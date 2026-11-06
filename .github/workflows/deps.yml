@@ -1,0 +1,33 @@
+name: Dependencies (licenses, bans, advisories)
+
+on:
+  push:
+    paths:
+      - "**/Cargo.toml"
+      - "**/Cargo.lock"
+      - "deny.toml"
+      - ".github/workflows/deps.yml"
+  schedule:
+    - cron: "0 6 * * 1"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  cargo-deny:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        manifest:
+          - spikes/s1-storage/Cargo.toml
+          - spikes/s3-tauri-shell/src-tauri/Cargo.toml
+    steps:
+      - uses: actions/checkout@v4
+      - uses: EmbarkStudios/cargo-deny-action@v2
+        with:
+          manifest-path: ${{ matrix.manifest }}
+          command: check
+          arguments: --all-features
+          command-arguments: --config ${{ github.workspace }}/deny.toml

@@ -1,0 +1,51 @@
+# cargo-deny: licențe, crate-uri interzise, vulnerabilități cunoscute, surse.
+# Rulat în CI (.github/workflows/deps.yml) pentru toate crate-urile K.G.B.
+
+[graph]
+targets = ["x86_64-pc-windows-msvc"]
+
+[advisories]
+# Vulnerabilitățile cunoscute (RustSec) opresc build-ul; crate-urile nemenținute apar ca avertisment.
+unmaintained = "workspace"
+
+[licenses]
+# Doar licențe permisive verificate (LICENSES.md). GPL/AGPL/SSPL/BUSL nu sunt permise.
+allow = [
+  "MIT", "MIT-0", "Apache-2.0", "Apache-2.0 WITH LLVM-exception",
+  "BSD-2-Clause", "BSD-3-Clause", "ISC", "Zlib", "0BSD",
+  "Unlicense", "CC0-1.0", "Unicode-3.0", "BSL-1.0",
+  # MPL-2.0: adusă tranzitiv de Tauri (cssparser, selectors, ...). DE VALIDAT — D-021.
+  "MPL-2.0",
+]
+confidence-threshold = 0.9
+
+[licenses.private]
+# Crate-urile noastre (publish = false) nu au licență publică.
+ignore = true
+
+[bans]
+multiple-versions = "allow"
+wildcards = "deny"
+allow-wildcard-paths = true
+# D-005 / D-018: niciun motor de bază de date.
+deny = [
+  { crate = "rusqlite", reason = "D-018: fără DB" },
+  { crate = "libsqlite3-sys", reason = "D-018: fără DB" },
+  { crate = "sqlx", reason = "D-018: fără DB" },
+  { crate = "sled", reason = "D-018: fără DB" },
+  { crate = "redb", reason = "D-018: fără DB" },
+  { crate = "rocksdb", reason = "D-018: fără DB" },
+  { crate = "librocksdb-sys", reason = "D-018: fără DB" },
+  { crate = "heed", reason = "D-018: fără DB" },
+  { crate = "lmdb", reason = "D-018: fără DB" },
+  { crate = "lmdb-rkv", reason = "D-018: fără DB" },
+  { crate = "fjall", reason = "D-018: fără DB" },
+  { crate = "diesel", reason = "D-018: fără DB" },
+  { crate = "sea-orm", reason = "D-018: fără DB" },
+  { crate = "surrealdb", reason = "D-018: fără DB" },
+  { crate = "duckdb", reason = "D-018: fără DB" },
+]
+
+[sources]
+unknown-registry = "deny"
+unknown-git = "deny"
