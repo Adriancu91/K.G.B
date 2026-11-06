@@ -1,0 +1,22 @@
+# Build
+target/
+node_modules/
+dist/
+build/
+*.log
+
+# Date locale de test generate de spike-uri (nu se publică)
+spikes/**/test-data/
+spikes/**/bench-out/
+
+# Secrete — nu se publică niciodată
+*.key
+*.pem
+.env
+.env.*
+
+# OS / editor
+Thumbs.db
+desktop.ini
+.vscode/
+.idea/

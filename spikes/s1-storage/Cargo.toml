@@ -1,0 +1,17 @@
+[package]
+name = "kgb-store-spike"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+blake3 = { version = "1.8.7", features = ["pure"] }
+crc32fast = "1.5.4"
+serde = { version = "1.0.229", features = ["derive"] }
+serde_json = { version = "1.0.154", features = ["raw_value"] }
+uuid = { version = "1.29.0", features = ["v4", "v7", "serde"] }
+
+[target."cfg(windows)".dependencies]
+windows-sys = { version = "0.61.2", features = ["Win32_Storage_FileSystem", "Win32_Foundation"] }
+
+[dev-dependencies]
+tempfile = "3.27.0"
