@@ -1,0 +1,129 @@
+// Workspace settings. Every change is validated and saved by the core.
+import { useEffect, useState, type FormEvent } from "react";
+import { api, message, type AppInfo, type Density, type Settings, type SettingsReply, type Theme } from "../api";
+
+export const SHORTCUTS: Array<[string, string]> = [
+  ["Ctrl + B", "ascunde / arată panoul lateral"],
+  ["Ctrl + ,", "deschide setările"],
+  ["Ctrl + 1 … 9", "deschide elementul 1 … 9 din panoul lateral"],
+  ["Esc", "închide o fereastră de confirmare"],
+];
+
+export function SettingsPage(props: {
+  reply: SettingsReply;
+  info: AppInfo;
+  onSave: (s: Settings) => Promise<void>;
+  onInfoChanged: () => Promise<void>;
+  onError: (e: string | null) => void;
+}) {
+  const s = props.reply.settings;
+  const [owner, setOwner] = useState(props.info.owner?.display_name ?? "");
+  const [wsName, setWsName] = useState(props.info.workspace?.name ?? "");
+
+  useEffect(() => setOwner(props.info.owner?.display_name ?? ""), [props.info.owner]);
+  useEffect(() => setWsName(props.info.workspace?.name ?? ""), [props.info.workspace]);
+
+  const run = async (f: () => Promise<unknown>) => {
+    try {
+      await f();
+      props.onError(null);
+    } catch (e) {
+      props.onError(message(e));
+    }
+    await props.onInfoChanged();
+  };
+
+  const saveOwner = (e: FormEvent) => {
+    e.preventDefault();
+    void run(() => api.renameOwner(owner, props.info.owner?.version ?? 0));
+  };
+  const saveWs = (e: FormEvent) => {
+    e.preventDefault();
+    void run(() => api.renameWorkspace(wsName));
+  };
+
+  return (
+    <section className="settings">
+      <h2>Aspect</h2>
+      <div className="field">
+        <label htmlFor="theme">Temă</label>
+        <select
+          id="theme"
+          value={s.theme}
+          onChange={(e) => void props.onSave({ ...s, theme: e.target.value as Theme })}
+        >
+          <option value="system">Ca sistemul</option>
+          <option value="light">Luminoasă</option>
+          <option value="dark">Întunecată</option>
+        </select>
+      </div>
+      <div className="field">
+        <label htmlFor="density">Densitate</label>
+        <select
+          id="density"
+          value={s.density}
+          onChange={(e) => void props.onSave({ ...s, density: e.target.value as Density })}
+        >
+          <option value="compact">Compactă</option>
+          <option value="normal">Normală</option>
+          <option value="comfortable">Aerisită</option>
+        </select>
+      </div>
+      <div className="field">
+        <label htmlFor="profile">Profil de lucru</label>
+        <select id="profile" value={s.profile} onChange={(e) => void props.onSave({ ...s, profile: e.target.value })}>
+          {props.reply.profiles.map((p) => (
+            <option key={p.id} value={p.id}>
+              {p.name}
+            </option>
+          ))}
+        </select>
+        <small className="muted">Profilul decide ce module activate apar în panoul lateral (alegi din Catalog).</small>
+      </div>
+      <div className="field">
+        <label>Limbă</label>
+        <span>Română (singura disponibilă acum)</span>
+      </div>
+
+      <h2>Identitate</h2>
+      <form className="field" onSubmit={saveOwner}>
+        <label htmlFor="owner">Numele proprietarului</label>
+        <div className="row">
+          <input id="owner" value={owner} maxLength={80} onChange={(e) => setOwner(e.target.value)} />
+          <button type="submit" disabled={!owner.trim() || owner.trim() === props.info.owner?.display_name}>
+            Salvează
+          </button>
+        </div>
+      </form>
+      <form className="field" onSubmit={saveWs}>
+        <label htmlFor="ws">Numele spațiului de lucru</label>
+        <div className="row">
+          <input id="ws" value={wsName} maxLength={80} onChange={(e) => setWsName(e.target.value)} />
+          <button type="submit" disabled={!wsName.trim() || wsName.trim() === props.info.workspace?.name}>
+            Salvează
+          </button>
+        </div>
+      </form>
+      <div className="field">
+        <label>Amprenta acestui PC</label>
+        <code>{props.info.device_fingerprint}</code>
+        <small className="muted">
+          Cheia dispozitivului a fost generată pe acest PC și e protejată de Windows. Va fi folosită la asocierea
+          altor PC-uri (Etapa 6).
+        </small>
+      </div>
+
+      <h2>Comenzi rapide</h2>
+      <dl className="facts">
+        {SHORTCUTS.map(([k, d]) => (
+          <div key={k} className="contents">
+            <dt>
+              <kbd>{k}</kbd>
+            </dt>
+            <dd>{d}</dd>
+          </div>
+        ))}
+      </dl>
+    </section>
+  );
+}

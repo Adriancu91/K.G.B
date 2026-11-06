@@ -1,29 +1,108 @@
-// Typed wrappers around the Rust commands. The UI never touches storage directly:
-// no localStorage / IndexedDB for data (D-005, D-018).
+// Typed calls to the Rust command layer (app/src-tauri/src/main.rs).
+// The UI keeps no data of its own: no localStorage, no IndexedDB.
 import { invoke } from "@tauri-apps/api/core";
 
-export interface Note {
-  id: string;
-  version: number;
-  text: string;
-  created_ms: number;
-}
-
-export interface Status {
-  store_dir: string;
-  records: number;
-  open_ms: number;
-  frames: number;
-  torn_tail: string | null;
-  process_start_to_ready_ms: number;
-  working_set_mb: number;
-}
-
-export const status = () => invoke<Status>("status");
-export const listNotes = () => invoke<Note[]>("list_notes");
-export const addNote = (text: string) => invoke<Note>("add_note", { text });
-export const deleteNote = (id: string, version: number) => invoke<void>("delete_note", { id, version });
-
 export type Theme = "system" | "light" | "dark";
-export const getTheme = () => invoke<Theme>("get_theme");
-export const setTheme = (theme: Theme) => invoke<void>("set_theme", { theme });
+export type Density = "compact" | "normal" | "comfortable";
+export type ModuleStatus = "stable" | "beta" | "experimental" | "disabled";
+
+export interface Layout {
+  sidebar_width: number;
+  sidebar_collapsed: boolean;
+}
+
+export interface Settings {
+  theme: Theme;
+  density: Density;
+  language: "ro";
+  profile: string;
+  layout: Layout;
+}
+
+export interface Profile {
+  id: string;
+  name: string;
+}
+
+export interface SettingsReply {
+  settings: Settings;
+  version: number;
+  profiles: Profile[];
+}
+
+export interface Owner {
+  display_name: string;
+  created_ms: number;
+  version: number;
+}
+
+export interface AppInfo {
+  app_version: string;
+  core_version: string;
+  pre_release: boolean;
+  startup_error: string | null;
+  workspace: { id: string; name: string; dir: string } | null;
+  owner: Owner | null;
+  device_fingerprint: string | null;
+  recovery: { records: number; open_ms: number; note: string | null } | null;
+  ready_ms: number;
+  log_dir: string;
+}
+
+export interface PermissionView {
+  id: string;
+  description: string;
+  granted: boolean;
+}
+
+export interface ModuleView {
+  id: string;
+  name: string;
+  description: string;
+  version: string;
+  status: ModuleStatus;
+  permissions: PermissionView[];
+  on_disable: string;
+  compatible: boolean;
+  enabled: boolean;
+  records: number;
+}
+
+export interface Planned {
+  id: string;
+  name: string;
+  stage: string;
+}
+
+export interface ModulesReply {
+  modules: ModuleView[];
+  planned: Planned[];
+  hidden: string[];
+}
+
+export interface Diagnostics {
+  report: string;
+  audit: Array<Record<string, unknown>>;
+  memory_mb: number;
+}
+
+export const api = {
+  appInfo: () => invoke<AppInfo>("app_info"),
+  getSettings: () => invoke<SettingsReply>("get_settings"),
+  saveSettings: (settings: Settings, version: number) => invoke<number>("save_settings", { settings, version }),
+  renameOwner: (name: string, version: number) => invoke<number>("rename_owner", { name, version }),
+  renameWorkspace: (name: string) => invoke<void>("rename_workspace", { name }),
+  listModules: () => invoke<ModulesReply>("list_modules"),
+  enableModule: (id: string, grant: string[]) => invoke<void>("enable_module", { id, grant }),
+  disableModule: (id: string) => invoke<void>("disable_module", { id }),
+  setModuleVisible: (id: string, visible: boolean) => invoke<void>("set_module_visible", { id, visible }),
+  moduleCall: <T>(id: string, command: string, args: Record<string, unknown> = {}) =>
+    invoke<T>("module_call", { id, command, args }),
+  diagnostics: () => invoke<Diagnostics>("diagnostics"),
+  exportDiagnostics: () => invoke<string>("export_diagnostics"),
+};
+
+/// Errors from Rust arrive as plain strings (already in Romanian).
+export function message(e: unknown): string {
+  return typeof e === "string" ? e : e instanceof Error ? e.message : String(e);
+}

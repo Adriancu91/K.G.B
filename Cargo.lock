@@ -1781,11 +1781,13 @@ name = "kgb-app"
 version = "0.1.0"
 dependencies = [
  "kgb-core",
+ "kgb-notes",
  "kgb-store",
  "serde",
  "serde_json",
  "tauri",
  "tauri-build",
+ "tracing",
  "uuid",
  "windows-sys 0.61.2",
 ]

@@ -1,57 +1,40 @@
-//! K.G.B. desktop app (Etapa 1, in progress). Starts from the S3 spike shell; the
-//! core services move into `kgb-core` step by step (docs/ETAPA1_PLAN.md).
+//! K.G.B. desktop app (Etapa 1). A thin command layer: every command locks the
+//! session and delegates to `kgb-core`. The UI never touches files directly.
 
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
 
+use std::path::{Path, PathBuf};
 use std::sync::Mutex;
-use std::time::{Instant, SystemTime, UNIX_EPOCH};
+use std::time::Instant;
 
-use kgb_store::{Fields, Options, RecordState, Store, Write};
+use kgb_core::identity::{self, DeviceIdentity};
+use kgb_core::log::{self, LogConfig, LogHandle};
+use kgb_core::modules::{self, Module, ModuleManager, ModuleView, PLANNED, PROFILES, Planned};
+use kgb_core::settings::{self, Settings};
+use kgb_core::workspace::{self, Workspace};
+use kgb_core::{CORE_VERSION, CoreError, profiles};
 use serde::Serialize;
 use serde_json::Value;
 use tauri::{Manager, State};
-use uuid::Uuid;
 
-const NOTES: &str = "notes";
+const APP_VERSION: &str = env!("CARGO_PKG_VERSION");
+/// Etapa 1 builds are pre-release: experimental modules are listed, labelled.
+const PRE_RELEASE: bool = true;
+const DEFAULT_WORKSPACE_NAME: &str = "Spațiul meu";
+const DEFAULT_OWNER_NAME: &str = "Proprietar";
 
-struct App {
-    store: Mutex<Store>,
-    main_to_ready_ms: u128,
+struct Session {
+    ws: Workspace,
+    mm: ModuleManager,
+    device: DeviceIdentity,
 }
 
-#[derive(Serialize)]
-struct Note {
-    id: Uuid,
-    version: u64,
-    text: String,
-    created_ms: u64,
-}
-
-impl Note {
-    fn from_state(r: &RecordState) -> Note {
-        Note {
-            id: r.id,
-            version: r.version,
-            text: r
-                .fields
-                .get("text")
-                .and_then(Value::as_str)
-                .unwrap_or_default()
-                .to_string(),
-            created_ms: r.fields.get("created_ms").and_then(Value::as_u64).unwrap_or_default(),
-        }
-    }
-}
-
-#[derive(Serialize)]
-struct Status {
-    store_dir: String,
-    records: usize,
-    open_ms: u128,
-    frames: u64,
-    torn_tail: Option<String>,
-    process_start_to_ready_ms: u128,
-    working_set_mb: f64,
+struct AppState {
+    session: Mutex<Option<Session>>,
+    startup_error: Option<String>,
+    root: PathBuf,
+    log: Option<LogHandle>,
+    ready_ms: u128,
 }
 
 type CmdResult<T> = Result<T, String>;
@@ -60,94 +43,274 @@ fn err(e: impl std::fmt::Display) -> String {
     e.to_string()
 }
 
+fn builtin_modules() -> Vec<Box<dyn Module>> {
+    vec![Box::new(kgb_notes::Notes::new())]
+}
+
+fn known_profiles() -> Vec<&'static str> {
+    modules::profile_ids()
+}
+
+/// Runs `f` with the open session, or explains why there is none.
+fn with_session<T>(app: &State<AppState>, f: impl FnOnce(&mut Session) -> Result<T, CoreError>) -> CmdResult<T> {
+    let mut guard = app
+        .session
+        .lock()
+        .map_err(|_| "starea aplicației este blocată după o eroare".to_string())?;
+    let s = guard.as_mut().ok_or_else(|| {
+        app.startup_error
+            .clone()
+            .unwrap_or_else(|| "spațiul de lucru nu este deschis".into())
+    })?;
+    f(s).map_err(|e| {
+        tracing::warn!("command failed: {e}");
+        e.to_string()
+    })
+}
+
+fn open_session(root: &Path) -> Result<Session, CoreError> {
+    let device = DeviceIdentity::load_or_create(&root.join("device"))?;
+    let (mut ws, created) = workspace::open_last_or_create_default(root, DEFAULT_WORKSPACE_NAME)?;
+    if created || identity::owner(ws.store())?.is_none() {
+        identity::set_owner(ws.store_mut(), DEFAULT_OWNER_NAME, 0)?;
+    }
+    let label = std::env::var("COMPUTERNAME").unwrap_or_else(|_| "Acest PC".into());
+    identity::register_this_device(ws.store_mut(), &device, &label)?;
+    let mm = ModuleManager::new(builtin_modules(), CORE_VERSION)?;
+    tracing::info!(created, records = ws.recovery().records as u64, "workspace opened");
+    Ok(Session { ws, mm, device })
+}
+
+// ---------- app info ----------
+
+#[derive(Serialize)]
+struct WorkspaceInfo {
+    id: String,
+    name: String,
+    dir: String,
+}
+
+#[derive(Serialize)]
+struct Recovery {
+    records: usize,
+    open_ms: u128,
+    note: Option<String>,
+}
+
+#[derive(Serialize)]
+struct AppInfo {
+    app_version: &'static str,
+    core_version: &'static str,
+    pre_release: bool,
+    startup_error: Option<String>,
+    workspace: Option<WorkspaceInfo>,
+    owner: Option<identity::Owner>,
+    device_fingerprint: Option<String>,
+    recovery: Option<Recovery>,
+    ready_ms: u128,
+    log_dir: String,
+}
+
 #[tauri::command]
-fn status(app: State<App>) -> CmdResult<Status> {
-    let store = app.store.lock().map_err(err)?;
-    let rep = store.recovery_report();
-    Ok(Status {
-        store_dir: store.dir().display().to_string(),
-        records: store.count(NOTES),
-        open_ms: rep.open_ms,
-        frames: rep.frames,
-        torn_tail: rep
-            .torn_tail
-            .as_ref()
-            .map(|t| format!("{} octeți mutați în carantină: {}", t.bytes, t.saved_to.display())),
-        process_start_to_ready_ms: app.main_to_ready_ms,
-        working_set_mb: working_set_mb(),
+fn app_info(app: State<AppState>) -> CmdResult<AppInfo> {
+    let guard = app.session.lock().map_err(err)?;
+    let mut info = AppInfo {
+        app_version: APP_VERSION,
+        core_version: CORE_VERSION,
+        pre_release: PRE_RELEASE,
+        startup_error: app.startup_error.clone(),
+        workspace: None,
+        owner: None,
+        device_fingerprint: None,
+        recovery: None,
+        ready_ms: app.ready_ms,
+        log_dir: app.root.join("logs").display().to_string(),
+    };
+    if let Some(s) = guard.as_ref() {
+        let m = s.ws.manifest();
+        info.workspace = Some(WorkspaceInfo {
+            id: m.id.to_string(),
+            name: m.name.clone(),
+            dir: s.ws.dir().display().to_string(),
+        });
+        info.owner = identity::owner(s.ws.store()).map_err(err)?;
+        info.device_fingerprint = Some(s.device.fingerprint());
+        let r = s.ws.recovery();
+        let note = r.torn_tail.as_ref().map(|t| {
+            format!(
+                "{} octeți incompleți de la ultima oprire au fost mutați în carantină",
+                t.bytes
+            )
+        });
+        info.recovery = Some(Recovery {
+            records: r.records,
+            open_ms: r.open_ms,
+            note,
+        });
+    }
+    Ok(info)
+}
+
+// ---------- settings ----------
+
+#[derive(Serialize)]
+struct Profile {
+    id: &'static str,
+    name: &'static str,
+}
+
+#[derive(Serialize)]
+struct SettingsReply {
+    settings: Settings,
+    version: u64,
+    profiles: Vec<Profile>,
+}
+
+#[tauri::command]
+fn get_settings(app: State<AppState>) -> CmdResult<SettingsReply> {
+    with_session(&app, |s| {
+        let l = settings::load(s.ws.store())?;
+        Ok(SettingsReply {
+            settings: l.settings,
+            version: l.version,
+            profiles: PROFILES.iter().map(|(id, name)| Profile { id, name }).collect(),
+        })
     })
 }
 
 #[tauri::command]
-fn list_notes(app: State<App>) -> CmdResult<Vec<Note>> {
-    let store = app.store.lock().map_err(err)?;
-    let mut notes: Vec<Note> = store
-        .scan(NOTES, |_| true)
-        .map_err(err)?
-        .iter()
-        .map(Note::from_state)
-        .collect();
-    notes.sort_by_key(|n| std::cmp::Reverse(n.created_ms));
-    Ok(notes)
+fn save_settings(app: State<AppState>, settings: Settings, version: u64) -> CmdResult<u64> {
+    with_session(&app, |s| {
+        settings::save(s.ws.store_mut(), &settings, version, &known_profiles())
+    })
 }
 
 #[tauri::command]
-fn add_note(app: State<App>, text: String) -> CmdResult<Note> {
-    let text = text.trim();
-    if text.is_empty() || text.len() > 10_000 {
-        return Err("textul trebuie să aibă între 1 și 10.000 de caractere".into());
+fn rename_owner(app: State<AppState>, name: String, version: u64) -> CmdResult<u64> {
+    with_session(&app, |s| identity::set_owner(s.ws.store_mut(), &name, version))
+}
+
+#[tauri::command]
+fn rename_workspace(app: State<AppState>, name: String) -> CmdResult<()> {
+    let root = app.root.clone();
+    with_session(&app, |s| {
+        s.ws.rename(&name)?;
+        let mut reg = workspace::Registry::load(&root)?;
+        reg.remember(&s.ws);
+        reg.save(&root)
+    })
+}
+
+// ---------- modules ----------
+
+#[derive(Serialize)]
+struct ModulesReply {
+    modules: Vec<ModuleView>,
+    planned: &'static [Planned],
+    /// Ids hidden in the active profile.
+    hidden: Vec<String>,
+}
+
+#[tauri::command]
+fn list_modules(app: State<AppState>) -> CmdResult<ModulesReply> {
+    with_session(&app, |s| {
+        let profile = settings::load(s.ws.store())?.settings.profile;
+        Ok(ModulesReply {
+            modules: s.mm.list(&s.ws, PRE_RELEASE)?,
+            planned: PLANNED,
+            hidden: profiles::hidden(s.ws.store(), &profile)?.into_iter().collect(),
+        })
+    })
+}
+
+#[tauri::command]
+fn enable_module(app: State<AppState>, id: String, grant: Vec<String>) -> CmdResult<()> {
+    with_session(&app, |s| s.mm.enable(&mut s.ws, &id, &grant))
+}
+
+#[tauri::command]
+fn disable_module(app: State<AppState>, id: String) -> CmdResult<()> {
+    with_session(&app, |s| s.mm.disable(&mut s.ws, &id))
+}
+
+#[tauri::command]
+fn set_module_visible(app: State<AppState>, id: String, visible: bool) -> CmdResult<()> {
+    with_session(&app, |s| {
+        let profile = settings::load(s.ws.store())?.settings.profile;
+        profiles::set_visible(s.ws.store_mut(), &profile, &id, visible)
+    })
+}
+
+#[tauri::command]
+fn module_call(app: State<AppState>, id: String, command: String, args: Value) -> CmdResult<Value> {
+    with_session(&app, |s| {
+        let fp = s.device.fingerprint();
+        s.mm.call(&mut s.ws, Some(&fp), &id, &command, args)
+    })
+}
+
+// ---------- diagnostics ----------
+
+#[derive(Serialize)]
+struct Diagnostics {
+    report: String,
+    audit: Vec<serde_json::Map<String, Value>>,
+    memory_mb: f64,
+}
+
+fn report(app: &State<AppState>, s: Option<&Session>) -> String {
+    let mut sections = vec![("Pornire până la gata (ms)", app.ready_ms.to_string())];
+    sections.push(("Memorie proces principal (MB)", format!("{:.1}", working_set_mb())));
+    if let Some(e) = &app.startup_error {
+        sections.push(("Eroare la pornire", e.clone()));
     }
-    let created_ms = SystemTime::now().duration_since(UNIX_EPOCH).map_err(err)?.as_millis() as u64;
-    let mut fields = Fields::new();
-    fields.insert("text".into(), text.into());
-    fields.insert("created_ms".into(), created_ms.into());
-    let id = Uuid::now_v7();
-    let mut store = app.store.lock().map_err(err)?;
-    store
-        .write(vec![Write::put(NOTES, id, fields).expect(0)])
-        .map_err(err)?;
-    let saved = store
-        .get(NOTES, id)
-        .map_err(err)?
-        .ok_or("nota nu a fost găsită după salvare")?;
-    Ok(Note::from_state(&saved))
-}
-
-#[tauri::command]
-fn delete_note(app: State<App>, id: Uuid, version: u64) -> CmdResult<()> {
-    let mut store = app.store.lock().map_err(err)?;
-    store
-        .write(vec![Write::delete(NOTES, id).expect(version)])
-        .map_err(err)?;
-    Ok(())
-}
-
-/// Workspace configuration lives in the store like any other record (no localStorage).
-const SETTINGS: &str = "settings";
-const WORKSPACE_ID: Uuid = Uuid::from_u128(1);
-const THEMES: [&str; 3] = ["system", "light", "dark"];
-
-#[tauri::command]
-fn get_theme(app: State<App>) -> CmdResult<String> {
-    let store = app.store.lock().map_err(err)?;
-    let rec = store.get(SETTINGS, WORKSPACE_ID).map_err(err)?;
-    Ok(rec
-        .and_then(|r| r.fields.get("theme").and_then(Value::as_str).map(str::to_string))
-        .unwrap_or_else(|| "system".into()))
-}
-
-#[tauri::command]
-fn set_theme(app: State<App>, theme: String) -> CmdResult<()> {
-    if !THEMES.contains(&theme.as_str()) {
-        return Err(format!("temă necunoscută: {theme}"));
+    if let Some(s) = s {
+        let r = s.ws.recovery();
+        sections.push(("Spațiu de lucru", s.ws.dir().display().to_string()));
+        sections.push(("Înregistrări la deschidere", r.records.to_string()));
+        sections.push(("Deschidere stocare (ms)", r.open_ms.to_string()));
+        sections.push((
+            "Recuperare",
+            r.torn_tail
+                .as_ref()
+                .map_or("nimic de reparat".into(), |t| t.reason.clone()),
+        ));
+        sections.push(("Amprentă dispozitiv", s.device.fingerprint()));
     }
-    let mut fields = Fields::new();
-    fields.insert("theme".into(), theme.into());
-    let mut store = app.store.lock().map_err(err)?;
-    store
-        .write(vec![Write::put(SETTINGS, WORKSPACE_ID, fields)])
-        .map_err(err)?;
-    Ok(())
+    if let Some(l) = &app.log {
+        l.flush();
+    }
+    log::diagnostic_report(APP_VERSION, &sections, &app.root.join("logs"))
+}
+
+#[tauri::command]
+fn diagnostics(app: State<AppState>) -> CmdResult<Diagnostics> {
+    let guard = app.session.lock().map_err(err)?;
+    let audit = match guard.as_ref() {
+        Some(s) => modules::audit_log(&s.ws, 30).map_err(err)?,
+        None => Vec::new(),
+    };
+    Ok(Diagnostics {
+        report: report(&app, guard.as_ref()),
+        audit,
+        memory_mb: working_set_mb(),
+    })
+}
+
+/// Saves the diagnostic report to `<root>/diagnostics/` and returns the path.
+#[tauri::command]
+fn export_diagnostics(app: State<AppState>) -> CmdResult<String> {
+    let text = {
+        let guard = app.session.lock().map_err(err)?;
+        report(&app, guard.as_ref())
+    };
+    let dir = app.root.join("diagnostics");
+    std::fs::create_dir_all(&dir).map_err(err)?;
+    let name = format!("diagnostic-{}.txt", log::utc_now().replace([':', '.'], "-"));
+    let path = dir.join(name);
+    std::fs::write(&path, text).map_err(err)?;
+    tracing::info!("diagnostic report exported");
+    Ok(path.display().to_string())
 }
 
 #[cfg(windows)]
@@ -174,22 +337,44 @@ fn main() {
     let t0 = Instant::now();
     tauri::Builder::default()
         .setup(move |app| {
-            let dir = app.path().app_local_data_dir()?.join("workspace");
-            let store = Store::open(&dir, Options::default())?;
-            app.manage(App {
-                store: Mutex::new(store),
-                main_to_ready_ms: t0.elapsed().as_millis(),
+            // KGB_DATA_DIR lets automated tests use a throw-away folder instead
+            // of the user's real data (%LOCALAPPDATA%\ro.kronos.kgb).
+            let root = match std::env::var_os("KGB_DATA_DIR") {
+                Some(d) => PathBuf::from(d),
+                None => app.path().app_local_data_dir()?,
+            };
+            let log = log::init(&root.join("logs"), LogConfig::default()).ok();
+            tracing::info!(version = APP_VERSION, "K.G.B. starting");
+            let (session, startup_error) = match open_session(&root) {
+                Ok(s) => (Some(s), None),
+                Err(e) => {
+                    tracing::error!("startup failed: {e}");
+                    (None, Some(e.to_string()))
+                }
+            };
+            app.manage(AppState {
+                session: Mutex::new(session),
+                startup_error,
+                root,
+                log,
+                ready_ms: t0.elapsed().as_millis(),
             });
             Ok(())
         })
         .invoke_handler(tauri::generate_handler![
-            status,
-            list_notes,
-            add_note,
-            delete_note,
-            get_theme,
-            set_theme
+            app_info,
+            get_settings,
+            save_settings,
+            rename_owner,
+            rename_workspace,
+            list_modules,
+            enable_module,
+            disable_module,
+            set_module_visible,
+            module_call,
+            diagnostics,
+            export_diagnostics
         ])
         .run(tauri::generate_context!())
-        .expect("error while running the S3 prototype");
+        .expect("K.G.B. could not start the window");
 }

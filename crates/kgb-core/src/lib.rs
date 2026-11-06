@@ -11,6 +11,7 @@ pub mod identity;
 pub mod log;
 pub mod manifest;
 pub mod modules;
+pub mod profiles;
 pub mod settings;
 pub mod workspace;
 
