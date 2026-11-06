@@ -13,3 +13,8 @@
 2. Network & Sync — transport, identitate, pairing, relay (după S2)
 3. Desktop shell — Tauri/React, granița UI ↔ Rust (după S3)
 4. Module Manager și contractul modulelor (Etapa 1)
+
+## Implementat în Etapa 1
+- `crates/kgb-store` — stocarea (S1). `crates/kgb-core` — workspace, setări, identitate, module, permisiuni, profiluri, loguri. `modules/kgb-notes` — modulul demonstrativ. `app/` — Tauri: un strat subțire de comenzi peste `kgb-core` și interfața React.
+- Interfața nu atinge fișierele. Fiecare acțiune e o comandă Rust care trece prin nucleu. Modulele ajung la date doar prin `ModuleContext` (vezi `MODULE_CONTRACT.md`).
+- Date: `%LOCALAPPDATA%\ro.kronos.kgb\` (`device/`, `logs/`, `workspaces/<id>/`, `workspaces.json`).

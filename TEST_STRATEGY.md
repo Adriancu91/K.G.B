@@ -26,3 +26,7 @@
 Build reușit, mărime installer, timp de pornire, consum RAM, apel UI → Rust → stocare.
 
 Pragurile de performanță sunt PROPUSE în ETAPA0_PLAN.md §3.2 și devin oficiale doar după aprobare.
+
+## Etapa 1 — nucleul desktop
+- `cargo test --workspace`: teste unitare și de integrare pentru stocare, loguri, workspace, setări, identitate, manifest, module, permisiuni, profiluri și modulul demonstrativ. Rulează în CI.
+- `node app/e2e/gate.mjs <kgb-app.exe> <folder-capturi>`: scenariul porții în fereastra reală, prin portul de depanare WebView2 (doar `127.0.0.1`). Folosește un folder de date temporar (`KGB_DATA_DIR`), nu datele reale. Rulează local; nu rulează încă în CI.

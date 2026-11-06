@@ -41,6 +41,6 @@ Interdicții permanente: fără baze de date (D-005, D-018), fără schimbări d
 - [x] 1.9 Modul demonstrativ „Note” prin contract
 - [x] 1.10 Shell UI (navigare, catalog, stare, setări, diagnostic, panouri)
 - [x] 1.11 Installer (upgrade, dezinstalare cu păstrarea datelor)
-- [ ] 1.12 Demonstrația porții + `docs/ETAPA1_RAPORT.md`
+- [x] 1.12 Demonstrația porții + `docs/ETAPA1_RAPORT.md`
 - [ ] 🔒 1.13 Poarta Etapei 1: aprobarea proprietarului
 - [ ] 🔒 S2.3 (din Etapa 0) 2 PC-uri, LAN + internet — înainte de Etapa 6
