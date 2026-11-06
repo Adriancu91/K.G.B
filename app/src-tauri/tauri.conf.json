@@ -37,7 +37,12 @@
     "windows": {
       "webviewInstallMode": {
         "type": "skip"
+      },
+      "nsis": {
+        "installMode": "currentUser"
       }
-    }
+    },
+    "publisher": "Kronos",
+    "shortDescription": "K.G.B. — Kronos Global Business (pre-lansare)"
   }
 }
