@@ -7,12 +7,18 @@ on:
       - "Cargo.lock"
       - "rustfmt.toml"
       - "crates/**"
+      - "modules/**"
       - "app/**"
       - ".github/workflows/core.yml"
   workflow_dispatch:
 
 permissions:
   contents: read
+
+# Only the newest commit matters; older runs are cancelled.
+concurrency:
+  group: core-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   build-test:
@@ -38,7 +44,7 @@ jobs:
       - name: Clippy (warnings are errors)
         run: cargo clippy --workspace --all-targets -- -D warnings
       - name: Tests
-        run: cargo test --workspace --release 2>&1 | tee tests.txt
+        run: cargo test --workspace 2>&1 | tee tests.txt
       - name: Summary
         if: always()
         run: |
