@@ -127,7 +127,7 @@ impl Store {
             }
             self.hlc.observe(op.state.rev.0);
             let key = (op.state.coll.clone(), op.state.id);
-            let local = match self.keydir.get(&key) {
+            let local = match self.keydir.get(&key.0, &key.1) {
                 Some(l) => Some(self.read_state_at(l)?),
                 None => None,
             };
@@ -168,7 +168,7 @@ impl Store {
         };
         let h = blake3::hash(format!("{}|{}|{}|{:?}|{:?}", rec.coll, rec.id, c.field, lo, hi).as_bytes());
         let id = Uuid::from_bytes(h.as_bytes()[..16].try_into().unwrap());
-        if self.keydir.contains_key(&(CONFLICTS.to_string(), id)) {
+        if self.keydir.contains(CONFLICTS, &id) {
             return Ok(false);
         }
         let provisional = if c.remote_rev > c.local_rev { "remote" } else { "local" };

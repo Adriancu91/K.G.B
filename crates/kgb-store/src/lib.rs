@@ -13,13 +13,16 @@ pub mod error;
 pub mod frame;
 pub mod fsutil;
 mod index;
+mod keydir;
 pub mod maintenance;
 pub mod model;
+pub mod query;
 pub mod store;
 pub mod sync;
 
 pub use error::{Error, Result};
 pub use maintenance::{BackupInfo, CompactReport, RepairReport, repair, restore_backup, verify_backup};
 pub use model::{DeviceId, Fields, Op, RecordState, Rev};
+pub use query::{Cond, Query, QueryResult, Sort};
 pub use store::{Durability, Options, RecoveryReport, Store, Write};
 pub use sync::{Conflict, SyncReport, VersionVector, sync_pair};

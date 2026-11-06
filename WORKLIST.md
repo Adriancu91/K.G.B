@@ -47,9 +47,9 @@ Interdicții permanente: fără baze de date (D-005, D-018), fără schimbări d
 
 ## Etapa 2 — pași (plan: `docs/ETAPA2_PLAN.md`)
 
-- [ ] 2.1 Benchmark extins (RAM, filtre) — tabel de bază
-- [ ] 2.2 Keydir pe colecții + scan doar pe înregistrările vii
-- [ ] 2.3 Interogări structurate cu decodare parțială (filtrare 100k < 200 ms)
+- [x] 2.1 Benchmark extins (RAM, filtre) — tabel de bază
+- [x] 2.2 Keydir pe colecții + scan doar pe înregistrările vii
+- [ ] 2.3 Interogări structurate cu decodare parțială (filtrare 100k < 200 ms) — API făcut + 5 teste; ținta NEATINSĂ cu JSON (455–609 ms) → cere 2.4
 - [ ] 2.4 Decizie D-028 format binar pe baza măsurătorilor
 - [ ] 2.5 Compactare incrementală
 - [ ] 2.6 Schema colecțiilor (înregistrări structurate)

@@ -4,7 +4,7 @@
 use std::path::Path;
 use std::time::Instant;
 
-use kgb_store::{Durability, Options, Store, Write};
+use kgb_store::{Cond, Durability, Options, Query, Store, Write};
 use serde_json::{Value, json};
 use uuid::Uuid;
 
@@ -128,6 +128,48 @@ fn bench(root: &Path, n: u64) -> Vec<(String, String)> {
         format!("Filtrare fără index ({hits} rezultate)"),
         format!("{:.0} ms", ms(t)),
     ));
+    let t = Instant::now();
+    let hits = s
+        .scan("items", |r| r.fields["warehouse"] == json!("DEP-3"))
+        .unwrap()
+        .len();
+    rows.push((
+        format!("Filtrare fără index, 20% ({hits} rezultate)"),
+        format!("{:.0} ms", ms(t)),
+    ));
+    let t = Instant::now();
+    let q = Query {
+        filter: Some(Cond::Lt {
+            field: "price".into(),
+            value: json!(1.0),
+        }),
+        ..Query::default()
+    };
+    let hits = s.query("items", &q).unwrap().total;
+    rows.push((
+        format!("Interogare fără index ({hits} rezultate)"),
+        format!("{:.0} ms", ms(t)),
+    ));
+    let t = Instant::now();
+    let q = Query {
+        filter: Some(Cond::Eq {
+            field: "warehouse".into(),
+            value: json!("DEP-3"),
+        }),
+        ..Query::default()
+    };
+    let hits = s.query("items", &q).unwrap().total;
+    rows.push((
+        format!("Interogare fără index, 20% ({hits} rezultate)"),
+        format!("{:.0} ms", ms(t)),
+    ));
+    let t = Instant::now();
+    let c = s.count("items");
+    rows.push((format!("Numărare colecție ({c})"), format!("{:.2} ms", ms(t))));
+    rows.push((
+        "Memorie proces (keydir + index)".into(),
+        format!("{:.0} MB", private_mb()),
+    ));
 
     let before = s.disk_bytes().unwrap();
     let t = Instant::now();
@@ -145,6 +187,26 @@ fn bench(root: &Path, n: u64) -> Vec<(String, String)> {
     drop(s);
     let _ = std::fs::remove_dir_all(&dir);
     rows
+}
+
+#[cfg(windows)]
+fn private_mb() -> f64 {
+    use windows_sys::Win32::System::ProcessStatus::{K32GetProcessMemoryInfo, PROCESS_MEMORY_COUNTERS_EX};
+    use windows_sys::Win32::System::Threading::GetCurrentProcess;
+    // SAFETY: plain FFI call with a correctly sized, zeroed out-struct.
+    unsafe {
+        let mut c: PROCESS_MEMORY_COUNTERS_EX = std::mem::zeroed();
+        c.cb = size_of::<PROCESS_MEMORY_COUNTERS_EX>() as u32;
+        if K32GetProcessMemoryInfo(GetCurrentProcess(), &mut c as *mut _ as *mut _, c.cb) == 0 {
+            return -1.0;
+        }
+        c.PrivateUsage as f64 / (1024.0 * 1024.0)
+    }
+}
+
+#[cfg(not(windows))]
+fn private_mb() -> f64 {
+    -1.0
 }
 
 fn main() {

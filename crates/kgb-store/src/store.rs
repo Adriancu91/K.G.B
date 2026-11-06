@@ -24,6 +24,7 @@ use crate::error::{Error, Result};
 use crate::frame::{self, Decoded, END_OF_TXN};
 use crate::fsutil;
 use crate::index::Indexes;
+use crate::keydir::Keydir;
 use crate::model::{DELETED_FIELD, DeviceId, Fields, Hlc, Op, Origin, RecordState, Rev, is_system_collection};
 
 pub const FORMAT_VERSION: u32 = 1;
@@ -162,6 +163,12 @@ impl Write {
     }
 }
 
+/// Only the record state of an op; the other parts are skipped while parsing.
+#[derive(Deserialize)]
+struct StateOnly {
+    s: RecordState,
+}
+
 /// Minimal view of an op used during replay; skips the parts not needed in memory.
 #[derive(Deserialize)]
 struct OpMeta {
@@ -188,7 +195,7 @@ pub struct Store {
     pub(crate) hlc: Hlc,
     pub(crate) local_seq: u64,
     pub(crate) applied: BTreeMap<DeviceId, u64>,
-    pub(crate) keydir: HashMap<Key, Loc>,
+    pub(crate) keydir: Keydir,
     pub(crate) indexes: Indexes,
     readers: BTreeMap<u32, File>,
     active: Option<File>,
@@ -238,7 +245,7 @@ impl Store {
             hlc: Hlc::default(),
             local_seq: 0,
             applied: BTreeMap::new(),
-            keydir: HashMap::new(),
+            keydir: Keydir::default(),
             indexes: Indexes::default(),
             readers: BTreeMap::new(),
             active: None,
@@ -401,7 +408,7 @@ impl Store {
         } else if fields.is_some() {
             self.indexes.update(&coll, id, fields);
         }
-        self.keydir.insert((coll, id), loc);
+        self.keydir.insert(&coll, id, loc);
         self.hlc.observe(rev.0);
         let Origin(dev, seq) = origin;
         if seq > 0 {
@@ -451,7 +458,7 @@ impl Store {
 
     /// Live record, or `None` if missing or logically deleted.
     pub fn get(&self, coll: &str, id: Uuid) -> Result<Option<RecordState>> {
-        match self.keydir.get(&(coll.to_string(), id)) {
+        match self.keydir.get(coll, &id) {
             Some(l) if !l.deleted => self.read_state_at(l).map(Some),
             _ => Ok(None),
         }
@@ -459,26 +466,22 @@ impl Store {
 
     /// Record including logically deleted ones.
     pub fn get_any(&self, coll: &str, id: Uuid) -> Result<Option<RecordState>> {
-        match self.keydir.get(&(coll.to_string(), id)) {
+        match self.keydir.get(coll, &id) {
             Some(l) => self.read_state_at(l).map(Some),
             None => Ok(None),
         }
     }
 
     pub fn version_of(&self, coll: &str, id: Uuid) -> Option<u64> {
-        self.keydir.get(&(coll.to_string(), id)).map(|l| l.version)
+        self.keydir.get(coll, &id).map(|l| l.version)
     }
 
     pub fn count(&self, coll: &str) -> usize {
-        self.keydir.iter().filter(|((c, _), l)| c == coll && !l.deleted).count()
+        self.keydir.count_live(coll)
     }
 
     pub fn ids(&self, coll: &str) -> Vec<Uuid> {
-        self.keydir
-            .iter()
-            .filter(|((c, _), l)| c == coll && !l.deleted)
-            .map(|((_, id), _)| *id)
-            .collect()
+        self.keydir.live(coll).map(|(id, _)| id).collect()
     }
 
     /// Declare an equality index (persisted in the manifest, contents rebuilt on open).
@@ -495,17 +498,15 @@ impl Store {
     }
 
     fn rebuild_index_for(&mut self, coll: &str) -> Result<()> {
-        let locs: Vec<(Uuid, Loc)> = self
-            .keydir
-            .iter()
-            .filter(|((c, _), l)| c == coll && !l.deleted)
-            .map(|((_, id), l)| (*id, *l))
-            .collect();
-        for (id, loc) in locs {
-            let st = self.read_state_at(&loc)?;
-            self.indexes.update(coll, id, Some(&st.fields));
-        }
-        Ok(())
+        let locs: Vec<Loc> = self.keydir.live(coll).map(|(_, l)| l).collect();
+        // Index while streaming: never hold every record in memory at once.
+        let mut idx = std::mem::take(&mut self.indexes);
+        let r = self.read_states(locs, |st| {
+            idx.update(coll, st.id, Some(&st.fields));
+            Ok(())
+        });
+        self.indexes = idx;
+        r
     }
 
     /// Drop and rebuild every index from the journal (used to prove indexes are regenerable).
@@ -526,49 +527,94 @@ impl Store {
                 coll: coll.into(),
                 field: field.into(),
             })?;
-        let mut out = Vec::with_capacity(ids.len());
-        for id in ids {
-            if let Some(st) = self.get(coll, id)? {
+        let locs: Vec<Loc> = ids
+            .iter()
+            .filter_map(|id| self.keydir.get(coll, id))
+            .filter(|l| !l.deleted)
+            .copied()
+            .collect();
+        let mut out = Vec::with_capacity(locs.len());
+        self.read_states(locs, |st| {
+            out.push(st);
+            Ok(())
+        })?;
+        Ok(out)
+    }
+
+    /// Unindexed filter over the live records of one collection only. Records
+    /// are read in on-disk order, in large contiguous chunks, decoded once.
+    pub fn scan(&self, coll: &str, mut pred: impl FnMut(&RecordState) -> bool) -> Result<Vec<RecordState>> {
+        let locs: Vec<Loc> = self.keydir.live(coll).map(|(_, l)| l).collect();
+        let mut out = Vec::new();
+        self.read_states(locs, |st| {
+            if pred(&st) {
                 out.push(st);
             }
-        }
+            Ok(())
+        })?;
         Ok(out)
     }
 
-    /// Unindexed filter: sequential pass over the segments, newest state only.
-    pub fn scan(&self, coll: &str, mut pred: impl FnMut(&RecordState) -> bool) -> Result<Vec<RecordState>> {
-        let mut out = Vec::new();
-        for &seg in &self.manifest.segments {
-            let buf = fs::read(self.seg_path(seg))?;
-            let mut off = 0;
-            while let Decoded::Frame { payload, next, .. } = frame::decode_at(&buf, off) {
-                if (off as u64) < self.active_end_for(seg) {
-                    let meta: OpMeta = serde_json::from_slice(payload)?;
-                    if meta.s.c == coll && !meta.s.d {
-                        let live = self
-                            .keydir
-                            .get(&(meta.s.c.clone(), meta.s.i))
-                            .is_some_and(|l| l.seg == seg && l.off == off as u64);
-                        if live {
-                            let op: Op = serde_json::from_slice(payload)?;
-                            if pred(&op.state) {
-                                out.push(op.state);
-                            }
-                        }
+    /// Reads the record states at `locs` (see [`Store::read_payloads`]).
+    pub(crate) fn read_states(&self, locs: Vec<Loc>, mut f: impl FnMut(RecordState) -> Result<()>) -> Result<()> {
+        self.read_payloads(locs, |p| f(Store::decode_state(p)?))
+    }
+
+    pub(crate) fn decode_state(payload: &[u8]) -> Result<RecordState> {
+        let only: StateOnly = serde_json::from_slice(payload)?;
+        Ok(only.s)
+    }
+
+    /// Calls `f` with the frame payload at each of `locs`, in on-disk order.
+    /// Neighbouring frames are read together, at most `READ_CHUNK` bytes per read.
+    pub(crate) fn read_payloads(&self, mut locs: Vec<Loc>, mut f: impl FnMut(&[u8]) -> Result<()>) -> Result<()> {
+        const READ_CHUNK: u64 = 4 * 1024 * 1024;
+        const MAX_GAP: u64 = 64 * 1024;
+        locs.sort_unstable_by_key(|l| (l.seg, l.off));
+        let mut buf = Vec::new();
+        let mut i = 0;
+        while i < locs.len() {
+            let first = locs[i];
+            let mut end = first.off + first.len as u64;
+            let mut j = i + 1;
+            while j < locs.len() {
+                let l = locs[j];
+                if l.seg != first.seg || l.off > end + MAX_GAP || l.off + l.len as u64 - first.off > READ_CHUNK {
+                    break;
+                }
+                end = end.max(l.off + l.len as u64);
+                j += 1;
+            }
+            let file = self.readers.get(&first.seg).ok_or_else(|| Error::Corruption {
+                segment: first.seg,
+                offset: first.off,
+                detail: "segment not open".into(),
+            })?;
+            buf.resize((end - first.off) as usize, 0);
+            fsutil::read_exact_at(file, &mut buf, first.off)?;
+            for l in &locs[i..j] {
+                let at = (l.off - first.off) as usize;
+                match frame::decode_at(&buf[..at + l.len as usize], at) {
+                    Decoded::Frame { payload, .. } => f(payload)?,
+                    Decoded::Invalid(why) => {
+                        return Err(Error::Corruption {
+                            segment: l.seg,
+                            offset: l.off,
+                            detail: why.into(),
+                        });
+                    }
+                    Decoded::End => {
+                        return Err(Error::Corruption {
+                            segment: l.seg,
+                            offset: l.off,
+                            detail: "empty frame".into(),
+                        });
                     }
                 }
-                off = next;
             }
+            i = j;
         }
-        Ok(out)
-    }
-
-    fn active_end_for(&self, seg: u32) -> u64 {
-        if self.manifest.segments.last() == Some(&seg) {
-            self.active_len
-        } else {
-            u64::MAX
-        }
+        Ok(())
     }
 
     // ---------------------------------------------------------------- writes
@@ -598,7 +644,7 @@ impl Store {
             let key = (coll.to_string(), id);
             let cur = match overlay.get(&key) {
                 Some(s) => Some(s.clone()),
-                None => match self.keydir.get(&key) {
+                None => match self.keydir.get(&key.0, &key.1) {
                     Some(l) => Some(self.read_state_at(l)?),
                     None => None,
                 },
