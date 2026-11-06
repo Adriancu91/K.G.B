@@ -28,10 +28,14 @@ pub const PERMISSIONS: &[(&str, &str)] = &[
         "identity.read",
         "citește numele proprietarului și amprenta dispozitivului",
     ),
+    (
+        "files.own",
+        "salvează și citește fișierele atașate proprii (verificate prin amprentă BLAKE3)",
+    ),
 ];
 
 /// Core services a module may use.
-pub const SERVICES: &[&str] = &["storage", "settings", "identity", "log"];
+pub const SERVICES: &[&str] = &["storage", "settings", "identity", "files", "log"];
 
 /// Which service each permission belongs to (a permission needs its service).
 fn service_of(permission: &str) -> &'static str {
@@ -39,6 +43,7 @@ fn service_of(permission: &str) -> &'static str {
         "storage.own" => "storage",
         "settings.read" => "settings",
         "identity.read" => "identity",
+        "files.own" => "files",
         _ => "",
     }
 }

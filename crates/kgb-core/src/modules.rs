@@ -17,6 +17,7 @@ use serde_json::Value;
 use uuid::Uuid;
 
 use crate::error::{CoreError, CoreResult};
+use crate::files;
 use crate::identity;
 use crate::manifest::{Manifest, ModuleStatus};
 use crate::settings::{self, Settings};
@@ -516,6 +517,32 @@ impl ModuleContext<'_> {
     pub fn device_fingerprint(&mut self) -> CoreResult<Option<String>> {
         self.require("identity.read")?;
         Ok(self.fingerprint.map(String::from))
+    }
+
+    /// Stores a file owned by this module (permission `files.own`).
+    pub fn put_file(&mut self, name: &str, data: &[u8]) -> CoreResult<files::FileRef> {
+        self.require("files.own")?;
+        let id = self.manifest.id.clone();
+        files::put(self.ws, &id, name, data)
+    }
+
+    /// Reads one of this module's files; the bytes are verified against their hash.
+    pub fn get_file(&mut self, id: Uuid) -> CoreResult<(files::FileRef, Vec<u8>)> {
+        self.require("files.own")?;
+        let m = self.manifest.id.clone();
+        files::get(self.ws, &m, id)
+    }
+
+    pub fn delete_file(&mut self, id: Uuid) -> CoreResult<()> {
+        self.require("files.own")?;
+        let m = self.manifest.id.clone();
+        files::delete(self.ws, &m, id)
+    }
+
+    pub fn list_files(&mut self) -> CoreResult<Vec<files::FileRef>> {
+        self.require("files.own")?;
+        let m = self.manifest.id.clone();
+        files::list(self.ws, &m)
     }
 
     /// Structured log line tagged with the module id (no permission needed:

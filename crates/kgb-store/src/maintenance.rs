@@ -327,6 +327,57 @@ impl Store {
     }
 }
 
+impl Store {
+    /// Hashes of every stored blob.
+    pub fn blob_hashes(&self) -> Result<Vec<String>> {
+        let root = self.dir.join("blobs");
+        let mut out = Vec::new();
+        if !root.exists() {
+            return Ok(out);
+        }
+        for d in fs::read_dir(&root)? {
+            let d = d?;
+            if !d.file_type()?.is_dir() {
+                continue;
+            }
+            for f in fs::read_dir(d.path())? {
+                let name = f?.file_name().to_string_lossy().to_string();
+                if name.len() == 64 && name.bytes().all(|b| b.is_ascii_hexdigit()) {
+                    out.push(name);
+                }
+            }
+        }
+        out.sort();
+        Ok(out)
+    }
+
+    /// Moves the given blobs to `retired/blobs/` (the previous generation there
+    /// is removed first), like segments after compaction. Returns bytes moved.
+    /// Callers decide what is unreferenced; the store never guesses.
+    pub fn retire_blobs(&self, hashes: &[String]) -> Result<u64> {
+        let retired = self.dir.join("retired").join("blobs");
+        if retired.exists() {
+            fs::remove_dir_all(&retired)?;
+        }
+        if hashes.is_empty() {
+            return Ok(0);
+        }
+        fs::create_dir_all(&retired)?;
+        let mut bytes = 0;
+        for h in hashes {
+            if h.len() != 64 || !h.bytes().all(|b| b.is_ascii_hexdigit()) {
+                return Err(Error::InvalidInput(format!("not a blob hash: {h}")));
+            }
+            let p = blob_path(&self.dir, h);
+            if p.exists() {
+                bytes += fs::metadata(&p)?.len();
+                fs::rename(&p, retired.join(h))?;
+            }
+        }
+        Ok(bytes)
+    }
+}
+
 fn blob_path(dir: &Path, hash: &str) -> PathBuf {
     dir.join("blobs").join(&hash[..2]).join(hash)
 }
