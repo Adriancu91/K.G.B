@@ -1,0 +1,59 @@
+name: S1 storage spike
+
+on:
+  push:
+    paths:
+      - "spikes/s1-storage/**"
+      - ".github/workflows/s1-storage.yml"
+  workflow_dispatch:
+    inputs:
+      bench_sizes:
+        description: "Benchmark sizes (comma separated)"
+        default: "10000,100000,1000000"
+      crash_iterations:
+        description: "Forced-kill iterations"
+        default: "300"
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: windows-latest
+    timeout-minutes: 60
+    defaults:
+      run:
+        working-directory: spikes/s1-storage
+        shell: bash
+    steps:
+      - uses: actions/checkout@v4
+      - name: Toolchain
+        run: rustup default stable && rustup component add clippy rustfmt && rustc --version
+      - name: Format
+        run: cargo fmt --check
+      - name: Clippy
+        run: cargo clippy --all-targets --release 2>&1 | tee clippy.txt
+      - name: Tests
+        run: cargo test --release 2>&1 | tee tests.txt
+      - name: Forced-kill test
+        run: cargo run --release --bin crashtest -- run "$RUNNER_TEMP/crash" "${{ inputs.crash_iterations || '300' }}" 2>&1 | tee crash.txt
+      - name: Benchmark
+        run: cargo run --release --bin bench -- "$RUNNER_TEMP/bench" "${{ inputs.bench_sizes || '10000,100000,1000000' }}" 2>&1 | tee bench.md
+      - name: Machine info
+        if: always()
+        shell: pwsh
+        run: |
+          Get-CimInstance Win32_Processor | Select-Object Name, NumberOfCores | Format-List | Out-File -Encoding utf8 machine.txt
+          "RAM GB: " + [math]::Round((Get-CimInstance Win32_ComputerSystem).TotalPhysicalMemory/1GB,1) | Out-File -Append -Encoding utf8 machine.txt
+          Get-PhysicalDisk | Select-Object MediaType, BusType, Size | Format-Table | Out-File -Append -Encoding utf8 machine.txt
+      - name: Summary
+        if: always()
+        run: |
+          { echo "## Bench"; cat bench.md 2>/dev/null; echo; echo "## Crash"; cat crash.txt 2>/dev/null; echo; echo '```'; tail -40 tests.txt 2>/dev/null; echo '```'; } >> "$GITHUB_STEP_SUMMARY"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: s1-results
+          path: |
+            spikes/s1-storage/*.txt
+            spikes/s1-storage/bench.md
