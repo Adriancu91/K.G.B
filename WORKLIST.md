@@ -49,8 +49,8 @@ Interdicții permanente: fără baze de date (D-005, D-018), fără schimbări d
 
 - [x] 2.1 Benchmark extins (RAM, filtre) — tabel de bază
 - [x] 2.2 Keydir pe colecții + scan doar pe înregistrările vii
-- [ ] 2.3 Interogări structurate cu decodare parțială (filtrare 100k < 200 ms) — API făcut + 5 teste; ținta NEATINSĂ cu JSON (455–609 ms) → cere 2.4
-- [ ] 2.4 Decizie D-028 format binar pe baza măsurătorilor
+- [x] 2.3 Interogări structurate cu decodare parțială — 5 teste; ținta atinsă după 2.4 (116 ms)
+- [x] 2.4 Format binar v2 (D-028), compatibil cu v1, conversie doar la compactare (D-029) — 6 teste, 300 opriri forțate fără pierderi
 - [ ] 2.5 Compactare incrementală
 - [ ] 2.6 Schema colecțiilor (înregistrări structurate)
 - [ ] 2.7 Indexuri declarate în manifest

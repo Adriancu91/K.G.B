@@ -112,3 +112,11 @@ Deciziile DECIS se schimbă doar cu aprobarea explicită a proprietarului (Maste
 - D-028: format binar al jurnalului — se decide după măsurători (pasul 2.4);
 - D-029: orice format nou citește jurnalele vechi; conversia se face doar la compactare, după backup automat;
 - D-030: restaurarea creează un spațiu de lucru nou, nu suprascrie pe cel curent.
+
+### D-028 — Format binar al jurnalului (v2)
+- **Data:** 6 nov. 2026 · **Statut:** DECIS. Formatul binar era deja recomandat în raportul Etapei 0 („Pentru Etapa 2: format binar în loc de JSON”), aprobat de proprietar prin D-022. S-a aplicat după dovada măsurată.
+- **Dovada** (`docs/etapa2/BENCH.md`): la 100k înregistrări, doar validarea JSON durează 241 ms, peste pragul de 200 ms, iar citirea de pe disc 89 ms.
+- **Ce s-a ales:** antet binar + câmpuri cu lungimea în față. **Valorile rămân JSON**, deci semnificația datelor nu se schimbă. Nu s-a folosit nicio bibliotecă nouă.
+- **Alternative respinse:** CBOR sau MessagePack, care ar fi cerut o dependență nouă și oricum citesc fiecare octet; o coloană separată în memorie, care costă mult RAM.
+- **Rezultat:** interogare 100k: 116 ms ✅; deschidere: 166 ms (era 349).
+- **Compatibilitate (D-029, aplicată):** jurnalele v1 se citesc în continuare. Un spațiu de lucru existent rămâne pe v1 până la prima compactare. La compactare, manifestul trece pe formatul 2, iar o aplicație veche îl refuză clar, fără să-l modifice. **Backup automat înainte de conversie:** pasul 2.9.

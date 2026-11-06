@@ -29,6 +29,10 @@ impl Indexes {
         self.data.entry((coll.to_string(), field.to_string())).or_default();
     }
 
+    pub fn has_any(&self) -> bool {
+        !self.fields.is_empty()
+    }
+
     pub fn has(&self, coll: &str) -> bool {
         self.fields.contains_key(coll)
     }

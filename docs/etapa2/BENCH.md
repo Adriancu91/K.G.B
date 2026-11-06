@@ -49,3 +49,18 @@ Laptop: i5-1135G7, 7,8 GB RAM, SSD NVMe Kingston A2000, Windows 11, Defender act
 | + decodarea completă | 583 ms |
 
 **Concluzie (dovada pentru D-028):** discul nu e problema. Simpla trecere prin JSON a fiecărei înregistrări depășește singură ținta de 200 ms. Ținta se poate atinge doar cu un format în care câmpurile nefolosite de filtru se sar după lungime, fără a fi citite caracter cu caracter.
+
+## După 2.4 — format binar v2 (D-028), 100k înregistrări — 6 nov. 2026
+
+| Măsurătoare | JSON (v1) | Binar (v2) |
+|---|---|---|
+| **Interogare fără index, 200 de rezultate** (pragul aprobat: < 200 ms) | 455–609 ms | **116 ms ✅** |
+| Interogare fără index, 20% (20.000 de rezultate, toate decodate complet) | 599–636 ms | 251 ms |
+| Deschidere + reconstruire keydir | 349–393 ms | 166 ms |
+| Construire index | 694–947 ms | 603 ms |
+| Scriere unitară durabilă p50 / p95 | 0,42 / 0,95 ms | 0,41 / 0,96 ms |
+| Compactare | 2.061 ms | 1.701 ms |
+| Raport disc / date utile | 1,78× | 1,71× |
+| Opriri forțate (300) | — | **0 pierdute, 0 parțiale**, 26.377 de tranzacții |
+
+`scan` (care decodează complet fiecare înregistrare) rămâne ~0,5 s. Modulele vor folosi `query`.

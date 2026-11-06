@@ -8,10 +8,11 @@ use std::time::Instant;
 
 use serde::{Deserialize, Serialize};
 
+use crate::codec;
 use crate::error::{Error, Result};
 use crate::frame::{self, Decoded, END_OF_TXN};
 use crate::fsutil;
-use crate::store::{Loc, Manifest, Options, Store, now_ms, seg_path};
+use crate::store::{FORMAT_VERSION, Loc, Manifest, Options, Store, now_ms, seg_path};
 
 #[derive(Debug, Clone)]
 pub struct CompactReport {
@@ -69,7 +70,7 @@ impl Store {
             op.changed.clear();
             op.record_base = None;
             buf.clear();
-            frame::encode(&serde_json::to_vec(&op)?, END_OF_TXN, &mut buf);
+            frame::encode(&codec::encode(&op, FORMAT_VERSION)?, END_OF_TXN, &mut buf);
             let full = cur
                 .as_ref()
                 .is_some_and(|c| c.3 > 0 && c.3 + buf.len() as u64 > self.opts.segment_max_bytes);
@@ -103,6 +104,9 @@ impl Store {
         m.segments = written.iter().map(|(id, _)| *id).chain(Some(active)).collect();
         m.next_segment = next;
         m.compaction_floor = self.version_vector();
+        // Compaction is the only place where a journal moves to the current
+        // format (D-029); the manifest switch is the commit point.
+        m.format = FORMAT_VERSION;
         self.save_manifest(&m)?;
         self.manifest = m;
         self.load()?;

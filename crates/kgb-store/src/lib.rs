@@ -9,6 +9,7 @@
 //! transactions) + in-memory key directory and secondary indexes rebuilt on open
 //! + compaction into fresh segments + content-addressed blobs.
 
+pub mod codec;
 pub mod error;
 pub mod frame;
 pub mod fsutil;

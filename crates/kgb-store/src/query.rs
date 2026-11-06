@@ -7,17 +7,15 @@
 //! that match are then decoded fully. An equality on an indexed field narrows
 //! the candidates through the index first.
 
-use std::borrow::Cow;
 use std::cmp::Ordering;
-use std::collections::HashMap;
 
 use serde::{Deserialize, Serialize};
 use serde_json::Value;
-use serde_json::value::RawValue;
 use uuid::Uuid;
 
+use crate::codec;
 use crate::error::{Error, Result};
-use crate::model::RecordState;
+use crate::model::{Fields, RecordState};
 use crate::store::{Loc, Store};
 
 /// One condition on a record's fields.
@@ -103,19 +101,6 @@ pub struct QueryResult {
     pub used_index: bool,
 }
 
-/// Raw view of an op: only the record id and its fields, borrowed.
-#[derive(Deserialize)]
-struct RawOp<'a> {
-    #[serde(borrow)]
-    s: RawState<'a>,
-}
-
-#[derive(Deserialize)]
-struct RawState<'a> {
-    #[serde(borrow)]
-    f: HashMap<Cow<'a, str>, &'a RawValue>,
-}
-
 const MAX_DEPTH: usize = 16;
 
 impl Cond {
@@ -151,19 +136,30 @@ impl Cond {
     }
 }
 
+/// Where a record's fields come from: an undecoded journal frame, or a
+/// record that is already decoded.
+enum Src<'a> {
+    View(&'a codec::View<'a>),
+    Decoded(&'a Fields),
+}
+
 /// Field values of one record, decoded on first use.
 struct Lazy<'a> {
-    raw: &'a HashMap<Cow<'a, str>, &'a RawValue>,
+    src: Src<'a>,
     cache: Vec<(&'a str, Option<Value>)>,
 }
 
 impl<'a> Lazy<'a> {
     fn get(&mut self, field: &'a str) -> Result<Option<&Value>> {
+        let view = match self.src {
+            Src::Decoded(f) => return Ok(f.get(field)),
+            Src::View(v) => v,
+        };
         if let Some(i) = self.cache.iter().position(|(f, _)| *f == field) {
             return Ok(self.cache[i].1.as_ref());
         }
-        let v = match self.raw.get(field) {
-            Some(r) => Some(serde_json::from_str::<Value>(r.get())?),
+        let v = match view.field(field) {
+            Some(bytes) => Some(serde_json::from_slice::<Value>(bytes)?),
             None => None,
         };
         self.cache.push((field, v));
@@ -233,18 +229,8 @@ fn eval<'a>(c: &'a Cond, rec: &mut Lazy<'a>) -> Result<bool> {
 
 /// Evaluates `filter` against a record that is already fully decoded.
 pub fn matches(filter: &Cond, state: &RecordState) -> bool {
-    let raw: HashMap<Cow<'_, str>, Box<RawValue>> = state
-        .fields
-        .iter()
-        .filter_map(|(k, v)| {
-            serde_json::value::to_raw_value(v)
-                .ok()
-                .map(|r| (Cow::Borrowed(k.as_str()), r))
-        })
-        .collect();
-    let borrowed: HashMap<Cow<'_, str>, &RawValue> = raw.iter().map(|(k, v)| (k.clone(), v.as_ref())).collect();
     let mut lazy = Lazy {
-        raw: &borrowed,
+        src: Src::Decoded(&state.fields),
         cache: Vec::new(),
     };
     eval(filter, &mut lazy).unwrap_or(false)
@@ -310,9 +296,9 @@ impl Store {
             let keep = match &q.filter {
                 None => true,
                 Some(f) => {
-                    let raw: RawOp<'_> = serde_json::from_slice(payload)?;
+                    let view = codec::View::parse(payload)?;
                     let mut lazy = Lazy {
-                        raw: &raw.s.f,
+                        src: Src::View(&view),
                         cache: Vec::new(),
                     };
                     eval(f, &mut lazy)?

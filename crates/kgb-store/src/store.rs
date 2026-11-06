@@ -17,9 +17,9 @@ use std::time::{Instant, SystemTime, UNIX_EPOCH};
 
 use serde::{Deserialize, Serialize};
 use serde_json::Value;
-use serde_json::value::RawValue;
 use uuid::Uuid;
 
+use crate::codec;
 use crate::error::{Error, Result};
 use crate::frame::{self, Decoded, END_OF_TXN};
 use crate::fsutil;
@@ -27,7 +27,10 @@ use crate::index::Indexes;
 use crate::keydir::Keydir;
 use crate::model::{DELETED_FIELD, DeviceId, Fields, Hlc, Op, Origin, RecordState, Rev, is_system_collection};
 
-pub const FORMAT_VERSION: u32 = 1;
+/// Journal format written by new stores and by compaction (see `codec`).
+pub const FORMAT_VERSION: u32 = 2;
+/// Oldest journal format this build still reads (D-029).
+pub const MIN_FORMAT_VERSION: u32 = 1;
 
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub enum Durability {
@@ -163,28 +166,36 @@ impl Write {
     }
 }
 
-/// Only the record state of an op; the other parts are skipped while parsing.
-#[derive(Deserialize)]
-struct StateOnly {
-    s: RecordState,
-}
-
-/// Minimal view of an op used during replay; skips the parts not needed in memory.
-#[derive(Deserialize)]
+/// What replay needs from an op. Fields are decoded only when some
+/// collection has an index (they are needed to rebuild it).
 struct OpMeta {
-    s: StateMeta,
-    o: Origin,
+    coll: String,
+    id: Uuid,
+    version: u64,
+    rev: Rev,
+    deleted: bool,
+    origin: Origin,
+    fields: Option<Fields>,
 }
 
-#[derive(Deserialize)]
-struct StateMeta {
-    c: String,
-    i: Uuid,
-    v: u64,
-    r: Rev,
-    #[serde(default)]
-    d: bool,
-    f: Box<RawValue>,
+impl OpMeta {
+    fn parse(payload: &[u8], want_fields: bool) -> Result<OpMeta> {
+        let v = codec::View::parse(payload)?;
+        let h = &v.header;
+        Ok(OpMeta {
+            coll: h.coll.to_string(),
+            id: h.id,
+            version: h.version,
+            rev: h.rev,
+            deleted: h.deleted,
+            origin: h.origin,
+            fields: if want_fields && !h.deleted {
+                Some(v.fields()?)
+            } else {
+                None
+            },
+        })
+    }
 }
 
 pub struct Store {
@@ -337,7 +348,7 @@ impl Store {
             match frame::decode_at(buf, off) {
                 Decoded::End => break,
                 Decoded::Frame { payload, flags, next } => {
-                    let meta: OpMeta = serde_json::from_slice(payload).map_err(|e| Error::Corruption {
+                    let meta = OpMeta::parse(payload, self.indexes.has_any()).map_err(|e| Error::Corruption {
                         segment: seg,
                         offset: off as u64,
                         detail: format!("frame passes CRC but does not parse: {e}"),
@@ -378,15 +389,17 @@ impl Store {
     }
 
     fn apply_meta(&mut self, seg: u32, off: usize, len: usize, m: OpMeta) -> Result<()> {
-        let s = m.s;
-        let fields = if self.indexes.has(&s.c) && !s.d {
-            Some(
-                serde_json::from_str::<Fields>(s.f.get()).map_err(|e| Error::Corruption {
-                    segment: seg,
-                    offset: off as u64,
-                    detail: format!("fields do not parse: {e}"),
-                })?,
-            )
+        let fields = if self.indexes.has(&m.coll) && !m.deleted {
+            match m.fields {
+                Some(f) => Some(f),
+                None => {
+                    return Err(Error::Corruption {
+                        segment: seg,
+                        offset: off as u64,
+                        detail: "fields missing for an indexed collection".into(),
+                    });
+                }
+            }
         } else {
             None
         };
@@ -394,10 +407,10 @@ impl Store {
             seg,
             off: off as u64,
             len: len as u32,
-            version: s.v,
-            deleted: s.d,
+            version: m.version,
+            deleted: m.deleted,
         };
-        self.track(s.c, s.i, s.r, m.o, loc, fields.as_ref());
+        self.track(m.coll, m.id, m.rev, m.origin, loc, fields.as_ref());
         Ok(())
     }
 
@@ -438,7 +451,7 @@ impl Store {
         let mut buf = vec![0u8; loc.len as usize];
         fsutil::read_exact_at(file, &mut buf, loc.off)?;
         match frame::decode_at(&buf, 0) {
-            Decoded::Frame { payload, .. } => Ok(serde_json::from_slice(payload)?),
+            Decoded::Frame { payload, .. } => codec::decode_op(payload),
             Decoded::Invalid(why) => Err(Error::Corruption {
                 segment: loc.seg,
                 offset: loc.off,
@@ -561,8 +574,7 @@ impl Store {
     }
 
     pub(crate) fn decode_state(payload: &[u8]) -> Result<RecordState> {
-        let only: StateOnly = serde_json::from_slice(payload)?;
-        Ok(only.s)
+        codec::decode_state(payload)
     }
 
     /// Calls `f` with the frame payload at each of `locs`, in on-disk order.
@@ -762,7 +774,7 @@ impl Store {
         buf.clear();
         let mut spans = Vec::with_capacity(ops.len());
         for (i, op) in ops.iter().enumerate() {
-            let payload = serde_json::to_vec(op)?;
+            let payload = codec::encode(op, self.manifest.format)?;
             let start = buf.len();
             frame::encode(&payload, if i + 1 == ops.len() { END_OF_TXN } else { 0 }, &mut buf);
             spans.push((start, buf.len() - start));
@@ -840,9 +852,9 @@ fn load_or_init_manifest(dir: &Path) -> Result<Manifest> {
     match fs::read(&path) {
         Ok(bytes) => {
             let m: Manifest = serde_json::from_slice(&bytes).map_err(|e| Error::ManifestCorrupt(e.to_string()))?;
-            if m.format != FORMAT_VERSION {
+            if !(MIN_FORMAT_VERSION..=FORMAT_VERSION).contains(&m.format) {
                 return Err(Error::ManifestCorrupt(format!(
-                    "unsupported format version {}",
+                    "unsupported format version {} (this build reads {MIN_FORMAT_VERSION}–{FORMAT_VERSION})",
                     m.format
                 )));
             }

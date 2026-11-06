@@ -86,7 +86,7 @@ impl Store {
             let buf = fs::read(self.seg_path(seg))?;
             let mut off = 0;
             while let Decoded::Frame { payload, next, .. } = frame::decode_at(&buf, off) {
-                let op: Op = serde_json::from_slice(payload)?;
+                let op: Op = crate::codec::decode_op(payload)?;
                 let Origin(dev, seq) = op.origin;
                 if !op.compacted && seq > 0 && seq > vv.get(&dev).copied().unwrap_or(0) {
                     out.push(op);
