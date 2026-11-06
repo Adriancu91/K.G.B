@@ -1,6 +1,6 @@
 # K.G.B. — Etapa 0: raport final și propunere de poartă
 
-**Data:** 6 nov. 2026 · **Statut:** PROPUNERE. Poarta Etapei 0 se închide doar cu aprobarea proprietarului.
+**Data:** 6 nov. 2026 · **Statut:** APROBAT de proprietar (6 nov. 2026, D-022): toate recomandările acceptate; Etapa 1 începe, S2.3 rămâne de făcut.
 **Poarta cerută de Master Plan:** „deciziile tehnice riscante sunt testate, iar rezultatele sunt documentate”.
 
 ## Pe scurt

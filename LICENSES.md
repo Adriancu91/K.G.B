@@ -35,7 +35,7 @@ Verificat 6 nov. 2026: `cargo metadata` (249 crates, target `x86_64-pc-windows-m
 | typescript | 7.0.2 | Apache-2.0 | unealtă build (nu se livrează) |
 | restul crates | — | MIT / Apache-2.0 / Unicode-3.0 / BSD-3 / Zlib / Unlicense / CC0 | tranzitive |
 
-**De confirmat de proprietar — MPL-2.0 (copyleft slab, la nivel de fișier):**
+**MPL-2.0 (copyleft slab, la nivel de fișier) — acceptat de proprietar (D-021, 6 nov. 2026):**
 - În executabil, tranzitiv prin `tauri-utils`: `cssparser` 0.37.0, `selectors` 0.38.0, `dtoa-short` 0.3.5; plus `option-ext` 0.2.0 (prin `dirs`).
 - Doar unealtă de build, nu se livrează: `lightningcss` 1.33.0 (prin vite).
 - Ce cere MPL-2.0: dacă modificăm *fișierele acelor biblioteci*, publicăm modificările lor; codul K.G.B. rămâne închis. Folosire nemodificată = doar păstrarea notice-urilor. Este licența standard a ecosistemului Tauri. **Recomandare: acceptat, fără modificări ale acestor biblioteci.**
@@ -53,4 +53,4 @@ Verificat 6 nov. 2026: `cargo metadata` (267 crates, target `x86_64-pc-windows-m
 | anyhow, serde, serde_json, blake3, data-encoding, rand | — | MIT / Apache-2.0 / CC0 | utilitare |
 | webpki-roots | 1.0.11 | CDLA-Permissive-2.0 | lista certificatelor rădăcină (date, licență permisivă) |
 
-**De confirmat de proprietar — MPL-2.0:** `attohttpc` 0.30.1 (client HTTP mic, prin `portmapper` → `igd-next`, pentru UPnP pe router). Aceeași situație ca la Tauri (D-021).
+**MPL-2.0 — acceptat (D-021):** `attohttpc` 0.30.1 (client HTTP mic, prin `portmapper` → `igd-next`, pentru UPnP pe router). Aceeași situație ca la Tauri (D-021).

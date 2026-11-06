@@ -4,8 +4,8 @@ Sursa: Master Plan §13. Nu se trece la etapa următoare doar pentru că etapa c
 
 | Etapă | Conținut | Stare |
 |---|---|---|
-| 0 | Specificație și validare tehnică (spike-uri stocare, rețea, Tauri) | **Raport final gata — așteaptă poarta**; rămâne testul 🔒 cu 2 PC-uri |
-| 1 | Nucleul desktop | Neînceput |
+| 0 | Specificație și validare tehnică (spike-uri stocare, rețea, Tauri) | **Încheiată** — poartă aprobată de proprietar (D-022, 6 nov. 2026); rămâne testul 🔒 S2.3 cu 2 PC-uri, obligatoriu înainte de Etapa 6 |
+| 1 | Nucleul desktop | **În lucru** (din 6 nov. 2026) |
 | 2 | Storage Engine | Neînceput |
 | 3 | Documente și foi de calcul | Neînceput |
 | 4 | Organizare și productivitate | Neînceput |
@@ -27,4 +27,4 @@ Sursa: Master Plan §13. Nu se trece la etapa următoare doar pentru că etapa c
 | 0.6 | Instalare componentă de rețea | Doar dacă se alege un VPN |
 | 0.7 | Registru licențe | Făcut: S1, S2, S3 în `LICENSES.md`; `cargo-deny` în CI (licențe, crate-uri DB interzise, vulnerabilități); MPL-2.0 de confirmat (D-021) |
 | 0.8 | Prototip UI minimal | Făcut: schiță de spațiu de lucru în prototipul S3; module cu stare reală („prototip” / „Etapa N — neimplementat”); temă salvată în S1 și verificată după oprire forțată |
-| 0.9 | Raport final și poartă | Raport scris (`docs/ETAPA0_RAPORT_FINAL.md`); 🔒 **așteaptă aprobarea proprietarului** |
+| 0.9 | Raport final și poartă | Făcut: raport `docs/ETAPA0_RAPORT_FINAL.md`; poartă aprobată (D-022) |

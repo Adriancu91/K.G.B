@@ -17,8 +17,8 @@ Deciziile DECIS se schimbă doar cu aprobarea explicită a proprietarului (Maste
 | D-006 | Stocare proprie prin fișiere structurate, indexuri și jurnal | DECIS |
 | D-007 | Conectare între PC-uri oriunde prin internet | DECIS |
 | D-008 | Installerul include și configurează automat componenta de rețea | DECIS |
-| D-009 | NetBird este candidat de evaluare, nu alegere finală | PROPUS |
-| D-010 | Tauri 2 + React + TypeScript | PROPUS |
+| D-009 | NetBird este candidat de evaluare, nu alegere finală | ÎNLOCUIT de D-015 (iroh) |
+| D-010 | Tauri 2 + React + TypeScript | DECIS (6 nov. 2026, după S3) |
 | D-011 | Module activate/dezactivate fără ștergerea datelor | DECIS |
 | D-012 | Sincronizarea și VPN-ul sunt subsisteme distincte | DECIS |
 
@@ -44,6 +44,7 @@ Deciziile DECIS se schimbă doar cu aprobarea explicită a proprietarului (Maste
 - **Alternative:** iroh (bibliotecă de conectare în aplicație, MIT/Apache-2.0, fără driver); Nebula (VPN, MIT, fără DB); NetBird; Tailscale.
 - **Impact:** iroh nu creează o rețea privată pentru alte programe (nu e necesar — sincronizarea e protocol de aplicație, Master Plan §8.2, §9.5); D-007 și D-008 rămân îndeplinite.
 - **Recomandare:** spike cu iroh + un candidat VPN pentru comparație. Licențele se verifică pe versiunile exacte.
+- **Statut final:** DECIS (6 nov. 2026, aprobat de proprietar după raportul Etapei 0): **iroh** e componenta de rețea; Nebula/NetBird respinse (driver + UAC, server obligatoriu). Condiție: testul S2.3 cu 2 PC-uri reale se face înainte de Etapa 6; dacă eșuează, decizia se redeschide.
 
 ### D-016 — Se aplică D-005 și infrastructurii de rețea (coordonare/relay)?
 - **Statut:** DE VALIDAT — cere decizia proprietarului
@@ -79,7 +80,17 @@ Deciziile DECIS se schimbă doar cu aprobarea explicită a proprietarului (Maste
 - **Conținut:** citire și analiză a codului pentru reutilizare. Codul se preia doar cu proveniență și licență verificate (proiect propriu al proprietarului) și se consemnează în `LICENSES.md`.
 
 ### D-021 — Biblioteci MPL-2.0 aduse de Tauri
-- **Data:** 6 nov. 2026 · **Statut:** DE VALIDAT — cere confirmarea proprietarului
+- **Data:** 6 nov. 2026 · **Statut:** DECIS (6 nov. 2026, aprobat de proprietar) — acceptat cu regula „nu modificăm aceste biblioteci”
 - **Context:** Tauri 2 include tranzitiv `cssparser`, `selectors`, `dtoa-short`, `option-ext` (MPL-2.0). Vite folosește `lightningcss` (MPL-2.0), doar la build. iroh include `attohttpc` (MPL-2.0) pentru UPnP.
 - **Ce înseamnă:** MPL-2.0 e copyleft la nivel de fișier. Doar modificările *acelor fișiere* trebuie publicate; codul K.G.B. rămâne închis. Se păstrează notice-urile.
 - **Recomandare:** acceptat, cu regula „nu modificăm aceste biblioteci”. Alternativa (fără Tauri) ar schimba stack-ul aprobat.
+
+### D-022 — Poarta Etapei 0
+- **Data:** 6 nov. 2026 · **Statut:** DECIS · **Aprobat de:** proprietar („Da la toate recomandările”)
+- **Conținut:** recomandările din `docs/ETAPA0_RAPORT_FINAL.md` sunt acceptate:
+  1. D-021 (MPL-2.0) acceptat, fără modificarea acelor biblioteci;
+  2. pragurile de performanță aprobate, cu 2 modificări: căutare indexată „< 5 ms pentru ≤ 1.000 de rezultate”; filtrarea fără index (100k < 200 ms) devine țintă a Etapei 2;
+  3. D-010 (Tauri 2 + React + TypeScript) și D-015 (iroh) → DECIS;
+  4. **Etapa 1 începe acum**, în paralel cu testul 🔒 S2.3 (2 PC-uri), care rămâne obligatoriu înainte de Etapa 6;
+  5. semnarea codului se pregătește prin firmă (Azure Artifact Signing) — pașii îi face proprietarul, înainte ca aplicația să ajungă la alți utilizatori.
+- **Ce rămâne deschis din Etapa 0:** S2.3; pierderea alimentării (VM); RAM-ul S1 la 1M; pornirea la rece; aplicație semnată pe PC cu Smart App Control.

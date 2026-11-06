@@ -16,7 +16,7 @@ allow = [
   "Unlicense", "CC0-1.0", "Unicode-3.0", "BSL-1.0",
   # webpki-roots (lista certificatelor rădăcină Mozilla): licență de date permisivă.
   "CDLA-Permissive-2.0",
-  # MPL-2.0: adusă tranzitiv de Tauri (cssparser, selectors, ...) și iroh (attohttpc). DE VALIDAT — D-021.
+  # MPL-2.0: adusă tranzitiv de Tauri (cssparser, selectors, ...) și iroh (attohttpc). Acceptat — D-021 DECIS; nu modificăm aceste biblioteci.
   "MPL-2.0",
 ]
 confidence-threshold = 0.9
