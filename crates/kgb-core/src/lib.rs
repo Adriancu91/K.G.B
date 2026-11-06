@@ -8,6 +8,7 @@ pub const CORE_VERSION: &str = env!("CARGO_PKG_VERSION");
 
 pub mod error;
 pub mod log;
+pub mod settings;
 pub mod workspace;
 
 pub use error::{CoreError, CoreResult};
