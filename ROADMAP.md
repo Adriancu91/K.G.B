@@ -23,8 +23,8 @@ Sursa: Master Plan §13. Nu se trece la etapa următoare doar pentru că etapa c
 | 0.2 | Toolchain MSVC | Făcut: build local funcțional după oprirea Smart App Control de către proprietar (D-020) |
 | 0.3 | Spike S1 — stocare fără DB | **Testat în CI și pe laptop** (20/20 teste, 1.000 opriri forțate fără pierderi, benchmark 10k/100k/1M pe SSD NVMe) — vezi `docs/spikes/S1_REZULTATE.md`; filtrarea fără index nu atinge pragul (țintă Etapa 2) |
 | 0.4 | Spike S2 — rețea între 2 PC-uri | Cercetare făcută (`docs/spikes/S2_RETEA_MATRICE.md`): iroh prim candidat, Nebula comparație; cod neînceput; lipsește al doilea PC |
-| 0.5 | Spike S3 — Tauri 2 + React/TS | Neînceput; depinde de 0.2 |
+| 0.5 | Spike S3 — Tauri 2 + React/TS | **Făcut pe laptop:** installer 1,18 MB, exe 3,2 MB, ~156 MB RAM privat, pornire ~1 s; UI → Rust → S1 verificat — vezi `docs/spikes/S3_REZULTATE.md`; MPL-2.0 de confirmat |
 | 0.6 | Instalare componentă de rețea | Doar dacă se alege un VPN |
-| 0.7 | Registru licențe | Început: dependențele S1 verificate (`LICENSES.md`) |
+| 0.7 | Registru licențe | În lucru: S1 și S3 verificate (`LICENSES.md`); `cargo-deny` urmează |
 | 0.8 | Prototip UI minimal | Neînceput |
 | 0.9 | Raport final și poartă | Neînceput |

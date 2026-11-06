@@ -1,0 +1,29 @@
+# K.G.B. — Listă de lucru continuu (Etapa 0)
+
+Reguli pentru fiecare pas (se aplică după FIECARE pas încheiat):
+1. Verifică: build/teste rulate, rezultat real notat (nimic „gata” fără verificare).
+2. Actualizează documentele afectate: `ROADMAP.md`, `LICENSES.md`, raportul spike-ului, `DECISION_LOG.md` / `RISK_REGISTER.md` dacă e cazul.
+3. Commit + push pe `main` (mesaj în română, cu Co-Authored-By).
+4. Bifează pasul aici și trece la următorul pas neblocat.
+5. Pașii marcați 🔒 cer proprietarul (al doilea PC, aprobare, setări de securitate) — se sar și se raportează, nu se ghicesc.
+
+Interdicții permanente: fără baze de date (D-005, D-018), fără schimbări de arhitectură, fără funcții incomplete prezentate drept terminate, fără modificări de setări de securitate, fără acces la alte foldere neaprobate.
+
+## Pași
+
+- [x] S3.1 Schelet Tauri 2 + React/TS strict (`spikes/s3-tauri-shell`), icon generat
+- [x] S3.2 `npm install`, `tsc` strict, build frontend
+- [x] S3.3 Build Rust (MSVC) cu legătură la S1; comenzi status/list/add/delete
+- [x] S3.4 Installer NSIS nesemnat; măsurat mărime installer + exe
+- [x] S3.5 Măsurat timp pornire (până la fereastră) și RAM (proces + WebView2), 5 rulări
+- [x] S3.6 Licențe npm + cargo pentru S3 în `LICENSES.md`
+- [x] S3.7 Raport `docs/spikes/S3_REZULTATE.md`, ROADMAP 0.5
+- [ ] S1.x Corectare cele 3 avertismente clippy din S1
+- [ ] 0.7 `cargo-deny` (licențe + advisories) pentru S1 și S3
+- [ ] S2.1 Spike rețea iroh: 2 procese pe același PC (pairing cu invitație, mesaj criptat, transfer fișier cu hash + reluare)
+- [ ] S2.2 Relay indisponibil → eșec clar, nu blocaj (test local)
+- [ ] 🔒 S2.3 2 PC-uri în LAN și prin internet — cere al doilea PC
+- [ ] S2.4 Comparație Nebula (doar documentare + test local dacă nu cere driver/UAC; altfel 🔒)
+- [ ] 0.8 Prototip UI minimal marcat „prototip” (fără funcții false)
+- [ ] 0.9 Raport final Etapa 0 + recomandare stack/rețea
+- [ ] 🔒 Poartă Etapa 0: aprobarea proprietarului pentru praguri și Etapa 1

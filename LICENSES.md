@@ -21,3 +21,21 @@ Verificat 7 nov. 2026 cu `cargo metadata` (target `x86_64-pc-windows-msvc`). Nic
 | memchr | 2.8.3 | Unlicense OR MIT | — |
 | unicode-ident | 1.0.27 | (MIT OR Apache-2.0) AND Unicode-3.0 | — |
 | zmij | 1.0.23 | MIT | — |
+
+## spikes/s3-tauri-shell (prototip, nu se distribuie)
+Verificat 6 nov. 2026: `cargo metadata` (249 crates, target `x86_64-pc-windows-msvc`) + `package.json` din `node_modules` (27 pachete npm). **Niciun motor DB.** Nicio licență GPL/AGPL.
+
+| Dependență | Versiune | Licență | Rol |
+|---|---|---|---|
+| tauri / tauri-build / tauri-runtime-wry | 2.12.5 / 2.7.4 / 2.12.3 | Apache-2.0 OR MIT | cadrul aplicației desktop |
+| wry / tao / webview2-com | 0.57.1 / 0.37.2 / 0.39.1 | Apache-2.0 OR MIT / Apache-2.0 / MIT | fereastră + WebView2 |
+| react / react-dom | 19.3.1 | MIT | interfață |
+| @tauri-apps/api / @tauri-apps/cli | 2.12.4 | Apache-2.0 OR MIT | punte UI ↔ Rust / unealtă build |
+| vite / @vitejs/plugin-react | 8.3.6 / 6.2.1 | MIT | unealtă build (nu se livrează) |
+| typescript | 7.0.2 | Apache-2.0 | unealtă build (nu se livrează) |
+| restul crates | — | MIT / Apache-2.0 / Unicode-3.0 / BSD-3 / Zlib / Unlicense / CC0 | tranzitive |
+
+**De confirmat de proprietar — MPL-2.0 (copyleft slab, la nivel de fișier):**
+- În executabil, tranzitiv prin `tauri-utils`: `cssparser` 0.37.0, `selectors` 0.38.0, `dtoa-short` 0.3.5; plus `option-ext` 0.2.0 (prin `dirs`).
+- Doar unealtă de build, nu se livrează: `lightningcss` 1.33.0 (prin vite).
+- Ce cere MPL-2.0: dacă modificăm *fișierele acelor biblioteci*, publicăm modificările lor; codul K.G.B. rămâne închis. Folosire nemodificată = doar păstrarea notice-urilor. Este licența standard a ecosistemului Tauri. **Recomandare: acceptat, fără modificări ale acestor biblioteci.**

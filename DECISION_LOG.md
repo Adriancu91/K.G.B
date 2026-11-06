@@ -77,3 +77,9 @@ Deciziile DECIS se schimbă doar cu aprobarea explicită a proprietarului (Maste
 ### D-019 — Acces la proiectul existent `workspace/` (Cyber Office Studio)
 - **Data:** 6 nov. 2026 · **Statut:** DECIS · **Aprobat de:** proprietar
 - **Conținut:** citire și analiză a codului pentru reutilizare. Codul se preia doar cu proveniență și licență verificate (proiect propriu al proprietarului) și se consemnează în `LICENSES.md`.
+
+### D-021 — Biblioteci MPL-2.0 aduse de Tauri
+- **Data:** 6 nov. 2026 · **Statut:** DE VALIDAT — cere confirmarea proprietarului
+- **Context:** Tauri 2 include tranzitiv `cssparser`, `selectors`, `dtoa-short`, `option-ext` (MPL-2.0). Vite folosește `lightningcss` (MPL-2.0), doar la build.
+- **Ce înseamnă:** MPL-2.0 e copyleft la nivel de fișier. Doar modificările *acelor fișiere* trebuie publicate; codul K.G.B. rămâne închis. Se păstrează notice-urile.
+- **Recomandare:** acceptat, cu regula „nu modificăm aceste biblioteci”. Alternativa (fără Tauri) ar schimba stack-ul aprobat.

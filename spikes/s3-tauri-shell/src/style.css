@@ -1,0 +1,73 @@
+:root {
+  font-family: "Segoe UI", system-ui, sans-serif;
+  color: #1d1d1f;
+  background: #f5f5f7;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    color: #e8e8ea;
+    background: #1c1c1e;
+  }
+}
+main {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 16px;
+}
+.banner {
+  background: #b25b00;
+  color: #fff;
+  padding: 6px 10px;
+  border-radius: 6px;
+  font-weight: 600;
+}
+form {
+  display: flex;
+  gap: 8px;
+  margin: 16px 0;
+}
+input {
+  flex: 1;
+  padding: 8px;
+  font: inherit;
+}
+button {
+  padding: 6px 12px;
+  font: inherit;
+  cursor: pointer;
+}
+ul {
+  list-style: none;
+  padding: 0;
+}
+li {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  padding: 6px 0;
+  border-bottom: 1px solid #8884;
+}
+li span {
+  flex: 1;
+}
+li small {
+  opacity: 0.6;
+}
+.empty {
+  opacity: 0.6;
+}
+.error {
+  color: #d33;
+}
+dl {
+  display: grid;
+  grid-template-columns: max-content 1fr;
+  gap: 4px 16px;
+  margin-top: 24px;
+  font-size: 13px;
+  opacity: 0.85;
+}
+dd {
+  margin: 0;
+  word-break: break-all;
+}
