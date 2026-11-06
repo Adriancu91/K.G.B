@@ -25,5 +25,5 @@ Interdicții permanente: fără baze de date (D-005, D-018), fără schimbări d
 - [ ] 🔒 S2.3 2 PC-uri în LAN și prin internet — cere al doilea PC
 - [x] S2.4 Comparație Nebula — documentată în `S2_REZULTATE.md`; testul practic cere driver + UAC → 🔒 doar dacă proprietarul vrea
 - [x] 0.8 Prototip UI minimal marcat „prototip” (fără funcții false)
-- [ ] 0.9 Raport final Etapa 0 + recomandare stack/rețea
+- [x] 0.9 Raport final Etapa 0 + recomandare stack/rețea (`docs/ETAPA0_RAPORT_FINAL.md`)
 - [ ] 🔒 Poartă Etapa 0: aprobarea proprietarului pentru praguri și Etapa 1
