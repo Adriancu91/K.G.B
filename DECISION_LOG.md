@@ -96,8 +96,13 @@ Deciziile DECIS se schimbă doar cu aprobarea explicită a proprietarului (Maste
 - **Ce rămâne deschis din Etapa 0:** S2.3; pierderea alimentării (VM); RAM-ul S1 la 1M; pornirea la rece; aplicație semnată pe PC cu Smart App Control.
 
 ### D-023 … D-026 — Structura și componentele Etapei 1
-- **Data:** 6 nov. 2026 · **Statut:** PROPUS — detalii și alternative în `docs/ETAPA1_PLAN.md`
+- **Data:** 6 nov. 2026 · **Statut:** DECIS (6 nov. 2026, aprobat de proprietar odată cu poarta Etapei 1, D-027) — detalii și alternative în `docs/ETAPA1_PLAN.md`
 - D-023 structura codului de produs (`crates/kgb-store`, `crates/kgb-core`, `app/`);
 - D-024 modulele Etapelor 1–5 sunt incluse în aplicație, declarate prin manifest, fără pluginuri încărcate la rulare;
 - D-025 cheia dispozitivului este Ed25519, protejată cu Windows DPAPI;
 - D-026 logurile se scriu cu `tracing` și o rotație proprie pe mărime.
+
+### D-027 — Poarta Etapei 1
+- **Data:** 6 nov. 2026 · **Statut:** DECIS · **Aprobat de:** proprietar („Da aprob … mergi înainte”), pe baza `docs/ETAPA1_RAPORT.md`
+- **Conținut:** Etapa 1 se încheie. D-023…D-026 devin DECISE. Panourile mutabile prin drag-and-drop și ecranul cu mai multe panouri trec în **Etapa 4**. **Începe Etapa 2** (Storage Engine).
+- **Notă:** proprietarul nu a testat personal aplicația (nu avea acces la laptop). Aprobarea se bazează pe testele automate și pe capturile de ecran.

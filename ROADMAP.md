@@ -5,10 +5,10 @@ Sursa: Master Plan §13. Nu se trece la etapa următoare doar pentru că etapa c
 | Etapă | Conținut | Stare |
 |---|---|---|
 | 0 | Specificație și validare tehnică (spike-uri stocare, rețea, Tauri) | **Încheiată** — poartă aprobată de proprietar (D-022, 6 nov. 2026); rămâne testul 🔒 S2.3 cu 2 PC-uri, obligatoriu înainte de Etapa 6 |
-| 1 | Nucleul desktop | **Raport gata — așteaptă poarta** (`docs/ETAPA1_RAPORT.md`): demonstrația porții 15/15 în aplicația instalată, 68 de teste automate |
-| 2 | Storage Engine | Neînceput |
+| 1 | Nucleul desktop | **Încheiată** — poartă aprobată (D-027, 6 nov. 2026); drag-and-drop panouri → Etapa 4 |
+| 2 | Storage Engine | **În lucru** (din 6 nov. 2026) |
 | 3 | Documente și foi de calcul | Neînceput |
-| 4 | Organizare și productivitate | Neînceput |
+| 4 | Organizare și productivitate | Neînceput (preia și panourile drag-and-drop din Etapa 1) |
 | 5 | Business | Neînceput |
 | 6 | Echipe și rețea | Neînceput |
 | 7 | Informații și proceduri | Neînceput |

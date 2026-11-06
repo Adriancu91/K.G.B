@@ -1,6 +1,6 @@
 # K.G.B. — Etapa 1 (Nucleul desktop): raport și propunere de poartă
 
-**Data:** 6 nov. 2026 · **Statut:** PROPUNERE. Poarta se închide doar cu aprobarea proprietarului.
+**Data:** 6 nov. 2026 · **Statut:** APROBAT de proprietar (6 nov. 2026, D-027). Drag-and-drop panouri → Etapa 4.
 **Poarta cerută de Master Plan:** „aplicația pornește, salvează configurarea, activează/dezactivează un modul demonstrativ și nu pierde datele acestuia”.
 **Planul etapei:** `docs/ETAPA1_PLAN.md`
 
