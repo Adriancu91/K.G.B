@@ -57,7 +57,7 @@ Interdicții permanente: fără baze de date (D-005, D-018), fără schimbări d
 - [x] 2.8 Fișiere atașate pentru module (files.own; proprietar per modul, BLAKE3 la citire, limită 64 MB, colectare explicită a blob-urilor fără referință; 4 teste)
 - [x] 2.9 Backup/restore în aplicație (backup verificat; restaurare ca spațiu NOU, D-030; backup automat înainte de migrări și de conversia v1→v2; păstrate ultimele 5 automate; compactare, colectare fișiere, ștergerea resturilor la cerere; 6 teste + e2e 8/8)
 - [x] 2.10 Teste de concurență (6 fire cu transferuri optimiste + conflicte reale, cititor care verifică invarianta, compactare și backup în paralel, a doua deschidere refuzată, un singur câștigător pe versiune; 3 teste, stabile la 5 rulări)
-- [ ] 2.11 Volum + corupere + opriri forțate pe laptop
+- [x] 2.11 Volum + corupere + opriri forțate pe laptop (10k/100k/1M pe v2; 1.000 opriri + 300 cu compactare: 0 pierderi; praguri D-022 toate atinse la 100k — vezi docs/etapa2/BENCH.md)
 - [ ] 🔒 2.12 Pierderea alimentării pe VM
 - [ ] 2.13 Raport Etapa 2
 - [ ] 🔒 2.14 Poarta Etapei 2
