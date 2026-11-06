@@ -64,3 +64,16 @@ Un singur program `kgb-net-spike.exe` cu 4 comenzi:
 
 ## Dependențe
 iroh 1.4.1 (MIT/Apache-2.0) + tokio, rustls, ring etc. 267 crates, **niciun motor DB**, verificat și în CI cu `cargo-deny`. **MPL-2.0 de confirmat:** `attohttpc` (pentru UPnP), aceeași situație ca D-021. Detalii în `LICENSES.md`.
+
+## S2.4 — Comparația cu Nebula (documentată, netestată)
+
+| Criteriu | iroh (testat) | Nebula (din documentație) |
+|---|---|---|
+| Instalare pe Windows | niciuna: bibliotecă în aplicație | adaptor de rețea virtual (driver Wintun) + serviciu → **drepturi de administrator (UAC)** |
+| Server propriu necesar | opțional: relay fără stare, fără DB | **obligatoriu:** „lighthouse” cu IP public; relay configurat manual |
+| Asociere dispozitive | invitație cu jeton unic (testat) | certificate semnate de o autoritate proprie (CA) pe care o gestionăm noi |
+| NAT dificil (simetric) | relay automat | relay manual; altfel nu se conectează |
+| Licență / DB | MIT/Apache-2.0, fără DB | MIT, fără DB |
+| Acces | doar la aplicația K.G.B. (protocolul nostru) | rețea virtuală întreagă între PC-uri: un PC compromis vede toate porturile celorlalte, dacă nu se configurează firewall-ul Nebula |
+
+**Concluzie:** iroh îndeplinește cerințele (D-004, D-005, D-007, D-008), iar Nebula încalcă „fără driver / fără UAC” și adaugă un server obligatoriu. **Recomandare: nu testăm Nebula**, decât dacă proprietarul vrea explicit o comparație practică. Testul ar cere instalarea unui driver de rețea cu drepturi de administrator, deci aprobare 🔒.

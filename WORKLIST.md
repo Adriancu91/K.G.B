@@ -23,7 +23,7 @@ Interdicții permanente: fără baze de date (D-005, D-018), fără schimbări d
 - [x] S2.1 Spike rețea iroh: 2 procese pe același PC (pairing cu invitație, mesaj criptat, transfer fișier cu hash + reluare)
 - [x] S2.2 Relay indisponibil → eșec clar, nu blocaj (test local)
 - [ ] 🔒 S2.3 2 PC-uri în LAN și prin internet — cere al doilea PC
-- [ ] S2.4 Comparație Nebula (doar documentare + test local dacă nu cere driver/UAC; altfel 🔒)
+- [x] S2.4 Comparație Nebula — documentată în `S2_REZULTATE.md`; testul practic cere driver + UAC → 🔒 doar dacă proprietarul vrea
 - [ ] 0.8 Prototip UI minimal marcat „prototip” (fără funcții false)
 - [ ] 0.9 Raport final Etapa 0 + recomandare stack/rețea
 - [ ] 🔒 Poartă Etapa 0: aprobarea proprietarului pentru praguri și Etapa 1
