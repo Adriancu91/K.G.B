@@ -62,7 +62,7 @@ Deciziile DECIS se schimbă doar cu aprobarea explicită a proprietarului (Maste
 - **Statut actualizat:** DECIS (6 nov. 2026, proprietarul a acceptat recomandările).
 
 ### D-020 — Mediu de compilare cu Smart App Control pornit
-- **Data:** 6 nov. 2026 · **Statut:** DE VALIDAT — cere decizia proprietarului
+- **Data:** 6 nov. 2026 · **Statut:** DECIS — varianta (a): proprietarul a oprit SAC pe laptop (6 nov. 2026); build-ul local funcționează
 - **Problemă:** Smart App Control (SAC) e pornit pe PC-ul de dezvoltare și blochează programele generate de compilator (build scripts, teste, aplicația). Nu se poate compila nimic în Rust.
 - **Alternative:**
   (a) proprietarul oprește SAC din Windows Security → App & browser control → Smart App Control. Atenție: Windows nu permite repornirea SAC fără reinstalarea sistemului; Defender rămâne activ;
