@@ -1,0 +1,45 @@
+name: K.G.B. core (Etapa 1)
+
+on:
+  push:
+    paths:
+      - "Cargo.toml"
+      - "Cargo.lock"
+      - "rustfmt.toml"
+      - "crates/**"
+      - "app/**"
+      - ".github/workflows/core.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build-test:
+    runs-on: windows-latest
+    timeout-minutes: 45
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - uses: actions/checkout@v4
+      - name: Toolchain
+        run: rustup default stable && rustup component add clippy rustfmt && rustc --version
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: app/package-lock.json
+      - name: Frontend (npm ci, tsc strict, vite build)
+        working-directory: app
+        run: npm ci && npm run build
+      - name: Format
+        run: cargo fmt --all --check
+      - name: Clippy (warnings are errors)
+        run: cargo clippy --workspace --all-targets -- -D warnings
+      - name: Tests
+        run: cargo test --workspace --release 2>&1 | tee tests.txt
+      - name: Summary
+        if: always()
+        run: |
+          { echo '```'; grep -E "test result|FAILED|panicked" tests.txt 2>/dev/null; echo '```'; } >> "$GITHUB_STEP_SUMMARY"

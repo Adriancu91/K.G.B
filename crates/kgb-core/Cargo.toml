@@ -1,0 +1,16 @@
+[package]
+name = "kgb-core"
+version.workspace = true
+edition.workspace = true
+publish.workspace = true
+license.workspace = true
+description = "K.G.B. core services (no UI): workspace, settings, identity, modules, permissions, logging."
+
+[dependencies]
+kgb-store.workspace = true
+serde.workspace = true
+serde_json.workspace = true
+uuid.workspace = true
+
+[dev-dependencies]
+tempfile.workspace = true

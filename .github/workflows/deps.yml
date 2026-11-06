@@ -21,6 +21,7 @@ jobs:
       fail-fast: false
       matrix:
         manifest:
+          - Cargo.toml
           - spikes/s1-storage/Cargo.toml
           - spikes/s3-tauri-shell/src-tauri/Cargo.toml
           - spikes/s2-network/Cargo.toml

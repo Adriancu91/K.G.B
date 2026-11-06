@@ -1,0 +1,7 @@
+//! K.G.B. core services (Master Plan §4, Etapa 1).
+//!
+//! Everything here is UI-free and testable without a window. The desktop app
+//! (`app/src-tauri`) is a thin command layer over this crate.
+
+/// Version of the core API that modules declare compatibility with.
+pub const CORE_VERSION: &str = env!("CARGO_PKG_VERSION");
