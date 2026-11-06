@@ -140,7 +140,7 @@ impl Store {
             )));
         }
         fs::create_dir_all(partial.join("journal"))?;
-        let mut copy = |rel: &str| -> Result<()> {
+        let copy = |rel: &str| -> Result<()> {
             let to = partial.join(rel);
             fs::copy(self.dir.join(rel), &to)?;
             File::open(&to)?.sync_all()?;

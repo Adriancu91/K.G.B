@@ -613,6 +613,7 @@ impl Store {
                 });
             }
             let rev = Rev(self.hlc.now(), device);
+            let deleting = matches!(w, Write::Delete { .. });
             let op = match w {
                 Write::Put { coll, id, fields, .. } => {
                     if fields.contains_key(DELETED_FIELD) {
@@ -660,7 +661,6 @@ impl Store {
                     }
                 }
                 Write::Delete { coll, id, .. } | Write::Restore { coll, id, .. } => {
-                    let deleting = matches!(w, Write::Delete { .. });
                     let Some(c) = cur else {
                         return Err(Error::NotFound { coll, id });
                     };

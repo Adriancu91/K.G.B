@@ -16,7 +16,7 @@ use uuid::Uuid;
 
 use crate::error::{Error, Result};
 use crate::frame::{self, Decoded};
-use crate::model::{DELETED_FIELD, DeviceId, Fields, Op, Origin, RecordState, Rev};
+use crate::model::{DELETED_FIELD, DeviceId, Op, Origin, RecordState, Rev};
 use crate::store::{Durability, Store};
 
 pub const CONFLICTS: &str = "_conflicts";
@@ -330,6 +330,3 @@ pub fn sync_pair(a: &mut Store, b: &mut Store) -> Result<(SyncReport, SyncReport
     let ra = a.apply_remote(to_a)?;
     Ok((ra, rb))
 }
-
-#[allow(dead_code)]
-fn _assert_fields(_: &Fields) {}
