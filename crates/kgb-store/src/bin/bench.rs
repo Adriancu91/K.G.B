@@ -171,6 +171,20 @@ fn bench(root: &Path, n: u64) -> Vec<(String, String)> {
         format!("{:.0} MB", private_mb()),
     ));
 
+    let t = Instant::now();
+    match s.compact_step(0.0).unwrap() {
+        Some(r) => rows.push((
+            format!("Pas de compactare incrementală ({} înreg.)", r.records),
+            format!(
+                "{:.0} ms ({:.1} → {:.1} MB)",
+                ms(t),
+                r.bytes_before as f64 / 1e6,
+                r.bytes_after as f64 / 1e6
+            ),
+        )),
+        None => rows.push(("Pas de compactare incrementală".into(), "nimic de compactat".into())),
+    }
+
     let before = s.disk_bytes().unwrap();
     let t = Instant::now();
     let c = s.compact().unwrap();

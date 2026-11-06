@@ -64,3 +64,15 @@ Laptop: i5-1135G7, 7,8 GB RAM, SSD NVMe Kingston A2000, Windows 11, Defender act
 | Opriri forțate (300) | — | **0 pierdute, 0 parțiale**, 26.377 de tranzacții |
 
 `scan` (care decodează complet fiecare înregistrare) rămâne ~0,5 s. Modulele vor folosi `query`.
+
+## După 2.5 — compactare incrementală — 6 nov. 2026
+
+| Măsurătoare (100k) | Valoare |
+|---|---|
+| Un pas de compactare cu segmente de 64 MB | 656 ms |
+| **Un pas cu segmente de 8 MB (noua valoare implicită)** | **91 ms** |
+| Compactare completă (toată colecția odată) | 2,5 s |
+| Deschidere cu segmente de 8 MB | 199 ms |
+| Interogare fără index | 135–140 ms ✅ |
+
+**300 de opriri forțate cu compactare în timpul scrierilor** (`crashtest run <dir> 300 compact`: rescrieri, un pas de compactare la fiecare 10 tranzacții, o compactare completă la 250, segmente de 64 KB): **0 pierdute, 0 parțiale**, 6.696 de tranzacții. Au rămas, raportate, nu șterse: 11 segmente orfane (0,6 MB) și 341 de fișiere temporare în carantină (20 MB), de la scrierile întrerupte. Trebuie o curățare explicită, inițiată de utilizator (pasul 2.9).

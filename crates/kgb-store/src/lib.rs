@@ -22,7 +22,7 @@ pub mod store;
 pub mod sync;
 
 pub use error::{Error, Result};
-pub use maintenance::{BackupInfo, CompactReport, RepairReport, repair, restore_backup, verify_backup};
+pub use maintenance::{BackupInfo, CompactReport, RepairReport, StepReport, repair, restore_backup, verify_backup};
 pub use model::{DeviceId, Fields, Op, RecordState, Rev};
 pub use query::{Cond, Query, QueryResult, Sort};
 pub use store::{Durability, Options, RecoveryReport, Store, Write};

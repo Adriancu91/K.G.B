@@ -6,6 +6,11 @@
 //!   1. every transaction the writer reported as committed (ACK) is present;
 //!   2. no transaction is partially visible (each writes 3 records or none).
 //!
+//! `crashtest run <dir> <iterations> compact` does the same while the writer
+//! also rewrites older transactions (creating garbage) and runs incremental
+//! compaction steps and occasional full compactions (Etapa 2, step 2.5), with
+//! small segments so that segments are replaced often.
+//!
 //! Limitation: killing a process does not lose the OS write cache, so this does not
 //! prove behaviour on power loss; that needs a VM with hard power-off (Etapa 2).
 
@@ -27,8 +32,19 @@ fn rec_id(txn: u64, i: u128) -> Uuid {
     Uuid::from_u128(((txn as u128) << 8) | i)
 }
 
-fn writer(dir: &Path) {
-    let mut s = Store::open(dir, Options::default()).expect("open");
+fn options(compact: bool) -> Options {
+    Options {
+        segment_max_bytes: if compact {
+            64 * 1024
+        } else {
+            Options::default().segment_max_bytes
+        },
+        ..Options::default()
+    }
+}
+
+fn writer(dir: &Path, compact: bool) {
+    let mut s = Store::open(dir, options(compact)).expect("open");
     let start = s
         .ids("crash")
         .iter()
@@ -38,15 +54,25 @@ fn writer(dir: &Path) {
     let out = std::io::stdout();
     for txn in start..=u64::MAX {
         let pad = "x".repeat(400);
-        let batch = (0..PER_TXN)
-            .map(|i| {
-                let serde_json::Value::Object(f) = json!({"txn": txn, "i": i as u64, "pad": pad}) else {
-                    unreachable!()
-                };
-                Write::put("crash", rec_id(txn, i), f)
-            })
-            .collect();
+        let rec = |t: u64, i: u128, generation: u64| {
+            let serde_json::Value::Object(f) = json!({"txn": t, "i": i as u64, "gen": generation, "pad": pad}) else {
+                unreachable!()
+            };
+            Write::put("crash", rec_id(t, i), f)
+        };
+        let mut batch: Vec<Write> = (0..PER_TXN).map(|i| rec(txn, i, 0)).collect();
+        if compact && txn > start {
+            // Rewrite an older transaction completely, so old frames become garbage.
+            let old = start + (txn * 7919) % (txn - start);
+            batch.extend((0..PER_TXN).map(|i| rec(old, i, txn)));
+        }
         s.write(batch).expect("write");
+        if compact && txn % 10 == 0 {
+            s.compact_step(0.2).expect("compact step");
+        }
+        if compact && txn % 250 == 0 {
+            s.compact().expect("full compaction");
+        }
         let mut o = out.lock();
         writeln!(o, "ACK {txn}").unwrap();
         o.flush().unwrap();
@@ -63,8 +89,8 @@ impl Rng {
     }
 }
 
-fn verify(dir: &Path, last_ack: u64) -> Result<(u64, bool), String> {
-    let s = Store::open(dir, Options::default()).map_err(|e| format!("open failed: {e}"))?;
+fn verify(dir: &Path, last_ack: u64, compact: bool) -> Result<(u64, bool), String> {
+    let s = Store::open(dir, options(compact)).map_err(|e| format!("open failed: {e}"))?;
     let torn = s.recovery_report().torn_tail.is_some();
     let mut per_txn: HashMap<u64, u128> = HashMap::new();
     for id in s.ids("crash") {
@@ -84,7 +110,7 @@ fn verify(dir: &Path, last_ack: u64) -> Result<(u64, bool), String> {
     Ok((max, torn))
 }
 
-fn run(dir: &Path, iterations: u32) {
+fn run(dir: &Path, iterations: u32, compact: bool) {
     let exe = std::env::current_exe().unwrap();
     let mut rng = Rng(0x9E3779B97F4A7C15 ^ Instant::now().elapsed().as_nanos() as u64 ^ std::process::id() as u64);
     let mut last_ack = 0u64;
@@ -95,6 +121,7 @@ fn run(dir: &Path, iterations: u32) {
         let mut child = Command::new(&exe)
             .arg("writer")
             .arg(dir)
+            .arg(if compact { "compact" } else { "plain" })
             .stdout(Stdio::piped())
             .spawn()
             .expect("spawn writer");
@@ -114,7 +141,7 @@ fn run(dir: &Path, iterations: u32) {
         while let Ok(n) = rx.try_recv() {
             last_ack = last_ack.max(n);
         }
-        match verify(dir, last_ack) {
+        match verify(dir, last_ack, compact) {
             Ok((max, torn)) => {
                 if torn {
                     torn_count += 1;
@@ -139,11 +166,12 @@ fn run(dir: &Path, iterations: u32) {
 fn main() {
     let args: Vec<String> = std::env::args().collect();
     match args.get(1).map(String::as_str) {
-        Some("writer") => writer(Path::new(&args[2])),
+        Some("writer") => writer(Path::new(&args[2]), args.get(3).is_some_and(|m| m == "compact")),
         Some("run") => run(
             Path::new(&args[2]),
             args.get(3).and_then(|n| n.parse().ok()).unwrap_or(100),
+            args.get(4).is_some_and(|m| m == "compact"),
         ),
-        _ => eprintln!("usage: crashtest run <dir> <iterations>"),
+        _ => eprintln!("usage: crashtest run <dir> <iterations> [compact]"),
     }
 }

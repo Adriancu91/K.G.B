@@ -51,7 +51,8 @@ impl Default for Options {
     fn default() -> Self {
         Options {
             durability: Durability::Sync,
-            segment_max_bytes: 64 * 1024 * 1024,
+            // 8 MB bounds one incremental compaction step to ~100 ms (Etapa 2, step 2.5).
+            segment_max_bytes: 8 * 1024 * 1024,
             check_location: true,
         }
     }
@@ -208,7 +209,7 @@ pub struct Store {
     pub(crate) applied: BTreeMap<DeviceId, u64>,
     pub(crate) keydir: Keydir,
     pub(crate) indexes: Indexes,
-    readers: BTreeMap<u32, File>,
+    pub(crate) readers: BTreeMap<u32, File>,
     active: Option<File>,
     active_len: u64,
     poisoned: bool,

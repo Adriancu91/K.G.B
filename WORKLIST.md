@@ -51,11 +51,11 @@ Interdicții permanente: fără baze de date (D-005, D-018), fără schimbări d
 - [x] 2.2 Keydir pe colecții + scan doar pe înregistrările vii
 - [x] 2.3 Interogări structurate cu decodare parțială — 5 teste; ținta atinsă după 2.4 (116 ms)
 - [x] 2.4 Format binar v2 (D-028), compatibil cu v1, conversie doar la compactare (D-029) — 6 teste, 300 opriri forțate fără pierderi
-- [ ] 2.5 Compactare incrementală
+- [x] 2.5 Compactare incrementală (pas ≤ 1 segment de 8 MB ≈ 91 ms; 4 teste; 300 opriri forțate cu compactare: 0 pierderi)
 - [ ] 2.6 Schema colecțiilor (înregistrări structurate)
 - [ ] 2.7 Indexuri declarate în manifest
 - [ ] 2.8 Fișiere atașate pentru module (files.own)
-- [ ] 2.9 Backup/restore în aplicație (+ automat înainte de migrări)
+- [ ] 2.9 Backup/restore în aplicație (+ automat înainte de migrări și de conversia v1→v2; curățare explicită a carantinei și a segmentelor orfane)
 - [ ] 2.10 Teste de concurență
 - [ ] 2.11 Volum + corupere + opriri forțate pe laptop
 - [ ] 🔒 2.12 Pierderea alimentării pe VM

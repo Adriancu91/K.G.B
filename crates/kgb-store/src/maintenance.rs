@@ -22,6 +22,19 @@ pub struct CompactReport {
     pub ms: u128,
 }
 
+/// Result of one incremental compaction step.
+#[derive(Debug, Clone)]
+pub struct StepReport {
+    /// Segment that was rewritten.
+    pub segment: u32,
+    /// Its replacement (same position in the replay order).
+    pub replaced_by: u32,
+    pub bytes_before: u64,
+    pub bytes_after: u64,
+    pub records: usize,
+    pub ms: u128,
+}
+
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct BackupInfo {
     pub format: u32,
@@ -49,6 +62,125 @@ impl Store {
 
     pub fn disk_bytes(&self) -> Result<u64> {
         self.segment_bytes()
+    }
+
+    /// Live bytes per sealed segment, and each segment's size on disk.
+    fn segment_usage(&self) -> Result<Vec<(u32, u64, u64)>> {
+        let mut live: BTreeMap<u32, u64> = BTreeMap::new();
+        for l in self.keydir.values() {
+            *live.entry(l.seg).or_default() += l.len as u64;
+        }
+        let sealed = &self.manifest.segments[..self.manifest.segments.len().saturating_sub(1)];
+        let mut out = Vec::with_capacity(sealed.len());
+        for &seg in sealed {
+            let size = fs::metadata(self.seg_path(seg))?.len();
+            out.push((seg, live.get(&seg).copied().unwrap_or(0), size));
+        }
+        Ok(out)
+    }
+
+    /// One bounded step of incremental compaction (Etapa 2, step 2.5).
+    ///
+    /// Picks the sealed segment with the largest share of dead bytes (at least
+    /// `min_garbage`, e.g. 0.3), rewrites only its live records into a new
+    /// segment placed at the **same position** in the replay order, and commits
+    /// by replacing the manifest atomically. The work per step is bounded by one
+    /// segment, so callers can release their lock between steps. Returns `None`
+    /// when no segment is worth rewriting.
+    ///
+    /// Only stores already in the current format compact incrementally; an older
+    /// journal is upgraded by a full [`Store::compact`] (D-029).
+    pub fn compact_step(&mut self, min_garbage: f64) -> Result<Option<StepReport>> {
+        if self.manifest.format != FORMAT_VERSION {
+            return Err(Error::InvalidInput(format!(
+                "incremental compaction needs journal format {FORMAT_VERSION}; run a full compaction first"
+            )));
+        }
+        let t0 = Instant::now();
+        self.flush()?;
+        let pick = self
+            .segment_usage()?
+            .into_iter()
+            .filter(|(_, live, size)| *size > 0 && 1.0 - (*live as f64 / *size as f64) >= min_garbage)
+            .max_by(|a, b| {
+                let ga = 1.0 - a.1 as f64 / a.2 as f64;
+                let gb = 1.0 - b.1 as f64 / b.2 as f64;
+                ga.partial_cmp(&gb).unwrap_or(std::cmp::Ordering::Equal)
+            });
+        let Some((seg, _, bytes_before)) = pick else {
+            return Ok(None);
+        };
+
+        let mut locs: Vec<Loc> = self.keydir.values().filter(|l| l.seg == seg).copied().collect();
+        locs.sort_by_key(|l| l.off);
+        let new_id = self.manifest.next_segment;
+        let final_path = seg_path(&self.dir, new_id);
+        let tmp = fsutil::tmp_path(&final_path);
+        let mut w = BufWriter::new(File::create(&tmp)?);
+        let mut moved: Vec<(String, uuid::Uuid, Loc)> = Vec::with_capacity(locs.len());
+        let mut off = 0u64;
+        let mut buf = Vec::new();
+        for loc in &locs {
+            let mut op = self.read_op(loc)?;
+            op.compacted = true;
+            op.changed.clear();
+            op.record_base = None;
+            buf.clear();
+            frame::encode(&codec::encode(&op, FORMAT_VERSION)?, END_OF_TXN, &mut buf);
+            w.write_all(&buf)?;
+            moved.push((
+                op.state.coll,
+                op.state.id,
+                Loc {
+                    seg: new_id,
+                    off,
+                    len: buf.len() as u32,
+                    version: loc.version,
+                    deleted: loc.deleted,
+                },
+            ));
+            off += buf.len() as u64;
+        }
+        w.into_inner().map_err(|e| e.into_error())?.sync_all()?;
+        fsutil::replace(&tmp, &final_path)?;
+
+        // Commit point: the manifest now lists the new segment where the old one was.
+        let mut m = self.manifest.clone();
+        for s in m.segments.iter_mut() {
+            if *s == seg {
+                *s = new_id;
+            }
+        }
+        m.next_segment = new_id + 1;
+        m.compaction_floor = self.version_vector();
+        self.save_manifest(&m)?;
+        self.manifest = m;
+
+        // In-memory state follows without a full reload.
+        self.readers.insert(new_id, File::open(&final_path)?);
+        for (coll, id, loc) in &moved {
+            self.keydir.insert(coll, *id, *loc);
+        }
+        self.readers.remove(&seg);
+
+        // Keep the replaced segment as the previous generation, like `compact`.
+        let retired = self.dir.join("retired");
+        fs::create_dir_all(&retired)?;
+        for e in fs::read_dir(&retired)? {
+            let p = e?.path();
+            if p.extension().is_some_and(|x| x == "kjl") {
+                fs::remove_file(p)?;
+            }
+        }
+        fs::rename(seg_path(&self.dir, seg), retired.join(format!("{seg:08}.kjl")))?;
+        Ok(Some(StepReport {
+            segment: seg,
+            replaced_by: new_id,
+            bytes_before,
+            bytes_after: off,
+            records: moved.len(),
+            ms: t0.elapsed().as_millis(),
+        }))
     }
 
     /// Rewrite only the newest state of every record into fresh segments.
