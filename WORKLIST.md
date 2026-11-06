@@ -59,5 +59,5 @@ Interdicții permanente: fără baze de date (D-005, D-018), fără schimbări d
 - [x] 2.10 Teste de concurență (6 fire cu transferuri optimiste + conflicte reale, cititor care verifică invarianta, compactare și backup în paralel, a doua deschidere refuzată, un singur câștigător pe versiune; 3 teste, stabile la 5 rulări)
 - [x] 2.11 Volum + corupere + opriri forțate pe laptop (10k/100k/1M pe v2; 1.000 opriri + 300 cu compactare: 0 pierderi; praguri D-022 toate atinse la 100k — vezi docs/etapa2/BENCH.md)
 - [ ] 🔒 2.12 Pierderea alimentării pe VM
-- [ ] 2.13 Raport Etapa 2
+- [x] 2.13 Raport Etapa 2 (`docs/ETAPA2_RAPORT.md`)
 - [ ] 🔒 2.14 Poarta Etapei 2
