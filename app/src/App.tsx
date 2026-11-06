@@ -4,6 +4,7 @@ import { useCallback, useEffect, useRef, useState, type ComponentType, type Poin
 import { api, message, type AppInfo, type ModulesReply, type Settings, type SettingsReply } from "./api";
 import { NotesPage } from "./modules/notes/NotesPage";
 import { Catalog } from "./pages/Catalog";
+import { DataPage } from "./pages/DataPage";
 import { DiagnosticsPage } from "./pages/DiagnosticsPage";
 import { Home } from "./pages/Home";
 import { SettingsPage } from "./pages/SettingsPage";
@@ -92,7 +93,7 @@ export function App() {
       nav.push({ id: m.id, label: m.name, badge: m.status === "experimental" ? "exp." : undefined });
     }
   }
-  nav.push({ id: "catalog", label: "Catalog module" }, { id: "settings", label: "Setări" }, { id: "diagnostics", label: "Diagnostic" });
+  nav.push({ id: "catalog", label: "Catalog module" }, { id: "settings", label: "Setări" }, { id: "data", label: "Date și backup" }, { id: "diagnostics", label: "Diagnostic" });
 
   // If the open module was disabled or hidden, fall back to the start page.
   useEffect(() => {
@@ -171,7 +172,7 @@ export function App() {
     <div className="shell" style={{ gridTemplateColumns: collapsed ? "48px 1fr" : `${width}px 1fr` }}>
       {info.pre_release && (
         <div className="banner">
-          Versiune de dinainte de lansare (Etapa 1) — nucleul desktop. Nu folosi încă pentru date importante.
+          Versiune de dinainte de lansare (Etapa 2 în lucru). Nu folosi încă pentru date importante.
         </div>
       )}
       <aside className={collapsed ? "collapsed" : undefined}>
@@ -219,6 +220,7 @@ export function App() {
           <SettingsPage reply={settings} info={info} onSave={saveSettings} onInfoChanged={loadInfo} onError={setError} />
         )}
         {page === "diagnostics" && <DiagnosticsPage onError={setError} />}
+        {page === "data" && <DataPage onError={setError} onSwitched={() => window.location.reload()} />}
         {ModulePage && <ModulePage onError={setError} />}
         {!ModulePage && modules.modules.some((m) => m.id === page) && (
           <p className="muted">Acest modul nu are încă interfață.</p>

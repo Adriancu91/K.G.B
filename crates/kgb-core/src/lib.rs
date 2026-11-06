@@ -6,6 +6,7 @@
 /// Version of the core API that modules declare compatibility with.
 pub const CORE_VERSION: &str = env!("CARGO_PKG_VERSION");
 
+pub mod backup;
 pub mod error;
 pub mod files;
 pub mod identity;

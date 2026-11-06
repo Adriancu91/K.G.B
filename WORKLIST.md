@@ -55,7 +55,7 @@ Interdicții permanente: fără baze de date (D-005, D-018), fără schimbări d
 - [x] 2.6 Schema colecțiilor (tipuri, obligatorii, limite, enum; verificată la fiecare scriere a modulului; 3 teste; kgb.notes are schemă)
 - [x] 2.7 Indexuri declarate în manifest (create la activare, reconstruite la deschidere, folosite automat de ctx.query; kgb.notes listează prin query; 2 teste; e2e 15/15)
 - [x] 2.8 Fișiere atașate pentru module (files.own; proprietar per modul, BLAKE3 la citire, limită 64 MB, colectare explicită a blob-urilor fără referință; 4 teste)
-- [ ] 2.9 Backup/restore în aplicație (+ automat înainte de migrări și de conversia v1→v2; curățare explicită a carantinei și a segmentelor orfane)
+- [x] 2.9 Backup/restore în aplicație (backup verificat; restaurare ca spațiu NOU, D-030; backup automat înainte de migrări și de conversia v1→v2; păstrate ultimele 5 automate; compactare, colectare fișiere, ștergerea resturilor la cerere; 6 teste + e2e 8/8)
 - [ ] 2.10 Teste de concurență
 - [ ] 2.11 Volum + corupere + opriri forțate pe laptop
 - [ ] 🔒 2.12 Pierderea alimentării pe VM

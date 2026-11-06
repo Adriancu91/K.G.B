@@ -213,7 +213,7 @@ pub struct Store {
     active: Option<File>,
     active_len: u64,
     poisoned: bool,
-    report: RecoveryReport,
+    pub(crate) report: RecoveryReport,
     buf: Vec<u8>,
 }
 
@@ -277,6 +277,12 @@ impl Store {
 
     pub fn device(&self) -> DeviceId {
         self.manifest.device
+    }
+
+    /// Journal format of this store (see `codec`); below `FORMAT_VERSION`
+    /// means a full compaction will upgrade it.
+    pub fn format(&self) -> u32 {
+        self.manifest.format
     }
 
     pub fn dir(&self) -> &Path {
@@ -964,7 +970,7 @@ fn quarantine_tmp_files(dir: &Path) -> Result<Vec<PathBuf>> {
     Ok(moved)
 }
 
-fn orphan_segments(dir: &Path, m: &Manifest) -> Result<Vec<PathBuf>> {
+pub(crate) fn orphan_segments(dir: &Path, m: &Manifest) -> Result<Vec<PathBuf>> {
     let mut out = Vec::new();
     for e in fs::read_dir(dir.join("journal"))? {
         let p = e?.path();

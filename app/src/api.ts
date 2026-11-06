@@ -86,6 +86,29 @@ export interface Diagnostics {
   memory_mb: number;
 }
 
+export type BackupReason = "manual" | "before_migration" | "before_format_upgrade";
+
+export interface BackupView {
+  id: string;
+  meta: {
+    workspace_name: string;
+    reason: BackupReason;
+    detail: string;
+    created_ms: number;
+    core_version: string;
+    records: number;
+  };
+}
+
+export interface DataInfo {
+  format: number;
+  disk_bytes: number;
+  leftover_bytes: number;
+  backups: BackupView[];
+  workspaces: Array<{ id: string; name: string; dir: string }>;
+  current: string;
+}
+
 export const api = {
   appInfo: () => invoke<AppInfo>("app_info"),
   getSettings: () => invoke<SettingsReply>("get_settings"),
@@ -100,6 +123,14 @@ export const api = {
     invoke<T>("module_call", { id, command, args }),
   diagnostics: () => invoke<Diagnostics>("diagnostics"),
   exportDiagnostics: () => invoke<string>("export_diagnostics"),
+  dataInfo: () => invoke<DataInfo>("data_info"),
+  createBackup: () => invoke<string>("create_backup"),
+  verifyBackup: (id: string) => invoke<number>("verify_backup", { id }),
+  restoreBackup: (id: string) => invoke<void>("restore_backup", { id }),
+  openWorkspace: (id: string) => invoke<void>("open_workspace", { id }),
+  compactNow: () => invoke<{ steps: number; bytes_freed: number; ms: number }>("compact_now"),
+  collectFiles: () => invoke<{ blobs_retired: number; bytes_retired: number }>("collect_files"),
+  purgeLeftovers: () => invoke<{ files: number; bytes: number }>("purge_leftovers"),
 };
 
 /// Errors from Rust arrive as plain strings (already in Romanian).

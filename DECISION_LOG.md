@@ -120,3 +120,8 @@ Deciziile DECIS se schimbă doar cu aprobarea explicită a proprietarului (Maste
 - **Alternative respinse:** CBOR sau MessagePack, care ar fi cerut o dependență nouă și oricum citesc fiecare octet; o coloană separată în memorie, care costă mult RAM.
 - **Rezultat:** interogare 100k: 116 ms ✅; deschidere: 166 ms (era 349).
 - **Compatibilitate (D-029, aplicată):** jurnalele v1 se citesc în continuare. Un spațiu de lucru existent rămâne pe v1 până la prima compactare. La compactare, manifestul trece pe formatul 2, iar o aplicație veche îl refuză clar, fără să-l modifice. **Backup automat înainte de conversie:** pasul 2.9.
+
+### D-030 — Restaurarea creează un spațiu de lucru nou (aplicată)
+- **Data:** 6 nov. 2026 · **Statut:** DECIS, aplicat în pasul 2.9 (era PROPUS în planul Etapei 2, conform regulii din Metaprompt §7 „nu suprascrie singura copie validă”).
+- **Ce face aplicația:** verifică backupul fișier cu fișier, apoi îl deschide ca spațiu nou, numit „… (restaurat <dată>)”. Originalul rămâne neatins și se redeschide din „Date și backup”.
+- **Backupuri automate:** înainte de migrarea datelor unui modul și înainte de conversia formatului jurnalului. Se păstrează ultimele 5 automate; cele manuale rămân până le șterge utilizatorul. Ștergerea backupurilor din interfață nu există încă.

@@ -10,12 +10,14 @@
 //!   and every enable/disable is written to the audit journal `core.audit`.
 
 use std::collections::BTreeSet;
+use std::path::{Path, PathBuf};
 
 use kgb_store::{Fields, Query, QueryResult, RecordState, Write};
 use serde::Serialize;
 use serde_json::Value;
 use uuid::Uuid;
 
+use crate::backup;
 use crate::error::{CoreError, CoreResult};
 use crate::files;
 use crate::identity;
@@ -162,6 +164,9 @@ pub fn audit_log(ws: &Workspace, limit: usize) -> CoreResult<Vec<Fields>> {
 pub struct ModuleManager {
     modules: Vec<Box<dyn Module>>,
     core_version: String,
+    /// Where automatic backups go before a data migration (`None` = no backup,
+    /// used only by tests that do not care).
+    backup_root: Option<PathBuf>,
 }
 
 impl ModuleManager {
@@ -181,7 +186,15 @@ impl ModuleManager {
         Ok(ModuleManager {
             modules,
             core_version: core_version.into(),
+            backup_root: None,
         })
+    }
+
+    /// Makes an automatic workspace backup under `root` before any module data
+    /// migration (Master Plan §12.2).
+    pub fn with_backup_root(mut self, root: &Path) -> ModuleManager {
+        self.backup_root = Some(root.to_path_buf());
+        self
     }
 
     fn find(&self, id: &str) -> CoreResult<&dyn Module> {
@@ -322,6 +335,12 @@ impl ModuleManager {
         if st.data_format == 0 {
             // First run here: nothing to migrate.
             st.data_format = mf.data_format;
+        }
+        if st.data_format < mf.data_format
+            && let Some(root) = &self.backup_root
+        {
+            let detail = format!("{id}: date {} → {}", st.data_format, mf.data_format);
+            backup::create(ws, root, backup::Reason::BeforeMigration, &detail)?;
         }
         while st.data_format < mf.data_format {
             let from = st.data_format;

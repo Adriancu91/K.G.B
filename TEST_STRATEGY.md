@@ -30,3 +30,9 @@ Pragurile de performanță sunt PROPUSE în ETAPA0_PLAN.md §3.2 și devin ofici
 ## Etapa 1 — nucleul desktop
 - `cargo test --workspace`: teste unitare și de integrare pentru stocare, loguri, workspace, setări, identitate, manifest, module, permisiuni, profiluri și modulul demonstrativ. Rulează în CI.
 - `node app/e2e/gate.mjs <kgb-app.exe> <folder-capturi>`: scenariul porții în fereastra reală, prin portul de depanare WebView2 (doar `127.0.0.1`). Folosește un folder de date temporar (`KGB_DATA_DIR`), nu datele reale. Rulează local; nu rulează încă în CI.
+
+## Etapa 2 — motorul de stocare
+- `cargo test --workspace`: format v1/v2, interogări (aleatoare, comparate cu decodarea completă), compactare incrementală, scheme, indexuri, fișiere, backup/restaurare.
+- `target/release/crashtest.exe run <dir> <n> [compact]`: opriri forțate, opțional cu compactare în timpul scrierilor.
+- `target/release/bench.exe <dir> <n>`: măsurători; rezultatele sunt în `docs/etapa2/BENCH.md`.
+- `node app/e2e/backup.mjs <kgb-app.exe> <folder-capturi>`: backup → modificare → verificare → restaurare ca spațiu nou → redeschiderea originalului.

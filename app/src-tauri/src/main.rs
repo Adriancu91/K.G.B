@@ -13,6 +13,7 @@ use kgb_core::modules::{self, Module, ModuleManager, ModuleView, PLANNED, PROFIL
 use kgb_core::settings::{self, Settings};
 use kgb_core::workspace::{self, Workspace};
 use kgb_core::{CORE_VERSION, CoreError, profiles};
+use kgb_core::{backup, files};
 use serde::Serialize;
 use serde_json::Value;
 use tauri::{Manager, State};
@@ -70,15 +71,185 @@ fn with_session<T>(app: &State<AppState>, f: impl FnOnce(&mut Session) -> Result
 
 fn open_session(root: &Path) -> Result<Session, CoreError> {
     let device = DeviceIdentity::load_or_create(&root.join("device"))?;
-    let (mut ws, created) = workspace::open_last_or_create_default(root, DEFAULT_WORKSPACE_NAME)?;
+    let (ws, created) = workspace::open_last_or_create_default(root, DEFAULT_WORKSPACE_NAME)?;
+    session_for(root, ws, device, created)
+}
+
+/// Prepares an opened workspace: owner, this device, journal format upgrade
+/// (with an automatic backup first), module manager.
+fn session_for(root: &Path, mut ws: Workspace, device: DeviceIdentity, created: bool) -> Result<Session, CoreError> {
     if created || identity::owner(ws.store())?.is_none() {
         identity::set_owner(ws.store_mut(), DEFAULT_OWNER_NAME, 0)?;
     }
     let label = std::env::var("COMPUTERNAME").unwrap_or_else(|_| "Acest PC".into());
     identity::register_this_device(ws.store_mut(), &device, &label)?;
-    let mm = ModuleManager::new(builtin_modules(), CORE_VERSION)?;
+    backup::upgrade_format_if_needed(&mut ws, root)?;
+    let mm = ModuleManager::new(builtin_modules(), CORE_VERSION)?.with_backup_root(root);
     tracing::info!(created, records = ws.recovery().records as u64, "workspace opened");
     Ok(Session { ws, mm, device })
+}
+
+/// Closes the current workspace and opens another one in its place.
+/// If opening fails, the previous workspace is reopened.
+fn switch_to(app: &State<AppState>, open: impl FnOnce(&Path) -> Result<Workspace, CoreError>) -> CmdResult<()> {
+    let mut guard = app.session.lock().map_err(err)?;
+    let old = guard.take().ok_or("spațiul de lucru nu este deschis")?;
+    let previous_dir = old.ws.dir().to_path_buf();
+    let device = old.device;
+    drop(old.ws); // releases the workspace lock
+    let opened = open(&app.root).and_then(|ws| {
+        let mut reg = workspace::Registry::load(&app.root)?;
+        reg.remember(&ws);
+        reg.save(&app.root)?;
+        Ok(ws)
+    });
+    match opened {
+        Ok(ws) => {
+            *guard = Some(session_for(&app.root, ws, device, false).map_err(err)?);
+            Ok(())
+        }
+        Err(e) => {
+            let back = Workspace::open(&previous_dir).map_err(err)?;
+            *guard = Some(session_for(&app.root, back, device, false).map_err(err)?);
+            Err(e.to_string())
+        }
+    }
+}
+
+// ---------- data, backups, maintenance ----------
+
+#[derive(Serialize)]
+struct DataInfo {
+    format: u32,
+    disk_bytes: u64,
+    leftover_bytes: u64,
+    backups: Vec<BackupView>,
+    workspaces: Vec<workspace::KnownWorkspace>,
+    current: String,
+}
+
+#[derive(Serialize)]
+struct BackupView {
+    /// Folder name; the only handle the UI gets (never a free path).
+    id: String,
+    meta: backup::BackupMeta,
+}
+
+fn folder_name(p: &Path) -> String {
+    p.file_name().unwrap_or_default().to_string_lossy().to_string()
+}
+
+#[tauri::command]
+fn data_info(app: State<AppState>) -> CmdResult<DataInfo> {
+    let root = app.root.clone();
+    with_session(&app, |s| {
+        let backups = backup::list(&root, s.ws.manifest().id)?
+            .into_iter()
+            .map(|b| BackupView {
+                id: folder_name(&b.dir),
+                meta: b.meta,
+            })
+            .collect();
+        Ok(DataInfo {
+            format: s.ws.store().format(),
+            disk_bytes: s.ws.store().disk_bytes()?,
+            leftover_bytes: s.ws.store().leftover_bytes()?,
+            backups,
+            workspaces: workspace::Registry::load(&root)?.workspaces,
+            current: s.ws.manifest().id.to_string(),
+        })
+    })
+}
+
+/// Resolves a backup id coming from the UI to a folder inside this
+/// workspace's backup directory, refusing anything else.
+fn backup_dir(root: &Path, s: &Session, id: &str) -> Result<PathBuf, CoreError> {
+    let unsafe_id = id.is_empty() || id.starts_with('.') || id.contains("..") || id.contains(['/', '\\', ':']);
+    if unsafe_id {
+        return Err(CoreError::invalid("backupul", "identificator invalid"));
+    }
+    let dir = backup::backups_dir(root, s.ws.manifest().id).join(id);
+    if !dir.is_dir() {
+        return Err(CoreError::invalid("backupul", "nu există"));
+    }
+    Ok(dir)
+}
+
+#[tauri::command]
+fn create_backup(app: State<AppState>) -> CmdResult<String> {
+    let root = app.root.clone();
+    with_session(&app, |s| {
+        let b = backup::create(&mut s.ws, &root, backup::Reason::Manual, "")?;
+        Ok(folder_name(&b.dir))
+    })
+}
+
+#[tauri::command]
+fn verify_backup(app: State<AppState>, id: String) -> CmdResult<usize> {
+    let root = app.root.clone();
+    with_session(&app, |s| Ok(backup::verify(&backup_dir(&root, s, &id)?)?.records))
+}
+
+/// Restores a backup as a new workspace and switches to it (D-030).
+#[tauri::command]
+fn restore_backup(app: State<AppState>, id: String) -> CmdResult<()> {
+    let root = app.root.clone();
+    let dir = with_session(&app, |s| backup_dir(&root, s, &id))?;
+    switch_to(&app, |root| backup::restore(&dir, root))
+}
+
+#[tauri::command]
+fn open_workspace(app: State<AppState>, id: String) -> CmdResult<()> {
+    let reg = workspace::Registry::load(&app.root).map_err(err)?;
+    let k = reg
+        .workspaces
+        .iter()
+        .find(|w| w.id.to_string() == id)
+        .cloned()
+        .ok_or("spațiul de lucru nu există")?;
+    switch_to(&app, |_| Workspace::open(&k.dir))
+}
+
+#[derive(Serialize)]
+struct CompactView {
+    steps: usize,
+    bytes_freed: u64,
+    ms: u128,
+}
+
+/// Incremental compaction until nothing is worth rewriting (or 5 s passed).
+/// The lock is released between steps.
+#[tauri::command]
+fn compact_now(app: State<AppState>) -> CmdResult<CompactView> {
+    let t0 = std::time::Instant::now();
+    let mut v = CompactView {
+        steps: 0,
+        bytes_freed: 0,
+        ms: 0,
+    };
+    while t0.elapsed().as_secs() < 5 {
+        match with_session(&app, |s| Ok(s.ws.store_mut().compact_step(0.3)?))? {
+            Some(r) => {
+                v.steps += 1;
+                v.bytes_freed += r.bytes_before.saturating_sub(r.bytes_after);
+            }
+            None => break,
+        }
+    }
+    v.ms = t0.elapsed().as_millis();
+    Ok(v)
+}
+
+#[tauri::command]
+fn collect_files(app: State<AppState>) -> CmdResult<files::CollectReport> {
+    with_session(&app, |s| files::collect_unreferenced(&mut s.ws))
+}
+
+/// Permanently removes quarantine, retired generations and orphan segments.
+/// The UI asks for confirmation and recommends a backup first.
+#[tauri::command]
+fn purge_leftovers(app: State<AppState>) -> CmdResult<kgb_store::PurgeReport> {
+    with_session(&app, |s| Ok(s.ws.store_mut().purge_leftovers()?))
 }
 
 // ---------- app info ----------
@@ -373,7 +544,15 @@ fn main() {
             set_module_visible,
             module_call,
             diagnostics,
-            export_diagnostics
+            export_diagnostics,
+            data_info,
+            create_backup,
+            verify_backup,
+            restore_backup,
+            open_workspace,
+            compact_now,
+            collect_files,
+            purge_leftovers
         ])
         .run(tauri::generate_context!())
         .expect("K.G.B. could not start the window");

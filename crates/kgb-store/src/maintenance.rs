@@ -22,6 +22,13 @@ pub struct CompactReport {
     pub ms: u128,
 }
 
+/// What [`Store::purge_leftovers`] removed.
+#[derive(Debug, Clone, Default, Serialize)]
+pub struct PurgeReport {
+    pub files: usize,
+    pub bytes: u64,
+}
+
 /// Result of one incremental compaction step.
 #[derive(Debug, Clone)]
 pub struct StepReport {
@@ -328,6 +335,41 @@ impl Store {
 }
 
 impl Store {
+    /// Bytes held by leftovers: `quarantine/`, `retired/` and journal segments
+    /// the manifest does not list. Nothing here is needed by the live data.
+    pub fn leftover_bytes(&self) -> Result<u64> {
+        let mut n = 0;
+        for d in ["quarantine", "retired"] {
+            n += tree_bytes(&self.dir.join(d))?;
+        }
+        for p in crate::store::orphan_segments(&self.dir, &self.manifest)? {
+            n += fs::metadata(p).map(|m| m.len()).unwrap_or(0);
+        }
+        Ok(n)
+    }
+
+    /// Permanently removes the leftovers counted by [`Store::leftover_bytes`].
+    /// **Only on an explicit user request** (after a backup): quarantine holds
+    /// the raw bytes of anything recovery cut away, kept for diagnosis.
+    pub fn purge_leftovers(&mut self) -> Result<PurgeReport> {
+        let mut r = PurgeReport::default();
+        for d in ["quarantine", "retired"] {
+            let dir = self.dir.join(d);
+            if dir.exists() {
+                r.bytes += tree_bytes(&dir)?;
+                r.files += tree_files(&dir)?;
+                fs::remove_dir_all(&dir)?;
+            }
+        }
+        for p in crate::store::orphan_segments(&self.dir, &self.manifest)? {
+            r.bytes += fs::metadata(&p)?.len();
+            r.files += 1;
+            fs::remove_file(p)?;
+        }
+        self.report.orphan_segments.clear();
+        Ok(r)
+    }
+
     /// Hashes of every stored blob.
     pub fn blob_hashes(&self) -> Result<Vec<String>> {
         let root = self.dir.join("blobs");
@@ -490,4 +532,33 @@ pub fn repair(dir: &Path) -> Result<RepairReport> {
         }
     }
     Ok(report)
+}
+
+fn tree_bytes(d: &Path) -> Result<u64> {
+    if !d.exists() {
+        return Ok(0);
+    }
+    let mut n = 0;
+    for e in fs::read_dir(d)? {
+        let e = e?;
+        n += if e.file_type()?.is_dir() {
+            tree_bytes(&e.path())?
+        } else {
+            e.metadata()?.len()
+        };
+    }
+    Ok(n)
+}
+
+fn tree_files(d: &Path) -> Result<usize> {
+    let mut n = 0;
+    for e in fs::read_dir(d)? {
+        let e = e?;
+        n += if e.file_type()?.is_dir() {
+            tree_files(&e.path())?
+        } else {
+            1
+        };
+    }
+    Ok(n)
 }
