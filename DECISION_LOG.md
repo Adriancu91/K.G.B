@@ -106,3 +106,9 @@ Deciziile DECIS se schimbă doar cu aprobarea explicită a proprietarului (Maste
 - **Data:** 6 nov. 2026 · **Statut:** DECIS · **Aprobat de:** proprietar („Da aprob … mergi înainte”), pe baza `docs/ETAPA1_RAPORT.md`
 - **Conținut:** Etapa 1 se încheie. D-023…D-026 devin DECISE. Panourile mutabile prin drag-and-drop și ecranul cu mai multe panouri trec în **Etapa 4**. **Începe Etapa 2** (Storage Engine).
 - **Notă:** proprietarul nu a testat personal aplicația (nu avea acces la laptop). Aprobarea se bazează pe testele automate și pe capturile de ecran.
+
+### D-028 … D-030 — Etapa 2 (Storage Engine)
+- **Data:** 6 nov. 2026 · **Statut:** PROPUS — detalii în `docs/ETAPA2_PLAN.md`
+- D-028: format binar al jurnalului — se decide după măsurători (pasul 2.4);
+- D-029: orice format nou citește jurnalele vechi; conversia se face doar la compactare, după backup automat;
+- D-030: restaurarea creează un spațiu de lucru nou, nu suprascrie pe cel curent.

@@ -44,3 +44,20 @@ Interdicții permanente: fără baze de date (D-005, D-018), fără schimbări d
 - [x] 1.12 Demonstrația porții + `docs/ETAPA1_RAPORT.md`
 - [x] 1.13 Poarta Etapei 1: aprobată (D-027)
 - [ ] 🔒 S2.3 (din Etapa 0) 2 PC-uri, LAN + internet — înainte de Etapa 6
+
+## Etapa 2 — pași (plan: `docs/ETAPA2_PLAN.md`)
+
+- [ ] 2.1 Benchmark extins (RAM, filtre) — tabel de bază
+- [ ] 2.2 Keydir pe colecții + scan doar pe înregistrările vii
+- [ ] 2.3 Interogări structurate cu decodare parțială (filtrare 100k < 200 ms)
+- [ ] 2.4 Decizie D-028 format binar pe baza măsurătorilor
+- [ ] 2.5 Compactare incrementală
+- [ ] 2.6 Schema colecțiilor (înregistrări structurate)
+- [ ] 2.7 Indexuri declarate în manifest
+- [ ] 2.8 Fișiere atașate pentru module (files.own)
+- [ ] 2.9 Backup/restore în aplicație (+ automat înainte de migrări)
+- [ ] 2.10 Teste de concurență
+- [ ] 2.11 Volum + corupere + opriri forțate pe laptop
+- [ ] 🔒 2.12 Pierderea alimentării pe VM
+- [ ] 2.13 Raport Etapa 2
+- [ ] 🔒 2.14 Poarta Etapei 2
