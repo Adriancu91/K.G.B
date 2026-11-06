@@ -17,13 +17,23 @@
 | `status` | da | `stable` · `beta` · `experimental` · `disabled` |
 | `permissions` | nu | doar din lista nucleului (mai jos) |
 | `services` | nu | `storage`, `settings`, `identity`, `log`; o permisiune cere serviciul ei |
-| `data_types` | nu | colecții logice `[a-z0-9_]+`; cer `storage.own` |
+| `data_types` | nu | colecții logice `[a-z0-9_]+`; cer `storage.own`; fiecare poate avea o `schema` (mai jos) |
 | `events.emits` / `events.listens` | nu | evenimentele emise încep cu `<id>.` |
 | `data_format` | da | formatul curent al datelor, de la 1 |
 | `migrations` | da dacă `data_format > 1` | lanț fără goluri: 1→2, 2→3, … |
 | `on_disable` | da | ce se întâmplă cu datele la dezactivare, pentru utilizator |
 
 Validarea e strictă: orice câmp necunoscut, permisiune necunoscută sau valoare greșită face manifestul să fie refuzat.
+
+## Schema unei colecții (Etapa 2)
+`"schema": {"fields": {"<câmp>": {...}}, "additional": false}`. Pentru fiecare câmp:
+- `type`: `string` · `number` · `integer` · `bool` · `array` · `object` · `any`;
+- `required`, `nullable` (implicit `false`);
+- `max_len` (caractere la text, elemente la liste);
+- `min`/`max` (doar la numere);
+- `enum` (doar la text).
+
+Nucleul verifică **fiecare scriere** a modulului. O înregistrare greșită e refuzată și nu se salvează nimic din lotul respectiv. Schema se schimbă doar odată cu `data_format`, printr-o migrare.
 
 ## Permisiuni (lista nucleului, v1)
 | Permisiune | Ce permite |

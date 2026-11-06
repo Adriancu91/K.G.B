@@ -6,10 +6,43 @@
   "version": "0.1.0",
   "core": ">=0.1.0, <0.2.0",
   "status": "experimental",
-  "permissions": ["storage.own"],
-  "services": ["storage", "log"],
-  "data_types": [{ "collection": "notes", "description": "notele: text, data creării și a ultimei modificări" }],
-  "events": { "emits": [], "listens": [] },
+  "permissions": [
+    "storage.own"
+  ],
+  "services": [
+    "storage",
+    "log"
+  ],
+  "data_types": [
+    {
+      "collection": "notes",
+      "description": "notele: text, data creării și a ultimei modificări",
+      "schema": {
+        "fields": {
+          "text": {
+            "type": "string",
+            "required": true,
+            "max_len": 2000
+          },
+          "created_ms": {
+            "type": "integer",
+            "required": true,
+            "min": 0
+          },
+          "updated_ms": {
+            "type": "integer",
+            "required": true,
+            "min": 0
+          }
+        },
+        "additional": false
+      }
+    }
+  ],
+  "events": {
+    "emits": [],
+    "listens": []
+  },
   "data_format": 1,
   "migrations": [],
   "on_disable": "Notele rămân salvate în spațiul de lucru și reapar când modulul este activat din nou."

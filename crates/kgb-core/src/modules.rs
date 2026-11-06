@@ -462,7 +462,13 @@ impl ModuleContext<'_> {
                     fields,
                     expected,
                 } => Write::Put {
-                    coll: self.collection(&coll)?,
+                    coll: {
+                        let physical = self.collection(&coll)?;
+                        if let Some(schema) = self.manifest.schema(&coll) {
+                            schema.check(&fields)?;
+                        }
+                        physical
+                    },
                     id,
                     fields,
                     expected,

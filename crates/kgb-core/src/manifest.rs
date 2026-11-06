@@ -12,6 +12,7 @@ use semver::{Version, VersionReq};
 use serde::{Deserialize, Serialize};
 
 use crate::error::{CoreError, CoreResult};
+use crate::schema::CollectionSchema;
 
 pub const MANIFEST_FORMAT: u32 = 1;
 
@@ -52,12 +53,15 @@ pub enum ModuleStatus {
     Disabled,
 }
 
-#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
 #[serde(deny_unknown_fields)]
 pub struct DataType {
     /// Logical collection name, unique inside the module (`[a-z0-9_]+`).
     pub collection: String,
     pub description: String,
+    /// Optional structure of the records; checked by the core on every write.
+    #[serde(default)]
+    pub schema: Option<CollectionSchema>,
 }
 
 #[derive(Clone, Debug, Default, PartialEq, Eq, Serialize, Deserialize)]
@@ -77,7 +81,7 @@ pub struct Migration {
     pub description: String,
 }
 
-#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
 #[serde(deny_unknown_fields)]
 pub struct Manifest {
     pub manifest_format: u32,
@@ -178,6 +182,10 @@ impl Manifest {
         unique(id, "permisiunea", self.permissions.iter().map(String::as_str))?;
         unique(id, "serviciul", self.services.iter().map(String::as_str))?;
         for d in &self.data_types {
+            if let Some(sc) = &d.schema {
+                sc.validate_self()
+                    .map_err(|e| bad(id, format!("schema colecției {}: {e}", d.collection)))?;
+            }
             if !is_collection_name(&d.collection) {
                 return Err(bad(
                     id,
@@ -233,6 +241,15 @@ impl Manifest {
             (Ok(req), Ok(v)) => req.matches(&v),
             _ => false,
         }
+    }
+
+    /// Schema of a logical collection, if declared.
+    pub fn schema(&self, logical: &str) -> Option<&CollectionSchema> {
+        self.data_types
+            .iter()
+            .find(|d| d.collection == logical)?
+            .schema
+            .as_ref()
     }
 
     /// Store collection that backs a logical collection of this module.
