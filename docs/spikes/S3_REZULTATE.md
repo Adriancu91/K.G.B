@@ -46,3 +46,12 @@
 
 ## Dependențe
 Vezi `LICENSES.md`, secțiunea S3. 249 crates + 27 pachete npm. Niciun motor DB. **MPL-2.0 de confirmat** (cssparser, selectors, dtoa-short, option-ext în executabil; lightningcss doar la build).
+
+## 0.8 — Prototip UI minimal (schiță de spațiu de lucru)
+
+![Prototipul UI, tema întunecată, după repornire](prototip-ui-0.8.jpg)
+
+- **Catalog de module în stânga, cu starea reală a fiecăruia.** Doar două sunt marcate „prototip” (verde), pentru că funcționează: *Note de test* și *Stare stocare*. Toate celelalte afișează eticheta etapei (ex. „Etapa 3”), iar pagina lor spune explicit **„Neimplementat”**. Nu există butoane sau date false.
+- **Configurarea spațiului de lucru se salvează în motorul S1**, nu în localStorage: tema (sistem / luminoasă / întunecată) e o înregistrare în colecția `settings`. **Verificat:** după alegerea temei întunecate și o oprire forțată a aplicației, la repornire tema e păstrată.
+- Rețeaua (S2) **nu** e legată de această fereastră. Modulul „Dispozitive și sincronizare” spune asta direct.
+- Ce lipsește față de Master Plan §5 (de făcut în Etapa 1): panouri redimensionabile și mutabile, drag-and-drop, profiluri, comenzi rapide, notificări.

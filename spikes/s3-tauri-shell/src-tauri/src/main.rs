@@ -105,6 +105,32 @@ fn delete_note(app: State<App>, id: Uuid, version: u64) -> CmdResult<()> {
     Ok(())
 }
 
+/// Workspace configuration lives in the store like any other record (no localStorage).
+const SETTINGS: &str = "settings";
+const WORKSPACE_ID: Uuid = Uuid::from_u128(1);
+const THEMES: [&str; 3] = ["system", "light", "dark"];
+
+#[tauri::command]
+fn get_theme(app: State<App>) -> CmdResult<String> {
+    let store = app.store.lock().map_err(err)?;
+    let rec = store.get(SETTINGS, WORKSPACE_ID).map_err(err)?;
+    Ok(rec
+        .and_then(|r| r.fields.get("theme").and_then(Value::as_str).map(str::to_string))
+        .unwrap_or_else(|| "system".into()))
+}
+
+#[tauri::command]
+fn set_theme(app: State<App>, theme: String) -> CmdResult<()> {
+    if !THEMES.contains(&theme.as_str()) {
+        return Err(format!("temă necunoscută: {theme}"));
+    }
+    let mut fields = Fields::new();
+    fields.insert("theme".into(), theme.into());
+    let mut store = app.store.lock().map_err(err)?;
+    store.write(vec![Write::put(SETTINGS, WORKSPACE_ID, fields)]).map_err(err)?;
+    Ok(())
+}
+
 #[cfg(windows)]
 fn working_set_mb() -> f64 {
     use windows_sys::Win32::System::ProcessStatus::{K32GetProcessMemoryInfo, PROCESS_MEMORY_COUNTERS};
@@ -137,7 +163,14 @@ fn main() {
             });
             Ok(())
         })
-        .invoke_handler(tauri::generate_handler![status, list_notes, add_note, delete_note])
+        .invoke_handler(tauri::generate_handler![
+            status,
+            list_notes,
+            add_note,
+            delete_note,
+            get_theme,
+            set_theme
+        ])
         .run(tauri::generate_context!())
         .expect("error while running the S3 prototype");
 }

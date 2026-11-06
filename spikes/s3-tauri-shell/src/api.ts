@@ -23,3 +23,7 @@ export const status = () => invoke<Status>("status");
 export const listNotes = () => invoke<Note[]>("list_notes");
 export const addNote = (text: string) => invoke<Note>("add_note", { text });
 export const deleteNote = (id: string, version: number) => invoke<void>("delete_note", { id, version });
+
+export type Theme = "system" | "light" | "dark";
+export const getTheme = () => invoke<Theme>("get_theme");
+export const setTheme = (theme: Theme) => invoke<void>("set_theme", { theme });
