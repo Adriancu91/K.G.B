@@ -26,6 +26,21 @@ pub enum CoreError {
     },
     NotAWorkspace(PathBuf),
     AlreadyExists(PathBuf),
+    ModuleNotFound(String),
+    /// The module is shipped but withdrawn (status `disabled`).
+    ModuleUnavailable(String),
+    ModuleIncompatible {
+        module: String,
+        requires: String,
+        core: String,
+    },
+    ModuleNotEnabled(String),
+    /// A module tried something it was not granted. Always audited.
+    PermissionDenied {
+        module: String,
+        permission: String,
+        detail: String,
+    },
     /// A value failed validation (settings, manifests, user input).
     Invalid {
         what: String,
@@ -79,6 +94,20 @@ impl fmt::Display for CoreError {
             ),
             CoreError::NotAWorkspace(p) => write!(f, "{} nu este un spațiu de lucru K.G.B.", p.display()),
             CoreError::AlreadyExists(p) => write!(f, "{} există deja", p.display()),
+            CoreError::ModuleNotFound(m) => write!(f, "modulul {m} nu există"),
+            CoreError::ModuleUnavailable(m) => write!(f, "modulul {m} a fost retras și nu poate fi activat"),
+            CoreError::ModuleIncompatible { module, requires, core } => write!(
+                f,
+                "modulul {module} cere nucleul {requires}, dar nucleul instalat este {core}"
+            ),
+            CoreError::ModuleNotEnabled(m) => write!(f, "modulul {m} nu este activat"),
+            CoreError::PermissionDenied {
+                module,
+                permission,
+                detail,
+            } => {
+                write!(f, "modulul {module} nu are permisiunea {permission}: {detail}")
+            }
             CoreError::Invalid { what, detail } => write!(f, "{what}: {detail}"),
         }
     }

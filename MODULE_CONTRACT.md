@@ -1,22 +1,49 @@
 # K.G.B. — Contractul modulelor
 
-**Statut:** CIORNĂ. Se finalizează în Etapa 1. Conținutul minim obligatoriu vine din Metaprompt §9 și Master Plan §4.2.
+**Statut:** v1, implementat în Etapa 1 (`crates/kgb-core/src/manifest.rs`, `modules.rs`). Sursa: Metaprompt §9, Master Plan §4.1–4.2, decizia D-024.
 
-## Manifest (câmpuri obligatorii)
-- ID unic și nume
-- versiune
-- versiunea minimă/maximă compatibilă a nucleului
-- permisiuni solicitate
-- servicii API ale nucleului folosite
-- tipuri de date deținute
-- evenimente emise și ascultate
-- migrații de format
-- status: `stable` | `beta` | `experimental` | `disabled`
+## Cum există un modul
+- Modulele din Etapele 1–5 sunt **incluse în aplicație** (D-024). Nu se încarcă cod străin la rulare.
+- Fiecare modul are un crate Rust propriu (logica), interfața în `app/src/modules/<id>/` și un `manifest.json` inclus în crate.
+- Codul implementează trăsătura `Module`: `manifest()`, `handle(ctx, comandă, argumente)` și, la nevoie, `migrate(ctx, de_la)`.
 
-## Reguli
-- Un modul nu accesează direct datele interne ale altui modul.
-- Un modul nu ocolește verificarea permisiunilor și nu își face propriul sistem de identitate, sincronizare sau jurnal.
-- Dezactivarea unui modul nu îi șterge datele.
-- Un modul `experimental` nu apare ca funcțional pentru utilizatorul final.
+## Manifest (`manifest_format: 1`)
+| Câmp | Obligatoriu | Regulă |
+|---|---|---|
+| `id` | da | stil domeniu invers, litere mici: `kgb.notes` |
+| `name`, `description` | da | text pentru utilizator |
+| `version` | da | semver (`0.1.0`) |
+| `core` | da | versiunile de nucleu compatibile, cerință semver (`>=0.1.0, <0.2.0`) |
+| `status` | da | `stable` · `beta` · `experimental` · `disabled` |
+| `permissions` | nu | doar din lista nucleului (mai jos) |
+| `services` | nu | `storage`, `settings`, `identity`, `log`; o permisiune cere serviciul ei |
+| `data_types` | nu | colecții logice `[a-z0-9_]+`; cer `storage.own` |
+| `events.emits` / `events.listens` | nu | evenimentele emise încep cu `<id>.` |
+| `data_format` | da | formatul curent al datelor, de la 1 |
+| `migrations` | da dacă `data_format > 1` | lanț fără goluri: 1→2, 2→3, … |
+| `on_disable` | da | ce se întâmplă cu datele la dezactivare, pentru utilizator |
 
-Formatul exact al manifestului (fișier, schemă, validare) — de definit în Etapa 1.
+Validarea e strictă: orice câmp necunoscut, permisiune necunoscută sau valoare greșită face manifestul să fie refuzat.
+
+## Permisiuni (lista nucleului, v1)
+| Permisiune | Ce permite |
+|---|---|
+| `storage.own` | citire/scriere doar în colecțiile proprii declarate (`mod.<id>.<colecție>`) |
+| `settings.read` | citirea setărilor spațiului de lucru |
+| `identity.read` | numele proprietarului și amprenta dispozitivului |
+
+În listă intră doar permisiuni pe care nucleul le verifică efectiv. Una nouă se adaugă împreună cu verificarea ei.
+
+## Reguli aplicate de nucleu
+- **Activare:** utilizatorul vede permisiunile cerute și le acordă pe toate sau deloc. Un modul incompatibil cu nucleul sau retras (`disabled`) nu poate fi activat.
+- **Migrații:** se rulează în ordine, o singură dată, înainte de activare. Date mai noi decât modulul → refuz (aplicația veche nu strică datele noi).
+- **Dezactivare:** datele rămân neatinse. La reactivare, modulul le regăsește.
+- **Izolare:** un modul ajunge la date doar prin `ModuleContext`, care verifică permisiunea la fiecare operație și limitează stocarea la colecțiile declarate. Două module cu aceeași colecție logică au colecții fizice diferite.
+- **Audit:** fiecare refuz, activare, dezactivare și migrare se scrie în `core.audit`.
+- **Loguri:** modulele folosesc logul nucleului (`ctx.log`), nu un mecanism propriu.
+- **Catalog:** modulele `experimental` apar doar în versiunile de dinainte de lansare, marcate „experimental”. Modulele etapelor viitoare apar ca „Neimplementat — Etapa N” și nu pot fi activate.
+
+## Ce nu acoperă încă v1
+- Evenimentele dintre module sunt declarate, dar **nu există încă magistrala de evenimente**: vine când un al doilea modul are nevoie de ea, cel mai devreme în Etapa 4.
+- Exportul datelor unui modul: Etapa 2, odată cu backup/restore în aplicație.
+- Permisiunile cu expirare și rolurile pentru alți utilizatori: Etapa 6.

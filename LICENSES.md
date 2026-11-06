@@ -65,6 +65,7 @@ Verificat automat de `cargo-deny` în CI pe workspace-ul rădăcină (`Cargo.tom
 | `ed25519-dalek` 3.0.0 (+ `curve25519-dalek`, `sha2`) | BSD-3-Clause / MIT OR Apache-2.0 | cheia dispozitivului; aceeași versiune ca în iroh | 1.6 |
 | `getrandom` 0.4.3 | MIT OR Apache-2.0 | numere aleatoare din sistemul de operare | 1.6 |
 | `zeroize` 1.9.1 | Apache-2.0 OR MIT | ștergerea cheii din memorie | 1.6 |
+| `semver` 1 | MIT OR Apache-2.0 | versiunile modulelor și compatibilitatea cu nucleul | 1.7 |
 | `windows-sys` (Cryptography) | MIT OR Apache-2.0 | Windows DPAPI pentru sigilarea cheii (D-025) | 1.6 |
 
 Restul dependențelor (Tauri, React, Vite, serde, uuid, blake3) sunt cele din S1 și S3, deja în acest registru.

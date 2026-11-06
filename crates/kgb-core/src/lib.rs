@@ -9,6 +9,8 @@ pub const CORE_VERSION: &str = env!("CARGO_PKG_VERSION");
 pub mod error;
 pub mod identity;
 pub mod log;
+pub mod manifest;
+pub mod modules;
 pub mod settings;
 pub mod workspace;
 

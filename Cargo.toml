@@ -23,6 +23,7 @@ tracing = "0.1"
 ed25519-dalek = "3.0.0"
 getrandom = "0.4.3"
 zeroize = "1.9.1"
+semver = "1"
 tracing-subscriber = { version = "0.3", default-features = false, features = ["registry", "std"] }
 tempfile = "3.27.0"
 

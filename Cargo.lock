@@ -1798,6 +1798,7 @@ dependencies = [
  "ed25519-dalek",
  "getrandom 0.4.3",
  "kgb-store",
+ "semver",
  "serde",
  "serde_json",
  "tempfile",
