@@ -33,7 +33,7 @@ Interdicții permanente: fără baze de date (D-005, D-018), fără schimbări d
 - [x] 1.1 Workspace Cargo + CI pentru codul de produs
 - [x] 1.2 `kgb-store` preluat din S1 (20 teste trec)
 - [x] 1.3 Loguri și diagnosticare
-- [ ] 1.4 Workspace (folder, manifest, o singură instanță, refuz cloud)
+- [x] 1.4 Workspace (folder, manifest, o singură instanță, refuz cloud)
 - [ ] 1.5 Setări tipizate și versionate
 - [ ] 1.6 Identitate locală (proprietar + cheie dispozitiv DPAPI)
 - [ ] 1.7 Module manager + contract
