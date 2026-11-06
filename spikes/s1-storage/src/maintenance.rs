@@ -143,7 +143,7 @@ impl Store {
         let copy = |rel: &str| -> Result<()> {
             let to = partial.join(rel);
             fs::copy(self.dir.join(rel), &to)?;
-            File::open(&to)?.sync_all()?;
+            fsutil::sync_path(&to)?;
             Ok(())
         };
         copy("MANIFEST")?;
@@ -295,7 +295,7 @@ pub fn repair(dir: &Path) -> Result<RepairReport> {
         if good.len() != buf.len() {
             let saved = q.join(format!("{seg:08}-original-{}.kjl", now_ms()));
             fs::copy(&path, &saved)?;
-            File::open(&saved)?.sync_all()?;
+            fsutil::sync_path(&saved)?;
             fsutil::write_atomic(&path, &good)?;
             report.bytes_removed += (buf.len() - good.len()) as u64;
             report.segments_rewritten.push(seg);

@@ -124,8 +124,14 @@ pub fn copy_tree(from: &Path, to: &Path) -> io::Result<()> {
             copy_tree(&entry.path(), &target)?;
         } else {
             fs::copy(entry.path(), &target)?;
-            File::open(&target)?.sync_all()?;
+            sync_path(&target)?;
         }
     }
     Ok(())
+}
+
+/// Flush an existing file to disk. On Windows FlushFileBuffers needs write access,
+/// so a read-only handle (`File::open`) fails with "Access is denied".
+pub fn sync_path(path: &Path) -> io::Result<()> {
+    std::fs::OpenOptions::new().write(true).open(path)?.sync_all()
 }
