@@ -70,6 +70,9 @@ Deciziile DECIS se schimbă doar cu aprobarea explicită a proprietarului (Maste
   (c) compilare și teste în WSL2 (Linux). Merge pentru logica de stocare, dar nu testează comportamentul Windows (MoveFileExW, Defender) și nu poate produce aplicația Tauri pentru Windows.
 - **Recomandare:** (b) dacă există un al doilea PC/VM; altfel (a). (c) doar ca soluție temporară pentru S1.
 - **Notă:** Claude nu modifică setări de securitate; schimbarea o face proprietarul.
+- **Actualizare (cercetare 6 nov. 2026, `docs/spikes/S2_RETEA_MATRICE.md`):** din aprilie 2026, SAC se poate reporni fără reinstalare (dacă datele de diagnostic opționale sunt pornite), deci varianta (a) nu mai e ireversibilă.
+- **Soluție provizorie folosită:** build și teste pe GitHub Actions (Windows curat) în repo-ul privat `Adriancu91/K.G.B`. Necesită permisiunea `workflow` pentru `gh`.
+- **Implicație pentru produs:** semnare cu Azure Artifact Signing prin firma proprietarului (persoanele fizice din RO nu sunt eligibile) — decizie de luat înainte de testele pe PC-uri curate.
 
 ### D-019 — Acces la proiectul existent `workspace/` (Cyber Office Studio)
 - **Data:** 6 nov. 2026 · **Statut:** DECIS · **Aprobat de:** proprietar
