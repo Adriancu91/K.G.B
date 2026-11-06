@@ -18,3 +18,4 @@ Scală: probabilitate / impact = Mică · Medie · Mare · Critic. Actualizat: 6
 | R12 | Memoria WebView2 (~130 MB din ~156 MB) pe PC-uri cu 8 GB | Medie | Mediu | Măsurat în S3; de urmărit la fiecare modul nou | Deschis |
 | R13 | Conexiuni „pe jumătate deschise” după întreruperi (QUIC ~30 s) produc curse la reluare | Medie | Mare | Găsit și rezolvat în S2 (transferul nou îl oprește pe cel vechi); de păstrat în designul sincronizării | Redus |
 | R14 | Biblioteci MPL-2.0 aduse de Tauri și iroh | Sigur | Mic | D-021: acceptare cu regula „nu le modificăm” | Acceptat (D-021 DECIS) |
+| R15 | Eroare trecătoare de compilare pe laptop („invalid metadata files” / „only metadata stub”) la build-uri paralele mari, probabil din cauza scanării Defender | Medie | Mic | A doua rulare trece fără schimbări; CI pe Windows curat nu o are. De urmărit; nu se exclud foldere din Defender fără aprobare | Deschis |

@@ -54,3 +54,13 @@ Verificat 6 nov. 2026: `cargo metadata` (267 crates, target `x86_64-pc-windows-m
 | webpki-roots | 1.0.11 | CDLA-Permissive-2.0 | lista certificatelor rădăcină (date, licență permisivă) |
 
 **MPL-2.0 — acceptat (D-021):** `attohttpc` 0.30.1 (client HTTP mic, prin `portmapper` → `igd-next`, pentru UPnP pe router). Aceeași situație ca la Tauri (D-021).
+
+## Cod de produs (Etapa 1): `crates/kgb-store`, `crates/kgb-core`, `app/`
+Verificat automat de `cargo-deny` în CI pe workspace-ul rădăcină (`Cargo.toml`): licențe, crate-uri DB interzise (D-018), vulnerabilități.
+
+| Dependență nouă | Licență | Rol | Pas |
+|---|---|---|---|
+| `kgb-store` | proprie (Kronos) | motorul de stocare, preluat din spike-ul S1 | 1.2 |
+| `tracing`, `tracing-subscriber` (doar `registry`, `std`) | MIT | evenimente de log; scrierea în fișier e proprie (D-026) | 1.3 |
+
+Restul dependențelor (Tauri, React, Vite, serde, uuid, blake3) sunt cele din S1 și S3, deja în acest registru.
