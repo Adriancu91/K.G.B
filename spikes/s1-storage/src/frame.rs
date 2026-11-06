@@ -77,16 +77,11 @@ pub fn decode_at(buf: &[u8], off: usize) -> Decoded<'_> {
 pub fn find_next_valid(buf: &[u8], from: usize) -> Option<usize> {
     let mut pos = from;
     while pos + HEADER <= buf.len() {
-        match buf[pos..].windows(4).position(|w| w == MAGIC) {
-            None => return None,
-            Some(rel) => {
-                let cand = pos + rel;
-                if let Decoded::Frame { .. } = decode_at(buf, cand) {
-                    return Some(cand);
-                }
-                pos = cand + 1;
-            }
+        let cand = pos + buf[pos..].windows(4).position(|w| w == MAGIC)?;
+        if let Decoded::Frame { .. } = decode_at(buf, cand) {
+            return Some(cand);
         }
+        pos = cand + 1;
     }
     None
 }

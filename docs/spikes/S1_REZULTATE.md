@@ -93,7 +93,7 @@ Primul build a arătat că `FlushFileBuffers` cere un handle cu drept de scriere
 - După compactare, un dispozitiv rămas mult în urmă are nevoie de resincronizare completă (eroare explicită, neimplementată încă).
 - Un conflict rezolvat pe un PC rămâne marcat ca nerezolvat pe celălalt până la rezolvarea acolo (ID identic pe ambele). De proiectat în Etapa 6.
 - Identitatea dispozitivului e în MANIFEST, deci o restaurare pe alt PC clonează identitatea. În Etapa 1 identitatea se mută separat, cu chei protejate prin DPAPI.
-- Clippy: 3 avertismente stilistice minore, nerezolvate.
+- ~~Clippy: 3 avertismente~~ → corectate (6 nov. 2026); clippy fără avertismente, 20/20 teste trec.
 
 ## Dependențe (toate cu licențe permisive, niciun motor DB)
 serde, serde_json, crc32fast, uuid, blake3, windows-sys (+ tranzitive) — MIT / Apache-2.0 / CC0 / Unlicense / Unicode-3.0. Detaliu în `LICENSES.md`.

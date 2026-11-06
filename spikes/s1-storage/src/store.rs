@@ -225,8 +225,10 @@ impl Store {
             Err(fs::TryLockError::WouldBlock) => return Err(Error::Locked(dir)),
             Err(fs::TryLockError::Error(e)) => return Err(e.into()),
         }
-        let mut report = RecoveryReport::default();
-        report.quarantined_tmp = quarantine_tmp_files(&dir)?;
+        let report = RecoveryReport {
+            quarantined_tmp: quarantine_tmp_files(&dir)?,
+            ..Default::default()
+        };
         let manifest = load_or_init_manifest(&dir)?;
         let mut store = Store {
             dir,

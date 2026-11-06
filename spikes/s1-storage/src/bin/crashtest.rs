@@ -36,7 +36,7 @@ fn writer(dir: &Path) {
         .max()
         .map_or(1, |m| m + 1);
     let out = std::io::stdout();
-    for txn in start.. {
+    for txn in start..=u64::MAX {
         let pad = "x".repeat(400);
         let batch = (0..PER_TXN)
             .map(|i| {
