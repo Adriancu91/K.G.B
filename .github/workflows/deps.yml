@@ -30,4 +30,3 @@ jobs:
           manifest-path: ${{ matrix.manifest }}
           command: check
           arguments: --all-features
-          command-arguments: --config ${{ github.workspace }}/deny.toml
