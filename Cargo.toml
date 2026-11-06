@@ -17,9 +17,12 @@ blake3 = { version = "1.8.7", features = ["pure"] }
 crc32fast = "1.5.4"
 serde = { version = "1.0.229", features = ["derive"] }
 serde_json = { version = "1.0.154", features = ["raw_value"] }
-uuid = { version = "1.29.0", features = ["v4", "v7", "serde"] }
+uuid = { version = "1.29.0", features = ["v4", "v5", "v7", "serde"] }
 windows-sys = "0.61.2"
 tracing = "0.1"
+ed25519-dalek = "3.0.0"
+getrandom = "0.4.3"
+zeroize = "1.9.1"
 tracing-subscriber = { version = "0.3", default-features = false, features = ["registry", "std"] }
 tempfile = "3.27.0"
 

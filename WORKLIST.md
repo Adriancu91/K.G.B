@@ -35,7 +35,7 @@ Interdicții permanente: fără baze de date (D-005, D-018), fără schimbări d
 - [x] 1.3 Loguri și diagnosticare
 - [x] 1.4 Workspace (folder, manifest, o singură instanță, refuz cloud)
 - [x] 1.5 Setări tipizate și versionate
-- [ ] 1.6 Identitate locală (proprietar + cheie dispozitiv DPAPI)
+- [x] 1.6 Identitate locală (proprietar + cheie dispozitiv DPAPI)
 - [ ] 1.7 Module manager + contract
 - [ ] 1.8 Permission framework + audit
 - [ ] 1.9 Modul demonstrativ „Note” prin contract
