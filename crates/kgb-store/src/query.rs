@@ -312,7 +312,11 @@ impl Store {
 
         if let Some(s) = &q.sort {
             records.sort_by(|a, b| {
-                sort_order(a.fields.get(&s.field), b.fields.get(&s.field), s.desc).then(a.id.cmp(&b.id))
+                sort_order(a.fields.get(&s.field), b.fields.get(&s.field), s.desc).then(if s.desc {
+                    b.id.cmp(&a.id)
+                } else {
+                    a.id.cmp(&b.id)
+                })
             });
         } else {
             records.sort_by_key(|r| r.id);

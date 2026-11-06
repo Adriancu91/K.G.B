@@ -17,7 +17,7 @@
 | `status` | da | `stable` · `beta` · `experimental` · `disabled` |
 | `permissions` | nu | doar din lista nucleului (mai jos) |
 | `services` | nu | `storage`, `settings`, `identity`, `log`; o permisiune cere serviciul ei |
-| `data_types` | nu | colecții logice `[a-z0-9_]+`; cer `storage.own`; fiecare poate avea o `schema` (mai jos) |
+| `data_types` | nu | colecții logice `[a-z0-9_]+`; cer `storage.own`; fiecare poate avea o `schema` (mai jos) și `indexes` (câmpuri indexate, din schemă dacă există) |
 | `events.emits` / `events.listens` | nu | evenimentele emise încep cu `<id>.` |
 | `data_format` | da | formatul curent al datelor, de la 1 |
 | `migrations` | da dacă `data_format > 1` | lanț fără goluri: 1→2, 2→3, … |
@@ -34,6 +34,10 @@ Validarea e strictă: orice câmp necunoscut, permisiune necunoscută sau valoar
 - `enum` (doar la text).
 
 Nucleul verifică **fiecare scriere** a modulului. O înregistrare greșită e refuzată și nu se salvează nimic din lotul respectiv. Schema se schimbă doar odată cu `data_format`, printr-o migrare.
+
+## Indexuri și interogări (Etapa 2)
+- `"indexes": ["câmp", ...]`: nucleul creează indexurile la activare. Motorul le păstrează și le reconstruiește la fiecare deschidere, iar un index pierdut nu pierde date.
+- `ctx.query(colecție, Query)`: filtre (`eq`, `ne`, `lt`, `le`, `gt`, `ge`, `in`, `contains`, `exists`, `and`, `or`, `not`), sortare, `offset`/`limit`. O egalitate pe un câmp indexat, cu valoare text sau adevărat/fals, folosește automat indexul.
 
 ## Permisiuni (lista nucleului, v1)
 | Permisiune | Ce permite |

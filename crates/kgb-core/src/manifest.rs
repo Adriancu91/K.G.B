@@ -62,6 +62,10 @@ pub struct DataType {
     /// Optional structure of the records; checked by the core on every write.
     #[serde(default)]
     pub schema: Option<CollectionSchema>,
+    /// Fields with an equality index, built and kept up to date by the core.
+    /// Queries use them automatically.
+    #[serde(default)]
+    pub indexes: Vec<String>,
 }
 
 #[derive(Clone, Debug, Default, PartialEq, Eq, Serialize, Deserialize)]
@@ -182,6 +186,20 @@ impl Manifest {
         unique(id, "permisiunea", self.permissions.iter().map(String::as_str))?;
         unique(id, "serviciul", self.services.iter().map(String::as_str))?;
         for d in &self.data_types {
+            unique(id, "indexul", d.indexes.iter().map(String::as_str))?;
+            for f in &d.indexes {
+                if f.is_empty() || f.len() > 64 {
+                    return Err(bad(id, format!("index invalid „{f}” în colecția {}", d.collection)));
+                }
+                if let Some(sc) = &d.schema
+                    && !sc.fields.contains_key(f)
+                {
+                    return Err(bad(
+                        id,
+                        format!("indexul „{f}” nu este un câmp din schema colecției {}", d.collection),
+                    ));
+                }
+            }
             if let Some(sc) = &d.schema {
                 sc.validate_self()
                     .map_err(|e| bad(id, format!("schema colecției {}: {e}", d.collection)))?;

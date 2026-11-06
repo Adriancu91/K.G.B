@@ -11,7 +11,7 @@
 
 use std::collections::BTreeSet;
 
-use kgb_store::{Fields, RecordState, Write};
+use kgb_store::{Fields, Query, QueryResult, RecordState, Write};
 use serde::Serialize;
 use serde_json::Value;
 use uuid::Uuid;
@@ -338,6 +338,14 @@ impl ModuleManager {
             st.version = self.state(ws, id)?.version;
             audit(ws, id, "migrate", "ok", &format!("{from} → {}", from + 1))?;
         }
+        // Declared indexes: idempotent, persisted by the store, rebuilt on open.
+        for d in &mf.data_types {
+            if let Some(physical) = mf.store_collection(&d.collection) {
+                for field in &d.indexes {
+                    ws.store_mut().create_index(&physical, field)?;
+                }
+            }
+        }
         st.enabled = true;
         self.write_state(ws, id, &st, "activat")?;
         audit(
@@ -443,6 +451,13 @@ impl ModuleContext<'_> {
     pub fn scan(&mut self, coll: &str, pred: impl FnMut(&RecordState) -> bool) -> CoreResult<Vec<RecordState>> {
         let c = self.collection(coll)?;
         Ok(self.ws.store().scan(&c, pred)?)
+    }
+
+    /// Structured query on one of the module's collections. Declared indexes
+    /// are used automatically.
+    pub fn query(&mut self, coll: &str, q: &Query) -> CoreResult<QueryResult> {
+        let c = self.collection(coll)?;
+        Ok(self.ws.store().query(&c, q)?)
     }
 
     pub fn count(&mut self, coll: &str) -> CoreResult<usize> {

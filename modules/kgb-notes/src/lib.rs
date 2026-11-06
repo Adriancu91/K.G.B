@@ -15,7 +15,7 @@ use kgb_core::manifest::Manifest;
 use kgb_core::modules::{Module, ModuleContext};
 use kgb_core::workspace::now_ms;
 use kgb_core::{CoreError, CoreResult};
-use kgb_store::{Fields, RecordState, Write};
+use kgb_store::{Fields, Query, RecordState, Sort, Write};
 use serde::{Deserialize, Serialize};
 use serde_json::Value;
 use uuid::Uuid;
@@ -135,8 +135,14 @@ impl Module for Notes {
     fn handle(&self, ctx: &mut ModuleContext<'_>, command: &str, a: Value) -> CoreResult<Value> {
         match command {
             "list" => {
-                let mut notes: Vec<Note> = ctx.scan(NOTES, |r| !r.deleted)?.iter().map(Note::from_record).collect();
-                notes.sort_by(|x, y| y.created_ms.cmp(&x.created_ms).then(y.id.cmp(&x.id)));
+                let q = Query {
+                    sort: Some(Sort {
+                        field: "created_ms".into(),
+                        desc: true,
+                    }),
+                    ..Query::default()
+                };
+                let notes: Vec<Note> = ctx.query(NOTES, &q)?.records.iter().map(Note::from_record).collect();
                 to_json(&notes)
             }
             "add" => {
