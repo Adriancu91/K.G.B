@@ -80,6 +80,6 @@ Deciziile DECIS se schimbă doar cu aprobarea explicită a proprietarului (Maste
 
 ### D-021 — Biblioteci MPL-2.0 aduse de Tauri
 - **Data:** 6 nov. 2026 · **Statut:** DE VALIDAT — cere confirmarea proprietarului
-- **Context:** Tauri 2 include tranzitiv `cssparser`, `selectors`, `dtoa-short`, `option-ext` (MPL-2.0). Vite folosește `lightningcss` (MPL-2.0), doar la build.
+- **Context:** Tauri 2 include tranzitiv `cssparser`, `selectors`, `dtoa-short`, `option-ext` (MPL-2.0). Vite folosește `lightningcss` (MPL-2.0), doar la build. iroh include `attohttpc` (MPL-2.0) pentru UPnP.
 - **Ce înseamnă:** MPL-2.0 e copyleft la nivel de fișier. Doar modificările *acelor fișiere* trebuie publicate; codul K.G.B. rămâne închis. Se păstrează notice-urile.
 - **Recomandare:** acceptat, cu regula „nu modificăm aceste biblioteci”. Alternativa (fără Tauri) ar schimba stack-ul aprobat.

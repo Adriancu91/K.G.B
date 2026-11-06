@@ -23,6 +23,7 @@ jobs:
         manifest:
           - spikes/s1-storage/Cargo.toml
           - spikes/s3-tauri-shell/src-tauri/Cargo.toml
+          - spikes/s2-network/Cargo.toml
     steps:
       - uses: actions/checkout@v4
       - uses: EmbarkStudios/cargo-deny-action@v2

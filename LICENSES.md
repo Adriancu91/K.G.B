@@ -39,3 +39,18 @@ Verificat 6 nov. 2026: `cargo metadata` (249 crates, target `x86_64-pc-windows-m
 - În executabil, tranzitiv prin `tauri-utils`: `cssparser` 0.37.0, `selectors` 0.38.0, `dtoa-short` 0.3.5; plus `option-ext` 0.2.0 (prin `dirs`).
 - Doar unealtă de build, nu se livrează: `lightningcss` 1.33.0 (prin vite).
 - Ce cere MPL-2.0: dacă modificăm *fișierele acelor biblioteci*, publicăm modificările lor; codul K.G.B. rămâne închis. Folosire nemodificată = doar păstrarea notice-urilor. Este licența standard a ecosistemului Tauri. **Recomandare: acceptat, fără modificări ale acestor biblioteci.**
+
+## spikes/s2-network (prototip, nu se distribuie)
+Verificat 6 nov. 2026: `cargo metadata` (267 crates, target `x86_64-pc-windows-msvc`). **Niciun motor DB.** Nicio licență GPL/AGPL. Rulat și în CI cu `cargo-deny`.
+
+| Dependență | Versiune | Licență | Rol |
+|---|---|---|---|
+| iroh / iroh-base / iroh-relay (client) | 1.4.1 | MIT OR Apache-2.0 | conexiuni P2P QUIC, NAT traversal, relay |
+| noq | 1.4.0 | MIT OR Apache-2.0 | implementarea QUIC folosită de iroh |
+| rustls / ring | 0.23.46 / 0.17.14 | Apache-2.0 OR ISC OR MIT / Apache-2.0 AND ISC | TLS 1.3, criptografie |
+| tokio | 1.54.1 | MIT | runtime asincron |
+| portmapper | 0.19.3 | MIT OR Apache-2.0 | UPnP / NAT-PMP / PCP |
+| anyhow, serde, serde_json, blake3, data-encoding, rand | — | MIT / Apache-2.0 / CC0 | utilitare |
+| webpki-roots | 1.0.11 | CDLA-Permissive-2.0 | lista certificatelor rădăcină (date, licență permisivă) |
+
+**De confirmat de proprietar — MPL-2.0:** `attohttpc` 0.30.1 (client HTTP mic, prin `portmapper` → `igd-next`, pentru UPnP pe router). Aceeași situație ca la Tauri (D-021).

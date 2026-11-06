@@ -1,0 +1,16 @@
+[package]
+name = "kgb-net-spike"
+version = "0.1.0"
+edition = "2024"
+publish = false
+description = "K.G.B. Etapa 0 spike S2: peer-to-peer connectivity with iroh. PROTOTYPE."
+
+[dependencies]
+iroh = "1.4.1"
+tokio = { version = "1", features = ["macros", "rt-multi-thread", "fs", "io-util", "time", "signal"] }
+anyhow = "1"
+blake3 = "1.8.7"
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+data-encoding = "2"
+rand = "0.9"

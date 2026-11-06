@@ -19,9 +19,9 @@ Interdicții permanente: fără baze de date (D-005, D-018), fără schimbări d
 - [x] S3.6 Licențe npm + cargo pentru S3 în `LICENSES.md`
 - [x] S3.7 Raport `docs/spikes/S3_REZULTATE.md`, ROADMAP 0.5
 - [x] S1.x Corectare cele 3 avertismente clippy din S1
-- [ ] 0.7 `cargo-deny` (licențe + advisories) pentru S1 și S3
-- [ ] S2.1 Spike rețea iroh: 2 procese pe același PC (pairing cu invitație, mesaj criptat, transfer fișier cu hash + reluare)
-- [ ] S2.2 Relay indisponibil → eșec clar, nu blocaj (test local)
+- [x] 0.7 `cargo-deny` (licențe + advisories) pentru S1 și S3
+- [x] S2.1 Spike rețea iroh: 2 procese pe același PC (pairing cu invitație, mesaj criptat, transfer fișier cu hash + reluare)
+- [x] S2.2 Relay indisponibil → eșec clar, nu blocaj (test local)
 - [ ] 🔒 S2.3 2 PC-uri în LAN și prin internet — cere al doilea PC
 - [ ] S2.4 Comparație Nebula (doar documentare + test local dacă nu cere driver/UAC; altfel 🔒)
 - [ ] 0.8 Prototip UI minimal marcat „prototip” (fără funcții false)
