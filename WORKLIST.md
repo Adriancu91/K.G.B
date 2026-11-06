@@ -1,4 +1,4 @@
-# K.G.B. — Listă de lucru continuu (Etapa 0)
+# K.G.B. — Listă de lucru continuu
 
 Reguli pentru fiecare pas (se aplică după FIECARE pas încheiat):
 1. Verifică: build/teste rulate, rezultat real notat (nimic „gata” fără verificare).
@@ -9,7 +9,7 @@ Reguli pentru fiecare pas (se aplică după FIECARE pas încheiat):
 
 Interdicții permanente: fără baze de date (D-005, D-018), fără schimbări de arhitectură, fără funcții incomplete prezentate drept terminate, fără modificări de setări de securitate, fără acces la alte foldere neaprobate.
 
-## Pași
+## Etapa 0 — pași
 
 - [x] S3.1 Schelet Tauri 2 + React/TS strict (`spikes/s3-tauri-shell`), icon generat
 - [x] S3.2 `npm install`, `tsc` strict, build frontend
@@ -27,3 +27,20 @@ Interdicții permanente: fără baze de date (D-005, D-018), fără schimbări d
 - [x] 0.8 Prototip UI minimal marcat „prototip” (fără funcții false)
 - [x] 0.9 Raport final Etapa 0 + recomandare stack/rețea (`docs/ETAPA0_RAPORT_FINAL.md`)
 - [x] Poartă Etapa 0: aprobată de proprietar (D-022, 6 nov. 2026)
+
+## Etapa 1 — pași (plan: `docs/ETAPA1_PLAN.md`)
+
+- [ ] 1.1 Workspace Cargo + CI pentru codul de produs
+- [ ] 1.2 `kgb-store` preluat din S1 (20 teste trec)
+- [ ] 1.3 Loguri și diagnosticare
+- [ ] 1.4 Workspace (folder, manifest, o singură instanță, refuz cloud)
+- [ ] 1.5 Setări tipizate și versionate
+- [ ] 1.6 Identitate locală (proprietar + cheie dispozitiv DPAPI)
+- [ ] 1.7 Module manager + contract
+- [ ] 1.8 Permission framework + audit
+- [ ] 1.9 Modul demonstrativ „Note” prin contract
+- [ ] 1.10 Shell UI (navigare, catalog, stare, setări, diagnostic, panouri)
+- [ ] 1.11 Installer (upgrade, dezinstalare cu păstrarea datelor)
+- [ ] 1.12 Demonstrația porții + `docs/ETAPA1_RAPORT.md`
+- [ ] 🔒 1.13 Poarta Etapei 1: aprobarea proprietarului
+- [ ] 🔒 S2.3 (din Etapa 0) 2 PC-uri, LAN + internet — înainte de Etapa 6
