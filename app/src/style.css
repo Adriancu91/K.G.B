@@ -565,3 +565,11 @@ button.thumb {
   outline: 2px solid var(--accent, #3b6fb6);
   outline-offset: -2px;
 }
+.templates li {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.templates p {
+  margin: 4px 0;
+}

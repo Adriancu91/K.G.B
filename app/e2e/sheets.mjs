@@ -126,13 +126,34 @@ try {
   check("CSV Windows-1250 cu diacritice corecte", (await cellText(p, 2, 2)) === "Ţăndărei", await cellText(p, 2, 2));
   check("CSV-ul e doar pentru citire", (await p.eval("document.querySelector('.pdf-doc').innerText")).includes("doar pentru citire"));
 
+  // Templates: use the invoice template, check its totals, edit the copy.
+  await p.click("Șabloane de calcul…");
+  await p.until("!!document.querySelector('.templates')", 10000);
+  check("biblioteca are 5 șabloane", (await p.eval("document.querySelectorAll('.templates li').length")) === 5);
+  await p.screenshot(join(shots, "04-sabloane.png"));
+  await p.eval("[...document.querySelectorAll('.templates li')].find(li => li.innerText.includes('Factură')).querySelector('button').click()");
+  await p.until("document.querySelector('.pdf-doc h2')?.textContent === 'Factură.xlsx'", 10000);
+  await p.until("document.querySelectorAll('.grid-row').length > 20", 10000);
+  await sleep(400);
+  check("factura din șablon: total de plată 1701.26", (await cellText(p, 22, 6)) === "1701.26", await cellText(p, 22, 6));
+  await clickCell(p, 11, 4);
+  await typeInto(p, "100");
+  await p.click("Previzualizează salvarea (1)");
+  await p.until("!!document.querySelector('.dialog.wide')", 10000);
+  await p.click("Salvează ca versiune nouă", ".dialog button");
+  await p.until("document.querySelector('.pdf-doc select')?.selectedOptions[0]?.textContent.startsWith('2 —')", 10000);
+  await p.until("document.querySelectorAll('.grid-row').length > 20", 10000);
+  await sleep(400);
+  check("copia recalculată: 100 × 85,50 = 8550", (await cellText(p, 11, 6)) === "8550", await cellText(p, 11, 6));
+  await p.screenshot(join(shots, "05-factura-din-sablon.png"));
+
   // A 100k-row sheet: import, scroll to the end.
   if (existsSync(join(td, "large/100k-randuri.xlsx"))) {
     const t0 = Date.now();
     check("import 100.000 de rânduri", (await tryImport(p, "large/100k-randuri.xlsx")) === "ok", `${Date.now() - t0} ms`);
     await go(p, "Acasă");
     await go(p, "Foi de calcul");
-    await p.until("document.querySelectorAll('.pdf-docs li .grow').length === 4", 10000);
+    await p.until("document.querySelectorAll('.pdf-docs li .grow').length === 5", 10000);
     const t1 = Date.now();
     await openDoc(p, "100k-randuri.xlsx");
     const openMs = Date.now() - t1;

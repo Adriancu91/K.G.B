@@ -44,6 +44,13 @@ interface Cell {
   k: string;
   f: string | null;
 }
+interface Template {
+  id: string;
+  name: string;
+  category: string;
+  description: string;
+  how: string;
+}
 interface Preview {
   summary: string;
   lost: string[];
@@ -73,6 +80,7 @@ export function SheetsPage({ onError }: { onError: (e: string | null) => void })
   const [toDelete, setToDelete] = useState<Doc | null>(null);
   const [busy, setBusy] = useState(false);
   const [notice, setNotice] = useState<string | null>(null);
+  const [library, setLibrary] = useState<{ templates: Template[]; note: string } | null>(null);
   const loading = useRef(new Set<number>());
 
   const refresh = useCallback(async () => {
@@ -95,6 +103,7 @@ export function SheetsPage({ onError }: { onError: (e: string | null) => void })
         setBlocks({});
         loading.current.clear();
         setSel(null);
+        setInput("");
         setEdits({});
         onError(null);
       } catch (e) {
@@ -199,6 +208,20 @@ export function SheetsPage({ onError }: { onError: (e: string | null) => void })
       if (last) setCurrent(last);
     });
 
+  const onTemplates = () =>
+    run(async () => {
+      setLibrary(await api.moduleCall<{ templates: Template[]; note: string }>(ID, "templates"));
+    });
+
+  const useTemplate = (t: Template) =>
+    run(async () => {
+      const r = await api.moduleCall<{ document: Doc }>(ID, "use_template", { template: t.id });
+      setLibrary(null);
+      setNotice(`Copie nouă din șablonul „${t.name}”. Originalul șablonului rămâne neschimbat.`);
+      await refresh();
+      setCurrent(r.document.id);
+    });
+
   const onPreview = () =>
     run(async () => {
       if (!info) return;
@@ -252,6 +275,9 @@ export function SheetsPage({ onError }: { onError: (e: string | null) => void })
       <div className="row wrap">
         <button className="primary" onClick={() => void onImport()} disabled={busy}>
           Importă foi de calcul…
+        </button>
+        <button onClick={() => void onTemplates()} disabled={busy}>
+          Șabloane de calcul…
         </button>
         {notice && <span className="muted grow">{notice}</span>}
       </div>
@@ -422,6 +448,34 @@ export function SheetsPage({ onError }: { onError: (e: string | null) => void })
               >
                 Salvează ca versiune nouă
               </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {library && (
+        <div className="overlay" role="presentation" onClick={() => setLibrary(null)}>
+          <div className="dialog wide" role="dialog" aria-modal="true" aria-labelledby="tpl-title" onClick={(e) => e.stopPropagation()}>
+            <h2 id="tpl-title">Șabloane de calcul</h2>
+            <p className="muted">
+              Originalele nu se modifică: „Folosește” creează o copie a ta, cu versiuni proprii. {library.note}
+            </p>
+            <ul className="list templates">
+              {library.templates.map((t) => (
+                <li key={t.id}>
+                  <div className="grow">
+                    <strong>{t.name}</strong> <span className="badge">{t.category}</span>
+                    <p>{t.description}</p>
+                    <p className="muted">{t.how}</p>
+                  </div>
+                  <button className="primary" disabled={busy} onClick={() => void useTemplate(t)}>
+                    Folosește
+                  </button>
+                </li>
+              ))}
+            </ul>
+            <div className="dialog-actions">
+              <button onClick={() => setLibrary(null)}>Închide</button>
             </div>
           </div>
         </div>

@@ -70,3 +70,4 @@ Pragurile de performanță sunt PROPUSE în ETAPA0_PLAN.md §3.2 și devin ofici
   - pierderile (grafice) anunțate și confirmate, din corpusul extern, dacă există;
   - derularea pe 100.000 de rânduri, dacă fișierul mare există.
 - `node app/e2e/sheets.mjs <kgb-app.exe> <folder-capturi>`: modulul Foi de calcul în fereastra reală.
+- `cargo test -p kgb-sheets --test templates` (pasul 3.7) are 7 teste. Fiecare șablon e comparat cu valori calculate independent în test; se mai verifică faptul că o copie editată nu schimbă șablonul.

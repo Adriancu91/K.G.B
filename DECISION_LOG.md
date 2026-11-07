@@ -222,3 +222,11 @@ Deciziile DECIS se schimbă doar cu aprobarea explicită a proprietarului (Maste
   - Altfel își păstrează valoarea veche și e listată în previzualizare ca „nu poate fi recalculată sigur”.
   - O formulă scrisă de utilizator primește valoarea calculată de K.G.B.
 - **Confirmare:** salvarea cu pierderi (grafice, imagini) sau cu formule nesigure cere confirmarea explicită a utilizatorului. Versiunile vechi rămân.
+
+### D-036 — Șabloanele originale sunt doar de citire (aplicată)
+- **Data:** 7 nov. 2026 · **Statut:** DECIS, aplicat în pasul 3.7 (Master Plan §6.3).
+- **Ce s-a făcut:** originalele sunt scrise în codul modulului `kgb.sheets`, deci nu se pot modifica din aplicație. „Folosește” creează o copie a utilizatorului, un document nou cu versiunile lui.
+- **Primele 5 șabloane:** buget lunar, factură, registru de casă, cost/km, rate credit.
+- **Verificare:** formulele sunt documentate în `docs/etapa3/SABLOANE.md` și verificate cu valori calculate independent (7 teste, inclusiv toate cele 60 de luni ale graficului de rambursare).
+- **Cota TVA din factură:** 21%, cota standard din 1 aug. 2025, într-o singură celulă modificabilă.
+- **Nefăcut încă:** celelalte categorii din §6.3 (cash-flow, P&L, stocuri, HR, proiecte, construcții etc.).

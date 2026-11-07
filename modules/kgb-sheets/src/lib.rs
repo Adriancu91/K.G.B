@@ -22,10 +22,13 @@
 //! - `info {id, version?}` → name, format, versions, sheets with their size
 //! - `cells {id, version?, sheet, row0, rows, col0?, cols?}` → a window of cells
 //! - `save {id, based_on, edits, apply, accept_losses?}` → preview or new version
+//! - `templates` → the template library; `use_template {template}` → a new
+//!   workbook, the user's copy (the originals are code and never change, D-036)
 //! - `restore {id, version}`, `export {id, version?, dest, overwrite}`, `delete {id}`
 
 pub mod book;
 pub mod save;
+pub mod templates;
 
 use std::path::PathBuf;
 use std::sync::{Arc, Mutex};
@@ -116,6 +119,12 @@ struct Save {
     apply: bool,
     #[serde(default)]
     accept_losses: bool,
+}
+
+#[derive(Deserialize)]
+#[serde(deny_unknown_fields)]
+struct UseTemplate {
+    template: String,
 }
 
 #[derive(Deserialize)]
@@ -313,6 +322,18 @@ impl Module for Sheets {
                 report["applied"] = json!(true);
                 report["version"] = json!(saved.number);
                 Ok(report)
+            }
+            "templates" => Ok(json!({"templates": templates::TEMPLATES, "note": templates::NOTE})),
+            "use_template" => {
+                let a: UseTemplate = args(a)?;
+                let t = templates::TEMPLATES
+                    .iter()
+                    .find(|t| t.id == a.template)
+                    .ok_or_else(|| bad(format!("șablonul „{}” nu există", a.template)))?;
+                let data = templates::workbook(t.id).map_err(bad)?;
+                let d = ctx.import_document(&format!("{}.xlsx", t.name), &data)?;
+                ctx.log(&format!("șablon folosit: {}", t.id));
+                Ok(json!({"document": d}))
             }
             "restore" => {
                 let a: Restore = args(a)?;
