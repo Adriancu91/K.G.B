@@ -3156,6 +3156,7 @@ name = "kgb-app"
 version = "0.1.0"
 dependencies = [
  "base64 0.22.1",
+ "kgb-business",
  "kgb-core",
  "kgb-docs",
  "kgb-extract",
@@ -3173,6 +3174,18 @@ dependencies = [
  "tracing",
  "uuid",
  "windows-sys 0.61.2",
+]
+
+[[package]]
+name = "kgb-business"
+version = "0.1.0"
+dependencies = [
+ "kgb-core",
+ "kgb-store",
+ "serde",
+ "serde_json",
+ "tempfile",
+ "uuid",
 ]
 
 [[package]]

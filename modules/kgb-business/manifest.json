@@ -1,0 +1,219 @@
+{
+  "manifest_format": 1,
+  "id": "kgb.business",
+  "name": "Business",
+  "description": "Evidență primară pentru firmă: produse, depozite, recepții, ieșiri și stocuri (urmează facturi, casă și bancă). Nu este contabilitate certificată. Ce s-a înregistrat nu se modifică; greșelile se corectează prin storno, vizibil.",
+  "version": "0.1.0",
+  "core": ">=0.1.0, <0.2.0",
+  "status": "beta",
+  "permissions": [
+    "storage.own",
+    "notify.send"
+  ],
+  "services": [
+    "storage",
+    "notify",
+    "log"
+  ],
+  "data_types": [
+    {
+      "collection": "produse",
+      "description": "produsele: cod, nume, unitate de măsură, categorie, cod de bare, stoc minim",
+      "schema": {
+        "fields": {
+          "cod": {
+            "type": "string",
+            "required": true,
+            "nullable": false,
+            "max_len": 40
+          },
+          "nume": {
+            "type": "string",
+            "required": true,
+            "nullable": false,
+            "max_len": 200
+          },
+          "um": {
+            "type": "string",
+            "required": true,
+            "nullable": false,
+            "max_len": 10
+          },
+          "categorie": {
+            "type": "string",
+            "required": false,
+            "nullable": true,
+            "max_len": 100
+          },
+          "cod_bare": {
+            "type": "string",
+            "required": false,
+            "nullable": true,
+            "max_len": 40
+          },
+          "stoc_minim": {
+            "type": "integer",
+            "required": false,
+            "min": 0,
+            "nullable": true
+          },
+          "activ": {
+            "type": "bool",
+            "required": true
+          },
+          "creat_ms": {
+            "type": "integer",
+            "required": true,
+            "min": 0
+          }
+        },
+        "additional": false
+      },
+      "indexes": [
+        "cod"
+      ]
+    },
+    {
+      "collection": "depozite",
+      "description": "depozitele (gestiunile)",
+      "schema": {
+        "fields": {
+          "nume": {
+            "type": "string",
+            "required": true,
+            "nullable": false,
+            "max_len": 100
+          },
+          "activ": {
+            "type": "bool",
+            "required": true
+          },
+          "creat_ms": {
+            "type": "integer",
+            "required": true,
+            "min": 0
+          }
+        },
+        "additional": false
+      }
+    },
+    {
+      "collection": "documente_stoc",
+      "description": "documentele de stoc (recepție, ieșire, storno); nu se modifică după înregistrare",
+      "schema": {
+        "fields": {
+          "tip": {
+            "type": "string",
+            "required": true,
+            "nullable": false,
+            "enum": [
+              "receptie",
+              "iesire",
+              "storno"
+            ]
+          },
+          "numar": {
+            "type": "string",
+            "required": true,
+            "nullable": false,
+            "max_len": 40
+          },
+          "data": {
+            "type": "string",
+            "required": true,
+            "nullable": false,
+            "max_len": 10
+          },
+          "depozit": {
+            "type": "string",
+            "required": true,
+            "nullable": false,
+            "max_len": 36
+          },
+          "partener": {
+            "type": "string",
+            "required": false,
+            "nullable": true,
+            "max_len": 200
+          },
+          "nota": {
+            "type": "string",
+            "required": false,
+            "nullable": true,
+            "max_len": 500
+          },
+          "storno_de": {
+            "type": "string",
+            "required": false,
+            "nullable": true,
+            "max_len": 36
+          },
+          "creat_ms": {
+            "type": "integer",
+            "required": true,
+            "min": 0
+          }
+        },
+        "additional": false
+      },
+      "indexes": [
+        "storno_de"
+      ]
+    },
+    {
+      "collection": "miscari",
+      "description": "mișcările de stoc: cantitate cu semn (+ intrare, − ieșire), în miimi; prețul în bani",
+      "schema": {
+        "fields": {
+          "document": {
+            "type": "string",
+            "required": true,
+            "nullable": false,
+            "max_len": 36
+          },
+          "produs": {
+            "type": "string",
+            "required": true,
+            "nullable": false,
+            "max_len": 36
+          },
+          "depozit": {
+            "type": "string",
+            "required": true,
+            "nullable": false,
+            "max_len": 36
+          },
+          "cantitate": {
+            "type": "integer",
+            "required": true
+          },
+          "pret_unitar": {
+            "type": "integer",
+            "required": false,
+            "min": 0,
+            "nullable": true
+          },
+          "data": {
+            "type": "string",
+            "required": true,
+            "nullable": false,
+            "max_len": 10
+          },
+          "creat_ms": {
+            "type": "integer",
+            "required": true,
+            "min": 0
+          }
+        },
+        "additional": false
+      },
+      "indexes": [
+        "produs",
+        "depozit",
+        "document"
+      ]
+    }
+  ],
+  "data_format": 1,
+  "on_disable": "Produsele, depozitele și toate mișcările rămân salvate și neschimbate; le regăsești la reactivare."
+}

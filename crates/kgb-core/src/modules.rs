@@ -56,26 +56,6 @@ pub struct Planned {
 
 pub const PLANNED: &[Planned] = &[
     Planned {
-        id: "documents",
-        name: "Document Studio",
-        stage: "Etapa 3",
-    },
-    Planned {
-        id: "sheets",
-        name: "Foi de calcul",
-        stage: "Etapa 3",
-    },
-    Planned {
-        id: "tasks",
-        name: "Planner și taskuri",
-        stage: "Etapa 4",
-    },
-    Planned {
-        id: "business",
-        name: "Stocuri și financiar",
-        stage: "Etapa 5",
-    },
-    Planned {
         id: "devices",
         name: "Dispozitive și sincronizare",
         stage: "Etapa 6",

@@ -8,6 +8,7 @@ import { SheetsPage } from "./modules/sheets/SheetsPage";
 import { ExtractPage } from "./modules/extract/ExtractPage";
 import { PlannerPage } from "./modules/planner/PlannerPage";
 import { DocsPage } from "./modules/docs/DocsPage";
+import { BusinessPage } from "./modules/business/BusinessPage";
 import { NotificationBell } from "./components/Notifications";
 import { Catalog } from "./pages/Catalog";
 import { DataPage } from "./pages/DataPage";
@@ -23,6 +24,7 @@ const MODULE_PAGES: Record<string, ComponentType<{ onError: (e: string | null) =
   "kgb.extract": ExtractPage,
   "kgb.planner": PlannerPage,
   "kgb.docs": DocsPage,
+  "kgb.business": BusinessPage,
 };
 
 const SIDEBAR_MIN = 160;
@@ -183,7 +185,7 @@ export function App() {
     <div className="shell" style={{ gridTemplateColumns: collapsed ? "48px 1fr" : `${width}px 1fr` }}>
       {info.pre_release && (
         <div className="banner">
-          Versiune de dinainte de lansare (Etapa 4 în lucru). Nu folosi încă pentru date importante.
+          Versiune de dinainte de lansare (Etapa 5 în lucru). Nu folosi încă pentru date importante.
         </div>
       )}
       <aside className={collapsed ? "collapsed" : undefined}>

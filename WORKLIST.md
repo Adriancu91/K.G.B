@@ -97,7 +97,7 @@ Interdicții permanente: fără baze de date (D-005, D-018), fără schimbări d
 
 ## Etapa 5 — pași (plan: `docs/ETAPA5_PLAN.md`; decizii propuse D-049 … D-054)
 
-- [ ] 5.1 Modulul Business (beta), stocuri 1: produse, depozite, recepții și ieșiri (mișcări care nu se modifică), stoc pe depozit, stoc minim cu notificare
+- [x] 5.1 Modulul Business (beta), stocuri 1: produse (cod unic), depozite, recepții și ieșiri cu mai multe linii, scrise o singură dată, atomic; stocul = suma mișcărilor (nu un număr salvat); ieșirea peste stoc refuzată cu cantitatea disponibilă; storno vizibil, o singură dată, refuzat dacă ar face stocul negativ; stoc minim cu memento zilnic; cantități în miimi și bani întregi (D-049); 2+1 teste + e2e 7/7; catalogul nu mai arată ca „neimplementate” modulele deja făcute
 - [ ] 5.2 Stocuri 2: transferuri, inventar, cost mediu ponderat (D-050), loturi și serii
 - [ ] 5.3 Parteneri și facturi emise: serii fără goluri (D-054), TVA pe linie (D-049), storno, chitanțe, factura PDF (Typst)
 - [ ] 5.4 Facturi primite și cheltuieli (și preluare din Extragere date prin export/import)

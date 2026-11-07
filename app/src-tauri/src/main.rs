@@ -53,6 +53,7 @@ fn builtin_modules() -> Vec<Box<dyn Module>> {
         Box::new(kgb_extract::Extract::new()),
         Box::new(kgb_planner::Planner::new()),
         Box::new(kgb_docs::Docs::new()),
+        Box::new(kgb_business::Business::new()),
     ]
 }
 

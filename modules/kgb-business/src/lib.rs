@@ -1,0 +1,619 @@
+//! `kgb.business` — primary business records (Etapa 5; Master Plan §6.7).
+//! Step 5.1: products, warehouses, receipts and issues, stock per warehouse,
+//! minimum-stock reminders.
+//!
+//! Rules (docs/ETAPA5_PLAN.md):
+//! - **Exact numbers (D-049):** quantities in thousandths and money in bani,
+//!   as integers; see [`num`].
+//! - **Nothing recorded changes (D-051):** a stock document and its movements
+//!   are written once, in one atomic batch, and never edited or deleted. A
+//!   mistake is undone by a storno document with the opposite movements,
+//!   which stays visible; a document can be reversed only once.
+//! - **Stock is the sum of the movements**, never a stored number that could
+//!   drift; an issue (or a storno of a receipt) that would take the stock
+//!   below zero is refused.
+//! - **Not certified accounting (D-052):** the UI says so on every screen.
+//!
+//! Commands: `products`, `product_save`, `warehouses`, `warehouse_save`,
+//! `receive`, `issue`, `storno`, `documents`, `stock`, `movements`.
+
+pub mod num;
+
+use std::collections::{BTreeMap, BTreeSet};
+
+use kgb_core::manifest::Manifest;
+use kgb_core::modules::{Module, ModuleContext};
+use kgb_core::notifications::{Level, Notice};
+use kgb_core::workspace::now_ms;
+use kgb_core::{CoreError, CoreResult};
+use kgb_store::{Fields, RecordState, Write};
+use serde::Deserialize;
+use serde::de::DeserializeOwned;
+use serde_json::{Value, json};
+use uuid::Uuid;
+
+use num::{Money, Qty};
+
+pub const ID: &str = "kgb.business";
+const PRODUCTS: &str = "produse";
+const WAREHOUSES: &str = "depozite";
+const DOCS: &str = "documente_stoc";
+const MOVES: &str = "miscari";
+const MAX_LINES: usize = 500;
+
+pub struct Business {
+    manifest: Manifest,
+}
+
+impl Business {
+    pub fn new() -> Business {
+        Business {
+            manifest: Manifest::parse(include_str!("../manifest.json")).expect("built-in manifest is valid"),
+        }
+    }
+}
+
+impl Default for Business {
+    fn default() -> Self {
+        Self::new()
+    }
+}
+
+fn bad(what: &str, detail: impl Into<String>) -> CoreError {
+    CoreError::invalid(what, detail)
+}
+
+fn args<T: DeserializeOwned>(v: Value) -> CoreResult<T> {
+    serde_json::from_value(v).map_err(|e| CoreError::invalid("argumentele comenzii", e.to_string()))
+}
+
+fn s(r: &RecordState, k: &str) -> String {
+    r.fields.get(k).and_then(Value::as_str).unwrap_or_default().to_string()
+}
+
+fn i(r: &RecordState, k: &str) -> i64 {
+    r.fields.get(k).and_then(Value::as_i64).unwrap_or_default()
+}
+
+fn text(v: Option<String>, what: &str, max: usize, required: bool) -> CoreResult<Value> {
+    let t = v.map(|s| s.trim().to_string()).unwrap_or_default();
+    if t.is_empty() {
+        return if required {
+            Err(bad(what, "nu poate fi gol"))
+        } else {
+            Ok(Value::Null)
+        };
+    }
+    if t.chars().count() > max {
+        return Err(bad(what, format!("are mai mult de {max} de caractere")));
+    }
+    Ok(json!(t))
+}
+
+/// `YYYY-MM-DD` or `dd.mm.yyyy` → `YYYY-MM-DD` (real dates only).
+pub fn date(s: &str) -> Option<String> {
+    let s = s.trim();
+    let (y, m, d) = if let Some((d, rest)) = s.split_once('.') {
+        let (m, y) = rest.split_once('.')?;
+        (y, m, d)
+    } else {
+        let mut p = s.split('-');
+        (p.next()?, p.next()?, p.next()?)
+    };
+    let (y, m, d): (i32, u32, u32) = (y.parse().ok()?, m.parse().ok()?, d.parse().ok()?);
+    let dim = match m {
+        1 | 3 | 5 | 7 | 8 | 10 | 12 => 31,
+        4 | 6 | 9 | 11 => 30,
+        2 if (y % 4 == 0 && y % 100 != 0) || y % 400 == 0 => 29,
+        2 => 28,
+        _ => return None,
+    };
+    ((1990..=2200).contains(&y) && (1..=dim).contains(&d)).then(|| format!("{y:04}-{m:02}-{d:02}"))
+}
+
+fn live(ctx: &mut ModuleContext<'_>, coll: &str, id: Uuid, what: &str) -> CoreResult<RecordState> {
+    ctx.get(coll, id)?
+        .filter(|r| !r.deleted)
+        .ok_or_else(|| bad(what, "nu există"))
+}
+
+/// Accepts a number as JSON number (already in the unit's smallest part) or
+/// as text typed by the user (`1,5`).
+#[derive(Deserialize)]
+#[serde(untagged)]
+enum Amount {
+    Text(String),
+}
+
+#[derive(Deserialize)]
+#[serde(deny_unknown_fields)]
+struct ProductSave {
+    #[serde(default)]
+    id: Option<Uuid>,
+    #[serde(default)]
+    version: Option<u64>,
+    cod: String,
+    nume: String,
+    um: String,
+    #[serde(default)]
+    categorie: Option<String>,
+    #[serde(default)]
+    cod_bare: Option<String>,
+    /// As typed (`10`, `2,5`); empty = no minimum.
+    #[serde(default)]
+    stoc_minim: Option<String>,
+    #[serde(default = "yes")]
+    activ: bool,
+}
+
+fn yes() -> bool {
+    true
+}
+
+#[derive(Deserialize)]
+#[serde(deny_unknown_fields)]
+struct WarehouseSave {
+    #[serde(default)]
+    id: Option<Uuid>,
+    #[serde(default)]
+    version: Option<u64>,
+    nume: String,
+    #[serde(default = "yes")]
+    activ: bool,
+}
+
+#[derive(Deserialize)]
+#[serde(deny_unknown_fields)]
+struct Line {
+    produs: Uuid,
+    cantitate: Amount,
+    /// Receipts: price per unit, as typed (`12,50`).
+    #[serde(default)]
+    pret_unitar: Option<Amount>,
+}
+
+#[derive(Deserialize)]
+#[serde(deny_unknown_fields)]
+struct StockDoc {
+    depozit: Uuid,
+    numar: String,
+    data: String,
+    #[serde(default)]
+    partener: Option<String>,
+    #[serde(default)]
+    nota: Option<String>,
+    linii: Vec<Line>,
+}
+
+#[derive(Deserialize)]
+#[serde(deny_unknown_fields)]
+struct Storno {
+    document: Uuid,
+    data: String,
+    #[serde(default)]
+    nota: Option<String>,
+}
+
+#[derive(Deserialize, Default)]
+#[serde(deny_unknown_fields)]
+struct StockFilter {
+    #[serde(default)]
+    depozit: Option<Uuid>,
+    #[serde(default)]
+    produs: Option<Uuid>,
+}
+
+fn amount(a: &Amount, parse: fn(&str) -> Option<i64>, what: &str) -> CoreResult<i64> {
+    match a {
+        Amount::Text(t) => parse(t).ok_or_else(|| bad(what, format!("„{t}” nu este un număr valid"))),
+    }
+}
+
+impl Business {
+    /// Stock per (product, warehouse), from the movements.
+    fn balances(&self, ctx: &mut ModuleContext<'_>) -> CoreResult<BTreeMap<(String, String), Qty>> {
+        let mut out: BTreeMap<(String, String), Qty> = BTreeMap::new();
+        for m in ctx.scan(MOVES, |_| true)? {
+            *out.entry((s(&m, "produs"), s(&m, "depozit"))).or_default() += i(&m, "cantitate");
+        }
+        Ok(out)
+    }
+
+    fn product_save(&self, ctx: &mut ModuleContext<'_>, a: ProductSave) -> CoreResult<Value> {
+        let cod = text(Some(a.cod), "codul produsului", 40, true)?;
+        let others = ctx.scan(PRODUCTS, |r| r.fields.get("cod") == Some(&cod) && Some(r.id) != a.id)?;
+        if !others.is_empty() {
+            return Err(bad("codul produsului", format!("{cod} este deja folosit")));
+        }
+        let min = match a.stoc_minim.as_deref().map(str::trim).filter(|t| !t.is_empty()) {
+            None => Value::Null,
+            Some(t) => {
+                let q = num::qty(t).ok_or_else(|| bad("stocul minim", format!("„{t}” nu este un număr valid")))?;
+                if q < 0 {
+                    return Err(bad("stocul minim", "nu poate fi negativ"));
+                }
+                json!(q)
+            }
+        };
+        let mut f = Fields::new();
+        f.insert("cod".into(), cod);
+        f.insert("nume".into(), text(Some(a.nume), "numele produsului", 200, true)?);
+        f.insert("um".into(), text(Some(a.um), "unitatea de măsură", 10, true)?);
+        f.insert("categorie".into(), text(a.categorie, "categoria", 100, false)?);
+        f.insert("cod_bare".into(), text(a.cod_bare, "codul de bare", 40, false)?);
+        f.insert("stoc_minim".into(), min);
+        f.insert("activ".into(), json!(a.activ));
+        let (id, w) = match a.id {
+            Some(id) => {
+                let cur = live(ctx, PRODUCTS, id, "produsul")?;
+                f.insert("creat_ms".into(), cur.fields["creat_ms"].clone());
+                (id, Write::put(PRODUCTS, id, f).expect(a.version.unwrap_or(cur.version)))
+            }
+            None => {
+                f.insert("creat_ms".into(), json!(now_ms()));
+                let id = Uuid::now_v7();
+                (id, Write::put(PRODUCTS, id, f).expect(0))
+            }
+        };
+        ctx.write(vec![w])?;
+        Ok(json!({"id": id}))
+    }
+
+    /// Receipts (+) and issues (−): one document and its movements, in one
+    /// atomic write. Issues are checked against the stock of every line.
+    fn stock_doc(&self, ctx: &mut ModuleContext<'_>, a: StockDoc, kind: &str) -> CoreResult<Value> {
+        let wh = live(ctx, WAREHOUSES, a.depozit, "depozitul")?;
+        if wh.fields.get("activ") == Some(&json!(false)) {
+            return Err(bad("depozitul", "este inactiv"));
+        }
+        let data = date(&a.data).ok_or_else(|| bad("data", format!("„{}” nu este o dată", a.data)))?;
+        if a.linii.is_empty() || a.linii.len() > MAX_LINES {
+            return Err(bad("documentul", format!("are nevoie de 1–{MAX_LINES} linii")));
+        }
+        let numar = text(Some(a.numar), "numărul documentului", 40, true)?;
+        let mut lines = Vec::new();
+        let mut need: BTreeMap<String, Qty> = BTreeMap::new();
+        let mut errs = Vec::new();
+        for (n, l) in a.linii.iter().enumerate() {
+            let p = live(ctx, PRODUCTS, l.produs, "produsul")?;
+            let label = format!("linia {} ({})", n + 1, s(&p, "nume"));
+            let q = match amount(&l.cantitate, num::qty, &label) {
+                Ok(q) if q > 0 => q,
+                Ok(_) => {
+                    errs.push(format!("{label}: cantitatea trebuie să fie mai mare decât 0"));
+                    continue;
+                }
+                Err(e) => {
+                    errs.push(e.to_string());
+                    continue;
+                }
+            };
+            let price: Option<Money> = match (&l.pret_unitar, kind) {
+                (Some(pr), "receptie") => match amount(pr, num::money, &label) {
+                    Ok(m) if m >= 0 => Some(m),
+                    Ok(_) => {
+                        errs.push(format!("{label}: prețul nu poate fi negativ"));
+                        continue;
+                    }
+                    Err(e) => {
+                        errs.push(e.to_string());
+                        continue;
+                    }
+                },
+                (None, "receptie") => {
+                    errs.push(format!("{label}: lipsește prețul unitar"));
+                    continue;
+                }
+                _ => None,
+            };
+            *need.entry(p.id.to_string()).or_default() += q;
+            lines.push((p, q, price));
+        }
+        if kind == "iesire" {
+            let stock = self.balances(ctx)?;
+            for (pid, q) in &need {
+                let have = stock.get(&(pid.clone(), a.depozit.to_string())).copied().unwrap_or(0);
+                if *q > have {
+                    let name = lines
+                        .iter()
+                        .find(|(p, _, _)| p.id.to_string() == *pid)
+                        .map(|(p, _, _)| s(p, "nume"))
+                        .unwrap_or_default();
+                    errs.push(format!(
+                        "„{name}”: în depozit sunt {}, se cer {}",
+                        num::fmt_qty(have),
+                        num::fmt_qty(*q)
+                    ));
+                }
+            }
+        }
+        if !errs.is_empty() {
+            return Err(bad("documentul", errs.join("; ")));
+        }
+        let now = now_ms();
+        let doc_id = Uuid::now_v7();
+        let mut d = Fields::new();
+        d.insert("tip".into(), json!(kind));
+        d.insert("numar".into(), numar);
+        d.insert("data".into(), json!(data));
+        d.insert("depozit".into(), json!(a.depozit.to_string()));
+        d.insert("partener".into(), text(a.partener, "partenerul", 200, false)?);
+        d.insert("nota".into(), text(a.nota, "nota", 500, false)?);
+        d.insert("storno_de".into(), Value::Null);
+        d.insert("creat_ms".into(), json!(now));
+        let mut batch = vec![Write::put(DOCS, doc_id, d).expect(0)];
+        let sign = if kind == "iesire" { -1 } else { 1 };
+        for (p, q, price) in &lines {
+            let mut m = Fields::new();
+            m.insert("document".into(), json!(doc_id.to_string()));
+            m.insert("produs".into(), json!(p.id.to_string()));
+            m.insert("depozit".into(), json!(a.depozit.to_string()));
+            m.insert("cantitate".into(), json!(sign * q));
+            m.insert("pret_unitar".into(), price.map_or(Value::Null, |v| json!(v)));
+            m.insert("data".into(), json!(data));
+            m.insert("creat_ms".into(), json!(now));
+            batch.push(Write::put(MOVES, Uuid::now_v7(), m).expect(0));
+        }
+        ctx.write(batch)?;
+        ctx.log(if kind == "iesire" {
+            "ieșire înregistrată"
+        } else {
+            "recepție înregistrată"
+        });
+        Ok(json!({"document": doc_id, "linii": lines.len()}))
+    }
+
+    /// The opposite movements of a document, once. Refused if it would take
+    /// a stock below zero (an issued product cannot be „un-received”).
+    fn storno(&self, ctx: &mut ModuleContext<'_>, a: Storno) -> CoreResult<Value> {
+        let doc = live(ctx, DOCS, a.document, "documentul")?;
+        if s(&doc, "tip") == "storno" {
+            return Err(bad(
+                "documentul",
+                "un storno nu se stornează; înregistrează un document nou",
+            ));
+        }
+        let id = json!(a.document.to_string());
+        if !ctx.scan(DOCS, |r| r.fields.get("storno_de") == Some(&id))?.is_empty() {
+            return Err(bad("documentul", "a fost deja stornat"));
+        }
+        let data = date(&a.data).ok_or_else(|| bad("data", format!("„{}” nu este o dată", a.data)))?;
+        let moves = ctx.scan(MOVES, |r| r.fields.get("document") == Some(&id))?;
+        let stock = self.balances(ctx)?;
+        let mut after = stock.clone();
+        for m in &moves {
+            *after.entry((s(m, "produs"), s(m, "depozit"))).or_default() -= i(m, "cantitate");
+        }
+        if let Some(((pid, _), q)) = after.iter().find(|(_, q)| **q < 0) {
+            let name = Uuid::parse_str(pid)
+                .ok()
+                .and_then(|p| ctx.get(PRODUCTS, p).ok().flatten())
+                .map(|p| s(&p, "nume"))
+                .unwrap_or_default();
+            return Err(bad(
+                "stornoul",
+                format!(
+                    "„{name}” ar ajunge la {} în depozit; au ieșit deja produse din această recepție",
+                    num::fmt_qty(*q)
+                ),
+            ));
+        }
+        let now = now_ms();
+        let sid = Uuid::now_v7();
+        let mut d = Fields::new();
+        d.insert("tip".into(), json!("storno"));
+        d.insert(
+            "numar".into(),
+            json!(
+                format!("STORNO {}", s(&doc, "numar"))
+                    .chars()
+                    .take(40)
+                    .collect::<String>()
+            ),
+        );
+        d.insert("data".into(), json!(data));
+        d.insert("depozit".into(), doc.fields["depozit"].clone());
+        d.insert(
+            "partener".into(),
+            doc.fields.get("partener").cloned().unwrap_or(Value::Null),
+        );
+        d.insert("nota".into(), text(a.nota, "nota", 500, false)?);
+        d.insert("storno_de".into(), id);
+        d.insert("creat_ms".into(), json!(now));
+        let mut batch = vec![Write::put(DOCS, sid, d).expect(0)];
+        for m in &moves {
+            let mut f = m.fields.clone();
+            f.insert("document".into(), json!(sid.to_string()));
+            f.insert("cantitate".into(), json!(-i(m, "cantitate")));
+            f.insert("data".into(), json!(data));
+            f.insert("creat_ms".into(), json!(now));
+            batch.push(Write::put(MOVES, Uuid::now_v7(), f).expect(0));
+        }
+        ctx.write(batch)?;
+        ctx.log("storno înregistrat");
+        Ok(json!({"document": sid}))
+    }
+
+    fn stock(&self, ctx: &mut ModuleContext<'_>, f: StockFilter) -> CoreResult<Value> {
+        let balances = self.balances(ctx)?;
+        let products = ctx.scan(PRODUCTS, |_| true)?;
+        let warehouses: BTreeMap<String, String> = ctx
+            .scan(WAREHOUSES, |_| true)?
+            .iter()
+            .map(|w| (w.id.to_string(), s(w, "nume")))
+            .collect();
+        let mut rows = Vec::new();
+        for p in &products {
+            if f.produs.is_some_and(|x| x != p.id) {
+                continue;
+            }
+            let pid = p.id.to_string();
+            let min = p.fields.get("stoc_minim").and_then(Value::as_i64);
+            for (wid, wname) in &warehouses {
+                if f.depozit.is_some_and(|x| x.to_string() != *wid) {
+                    continue;
+                }
+                let q = balances.get(&(pid.clone(), wid.clone())).copied();
+                // Only where the product has had movements: a minimum is not
+                // a reason to list (or remind about) every empty warehouse.
+                let Some(q) = q else { continue };
+                rows.push(json!({
+                    "produs": p.id, "cod": s(p, "cod"), "nume": s(p, "nume"), "um": s(p, "um"),
+                    "depozit": wid, "depozit_nume": wname,
+                    "cantitate": q, "cantitate_text": num::fmt_qty(q),
+                    "stoc_minim": min, "sub_minim": min.is_some_and(|m| q < m),
+                }));
+            }
+        }
+        rows.sort_by(|a, b| {
+            (a["nume"].as_str(), a["depozit_nume"].as_str()).cmp(&(b["nume"].as_str(), b["depozit_nume"].as_str()))
+        });
+        Ok(json!(rows))
+    }
+
+    fn reminders(&self, ctx: &mut ModuleContext<'_>, today: &str) -> CoreResult<()> {
+        let rows = self.stock(ctx, StockFilter::default())?;
+        let mut sent = 0;
+        for r in rows.as_array().into_iter().flatten().filter(|r| r["sub_minim"] == true) {
+            // One reminder per product, warehouse and day while it stays low.
+            let key = format!(
+                "stoc-minim:{}:{}:{today}",
+                r["produs"].as_str().unwrap_or_default(),
+                r["depozit"].as_str().unwrap_or_default()
+            );
+            if sent >= 10 || ctx.notify_key_used(&key)? {
+                continue;
+            }
+            let min = r["stoc_minim"].as_i64().unwrap_or_default();
+            ctx.notify(
+                &Notice::new(
+                    format!("Stoc sub minim: {}", r["nume"].as_str().unwrap_or_default()),
+                    format!(
+                        "{}: {} {} (minim {}).",
+                        r["depozit_nume"].as_str().unwrap_or_default(),
+                        r["cantitate_text"].as_str().unwrap_or_default(),
+                        r["um"].as_str().unwrap_or_default(),
+                        num::fmt_qty(min)
+                    ),
+                )
+                .level(Level::Atentie)
+                .key(key),
+            )?;
+            sent += 1;
+        }
+        Ok(())
+    }
+}
+
+fn view(r: &RecordState) -> Value {
+    let mut v = Value::Object(r.fields.clone());
+    v["id"] = json!(r.id);
+    v["version"] = json!(r.version);
+    v
+}
+
+impl Module for Business {
+    fn manifest(&self) -> &Manifest {
+        &self.manifest
+    }
+
+    fn remind(&self, ctx: &mut ModuleContext<'_>, today: &str) -> CoreResult<()> {
+        self.reminders(ctx, today)
+    }
+
+    fn handle(&self, ctx: &mut ModuleContext<'_>, command: &str, a: Value) -> CoreResult<Value> {
+        match command {
+            "products" => {
+                let mut list = ctx.scan(PRODUCTS, |_| true)?;
+                list.sort_by_key(|r| s(r, "nume").to_lowercase());
+                Ok(json!(
+                    list.iter()
+                        .map(|r| {
+                            let mut v = view(r);
+                            v["stoc_minim_text"] = r
+                                .fields
+                                .get("stoc_minim")
+                                .and_then(Value::as_i64)
+                                .map_or(Value::Null, |q| json!(num::fmt_qty(q)));
+                            v
+                        })
+                        .collect::<Vec<_>>()
+                ))
+            }
+            "product_save" => self.product_save(ctx, args(a)?),
+            "warehouses" => {
+                let mut list = ctx.scan(WAREHOUSES, |_| true)?;
+                list.sort_by_key(|r| s(r, "nume").to_lowercase());
+                Ok(json!(list.iter().map(view).collect::<Vec<_>>()))
+            }
+            "warehouse_save" => {
+                let a: WarehouseSave = args(a)?;
+                let mut f = Fields::new();
+                f.insert("nume".into(), text(Some(a.nume), "numele depozitului", 100, true)?);
+                f.insert("activ".into(), json!(a.activ));
+                let (id, w) = match a.id {
+                    Some(id) => {
+                        let cur = live(ctx, WAREHOUSES, id, "depozitul")?;
+                        f.insert("creat_ms".into(), cur.fields["creat_ms"].clone());
+                        (
+                            id,
+                            Write::put(WAREHOUSES, id, f).expect(a.version.unwrap_or(cur.version)),
+                        )
+                    }
+                    None => {
+                        f.insert("creat_ms".into(), json!(now_ms()));
+                        let id = Uuid::now_v7();
+                        (id, Write::put(WAREHOUSES, id, f).expect(0))
+                    }
+                };
+                ctx.write(vec![w])?;
+                Ok(json!({"id": id}))
+            }
+            "receive" => self.stock_doc(ctx, args(a)?, "receptie"),
+            "issue" => self.stock_doc(ctx, args(a)?, "iesire"),
+            "storno" => self.storno(ctx, args(a)?),
+            "documents" => {
+                let docs = ctx.scan(DOCS, |_| true)?;
+                let reversed: BTreeSet<String> = docs
+                    .iter()
+                    .map(|d| s(d, "storno_de"))
+                    .filter(|x| !x.is_empty())
+                    .collect();
+                let mut list: Vec<Value> = docs
+                    .iter()
+                    .map(|d| {
+                        let mut v = view(d);
+                        v["stornat"] = json!(reversed.contains(&d.id.to_string()));
+                        v
+                    })
+                    .collect();
+                list.sort_by(|a, b| b["id"].as_str().cmp(&a["id"].as_str()));
+                Ok(json!(list))
+            }
+            "stock" => self.stock(ctx, args(a)?),
+            "movements" => {
+                let a: StockFilter = args(a)?;
+                let mut list = ctx.scan(MOVES, |r| {
+                    a.produs
+                        .is_none_or(|p| r.fields.get("produs") == Some(&json!(p.to_string())))
+                        && a.depozit
+                            .is_none_or(|d| r.fields.get("depozit") == Some(&json!(d.to_string())))
+                })?;
+                list.sort_by_key(|r| r.id);
+                Ok(json!(
+                    list.iter()
+                        .map(|r| {
+                            let mut v = view(r);
+                            v["cantitate_text"] = json!(num::fmt_qty(i(r, "cantitate")));
+                            v
+                        })
+                        .collect::<Vec<_>>()
+                ))
+            }
+            other => Err(CoreError::invalid(
+                "modulul Business",
+                format!("comandă necunoscută „{other}”"),
+            )),
+        }
+    }
+}

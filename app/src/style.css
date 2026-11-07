@@ -957,3 +957,20 @@ table.report tfoot th {
     grid-column: span 1 !important;
   }
 }
+
+/* Business (step 5.1). */
+.business td.num {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+.business tr.low td {
+  color: #b35c00;
+}
+.stock-doc .doc-line input.short,
+.product-form input.short {
+  flex: 0 0 8em;
+  min-width: 0;
+}
+.stock-doc .doc-line select {
+  min-width: 260px;
+}
