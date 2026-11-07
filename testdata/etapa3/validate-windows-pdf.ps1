@@ -1,7 +1,8 @@
 # Etapa 3, pasul 3.1: verificare independentă a PDF-urilor de test cu
 # cititorul PDF inclus în Windows (Windows.Data.Pdf). Afișează pentru fiecare
 # fișier numărul de pagini văzut de Windows sau eroarea.
-#   powershell -File testdata/etapa3/validate-windows-pdf.ps1
+#   powershell -File testdata/etapa3/validate-windows-pdf.ps1 [alt-folder]
+param([string]$Dir = '')
 $ErrorActionPreference = 'Stop'
 Add-Type -AssemblyName System.Runtime.WindowsRuntime
 $null = [Windows.Storage.StorageFile, Windows.Storage, ContentType = WindowsRuntime]
@@ -15,7 +16,9 @@ function Await($op, [Type]$t) {
     $task.Result
 }
 $root = Split-Path -Parent $MyInvocation.MyCommand.Path
-Get-ChildItem -Path (Join-Path $root 'files'), (Join-Path $root 'large') -Recurse -Filter *.pdf | Sort-Object FullName | ForEach-Object {
+$paths = @((Join-Path $root 'files'), (Join-Path $root 'large'))
+if ($Dir) { $root = (Resolve-Path $Dir).Path; $paths = @($root) }
+Get-ChildItem -Path $paths -Recurse -Filter *.pdf | Sort-Object FullName | ForEach-Object {
     $rel = $_.FullName.Substring($root.Length + 1).Replace('\', '/')
     try {
         $f = Await ([Windows.Storage.StorageFile]::GetFileFromPathAsync($_.FullName)) ([Windows.Storage.StorageFile])

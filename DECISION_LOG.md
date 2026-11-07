@@ -139,3 +139,35 @@ Deciziile DECIS se schimbă doar cu aprobarea explicită a proprietarului (Maste
 - D-034: documentele nu se suprascriu niciodată. Fiecare salvare creează o versiune nouă, iar originalul importat rămâne neatins;
 - D-035: OCR-ul (text din scanări și imagini) se evaluează separat și nu intră în Etapa 3 dacă cere programe externe sau licențe neclare;
 - D-036: șabloanele originale sunt doar de citire. Utilizatorul lucrează pe o copie.
+
+### D-032 — Biblioteci PDF (aplicată)
+- **Data:** 7 nov. 2026 · **Statut:** DECIS după spike-ul S4, conform regulii din `docs/ETAPA3_PLAN.md`: licențe permisive, alegere măsurată, se confirmă la poarta Etapei 3. Detalii: `docs/spikes/S4_REZULTATE.md`.
+- **Ce s-a ales:**
+  - **lopdf 0.47 (MIT)** pentru operații: 48/48 fără corupere, originalele neatinse, 500 de pagini în câteva ms;
+  - **pdf.js 6.4 (Apache-2.0)** pentru afișare în fereastră, fără `eval`;
+  - **hayro 0.9 (Apache-2.0/MIT)** pentru miniaturi și comparații vizuale în teste;
+  - **o verificare strictă proprie a integrității**, înainte de orice operație.
+- **Respinse:**
+  - MuPDF, din cauza licenței AGPL;
+  - pdfium, care cere un DLL extern;
+  - pdf-extract, care pune spații false în text.
+- **Regulă nouă:** bibliotecile tolerante „recuperează” în tăcere fișiere stricate (un PDF tăiat la 60% apare cu 10 pagini, din care 4 goale). De aceea:
+  - un PDF care nu trece verificarea strictă se arată doar pentru citire, marcat „deteriorat”;
+  - nu se oferă reparare automată în Etapa 3.
+
+### D-035 — OCR (propunere actualizată după S4)
+- **Statut:** PROPUS, așteaptă proprietarul (🔒).
+- **Ce am testat:** OCR-ul inclus în Windows (`Windows.Media.Ocr`) funcționează fără nimic descărcat: 109 ms pe o factură.
+- **Problema:** pe laptop e instalată doar limba engleză pentru OCR, așa că diacriticele și unele cifre ies greșit.
+- **Ce e nevoie:** limba română pentru OCR, o setare de sistem pe care o face proprietarul.
+- **Recomandare:** OCR nu intră în Etapa 3. Se reia după ce proprietarul adaugă limba română pentru OCR în Windows. Orice valoare citită cu OCR cere confirmarea utilizatorului.
+
+### D-037 — Office Suite Test (programul proprietarului) ca unealtă de testare
+- **Data:** 7 nov. 2026 · **Statut:** DECIS · **Aprobat de:** proprietar („Poți folosi dacă ai nevoie unelte din cyber office suite”).
+- **Ce e:** folderul `Desktop/Office Suite Test 0.9.2 - pentru testare` (programul proprietarului: Docs, Sheets, PDF; licență de testare). E aprobat pentru citire și folosire, ca al doilea program independent care deschide și produce XLSX/PDF în teste (S5, pasul 3.10).
+- **Regula proprietarului:** „Fără să modifice ceva acolo, doar extragi ce ai nevoie”:
+  - în acel folder nu se modifică, nu se instalează și nu se rulează nimic;
+  - componentele necesare se extrag dintr-o copie, într-un folder temporar din afara proiectului și a folderului sursă.
+- **Limite:**
+  - nu se copiază codul lui în K.G.B.;
+  - fișierele produse cu el intră în `testdata/` doar dacă nu conțin date personale.

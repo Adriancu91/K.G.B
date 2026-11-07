@@ -65,7 +65,7 @@ Interdicții permanente: fără baze de date (D-005, D-018), fără schimbări d
 ## Etapa 3 — pași (plan: `docs/ETAPA3_PLAN.md`)
 
 - [x] 3.1 Set de fișiere de test `testdata/etapa3/` (35 fișiere: 33 generate determinist + 2 PDF din Edge, manifest SHA-256; verificat cu cititorul PDF din Windows)
-- [ ] 3.2 Spike S4 — PDF (lopdf / pdf / pdf.js) → D-032
+- [x] 3.2 Spike S4 — PDF → D-032: lopdf (operații, 48/48 fără corupere), pdf.js (afișare), hayro (miniaturi), verificare strictă proprie 17/17; OCR Windows testat, română 🔒 (D-035) — `docs/spikes/S4_REZULTATE.md`
 - [ ] 3.3 Spike S5 — foi de calcul (calamine / rust_xlsxwriter / umya-spreadsheet / IronCalc) → D-033
 - [ ] 3.4 Documente versionate în spațiul de lucru (D-034)
 - [ ] 3.5 Modulul PDF (beta)
@@ -73,6 +73,7 @@ Interdicții permanente: fără baze de date (D-005, D-018), fără schimbări d
 - [ ] 3.7 Șabloane (D-036)
 - [ ] 3.8 Import/export CSV/XLSX/PDF
 - [ ] 3.9 Extragere inițială de date (fără OCR, D-035)
+- [ ] 🔒 OCR în română: limba română pentru OCR în Windows (setare de sistem, proprietarul) — D-035
 - [ ] 3.10 Test de necorupere pe tot setul + fișiere stricate
 - [ ] 🔒 3.11 Fișiere reale, fără date confidențiale, de la proprietar
 - [ ] 3.12 Raport Etapa 3 (`docs/ETAPA3_RAPORT.md`)

@@ -1,0 +1,1083 @@
+[
+  {
+    "expect": {
+      "kind": "pdf",
+      "pages": 1,
+      "path": "files/pdf/simplu-1-pagina.pdf",
+      "producer": "generate.py",
+      "sha256": "605d3498b611af048ee4b8d59ff06bebe92233656e8d2ff92d7408c8f21befd0",
+      "size": 676,
+      "text": [
+        "K.G.B. test simplu"
+      ]
+    },
+    "file": "files/pdf/simplu-1-pagina.pdf",
+    "hayro": {
+      "error": null,
+      "ok": true,
+      "open_ms": 0.2,
+      "pages": 1,
+      "peak_mb": 7.19140625,
+      "rendered": 1,
+      "text": null,
+      "text_ok": null,
+      "total_ms": 3.0,
+      "verdict": "corect"
+    },
+    "lopdf": {
+      "error": null,
+      "ok": true,
+      "open_ms": 0.3,
+      "pages": 1,
+      "peak_mb": 4.3046875,
+      "rendered": null,
+      "text": "K.G.B. test simplu\nPrima pagina, text necomprimat.\n",
+      "text_ok": true,
+      "total_ms": 0.4,
+      "verdict": "corect"
+    },
+    "pdf-extract": {
+      "error": null,
+      "ok": true,
+      "open_ms": 0.6,
+      "pages": 1,
+      "peak_mb": 4.625,
+      "rendered": null,
+      "text": "\n\nK.G.B. test simplu\nPrima pagina, text necomprimat.",
+      "text_ok": true,
+      "total_ms": 0.6,
+      "verdict": "corect"
+    },
+    "pdf-rs": {
+      "error": null,
+      "ok": true,
+      "open_ms": 0.3,
+      "pages": 1,
+      "peak_mb": 4.4140625,
+      "rendered": null,
+      "text": null,
+      "text_ok": null,
+      "total_ms": 0.5,
+      "verdict": "corect"
+    }
+  },
+  {
+    "expect": {
+      "kind": "pdf",
+      "pages": 50,
+      "path": "files/pdf/multipagina-50.pdf",
+      "producer": "generate.py",
+      "sha256": "04dbd62f654d94bebefad09afcc604eda5bdb25883bcf688ff0ad25c5f19db74",
+      "size": 17029,
+      "text": [
+        "Pagina 1 din 50",
+        "Pagina 50 din 50",
+        "Continut unic 395950"
+      ]
+    },
+    "file": "files/pdf/multipagina-50.pdf",
+    "hayro": {
+      "error": null,
+      "ok": true,
+      "open_ms": 0.3,
+      "pages": 50,
+      "peak_mb": 7.734375,
+      "rendered": 50,
+      "text": null,
+      "text_ok": null,
+      "total_ms": 93.0,
+      "verdict": "corect"
+    },
+    "lopdf": {
+      "error": null,
+      "ok": true,
+      "open_ms": 0.8,
+      "pages": 50,
+      "peak_mb": 5.4140625,
+      "rendered": null,
+      "text": "Pagina 1 din 50\nContinut unic 7919\nPagina 2 din 50\nContinut unic 15838\nPagina 3 din 50\nContinut unic 23757\nPagina 4 din ",
+      "text_ok": true,
+      "total_ms": 2.5,
+      "verdict": "corect"
+    },
+    "pdf-extract": {
+      "error": null,
+      "ok": true,
+      "open_ms": 8.3,
+      "pages": 50,
+      "peak_mb": 5.0,
+      "rendered": null,
+      "text": "\n\nPagina 1 din 50\nContinut unic 7919\n\n\nPagina 2 din 50\nContinut unic 15838\n\n\nPagina 3 din 50\nContinut unic 23757\n\n\nPagin",
+      "text_ok": true,
+      "total_ms": 8.3,
+      "verdict": "corect"
+    },
+    "pdf-rs": {
+      "error": null,
+      "ok": true,
+      "open_ms": 0.2,
+      "pages": 50,
+      "peak_mb": 4.7265625,
+      "rendered": null,
+      "text": null,
+      "text_ok": null,
+      "total_ms": 0.7,
+      "verdict": "corect"
+    }
+  },
+  {
+    "expect": {
+      "kind": "pdf",
+      "pages": 4,
+      "path": "files/pdf/rotite-si-formate.pdf",
+      "producer": "generate.py",
+      "rotate": [
+        0,
+        90,
+        180,
+        270
+      ],
+      "sha256": "a7039681d9d8feb8887c4e384f3b9d7298bfac81cb12fda64dc974c027c074dd",
+      "size": 1646,
+      "text": [
+        "Letter, rotita 180"
+      ]
+    },
+    "file": "files/pdf/rotite-si-formate.pdf",
+    "hayro": {
+      "error": null,
+      "ok": true,
+      "open_ms": 0.1,
+      "pages": 4,
+      "peak_mb": 7.375,
+      "rendered": 4,
+      "text": null,
+      "text_ok": null,
+      "total_ms": 11.1,
+      "verdict": "corect"
+    },
+    "lopdf": {
+      "error": null,
+      "ok": true,
+      "open_ms": 0.2,
+      "pages": 4,
+      "peak_mb": 4.5625,
+      "rendered": null,
+      "text": "A4 portret, 0 grade\nA4, rotita 90\nLetter, rotita 180\nA4 peisaj, rotita 270\n",
+      "text_ok": true,
+      "total_ms": 0.4,
+      "verdict": "corect"
+    },
+    "pdf-extract": {
+      "error": null,
+      "ok": true,
+      "open_ms": 1.1,
+      "pages": 4,
+      "peak_mb": 4.765625,
+      "rendered": null,
+      "text": "\n\nA4 portret, 0 grade\n\n\nA4, rotita 90\n\n\nLetter, rotita 180\n\n\nA4 peisaj, rotita 270",
+      "text_ok": true,
+      "total_ms": 1.1,
+      "verdict": "corect"
+    },
+    "pdf-rs": {
+      "error": null,
+      "ok": true,
+      "open_ms": 0.2,
+      "pages": 4,
+      "peak_mb": 4.45703125,
+      "rendered": null,
+      "text": null,
+      "text_ok": null,
+      "total_ms": 0.3,
+      "verdict": "corect"
+    }
+  },
+  {
+    "expect": {
+      "kind": "pdf",
+      "note": "a doua revizie înlocuiește pagina 2 și adaugă pagina 3",
+      "pages": 3,
+      "path": "files/pdf/actualizare-incrementala.pdf",
+      "producer": "generate.py",
+      "sha256": "945ae71def4b2ffb123d693a467b2943f88485f000e54cc5f163297b378cee19",
+      "size": 1637,
+      "text": [
+        "Pagina 2 MODIFICATA",
+        "Pagina 3 adaugata"
+      ],
+      "text_absent": [
+        "Pagina 2 originala"
+      ]
+    },
+    "file": "files/pdf/actualizare-incrementala.pdf",
+    "hayro": {
+      "error": null,
+      "ok": true,
+      "open_ms": 0.1,
+      "pages": 3,
+      "peak_mb": 7.21484375,
+      "rendered": 3,
+      "text": null,
+      "text_ok": null,
+      "total_ms": 6.7,
+      "verdict": "corect"
+    },
+    "lopdf": {
+      "error": null,
+      "ok": true,
+      "open_ms": 0.2,
+      "pages": 3,
+      "peak_mb": 4.46484375,
+      "rendered": null,
+      "text": "Pagina 1\nPagina 2 MODIFICATA\nPagina 3 adaugata\n",
+      "text_ok": true,
+      "total_ms": 0.3,
+      "verdict": "corect"
+    },
+    "pdf-extract": {
+      "error": null,
+      "ok": true,
+      "open_ms": 0.8,
+      "pages": 3,
+      "peak_mb": 4.67578125,
+      "rendered": null,
+      "text": "\n\nPagina 1\n\n\nPagina 2 MODIFICATA\n\n\nPagina 3 adaugata",
+      "text_ok": true,
+      "total_ms": 0.8,
+      "verdict": "corect"
+    },
+    "pdf-rs": {
+      "error": null,
+      "ok": true,
+      "open_ms": 0.2,
+      "pages": 3,
+      "peak_mb": 4.453125,
+      "rendered": null,
+      "text": null,
+      "text_ok": null,
+      "total_ms": 0.3,
+      "verdict": "corect"
+    }
+  },
+  {
+    "expect": {
+      "kind": "pdf",
+      "note": "PDF 1.5: obiecte în ObjStm, tabel xref ca flux binar",
+      "pages": 3,
+      "path": "files/pdf/xref-stream-pdf15.pdf",
+      "producer": "generate.py",
+      "sha256": "1d7e0c722bd02b18dd1a4fee4fd14a6fa424783917aca04669cffb47c02e72f0",
+      "size": 935,
+      "text": [
+        "Obiecte comprimate 3"
+      ]
+    },
+    "file": "files/pdf/xref-stream-pdf15.pdf",
+    "hayro": {
+      "error": null,
+      "ok": true,
+      "open_ms": 0.2,
+      "pages": 3,
+      "peak_mb": 7.28125,
+      "rendered": 3,
+      "text": null,
+      "text_ok": null,
+      "total_ms": 6.6,
+      "verdict": "corect"
+    },
+    "lopdf": {
+      "error": null,
+      "ok": true,
+      "open_ms": 0.3,
+      "pages": 3,
+      "peak_mb": 4.58203125,
+      "rendered": null,
+      "text": "Obiecte comprimate 1\nObiecte comprimate 2\nObiecte comprimate 3\n",
+      "text_ok": true,
+      "total_ms": 0.5,
+      "verdict": "corect"
+    },
+    "pdf-extract": {
+      "error": null,
+      "ok": true,
+      "open_ms": 1.1,
+      "pages": 3,
+      "peak_mb": 4.76171875,
+      "rendered": null,
+      "text": "\n\nObiecte comprimate 1\n\n\nObiecte comprimate 2\n\n\nObiecte comprimate 3",
+      "text_ok": true,
+      "total_ms": 1.1,
+      "verdict": "corect"
+    },
+    "pdf-rs": {
+      "error": null,
+      "ok": true,
+      "open_ms": 0.4,
+      "pages": 3,
+      "peak_mb": 4.578125,
+      "rendered": null,
+      "text": null,
+      "text_ok": null,
+      "total_ms": 0.4,
+      "verdict": "corect"
+    }
+  },
+  {
+    "expect": {
+      "form_fields": {
+        "Acord": "Yes",
+        "Nume": "Ion Popescu"
+      },
+      "kind": "pdf",
+      "pages": 1,
+      "path": "files/pdf/formular.pdf",
+      "producer": "generate.py",
+      "sha256": "a29d083044b8ff871a51179242aec5ac18a924b822d98a4cb544ab43f896fcd5",
+      "size": 1105
+    },
+    "file": "files/pdf/formular.pdf",
+    "hayro": {
+      "error": null,
+      "ok": true,
+      "open_ms": 0.1,
+      "pages": 1,
+      "peak_mb": 7.21484375,
+      "rendered": 1,
+      "text": null,
+      "text_ok": null,
+      "total_ms": 2.5,
+      "verdict": "corect"
+    },
+    "lopdf": {
+      "error": null,
+      "ok": true,
+      "open_ms": 0.2,
+      "pages": 1,
+      "peak_mb": 4.60546875,
+      "rendered": null,
+      "text": "Nume:\nAcord:\n",
+      "text_ok": true,
+      "total_ms": 0.3,
+      "verdict": "corect"
+    },
+    "pdf-extract": {
+      "error": null,
+      "ok": true,
+      "open_ms": 0.5,
+      "pages": 1,
+      "peak_mb": 4.734375,
+      "rendered": null,
+      "text": "\n\nNume:\n\nAcord:",
+      "text_ok": true,
+      "total_ms": 0.5,
+      "verdict": "corect"
+    },
+    "pdf-rs": {
+      "error": null,
+      "ok": true,
+      "open_ms": 0.2,
+      "pages": 1,
+      "peak_mb": 4.50390625,
+      "rendered": null,
+      "text": null,
+      "text_ok": null,
+      "total_ms": 0.3,
+      "verdict": "corect"
+    }
+  },
+  {
+    "expect": {
+      "images": 1,
+      "kind": "pdf",
+      "pages": 1,
+      "path": "files/pdf/cu-imagine.pdf",
+      "producer": "generate.py",
+      "sha256": "7a2f801f18792c423151c986fae320416afa692144cecb276c3ec74ba306a1d9",
+      "size": 9075,
+      "text": [
+        "Imagine 64x64"
+      ]
+    },
+    "file": "files/pdf/cu-imagine.pdf",
+    "hayro": {
+      "error": null,
+      "ok": true,
+      "open_ms": 0.2,
+      "pages": 1,
+      "peak_mb": 7.37890625,
+      "rendered": 1,
+      "text": null,
+      "text_ok": null,
+      "total_ms": 4.5,
+      "verdict": "corect"
+    },
+    "lopdf": {
+      "error": null,
+      "ok": true,
+      "open_ms": 0.2,
+      "pages": 1,
+      "peak_mb": 4.54296875,
+      "rendered": null,
+      "text": "Imagine 64x64\n",
+      "text_ok": true,
+      "total_ms": 0.3,
+      "verdict": "corect"
+    },
+    "pdf-extract": {
+      "error": null,
+      "ok": true,
+      "open_ms": 0.9,
+      "pages": 1,
+      "peak_mb": 4.7109375,
+      "rendered": null,
+      "text": "\n\nImagine 64x64",
+      "text_ok": true,
+      "total_ms": 0.9,
+      "verdict": "corect"
+    },
+    "pdf-rs": {
+      "error": null,
+      "ok": true,
+      "open_ms": 0.1,
+      "pages": 1,
+      "peak_mb": 4.4765625,
+      "rendered": null,
+      "text": null,
+      "text_ok": null,
+      "total_ms": 0.2,
+      "verdict": "corect"
+    }
+  },
+  {
+    "expect": {
+      "kind": "pdf",
+      "links": 1,
+      "metadata": {
+        "Author": "K.G.B.",
+        "Title": "Test semne de carte"
+      },
+      "outlines": [
+        "Capitolul 1",
+        "Capitolul 2",
+        "Capitolul 3"
+      ],
+      "pages": 3,
+      "path": "files/pdf/semne-de-carte-si-legaturi.pdf",
+      "producer": "generate.py",
+      "sha256": "2183baf8166cb4f8167d1a63009977ec2dd9ef7c3132ea081598ac50ec385db9",
+      "size": 1983
+    },
+    "file": "files/pdf/semne-de-carte-si-legaturi.pdf",
+    "hayro": {
+      "error": null,
+      "ok": true,
+      "open_ms": 0.1,
+      "pages": 3,
+      "peak_mb": 7.28125,
+      "rendered": 3,
+      "text": null,
+      "text_ok": null,
+      "total_ms": 6.7,
+      "verdict": "corect"
+    },
+    "lopdf": {
+      "error": null,
+      "ok": true,
+      "open_ms": 0.3,
+      "pages": 3,
+      "peak_mb": 4.60546875,
+      "rendered": null,
+      "text": "Capitolul 1\nLegatura catre capitolul 3\nCapitolul 2\nCapitolul 3\n",
+      "text_ok": true,
+      "total_ms": 0.6,
+      "verdict": "corect"
+    },
+    "pdf-extract": {
+      "error": null,
+      "ok": true,
+      "open_ms": 0.8,
+      "pages": 3,
+      "peak_mb": 4.765625,
+      "rendered": null,
+      "text": "\n\nCapitolul 1\nLegatura catre capitolul 3\n\n\nCapitolul 2\n\n\nCapitolul 3",
+      "text_ok": true,
+      "total_ms": 0.9,
+      "verdict": "corect"
+    },
+    "pdf-rs": {
+      "error": null,
+      "ok": true,
+      "open_ms": 0.2,
+      "pages": 3,
+      "peak_mb": 4.48828125,
+      "rendered": null,
+      "text": null,
+      "text_ok": null,
+      "total_ms": 0.3,
+      "verdict": "corect"
+    }
+  },
+  {
+    "expect": {
+      "broken": true,
+      "kind": "pdf",
+      "note": "tăiat la 60%: fără xref, fără %%EOF",
+      "path": "files/pdf/stricat-trunchiat.pdf",
+      "producer": "generate.py",
+      "sha256": "61e05eddd98d683075c4ce3e8f943092240f31011be4508ae1cbe27aec7191a4",
+      "size": 2032
+    },
+    "file": "files/pdf/stricat-trunchiat.pdf",
+    "hayro": {
+      "error": null,
+      "ok": true,
+      "open_ms": 0.2,
+      "pages": 7,
+      "peak_mb": 7.28125,
+      "rendered": 7,
+      "text": null,
+      "text_ok": null,
+      "total_ms": 13.9,
+      "verdict": "GREȘIT"
+    },
+    "lopdf": {
+      "error": null,
+      "ok": true,
+      "open_ms": 0.6,
+      "pages": 10,
+      "peak_mb": 5.12109375,
+      "rendered": null,
+      "text": "Pagina 1\nPagina 2\nPagina 3\nPagina 4\nPagina 5\nPagina 6\n",
+      "text_ok": true,
+      "total_ms": 0.9,
+      "verdict": "GREȘIT"
+    },
+    "pdf-extract": {
+      "error": "PDF error: failed parsing cross reference table: invalid start value",
+      "ok": false,
+      "open_ms": 0.0,
+      "pages": null,
+      "peak_mb": 4.08203125,
+      "rendered": null,
+      "text": null,
+      "text_ok": null,
+      "total_ms": 0.1,
+      "verdict": "corect"
+    },
+    "pdf-rs": {
+      "error": "Try at C:\\Users\\krono\\.cargo\\registry\\src\\index.crates.io-1949cf8c6b5b557f\\pdf-0.10.0\\src\\file.rs:175:31:, caused by\n  Try at C:\\Users\\krono\\.cargo\\registry\\src\\index.crates.io-1949cf8c6b5b557f\\pdf-0.10.0\\src\\backend.rs:54:27:, caused by\n  Try at C:\\Users\\krono\\.cargo\\registry\\src\\index.crates.io-1949cf8c6b5b557f\\pdf-0.10.0\\src\\backend.rs:48:9:, caused by\n  'startxref' not found.",
+      "ok": false,
+      "open_ms": 0.0,
+      "pages": null,
+      "peak_mb": 4.06640625,
+      "rendered": null,
+      "text": null,
+      "text_ok": null,
+      "total_ms": 0.1,
+      "verdict": "corect"
+    }
+  },
+  {
+    "expect": {
+      "broken": true,
+      "kind": "pdf",
+      "note": "octeți alterați în primele obiecte",
+      "path": "files/pdf/stricat-octeti.pdf",
+      "producer": "generate.py",
+      "sha256": "202c7f5c8f32685dede326b0dd9bf9206123a363f7634ce3a59c3e4e182d7af7",
+      "size": 3388
+    },
+    "file": "files/pdf/stricat-octeti.pdf",
+    "hayro": {
+      "error": null,
+      "ok": true,
+      "open_ms": 0.2,
+      "pages": 9,
+      "peak_mb": 7.328125,
+      "rendered": 9,
+      "text": null,
+      "text_ok": null,
+      "total_ms": 17.1,
+      "verdict": "GREȘIT"
+    },
+    "lopdf": {
+      "error": null,
+      "ok": true,
+      "open_ms": 0.6,
+      "pages": 10,
+      "peak_mb": 5.08984375,
+      "rendered": null,
+      "text": "Pagina 3\nPagina 4\nPagina 5\nPagina 6\nPagina 7\nPagina 8\nPagina 9\nPagina 10\n",
+      "text_ok": true,
+      "total_ms": 0.9,
+      "verdict": "GREȘIT"
+    },
+    "pdf-extract": {
+      "error": null,
+      "ok": true,
+      "open_ms": 1.6,
+      "pages": 9,
+      "peak_mb": 4.76953125,
+      "rendered": null,
+      "text": "\n\n\nPagina 3\n\n\nPagina 4\n\n\nPagina 5\n\n\nPagina 6\n\n\nPagina 7\n\n\nPagina 8\n\n\nPagina 9\n\n\nPagina 10",
+      "text_ok": true,
+      "total_ms": 1.6,
+      "verdict": "GREȘIT"
+    },
+    "pdf-rs": {
+      "error": "Shared, caused by\n  Try at C:\\Users\\krono\\.cargo\\registry\\src\\index.crates.io-1949cf8c6b5b557f\\pdf-0.10.0\\src\\file.rs:261:29:\n    r = PlainRef { id: 4, gen: 0 }\n, caused by\n  Try at C:\\Users\\krono\\.cargo\\registry\\src\\index.crates.io-1949cf8c6b5b557f\\pdf-0.10.0\\src\\parser\\parse_object.rs:35:9:, caused by\n  Unexpected token 'e4dobj' at 125 - expected 'endobj'",
+      "ok": false,
+      "open_ms": 0.2,
+      "pages": null,
+      "peak_mb": 4.34765625,
+      "rendered": null,
+      "text": null,
+      "text_ok": null,
+      "total_ms": 0.2,
+      "verdict": "corect"
+    }
+  },
+  {
+    "expect": {
+      "broken": true,
+      "kind": "pdf",
+      "note": "offseturile din xref sunt deplasate; un cititor tolerant reconstruiește",
+      "pages": 10,
+      "path": "files/pdf/stricat-xref-gresit.pdf",
+      "producer": "generate.py",
+      "recoverable": true,
+      "sha256": "7385ae649c8202c947caa54aded8f4880c7698a0a3ea14b11ed008493f0e8a2b",
+      "size": 3388
+    },
+    "file": "files/pdf/stricat-xref-gresit.pdf",
+    "hayro": {
+      "error": null,
+      "ok": true,
+      "open_ms": 0.2,
+      "pages": 10,
+      "peak_mb": 7.34375,
+      "rendered": 10,
+      "text": null,
+      "text_ok": null,
+      "total_ms": 26.7,
+      "verdict": "corect"
+    },
+    "lopdf": {
+      "error": null,
+      "ok": true,
+      "open_ms": 0.8,
+      "pages": 10,
+      "peak_mb": 5.140625,
+      "rendered": null,
+      "text": "Pagina 1\nPagina 2\nPagina 3\nPagina 4\nPagina 5\nPagina 6\nPagina 7\nPagina 8\nPagina 9\nPagina 10\n",
+      "text_ok": true,
+      "total_ms": 1.1,
+      "verdict": "corect"
+    },
+    "pdf-extract": {
+      "error": null,
+      "ok": true,
+      "open_ms": 0.1,
+      "pages": 0,
+      "peak_mb": 4.23046875,
+      "rendered": null,
+      "text": "",
+      "text_ok": true,
+      "total_ms": 0.1,
+      "verdict": "GREȘIT"
+    },
+    "pdf-rs": {
+      "error": "Try at C:\\Users\\krono\\.cargo\\registry\\src\\index.crates.io-1949cf8c6b5b557f\\pdf-0.10.0\\src\\file.rs:801:23:, caused by\n  Can't parse field root of struct RcRef < Catalog >, caused by\n  Shared, caused by\n  Try at C:\\Users\\krono\\.cargo\\registry\\src\\index.crates.io-1949cf8c6b5b557f\\pdf-0.10.0\\src\\file.rs:261:29:\n    r = PlainRef { id: 1, gen: 0 }\n, caused by\n  Error parsing from string, caused by\n  invalid digit found in string",
+      "ok": false,
+      "open_ms": 0.0,
+      "pages": null,
+      "peak_mb": 4.21875,
+      "rendered": null,
+      "text": null,
+      "text_ok": null,
+      "total_ms": 0.2,
+      "verdict": "GREȘIT"
+    }
+  },
+  {
+    "expect": {
+      "broken": true,
+      "kind": "pdf",
+      "path": "files/pdf/nu-e-pdf.pdf",
+      "producer": "generate.py",
+      "sha256": "4ed7ec9527f2e23ff503d568fe1a41b82cf19d00c2e558bff26dc4bb1463c69d",
+      "size": 37
+    },
+    "file": "files/pdf/nu-e-pdf.pdf",
+    "hayro": {
+      "error": "Invalid",
+      "ok": false,
+      "open_ms": 0.0,
+      "pages": null,
+      "peak_mb": 4.0390625,
+      "rendered": null,
+      "text": null,
+      "text_ok": null,
+      "total_ms": 0.0,
+      "verdict": "corect"
+    },
+    "lopdf": {
+      "error": "couldn't parse input",
+      "ok": false,
+      "open_ms": 0.0,
+      "pages": null,
+      "peak_mb": 4.0859375,
+      "rendered": null,
+      "text": null,
+      "text_ok": null,
+      "total_ms": 0.1,
+      "verdict": "corect"
+    },
+    "pdf-extract": {
+      "error": "PDF error: couldn't parse input: invalid file header",
+      "ok": false,
+      "open_ms": 0.0,
+      "pages": null,
+      "peak_mb": 4.0546875,
+      "rendered": null,
+      "text": null,
+      "text_ok": null,
+      "total_ms": 0.0,
+      "verdict": "corect"
+    },
+    "pdf-rs": {
+      "error": "file header is missing",
+      "ok": false,
+      "open_ms": 0.0,
+      "pages": null,
+      "peak_mb": 4.03125,
+      "rendered": null,
+      "text": null,
+      "text_ok": null,
+      "total_ms": 0.0,
+      "verdict": "corect"
+    }
+  },
+  {
+    "expect": {
+      "broken": true,
+      "kind": "pdf",
+      "path": "files/pdf/gol.pdf",
+      "producer": "generate.py",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0
+    },
+    "file": "files/pdf/gol.pdf",
+    "hayro": {
+      "error": "Invalid",
+      "ok": false,
+      "open_ms": 0.0,
+      "pages": null,
+      "peak_mb": 4.03515625,
+      "rendered": null,
+      "text": null,
+      "text_ok": null,
+      "total_ms": 0.0,
+      "verdict": "corect"
+    },
+    "lopdf": {
+      "error": "couldn't parse input",
+      "ok": false,
+      "open_ms": 0.0,
+      "pages": null,
+      "peak_mb": 4.06640625,
+      "rendered": null,
+      "text": null,
+      "text_ok": null,
+      "total_ms": 0.0,
+      "verdict": "corect"
+    },
+    "pdf-extract": {
+      "error": "PDF error: couldn't parse input: invalid file header",
+      "ok": false,
+      "open_ms": 0.0,
+      "pages": null,
+      "peak_mb": 4.05859375,
+      "rendered": null,
+      "text": null,
+      "text_ok": null,
+      "total_ms": 0.0,
+      "verdict": "corect"
+    },
+    "pdf-rs": {
+      "error": "file header is missing",
+      "ok": false,
+      "open_ms": 0.0,
+      "pages": null,
+      "peak_mb": 4.02734375,
+      "rendered": null,
+      "text": null,
+      "text_ok": null,
+      "total_ms": 0.0,
+      "verdict": "corect"
+    }
+  },
+  {
+    "expect": {
+      "broken": true,
+      "hostile": true,
+      "kind": "pdf",
+      "note": "200.000 de tablouri imbricate: un parser recursiv fără limită se prăbușește",
+      "path": "files/pdf/ostil-imbricare-adanca.pdf",
+      "producer": "generate.py",
+      "sha256": "ce7e4e5c70fd57393920b5a1325c3e41ad64e740be66c48e276932be99708581",
+      "size": 400246
+    },
+    "file": "files/pdf/ostil-imbricare-adanca.pdf",
+    "hayro": {
+      "error": "Invalid",
+      "ok": false,
+      "open_ms": 0.0,
+      "pages": null,
+      "peak_mb": 4.984375,
+      "rendered": null,
+      "text": null,
+      "text_ok": null,
+      "total_ms": 0.6,
+      "verdict": "corect"
+    },
+    "lopdf": {
+      "error": null,
+      "ok": true,
+      "open_ms": 0.9,
+      "pages": 0,
+      "peak_mb": 4.92578125,
+      "rendered": null,
+      "text": "",
+      "text_ok": true,
+      "total_ms": 0.9,
+      "verdict": "GREȘIT"
+    },
+    "pdf-extract": {
+      "error": null,
+      "ok": true,
+      "open_ms": 0.3,
+      "pages": 0,
+      "peak_mb": 4.82421875,
+      "rendered": null,
+      "text": "",
+      "text_ok": true,
+      "total_ms": 0.3,
+      "verdict": "GREȘIT"
+    },
+    "pdf-rs": {
+      "error": "Try at C:\\Users\\krono\\.cargo\\registry\\src\\index.crates.io-1949cf8c6b5b557f\\pdf-0.10.0\\src\\file.rs:801:23:, caused by\n  Can't parse field root of struct RcRef < Catalog >, caused by\n  Shared, caused by\n  Try at C:\\Users\\krono\\.cargo\\registry\\src\\index.crates.io-1949cf8c6b5b557f\\pdf-0.10.0\\src\\file.rs:261:29:\n    r = PlainRef { id: 1, gen: 0 }\n, caused by\n  Try at C:\\Users\\krono\\.cargo\\registry\\src\\index.crates.io-1949cf8c6b5b557f\\pdf-0.10.0\\src\\parser\\parse_object.rs:26:15:, caused by\n  Try at C:\\Users\\krono\\.cargo\\registry\\src\\index.crates.io-1949cf8c6b5b557f\\pdf-0.10.0\\src\\parser\\mod.rs:151:20:, caused by\n  Try at C:\\Users\\krono\\.cargo\\registry\\src\\index.crates.io-1949cf8c6b5b557f\\pdf-0.10.0\\src\\parser\\mod.rs:81:23:, caused by\n  Try at C:\\Users\\krono\\.cargo\\registry\\src\\index.crates.io-1949cf8c6b5b557f\\pdf-0.10.0\\src\\parser\\mod.rs:231:27:, caused by\n  Try at C:\\Users\\krono\\.cargo\\registry\\src\\index.crates.io-1949cf8c6b5b557f\\pdf-0.10.0\\src\\parser\\mod.rs:231:27:, caused by\n  Try at C:\\Users\\krono\\.cargo\\registry\\src\\index.crates.io-1949cf8c6b5b557f\\pdf-0.10.0\\src\\parser\\mod.rs:231:27:, caused by\n  Try at C:\\Users\\krono\\.cargo\\registry\\src\\index.crates.io-1949cf8c6b5b557f\\pdf-0.10.0\\src\\parser\\mod.rs:231:27:, caused by\n  Try at C:\\Users\\krono\\.cargo\\registry\\src\\index.crates.io-1949cf8c6b5b557f\\pdf-0.10.0\\src\\parser\\mod.rs:231:27:, caused by\n  Try at C:\\Users\\krono\\.cargo\\registry\\src\\index.crates.io-1949cf8c6b5b557f\\pdf-0.10.0\\src\\parser\\mod.rs:231:27:, caused by\n  Try at C:\\Users\\krono\\.cargo\\registry\\src\\index.crates.io-1949cf8c6b5b557f\\pdf-0.10.0\\src\\parser\\mod.rs:231:27:, caused by\n  Try at C:\\Users\\krono\\.cargo\\registry\\src\\index.crates.io-1949cf8c6b5b557f\\pdf-0.10.0\\src\\parser\\mod.rs:231:27:, caused by\n  Try at C:\\Users\\krono\\.cargo\\registry\\src\\index.crates.io-1949cf8c6b5b557f\\pdf-0.10.0\\src\\parser\\mod.rs:231:27:, caused by\n  Try at C:\\Users\\krono\\.cargo\\registry\\src\\index.crates.io-1949cf8c6b5b557f\\pdf-0.10.0\\src\\parser\\mod.rs:231:27:, caused by\n  Try at C:\\Users\\krono\\.cargo\\registry\\src\\index.crates.io-1949cf8c6b5b557f\\pdf-0.10.0\\src\\parser\\mod.rs:231:27:, caused by\n  Try at C:\\Users\\krono\\.cargo\\registry\\src\\index.crates.io-1949cf8c6b5b557f\\pdf-0.10.0\\src\\parser\\mod.rs:231:27:, caused by\n  Try at C:\\Users\\krono\\.cargo\\registry\\src\\index.crates.io-1949cf8c6b5b557f\\pdf-0.10.0\\src\\parser\\mod.rs:231:27:, caused by\n  Try at C:\\Users\\krono\\.cargo\\registry\\src\\index.crates.io-1949cf8c6b5b557f\\pdf-0.10.0\\src\\parser\\mod.rs:231:27:, caused by\n  Try at C:\\Users\\krono\\.cargo\\registry\\src\\index.crates.io-1949cf8c6b5b557f\\pdf-0.10.0\\src\\parser\\mod.rs:231:27:, caused by\n  Try at C:\\Users\\krono\\.cargo\\registry\\src\\index.crates.io-1949cf8c6b5b557f\\pdf-0.10.0\\src\\parser\\mod.rs:231:27:, caused by\n  Try at C:\\Users\\krono\\.cargo\\registry\\src\\index.crates.io-1949cf8c6b5b557f\\pdf-0.10.0\\src\\parser\\mod.rs:231:27:, caused by\n  Try at C:\\Users\\krono\\.cargo\\registry\\src\\index.crates.io-1949cf8c6b5b557f\\pdf-0.10.0\\src\\parser\\mod.rs:231:27:, caused by\n  Try at C:\\Users\\krono\\.cargo\\registry\\src\\index.crates.io-1949cf8c6b5b557f\\pdf-0.10.0\\src\\parser\\mod.rs:231:27:, caused by\n  Max nesting depth reached",
+      "ok": false,
+      "open_ms": 0.0,
+      "pages": null,
+      "peak_mb": 5.015625,
+      "rendered": null,
+      "text": null,
+      "text_ok": null,
+      "total_ms": 0.2,
+      "verdict": "corect"
+    }
+  },
+  {
+    "expect": {
+      "kind": "pdf",
+      "large": true,
+      "pages": 500,
+      "path": "large/mare-500-pagini.pdf",
+      "producer": "generate.py",
+      "sha256": "54bee0defa45ed84e7f98f06661ee6b50d8ea324fe23fa783bb1cc54fd606db7",
+      "size": 211914,
+      "text": [
+        "Pagina 500 din 500"
+      ]
+    },
+    "file": "large/mare-500-pagini.pdf",
+    "hayro": {
+      "error": null,
+      "ok": true,
+      "open_ms": 1.2,
+      "pages": 500,
+      "peak_mb": 10.28515625,
+      "rendered": 50,
+      "text": null,
+      "text_ok": null,
+      "total_ms": 125.6,
+      "verdict": "corect"
+    },
+    "lopdf": {
+      "error": null,
+      "ok": true,
+      "open_ms": 2.2,
+      "pages": 500,
+      "peak_mb": 9.10546875,
+      "rendered": null,
+      "text": "Pagina 1 din 500\nRand de control 31\nLinie 0 pe pagina 1\nLinie 1 pe pagina 1\nLinie 2 pe pagina 1\nLinie 3 pe pagina 1\nLini",
+      "text_ok": true,
+      "total_ms": 17.0,
+      "verdict": "corect"
+    },
+    "pdf-extract": {
+      "error": null,
+      "ok": true,
+      "open_ms": 201.1,
+      "pages": 500,
+      "peak_mb": 8.10546875,
+      "rendered": null,
+      "text": "\n\nPagina 1 din 500\nRand de control 31\nLinie 0 pe pagina 1\nLinie 1 pe pagina 1\nLinie 2 pe pagina 1\nLinie 3 pe pagina 1\nLi",
+      "text_ok": true,
+      "total_ms": 201.3,
+      "verdict": "corect"
+    },
+    "pdf-rs": {
+      "error": null,
+      "ok": true,
+      "open_ms": 0.5,
+      "pages": 500,
+      "peak_mb": 7.30078125,
+      "rendered": null,
+      "text": null,
+      "text_ok": null,
+      "total_ms": 11.2,
+      "verdict": "corect"
+    }
+  },
+  {
+    "expect": {
+      "extract": {
+        "data": "07.11.2026",
+        "numar": "FCT-0042",
+        "total": "1.673,14",
+        "tva": "267,14"
+      },
+      "fonts_embedded": true,
+      "kind": "pdf",
+      "note": "fonturi TrueType încorporate (subset), diacritice românești cu virgulă; ținta pasului 3.9",
+      "pages": 1,
+      "path": "files/edge/factura.pdf",
+      "producer": "Microsoft Edge --print-to-pdf",
+      "sha256": "d90214af20821d026b692fb8a6bc572f4d32e8abdcb13abde048d35cef2bc211",
+      "size": 45207,
+      "text": [
+        "FACTURĂ FISCALĂ nr. FCT-0042",
+        "Școala Gimnazială",
+        "1.673,14 lei"
+      ]
+    },
+    "file": "files/edge/factura.pdf",
+    "hayro": {
+      "error": null,
+      "ok": true,
+      "open_ms": 0.1,
+      "pages": 1,
+      "peak_mb": 8.37890625,
+      "rendered": 1,
+      "text": null,
+      "text_ok": null,
+      "total_ms": 5.5,
+      "verdict": "corect"
+    },
+    "lopdf": {
+      "error": null,
+      "ok": true,
+      "open_ms": 1.0,
+      "pages": 1,
+      "peak_mb": 6.63671875,
+      "rendered": null,
+      "text": "FACTURĂ FISCALĂ nr. FCT-0042\nData emiterii: 07.11.2026 · Scadență: 07.12.2026\nFurnizor:\n Exemplu Țesături Șerban SRL, CU",
+      "text_ok": true,
+      "total_ms": 2.4,
+      "verdict": "corect"
+    },
+    "pdf-extract": {
+      "error": null,
+      "ok": true,
+      "open_ms": 2.9,
+      "pages": 1,
+      "peak_mb": 5.9765625,
+      "rendered": null,
+      "text": "\n\nFACTURĂ FISCALĂ nr. FCT-0042\n\nData emi teri i : 0 7 . 1 1 . 2 0 2 6  · Scadență: 0 7 . 1 2 . 2 0 2 6\n\nFurni zor: Exemp",
+      "text_ok": false,
+      "total_ms": 2.9,
+      "verdict": "corect"
+    },
+    "pdf-rs": {
+      "error": null,
+      "ok": true,
+      "open_ms": 0.3,
+      "pages": 1,
+      "peak_mb": 4.6015625,
+      "rendered": null,
+      "text": null,
+      "text_ok": null,
+      "total_ms": 0.4,
+      "verdict": "corect"
+    }
+  },
+  {
+    "expect": {
+      "fonts_embedded": true,
+      "kind": "pdf",
+      "note": "grafic vectorial SVG + tabel pe pagina a doua",
+      "pages": 2,
+      "path": "files/edge/raport-grafic.pdf",
+      "producer": "Microsoft Edge --print-to-pdf",
+      "sha256": "6cf16ccd4894869b2bda2bdb348142f0d2eb6812356f2a15d7b590f86d47109e",
+      "size": 34115,
+      "text": [
+        "Raport trimestrial de vânzări",
+        "Septembrie",
+        "Tabel detaliat"
+      ]
+    },
+    "file": "files/edge/raport-grafic.pdf",
+    "hayro": {
+      "error": null,
+      "ok": true,
+      "open_ms": 0.1,
+      "pages": 2,
+      "peak_mb": 8.22265625,
+      "rendered": 2,
+      "text": null,
+      "text_ok": null,
+      "total_ms": 6.3,
+      "verdict": "corect"
+    },
+    "lopdf": {
+      "error": null,
+      "ok": true,
+      "open_ms": 0.7,
+      "pages": 2,
+      "peak_mb": 5.8203125,
+      "rendered": null,
+      "text": "Raport trimestrial de vânzări\nGraficul de mai jos este vectorial (SVG), deci textul etichetelor rămâne text în PDF.\nIuli",
+      "text_ok": true,
+      "total_ms": 1.6,
+      "verdict": "corect"
+    },
+    "pdf-extract": {
+      "error": null,
+      "ok": true,
+      "open_ms": 2.7,
+      "pages": 2,
+      "peak_mb": 5.125,
+      "rendered": null,
+      "text": "\n\nRaport trimestrial de vânzări\n\nGrafi cul  de mai  j os este vectori al  ( SVG) ,  deci  textul  eti chetel or rămâne t",
+      "text_ok": true,
+      "total_ms": 2.7,
+      "verdict": "corect"
+    },
+    "pdf-rs": {
+      "error": null,
+      "ok": true,
+      "open_ms": 0.2,
+      "pages": 2,
+      "peak_mb": 4.6015625,
+      "rendered": null,
+      "text": null,
+      "text_ok": null,
+      "total_ms": 0.4,
+      "verdict": "corect"
+    }
+  }
+]

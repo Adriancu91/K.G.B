@@ -1,0 +1,21 @@
+[package]
+name = "kgb-pdf-spike"
+version = "0.1.0"
+edition = "2024"
+publish = false
+
+# Spike S4 (Etapa 3, pasul 3.2): candidați PDF evaluați pe testdata/etapa3.
+[dependencies]
+lopdf = "0.47.0"
+pdf = "0.10.0"
+pdf-extract = "0.12.1"
+hayro = { version = "0.9.0", features = ["embed-fonts"] }
+serde = { version = "1.0.229", features = ["derive"] }
+serde_json = "1.0.154"
+sha2 = "0.10"
+
+[target."cfg(windows)".dependencies]
+windows-sys = { version = "0.61.2", features = ["Win32_System_ProcessStatus", "Win32_System_Threading", "Win32_Foundation"] }
+
+[profile.release]
+debug = false

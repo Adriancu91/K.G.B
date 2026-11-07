@@ -55,6 +55,23 @@ Verificat 6 nov. 2026: `cargo metadata` (267 crates, target `x86_64-pc-windows-m
 
 **MPL-2.0 — acceptat (D-021):** `attohttpc` 0.30.1 (client HTTP mic, prin `portmapper` → `igd-next`, pentru UPnP pe router). Aceeași situație ca la Tauri (D-021).
 
+## spikes/s4-pdf (prototip, nu se distribuie)
+Verificat 7 nov. 2026:
+- `cargo metadata` (182 de crate-uri, target `x86_64-pc-windows-msvc`): **niciun motor DB**, nicio licență GPL/AGPL;
+- `cargo-deny` în CI.
+
+| Dependență | Versiune | Licență | Rol |
+|---|---|---|---|
+| lopdf | 0.47.0 | MIT | citire/modificare/salvare PDF (ales, D-032) |
+| hayro (+ hayro-syntax, -interpret, -font, ...) | 0.9.0 | Apache-2.0 OR MIT | randare pagini (ales pentru miniaturi/teste) |
+| ↳ fonturi standard Foxit (în hayro-font) | — | BSD-3-Clause (PDFium) | **cer atribuire** în notices |
+| ↳ profiluri ICC (în hayro-interpret) | — | CC0-1.0 | — |
+| vello_cpu, skrifa, read-fonts | 0.3 / 0.49 / 0.46 | Apache-2.0 OR MIT | rasterizare, fonturi |
+| pdf (pdf-rs) | 0.10.0 | MIT | cititor strict, doar în teste |
+| pdf-extract | 0.12.1 | MIT | evaluat, respins (spații false în text) |
+| yoke, zerofrom (tranzitive) | 0.8 / 0.1 | Unicode-3.0 | permisă în `deny.toml` |
+| **pdfjs-dist** (npm) | 6.4.299 | Apache-2.0 | afișare PDF în fereastră (ales); fără dependențe obligatorii (`@napi-rs/canvas` e opțional, neinstalat) |
+
 ## Cod de produs (Etapa 1): `crates/kgb-store`, `crates/kgb-core`, `app/`
 Verificat automat de `cargo-deny` în CI pe workspace-ul rădăcină (`Cargo.toml`): licențe, crate-uri DB interzise (D-018), vulnerabilități.
 

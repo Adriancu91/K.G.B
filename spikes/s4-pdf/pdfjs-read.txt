@@ -1,0 +1,21 @@
+Require stack:
+- C:\Users\krono\Desktop\Kronos-Global-Business\spikes\s4-pdf\pdfjs\node_modules\pdfjs-dist\legacy\build\pdf.mjs".
+files/pdf/simplu-1-pagina.pdf                 corect  pagini=1     text=true       73.9 ms 
+files/pdf/multipagina-50.pdf                  corect  pagini=50    text=true       46.9 ms 
+files/pdf/rotite-si-formate.pdf               corect  pagini=4     text=true        3.9 ms 
+files/pdf/actualizare-incrementala.pdf        corect  pagini=3     text=true        1.9 ms 
+files/pdf/xref-stream-pdf15.pdf               corect  pagini=3     text=true        5.0 ms 
+files/pdf/formular.pdf                        corect  pagini=1     text=true        1.7 ms 
+files/pdf/cu-imagine.pdf                      corect  pagini=1     text=true        1.7 ms 
+files/pdf/semne-de-carte-si-legaturi.pdf      corect  pagini=3     text=true        2.5 ms 
+files/pdf/stricat-trunchiat.pdf               corect  pagini=null  text=-           2.1 ms Invalid PDF structure.
+files/pdf/stricat-octeti.pdf                  GREȘIT  pagini=2     text=true        2.1 ms Page dictionary kid reference points to wrong type of object.
+files/pdf/stricat-xref-gresit.pdf             corect  pagini=10    text=true        8.7 ms 
+files/pdf/nu-e-pdf.pdf                        corect  pagini=null  text=-           0.5 ms Invalid PDF structure.
+files/pdf/gol.pdf                             corect  pagini=null  text=-           0.2 ms The PDF file is empty, i.e. its size is zero bytes.
+files/pdf/ostil-imbricare-adanca.pdf          corect  pagini=null  text=-          11.1 ms Invalid Root reference.
+large/mare-500-pagini.pdf                     corect  pagini=500   text=true       68.8 ms 
+files/edge/factura.pdf                        corect  pagini=1     text=true       20.9 ms 
+files/edge/raport-grafic.pdf                  corect  pagini=2     text=true        8.9 ms 
+
+16/17 corecte; memorie la final: 88 MB RSS

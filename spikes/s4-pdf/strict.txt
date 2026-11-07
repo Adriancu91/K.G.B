@@ -1,0 +1,17 @@
+files/pdf/simplu-1-pagina.pdf                 corect  intact, 1 pagini
+files/pdf/multipagina-50.pdf                  corect  intact, 50 pagini
+files/pdf/rotite-si-formate.pdf               corect  intact, 4 pagini
+files/pdf/actualizare-incrementala.pdf        corect  intact, 3 pagini
+files/pdf/xref-stream-pdf15.pdf               corect  intact, 3 pagini
+files/pdf/formular.pdf                        corect  intact, 1 pagini
+files/pdf/cu-imagine.pdf                      corect  intact, 1 pagini
+files/pdf/semne-de-carte-si-legaturi.pdf      corect  intact, 3 pagini
+files/pdf/stricat-trunchiat.pdf               corect  refuzat: lipsește %%EOF la final (fișier trunchiat?)
+files/pdf/stricat-octeti.pdf                  corect  refuzat: obiectul 5 nu e la offsetul din xref
+files/pdf/stricat-xref-gresit.pdf             corect  refuzat: obiectul 1 nu e la offsetul din xref
+files/pdf/nu-e-pdf.pdf                        corect  refuzat: nu începe cu %PDF-
+files/pdf/gol.pdf                             corect  refuzat: nu începe cu %PDF-
+files/pdf/ostil-imbricare-adanca.pdf          corect  refuzat: documentul nu are nicio pagină
+large/mare-500-pagini.pdf                     corect  intact, 500 pagini
+files/edge/factura.pdf                        corect  intact, 1 pagini
+files/edge/raport-grafic.pdf                  corect  intact, 2 pagini
