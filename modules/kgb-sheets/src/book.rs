@@ -69,6 +69,14 @@ pub fn guard(data: &[u8], format: Format) -> Result<(), String> {
             MAX_UNPACKED >> 20
         ));
     }
+    // Every part of the archive carries a CRC32. Libraries check it only for
+    // the parts they read, so a damaged image or style part could otherwise
+    // be carried silently into a saved version (step 3.10). Check them all.
+    for i in 0..z.len() {
+        let mut e = z.by_index(i).map_err(|_| "fișierul este deteriorat".to_string())?;
+        std::io::copy(&mut e, &mut std::io::sink())
+            .map_err(|_| "fișierul este deteriorat (o parte a arhivei nu trece verificarea CRC)".to_string())?;
+    }
     Ok(())
 }
 

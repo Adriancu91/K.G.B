@@ -74,7 +74,7 @@ Interdicții permanente: fără baze de date (D-005, D-018), fără schimbări d
 - [x] 3.8 Import/export: import prin dialog (PDF, XLSX/XLSM/XLS/XLSB/ODS/CSV), export ca copie în formatul original, foaie → CSV (stil românesc sau standard, verificat prin reimport), CSV/ODS/XLS/XLSB/XLSM → .xlsx editabil (verificat celulă cu celulă; formulele altor formate devin valori); `ctx.export_bytes` în nucleu; 6 teste + e2e
 - [x] 3.9 Extragere inițială de date (D-040) `kgb.extract`: facturi din PDF cu text și foi de calcul; sursă (pagină/rând sau celulă), încredere verificată independent (total = net + TVA, cifra de control CUI, dată reală), confirmare obligatorie pentru tot ce nu e „sigur”, jurnal atomic, duplicate refuzate, registru exportabil CSV; fără OCR (D-035); 8 teste (158 de fișiere reale fără oprire) + e2e 8/8
 - [x] OCR în română: test tesseract.js + `ron` rulat cu acordul proprietarului (text corect cu diacritice ~0,6 s/pagină; tabele slabe → recunoaștere pe zone, pas viitor) — D-035
-- [ ] 3.10 Test de necorupere pe tot setul + fișiere stricate
+- [x] 3.10 Test de necorupere: 189 de fișiere (setul propriu + 162 reale) și 905 variante stricate. 0 originale modificate, 0 opriri ale aplicației; 533 de variante refuzate clar, 230 doar citire. Nucleul prinde oprirea neașteptată a oricărui modul; XLSX/ODS verificate CRC pe toate părțile. Formatele fără sume de control (CSV, PDF, XLS) sunt explicate în `docs/etapa3/NECORUPERE.md`
 - [ ] 🔒 3.11 Fișiere reale, fără date confidențiale, de la proprietar
 - [ ] 3.12 Raport Etapa 3 (`docs/ETAPA3_RAPORT.md`)
 - [ ] 🔒 3.13 Poarta Etapei 3

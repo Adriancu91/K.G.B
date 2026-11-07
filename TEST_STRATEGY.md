@@ -88,3 +88,7 @@ Pragurile de performanță sunt PROPUSE în ETAPA0_PLAN.md §3.2 și devin ofici
   - sume, date și CUI verificate;
   - **toate cele 158 de fișiere reale din corpus, fără nicio oprire a programului**.
 - `node app/e2e/extract.mjs <kgb-app.exe> <folder-capturi>`: modulul Extragere date în fereastra reală.
+- **Testul de necorupere (pasul 3.10):** `cargo test -p kgb-extract --test necorupere --release -- --nocapture`.
+  - Pe tot setul și pe corpus: originalul neatins, operația verificată, 5 variante stricate pe fiecare fișier.
+  - Rezultatele sunt în `docs/etapa3/NECORUPERE.md`.
+- `cargo test -p kgb-core --test module_panic`: oprirea neașteptată a unui modul devine o eroare înregistrată în audit, nu închiderea aplicației.

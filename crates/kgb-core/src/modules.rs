@@ -415,7 +415,32 @@ impl ModuleManager {
             ws,
             fingerprint,
         };
-        m.handle(&mut ctx, command, args)
+        // A module that panics (for example a library on a hostile file) must
+        // never close the app: the panic becomes an error and an audit entry.
+        // The store's writes are atomic batches, so nothing is left half-written.
+        let r = std::panic::catch_unwind(std::panic::AssertUnwindSafe(|| m.handle(&mut ctx, command, args)));
+        match r {
+            Ok(r) => r,
+            Err(p) => {
+                let what = p
+                    .downcast_ref::<&str>()
+                    .map(|s| s.to_string())
+                    .or_else(|| p.downcast_ref::<String>().cloned())
+                    .unwrap_or_default();
+                tracing::error!(module = id, command, "module panicked: {what}");
+                audit(
+                    ws,
+                    id,
+                    command,
+                    "eroare internă",
+                    &what.chars().take(200).collect::<String>(),
+                )?;
+                Err(CoreError::invalid(
+                    "modulul",
+                    "a întâlnit o eroare internă la această operație (fișier neobișnuit?); nimic nu a fost modificat",
+                ))
+            }
+        }
     }
 }
 
