@@ -45,7 +45,11 @@ fn err(e: impl std::fmt::Display) -> String {
 }
 
 fn builtin_modules() -> Vec<Box<dyn Module>> {
-    vec![Box::new(kgb_notes::Notes::new()), Box::new(kgb_pdf::Pdf::new())]
+    vec![
+        Box::new(kgb_notes::Notes::new()),
+        Box::new(kgb_pdf::Pdf::new()),
+        Box::new(kgb_sheets::Sheets::new()),
+    ]
 }
 
 fn known_profiles() -> Vec<&'static str> {

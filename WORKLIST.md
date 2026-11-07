@@ -69,7 +69,7 @@ Interdicții permanente: fără baze de date (D-005, D-018), fără schimbări d
 - [x] 3.3 Spike S5 — foi de calcul → D-033: calamine (citire, 0 prăbușiri pe XLSX reale), umya (salvare, 61/65 identice), IronCalc (formule, 95,9% ca Excel; 12/12 uzuale), rust_xlsxwriter (export); verificare anti-bombă zip proprie — `docs/spikes/S5_REZULTATE.md`
 - [x] 3.4 Documente versionate în spațiul de lucru (D-034): `kgb_core::documents` prin `files.own`; original neatins, versiune nouă la fiecare salvare, salvare depășită refuzată, export ca copie; 7 teste (25 opriri forțate: nicio versiune pe jumătate); 108 teste în total
 - [x] 3.5 Modulul PDF (beta) `kgb.pdf`: import prin dialog, miniaturi (hayro), afișare (pdf.js), rotire/scoatere/extragere/unire cu previzualizare și verificarea textului fiecărei pagini, versiuni + restaurare, export; deteriorate/criptate doar citire; 6 teste + e2e 20/20 (poarta 15/15, backup 8/8); installer 2,1 → 5,3 MB
-- [ ] 3.6 Modulul Foi de calcul (beta)
+- [x] 3.6 Modulul Foi de calcul (beta) `kgb.sheets`: XLSX/XLSM/XLS/XLSB/ODS/CSV (Windows-1250), tabel care încarcă doar rândurile vizibile (100k rânduri: deschidere ~0,6 s, salt la final ~0,3 s), editare XLSX cu previzualizare (ce se recalculează, ce s-ar pierde, ce formule nu se pot recalcula sigur — D-039), versiuni, export; bombă zip/parolă refuzate; 10 teste + e2e 18/18; installer 7,5 MB
 - [ ] 3.7 Șabloane (D-036)
 - [ ] 3.8 Import/export CSV/XLSX/PDF
 - [ ] 3.9 Extragere inițială de date (fără OCR, D-035)

@@ -66,6 +66,7 @@ Nucleul verifică **fiecare scriere** a modulului. O înregistrare greșită e r
 - **Catalog:** modulele `experimental` apar doar în versiunile de dinainte de lansare, marcate „experimental”. Modulele etapelor viitoare apar ca „Neimplementat — Etapa N” și nu pot fi activate.
 
 ## Fișiere din afara aplicației (Etapa 3)
+- Modulele `kgb.pdf` și `kgb.sheets` folosesc acest mecanism.
 - Un modul nu are acces la discul utilizatorului. Fișierul ales în dialogul sistemului e citit de aplicație (`module_import_file`, cu limita de 64 MB) și dat comenzii `import` a modulului, ca nume + conținut.
 - Exportul primește calea aleasă de utilizator în dialogul de salvare. Dialogul sistemului cere el confirmarea înainte de a înlocui un fișier existent.
 

@@ -34,3 +34,10 @@
   - interfața: `app/src/modules/pdf/` (pdf.js);
   - fișierele intră prin comanda aplicației `module_import_file` (dialogul sistemului) și ies prin export în calea aleasă.
   - Politica de securitate a ferestrei permite acum `worker-src 'self'` (lucrătorul pdf.js) și `wasm-unsafe-eval` (decodoarele de imagini din pdf.js). `eval` rămâne interzis.
+- **Modulul `modules/kgb-sheets`** (`kgb.sheets`, beta):
+  - logica:
+    - `book.rs`: citire, verificarea anti-bombă, CSV;
+    - `save.rs`: editare cu umya, recalculare IronCalc (D-039), verificarea rezultatului, lista pierderilor;
+  - interfața: `app/src/modules/sheets/`, un tabel care încarcă doar rândurile de pe ecran;
+  - modulul ține în memorie ultimul registru citit, ca derularea să nu recitească fișierul;
+  - IronCalc rulează pe un fir separat, cu limită de 30 s și protecție la panică.

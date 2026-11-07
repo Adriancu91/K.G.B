@@ -213,3 +213,12 @@ Deciziile DECIS se schimbă doar cu aprobarea explicită a proprietarului (Maste
   - `wasm-unsafe-eval`: decodoarele de imagini pdf.js sunt WebAssembly;
   - `img-src blob:`.
 - **Neschimbat:** `eval` rămâne interzis, iar rețeaua nu e permisă.
+
+### D-039 — Recalcularea formulelor la salvare: doar unde e sigură
+- **Data:** 7 nov. 2026 · **Statut:** DECIS (pasul 3.6, aplicare a regulii din D-033).
+- **Problema:** IronCalc calculează ca Excel ~96% din formulele obișnuite (S5). Dacă K.G.B. ar scrie orbește rezultatele lui, ar putea strica valori corecte calculate de alt program.
+- **Regula:** la salvare, K.G.B. calculează fișierul de două ori: așa cum a fost primit și după modificări.
+  - O formulă afectată de modificări primește valoarea nouă doar dacă, pe fișierul original, K.G.B. obținea exact valoarea salvată de celălalt program.
+  - Altfel își păstrează valoarea veche și e listată în previzualizare ca „nu poate fi recalculată sigur”.
+  - O formulă scrisă de utilizator primește valoarea calculată de K.G.B.
+- **Confirmare:** salvarea cu pierderi (grafice, imagini) sau cu formule nesigure cere confirmarea explicită a utilizatorului. Versiunile vechi rămân.

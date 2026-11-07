@@ -60,3 +60,13 @@ Pragurile de performanță sunt PROPUSE în ETAPA0_PLAN.md §3.2 și devin ofici
   - argumente greșite refuzate.
 - `node app/e2e/pdf.mjs <kgb-app.exe> <folder-capturi>`: modulul PDF în fereastra reală (20 de verificări).
   - Testul nu poate acționa dialogul de fișiere al sistemului. Apelează aceeași comandă (`module_import_file`) care primește rezultatul dialogului.
+- `cargo test -p kgb-sheets` (pasul 3.6) are 10 teste:
+  - valorile și formulele din setul propriu, datele afișate ca date, foile cu diacritice;
+  - fișierele stricate refuzate, bomba zip și fișierele protejate cu parolă refuzate înainte de orice bibliotecă;
+  - CSV în UTF-8 și Windows-1250, cu separatorul detectat;
+  - editarea cu recalculare și originalul neatins;
+  - funcțiile avansate păstrate;
+  - formulele care nu pot fi recalculate sigur își păstrează valoarea și sunt raportate;
+  - pierderile (grafice) anunțate și confirmate, din corpusul extern, dacă există;
+  - derularea pe 100.000 de rânduri, dacă fișierul mare există.
+- `node app/e2e/sheets.mjs <kgb-app.exe> <folder-capturi>`: modulul Foi de calcul în fereastra reală.

@@ -491,3 +491,77 @@ button.thumb {
 .dialog.wide {
   width: min(900px, 94vw);
 }
+
+/* ---------- Spreadsheets module ---------- */
+.sheet-tabs {
+  display: flex;
+  gap: 4px;
+  flex-wrap: wrap;
+  margin: 8px 0;
+}
+.sheet-tabs button.active {
+  background: var(--accent, #3b6fb6);
+  color: white;
+}
+.formula-bar input {
+  flex: 1;
+  font-family: ui-monospace, Consolas, monospace;
+}
+.cell-ref {
+  min-width: 64px;
+  text-align: center;
+}
+.grid {
+  height: 60vh;
+  overflow: auto;
+  border: 1px solid rgba(128, 128, 128, 0.4);
+  margin-top: 8px;
+  font-variant-numeric: tabular-nums;
+}
+.grid-row {
+  position: absolute;
+  left: 0;
+  display: flex;
+  height: 26px;
+}
+.grid-head {
+  z-index: 1;
+  background: var(--panel, #f4f4f4);
+  font-weight: 600;
+}
+.grid-row span {
+  width: 110px;
+  flex: none;
+  box-sizing: border-box;
+  padding: 3px 6px;
+  border-right: 1px solid rgba(128, 128, 128, 0.25);
+  border-bottom: 1px solid rgba(128, 128, 128, 0.25);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  cursor: cell;
+}
+.grid-row span.rh {
+  width: 68px;
+  text-align: right;
+  color: #888;
+  background: var(--panel, #f4f4f4);
+  cursor: default;
+}
+.grid-row span.k-n,
+.grid-row span.k-d {
+  text-align: right;
+}
+.grid-row span.k-e {
+  color: #b00020;
+}
+.grid-row span.formula {
+  font-style: italic;
+}
+.grid-row span.edited {
+  background: rgba(255, 210, 0, 0.35);
+}
+.grid-row span.sel {
+  outline: 2px solid var(--accent, #3b6fb6);
+  outline-offset: -2px;
+}

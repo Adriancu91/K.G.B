@@ -1,0 +1,25 @@
+[package]
+name = "kgb-sheets"
+version = "0.1.0"
+edition.workspace = true
+publish.workspace = true
+license.workspace = true
+description = "K.G.B. module: spreadsheets (view XLSX/XLSM/XLS/ODS/CSV, edit XLSX) on versioned documents."
+
+[dependencies]
+kgb-core.workspace = true
+serde.workspace = true
+serde_json.workspace = true
+uuid.workspace = true
+base64 = "0.22.1"
+# D-033 (spike S5): read, edit+save, formulas.
+calamine = "0.38.0"
+umya-spreadsheet = "=4.0.0-beta.1"
+ironcalc = "0.9.1"
+zip = { version = "9.4.1", default-features = false, features = ["deflate"] }
+# CSV: parsing and the old Windows code pages (Ş/Ţ with cedilla).
+csv = "1.4.0"
+encoding_rs = "0.8.44"
+
+[dev-dependencies]
+tempfile.workspace = true
