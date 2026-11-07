@@ -1,0 +1,145 @@
+{
+  "manifest_format": 1,
+  "id": "kgb.extract",
+  "name": "Extragere date",
+  "description": "Extrage datele facturilor din PDF-uri cu text și din foi de calcul: fiecare valoare cu sursa ei și un nivel de încredere. Nimic incert nu se importă fără confirmarea ta; fiecare import se scrie în jurnal.",
+  "version": "0.1.0",
+  "core": ">=0.1.0, <0.2.0",
+  "status": "beta",
+  "permissions": [
+    "storage.own",
+    "files.own"
+  ],
+  "services": [
+    "storage",
+    "files",
+    "log"
+  ],
+  "data_types": [
+    {
+      "collection": "facturi",
+      "description": "facturile importate după confirmare: număr, date, furnizor, client, sume, documentul sursă",
+      "schema": {
+        "fields": {
+          "numar": {
+            "type": "string",
+            "required": true,
+            "nullable": false,
+            "max_len": 300
+          },
+          "data": {
+            "type": "string",
+            "required": true,
+            "nullable": false,
+            "max_len": 300
+          },
+          "scadenta": {
+            "type": "string",
+            "required": false,
+            "nullable": true,
+            "max_len": 300
+          },
+          "furnizor": {
+            "type": "string",
+            "required": true,
+            "nullable": false,
+            "max_len": 300
+          },
+          "cui_furnizor": {
+            "type": "string",
+            "required": false,
+            "nullable": true,
+            "max_len": 300
+          },
+          "client": {
+            "type": "string",
+            "required": false,
+            "nullable": true,
+            "max_len": 300
+          },
+          "total_fara_tva": {
+            "type": "number",
+            "required": false,
+            "nullable": true
+          },
+          "tva": {
+            "type": "number",
+            "required": false,
+            "nullable": true
+          },
+          "total": {
+            "type": "number",
+            "required": true
+          },
+          "sursa_document": {
+            "type": "string",
+            "required": true
+          },
+          "sursa_versiune": {
+            "type": "integer",
+            "required": true,
+            "min": 1
+          },
+          "importat_ms": {
+            "type": "integer",
+            "required": true,
+            "min": 0
+          }
+        },
+        "additional": false
+      }
+    },
+    {
+      "collection": "jurnal",
+      "description": "jurnalul importurilor: ce s-a importat, din ce sursă, ce a confirmat sau corectat utilizatorul",
+      "schema": {
+        "fields": {
+          "actiune": {
+            "type": "string",
+            "required": true,
+            "enum": [
+              "import"
+            ]
+          },
+          "factura": {
+            "type": "string",
+            "required": true
+          },
+          "sursa_document": {
+            "type": "string",
+            "required": true
+          },
+          "sursa_versiune": {
+            "type": "integer",
+            "required": true
+          },
+          "automate": {
+            "type": "array",
+            "required": true
+          },
+          "confirmate": {
+            "type": "array",
+            "required": true
+          },
+          "corectate": {
+            "type": "array",
+            "required": true
+          },
+          "la_ms": {
+            "type": "integer",
+            "required": true,
+            "min": 0
+          }
+        },
+        "additional": false
+      }
+    }
+  ],
+  "events": {
+    "emits": [],
+    "listens": []
+  },
+  "data_format": 1,
+  "migrations": [],
+  "on_disable": "Documentele, facturile importate și jurnalul rămân în spațiul de lucru și reapar când modulul este activat din nou."
+}

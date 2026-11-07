@@ -97,6 +97,13 @@ pub fn read(data: &[u8], format: Format) -> Result<Book, String> {
     if format == Format::Csv {
         return read_csv(data);
     }
+    // A library panic on a hostile file (calamine overflowed on one corpus
+    // file in step 3.9) becomes an error message, never a closed app.
+    std::panic::catch_unwind(|| read_workbook(data))
+        .unwrap_or_else(|_| Err("fișierul nu se poate citi (structură neobișnuită sau deteriorată)".into()))
+}
+
+fn read_workbook(data: &[u8]) -> Result<Book, String> {
     let mut wb = open_workbook_auto_from_rs(Cursor::new(data)).map_err(|e| explain(&e.to_string()))?;
     let mut sheets = Vec::new();
     for name in wb.sheet_names() {

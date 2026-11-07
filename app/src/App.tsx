@@ -5,6 +5,7 @@ import { api, message, type AppInfo, type ModulesReply, type Settings, type Sett
 import { NotesPage } from "./modules/notes/NotesPage";
 import { PdfPage } from "./modules/pdf/PdfPage";
 import { SheetsPage } from "./modules/sheets/SheetsPage";
+import { ExtractPage } from "./modules/extract/ExtractPage";
 import { Catalog } from "./pages/Catalog";
 import { DataPage } from "./pages/DataPage";
 import { DiagnosticsPage } from "./pages/DiagnosticsPage";
@@ -16,6 +17,7 @@ const MODULE_PAGES: Record<string, ComponentType<{ onError: (e: string | null) =
   "kgb.notes": NotesPage,
   "kgb.pdf": PdfPage,
   "kgb.sheets": SheetsPage,
+  "kgb.extract": ExtractPage,
 };
 
 const SIDEBAR_MIN = 160;

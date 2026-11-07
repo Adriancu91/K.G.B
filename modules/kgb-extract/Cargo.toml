@@ -1,0 +1,24 @@
+[package]
+name = "kgb-extract"
+version = "0.1.0"
+edition.workspace = true
+publish.workspace = true
+license.workspace = true
+description = "K.G.B. module: initial data extraction from text PDFs and spreadsheets, validated by the user before import."
+
+[dependencies]
+kgb-core.workspace = true
+kgb-store.workspace = true
+# Pure reading functions of the PDF and spreadsheet modules (strict PDF check,
+# workbook reading with the zip-bomb guard). No data is shared between modules.
+kgb-pdf.workspace = true
+kgb-sheets.workspace = true
+serde.workspace = true
+serde_json.workspace = true
+uuid.workspace = true
+base64 = "0.22.1"
+lopdf = "0.47.0"
+csv = "1.4.0"
+
+[dev-dependencies]
+tempfile.workspace = true

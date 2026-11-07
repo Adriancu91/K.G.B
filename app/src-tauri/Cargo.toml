@@ -15,6 +15,7 @@ kgb-store.workspace = true
 kgb-notes.workspace = true
 kgb-pdf.workspace = true
 kgb-sheets.workspace = true
+kgb-extract.workspace = true
 tracing.workspace = true
 tauri = { version = "2.12", features = [] }
 # System file dialogs (open/save) for importing and exporting documents (Etapa 3).

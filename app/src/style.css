@@ -573,3 +573,18 @@ button.thumb {
 .templates p {
   margin: 4px 0;
 }
+
+/* ---------- Extraction module ---------- */
+.extract-fields input:not([type="checkbox"]) {
+  width: 100%;
+  min-width: 220px;
+}
+.extract-fields tr.to-confirm {
+  background: rgba(255, 210, 0, 0.18);
+}
+.small {
+  font-size: 0.85em;
+}
+td.num {
+  text-align: right;
+}

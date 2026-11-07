@@ -49,6 +49,7 @@ fn builtin_modules() -> Vec<Box<dyn Module>> {
         Box::new(kgb_notes::Notes::new()),
         Box::new(kgb_pdf::Pdf::new()),
         Box::new(kgb_sheets::Sheets::new()),
+        Box::new(kgb_extract::Extract::new()),
     ]
 }
 

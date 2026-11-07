@@ -41,3 +41,7 @@
   - interfața: `app/src/modules/sheets/`, un tabel care încarcă doar rândurile de pe ecran;
   - modulul ține în memorie ultimul registru citit, ca derularea să nu recitească fișierul;
   - IronCalc rulează pe un fir separat, cu limită de 30 s și protecție la panică.
+- **Modulul `modules/kgb-extract`** (`kgb.extract`, beta): extragere de date (D-040).
+  - `fields.rs` găsește câmpurile după etichetă și le verifică independent: total fără TVA + TVA = total, cifra de control a CUI, data din calendar.
+  - Modulul are colecțiile proprii `facturi` și `jurnal`, cu scheme.
+  - Folosește ca biblioteci funcțiile pure de citire din `kgb-pdf` și `kgb-sheets`, fără să le vadă datele.

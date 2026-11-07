@@ -230,3 +230,21 @@ Deciziile DECIS se schimbă doar cu aprobarea explicită a proprietarului (Maste
 - **Verificare:** formulele sunt documentate în `docs/etapa3/SABLOANE.md` și verificate cu valori calculate independent (7 teste, inclusiv toate cele 60 de luni ale graficului de rambursare).
 - **Cota TVA din factură:** 21%, cota standard din 1 aug. 2025, într-o singură celulă modificabilă.
 - **Nefăcut încă:** celelalte categorii din §6.3 (cash-flow, P&L, stocuri, HR, proiecte, construcții etc.).
+
+### D-040 — Extragerea de date: reguli simple, sursa vizibilă, confirmare obligatorie
+- **Data:** 7 nov. 2026 · **Statut:** DECIS (pasul 3.9, Master Plan §6.4).
+- **Modulul `kgb.extract` (beta):** extrage datele facturilor din PDF-uri cu text și din foi de calcul. Câmpurile sunt număr, dată, scadență, furnizor, CUI, client, total fără TVA, TVA, total.
+- **Cum găsește valorile:** reguli scrise de mână, după etichetă („Total de plată”, „Data emiterii”…), fără un model care ghicește. În foi de calcul, valoarea se caută doar la dreapta etichetei, pe același rând.
+- **Sursa:** fiecare valoare arată de unde vine (pagina și rândul, sau celula) și textul din jur.
+- **Niveluri de încredere:**
+  - **sigur:** o verificare independentă a trecut: total fără TVA + TVA = total, cifra de control a CUI sau o dată existentă în calendar;
+  - **de verificat:** eticheta a fost găsită, dar valoarea nu are o verificare independentă;
+  - **incert:** o verificare a eșuat;
+  - **lipsă:** câmpul nu a fost găsit.
+- **Import:** orice valoare care nu e „sigur”, orice corectură și orice valoare scrisă de mână trebuie confirmate. Câmpurile obligatorii trebuie să existe, iar aceeași factură nu se importă de două ori din greșeală. Factura și intrarea în jurnal (automate, confirmate, corectate, sursa și versiunea ei) se scriu într-o singură operație atomică.
+- **Destinația:** registrul de facturi al modulului, care se poate exporta ca CSV. Modulele de business (Etapa 5) vor putea prelua din el.
+- **Cod:** modulul folosește funcțiile de citire din `kgb-pdf` (verificarea strictă) și `kgb-sheets` (citirea cu protecție anti-bombă), ca biblioteci. Între module nu circulă date: fiecare are documentele lui.
+- **Nefăcut:**
+  - PDF-urile scanate, care cer OCR (D-035);
+  - liniile de produse ale facturii;
+  - alte tipuri de documente: extrase, contracte, pontaje.

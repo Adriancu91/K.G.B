@@ -77,3 +77,14 @@ Pragurile de performanță sunt PROPUSE în ETAPA0_PLAN.md §3.2 și devin ofici
   - separatorul detectat doar în afara ghilimelelor;
   - ODS/XLS din corpus convertite cu aceleași valori;
   - fișiere stricate sau necunoscute refuzate clar.
+- `cargo test -p kgb-extract` (pasul 3.9) are 8 teste:
+  - câmpurile facturii din Edge, cu sursă și încredere;
+  - importul refuzat fără confirmare, apoi jurnalizat;
+  - duplicatele refuzate;
+  - corecturile validate;
+  - celulele ca sursă în foi de calcul;
+  - PDF scanat, deteriorat sau format necunoscut refuzate;
+  - exportul registrului;
+  - sume, date și CUI verificate;
+  - **toate cele 158 de fișiere reale din corpus, fără nicio oprire a programului**.
+- `node app/e2e/extract.mjs <kgb-app.exe> <folder-capturi>`: modulul Extragere date în fereastra reală.
