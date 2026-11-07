@@ -76,5 +76,5 @@ Interdicții permanente: fără baze de date (D-005, D-018), fără schimbări d
 - [x] OCR în română: test tesseract.js + `ron` rulat cu acordul proprietarului (text corect cu diacritice ~0,6 s/pagină; tabele slabe → recunoaștere pe zone, pas viitor) — D-035
 - [x] 3.10 Test de necorupere: 189 de fișiere (setul propriu + 162 reale) și 905 variante stricate. 0 originale modificate, 0 opriri ale aplicației; 533 de variante refuzate clar, 230 doar citire. Nucleul prinde oprirea neașteptată a oricărui modul; XLSX/ODS verificate CRC pe toate părțile. Formatele fără sume de control (CSV, PDF, XLS) sunt explicate în `docs/etapa3/NECORUPERE.md`
 - [ ] 🔒 3.11 Fișiere reale, fără date confidențiale, de la proprietar
-- [ ] 3.12 Raport Etapa 3 (`docs/ETAPA3_RAPORT.md`)
+- [x] 3.12 Raport Etapa 3 (`docs/ETAPA3_RAPORT.md`)
 - [ ] 🔒 3.13 Poarta Etapei 3

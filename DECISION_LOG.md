@@ -133,7 +133,7 @@ Deciziile DECIS se schimbă doar cu aprobarea explicită a proprietarului (Maste
 - **Notă:** proprietarul nu a testat personal aplicația. Aprobarea se bazează pe raport și pe testele automate.
 
 ### D-032 … D-036 — Etapa 3 (Documente și foi de calcul)
-- **Data:** 7 nov. 2026 · **Statut:** PROPUS — detalii și alternative în `docs/ETAPA3_PLAN.md`
+- **Data:** 7 nov. 2026 · **Statut:** aplicate pe parcurs (vezi D-032 … D-040 mai jos); de confirmat la poarta Etapei 3 (`docs/ETAPA3_RAPORT.md`) — detalii și alternative în `docs/ETAPA3_PLAN.md`
 - D-032: biblioteca PDF se alege după spike-ul S4 (licență, fidelitate, viteză);
 - D-033: biblioteca pentru foi de calcul se alege după spike-ul S5;
 - D-034: documentele nu se suprascriu niciodată. Fiecare salvare creează o versiune nouă, iar originalul importat rămâne neatins;
