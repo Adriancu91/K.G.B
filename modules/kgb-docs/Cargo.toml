@@ -9,6 +9,8 @@ description = "K.G.B. module: library of document models (DOCX) filled with {{fi
 [dependencies]
 kgb-core.workspace = true
 kgb-store.workspace = true
+# The Sheets module's verified XLSX/CSV writers, for exporting form answers (step 4.9).
+kgb-sheets.workspace = true
 serde.workspace = true
 serde_json.workspace = true
 uuid.workspace = true

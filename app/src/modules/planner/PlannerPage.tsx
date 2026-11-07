@@ -89,6 +89,7 @@ const empty: Draft = { titlu: "", descriere: "", responsabil: "", proiect: "", t
 
 export function TaskEditor(props: {
   draft: Draft;
+  error?: string | null;
   people: Person[];
   projects: Project[];
   busy: boolean;
@@ -268,6 +269,11 @@ export function TaskEditor(props: {
               </p>
             )}
           </fieldset>
+          {props.error && (
+            <p className="error" role="alert">
+              {props.error}
+            </p>
+          )}
           <div className="dialog-actions">
             <button type="button" onClick={props.onCancel}>
               Renunță
@@ -335,13 +341,18 @@ export function PlannerPage({ onError }: { onError: (e: string | null) => void }
     void refresh();
   }, [refresh]);
 
-  const run = async (f: () => Promise<unknown>) => {
+  // An error while the task editor is open is shown inside it (the page's
+  // banner is behind the dialog); the editor stays open with what was typed.
+  const [editorError, setEditorError] = useState<string | null>(null);
+  const run = async (f: () => Promise<unknown>, inEditor = false) => {
     setBusy(true);
     try {
       await f();
       onError(null);
+      setEditorError(null);
     } catch (e) {
-      onError(message(e));
+      if (inEditor) setEditorError(message(e));
+      else onError(message(e));
     } finally {
       setBusy(false);
     }
@@ -386,7 +397,7 @@ export function PlannerPage({ onError }: { onError: (e: string | null) => void }
         recurenta: d.recurenta,
       });
       if (close) setEditing(null);
-    });
+    }, close);
 
   return (
     <section className="planner">
@@ -616,7 +627,7 @@ export function PlannerPage({ onError }: { onError: (e: string | null) => void }
         </>
       )}
 
-      {editing && <TaskEditor draft={editing} people={people} projects={projects} busy={busy} onSave={(d) => void save(d)} onCancel={() => setEditing(null)} />}
+      {editing && <TaskEditor draft={editing} people={people} projects={projects} busy={busy} error={editorError} onSave={(d) => void save(d)} onCancel={() => { setEditing(null); setEditorError(null); }} />}
       {toDelete && (
         <Confirm
           title="Ștergi taskul?"

@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useState } from "react";
 import { open, save } from "@tauri-apps/plugin-dialog";
 import { api, message } from "../../api";
+import { FormsView } from "./forms";
 
 const ID = "kgb.docs";
 const CATEGORY: Record<string, string> = {
@@ -52,6 +53,7 @@ function GenerateDialog(props: {
   model: Model;
   company: Company;
   busy: boolean;
+  error: string | null;
   onGenerate: (valori: Record<string, string>, nume: string) => void;
   onCancel: () => void;
   onCompany: () => void;
@@ -113,6 +115,11 @@ function GenerateDialog(props: {
               )}
             </fieldset>
           )}
+          {props.error && (
+            <p className="error" role="alert">
+              {props.error}
+            </p>
+          )}
           <div className="dialog-actions">
             {empty.length > 0 && <span className="muted small grow">Mai ai de completat: {empty.map((f) => f.eticheta).join(", ")}</span>}
             <button type="button" onClick={props.onCancel}>
@@ -129,7 +136,7 @@ function GenerateDialog(props: {
 }
 
 export function DocsPage({ onError }: { onError: (e: string | null) => void }) {
-  const [tab, setTab] = useState<"modele" | "generate" | "firma">("modele");
+  const [tab, setTab] = useState<"modele" | "generate" | "formulare" | "firma">("modele");
   const [models, setModels] = useState<Model[]>([]);
   const [generated, setGenerated] = useState<Generated[]>([]);
   const [company, setCompany] = useState<Company | null>(null);
@@ -138,6 +145,7 @@ export function DocsPage({ onError }: { onError: (e: string | null) => void }) {
   const [preview, setPreview] = useState<{ id: string; text: string } | null>(null);
   const [notice, setNotice] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
+  const [dialogError, setDialogError] = useState<string | null>(null);
 
   const refresh = useCallback(async () => {
     try {
@@ -193,9 +201,9 @@ export function DocsPage({ onError }: { onError: (e: string | null) => void }) {
         schimbă; fiecare document generat se păstrează separat.
       </p>
       <div className="sheet-tabs" role="tablist">
-        {(["modele", "generate", "firma"] as const).map((t) => (
+        {(["modele", "generate", "formulare", "firma"] as const).map((t) => (
           <button key={t} role="tab" aria-selected={tab === t} className={tab === t ? "active" : ""} onClick={() => setTab(t)}>
-            {t === "modele" ? `Modele (${models.length})` : t === "generate" ? `Documente generate (${generated.length})` : "Date firmă"}
+            {t === "modele" ? `Modele (${models.length})` : t === "generate" ? `Documente generate (${generated.length})` : t === "formulare" ? "Formulare" : "Date firmă"}
           </button>
         ))}
       </div>
@@ -327,6 +335,8 @@ export function DocsPage({ onError }: { onError: (e: string | null) => void }) {
         </>
       )}
 
+      {tab === "formulare" && <FormsView onError={onError} />}
+
       {tab === "firma" && company && (
         <form
           className="task-form company-form"
@@ -360,20 +370,34 @@ export function DocsPage({ onError }: { onError: (e: string | null) => void }) {
           model={filling}
           company={company}
           busy={busy}
-          onCancel={() => setFilling(null)}
+          error={dialogError}
+          onCancel={() => {
+            setFilling(null);
+            setDialogError(null);
+          }}
           onCompany={() => {
             setFilling(null);
             setTab("firma");
           }}
           onGenerate={(valori, nume) =>
-            void run(async () => {
+            void (async () => {
+              setBusy(true);
+              try {
               const r = await api.moduleCall<{ id: string; nume: string; inlocuiri: number }>(ID, "generate", { model: filling.id, valori, nume });
               setFilling(null);
               setTab("generate");
               setNotice(`Documentul „${r.nume}” a fost generat (${r.inlocuiri} câmpuri completate) și verificat.`);
               const t = await api.moduleCall<{ text: string }>(ID, "text", { id: r.id });
               setPreview({ id: r.id, text: t.text });
-            })
+                setDialogError(null);
+              } catch (e) {
+                // Shown in the dialog, which stays open with what was typed.
+                setDialogError(message(e));
+              } finally {
+                setBusy(false);
+              }
+              await refresh();
+            })()
           }
         />
       )}

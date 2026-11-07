@@ -2,7 +2,7 @@
   "manifest_format": 1,
   "id": "kgb.docs",
   "name": "Documente și modele",
-  "description": "Bibliotecă de modele Word (administrative, comerciale, HR, tehnice) cu câmpuri {{…}}. Datele firmei se completează o singură dată; fiecare document generat se păstrează cu modelul și versiunea din care a fost făcut. Modelul original nu se schimbă.",
+  "description": "Bibliotecă de modele Word (administrative, comerciale, HR, tehnice) cu câmpuri {{…}} și formulare cu răspunsuri salvate. Datele firmei se completează o singură dată; fiecare document generat se păstrează cu modelul și versiunea din care a fost făcut. Modelul original nu se schimbă.",
   "version": "0.1.0",
   "core": ">=0.1.0, <0.2.0",
   "status": "beta",
@@ -193,8 +193,77 @@
       "indexes": [
         "model"
       ]
+    },
+    {
+      "collection": "formulare",
+      "description": "formularele: câmpurile (text, număr, dată, listă) și versiunile lor",
+      "schema": {
+        "fields": {
+          "nume": {
+            "type": "string",
+            "required": true,
+            "nullable": false,
+            "max_len": 200
+          },
+          "descriere": {
+            "type": "string",
+            "required": false,
+            "nullable": true,
+            "max_len": 2000
+          },
+          "versiuni": {
+            "type": "array",
+            "required": true,
+            "nullable": false
+          },
+          "creat_ms": {
+            "type": "integer",
+            "required": true,
+            "min": 0
+          },
+          "actualizat_ms": {
+            "type": "integer",
+            "required": true,
+            "min": 0
+          }
+        },
+        "additional": false
+      }
+    },
+    {
+      "collection": "raspunsuri",
+      "description": "răspunsurile la formulare, verificate după definiția formularului",
+      "schema": {
+        "fields": {
+          "formular": {
+            "type": "string",
+            "required": true,
+            "nullable": false,
+            "max_len": 36
+          },
+          "formular_versiune": {
+            "type": "integer",
+            "required": true,
+            "min": 1
+          },
+          "valori": {
+            "type": "object",
+            "required": true,
+            "nullable": false
+          },
+          "creat_ms": {
+            "type": "integer",
+            "required": true,
+            "min": 0
+          }
+        },
+        "additional": false
+      },
+      "indexes": [
+        "formular"
+      ]
     }
   ],
   "data_format": 1,
-  "on_disable": "Modelele, datele firmei și documentele generate rămân salvate; le regăsești la reactivare."
+  "on_disable": "Modelele, datele firmei, documentele generate, formularele și răspunsurile rămân salvate; le regăsești la reactivare."
 }

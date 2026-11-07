@@ -882,3 +882,20 @@ table.report tfoot th {
 .facts .contents {
   display: contents;
 }
+
+/* Forms (step 4.9). */
+.form-field input:not([type="checkbox"]) {
+  min-width: 160px;
+}
+.form-field input.short {
+  flex: 0 0 6em;
+  min-width: 0;
+}
+.form-card header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.table-scroll {
+  overflow-x: auto;
+}

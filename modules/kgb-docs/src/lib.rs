@@ -15,9 +15,11 @@
 //! Commands: `company`, `company_save`, `models`, `import` (from the file
 //! dialog), `model_import`, `model_set`,
 //! `model_update`, `model_versions`, `model_delete`, `generate`, `generated`, `text`,
-//! `export`, `delete_generated`.
+//! `export`, `delete_generated`; forms (step 4.9): `forms`, `form_save`,
+//! `form_delete`, `answer_save`, `answers`, `answer_delete`, `export_answers`.
 
 pub mod fill;
+pub mod forms;
 
 use std::collections::{BTreeMap, BTreeSet};
 use std::path::PathBuf;
@@ -229,6 +231,16 @@ struct Generate {
     valori: BTreeMap<String, String>,
     #[serde(default)]
     nume: Option<String>,
+}
+
+#[derive(Deserialize)]
+#[serde(deny_unknown_fields)]
+struct ExportAnswers {
+    formular: Uuid,
+    format: String,
+    #[serde(default)]
+    stil: Option<String>,
+    dest: PathBuf,
 }
 
 #[derive(Deserialize)]
@@ -572,6 +584,32 @@ impl Module for Docs {
                 ctx.delete_document(uuid_of(&r, "document")?)?;
                 ctx.write(vec![Write::delete(GENERATED, a.id).expect(r.version)])?;
                 Ok(json!({"deleted": a.id}))
+            }
+            // Forms (step 4.9).
+            "forms" => forms::forms(ctx),
+            "form_save" => forms::form_save(ctx, args(a)?),
+            "form_delete" => forms::form_delete(ctx, args::<ById>(a)?.id),
+            "answer_save" => forms::answer_save(ctx, args(a)?),
+            "answers" => {
+                let a: ById = args(a)?;
+                let list = forms::answers(ctx, a.id)?;
+                Ok(json!(
+                    list.iter()
+                        .map(|r| {
+                            let mut v = Value::Object(r.fields.clone());
+                            v["id"] = json!(r.id);
+                            v
+                        })
+                        .collect::<Vec<_>>()
+                ))
+            }
+            "answer_delete" => forms::answer_delete(ctx, args::<ById>(a)?.id),
+            "export_answers" => {
+                let a: ExportAnswers = args(a)?;
+                let (bytes, n) = forms::export(ctx, a.formular, &a.format, a.stil.as_deref().unwrap_or("ro"))?;
+                // The user confirmed replacing an existing file in the save dialog.
+                ctx.export_bytes(&a.dest, &bytes, true)?;
+                Ok(json!({"raspunsuri": n, "octeti": bytes.len()}))
             }
             other => Err(CoreError::invalid(
                 "modulul Documente",

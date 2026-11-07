@@ -108,5 +108,5 @@ Pragurile de performanță sunt PROPUSE în ETAPA0_PLAN.md §3.2 și devin ofici
   - Un task săptămânal marcat „Gata” creează apariția de săptămâna viitoare, cu checklistul debifat.
   - Centrul de notificări: clopoțelul arată notificarea trimisă de Planificator; „Marchează citit” și „Șterge cele citite”.
   - Rapoarte: totalurile pe persoane și pe proiecte; exportul XLSX și CSV scris pe disc și recitit.
-- `node app/e2e/docs.mjs <kgb-app.exe> <folder-capturi>`: Documente și modele — date firmă, contract generat din formular, previzualizare, export .docx, import de model propriu, repornire forțată.
+- `node app/e2e/docs.mjs <kgb-app.exe> <folder-capturi>`: Documente și modele — date firmă, contract generat din formular, previzualizare, export .docx, import de model propriu; formulare (definire, răspuns greșit refuzat, răspuns salvat, export XLSX); repornire forțată.
 - `node app/e2e/reminders.mjs <kgb-app.exe> <folder-capturi>`: memento-uri la pornire pentru taskurile de azi și de mâine; după încă o repornire (forțată) nu se repetă, nici după ce au fost șterse. Notificările Windows propriu-zise nu sunt verificate automat (țin de Windows și de setările lui).

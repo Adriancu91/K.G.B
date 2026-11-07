@@ -89,8 +89,8 @@ Interdicții permanente: fără baze de date (D-005, D-018), fără schimbări d
 - [x] 4.6 Rapoarte și export: fila „Rapoarte” în Planificator — pe persoane și pe proiecte, pe stări, cu întârziate și total, după filtrele alese; export XLSX (3 foi) sau CSV (stil românesc), recitit și verificat celulă cu celulă; un titlu care arată ca o formulă rămâne text; 2 teste noi (173) + e2e planner 22/22
 - [x] 4.7 Spike S6 — generarea documentelor → D-045 propus (`docs/spikes/S6_REZULTATE.md`): DOCX cu completator propriu (9/9; corpus 50 DOCX: 46 neschimbate, 4 refuzate, 0 prăbușiri; ~0,3 MB); PDF prin WebView2 (0 MB) sau Typst (+11,7 MB), ambele cu diacritice căutabile și valori tratate ca text
 - [x] 4.8 Bibliotecă de documente și modele (§6.5): modulul beta `kgb.docs` „Documente și modele” — 5 modele Word incluse (cerere, ofertă, contract de prestări servicii, adeverință de salariat, proces-verbal de recepție), import de modele proprii, câmpuri `{{…}}` (și când Word le taie în bucăți), date firmă completate o singură dată și folosite doar de acolo, valori lipsă refuzate, fiecare document generat verificat și păstrat cu modelul și versiunea lui; originalul modelului nu se schimbă; 3 teste (176 în total) + e2e 8/8
-- [ ] 4.8b Generare PDF din modele HTML prin WebView2 (D-045, după confirmarea la poartă)
-- [ ] 4.9 Formulare
+- [ ] 🔒 4.8b Generare PDF din modele HTML prin WebView2 — așteaptă confirmarea D-045 de către proprietar
+- [x] 4.9 Formulare (în modulul Documente și modele): câmpuri text, număr, dată, listă (obligatorii, limite, opțiuni); fiecare răspuns verificat după definiția formularului, cu toate problemele raportate deodată; un formular cu răspunsuri, modificat, primește o versiune nouă, iar răspunsurile vechi își păstrează versiunea; export XLSX/CSV recitit celulă cu celulă; 2 teste (178 în total) + e2e documente 13/13; erorile din ferestrele de editare (task, document, formular) apar acum în fereastră, nu în spatele ei
 - [ ] 4.10 Panouri drag-and-drop pe ecranul de start (D-047)
 - [ ] 4.11 Raport Etapa 4 (`docs/ETAPA4_RAPORT.md`)
 - [ ] 🔒 4.12 Poarta Etapei 4

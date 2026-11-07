@@ -2615,6 +2615,7 @@ version = "0.1.0"
 dependencies = [
  "base64 0.22.1",
  "kgb-core",
+ "kgb-sheets",
  "kgb-store",
  "quick-xml 0.42.0",
  "serde",

@@ -107,6 +107,45 @@ try {
   await p.until("document.querySelectorAll('.model-card').length === 6", 8000);
   check("un model Word propriu se importă la „Altele”", await p.eval("[...document.querySelectorAll('.docs h2')].some(h => h.innerText === 'Altele')"));
 
+  // Step 4.9: a form with text, number and list fields; a bad answer is refused.
+  await p.click("Formulare", ".sheet-tabs button");
+  await p.click("+ Formular nou");
+  await p.until("!!document.querySelector('#form-ed-title')");
+  await p.fill("input[aria-label='Numele formularului']", "Inventar echipamente");
+  await p.fill("input[aria-label='Eticheta câmpului 1']", "Denumire");
+  await p.click("+ Adaugă un câmp", ".dialog button");
+  await p.fill("input[aria-label='Eticheta câmpului 2']", "Cantitate");
+  await p.fill("select[aria-label='Tipul câmpului 2']", "numar");
+  await p.fill("input[aria-label='Maximul câmpului 2']", "100");
+  await p.click("+ Adaugă un câmp", ".dialog button");
+  await p.fill("input[aria-label='Eticheta câmpului 3']", "Stare");
+  await p.fill("select[aria-label='Tipul câmpului 3']", "lista");
+  await p.fill("input[aria-label='Opțiunile câmpului 3']", "Nou, Bun, Defect");
+  await p.screenshot(join(shots, "04-formular-definire.png"));
+  await p.click("Salvează formularul", ".dialog button");
+  await p.until("!!document.querySelector(\".form-card[data-form='Inventar echipamente']\")", 8000);
+  check("formularul se definește din interfață", true);
+  const fillForm = async (vals) => {
+    await p.eval("document.querySelector(\".form-card[data-form='Inventar echipamente'] button.primary\").click()");
+    await p.until("!!document.querySelector('#fill-title')");
+    for (const [k, v] of Object.entries(vals)) await p.fill(`.dialog [aria-label='${k}']`, v);
+    await p.click("Salvează răspunsul", ".dialog button");
+  };
+  await fillForm({ Denumire: "Laptop", Cantitate: "250", Stare: "Bun" });
+  await p.until("!!document.querySelector('.dialog [role=alert]')", 8000);
+  const err = await p.eval("document.querySelector('.dialog [role=alert]').innerText");
+  check("un răspuns greșit e refuzat și spune de ce (formularul rămâne deschis)", err.includes("cel mult 100") && (await p.eval("!!document.querySelector('#fill-title')")), err.split("\n")[0]);
+  await p.fill(".dialog [aria-label='Cantitate']", "12,5");
+  await p.click("Salvează răspunsul", ".dialog button");
+  await p.until("document.querySelectorAll('.answers-table tbody tr').length === 1 && !document.querySelector('#fill-title')", 8000);
+  const row = await p.eval("[...document.querySelector('.answers-table tbody tr').cells].map(c => c.innerText.trim()).slice(1, 5).join('|')");
+  check("răspunsul corect se salvează", row === "1|Laptop|12,5|Bun", row);
+  await p.screenshot(join(shots, "05-raspunsuri.png"));
+  const forms = await invoke(p, "module_call", { id: "kgb.docs", command: "forms", args: {} });
+  const fx = join(data, "raspunsuri.xlsx");
+  const ex = await invoke(p, "module_call", { id: "kgb.docs", command: "export_answers", args: { formular: forms[0].id, format: "xlsx", dest: fx } });
+  check("răspunsurile se exportă în Excel", ex.raspunsuri === 1 && readFileSync(fx).subarray(0, 2).toString("latin1") === "PK");
+
   // Restart (forced): everything is still there.
   stop(p);
   p = await start();
@@ -114,6 +153,8 @@ try {
   await p.until("document.querySelectorAll('.model-card').length === 6", 10000);
   const tabs = await p.eval("[...document.querySelectorAll('.sheet-tabs button')].map(b => b.innerText).join(' | ')");
   check("după repornire: modelele și documentul generat sunt acolo", tabs.includes("Modele (6)") && tabs.includes("Documente generate (1)"), tabs);
+  const after = await invoke(p, "module_call", { id: "kgb.docs", command: "forms", args: {} });
+  check("după repornire: formularul și răspunsul sunt acolo", after.length === 1 && after[0].raspunsuri === 1);
   stop(p);
 } catch (e) {
   check("scenariul a rulat până la capăt", false, e.message);
