@@ -7,8 +7,8 @@ Sursa: Master Plan §13. Nu se trece la etapa următoare doar pentru că etapa c
 | 0 | Specificație și validare tehnică (spike-uri stocare, rețea, Tauri) | **Încheiată** — poartă aprobată de proprietar (D-022, 6 nov. 2026); rămâne testul 🔒 S2.3 cu 2 PC-uri, obligatoriu înainte de Etapa 6 |
 | 1 | Nucleul desktop | **Încheiată** — poartă aprobată (D-027, 6 nov. 2026); drag-and-drop panouri → Etapa 4 |
 | 2 | Storage Engine | **Încheiată** — poartă aprobată (D-031, 7 nov. 2026); 🔒 testul de pierdere a alimentării amânat, obligatoriu înainte de date reale |
-| 3 | Documente și foi de calcul | **Raport gata — așteaptă poarta** (`docs/ETAPA3_RAPORT.md`): PDF, foi de calcul, 5 șabloane, import/export, extragere date (toate beta); necorupere: 189 de fișiere + 905 variante stricate, 0 originale modificate; 🔒 fișierele reale ale proprietarului (3.11) |
-| 4 | Organizare și productivitate | Neînceput (preia și panourile drag-and-drop din Etapa 1) |
+| 3 | Documente și foi de calcul | **Încheiată** — poartă aprobată (D-041, 7 nov. 2026); module beta: PDF, foi de calcul (+5 șabloane), extragere date; fișierele reale ale proprietarului trec fără pierderi |
+| 4 | Organizare și productivitate | **În lucru** — plan `docs/ETAPA4_PLAN.md` (preia și panourile drag-and-drop din Etapa 1) |
 | 5 | Business | Neînceput |
 | 6 | Echipe și rețea | Neînceput |
 | 7 | Informații și proceduri | Neînceput |

@@ -212,12 +212,28 @@ pub fn features(data: &[u8]) -> BTreeMap<String, usize> {
             ("panouri înghețate", "state=\"frozen\""),
             ("filtre", "<autoFilter"),
             ("protecție", "<sheetProtection"),
-            ("formate de număr", "<numFmt "),
         ] {
             let n = s.matches(tag).count();
             if n > 0 {
                 *m.entry(key.to_string()).or_default() += n;
             }
+        }
+        // Own number formats only: ids below 164 are the built-in ones every
+        // program knows; some programs declare them anyway and the saving
+        // library leaves the declaration out, which changes nothing (step 3.11).
+        let own = s
+            .split("<numFmt ")
+            .skip(1)
+            .filter(|t| {
+                t.split("numFmtId=\"")
+                    .nth(1)
+                    .and_then(|v| v.split('"').next())
+                    .and_then(|v| v.parse::<u32>().ok())
+                    .is_some_and(|id| id >= 164)
+            })
+            .count();
+        if own > 0 {
+            *m.entry("formate de număr".to_string()).or_default() += own;
         }
     }
     m
@@ -248,6 +264,122 @@ fn set_result(cell: &mut umya_spreadsheet::Cell, v: &V) {
     }
 }
 
+/// Some programs (for example .NET libraries) write a valid package the
+/// editing library cannot follow — it saw 0 sheets in such an owner file
+/// (step 3.11): internal links as absolute part names ("/xl/styles.xml") and
+/// spreadsheet XML with a namespace prefix ([`without_main_prefix`]). Rewrites
+/// both into the equivalent common form; the content is unchanged and the
+/// saved result is still checked against the original. `None` when there is
+/// nothing to rewrite.
+fn normalize_package(data: &[u8]) -> Result<Option<Vec<u8>>, String> {
+    use std::io::Write as _;
+    let mut z = zip::ZipArchive::new(Cursor::new(data)).map_err(|_| "fișierul este deteriorat".to_string())?;
+    let mut parts: Vec<(String, Vec<u8>)> = Vec::new();
+    let mut changed = false;
+    for i in 0..z.len() {
+        let mut e = z.by_index(i).map_err(|_| "fișierul este deteriorat".to_string())?;
+        let name = e
+            .name()
+            .map_err(|_| "fișierul este deteriorat".to_string())?
+            .to_string();
+        let mut bytes = Vec::new();
+        e.read_to_end(&mut bytes)
+            .map_err(|_| "fișierul este deteriorat".to_string())?;
+        if name.ends_with(".rels") && bytes.windows(9).any(|w| w == b"Target=\"/") {
+            // The folder the links are relative to: "xl/_rels/x.rels" → "xl/".
+            let base = name.rsplit_once("_rels/").map(|(b, _)| b).unwrap_or("");
+            let text = String::from_utf8_lossy(&bytes).to_string();
+            let mut out = String::with_capacity(text.len());
+            let mut rest = text.as_str();
+            while let Some(i) = rest.find("Target=\"/") {
+                out.push_str(&rest[..i + 8]);
+                let after = &rest[i + 9..];
+                let end = after.find('"').unwrap_or(after.len());
+                let target = &after[..end];
+                // Drop the folders the two paths share, go up for the rest.
+                let b: Vec<&str> = base.split('/').filter(|x| !x.is_empty()).collect();
+                let t: Vec<&str> = target.split('/').collect();
+                let common = b
+                    .iter()
+                    .zip(&t)
+                    .take_while(|(x, y)| x == y)
+                    .count()
+                    .min(t.len().saturating_sub(1));
+                let rel = format!("{}{}", "../".repeat(b.len() - common), t[common..].join("/"));
+                out.push_str(&rel);
+                rest = &after[end..];
+            }
+            out.push_str(rest);
+            bytes = out.into_bytes();
+            changed = true;
+        }
+        if name.ends_with(".xml")
+            && let Some(b) = without_main_prefix(&bytes)
+        {
+            bytes = b;
+            changed = true;
+        }
+        parts.push((name, bytes));
+    }
+    if !changed {
+        return Ok(None);
+    }
+    let mut buf = Cursor::new(Vec::new());
+    {
+        let mut w = zip::ZipWriter::new(&mut buf);
+        let o = zip::write::SimpleFileOptions::default().compression_method(zip::CompressionMethod::Deflated);
+        for (name, bytes) in parts {
+            w.start_file(name, o).map_err(|e| e.to_string())?;
+            w.write_all(&bytes).map_err(|e| e.to_string())?;
+        }
+        w.finish().map_err(|e| e.to_string())?;
+    }
+    Ok(Some(buf.into_inner()))
+}
+
+const MAIN_NS: &[u8] = b"http://schemas.openxmlformats.org/spreadsheetml/2006/main";
+
+/// Spreadsheet XML written with a namespace prefix (`<x:workbook>`, as .NET
+/// libraries do) means exactly the same as without it, but the editing
+/// library only recognises the unprefixed form (0 sheets otherwise, step
+/// 3.11). Removes the prefix bound to the main spreadsheet namespace.
+fn without_main_prefix(xml: &[u8]) -> Option<Vec<u8>> {
+    let decl = b"xmlns:";
+    let pos = xml.windows(decl.len()).enumerate().find_map(|(i, w)| {
+        if w != decl {
+            return None;
+        }
+        let rest = &xml[i + decl.len()..];
+        let eq = rest.iter().position(|c| *c == b'=')?;
+        let prefix = &rest[..eq];
+        let value = rest.get(eq + 2..eq + 2 + MAIN_NS.len())?;
+        (value == MAIN_NS
+            && rest.get(eq + 1) == Some(&b'"')
+            && !prefix.is_empty()
+            && prefix.iter().all(u8::is_ascii_alphanumeric))
+        .then(|| prefix.to_vec())
+    })?;
+    let replace = |hay: Vec<u8>, from: &[u8], to: &[u8]| -> Vec<u8> {
+        let mut out = Vec::with_capacity(hay.len());
+        let mut i = 0;
+        while i < hay.len() {
+            if hay[i..].starts_with(from) {
+                out.extend_from_slice(to);
+                i += from.len();
+            } else {
+                out.push(hay[i]);
+                i += 1;
+            }
+        }
+        out
+    };
+    let p = pos;
+    let mut x = replace(xml.to_vec(), &[b"xmlns:".as_slice(), &p, b"=\""].concat(), b"xmlns=\"");
+    x = replace(x, &[b"</".as_slice(), &p, b":"].concat(), b"</");
+    x = replace(x, &[b"<".as_slice(), &p, b":"].concat(), b"<");
+    Some(x)
+}
+
 pub fn apply(data: &[u8], edits: &[Edit]) -> Result<Outcome, String> {
     if edits.is_empty() {
         return Err("nu există modificări de salvat".into());
@@ -258,8 +390,12 @@ pub fn apply(data: &[u8], edits: &[Edit]) -> Result<Outcome, String> {
     let before = book::read(data, Format::Xlsx)?;
     let calc = calculate_guarded(data, edits)?;
 
-    let mut wb = umya_spreadsheet::reader::xlsx::read_reader(Cursor::new(data), true)
+    let editable = normalize_package(data)?;
+    let mut wb = umya_spreadsheet::reader::xlsx::read_reader(Cursor::new(editable.as_deref().unwrap_or(data)), true)
         .map_err(|e| format!("fișierul nu se poate deschide pentru editare: {e}"))?;
+    if wb.sheet_count() != before.sheets.len() {
+        return Err("structura fișierului nu poate fi citită complet pentru salvare; folosește „Convertește în .xlsx” sau exportă o copie".into());
+    }
     let mut typed: BTreeSet<Key> = BTreeSet::new();
     for e in edits {
         let (r, c) = parse_ref(&e.cell)?;

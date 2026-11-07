@@ -24,3 +24,6 @@ desktop.ini
 # Etapa 3: fișiere mari de test, se regenerează cu generate.py
 testdata/etapa3/large/
 testdata/etapa3/extern/
+
+# Fișierele reale ale proprietarului (D-041): doar local, conțin date reale și personale
+testdata/proprietar/

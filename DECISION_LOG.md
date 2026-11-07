@@ -248,3 +248,10 @@ Deciziile DECIS se schimbă doar cu aprobarea explicită a proprietarului (Maste
   - PDF-urile scanate, care cer OCR (D-035);
   - liniile de produse ale facturii;
   - alte tipuri de documente: extrase, contracte, pontaje.
+
+### D-041 — Poarta Etapei 3
+- **Data:** 7 nov. 2026 · **Statut:** DECIS · **Aprobat de:** proprietar („Aprob”), ca răspuns la `docs/ETAPA3_RAPORT.md`.
+- **Conținut:** Etapa 3 se încheie, iar D-032 … D-040 sunt confirmate. **Începe Etapa 4** (Organizare și productivitate).
+- **3.11:** proprietarul a trimis odată cu aprobarea fișiere reale: un PDF de tranzacție bancară, 4 registre Excel și poze ale unor documente. Ele conțin date reale, inclusiv personale.
+  - Se folosesc **doar local** (`testdata/proprietar/`, ignorat de Git) și nu se publică.
+  - Rezultatele se raportează doar agregat, fără conținut.

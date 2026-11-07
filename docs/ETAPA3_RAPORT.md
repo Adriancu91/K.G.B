@@ -1,6 +1,6 @@
 # K.G.B. — Etapa 3 (Documente și foi de calcul): raport și propunere de poartă
 
-**Data:** 7 nov. 2026 · **Statut:** PROPUNERE. Poarta se închide doar cu aprobarea proprietarului.
+**Data:** 7 nov. 2026 · **Statut:** **APROBAT** de proprietar (D-041, „Aprob”). Pasul 3.11 a fost făcut după aprobare, pe fișierele trimise atunci.
 **Poarta cerută de Master Plan §13:** „scenarii reale și set de fișiere de test trec fără coruperea documentelor”.
 **Plan:** `docs/ETAPA3_PLAN.md` · **Necorupere:** `docs/etapa3/NECORUPERE.md` · **Șabloane:** `docs/etapa3/SABLOANE.md`
 
@@ -39,6 +39,24 @@
 | 3.8 | Import/export | Rezultatul fiecărei conversii e recitit și comparat celulă cu celulă |
 | 3.9 | Extragere de date (D-040) | Sursă, încredere și verificări independente (total = net + TVA, CUI, dată reală). Tot ce nu e „sigur” se confirmă |
 | 3.10 | Test de necorupere | Vezi mai sus. Nucleul prinde orice oprire neașteptată a unui modul; arhivele Excel/ODS sunt verificate CRC pe toate părțile |
+
+## 3.11 — Fișierele reale ale proprietarului (după aprobare)
+**Ce a trimis proprietarul:**
+- 1 PDF de tranzacție bancară;
+- 4 registre Excel, făcute cu Microsoft Excel, Excel pe Android și un program .NET;
+- 5 poze ale unor documente: carte de vizită, extras bancar pe telefon, tabel, borderou de achiziții, fotografie.
+
+Fișierele conțin date reale și personale: sunt păstrate doar local (`testdata/proprietar/`, ignorat de Git), iar aici apar doar cifre. Testul este `modules/kgb-extract/tests/proprietar.rs`.
+
+| Fișier | Rezultat |
+|---|---|
+| PDF de tranzacție | intact, 1 pagină; rotirea a fost salvată și verificată; nu e factură, deci extragerea nu găsește câmpuri de factură (corect) |
+| Catalog (5 foi, ~7.000 de celule, scris de un program .NET) | **Problemă găsită și corectată:** biblioteca de salvare vedea **0 foi**. Modulul refuza salvarea, deci nu se pierdea nimic. Cauza: XML cu prefix de spațiu de nume (`<x:sheet>`) și legături interne cu căi absolute, ambele valide. Acum fișierul e adus la forma obișnuită înainte de editare și se salvează **fără nicio pierdere** |
+| Prețuri (Excel) | Editat fără pierderi. Alarma inițială „formate de număr pierdute” era falsă: erau formatele standard ale Excel, redeclarate explicit. Acum se compară doar formatele proprii |
+| Plăți (Excel Android), registrul 2026 (Excel) | Editate fără pierderi |
+| **Formule** | **226 din 226 dau exact rezultatul din Excel (100%)** |
+| Originale | Identice octet cu octet după toate operațiile |
+| Poze (5) | Formatul nu e acceptat: cer OCR (D-035), care nu face parte din Etapa 3. Borderoul și extrasul bancar arată ce trebuie să știe să citească modulele de business (Etapa 5) |
 
 ## Ce a costat
 - **Mărimea installerului:** 2,1 MB → 7,9 MB. Programul: 9 → 28 MB. Vin din bibliotecile de documente (R20).

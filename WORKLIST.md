@@ -75,6 +75,6 @@ Interdicții permanente: fără baze de date (D-005, D-018), fără schimbări d
 - [x] 3.9 Extragere inițială de date (D-040) `kgb.extract`: facturi din PDF cu text și foi de calcul; sursă (pagină/rând sau celulă), încredere verificată independent (total = net + TVA, cifra de control CUI, dată reală), confirmare obligatorie pentru tot ce nu e „sigur”, jurnal atomic, duplicate refuzate, registru exportabil CSV; fără OCR (D-035); 8 teste (158 de fișiere reale fără oprire) + e2e 8/8
 - [x] OCR în română: test tesseract.js + `ron` rulat cu acordul proprietarului (text corect cu diacritice ~0,6 s/pagină; tabele slabe → recunoaștere pe zone, pas viitor) — D-035
 - [x] 3.10 Test de necorupere: 189 de fișiere (setul propriu + 162 reale) și 905 variante stricate. 0 originale modificate, 0 opriri ale aplicației; 533 de variante refuzate clar, 230 doar citire. Nucleul prinde oprirea neașteptată a oricărui modul; XLSX/ODS verificate CRC pe toate părțile. Formatele fără sume de control (CSV, PDF, XLS) sunt explicate în `docs/etapa3/NECORUPERE.md`
-- [ ] 🔒 3.11 Fișiere reale, fără date confidențiale, de la proprietar
+- [x] 3.11 Fișiere reale ale proprietarului (doar local, D-041): PDF + 4 registre Excel; corectat: XML cu prefix de spațiu de nume și legături absolute (biblioteca de salvare vedea 0 foi), alarmă falsă la formatele de număr standard; 226/226 formule ca în Excel; pozele cer OCR
 - [x] 3.12 Raport Etapa 3 (`docs/ETAPA3_RAPORT.md`)
-- [ ] 🔒 3.13 Poarta Etapei 3
+- [x] 3.13 Poarta Etapei 3: aprobată (D-041)
