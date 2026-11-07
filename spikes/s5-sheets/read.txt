@@ -1,0 +1,146 @@
+files/xlsx/simplu.xlsx                       calamine  corect  foi=1   celule=33           1.4 ms   5.0 MB 
+files/xlsx/simplu.xlsx                       umya      corect  foi=1   celule=33           1.9 ms   6.0 MB 
+files/xlsx/simplu.xlsx                       ironcalc  corect  foi=1   celule=33           1.5 ms   5.0 MB 
+files/xlsx/diacritice-foi-multiple.xlsx      calamine  corect  foi=3   celule=16           1.2 ms   5.0 MB 
+files/xlsx/diacritice-foi-multiple.xlsx      umya      corect  foi=3   celule=16           1.6 ms   6.0 MB 
+files/xlsx/diacritice-foi-multiple.xlsx      ironcalc  corect  foi=3   celule=16           1.8 ms   6.0 MB 
+files/xlsx/formule.xlsx                      calamine  corect  foi=1   celule=36           1.2 ms   5.0 MB 
+files/xlsx/formule.xlsx                      umya      corect  foi=1   celule=36           1.3 ms   6.0 MB 
+files/xlsx/formule.xlsx                      ironcalc  corect  foi=1   celule=36           1.9 ms   6.0 MB 
+files/xlsx/formate.xlsx                      calamine  corect  foi=1   celule=13           1.2 ms   5.0 MB 
+files/xlsx/formate.xlsx                      umya      corect  foi=1   celule=13           1.4 ms   6.0 MB 
+files/xlsx/formate.xlsx                      ironcalc  corect  foi=1   celule=13           1.3 ms   6.0 MB 
+files/xlsx/functii-avansate.xlsx             calamine  corect  foi=1   celule=12           1.1 ms   5.0 MB 
+files/xlsx/functii-avansate.xlsx             umya      corect  foi=1   celule=12           2.3 ms   6.0 MB 
+files/xlsx/functii-avansate.xlsx             ironcalc  corect  foi=1   celule=12           1.3 ms   6.0 MB 
+files/xlsx/tipuri-celule.xlsx                calamine  corect  foi=1   celule=16           1.0 ms   5.0 MB 
+files/xlsx/tipuri-celule.xlsx                umya      corect  foi=1   celule=16           1.2 ms   6.0 MB 
+files/xlsx/tipuri-celule.xlsx                ironcalc  corect  foi=1   celule=16           1.2 ms   6.0 MB 
+files/xlsx/stricat-trunchiat.xlsx            calamine  corect  foi=null celule=null         0.6 ms   4.0 MB Xlsx error: Zip error: invalid Zip archive: Could not find EOCD
+files/xlsx/stricat-trunchiat.xlsx            umya      corect  foi=null celule=null         0.2 ms   4.0 MB ZipError: invalid Zip archive: Could not find EOCD
+files/xlsx/stricat-trunchiat.xlsx            ironcalc  corect  foi=null celule=null         0.2 ms   4.0 MB Zip("invalid Zip archive: Could not find EOCD")
+files/xlsx/nu-e-zip.xlsx                     calamine  corect  foi=null celule=null         0.5 ms   4.0 MB Xlsx error: Zip error: invalid Zip archive: Could not find EOCD
+files/xlsx/nu-e-zip.xlsx                     umya      corect  foi=null celule=null         0.2 ms   4.0 MB ZipError: invalid Zip archive: Could not find EOCD
+files/xlsx/nu-e-zip.xlsx                     ironcalc  corect  foi=null celule=null         0.2 ms   4.0 MB Zip("invalid Zip archive: Could not find EOCD")
+files/xlsx/zip-fara-workbook.xlsx            calamine  corect  foi=null celule=null         0.3 ms   4.0 MB Xlsx error: File not found '_rels/.rels'
+files/xlsx/zip-fara-workbook.xlsx            umya      corect  foi=null celule=null         0.2 ms   4.0 MB ZipError: specified file not found in archive
+files/xlsx/zip-fara-workbook.xlsx            ironcalc  corect  foi=null celule=null         0.2 ms   4.0 MB Zip("specified file not found in archive")
+files/xlsx/stricat-octeti.xlsx               calamine  corect  foi=null celule=null         0.7 ms   4.0 MB Xlsx error: Zip error: invalid Zip archive: Invalid Central Directory 
+files/xlsx/stricat-octeti.xlsx               umya      corect  foi=null celule=null         0.2 ms   4.0 MB ZipError: invalid Zip archive: Invalid Central Directory header
+files/xlsx/stricat-octeti.xlsx               ironcalc  corect  foi=null celule=null         0.2 ms   4.0 MB Zip("invalid Zip archive: Invalid Central Directory header")
+large/100k-randuri.xlsx                      calamine  corect  foi=1   celule=600006     979.9 ms 150.0 MB 
+large/100k-randuri.xlsx                      umya      corect  foi=1   celule=600006    2171.7 ms 239.0 MB 
+large/100k-randuri.xlsx                      ironcalc  corect  foi=1   celule=600006    1546.4 ms  69.0 MB 
+large/ostil-bomba-zip.xlsx                   calamine  GREȘIT  foi=0   celule=0          343.8 ms 272.0 MB 
+large/ostil-bomba-zip.xlsx                   umya      GREȘIT  foi=1   celule=0          417.1 ms 625.0 MB 
+large/ostil-bomba-zip.xlsx                   ironcalc  GREȘIT  foi=1   celule=0          191.4 ms 272.0 MB 
+ArrayFormulasStatic.ods                                      calamine=208c/1.6ms
+SampleSS.ods                                                 calamine=15c/1.5ms
+basic-cell-content.ods                                       calamine=11c/1.0ms
+border.ods                                                   calamine=0c/0.8ms
+cachedValue.ods                                              calamine=EȘEC(Ods error: Expecting 'table-cell', found 'Text(Byt)
+chart-import-basic.ods                                       calamine=10c/1.0ms
+comment.ods                                                  calamine=0c/0.9ms
+copy-merged-number-formats.ods                               calamine=8c/1.3ms
+custom-numfmt-hybrid-cell.ods                                calamine=3c/0.8ms
+database-functions.ods                                       calamine=154c/1.7ms
+date-time-functions.ods                                      calamine=106c/1.1ms
+document_with_two_images.ods                                 calamine=0c/1.4ms
+fdo67682-2.ods                                               calamine=9839c/21.1ms
+formats.ods                                                  calamine=44c/1.1ms
+formula-across-sheets.ods                                    calamine=52c/1.2ms
+formula-quote-in-sheet-name.ods                              calamine=6c/0.9ms
+functions.ods                                                calamine=1216c/4.7ms
+hidden-empty-rows.ods                                        calamine=1c/1.0ms
+hybrid-shared-string.ods                                     calamine=6c/1.2ms
+many_charts.ods                                              calamine=22c/1.6ms
+matrix.ods                                                   calamine=EȘEC(Ods error: Expecting 'table-cell', found 'Text(Byt)
+merged.ods                                                   calamine=4c/0.7ms
+notes-on-3-sheets.ods                                        calamine=0c/0.8ms
+password.ods                                                 calamine=EȘEC(Ods error: Workbook is password protected)
+pivot-table-basic.ods                                        calamine=106c/0.8ms
+ranges-column-2000.ods                                       calamine=19c/2.0ms
+repeatedColumns.ods                                          calamine=11c/0.7ms
+rich-text-cells.ods                                          calamine=35c/1.0ms
+sheet_name_with_dots.ods                                     calamine=2c/0.6ms
+sum-whole-column-row.ods                                     calamine=2c/0.6ms
+tdf100458_lost_zero_value.ods                                calamine=2c/0.6ms
+15228.xls                                                    calamine=14874c/14.3ms
+SampleSS.xls                                                 calamine=15c/0.9ms
+Simple.xlsb                                                  calamine=EȘEC(prăbușit (exit code: 101): panică: panicked at C:\)
+SimpleMacro.xlsm                                             calamine=1c/1.1ms umya=1c/1.6ms ironcalc=1c/1.3ms
+mv-calculator-final-2-20-2013.xlsm                           calamine=24765c/40.7ms umya=24765c/235.1ms ironcalc=31987c/23.4ms
+123233_charts.xlsx                                           calamine=62c/1.8ms umya=62c/3.1ms ironcalc=66c/1.7ms
+45540_form_Header.xlsx                                       calamine=87c/1.8ms umya=87c/26.3ms ironcalc=909c/2.3ms
+46535.xlsx                                                   calamine=7156c/13.7ms umya=7155c/51.0ms ironcalc=7369c/16.2ms
+47668.xlsx                                                   calamine=0c/1.6ms umya=0c/2.1ms ironcalc=0c/1.2ms
+49609.xlsx                                                   calamine=7566c/12.0ms umya=7566c/28.5ms ironcalc=EȘEC(Zip("specified file not found in archive"))
+50784-font_theme_colours.xlsx                                calamine=2c/1.3ms umya=2c/1.9ms ironcalc=2c/1.3ms
+51585.xlsx                                                   calamine=0c/23.8ms umya=0c/183.8ms ironcalc=55629c/38.1ms
+53568.xlsx                                                   calamine=0c/2.7ms umya=0c/8.4ms ironcalc=0c/13.3ms
+54084 - Greek - beyond BMP.xlsx                              calamine=1c/1.1ms umya=1c/1.2ms ironcalc=1c/1.2ms
+55406_Conditional_formatting_sample.xlsx                     calamine=0c/1.3ms umya=0c/15.3ms ironcalc=39c/4.5ms
+55906-MultiSheetRefs.xlsx                                    calamine=23c/1.2ms umya=23c/1.5ms ironcalc=23c/1.5ms
+57893-many-merges.xlsx                                       calamine=0c/60.0ms umya=0c/556.3ms ironcalc=140000c/827.2ms
+58325_lt.xlsx                                                calamine=1c/3.5ms umya=1c/4.2ms ironcalc=1c/0.9ms
+AverageTaxRates.xlsx                                         calamine=1110c/2.9ms umya=1110c/38.6ms ironcalc=1360c/2.7ms
+CVLKRA-KYC_Download_File_Structure_V3.1.xlsx                 calamine=2987c/24.3ms umya=2987c/149.5ms ironcalc=52287c/22.4ms
+ConditionalFormattingSamples.xlsx                            calamine=1723c/10.4ms umya=1723c/152.3ms ironcalc=2273c/11.2ms
+DataValidations-49244.xlsx                                   calamine=138c/1.4ms umya=138c/2.7ms ironcalc=142c/2.5ms
+DateFormatTests.xlsx                                         calamine=194c/1.9ms umya=194c/31.6ms ironcalc=195c/2.0ms
+ExcelPivotTableSample.xlsx                                   calamine=50c/1.1ms umya=50c/2.5ms ironcalc=52c/1.5ms
+FormulaEvalTestData_Copy.xlsx                                calamine=4177c/10.9ms umya=4141c/55.4ms ironcalc=4588c/20.2ms
+InlineStrings.xlsx                                           calamine=28c/1.4ms umya=28c/2.3ms ironcalc=28c/1.2ms
+LIBRE_OFFICE-116306-0.xlsx                                   calamine=662923c/787.8ms umya=657530c/1918.6ms ironcalc=664571c/334.0ms
+MalformedSSTCount.xlsx                                       calamine=12c/0.9ms umya=12c/0.9ms ironcalc=12c/1.0ms
+NumberFormatTests.xlsx                                       calamine=1314c/3.4ms umya=1314c/29.4ms ironcalc=1322c/3.2ms
+SampleSS.strict.xlsx                                         calamine=15c/1.1ms umya=0c/0.7ms ironcalc=EȘEC(Xml("Missing \"r:id\" XML attribute"))
+SimpleHistogram.xlsx                                         calamine=5c/1.1ms umya=5c/2.0ms ironcalc=5c/1.3ms
+SimpleScatterChart.xlsx                                      calamine=6c/0.9ms umya=6c/2.4ms ironcalc=6c/1.2ms
+StructuredRefs-lots-with-lookups.xlsx                        calamine=37696c/55.2ms umya=37696c/163.1ms ironcalc=EȘEC(peste 120 s)
+Tables.xlsx                                                  calamine=2111c/9.0ms umya=2111c/139.1ms ironcalc=3544c/6.2ms
+WithChartSheet.xlsx                                          calamine=267c/2.1ms umya=267c/7.4ms ironcalc=297c/2.3ms
+WithDrawing.xlsx                                             calamine=0c/1.4ms umya=0c/3.3ms ironcalc=0c/1.3ms
+WithThreeCharts.xlsx                                         calamine=24c/1.3ms umya=24c/4.0ms ironcalc=24c/1.5ms
+boxWhisker.xlsx                                              calamine=27c/1.2ms umya=27c/3.0ms ironcalc=27c/1.5ms
+bug62181.xlsx                                                calamine=175095c/239.1ms umya=175095c/1034.4ms ironcalc=EȘEC(prăbușit (exit code: 101): panică: panicked at C:\)
+clusterfuzz-testcase-minimized-POIXSSFFuzzer-593738531956326 calamine=2111c/8.8ms umya=1956c/125.2ms ironcalc=EȘEC(Xml("number too large to fit in target type"))
+clusterfuzz-testcase-minimized-XLSX2CSVFuzzer-56364391516078 calamine=EȘEC(Xlsx error: Zip error: invalid Zip archive: Could ) umya=EȘEC(ZipError: invalid Zip archive: Could not find EOCD) ironcalc=EȘEC(Zip("invalid Zip archive: Could not find EOCD"))
+commentTest.xlsx                                             calamine=2c/3.7ms umya=2c/1.6ms ironcalc=2c/1.6ms
+deep-data.xlsx                                               calamine=EȘEC(Xlsx error: Zip error: invalid Zip archive: Could ) umya=EȘEC(ZipError: invalid Zip archive: Could not find EOCD) ironcalc=EȘEC(Zip("invalid Zip archive: Could not find EOCD"))
+funnel1.xlsx                                                 calamine=6c/1.2ms umya=6c/3.0ms ironcalc=6c/1.4ms
+noSharedStringTable.xlsx                                     calamine=2c/0.9ms umya=2c/1.0ms ironcalc=2c/1.2ms
+paretoLine.xlsx                                              calamine=30c/1.2ms umya=30c/3.2ms ironcalc=30c/1.5ms
+picture.xlsx                                                 calamine=20c/1.7ms umya=20c/4.6ms ironcalc=20c/1.4ms
+poc-shared-strings.xlsx                                      calamine=EȘEC(Xlsx error: Range is missing the expected row comp) umya=EȘEC(prăbușit (exit code: 0xc0000409): memory allocatio) ironcalc=EȘEC(Xml("Invalid cell reference: 'A0'"))
+poc-xmlbomb.xlsx                                             calamine=EȘEC(Xlsx error: Xml error: at 0..0: unrecognized entit) umya=EȘEC(prăbușit (exit code: 101): panică: panicked at C:\) ironcalc=EȘEC(Xml("Unknown entity: &a5;"))
+protected_passtika.xlsx                                      calamine=EȘEC(Xlsx error: Workbook is password protected) umya=EȘEC(ZipError: invalid Zip archive: Could not find EOCD) ironcalc=EȘEC(Zip("invalid Zip archive: Could not find EOCD"))
+right-to-left.xlsx                                           calamine=8c/4.0ms umya=8c/19.7ms ironcalc=8c/5.9ms
+shared_formulas.xlsx                                         calamine=81c/2.2ms umya=81c/6.8ms ironcalc=81c/4.8ms
+simple-monthly-budget.xlsx                                   calamine=49c/2.4ms umya=49c/11.4ms ironcalc=69c/6.3ms
+sunburst.xlsx                                                calamine=28c/1.6ms umya=28c/5.8ms ironcalc=28c/2.7ms
+treemap.xlsx                                                 calamine=28c/2.6ms umya=28c/5.9ms ironcalc=28c/3.7ms
+unicodeSheetName.xlsx                                        calamine=9c/2.1ms umya=9c/4.1ms ironcalc=9c/3.2ms
+waterfall.xlsx                                               calamine=12c/2.0ms umya=12c/5.6ms ironcalc=12c/3.9ms
+waterfall2.xlsx                                              calamine=16c/2.3ms umya=16c/4.5ms ironcalc=16c/2.7ms
+xlookup.xlsx                                                 calamine=97c/2.4ms umya=97c/3.7ms ironcalc=97c/4.8ms
+xlsx-corrupted.xlsx                                          calamine=EȘEC(Xlsx error: Unexpected end of xml, expecting '</Re) umya=18c/5.7ms ironcalc=18c/2.6ms
+xlsxwriter-embed_image01.xlsx                                calamine=1c/2.5ms umya=1c/3.1ms ironcalc=1c/2.5ms
+xlsxwriter-embed_image02.xlsx                                calamine=2c/2.0ms umya=2c/3.0ms ironcalc=2c/2.4ms
+xlsxwriter-embed_image03.xlsx                                calamine=2c/1.6ms umya=2c/2.7ms ironcalc=2c/2.3ms
+xlsxwriter-embed_image04.xlsx                                calamine=2c/1.9ms umya=2c/2.4ms ironcalc=2c/3.4ms
+xlsxwriter-embed_image05.xlsx                                calamine=4c/1.7ms umya=4c/2.3ms ironcalc=4c/2.4ms
+xlsxwriter-embed_image07.xlsx                                calamine=2c/1.6ms umya=2c/2.9ms ironcalc=2c/2.4ms
+xlsxwriter-embed_image09.xlsx                                calamine=1c/1.5ms umya=1c/2.2ms ironcalc=1c/2.2ms
+xlsxwriter-embed_image11.xlsx                                calamine=1c/2.2ms umya=1c/2.6ms ironcalc=1c/2.8ms
+
+Corpus extern — deschise / total (prăbușiri sau blocaje):
+  ods   calamine  28/31  (0)
+  xls   calamine  2/2  (0)
+  xlsb  calamine  0/1  (1)
+  xlsm  calamine  2/2  (0)
+  xlsm  ironcalc  2/2  (0)
+  xlsm  umya      2/2  (0)
+  xlsx  calamine  57/63  (0)
+  xlsx  ironcalc  53/63  (2)
+  xlsx  umya      58/63  (2)

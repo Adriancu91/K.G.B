@@ -1,0 +1,121 @@
+46535.xlsx                                              formule=342    identice=336    diferite=6     calcul 1.6 ms
+55906-MultiSheetRefs.xlsx                               formule=13     identice=0      diferite=13    calcul 0 ms
+CVLKRA-KYC_Download_File_Structure_V3.1.xlsx            formule=103    identice=103    diferite=0     calcul 0.1 ms
+ConditionalFormattingSamples.xlsx                       formule=352    identice=352    diferite=0     calcul 0.9 ms
+DateFormatTests.xlsx                                    formule=45     identice=5      diferite=40    calcul 0.1 ms
+FormulaEvalTestData_Copy.xlsx                           formule=1295   identice=1229   diferite=66    calcul 1.9 ms
+InlineStrings.xlsx                                      formule=6      identice=6      diferite=0     calcul 0 ms
+NumberFormatTests.xlsx                                  formule=325    identice=88     diferite=237   calcul 0.7 ms
+Tables.xlsx                                             formule=21     identice=21     diferite=0     calcul 0 ms
+WithThreeCharts.xlsx                                    formule=6      identice=6      diferite=0     calcul 0 ms
+diacritice-foi-multiple.xlsx                            formule=2      identice=2      diferite=0     calcul 0 ms
+formule.xlsx                                            formule=12     identice=12     diferite=0     calcul 0.1 ms
+functii-avansate.xlsx                                   formule=1      identice=1      diferite=0     calcul 0 ms
+mv-calculator-final-2-20-2013.xlsm                      formule=3      identice=3      diferite=0     calcul 0 ms
+shared_formulas.xlsx                                    formule=40     identice=40     diferite=0     calcul 0 ms
+simple-monthly-budget.xlsx                              formule=5      identice=0      diferite=5     calcul 0 ms
+tipuri-celule.xlsx                                      formule=1      identice=1      diferite=0     calcul 0 ms
+xlookup.xlsx                                            formule=4      identice=3      diferite=1     calcul 0.1 ms
+xlsxwriter-embed_image05.xlsx                           formule=1      identice=1      diferite=0     calcul 0 ms
+
+61 fișiere deschise; 2577 formule; 2209 cu același rezultat ca în fișier (85.7%); 368 diferite
+Diferențe pe funcții (cel mult 2 exemple fiecare):
+  (expresie):
+    FormulaEvalTestData_Copy.xlsx R27C6 ="its "&2<3&" blue" : salvat String("its TRUE blue") → IronCalc Boolean(false)
+  ADDRESS:
+    FormulaEvalTestData_Copy.xlsx R128C6 =ADDRESS(2,3,3,TRUE,"[Book1]Sheet1") : salvat String("[Book1]Sheet1!$C2") → IronCalc String("'[Book1]Sheet1'!$C2")
+  AND:
+    FormulaEvalTestData_Copy.xlsx R136C10 =AND("1",1) : salvat String("#VALUE!") → IronCalc Boolean(true)
+  AVEDEV:
+    FormulaEvalTestData_Copy.xlsx R176C6 =AVEDEV(D7:E9) : salvat String("#NUM!") → IronCalc String("#DIV/0!")
+    FormulaEvalTestData_Copy.xlsx R176C7 =AVEDEV(E13:E17) : salvat String("#NUM!") → IronCalc String("#DIV/0!")
+  AVERAGE:
+    55906-MultiSheetRefs.xlsx R3C2 =AVERAGE(Sheet1:Sheet3!A1) : salvat Number(22.0) → IronCalc String("#VALUE!")
+    55906-MultiSheetRefs.xlsx R3C9 =AVERAGE(Sheet1:Sheet3!A1:B2) : salvat Number(27.5) → IronCalc String("#VALUE!")
+  COUNT:
+    55906-MultiSheetRefs.xlsx R6C2 =COUNT(Sheet1:Sheet3!A$1) : salvat Number(3.0) → IronCalc Number(0.0)
+    55906-MultiSheetRefs.xlsx R6C9 =COUNT(Sheet1:Sheet3!$A$1:$B$2) : salvat Number(4.0) → IronCalc Number(0.0)
+  COUNTA:
+    55906-MultiSheetRefs.xlsx R3C3 =COUNTA(Sheet1:Sheet3!C1) : salvat Number(3.0) → IronCalc Number(1.0)
+    55906-MultiSheetRefs.xlsx R3C4 =COUNTA(Sheet1:Sheet3!D1) : salvat Number(0.0) → IronCalc Number(1.0)
+  DATE:
+    FormulaEvalTestData_Copy.xlsx R320C4 =DATE(1900,1,1) : salvat Number(1.0) → IronCalc Number(2.0)
+    FormulaEvalTestData_Copy.xlsx R320C5 =DATE(1900,1,32) : salvat Number(32.0) → IronCalc Number(33.0)
+  DAY:
+    FormulaEvalTestData_Copy.xlsx R340C5 =DAY(1) : salvat Number(1.0) → IronCalc Number(31.0)
+    FormulaEvalTestData_Copy.xlsx R340C6 =DAY(0) : salvat Number(0.0) → IronCalc String("#NUM!")
+  DEVSQ:
+    FormulaEvalTestData_Copy.xlsx R392C8 =DEVSQ(E15:E17) : salvat String("#NUM!") → IronCalc String("#DIV/0!")
+    FormulaEvalTestData_Copy.xlsx R392C9 =DEVSQ("1","2",2) : salvat Number(0.6666666666666666) → IronCalc Number(0.0)
+  IF:
+    46535.xlsx R12C12 =IF(HSI\10_1\1460_1\1470_1___val<>"",HSI\10_1\1460_1\1470_1___val,"") : salvat String("#NAME?") → IronCalc String("#ERROR!")
+    46535.xlsx R12C13 =IF(HSI\10_1\1460_2\1470_1___val<>"",HSI\10_1\1460_2\1470_1___val,"") : salvat String("#NAME?") → IronCalc String("#ERROR!")
+  LEFT:
+    FormulaEvalTestData_Copy.xlsx R824C5 =LEFT("a string","6") : salvat String("a stri") → IronCalc String("#VALUE!")
+    FormulaEvalTestData_Copy.xlsx R824C8 =LEFT(E12,E17) : salvat String("no") → IronCalc String("#VALUE!")
+  LOOKUP:
+    FormulaEvalTestData_Copy.xlsx R872C5 =LOOKUP("DOUBLE",C6:G6,C9:G9) : salvat Number(1.1) → IronCalc Number(0.0)
+  MAX:
+    55906-MultiSheetRefs.xlsx R5C2 =MAX(Sheet1:Sheet3!A$1) : salvat Number(33.0) → IronCalc String("#VALUE!")
+    55906-MultiSheetRefs.xlsx R5C9 =MAX(Sheet1:Sheet3!A$1:B$2) : salvat Number(44.0) → IronCalc String("#VALUE!")
+  MAXA:
+    FormulaEvalTestData_Copy.xlsx R888C10 =MAXA(F14,E19,F12) : salvat Number(0.0) → IronCalc String("#VALUE!")
+  MIN:
+    55906-MultiSheetRefs.xlsx R4C2 =MIN(Sheet1:Sheet3!A$1) : salvat Number(11.0) → IronCalc String("#VALUE!")
+    55906-MultiSheetRefs.xlsx R4C9 =MIN(Sheet1:Sheet3!A$1:B$2) : salvat Number(11.0) → IronCalc String("#VALUE!")
+  MINA:
+    FormulaEvalTestData_Copy.xlsx R912C6 =MINA(B16,B10,B9) : salvat Number(1.0) → IronCalc Number(2.0)
+  MODE:
+    FormulaEvalTestData_Copy.xlsx R936C7 =MODE(C9,E16,"1",B8) : salvat String("#VALUE!") → IronCalc String("#N/A")
+    FormulaEvalTestData_Copy.xlsx R936C8 =MODE(B8,"1",2,3) : salvat String("#VALUE!") → IronCalc String("#N/A")
+  MONTH:
+    FormulaEvalTestData_Copy.xlsx R940C5 =MONTH(1) : salvat Number(1.0) → IronCalc Number(12.0)
+    FormulaEvalTestData_Copy.xlsx R940C6 =MONTH(0) : salvat Number(1.0) → IronCalc String("#NUM!")
+  RIGHT:
+    FormulaEvalTestData_Copy.xlsx R1168C5 =RIGHT("a string","6") : salvat String("string") → IronCalc String("#VALUE!")
+    FormulaEvalTestData_Copy.xlsx R1168C8 =RIGHT(E11,E17) : salvat String("ce") → IronCalc String("#VALUE!")
+  STDEV:
+    FormulaEvalTestData_Copy.xlsx R1288C7 =STDEV("1","2") : salvat Number(0.7071067811865476) → IronCalc String("#DIV/0!")
+    FormulaEvalTestData_Copy.xlsx R1288C11 =STDEV(TRUE,FALSE,TRUE) : salvat Number(0.5773502691896258) → IronCalc String("#DIV/0!")
+  SUM:
+    55906-MultiSheetRefs.xlsx R3C1 =SUM(Sheet1:Sheet3!A1) : salvat Number(66.0) → IronCalc String("#VALUE!")
+    55906-MultiSheetRefs.xlsx R3C8 =SUM(Sheet1:Sheet3!A1:B2) : salvat Number(110.0) → IronCalc String("#VALUE!")
+  SUMIF:
+    FormulaEvalTestData_Copy.xlsx R1324C5 =SUMIF(AA7:AA13,C10:D10,C7) : salvat Number(1.1) → IronCalc String("#VALUE!")
+  SUMPRODUCT:
+    FormulaEvalTestData_Copy.xlsx R1328C10 =SUMPRODUCT(G1330:G1330,I1330:I1330) : salvat String("#VALUE!") → IronCalc Number(0.0)
+  SUMSQ:
+    FormulaEvalTestData_Copy.xlsx R1332C13 =SUMSQ(TRUE,TRUE,FALSE) : salvat Number(2.0) → IronCalc Number(0.0)
+    FormulaEvalTestData_Copy.xlsx R1332C14 =SUMSQ("2","3",4) : salvat Number(29.0) → IronCalc Number(16.0)
+  SUMX2MY2:
+    FormulaEvalTestData_Copy.xlsx R1336C4 =SUMX2MY2(B7:C10,C8:D11) : salvat Number(285149.7900399997) → IronCalc Number(285152.0000599999)
+    FormulaEvalTestData_Copy.xlsx R1336C5 =SUMX2MY2(D8:E11,C8:D11) : salvat String("#DIV/0!") → IronCalc Number(-11.209960000299999)
+  SUMX2PY2:
+    FormulaEvalTestData_Copy.xlsx R1340C5 =SUMX2PY2(C8:C10,B15:D15) : salvat Number(3.2100200002) → IronCalc Number(4.2100400003)
+    FormulaEvalTestData_Copy.xlsx R1340C6 =SUMX2PY2(B16:D16,B16:B18) : salvat String("#DIV/0!") → IronCalc Number(1.2100000000000002)
+  SUMXMY2:
+    FormulaEvalTestData_Copy.xlsx R1344C6 =SUMXMY2(2,4) : salvat Number(4.0) → IronCalc String("#VALUE!")
+    FormulaEvalTestData_Copy.xlsx R1344C7 =SUMXMY2(D7:D11,C8:C12) : salvat String("#DIV/0!") → IronCalc Number(999999999991.2101)
+  T:
+    FormulaEvalTestData_Copy.xlsx R1352C13 =T(@H12:J12) : salvat String("") → IronCalc String("#VALUE!")
+    FormulaEvalTestData_Copy.xlsx R1352C14 =T(@L7:N7) : salvat String("") → IronCalc String("blanksIncl")
+  TEXT:
+    DateFormatTests.xlsx R2C1 =TEXT(C2,B2) : salvat String("11-10-52") → IronCalc String("10-10-48")
+    DateFormatTests.xlsx R3C1 =TEXT(C3,B3) : salvat String("11-10-52") → IronCalc String("10-10-48")
+  TotalMonthlyExpenses:
+    simple-monthly-budget.xlsx R4C5 =TotalMonthlyExpenses : salvat Number(2336.0) → IronCalc String("#NAME?")
+    simple-monthly-budget.xlsx R4C8 =TotalMonthlyExpenses/TotalMonthlyIncome : salvat Number(0.6229333333333333) → IronCalc String("#NAME?")
+  TotalMonthlyIncome:
+    simple-monthly-budget.xlsx R9C5 =TotalMonthlyIncome : salvat Number(3750.0) → IronCalc String("#NAME?")
+    simple-monthly-budget.xlsx R9C7 =TotalMonthlyIncome-TotalMonthlyExpenses : salvat Number(1414.0) → IronCalc String("#NAME?")
+  VAR:
+    FormulaEvalTestData_Copy.xlsx R1448C7 =VAR("1","2") : salvat Number(0.5) → IronCalc String("#DIV/0!")
+    FormulaEvalTestData_Copy.xlsx R1448C11 =VAR(TRUE,FALSE,TRUE) : salvat Number(0.33333333333333337) → IronCalc String("#DIV/0!")
+  VARP:
+    FormulaEvalTestData_Copy.xlsx R1456C7 =VARP("1","2") : salvat Number(0.25) → IronCalc String("#DIV/0!")
+    FormulaEvalTestData_Copy.xlsx R1456C11 =VARP(TRUE,FALSE,TRUE) : salvat Number(0.2222222222222222) → IronCalc String("#DIV/0!")
+  XLOOKUP:
+    xlookup.xlsx R2C3 =XLOOKUP(B2,B5:B14,C5:D14) : salvat String("Dianne Pugh") → IronCalc String("#VALUE!")
+  YEAR:
+    FormulaEvalTestData_Copy.xlsx R1496C5 =YEAR(1) : salvat Number(1900.0) → IronCalc Number(1899.0)
+    FormulaEvalTestData_Copy.xlsx R1496C6 =YEAR(0) : salvat Number(1900.0) → IronCalc String("#NUM!")

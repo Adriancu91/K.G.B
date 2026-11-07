@@ -1,0 +1,3365 @@
+[
+  {
+    "bad": [],
+    "file": "files/xlsx/simplu.xlsx",
+    "lib": "calamine",
+    "r": {
+      "cells": 33,
+      "formulas": 0,
+      "got": {
+        "Date!A1": "Produs",
+        "Date!B11": "30",
+        "Date!C4": "7.5"
+      },
+      "ms": 1.4,
+      "ok": true,
+      "peak_mb": 5.0,
+      "sheets": 1
+    },
+    "verdict": true
+  },
+  {
+    "bad": [],
+    "file": "files/xlsx/simplu.xlsx",
+    "lib": "umya",
+    "r": {
+      "cells": 33,
+      "got": {
+        "Date!A1": "Produs",
+        "Date!B11": "30",
+        "Date!C4": "7.5"
+      },
+      "ms": 1.9,
+      "ok": true,
+      "peak_mb": 6.0,
+      "sheets": 1
+    },
+    "verdict": true
+  },
+  {
+    "bad": [],
+    "file": "files/xlsx/simplu.xlsx",
+    "lib": "ironcalc",
+    "r": {
+      "cells": 33,
+      "got": {
+        "Date!A1": "Produs",
+        "Date!B11": "30",
+        "Date!C4": "7.5"
+      },
+      "ms": 1.5,
+      "ok": true,
+      "peak_mb": 5.0,
+      "sheets": 1
+    },
+    "verdict": true
+  },
+  {
+    "bad": [],
+    "file": "files/xlsx/diacritice-foi-multiple.xlsx",
+    "lib": "calamine",
+    "r": {
+      "cells": 16,
+      "formulas": 2,
+      "got": {
+        "'Sumar ș ț'!A2": "ĂÂÎȘȚ ăâîșț",
+        "'Sumar ș ț'!B1": "2180.75",
+        "Ianuarie!A2": "Încasări școală"
+      },
+      "ms": 1.2,
+      "ok": true,
+      "peak_mb": 5.0,
+      "sheets": 3
+    },
+    "verdict": true
+  },
+  {
+    "bad": [],
+    "file": "files/xlsx/diacritice-foi-multiple.xlsx",
+    "lib": "umya",
+    "r": {
+      "cells": 16,
+      "got": {
+        "'Sumar ș ț'!A2": "ĂÂÎȘȚ ăâîșț",
+        "'Sumar ș ț'!B1": "2180.75",
+        "Ianuarie!A2": "Încasări școală"
+      },
+      "ms": 1.6,
+      "ok": true,
+      "peak_mb": 6.0,
+      "sheets": 3
+    },
+    "verdict": true
+  },
+  {
+    "bad": [],
+    "file": "files/xlsx/diacritice-foi-multiple.xlsx",
+    "lib": "ironcalc",
+    "r": {
+      "cells": 16,
+      "got": {
+        "'Sumar ș ț'!A2": "ĂÂÎȘȚ ăâîșț",
+        "'Sumar ș ț'!B1": "2180.75",
+        "Ianuarie!A2": "Încasări școală"
+      },
+      "ms": 1.8,
+      "ok": true,
+      "peak_mb": 6.0,
+      "sheets": 3
+    },
+    "verdict": true
+  },
+  {
+    "bad": [],
+    "file": "files/xlsx/formule.xlsx",
+    "lib": "calamine",
+    "r": {
+      "cells": 36,
+      "formulas": 12,
+      "got": {
+        "Formule!B10": "mare",
+        "Formule!B12": "30",
+        "Formule!B13": "30.25",
+        "Formule!B17": "-1013.819714421",
+        "Formule!B19": "true",
+        "Formule!B8": "71.75",
+        "Formule!B9": "14.35"
+      },
+      "ms": 1.2,
+      "ok": true,
+      "peak_mb": 5.0,
+      "sheets": 1
+    },
+    "verdict": true
+  },
+  {
+    "bad": [],
+    "file": "files/xlsx/formule.xlsx",
+    "lib": "umya",
+    "r": {
+      "cells": 36,
+      "got": {
+        "Formule!B10": "mare",
+        "Formule!B12": "30",
+        "Formule!B13": "30.25",
+        "Formule!B17": "-1013.8197144207",
+        "Formule!B19": "TRUE",
+        "Formule!B8": "71.75",
+        "Formule!B9": "14.35"
+      },
+      "ms": 1.3,
+      "ok": true,
+      "peak_mb": 6.0,
+      "sheets": 1
+    },
+    "verdict": true
+  },
+  {
+    "bad": [],
+    "file": "files/xlsx/formule.xlsx",
+    "lib": "ironcalc",
+    "r": {
+      "cells": 36,
+      "got": {
+        "Formule!B10": "mare",
+        "Formule!B12": "30",
+        "Formule!B13": "30.25",
+        "Formule!B17": "-1013.819714421",
+        "Formule!B19": "true",
+        "Formule!B8": "71.75",
+        "Formule!B9": "14.35"
+      },
+      "ms": 1.9,
+      "ok": true,
+      "peak_mb": 6.0,
+      "sheets": 1
+    },
+    "verdict": true
+  },
+  {
+    "bad": [],
+    "file": "files/xlsx/formate.xlsx",
+    "lib": "calamine",
+    "r": {
+      "cells": 13,
+      "formulas": 0,
+      "got": {
+        "Formate!B2": "46333",
+        "Formate!C2": "1234.5"
+      },
+      "ms": 1.2,
+      "ok": true,
+      "peak_mb": 5.0,
+      "sheets": 1
+    },
+    "verdict": true
+  },
+  {
+    "bad": [],
+    "file": "files/xlsx/formate.xlsx",
+    "lib": "umya",
+    "r": {
+      "cells": 13,
+      "got": {
+        "Formate!B2": "46333",
+        "Formate!C2": "1234.5"
+      },
+      "ms": 1.4,
+      "ok": true,
+      "peak_mb": 6.0,
+      "sheets": 1
+    },
+    "verdict": true
+  },
+  {
+    "bad": [],
+    "file": "files/xlsx/formate.xlsx",
+    "lib": "ironcalc",
+    "r": {
+      "cells": 13,
+      "got": {
+        "Formate!B2": "46333",
+        "Formate!C2": "1234.5"
+      },
+      "ms": 1.3,
+      "ok": true,
+      "peak_mb": 6.0,
+      "sheets": 1
+    },
+    "verdict": true
+  },
+  {
+    "bad": [],
+    "file": "files/xlsx/functii-avansate.xlsx",
+    "lib": "calamine",
+    "r": {
+      "cells": 12,
+      "formulas": 1,
+      "got": {
+        "Avansat!B5": "185"
+      },
+      "ms": 1.1,
+      "ok": true,
+      "peak_mb": 5.0,
+      "sheets": 1
+    },
+    "verdict": true
+  },
+  {
+    "bad": [],
+    "file": "files/xlsx/functii-avansate.xlsx",
+    "lib": "umya",
+    "r": {
+      "cells": 12,
+      "got": {
+        "Avansat!B5": "185"
+      },
+      "ms": 2.3,
+      "ok": true,
+      "peak_mb": 6.0,
+      "sheets": 1
+    },
+    "verdict": true
+  },
+  {
+    "bad": [],
+    "file": "files/xlsx/functii-avansate.xlsx",
+    "lib": "ironcalc",
+    "r": {
+      "cells": 12,
+      "got": {
+        "Avansat!B5": "185"
+      },
+      "ms": 1.3,
+      "ok": true,
+      "peak_mb": 6.0,
+      "sheets": 1
+    },
+    "verdict": true
+  },
+  {
+    "bad": [],
+    "file": "files/xlsx/tipuri-celule.xlsx",
+    "lib": "calamine",
+    "r": {
+      "cells": 16,
+      "formulas": 1,
+      "got": {
+        "Tipuri!B1": "text inline ș",
+        "Tipuri!B2": "true",
+        "Tipuri!B3": "#DIV/0!",
+        "Tipuri!B5": "-0.000125",
+        "Tipuri!B6": "123456789012345",
+        "Tipuri!B7": "  cu spații la capete  ",
+        "Tipuri!B8": "linia 1\nlinia 2"
+      },
+      "ms": 1.0,
+      "ok": true,
+      "peak_mb": 5.0,
+      "sheets": 1
+    },
+    "verdict": true
+  },
+  {
+    "bad": [],
+    "file": "files/xlsx/tipuri-celule.xlsx",
+    "lib": "umya",
+    "r": {
+      "cells": 16,
+      "got": {
+        "Tipuri!B1": "text inline ș",
+        "Tipuri!B2": "TRUE",
+        "Tipuri!B3": "#DIV/0!",
+        "Tipuri!B5": "-0.000125",
+        "Tipuri!B6": "123456789012345",
+        "Tipuri!B7": "  cu spații la capete  ",
+        "Tipuri!B8": "linia 1\nlinia 2"
+      },
+      "ms": 1.2,
+      "ok": true,
+      "peak_mb": 6.0,
+      "sheets": 1
+    },
+    "verdict": true
+  },
+  {
+    "bad": [],
+    "file": "files/xlsx/tipuri-celule.xlsx",
+    "lib": "ironcalc",
+    "r": {
+      "cells": 16,
+      "got": {
+        "Tipuri!B1": "text inline ș",
+        "Tipuri!B2": "true",
+        "Tipuri!B3": "#DIV/0!",
+        "Tipuri!B5": "-0.000125",
+        "Tipuri!B6": "123456789012345",
+        "Tipuri!B7": "  cu spații la capete  ",
+        "Tipuri!B8": "linia 1\nlinia 2"
+      },
+      "ms": 1.2,
+      "ok": true,
+      "peak_mb": 6.0,
+      "sheets": 1
+    },
+    "verdict": true
+  },
+  {
+    "bad": [],
+    "file": "files/xlsx/stricat-trunchiat.xlsx",
+    "lib": "calamine",
+    "r": {
+      "error": "Xlsx error: Zip error: invalid Zip archive: Could not find EOCD",
+      "ms": 0.6,
+      "ok": false,
+      "peak_mb": 4.0
+    },
+    "verdict": true
+  },
+  {
+    "bad": [],
+    "file": "files/xlsx/stricat-trunchiat.xlsx",
+    "lib": "umya",
+    "r": {
+      "error": "ZipError: invalid Zip archive: Could not find EOCD",
+      "ms": 0.2,
+      "ok": false,
+      "peak_mb": 4.0
+    },
+    "verdict": true
+  },
+  {
+    "bad": [],
+    "file": "files/xlsx/stricat-trunchiat.xlsx",
+    "lib": "ironcalc",
+    "r": {
+      "error": "Zip(\"invalid Zip archive: Could not find EOCD\")",
+      "ms": 0.2,
+      "ok": false,
+      "peak_mb": 4.0
+    },
+    "verdict": true
+  },
+  {
+    "bad": [],
+    "file": "files/xlsx/nu-e-zip.xlsx",
+    "lib": "calamine",
+    "r": {
+      "error": "Xlsx error: Zip error: invalid Zip archive: Could not find EOCD",
+      "ms": 0.5,
+      "ok": false,
+      "peak_mb": 4.0
+    },
+    "verdict": true
+  },
+  {
+    "bad": [],
+    "file": "files/xlsx/nu-e-zip.xlsx",
+    "lib": "umya",
+    "r": {
+      "error": "ZipError: invalid Zip archive: Could not find EOCD",
+      "ms": 0.2,
+      "ok": false,
+      "peak_mb": 4.0
+    },
+    "verdict": true
+  },
+  {
+    "bad": [],
+    "file": "files/xlsx/nu-e-zip.xlsx",
+    "lib": "ironcalc",
+    "r": {
+      "error": "Zip(\"invalid Zip archive: Could not find EOCD\")",
+      "ms": 0.2,
+      "ok": false,
+      "peak_mb": 4.0
+    },
+    "verdict": true
+  },
+  {
+    "bad": [],
+    "file": "files/xlsx/zip-fara-workbook.xlsx",
+    "lib": "calamine",
+    "r": {
+      "error": "Xlsx error: File not found '_rels/.rels'",
+      "ms": 0.3,
+      "ok": false,
+      "peak_mb": 4.0
+    },
+    "verdict": true
+  },
+  {
+    "bad": [],
+    "file": "files/xlsx/zip-fara-workbook.xlsx",
+    "lib": "umya",
+    "r": {
+      "error": "ZipError: specified file not found in archive",
+      "ms": 0.2,
+      "ok": false,
+      "peak_mb": 4.0
+    },
+    "verdict": true
+  },
+  {
+    "bad": [],
+    "file": "files/xlsx/zip-fara-workbook.xlsx",
+    "lib": "ironcalc",
+    "r": {
+      "error": "Zip(\"specified file not found in archive\")",
+      "ms": 0.2,
+      "ok": false,
+      "peak_mb": 4.0
+    },
+    "verdict": true
+  },
+  {
+    "bad": [],
+    "file": "files/xlsx/stricat-octeti.xlsx",
+    "lib": "calamine",
+    "r": {
+      "error": "Xlsx error: Zip error: invalid Zip archive: Invalid Central Directory header",
+      "ms": 0.7,
+      "ok": false,
+      "peak_mb": 4.0
+    },
+    "verdict": true
+  },
+  {
+    "bad": [],
+    "file": "files/xlsx/stricat-octeti.xlsx",
+    "lib": "umya",
+    "r": {
+      "error": "ZipError: invalid Zip archive: Invalid Central Directory header",
+      "ms": 0.2,
+      "ok": false,
+      "peak_mb": 4.0
+    },
+    "verdict": true
+  },
+  {
+    "bad": [],
+    "file": "files/xlsx/stricat-octeti.xlsx",
+    "lib": "ironcalc",
+    "r": {
+      "error": "Zip(\"invalid Zip archive: Invalid Central Directory header\")",
+      "ms": 0.2,
+      "ok": false,
+      "peak_mb": 4.0
+    },
+    "verdict": true
+  },
+  {
+    "bad": [],
+    "file": "large/100k-randuri.xlsx",
+    "lib": "calamine",
+    "r": {
+      "cells": 600006,
+      "formulas": 200000,
+      "got": {
+        "Vanzari!A100001": "100000"
+      },
+      "ms": 979.9,
+      "ok": true,
+      "peak_mb": 150.0,
+      "sheets": 1
+    },
+    "verdict": true
+  },
+  {
+    "bad": [],
+    "file": "large/100k-randuri.xlsx",
+    "lib": "umya",
+    "r": {
+      "cells": 600006,
+      "got": {
+        "Vanzari!A100001": "100000"
+      },
+      "ms": 2171.7,
+      "ok": true,
+      "peak_mb": 239.0,
+      "sheets": 1
+    },
+    "verdict": true
+  },
+  {
+    "bad": [],
+    "file": "large/100k-randuri.xlsx",
+    "lib": "ironcalc",
+    "r": {
+      "cells": 600006,
+      "got": {
+        "Vanzari!A100001": "100000"
+      },
+      "ms": 1546.4,
+      "ok": true,
+      "peak_mb": 69.0,
+      "sheets": 1
+    },
+    "verdict": true
+  },
+  {
+    "bad": [],
+    "file": "large/ostil-bomba-zip.xlsx",
+    "lib": "calamine",
+    "r": {
+      "cells": 0,
+      "formulas": 0,
+      "got": {},
+      "ms": 343.8,
+      "ok": true,
+      "peak_mb": 272.0,
+      "sheets": 0
+    },
+    "verdict": false
+  },
+  {
+    "bad": [],
+    "file": "large/ostil-bomba-zip.xlsx",
+    "lib": "umya",
+    "r": {
+      "cells": 0,
+      "got": {},
+      "ms": 417.1,
+      "ok": true,
+      "peak_mb": 625.0,
+      "sheets": 1
+    },
+    "verdict": false
+  },
+  {
+    "bad": [],
+    "file": "large/ostil-bomba-zip.xlsx",
+    "lib": "ironcalc",
+    "r": {
+      "cells": 0,
+      "got": {},
+      "ms": 191.4,
+      "ok": true,
+      "peak_mb": 272.0,
+      "sheets": 1
+    },
+    "verdict": false
+  },
+  {
+    "file": "ArrayFormulasStatic.ods",
+    "lib": "calamine",
+    "r": {
+      "cells": 208,
+      "formulas": 129,
+      "got": {},
+      "ms": 1.6,
+      "ok": true,
+      "peak_mb": 17.0,
+      "sheets": 1
+    }
+  },
+  {
+    "file": "SampleSS.ods",
+    "lib": "calamine",
+    "r": {
+      "cells": 15,
+      "formulas": 1,
+      "got": {},
+      "ms": 1.5,
+      "ok": true,
+      "peak_mb": 17.0,
+      "sheets": 2
+    }
+  },
+  {
+    "file": "basic-cell-content.ods",
+    "lib": "calamine",
+    "r": {
+      "cells": 11,
+      "formulas": 0,
+      "got": {},
+      "ms": 1.0,
+      "ok": true,
+      "peak_mb": 17.0,
+      "sheets": 1
+    }
+  },
+  {
+    "file": "border.ods",
+    "lib": "calamine",
+    "r": {
+      "cells": 0,
+      "formulas": 0,
+      "got": {},
+      "ms": 0.8,
+      "ok": true,
+      "peak_mb": 17.0,
+      "sheets": 0
+    }
+  },
+  {
+    "file": "cachedValue.ods",
+    "lib": "calamine",
+    "r": {
+      "error": "Ods error: Expecting 'table-cell', found 'Text(BytesText { content: Borrowed(\"\\n     \") })'",
+      "ms": 1.0,
+      "ok": false,
+      "peak_mb": 17.0
+    }
+  },
+  {
+    "file": "chart-import-basic.ods",
+    "lib": "calamine",
+    "r": {
+      "cells": 10,
+      "formulas": 0,
+      "got": {},
+      "ms": 1.0,
+      "ok": true,
+      "peak_mb": 17.0,
+      "sheets": 2
+    }
+  },
+  {
+    "file": "comment.ods",
+    "lib": "calamine",
+    "r": {
+      "cells": 0,
+      "formulas": 0,
+      "got": {},
+      "ms": 0.9,
+      "ok": true,
+      "peak_mb": 17.0,
+      "sheets": 0
+    }
+  },
+  {
+    "file": "copy-merged-number-formats.ods",
+    "lib": "calamine",
+    "r": {
+      "cells": 8,
+      "formulas": 0,
+      "got": {},
+      "ms": 1.3,
+      "ok": true,
+      "peak_mb": 17.0,
+      "sheets": 1
+    }
+  },
+  {
+    "file": "custom-numfmt-hybrid-cell.ods",
+    "lib": "calamine",
+    "r": {
+      "cells": 3,
+      "formulas": 3,
+      "got": {},
+      "ms": 0.8,
+      "ok": true,
+      "peak_mb": 17.0,
+      "sheets": 1
+    }
+  },
+  {
+    "file": "database-functions.ods",
+    "lib": "calamine",
+    "r": {
+      "cells": 154,
+      "formulas": 12,
+      "got": {},
+      "ms": 1.7,
+      "ok": true,
+      "peak_mb": 17.0,
+      "sheets": 1
+    }
+  },
+  {
+    "file": "date-time-functions.ods",
+    "lib": "calamine",
+    "r": {
+      "cells": 106,
+      "formulas": 62,
+      "got": {},
+      "ms": 1.1,
+      "ok": true,
+      "peak_mb": 17.0,
+      "sheets": 1
+    }
+  },
+  {
+    "file": "document_with_two_images.ods",
+    "lib": "calamine",
+    "r": {
+      "cells": 0,
+      "formulas": 0,
+      "got": {},
+      "ms": 1.4,
+      "ok": true,
+      "peak_mb": 17.0,
+      "sheets": 0
+    }
+  },
+  {
+    "file": "fdo67682-2.ods",
+    "lib": "calamine",
+    "r": {
+      "cells": 9839,
+      "formulas": 5360,
+      "got": {},
+      "ms": 21.1,
+      "ok": true,
+      "peak_mb": 21.0,
+      "sheets": 30
+    }
+  },
+  {
+    "file": "formats.ods",
+    "lib": "calamine",
+    "r": {
+      "cells": 44,
+      "formulas": 0,
+      "got": {},
+      "ms": 1.1,
+      "ok": true,
+      "peak_mb": 17.0,
+      "sheets": 3
+    }
+  },
+  {
+    "file": "formula-across-sheets.ods",
+    "lib": "calamine",
+    "r": {
+      "cells": 52,
+      "formulas": 23,
+      "got": {},
+      "ms": 1.2,
+      "ok": true,
+      "peak_mb": 17.0,
+      "sheets": 3
+    }
+  },
+  {
+    "file": "formula-quote-in-sheet-name.ods",
+    "lib": "calamine",
+    "r": {
+      "cells": 6,
+      "formulas": 0,
+      "got": {},
+      "ms": 0.9,
+      "ok": true,
+      "peak_mb": 17.0,
+      "sheets": 1
+    }
+  },
+  {
+    "file": "functions.ods",
+    "lib": "calamine",
+    "r": {
+      "cells": 1216,
+      "formulas": 646,
+      "got": {},
+      "ms": 4.7,
+      "ok": true,
+      "peak_mb": 18.0,
+      "sheets": 7
+    }
+  },
+  {
+    "file": "hidden-empty-rows.ods",
+    "lib": "calamine",
+    "r": {
+      "cells": 1,
+      "formulas": 0,
+      "got": {},
+      "ms": 1.0,
+      "ok": true,
+      "peak_mb": 17.0,
+      "sheets": 1
+    }
+  },
+  {
+    "file": "hybrid-shared-string.ods",
+    "lib": "calamine",
+    "r": {
+      "cells": 6,
+      "formulas": 2,
+      "got": {},
+      "ms": 1.2,
+      "ok": true,
+      "peak_mb": 17.0,
+      "sheets": 1
+    }
+  },
+  {
+    "file": "many_charts.ods",
+    "lib": "calamine",
+    "r": {
+      "cells": 22,
+      "formulas": 0,
+      "got": {},
+      "ms": 1.6,
+      "ok": true,
+      "peak_mb": 17.0,
+      "sheets": 1
+    }
+  },
+  {
+    "file": "matrix.ods",
+    "lib": "calamine",
+    "r": {
+      "error": "Ods error: Expecting 'table-cell', found 'Text(BytesText { content: Borrowed(\"\\n     \") })'",
+      "ms": 1.1,
+      "ok": false,
+      "peak_mb": 17.0
+    }
+  },
+  {
+    "file": "merged.ods",
+    "lib": "calamine",
+    "r": {
+      "cells": 4,
+      "formulas": 0,
+      "got": {},
+      "ms": 0.7,
+      "ok": true,
+      "peak_mb": 17.0,
+      "sheets": 2
+    }
+  },
+  {
+    "file": "notes-on-3-sheets.ods",
+    "lib": "calamine",
+    "r": {
+      "cells": 0,
+      "formulas": 0,
+      "got": {},
+      "ms": 0.8,
+      "ok": true,
+      "peak_mb": 17.0,
+      "sheets": 0
+    }
+  },
+  {
+    "file": "password.ods",
+    "lib": "calamine",
+    "r": {
+      "error": "Ods error: Workbook is password protected",
+      "ms": 0.7,
+      "ok": false,
+      "peak_mb": 17.0
+    }
+  },
+  {
+    "file": "pivot-table-basic.ods",
+    "lib": "calamine",
+    "r": {
+      "cells": 106,
+      "formulas": 0,
+      "got": {},
+      "ms": 0.8,
+      "ok": true,
+      "peak_mb": 17.0,
+      "sheets": 2
+    }
+  },
+  {
+    "file": "ranges-column-2000.ods",
+    "lib": "calamine",
+    "r": {
+      "cells": 19,
+      "formulas": 8,
+      "got": {},
+      "ms": 2.0,
+      "ok": true,
+      "peak_mb": 19.0,
+      "sheets": 1
+    }
+  },
+  {
+    "file": "repeatedColumns.ods",
+    "lib": "calamine",
+    "r": {
+      "cells": 11,
+      "formulas": 0,
+      "got": {},
+      "ms": 0.7,
+      "ok": true,
+      "peak_mb": 17.0,
+      "sheets": 2
+    }
+  },
+  {
+    "file": "rich-text-cells.ods",
+    "lib": "calamine",
+    "r": {
+      "cells": 35,
+      "formulas": 0,
+      "got": {},
+      "ms": 1.0,
+      "ok": true,
+      "peak_mb": 17.0,
+      "sheets": 1
+    }
+  },
+  {
+    "file": "sheet_name_with_dots.ods",
+    "lib": "calamine",
+    "r": {
+      "cells": 2,
+      "formulas": 0,
+      "got": {},
+      "ms": 0.6,
+      "ok": true,
+      "peak_mb": 17.0,
+      "sheets": 1
+    }
+  },
+  {
+    "file": "sum-whole-column-row.ods",
+    "lib": "calamine",
+    "r": {
+      "cells": 2,
+      "formulas": 2,
+      "got": {},
+      "ms": 0.6,
+      "ok": true,
+      "peak_mb": 17.0,
+      "sheets": 1
+    }
+  },
+  {
+    "file": "tdf100458_lost_zero_value.ods",
+    "lib": "calamine",
+    "r": {
+      "cells": 2,
+      "formulas": 1,
+      "got": {},
+      "ms": 0.6,
+      "ok": true,
+      "peak_mb": 17.0,
+      "sheets": 1
+    }
+  },
+  {
+    "file": "15228.xls",
+    "lib": "calamine",
+    "r": {
+      "cells": 14874,
+      "formulas": 2203,
+      "got": {},
+      "ms": 14.3,
+      "ok": true,
+      "peak_mb": 22.0,
+      "sheets": 17
+    }
+  },
+  {
+    "file": "SampleSS.xls",
+    "lib": "calamine",
+    "r": {
+      "cells": 15,
+      "formulas": 1,
+      "got": {},
+      "ms": 0.9,
+      "ok": true,
+      "peak_mb": 17.0,
+      "sheets": 2
+    }
+  },
+  {
+    "file": "Simple.xlsb",
+    "lib": "calamine",
+    "r": {
+      "crashed": true,
+      "error": "prăbușit (exit code: 101): panică: panicked at C:\\Users\\krono\\.cargo\\registry\\src\\index.crates.io-1949cf8c6b5b557f\\ca",
+      "ok": false
+    }
+  },
+  {
+    "file": "SimpleMacro.xlsm",
+    "lib": "calamine",
+    "r": {
+      "cells": 1,
+      "formulas": 0,
+      "got": {},
+      "ms": 1.1,
+      "ok": true,
+      "peak_mb": 17.0,
+      "sheets": 1
+    }
+  },
+  {
+    "file": "SimpleMacro.xlsm",
+    "lib": "umya",
+    "r": {
+      "cells": 1,
+      "got": {},
+      "ms": 1.6,
+      "ok": true,
+      "peak_mb": 17.0,
+      "sheets": 3
+    }
+  },
+  {
+    "file": "SimpleMacro.xlsm",
+    "lib": "ironcalc",
+    "r": {
+      "cells": 1,
+      "got": {},
+      "ms": 1.3,
+      "ok": true,
+      "peak_mb": 17.0,
+      "sheets": 3
+    }
+  },
+  {
+    "file": "mv-calculator-final-2-20-2013.xlsm",
+    "lib": "calamine",
+    "r": {
+      "cells": 24765,
+      "formulas": 3,
+      "got": {},
+      "ms": 40.7,
+      "ok": true,
+      "peak_mb": 22.0,
+      "sheets": 8
+    }
+  },
+  {
+    "file": "mv-calculator-final-2-20-2013.xlsm",
+    "lib": "umya",
+    "r": {
+      "cells": 24765,
+      "got": {},
+      "ms": 235.1,
+      "ok": true,
+      "peak_mb": 101.0,
+      "sheets": 8
+    }
+  },
+  {
+    "file": "mv-calculator-final-2-20-2013.xlsm",
+    "lib": "ironcalc",
+    "r": {
+      "cells": 31987,
+      "got": {},
+      "ms": 23.4,
+      "ok": true,
+      "peak_mb": 20.0,
+      "sheets": 8
+    }
+  },
+  {
+    "file": "123233_charts.xlsx",
+    "lib": "calamine",
+    "r": {
+      "cells": 62,
+      "formulas": 0,
+      "got": {},
+      "ms": 1.8,
+      "ok": true,
+      "peak_mb": 17.0,
+      "sheets": 5
+    }
+  },
+  {
+    "file": "123233_charts.xlsx",
+    "lib": "umya",
+    "r": {
+      "cells": 62,
+      "got": {},
+      "ms": 3.1,
+      "ok": true,
+      "peak_mb": 17.0,
+      "sheets": 5
+    }
+  },
+  {
+    "file": "123233_charts.xlsx",
+    "lib": "ironcalc",
+    "r": {
+      "cells": 66,
+      "got": {},
+      "ms": 1.7,
+      "ok": true,
+      "peak_mb": 17.0,
+      "sheets": 5
+    }
+  },
+  {
+    "file": "45540_form_Header.xlsx",
+    "lib": "calamine",
+    "r": {
+      "cells": 87,
+      "formulas": 0,
+      "got": {},
+      "ms": 1.8,
+      "ok": true,
+      "peak_mb": 17.0,
+      "sheets": 1
+    }
+  },
+  {
+    "file": "45540_form_Header.xlsx",
+    "lib": "umya",
+    "r": {
+      "cells": 87,
+      "got": {},
+      "ms": 26.3,
+      "ok": true,
+      "peak_mb": 28.0,
+      "sheets": 1
+    }
+  },
+  {
+    "file": "45540_form_Header.xlsx",
+    "lib": "ironcalc",
+    "r": {
+      "cells": 909,
+      "got": {},
+      "ms": 2.3,
+      "ok": true,
+      "peak_mb": 17.0,
+      "sheets": 1
+    }
+  },
+  {
+    "file": "46535.xlsx",
+    "lib": "calamine",
+    "r": {
+      "cells": 7156,
+      "formulas": 342,
+      "got": {},
+      "ms": 13.7,
+      "ok": true,
+      "peak_mb": 19.0,
+      "sheets": 5
+    }
+  },
+  {
+    "file": "46535.xlsx",
+    "lib": "umya",
+    "r": {
+      "cells": 7155,
+      "got": {},
+      "ms": 51.0,
+      "ok": true,
+      "peak_mb": 33.0,
+      "sheets": 5
+    }
+  },
+  {
+    "file": "46535.xlsx",
+    "lib": "ironcalc",
+    "r": {
+      "cells": 7369,
+      "got": {},
+      "ms": 16.2,
+      "ok": true,
+      "peak_mb": 21.0,
+      "sheets": 5
+    }
+  },
+  {
+    "file": "47668.xlsx",
+    "lib": "calamine",
+    "r": {
+      "cells": 0,
+      "formulas": 0,
+      "got": {},
+      "ms": 1.6,
+      "ok": true,
+      "peak_mb": 17.0,
+      "sheets": 0
+    }
+  },
+  {
+    "file": "47668.xlsx",
+    "lib": "umya",
+    "r": {
+      "cells": 0,
+      "got": {},
+      "ms": 2.1,
+      "ok": true,
+      "peak_mb": 17.0,
+      "sheets": 3
+    }
+  },
+  {
+    "file": "47668.xlsx",
+    "lib": "ironcalc",
+    "r": {
+      "cells": 0,
+      "got": {},
+      "ms": 1.2,
+      "ok": true,
+      "peak_mb": 17.0,
+      "sheets": 3
+    }
+  },
+  {
+    "file": "49609.xlsx",
+    "lib": "calamine",
+    "r": {
+      "cells": 7566,
+      "formulas": 0,
+      "got": {},
+      "ms": 12.0,
+      "ok": true,
+      "peak_mb": 18.0,
+      "sheets": 2
+    }
+  },
+  {
+    "file": "49609.xlsx",
+    "lib": "umya",
+    "r": {
+      "cells": 7566,
+      "got": {},
+      "ms": 28.5,
+      "ok": true,
+      "peak_mb": 23.0,
+      "sheets": 2
+    }
+  },
+  {
+    "file": "49609.xlsx",
+    "lib": "ironcalc",
+    "r": {
+      "error": "Zip(\"specified file not found in archive\")",
+      "ms": 0.2,
+      "ok": false,
+      "peak_mb": 17.0
+    }
+  },
+  {
+    "file": "50784-font_theme_colours.xlsx",
+    "lib": "calamine",
+    "r": {
+      "cells": 2,
+      "formulas": 0,
+      "got": {},
+      "ms": 1.3,
+      "ok": true,
+      "peak_mb": 17.0,
+      "sheets": 1
+    }
+  },
+  {
+    "file": "50784-font_theme_colours.xlsx",
+    "lib": "umya",
+    "r": {
+      "cells": 2,
+      "got": {},
+      "ms": 1.9,
+      "ok": true,
+      "peak_mb": 17.0,
+      "sheets": 3
+    }
+  },
+  {
+    "file": "50784-font_theme_colours.xlsx",
+    "lib": "ironcalc",
+    "r": {
+      "cells": 2,
+      "got": {},
+      "ms": 1.3,
+      "ok": true,
+      "peak_mb": 17.0,
+      "sheets": 3
+    }
+  },
+  {
+    "file": "51585.xlsx",
+    "lib": "calamine",
+    "r": {
+      "cells": 0,
+      "formulas": 0,
+      "got": {},
+      "ms": 23.8,
+      "ok": true,
+      "peak_mb": 17.0,
+      "sheets": 0
+    }
+  },
+  {
+    "file": "51585.xlsx",
+    "lib": "umya",
+    "r": {
+      "cells": 0,
+      "got": {},
+      "ms": 183.8,
+      "ok": true,
+      "peak_mb": 62.0,
+      "sheets": 3
+    }
+  },
+  {
+    "file": "51585.xlsx",
+    "lib": "ironcalc",
+    "r": {
+      "cells": 55629,
+      "got": {},
+      "ms": 38.1,
+      "ok": true,
+      "peak_mb": 31.0,
+      "sheets": 3
+    }
+  },
+  {
+    "file": "53568.xlsx",
+    "lib": "calamine",
+    "r": {
+      "cells": 0,
+      "formulas": 0,
+      "got": {},
+      "ms": 2.7,
+      "ok": true,
+      "peak_mb": 17.0,
+      "sheets": 0
+    }
+  },
+  {
+    "file": "53568.xlsx",
+    "lib": "umya",
+    "r": {
+      "cells": 0,
+      "got": {},
+      "ms": 8.4,
+      "ok": true,
+      "peak_mb": 18.0,
+      "sheets": 4
+    }
+  },
+  {
+    "file": "53568.xlsx",
+    "lib": "ironcalc",
+    "r": {
+      "cells": 0,
+      "got": {},
+      "ms": 13.3,
+      "ok": true,
+      "peak_mb": 23.0,
+      "sheets": 4
+    }
+  },
+  {
+    "file": "54084 - Greek - beyond BMP.xlsx",
+    "lib": "calamine",
+    "r": {
+      "cells": 1,
+      "formulas": 0,
+      "got": {},
+      "ms": 1.1,
+      "ok": true,
+      "peak_mb": 17.0,
+      "sheets": 1
+    }
+  },
+  {
+    "file": "54084 - Greek - beyond BMP.xlsx",
+    "lib": "umya",
+    "r": {
+      "cells": 1,
+      "got": {},
+      "ms": 1.2,
+      "ok": true,
+      "peak_mb": 17.0,
+      "sheets": 3
+    }
+  },
+  {
+    "file": "54084 - Greek - beyond BMP.xlsx",
+    "lib": "ironcalc",
+    "r": {
+      "cells": 1,
+      "got": {},
+      "ms": 1.2,
+      "ok": true,
+      "peak_mb": 17.0,
+      "sheets": 3
+    }
+  },
+  {
+    "file": "55406_Conditional_formatting_sample.xlsx",
+    "lib": "calamine",
+    "r": {
+      "cells": 0,
+      "formulas": 0,
+      "got": {},
+      "ms": 1.3,
+      "ok": true,
+      "peak_mb": 17.0,
+      "sheets": 0
+    }
+  },
+  {
+    "file": "55406_Conditional_formatting_sample.xlsx",
+    "lib": "umya",
+    "r": {
+      "cells": 0,
+      "got": {},
+      "ms": 15.3,
+      "ok": true,
+      "peak_mb": 27.0,
+      "sheets": 1
+    }
+  },
+  {
+    "file": "55406_Conditional_formatting_sample.xlsx",
+    "lib": "ironcalc",
+    "r": {
+      "cells": 39,
+      "got": {},
+      "ms": 4.5,
+      "ok": true,
+      "peak_mb": 19.0,
+      "sheets": 1
+    }
+  },
+  {
+    "file": "55906-MultiSheetRefs.xlsx",
+    "lib": "calamine",
+    "r": {
+      "cells": 23,
+      "formulas": 13,
+      "got": {},
+      "ms": 1.2,
+      "ok": true,
+      "peak_mb": 17.0,
+      "sheets": 3
+    }
+  },
+  {
+    "file": "55906-MultiSheetRefs.xlsx",
+    "lib": "umya",
+    "r": {
+      "cells": 23,
+      "got": {},
+      "ms": 1.5,
+      "ok": true,
+      "peak_mb": 17.0,
+      "sheets": 3
+    }
+  },
+  {
+    "file": "55906-MultiSheetRefs.xlsx",
+    "lib": "ironcalc",
+    "r": {
+      "cells": 23,
+      "got": {},
+      "ms": 1.5,
+      "ok": true,
+      "peak_mb": 17.0,
+      "sheets": 3
+    }
+  },
+  {
+    "file": "57893-many-merges.xlsx",
+    "lib": "calamine",
+    "r": {
+      "cells": 0,
+      "formulas": 0,
+      "got": {},
+      "ms": 60.0,
+      "ok": true,
+      "peak_mb": 17.0,
+      "sheets": 0
+    }
+  },
+  {
+    "file": "57893-many-merges.xlsx",
+    "lib": "umya",
+    "r": {
+      "cells": 0,
+      "got": {},
+      "ms": 556.3,
+      "ok": true,
+      "peak_mb": 125.0,
+      "sheets": 1
+    }
+  },
+  {
+    "file": "57893-many-merges.xlsx",
+    "lib": "ironcalc",
+    "r": {
+      "cells": 140000,
+      "got": {},
+      "ms": 827.2,
+      "ok": true,
+      "peak_mb": 53.0,
+      "sheets": 1
+    }
+  },
+  {
+    "file": "58325_lt.xlsx",
+    "lib": "calamine",
+    "r": {
+      "cells": 1,
+      "formulas": 0,
+      "got": {},
+      "ms": 3.5,
+      "ok": true,
+      "peak_mb": 17.0,
+      "sheets": 1
+    }
+  },
+  {
+    "file": "58325_lt.xlsx",
+    "lib": "umya",
+    "r": {
+      "cells": 1,
+      "got": {},
+      "ms": 4.2,
+      "ok": true,
+      "peak_mb": 19.0,
+      "sheets": 1
+    }
+  },
+  {
+    "file": "58325_lt.xlsx",
+    "lib": "ironcalc",
+    "r": {
+      "cells": 1,
+      "got": {},
+      "ms": 0.9,
+      "ok": true,
+      "peak_mb": 17.0,
+      "sheets": 1
+    }
+  },
+  {
+    "file": "AverageTaxRates.xlsx",
+    "lib": "calamine",
+    "r": {
+      "cells": 1110,
+      "formulas": 0,
+      "got": {},
+      "ms": 2.9,
+      "ok": true,
+      "peak_mb": 17.0,
+      "sheets": 3
+    }
+  },
+  {
+    "file": "AverageTaxRates.xlsx",
+    "lib": "umya",
+    "r": {
+      "cells": 1110,
+      "got": {},
+      "ms": 38.6,
+      "ok": true,
+      "peak_mb": 44.0,
+      "sheets": 3
+    }
+  },
+  {
+    "file": "AverageTaxRates.xlsx",
+    "lib": "ironcalc",
+    "r": {
+      "cells": 1360,
+      "got": {},
+      "ms": 2.7,
+      "ok": true,
+      "peak_mb": 17.0,
+      "sheets": 3
+    }
+  },
+  {
+    "file": "CVLKRA-KYC_Download_File_Structure_V3.1.xlsx",
+    "lib": "calamine",
+    "r": {
+      "cells": 2987,
+      "formulas": 103,
+      "got": {},
+      "ms": 24.3,
+      "ok": true,
+      "peak_mb": 17.0,
+      "sheets": 30
+    }
+  },
+  {
+    "file": "CVLKRA-KYC_Download_File_Structure_V3.1.xlsx",
+    "lib": "umya",
+    "r": {
+      "cells": 2987,
+      "got": {},
+      "ms": 149.5,
+      "ok": true,
+      "peak_mb": 51.0,
+      "sheets": 30
+    }
+  },
+  {
+    "file": "CVLKRA-KYC_Download_File_Structure_V3.1.xlsx",
+    "lib": "ironcalc",
+    "r": {
+      "cells": 52287,
+      "got": {},
+      "ms": 22.4,
+      "ok": true,
+      "peak_mb": 23.0,
+      "sheets": 30
+    }
+  },
+  {
+    "file": "ConditionalFormattingSamples.xlsx",
+    "lib": "calamine",
+    "r": {
+      "cells": 1723,
+      "formulas": 352,
+      "got": {},
+      "ms": 10.4,
+      "ok": true,
+      "peak_mb": 17.0,
+      "sheets": 18
+    }
+  },
+  {
+    "file": "ConditionalFormattingSamples.xlsx",
+    "lib": "umya",
+    "r": {
+      "cells": 1723,
+      "got": {},
+      "ms": 152.3,
+      "ok": true,
+      "peak_mb": 94.0,
+      "sheets": 18
+    }
+  },
+  {
+    "file": "ConditionalFormattingSamples.xlsx",
+    "lib": "ironcalc",
+    "r": {
+      "cells": 2273,
+      "got": {},
+      "ms": 11.2,
+      "ok": true,
+      "peak_mb": 19.0,
+      "sheets": 18
+    }
+  },
+  {
+    "file": "DataValidations-49244.xlsx",
+    "lib": "calamine",
+    "r": {
+      "cells": 138,
+      "formulas": 0,
+      "got": {},
+      "ms": 1.4,
+      "ok": true,
+      "peak_mb": 17.0,
+      "sheets": 1
+    }
+  },
+  {
+    "file": "DataValidations-49244.xlsx",
+    "lib": "umya",
+    "r": {
+      "cells": 138,
+      "got": {},
+      "ms": 2.7,
+      "ok": true,
+      "peak_mb": 17.0,
+      "sheets": 1
+    }
+  },
+  {
+    "file": "DataValidations-49244.xlsx",
+    "lib": "ironcalc",
+    "r": {
+      "cells": 142,
+      "got": {},
+      "ms": 2.5,
+      "ok": true,
+      "peak_mb": 17.0,
+      "sheets": 1
+    }
+  },
+  {
+    "file": "DateFormatTests.xlsx",
+    "lib": "calamine",
+    "r": {
+      "cells": 194,
+      "formulas": 45,
+      "got": {},
+      "ms": 1.9,
+      "ok": true,
+      "peak_mb": 17.0,
+      "sheets": 2
+    }
+  },
+  {
+    "file": "DateFormatTests.xlsx",
+    "lib": "umya",
+    "r": {
+      "cells": 194,
+      "got": {},
+      "ms": 31.6,
+      "ok": true,
+      "peak_mb": 34.0,
+      "sheets": 2
+    }
+  },
+  {
+    "file": "DateFormatTests.xlsx",
+    "lib": "ironcalc",
+    "r": {
+      "cells": 195,
+      "got": {},
+      "ms": 2.0,
+      "ok": true,
+      "peak_mb": 17.0,
+      "sheets": 2
+    }
+  },
+  {
+    "file": "ExcelPivotTableSample.xlsx",
+    "lib": "calamine",
+    "r": {
+      "cells": 50,
+      "formulas": 0,
+      "got": {},
+      "ms": 1.1,
+      "ok": true,
+      "peak_mb": 17.0,
+      "sheets": 3
+    }
+  },
+  {
+    "file": "ExcelPivotTableSample.xlsx",
+    "lib": "umya",
+    "r": {
+      "cells": 50,
+      "got": {},
+      "ms": 2.5,
+      "ok": true,
+      "peak_mb": 17.0,
+      "sheets": 3
+    }
+  },
+  {
+    "file": "ExcelPivotTableSample.xlsx",
+    "lib": "ironcalc",
+    "r": {
+      "cells": 52,
+      "got": {},
+      "ms": 1.5,
+      "ok": true,
+      "peak_mb": 17.0,
+      "sheets": 3
+    }
+  },
+  {
+    "file": "FormulaEvalTestData_Copy.xlsx",
+    "lib": "calamine",
+    "r": {
+      "cells": 4177,
+      "formulas": 1295,
+      "got": {},
+      "ms": 10.9,
+      "ok": true,
+      "peak_mb": 20.0,
+      "sheets": 4
+    }
+  },
+  {
+    "file": "FormulaEvalTestData_Copy.xlsx",
+    "lib": "umya",
+    "r": {
+      "cells": 4141,
+      "got": {},
+      "ms": 55.4,
+      "ok": true,
+      "peak_mb": 45.0,
+      "sheets": 4
+    }
+  },
+  {
+    "file": "FormulaEvalTestData_Copy.xlsx",
+    "lib": "ironcalc",
+    "r": {
+      "cells": 4588,
+      "got": {},
+      "ms": 20.2,
+      "ok": true,
+      "peak_mb": 19.0,
+      "sheets": 4
+    }
+  },
+  {
+    "file": "InlineStrings.xlsx",
+    "lib": "calamine",
+    "r": {
+      "cells": 28,
+      "formulas": 6,
+      "got": {},
+      "ms": 1.4,
+      "ok": true,
+      "peak_mb": 17.0,
+      "sheets": 1
+    }
+  },
+  {
+    "file": "InlineStrings.xlsx",
+    "lib": "umya",
+    "r": {
+      "cells": 28,
+      "got": {},
+      "ms": 2.3,
+      "ok": true,
+      "peak_mb": 18.0,
+      "sheets": 3
+    }
+  },
+  {
+    "file": "InlineStrings.xlsx",
+    "lib": "ironcalc",
+    "r": {
+      "cells": 28,
+      "got": {},
+      "ms": 1.2,
+      "ok": true,
+      "peak_mb": 17.0,
+      "sheets": 3
+    }
+  },
+  {
+    "file": "LIBRE_OFFICE-116306-0.xlsx",
+    "lib": "calamine",
+    "r": {
+      "cells": 662923,
+      "formulas": 0,
+      "got": {},
+      "ms": 787.8,
+      "ok": true,
+      "peak_mb": 142.0,
+      "sheets": 2
+    }
+  },
+  {
+    "file": "LIBRE_OFFICE-116306-0.xlsx",
+    "lib": "umya",
+    "r": {
+      "cells": 657530,
+      "got": {},
+      "ms": 1918.6,
+      "ok": true,
+      "peak_mb": 217.0,
+      "sheets": 2
+    }
+  },
+  {
+    "file": "LIBRE_OFFICE-116306-0.xlsx",
+    "lib": "ironcalc",
+    "r": {
+      "cells": 664571,
+      "got": {},
+      "ms": 334.0,
+      "ok": true,
+      "peak_mb": 70.0,
+      "sheets": 2
+    }
+  },
+  {
+    "file": "MalformedSSTCount.xlsx",
+    "lib": "calamine",
+    "r": {
+      "cells": 12,
+      "formulas": 0,
+      "got": {},
+      "ms": 0.9,
+      "ok": true,
+      "peak_mb": 17.0,
+      "sheets": 1
+    }
+  },
+  {
+    "file": "MalformedSSTCount.xlsx",
+    "lib": "umya",
+    "r": {
+      "cells": 12,
+      "got": {},
+      "ms": 0.9,
+      "ok": true,
+      "peak_mb": 17.0,
+      "sheets": 1
+    }
+  },
+  {
+    "file": "MalformedSSTCount.xlsx",
+    "lib": "ironcalc",
+    "r": {
+      "cells": 12,
+      "got": {},
+      "ms": 1.0,
+      "ok": true,
+      "peak_mb": 17.0,
+      "sheets": 1
+    }
+  },
+  {
+    "file": "NumberFormatTests.xlsx",
+    "lib": "calamine",
+    "r": {
+      "cells": 1314,
+      "formulas": 325,
+      "got": {},
+      "ms": 3.4,
+      "ok": true,
+      "peak_mb": 17.0,
+      "sheets": 2
+    }
+  },
+  {
+    "file": "NumberFormatTests.xlsx",
+    "lib": "umya",
+    "r": {
+      "cells": 1314,
+      "got": {},
+      "ms": 29.4,
+      "ok": true,
+      "peak_mb": 35.0,
+      "sheets": 2
+    }
+  },
+  {
+    "file": "NumberFormatTests.xlsx",
+    "lib": "ironcalc",
+    "r": {
+      "cells": 1322,
+      "got": {},
+      "ms": 3.2,
+      "ok": true,
+      "peak_mb": 17.0,
+      "sheets": 2
+    }
+  },
+  {
+    "file": "SampleSS.strict.xlsx",
+    "lib": "calamine",
+    "r": {
+      "cells": 15,
+      "formulas": 1,
+      "got": {},
+      "ms": 1.1,
+      "ok": true,
+      "peak_mb": 17.0,
+      "sheets": 2
+    }
+  },
+  {
+    "file": "SampleSS.strict.xlsx",
+    "lib": "umya",
+    "r": {
+      "cells": 0,
+      "got": {},
+      "ms": 0.7,
+      "ok": true,
+      "peak_mb": 17.0,
+      "sheets": 3
+    }
+  },
+  {
+    "file": "SampleSS.strict.xlsx",
+    "lib": "ironcalc",
+    "r": {
+      "error": "Xml(\"Missing \\\"r:id\\\" XML attribute\")",
+      "ms": 0.3,
+      "ok": false,
+      "peak_mb": 17.0
+    }
+  },
+  {
+    "file": "SimpleHistogram.xlsx",
+    "lib": "calamine",
+    "r": {
+      "cells": 5,
+      "formulas": 0,
+      "got": {},
+      "ms": 1.1,
+      "ok": true,
+      "peak_mb": 17.0,
+      "sheets": 1
+    }
+  },
+  {
+    "file": "SimpleHistogram.xlsx",
+    "lib": "umya",
+    "r": {
+      "cells": 5,
+      "got": {},
+      "ms": 2.0,
+      "ok": true,
+      "peak_mb": 17.0,
+      "sheets": 1
+    }
+  },
+  {
+    "file": "SimpleHistogram.xlsx",
+    "lib": "ironcalc",
+    "r": {
+      "cells": 5,
+      "got": {},
+      "ms": 1.3,
+      "ok": true,
+      "peak_mb": 17.0,
+      "sheets": 1
+    }
+  },
+  {
+    "file": "SimpleScatterChart.xlsx",
+    "lib": "calamine",
+    "r": {
+      "cells": 6,
+      "formulas": 0,
+      "got": {},
+      "ms": 0.9,
+      "ok": true,
+      "peak_mb": 17.0,
+      "sheets": 1
+    }
+  },
+  {
+    "file": "SimpleScatterChart.xlsx",
+    "lib": "umya",
+    "r": {
+      "cells": 6,
+      "got": {},
+      "ms": 2.4,
+      "ok": true,
+      "peak_mb": 17.0,
+      "sheets": 2
+    }
+  },
+  {
+    "file": "SimpleScatterChart.xlsx",
+    "lib": "ironcalc",
+    "r": {
+      "cells": 6,
+      "got": {},
+      "ms": 1.2,
+      "ok": true,
+      "peak_mb": 17.0,
+      "sheets": 1
+    }
+  },
+  {
+    "file": "StructuredRefs-lots-with-lookups.xlsx",
+    "lib": "calamine",
+    "r": {
+      "cells": 37696,
+      "formulas": 7274,
+      "got": {},
+      "ms": 55.2,
+      "ok": true,
+      "peak_mb": 25.0,
+      "sheets": 5
+    }
+  },
+  {
+    "file": "StructuredRefs-lots-with-lookups.xlsx",
+    "lib": "umya",
+    "r": {
+      "cells": 37696,
+      "got": {},
+      "ms": 163.1,
+      "ok": true,
+      "peak_mb": 51.0,
+      "sheets": 5
+    }
+  },
+  {
+    "file": "StructuredRefs-lots-with-lookups.xlsx",
+    "lib": "ironcalc",
+    "r": {
+      "error": "peste 120 s",
+      "ok": false,
+      "timeout": true
+    }
+  },
+  {
+    "file": "Tables.xlsx",
+    "lib": "calamine",
+    "r": {
+      "cells": 2111,
+      "formulas": 21,
+      "got": {},
+      "ms": 9.0,
+      "ok": true,
+      "peak_mb": 17.0,
+      "sheets": 12
+    }
+  },
+  {
+    "file": "Tables.xlsx",
+    "lib": "umya",
+    "r": {
+      "cells": 2111,
+      "got": {},
+      "ms": 139.1,
+      "ok": true,
+      "peak_mb": 105.0,
+      "sheets": 12
+    }
+  },
+  {
+    "file": "Tables.xlsx",
+    "lib": "ironcalc",
+    "r": {
+      "cells": 3544,
+      "got": {},
+      "ms": 6.2,
+      "ok": true,
+      "peak_mb": 18.0,
+      "sheets": 12
+    }
+  },
+  {
+    "file": "WithChartSheet.xlsx",
+    "lib": "calamine",
+    "r": {
+      "cells": 267,
+      "formulas": 0,
+      "got": {},
+      "ms": 2.1,
+      "ok": true,
+      "peak_mb": 17.0,
+      "sheets": 6
+    }
+  },
+  {
+    "file": "WithChartSheet.xlsx",
+    "lib": "umya",
+    "r": {
+      "cells": 267,
+      "got": {},
+      "ms": 7.4,
+      "ok": true,
+      "peak_mb": 17.0,
+      "sheets": 7
+    }
+  },
+  {
+    "file": "WithChartSheet.xlsx",
+    "lib": "ironcalc",
+    "r": {
+      "cells": 297,
+      "got": {},
+      "ms": 2.3,
+      "ok": true,
+      "peak_mb": 17.0,
+      "sheets": 6
+    }
+  },
+  {
+    "file": "WithDrawing.xlsx",
+    "lib": "calamine",
+    "r": {
+      "cells": 0,
+      "formulas": 0,
+      "got": {},
+      "ms": 1.4,
+      "ok": true,
+      "peak_mb": 17.0,
+      "sheets": 0
+    }
+  },
+  {
+    "file": "WithDrawing.xlsx",
+    "lib": "umya",
+    "r": {
+      "cells": 0,
+      "got": {},
+      "ms": 3.3,
+      "ok": true,
+      "peak_mb": 17.0,
+      "sheets": 3
+    }
+  },
+  {
+    "file": "WithDrawing.xlsx",
+    "lib": "ironcalc",
+    "r": {
+      "cells": 0,
+      "got": {},
+      "ms": 1.3,
+      "ok": true,
+      "peak_mb": 17.0,
+      "sheets": 3
+    }
+  },
+  {
+    "file": "WithThreeCharts.xlsx",
+    "lib": "calamine",
+    "r": {
+      "cells": 24,
+      "formulas": 6,
+      "got": {},
+      "ms": 1.3,
+      "ok": true,
+      "peak_mb": 17.0,
+      "sheets": 1
+    }
+  },
+  {
+    "file": "WithThreeCharts.xlsx",
+    "lib": "umya",
+    "r": {
+      "cells": 24,
+      "got": {},
+      "ms": 4.0,
+      "ok": true,
+      "peak_mb": 17.0,
+      "sheets": 3
+    }
+  },
+  {
+    "file": "WithThreeCharts.xlsx",
+    "lib": "ironcalc",
+    "r": {
+      "cells": 24,
+      "got": {},
+      "ms": 1.5,
+      "ok": true,
+      "peak_mb": 17.0,
+      "sheets": 3
+    }
+  },
+  {
+    "file": "boxWhisker.xlsx",
+    "lib": "calamine",
+    "r": {
+      "cells": 27,
+      "formulas": 0,
+      "got": {},
+      "ms": 1.2,
+      "ok": true,
+      "peak_mb": 17.0,
+      "sheets": 1
+    }
+  },
+  {
+    "file": "boxWhisker.xlsx",
+    "lib": "umya",
+    "r": {
+      "cells": 27,
+      "got": {},
+      "ms": 3.0,
+      "ok": true,
+      "peak_mb": 17.0,
+      "sheets": 1
+    }
+  },
+  {
+    "file": "boxWhisker.xlsx",
+    "lib": "ironcalc",
+    "r": {
+      "cells": 27,
+      "got": {},
+      "ms": 1.5,
+      "ok": true,
+      "peak_mb": 17.0,
+      "sheets": 1
+    }
+  },
+  {
+    "file": "bug62181.xlsx",
+    "lib": "calamine",
+    "r": {
+      "cells": 175095,
+      "formulas": 0,
+      "got": {},
+      "ms": 239.1,
+      "ok": true,
+      "peak_mb": 46.0,
+      "sheets": 1
+    }
+  },
+  {
+    "file": "bug62181.xlsx",
+    "lib": "umya",
+    "r": {
+      "cells": 175095,
+      "got": {},
+      "ms": 1034.4,
+      "ok": true,
+      "peak_mb": 196.0,
+      "sheets": 1
+    }
+  },
+  {
+    "file": "bug62181.xlsx",
+    "lib": "ironcalc",
+    "r": {
+      "crashed": true,
+      "error": "prăbușit (exit code: 101): panică: panicked at C:\\Users\\krono\\.cargo\\registry\\src\\index.crates.io-1949cf8c6b5b557f\\ir",
+      "ok": false
+    }
+  },
+  {
+    "file": "clusterfuzz-testcase-minimized-POIXSSFFuzzer-5937385319563264.xlsx",
+    "lib": "calamine",
+    "r": {
+      "cells": 2111,
+      "formulas": 21,
+      "got": {},
+      "ms": 8.8,
+      "ok": true,
+      "peak_mb": 17.0,
+      "sheets": 12
+    }
+  },
+  {
+    "file": "clusterfuzz-testcase-minimized-POIXSSFFuzzer-5937385319563264.xlsx",
+    "lib": "umya",
+    "r": {
+      "cells": 1956,
+      "got": {},
+      "ms": 125.2,
+      "ok": true,
+      "peak_mb": 96.0,
+      "sheets": 12
+    }
+  },
+  {
+    "file": "clusterfuzz-testcase-minimized-POIXSSFFuzzer-5937385319563264.xlsx",
+    "lib": "ironcalc",
+    "r": {
+      "error": "Xml(\"number too large to fit in target type\")",
+      "ms": 5.4,
+      "ok": false,
+      "peak_mb": 18.0
+    }
+  },
+  {
+    "file": "clusterfuzz-testcase-minimized-XLSX2CSVFuzzer-5636439151607808.xlsx",
+    "lib": "calamine",
+    "r": {
+      "error": "Xlsx error: Zip error: invalid Zip archive: Could not find EOCD",
+      "ms": 0.2,
+      "ok": false,
+      "peak_mb": 17.0
+    }
+  },
+  {
+    "file": "clusterfuzz-testcase-minimized-XLSX2CSVFuzzer-5636439151607808.xlsx",
+    "lib": "umya",
+    "r": {
+      "error": "ZipError: invalid Zip archive: Could not find EOCD",
+      "ms": 0.1,
+      "ok": false,
+      "peak_mb": 17.0
+    }
+  },
+  {
+    "file": "clusterfuzz-testcase-minimized-XLSX2CSVFuzzer-5636439151607808.xlsx",
+    "lib": "ironcalc",
+    "r": {
+      "error": "Zip(\"invalid Zip archive: Could not find EOCD\")",
+      "ms": 0.2,
+      "ok": false,
+      "peak_mb": 17.0
+    }
+  },
+  {
+    "file": "commentTest.xlsx",
+    "lib": "calamine",
+    "r": {
+      "cells": 2,
+      "formulas": 0,
+      "got": {},
+      "ms": 3.7,
+      "ok": true,
+      "peak_mb": 17.0,
+      "sheets": 1
+    }
+  },
+  {
+    "file": "commentTest.xlsx",
+    "lib": "umya",
+    "r": {
+      "cells": 2,
+      "got": {},
+      "ms": 1.6,
+      "ok": true,
+      "peak_mb": 17.0,
+      "sheets": 1
+    }
+  },
+  {
+    "file": "commentTest.xlsx",
+    "lib": "ironcalc",
+    "r": {
+      "cells": 2,
+      "got": {},
+      "ms": 1.6,
+      "ok": true,
+      "peak_mb": 17.0,
+      "sheets": 1
+    }
+  },
+  {
+    "file": "deep-data.xlsx",
+    "lib": "calamine",
+    "r": {
+      "error": "Xlsx error: Zip error: invalid Zip archive: Could not find EOCD",
+      "ms": 3.4,
+      "ok": false,
+      "peak_mb": 17.0
+    }
+  },
+  {
+    "file": "deep-data.xlsx",
+    "lib": "umya",
+    "r": {
+      "error": "ZipError: invalid Zip archive: Could not find EOCD",
+      "ms": 23.6,
+      "ok": false,
+      "peak_mb": 17.0
+    }
+  },
+  {
+    "file": "deep-data.xlsx",
+    "lib": "ironcalc",
+    "r": {
+      "error": "Zip(\"invalid Zip archive: Could not find EOCD\")",
+      "ms": 0.3,
+      "ok": false,
+      "peak_mb": 17.0
+    }
+  },
+  {
+    "file": "funnel1.xlsx",
+    "lib": "calamine",
+    "r": {
+      "cells": 6,
+      "formulas": 0,
+      "got": {},
+      "ms": 1.2,
+      "ok": true,
+      "peak_mb": 17.0,
+      "sheets": 1
+    }
+  },
+  {
+    "file": "funnel1.xlsx",
+    "lib": "umya",
+    "r": {
+      "cells": 6,
+      "got": {},
+      "ms": 3.0,
+      "ok": true,
+      "peak_mb": 17.0,
+      "sheets": 1
+    }
+  },
+  {
+    "file": "funnel1.xlsx",
+    "lib": "ironcalc",
+    "r": {
+      "cells": 6,
+      "got": {},
+      "ms": 1.4,
+      "ok": true,
+      "peak_mb": 17.0,
+      "sheets": 1
+    }
+  },
+  {
+    "file": "noSharedStringTable.xlsx",
+    "lib": "calamine",
+    "r": {
+      "cells": 2,
+      "formulas": 0,
+      "got": {},
+      "ms": 0.9,
+      "ok": true,
+      "peak_mb": 17.0,
+      "sheets": 1
+    }
+  },
+  {
+    "file": "noSharedStringTable.xlsx",
+    "lib": "umya",
+    "r": {
+      "cells": 2,
+      "got": {},
+      "ms": 1.0,
+      "ok": true,
+      "peak_mb": 17.0,
+      "sheets": 1
+    }
+  },
+  {
+    "file": "noSharedStringTable.xlsx",
+    "lib": "ironcalc",
+    "r": {
+      "cells": 2,
+      "got": {},
+      "ms": 1.2,
+      "ok": true,
+      "peak_mb": 17.0,
+      "sheets": 1
+    }
+  },
+  {
+    "file": "paretoLine.xlsx",
+    "lib": "calamine",
+    "r": {
+      "cells": 30,
+      "formulas": 0,
+      "got": {},
+      "ms": 1.2,
+      "ok": true,
+      "peak_mb": 17.0,
+      "sheets": 1
+    }
+  },
+  {
+    "file": "paretoLine.xlsx",
+    "lib": "umya",
+    "r": {
+      "cells": 30,
+      "got": {},
+      "ms": 3.2,
+      "ok": true,
+      "peak_mb": 17.0,
+      "sheets": 1
+    }
+  },
+  {
+    "file": "paretoLine.xlsx",
+    "lib": "ironcalc",
+    "r": {
+      "cells": 30,
+      "got": {},
+      "ms": 1.5,
+      "ok": true,
+      "peak_mb": 17.0,
+      "sheets": 1
+    }
+  },
+  {
+    "file": "picture.xlsx",
+    "lib": "calamine",
+    "r": {
+      "cells": 20,
+      "formulas": 0,
+      "got": {},
+      "ms": 1.7,
+      "ok": true,
+      "peak_mb": 17.0,
+      "sheets": 1
+    }
+  },
+  {
+    "file": "picture.xlsx",
+    "lib": "umya",
+    "r": {
+      "cells": 20,
+      "got": {},
+      "ms": 4.6,
+      "ok": true,
+      "peak_mb": 18.0,
+      "sheets": 3
+    }
+  },
+  {
+    "file": "picture.xlsx",
+    "lib": "ironcalc",
+    "r": {
+      "cells": 20,
+      "got": {},
+      "ms": 1.4,
+      "ok": true,
+      "peak_mb": 17.0,
+      "sheets": 3
+    }
+  },
+  {
+    "file": "poc-shared-strings.xlsx",
+    "lib": "calamine",
+    "r": {
+      "error": "Xlsx error: Range is missing the expected row component.",
+      "ms": 3.6,
+      "ok": false,
+      "peak_mb": 22.0
+    }
+  },
+  {
+    "file": "poc-shared-strings.xlsx",
+    "lib": "umya",
+    "r": {
+      "crashed": true,
+      "error": "prăbușit (exit code: 0xc0000409): memory allocation of 1048576 bytes failed",
+      "ok": false
+    }
+  },
+  {
+    "file": "poc-shared-strings.xlsx",
+    "lib": "ironcalc",
+    "r": {
+      "error": "Xml(\"Invalid cell reference: 'A0'\")",
+      "ms": 18.6,
+      "ok": false,
+      "peak_mb": 9.0
+    }
+  },
+  {
+    "file": "poc-xmlbomb.xlsx",
+    "lib": "calamine",
+    "r": {
+      "error": "Xlsx error: Xml error: at 0..0: unrecognized entity `&a5;`",
+      "ms": 5.7,
+      "ok": false,
+      "peak_mb": 4.0
+    }
+  },
+  {
+    "file": "poc-xmlbomb.xlsx",
+    "lib": "umya",
+    "r": {
+      "crashed": true,
+      "error": "prăbușit (exit code: 101): panică: panicked at C:\\Users\\krono\\.cargo\\registry\\src\\index.crates.io-1949cf8c6b5b557f\\um",
+      "ok": false
+    }
+  },
+  {
+    "file": "poc-xmlbomb.xlsx",
+    "lib": "ironcalc",
+    "r": {
+      "error": "Xml(\"Unknown entity: &a5;\")",
+      "ms": 0.7,
+      "ok": false,
+      "peak_mb": 4.0
+    }
+  },
+  {
+    "file": "protected_passtika.xlsx",
+    "lib": "calamine",
+    "r": {
+      "error": "Xlsx error: Workbook is password protected",
+      "ms": 0.8,
+      "ok": false,
+      "peak_mb": 4.0
+    }
+  },
+  {
+    "file": "protected_passtika.xlsx",
+    "lib": "umya",
+    "r": {
+      "error": "ZipError: invalid Zip archive: Could not find EOCD",
+      "ms": 0.5,
+      "ok": false,
+      "peak_mb": 4.0
+    }
+  },
+  {
+    "file": "protected_passtika.xlsx",
+    "lib": "ironcalc",
+    "r": {
+      "error": "Zip(\"invalid Zip archive: Could not find EOCD\")",
+      "ms": 0.8,
+      "ok": false,
+      "peak_mb": 4.0
+    }
+  },
+  {
+    "file": "right-to-left.xlsx",
+    "lib": "calamine",
+    "r": {
+      "cells": 8,
+      "formulas": 0,
+      "got": {},
+      "ms": 4.0,
+      "ok": true,
+      "peak_mb": 5.0,
+      "sheets": 2
+    }
+  },
+  {
+    "file": "right-to-left.xlsx",
+    "lib": "umya",
+    "r": {
+      "cells": 8,
+      "got": {},
+      "ms": 19.7,
+      "ok": true,
+      "peak_mb": 6.0,
+      "sheets": 2
+    }
+  },
+  {
+    "file": "right-to-left.xlsx",
+    "lib": "ironcalc",
+    "r": {
+      "cells": 8,
+      "got": {},
+      "ms": 5.9,
+      "ok": true,
+      "peak_mb": 6.0,
+      "sheets": 2
+    }
+  },
+  {
+    "file": "shared_formulas.xlsx",
+    "lib": "calamine",
+    "r": {
+      "cells": 81,
+      "formulas": 40,
+      "got": {},
+      "ms": 2.2,
+      "ok": true,
+      "peak_mb": 5.0,
+      "sheets": 1
+    }
+  },
+  {
+    "file": "shared_formulas.xlsx",
+    "lib": "umya",
+    "r": {
+      "cells": 81,
+      "got": {},
+      "ms": 6.8,
+      "ok": true,
+      "peak_mb": 6.0,
+      "sheets": 1
+    }
+  },
+  {
+    "file": "shared_formulas.xlsx",
+    "lib": "ironcalc",
+    "r": {
+      "cells": 81,
+      "got": {},
+      "ms": 4.8,
+      "ok": true,
+      "peak_mb": 6.0,
+      "sheets": 1
+    }
+  },
+  {
+    "file": "simple-monthly-budget.xlsx",
+    "lib": "calamine",
+    "r": {
+      "cells": 49,
+      "formulas": 5,
+      "got": {},
+      "ms": 2.4,
+      "ok": true,
+      "peak_mb": 5.0,
+      "sheets": 1
+    }
+  },
+  {
+    "file": "simple-monthly-budget.xlsx",
+    "lib": "umya",
+    "r": {
+      "cells": 49,
+      "got": {},
+      "ms": 11.4,
+      "ok": true,
+      "peak_mb": 7.0,
+      "sheets": 1
+    }
+  },
+  {
+    "file": "simple-monthly-budget.xlsx",
+    "lib": "ironcalc",
+    "r": {
+      "cells": 69,
+      "got": {},
+      "ms": 6.3,
+      "ok": true,
+      "peak_mb": 6.0,
+      "sheets": 1
+    }
+  },
+  {
+    "file": "sunburst.xlsx",
+    "lib": "calamine",
+    "r": {
+      "cells": 28,
+      "formulas": 0,
+      "got": {},
+      "ms": 1.6,
+      "ok": true,
+      "peak_mb": 5.0,
+      "sheets": 1
+    }
+  },
+  {
+    "file": "sunburst.xlsx",
+    "lib": "umya",
+    "r": {
+      "cells": 28,
+      "got": {},
+      "ms": 5.8,
+      "ok": true,
+      "peak_mb": 6.0,
+      "sheets": 1
+    }
+  },
+  {
+    "file": "sunburst.xlsx",
+    "lib": "ironcalc",
+    "r": {
+      "cells": 28,
+      "got": {},
+      "ms": 2.7,
+      "ok": true,
+      "peak_mb": 6.0,
+      "sheets": 1
+    }
+  },
+  {
+    "file": "treemap.xlsx",
+    "lib": "calamine",
+    "r": {
+      "cells": 28,
+      "formulas": 0,
+      "got": {},
+      "ms": 2.6,
+      "ok": true,
+      "peak_mb": 5.0,
+      "sheets": 1
+    }
+  },
+  {
+    "file": "treemap.xlsx",
+    "lib": "umya",
+    "r": {
+      "cells": 28,
+      "got": {},
+      "ms": 5.9,
+      "ok": true,
+      "peak_mb": 6.0,
+      "sheets": 1
+    }
+  },
+  {
+    "file": "treemap.xlsx",
+    "lib": "ironcalc",
+    "r": {
+      "cells": 28,
+      "got": {},
+      "ms": 3.7,
+      "ok": true,
+      "peak_mb": 6.0,
+      "sheets": 1
+    }
+  },
+  {
+    "file": "unicodeSheetName.xlsx",
+    "lib": "calamine",
+    "r": {
+      "cells": 9,
+      "formulas": 0,
+      "got": {},
+      "ms": 2.1,
+      "ok": true,
+      "peak_mb": 5.0,
+      "sheets": 1
+    }
+  },
+  {
+    "file": "unicodeSheetName.xlsx",
+    "lib": "umya",
+    "r": {
+      "cells": 9,
+      "got": {},
+      "ms": 4.1,
+      "ok": true,
+      "peak_mb": 6.0,
+      "sheets": 1
+    }
+  },
+  {
+    "file": "unicodeSheetName.xlsx",
+    "lib": "ironcalc",
+    "r": {
+      "cells": 9,
+      "got": {},
+      "ms": 3.2,
+      "ok": true,
+      "peak_mb": 6.0,
+      "sheets": 1
+    }
+  },
+  {
+    "file": "waterfall.xlsx",
+    "lib": "calamine",
+    "r": {
+      "cells": 12,
+      "formulas": 0,
+      "got": {},
+      "ms": 2.0,
+      "ok": true,
+      "peak_mb": 5.0,
+      "sheets": 1
+    }
+  },
+  {
+    "file": "waterfall.xlsx",
+    "lib": "umya",
+    "r": {
+      "cells": 12,
+      "got": {},
+      "ms": 5.6,
+      "ok": true,
+      "peak_mb": 6.0,
+      "sheets": 1
+    }
+  },
+  {
+    "file": "waterfall.xlsx",
+    "lib": "ironcalc",
+    "r": {
+      "cells": 12,
+      "got": {},
+      "ms": 3.9,
+      "ok": true,
+      "peak_mb": 6.0,
+      "sheets": 1
+    }
+  },
+  {
+    "file": "waterfall2.xlsx",
+    "lib": "calamine",
+    "r": {
+      "cells": 16,
+      "formulas": 0,
+      "got": {},
+      "ms": 2.3,
+      "ok": true,
+      "peak_mb": 5.0,
+      "sheets": 1
+    }
+  },
+  {
+    "file": "waterfall2.xlsx",
+    "lib": "umya",
+    "r": {
+      "cells": 16,
+      "got": {},
+      "ms": 4.5,
+      "ok": true,
+      "peak_mb": 6.0,
+      "sheets": 1
+    }
+  },
+  {
+    "file": "waterfall2.xlsx",
+    "lib": "ironcalc",
+    "r": {
+      "cells": 16,
+      "got": {},
+      "ms": 2.7,
+      "ok": true,
+      "peak_mb": 6.0,
+      "sheets": 1
+    }
+  },
+  {
+    "file": "xlookup.xlsx",
+    "lib": "calamine",
+    "r": {
+      "cells": 97,
+      "formulas": 4,
+      "got": {},
+      "ms": 2.4,
+      "ok": true,
+      "peak_mb": 5.0,
+      "sheets": 3
+    }
+  },
+  {
+    "file": "xlookup.xlsx",
+    "lib": "umya",
+    "r": {
+      "cells": 97,
+      "got": {},
+      "ms": 3.7,
+      "ok": true,
+      "peak_mb": 6.0,
+      "sheets": 3
+    }
+  },
+  {
+    "file": "xlookup.xlsx",
+    "lib": "ironcalc",
+    "r": {
+      "cells": 97,
+      "got": {},
+      "ms": 4.8,
+      "ok": true,
+      "peak_mb": 6.0,
+      "sheets": 3
+    }
+  },
+  {
+    "file": "xlsx-corrupted.xlsx",
+    "lib": "calamine",
+    "r": {
+      "error": "Xlsx error: Unexpected end of xml, expecting '</Relationships>'",
+      "ms": 0.9,
+      "ok": false,
+      "peak_mb": 4.0
+    }
+  },
+  {
+    "file": "xlsx-corrupted.xlsx",
+    "lib": "umya",
+    "r": {
+      "cells": 18,
+      "got": {},
+      "ms": 5.7,
+      "ok": true,
+      "peak_mb": 6.0,
+      "sheets": 2
+    }
+  },
+  {
+    "file": "xlsx-corrupted.xlsx",
+    "lib": "ironcalc",
+    "r": {
+      "cells": 18,
+      "got": {},
+      "ms": 2.6,
+      "ok": true,
+      "peak_mb": 5.0,
+      "sheets": 2
+    }
+  },
+  {
+    "file": "xlsxwriter-embed_image01.xlsx",
+    "lib": "calamine",
+    "r": {
+      "cells": 1,
+      "formulas": 0,
+      "got": {},
+      "ms": 2.5,
+      "ok": true,
+      "peak_mb": 5.0,
+      "sheets": 1
+    }
+  },
+  {
+    "file": "xlsxwriter-embed_image01.xlsx",
+    "lib": "umya",
+    "r": {
+      "cells": 1,
+      "got": {},
+      "ms": 3.1,
+      "ok": true,
+      "peak_mb": 6.0,
+      "sheets": 1
+    }
+  },
+  {
+    "file": "xlsxwriter-embed_image01.xlsx",
+    "lib": "ironcalc",
+    "r": {
+      "cells": 1,
+      "got": {},
+      "ms": 2.5,
+      "ok": true,
+      "peak_mb": 5.0,
+      "sheets": 1
+    }
+  },
+  {
+    "file": "xlsxwriter-embed_image02.xlsx",
+    "lib": "calamine",
+    "r": {
+      "cells": 2,
+      "formulas": 0,
+      "got": {},
+      "ms": 2.0,
+      "ok": true,
+      "peak_mb": 5.0,
+      "sheets": 1
+    }
+  },
+  {
+    "file": "xlsxwriter-embed_image02.xlsx",
+    "lib": "umya",
+    "r": {
+      "cells": 2,
+      "got": {},
+      "ms": 3.0,
+      "ok": true,
+      "peak_mb": 6.0,
+      "sheets": 1
+    }
+  },
+  {
+    "file": "xlsxwriter-embed_image02.xlsx",
+    "lib": "ironcalc",
+    "r": {
+      "cells": 2,
+      "got": {},
+      "ms": 2.4,
+      "ok": true,
+      "peak_mb": 5.0,
+      "sheets": 1
+    }
+  },
+  {
+    "file": "xlsxwriter-embed_image03.xlsx",
+    "lib": "calamine",
+    "r": {
+      "cells": 2,
+      "formulas": 0,
+      "got": {},
+      "ms": 1.6,
+      "ok": true,
+      "peak_mb": 5.0,
+      "sheets": 1
+    }
+  },
+  {
+    "file": "xlsxwriter-embed_image03.xlsx",
+    "lib": "umya",
+    "r": {
+      "cells": 2,
+      "got": {},
+      "ms": 2.7,
+      "ok": true,
+      "peak_mb": 6.0,
+      "sheets": 1
+    }
+  },
+  {
+    "file": "xlsxwriter-embed_image03.xlsx",
+    "lib": "ironcalc",
+    "r": {
+      "cells": 2,
+      "got": {},
+      "ms": 2.3,
+      "ok": true,
+      "peak_mb": 5.0,
+      "sheets": 1
+    }
+  },
+  {
+    "file": "xlsxwriter-embed_image04.xlsx",
+    "lib": "calamine",
+    "r": {
+      "cells": 2,
+      "formulas": 0,
+      "got": {},
+      "ms": 1.9,
+      "ok": true,
+      "peak_mb": 5.0,
+      "sheets": 2
+    }
+  },
+  {
+    "file": "xlsxwriter-embed_image04.xlsx",
+    "lib": "umya",
+    "r": {
+      "cells": 2,
+      "got": {},
+      "ms": 2.4,
+      "ok": true,
+      "peak_mb": 6.0,
+      "sheets": 2
+    }
+  },
+  {
+    "file": "xlsxwriter-embed_image04.xlsx",
+    "lib": "ironcalc",
+    "r": {
+      "cells": 2,
+      "got": {},
+      "ms": 3.4,
+      "ok": true,
+      "peak_mb": 5.0,
+      "sheets": 2
+    }
+  },
+  {
+    "file": "xlsxwriter-embed_image05.xlsx",
+    "lib": "calamine",
+    "r": {
+      "cells": 4,
+      "formulas": 1,
+      "got": {},
+      "ms": 1.7,
+      "ok": true,
+      "peak_mb": 5.0,
+      "sheets": 1
+    }
+  },
+  {
+    "file": "xlsxwriter-embed_image05.xlsx",
+    "lib": "umya",
+    "r": {
+      "cells": 4,
+      "got": {},
+      "ms": 2.3,
+      "ok": true,
+      "peak_mb": 6.0,
+      "sheets": 1
+    }
+  },
+  {
+    "file": "xlsxwriter-embed_image05.xlsx",
+    "lib": "ironcalc",
+    "r": {
+      "cells": 4,
+      "got": {},
+      "ms": 2.4,
+      "ok": true,
+      "peak_mb": 6.0,
+      "sheets": 1
+    }
+  },
+  {
+    "file": "xlsxwriter-embed_image07.xlsx",
+    "lib": "calamine",
+    "r": {
+      "cells": 2,
+      "formulas": 0,
+      "got": {},
+      "ms": 1.6,
+      "ok": true,
+      "peak_mb": 5.0,
+      "sheets": 1
+    }
+  },
+  {
+    "file": "xlsxwriter-embed_image07.xlsx",
+    "lib": "umya",
+    "r": {
+      "cells": 2,
+      "got": {},
+      "ms": 2.9,
+      "ok": true,
+      "peak_mb": 6.0,
+      "sheets": 1
+    }
+  },
+  {
+    "file": "xlsxwriter-embed_image07.xlsx",
+    "lib": "ironcalc",
+    "r": {
+      "cells": 2,
+      "got": {},
+      "ms": 2.4,
+      "ok": true,
+      "peak_mb": 5.0,
+      "sheets": 1
+    }
+  },
+  {
+    "file": "xlsxwriter-embed_image09.xlsx",
+    "lib": "calamine",
+    "r": {
+      "cells": 1,
+      "formulas": 0,
+      "got": {},
+      "ms": 1.5,
+      "ok": true,
+      "peak_mb": 5.0,
+      "sheets": 1
+    }
+  },
+  {
+    "file": "xlsxwriter-embed_image09.xlsx",
+    "lib": "umya",
+    "r": {
+      "cells": 1,
+      "got": {},
+      "ms": 2.2,
+      "ok": true,
+      "peak_mb": 6.0,
+      "sheets": 1
+    }
+  },
+  {
+    "file": "xlsxwriter-embed_image09.xlsx",
+    "lib": "ironcalc",
+    "r": {
+      "cells": 1,
+      "got": {},
+      "ms": 2.2,
+      "ok": true,
+      "peak_mb": 5.0,
+      "sheets": 1
+    }
+  },
+  {
+    "file": "xlsxwriter-embed_image11.xlsx",
+    "lib": "calamine",
+    "r": {
+      "cells": 1,
+      "formulas": 0,
+      "got": {},
+      "ms": 2.2,
+      "ok": true,
+      "peak_mb": 5.0,
+      "sheets": 1
+    }
+  },
+  {
+    "file": "xlsxwriter-embed_image11.xlsx",
+    "lib": "umya",
+    "r": {
+      "cells": 1,
+      "got": {},
+      "ms": 2.6,
+      "ok": true,
+      "peak_mb": 6.0,
+      "sheets": 1
+    }
+  },
+  {
+    "file": "xlsxwriter-embed_image11.xlsx",
+    "lib": "ironcalc",
+    "r": {
+      "cells": 1,
+      "got": {},
+      "ms": 2.8,
+      "ok": true,
+      "peak_mb": 5.0,
+      "sheets": 1
+    }
+  }
+]

@@ -178,3 +178,18 @@ Deciziile DECIS se schimbă doar cu aprobarea explicită a proprietarului (Maste
 - **Limite:**
   - nu se copiază codul lui în K.G.B.;
   - fișierele produse cu el intră în `testdata/` doar dacă nu conțin date personale.
+
+### D-033 — Biblioteci pentru foi de calcul (aplicată)
+- **Data:** 7 nov. 2026 · **Statut:** DECIS după spike-ul S5, conform regulii din `docs/ETAPA3_PLAN.md`: licențe permisive, alegere măsurată, se confirmă la poarta Etapei 3. Detalii: `docs/spikes/S5_REZULTATE.md`.
+- **Ce s-a ales:**
+  - **calamine 0.38 (MIT)** pentru citire și import: 0 prăbușiri pe XLSX reale, citește și ODS/XLS;
+  - **umya-spreadsheet 3.1 (MIT)** pentru editare și salvare XLSX: 61/65 fișiere reale cu valori și formule identice, 6/6 pe setul propriu;
+  - **IronCalc 0.9 (MIT/Apache)** pentru formule: 95,9% identic cu Excel pe formulele obișnuite, 12/12 pe cele uzuale;
+  - **rust_xlsxwriter (MIT/Apache)** pentru fișiere noi, cu rezultatele formulelor scrise.
+- **Reguli noi:**
+  - salvarea compară fișierul înainte și după, anunță exact ce s-ar pierde (grafice noi, imagini din celule, pivot) și salvează ca versiune nouă (D-034);
+  - când o formulă recalculată diferă de valoarea salvată de alt program, se arată valoarea salvată și celula e marcată;
+  - verificarea proprie anti-„bombă zip” rulează înainte de orice bibliotecă.
+- **Respinse:**
+  - SheetJS, care e JavaScript; logica rămâne în Rust;
+  - sql.js, folosit de suita proprietarului, pentru că e SQLite (D-018).

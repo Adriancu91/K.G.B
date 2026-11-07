@@ -482,6 +482,13 @@ STYLES = (
 )
 
 
+def xl_round(x, digits):
+    """ROUND ca în programele de calcul: jumătatea se rotunjește în sus (departe de zero),
+    nu „la par” ca round() din Python (14,35 → 14,4, nu 14,3)."""
+    from decimal import Decimal, ROUND_HALF_UP
+    return float(Decimal(repr(x)).quantize(Decimal(1).scaleb(-digits), rounding=ROUND_HALF_UP))
+
+
 def pmt(rate, n, pv):
     return -pv * rate / (1 - (1 + rate) ** -n)
 
@@ -515,8 +522,8 @@ def xlsx_files():
         [],
         ["SUM", ("SUM(B2:B6)", s)],
         ["AVERAGE", ("AVERAGE(B2:B6)", s / 5)],
-        ["IF", ('IF(B9>50,"mare","mic")', "mare" if s > 50 else "mic")],
-        ["ROUND", ("ROUND(B10,1)", round(s / 5, 1))],
+        ["IF", ('IF(B8>50,"mare","mic")', "mare" if s > 50 else "mic")],
+        ["ROUND", ("ROUND(B9,1)", xl_round(s / 5, 1))],
         ["VLOOKUP", ('VLOOKUP("prune",A2:B6,2,FALSE)', 30)],
         ["SUMIF", ('SUMIF(A2:A6,"mere",B2:B6)', mere)],
         ["COUNTIF", ('COUNTIF(B2:B6,">10")', sum(1 for v in vals if v > 10))],
@@ -529,7 +536,7 @@ def xlsx_files():
     b = Book()
     b.add_sheet("Formule", rows)
     emit(d / "formule.xlsx", b.bytes(), {"kind": "xlsx", "sheets": ["Formule"], "cells": {
-        "Formule!B8": s, "Formule!B9": s / 5, "Formule!B10": "mare", "Formule!B12": 30, "Formule!B13": mere,
+        "Formule!B8": s, "Formule!B9": s / 5, "Formule!B10": "mare", "Formule!B11": xl_round(s / 5, 1), "Formule!B12": 30, "Formule!B13": mere,
         "Formule!B17": round(rate, 6), "Formule!B19": True},
         "formulas": {"Formule!B8": "SUM(B2:B6)", "Formule!B12": 'VLOOKUP("prune",A2:B6,2,FALSE)'},
         "note": "valorile din cache sunt calculate în Python; PMT rotunjit la 6 zecimale în așteptări"})

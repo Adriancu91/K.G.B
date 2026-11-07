@@ -1,0 +1,19 @@
+[package]
+name = "kgb-sheets-spike"
+version = "0.1.0"
+edition = "2024"
+publish = false
+
+# Spike S5 (Etapa 3, pasul 3.3): biblioteci pentru foi de calcul evaluate pe testdata/etapa3.
+[dependencies]
+calamine = "0.38.0"
+umya-spreadsheet = "3.1.1"
+ironcalc = "0.9.1"
+rust_xlsxwriter = "0.102.0"
+zip = { version = "9.4.1", default-features = false, features = ["deflate"] }
+serde = { version = "1.0.229", features = ["derive"] }
+serde_json = "1.0.154"
+sha2 = "0.10"
+
+[target."cfg(windows)".dependencies]
+windows-sys = { version = "0.61.2", features = ["Win32_System_ProcessStatus", "Win32_System_Threading", "Win32_Foundation"] }

@@ -205,8 +205,8 @@
   },
   {
    "path": "files/xlsx/formule.xlsx",
-   "size": 3872,
-   "sha256": "4569ae59d30404c9c18dea1c4a6422c751bc6475e5e3fe7d0f9459b213e1f0fd",
+   "size": 3874,
+   "sha256": "c1ad7b17c4047639ee27ccb22496ec402133092d17b7613cfe667496684f249d",
    "producer": "generate.py",
    "kind": "xlsx",
    "sheets": [
@@ -216,6 +216,7 @@
     "Formule!B8": 71.75,
     "Formule!B9": 14.35,
     "Formule!B10": "mare",
+    "Formule!B11": 14.4,
     "Formule!B12": 30,
     "Formule!B13": 30.25,
     "Formule!B17": -1013.819714,

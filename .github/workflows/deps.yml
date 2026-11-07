@@ -26,6 +26,7 @@ jobs:
           - spikes/s3-tauri-shell/src-tauri/Cargo.toml
           - spikes/s2-network/Cargo.toml
           - spikes/s4-pdf/Cargo.toml
+          - spikes/s5-sheets/Cargo.toml
     steps:
       - uses: actions/checkout@v4
       - uses: EmbarkStudios/cargo-deny-action@v2

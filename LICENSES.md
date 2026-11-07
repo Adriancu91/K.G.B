@@ -70,7 +70,23 @@ Verificat 7 nov. 2026:
 | pdf (pdf-rs) | 0.10.0 | MIT | cititor strict, doar în teste |
 | pdf-extract | 0.12.1 | MIT | evaluat, respins (spații false în text) |
 | yoke, zerofrom (tranzitive) | 0.8 / 0.1 | Unicode-3.0 | permisă în `deny.toml` |
+| **tesseract.js** + tesseract.js-core (npm, `spikes/s4-pdf/ocr`) | 7.0.0 | Apache-2.0 | OCR WebAssembly (candidat D-035); tranzitive MIT/Apache/BSD-2; scriptul de instalare neexecutat |
+| @tesseract.js-data/ron (npm) | 1.0.0 | MIT (datele tessdata: Apache-2.0) | limba română pentru OCR |
 | **pdfjs-dist** (npm) | 6.4.299 | Apache-2.0 | afișare PDF în fereastră (ales); fără dependențe obligatorii (`@napi-rs/canvas` e opțional, neinstalat) |
+
+## spikes/s5-sheets (prototip, nu se distribuie)
+Verificat 7 nov. 2026:
+- `cargo metadata` (148 de crate-uri, target `x86_64-pc-windows-msvc`): **niciun motor DB**, toate permisive;
+- `cargo-deny` în CI.
+
+| Dependență | Versiune | Licență | Rol |
+|---|---|---|---|
+| calamine | 0.38.0 | MIT | citire XLSX/XLSM/XLSB/XLS/ODS (ales, D-033) |
+| umya-spreadsheet | 3.1.1 | MIT | editare + salvare XLSX (ales, D-033) |
+| ironcalc / ironcalc_base | 0.9.1 | MIT OR Apache-2.0 | motor de formule (ales, D-033) |
+| rust_xlsxwriter | 0.102.0 | MIT OR Apache-2.0 | fișiere noi / export (ales, D-033) |
+| zip | 9.4.1 / 8.6.0 | MIT | arhive XLSX. Doar `deflate`: opțiunea implicită bzip2 (licență „bzip2-1.0.6”) e oprită |
+| quick-xml | 0.41 / 0.42 | MIT | XML |
 
 ## Cod de produs (Etapa 1): `crates/kgb-store`, `crates/kgb-core`, `app/`
 Verificat automat de `cargo-deny` în CI pe workspace-ul rădăcină (`Cargo.toml`): licențe, crate-uri DB interzise (D-018), vulnerabilități.
