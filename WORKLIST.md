@@ -82,7 +82,7 @@ Interdicții permanente: fără baze de date (D-005, D-018), fără schimbări d
 ## Etapa 4 — pași (plan: `docs/ETAPA4_PLAN.md`)
 
 - [x] 4.1 Modulul Planificator (beta) `kgb.planner`: taskuri (responsabil, proiect, termen, prioritate, stare, checklist), persoane (D-042), proiecte, listă cu filtre (persoană, stare, proiect, text, întârziate), sumar; 6 teste + e2e 8/8 (inclusiv după oprire forțată)
-- [ ] 4.2 Kanban (drag-and-drop) și calendar
+- [x] 4.2 Kanban (drag-and-drop pe stări + butoane ← → pentru tastatură) și calendar (lună/săptămână, drag-and-drop pe zile mută termenul, + task nou pe o zi); filtru pe interval de date; e2e 12/12
 - [ ] 4.3 Activități recurente (D-046)
 - [ ] 4.4 Notificări în nucleu + centrul de notificări (D-043)
 - [ ] 4.5 Remindere: termene de taskuri, scadențe de facturi; notificări desktop (D-044)

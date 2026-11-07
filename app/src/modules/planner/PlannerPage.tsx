@@ -4,6 +4,7 @@
 import { useCallback, useEffect, useState } from "react";
 import { api, message } from "../../api";
 import { Confirm } from "../../components/Confirm";
+import { CalendarView, KanbanView } from "./views";
 
 const ID = "kgb.planner";
 
@@ -190,6 +191,7 @@ export function TaskEditor(props: {
 
 export function PlannerPage({ onError }: { onError: (e: string | null) => void }) {
   const [tab, setTab] = useState<"taskuri" | "persoane" | "proiecte">("taskuri");
+  const [view, setView] = useState<"lista" | "kanban" | "calendar">("lista");
   const [tasks, setTasks] = useState<Task[]>([]);
   const [people, setPeople] = useState<Person[]>([]);
   const [projects, setProjects] = useState<Project[]>([]);
@@ -242,7 +244,22 @@ export function PlannerPage({ onError }: { onError: (e: string | null) => void }
   };
 
   const name = (id: string | null, list: { id: string; nume: string }[]) => list.find((x) => x.id === id)?.nume ?? "—";
-  const save = (d: Draft) =>
+  const draftOf = (t: Task): Draft => ({
+    id: t.id,
+    version: t.version,
+    titlu: t.titlu,
+    descriere: t.descriere ?? "",
+    responsabil: t.responsabil ?? "",
+    proiect: t.proiect ?? "",
+    termen: t.termen ?? "",
+    prioritate: t.prioritate,
+    stare: t.stare,
+    checklist: t.checklist,
+  });
+  const setStatus = (t: Task, stare: Status) => void run(() => api.moduleCall(ID, "task_status", { id: t.id, version: t.version, stare }));
+  const moveDate = (t: Task, termen: string) => void save({ ...draftOf(t), termen }, false);
+
+  const save = (d: Draft, close = true) =>
     run(async () => {
       await api.moduleCall(ID, "task_save", {
         ...(d.id ? { id: d.id, version: d.version } : {}),
@@ -255,7 +272,7 @@ export function PlannerPage({ onError }: { onError: (e: string | null) => void }
         stare: d.stare,
         checklist: d.checklist,
       });
-      setEditing(null);
+      if (close) setEditing(null);
     });
 
   return (
@@ -320,7 +337,28 @@ export function PlannerPage({ onError }: { onError: (e: string | null) => void }
               <input type="checkbox" checked={filter.intarziate} onChange={(e) => setFilter({ ...filter, intarziate: e.target.checked })} /> Doar
               întârziate
             </label>
+            <span className="grow" />
+            <div className="sheet-tabs" role="tablist" aria-label="Vedere">
+              {(["lista", "kanban", "calendar"] as const).map((v) => (
+                <button key={v} role="tab" aria-selected={view === v} className={view === v ? "active" : ""} onClick={() => setView(v)}>
+                  {v === "lista" ? "Listă" : v === "kanban" ? "Kanban" : "Calendar"}
+                </button>
+              ))}
+            </div>
           </div>
+          {view === "kanban" && <KanbanView tasks={tasks} people={people} busy={busy} onStatus={setStatus} onEdit={(t) => setEditing(draftOf(t))} />}
+          {view === "calendar" && (
+            <CalendarView
+              tasks={tasks}
+              people={people}
+              busy={busy}
+              onStatus={setStatus}
+              onEdit={(t) => setEditing(draftOf(t))}
+              onMoveDate={moveDate}
+              onNew={(iso) => setEditing({ ...empty, termen: iso })}
+            />
+          )}
+          {view === "lista" && (
           <table className="audit tasks">
             <thead>
               <tr>
@@ -398,6 +436,7 @@ export function PlannerPage({ onError }: { onError: (e: string | null) => void }
               ))}
             </tbody>
           </table>
+          )}
         </>
       )}
 

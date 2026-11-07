@@ -80,6 +80,19 @@ fn create_assign_track_and_filter() {
         titles(&call(&mut ws, &mm, "tasks", json!({"text": "FACTURI"})).unwrap()),
         ["Facturile lunii"]
     );
+    // A calendar range: from the 6th to the 30th.
+    assert_eq!(
+        titles(
+            &call(
+                &mut ws,
+                &mm,
+                "tasks",
+                json!({"de_la": "2026-11-06", "pana_la": "2026-11-30"})
+            )
+            .unwrap()
+        ),
+        ["Facturile lunii", "Raport inventar"]
+    );
     assert_eq!(
         call(&mut ws, &mm, "tasks", json!({"pana_la": "10.11.2026"}))
             .unwrap()

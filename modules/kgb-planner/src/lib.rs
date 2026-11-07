@@ -12,7 +12,7 @@
 //!   `person_delete {id, version}` (refused while open tasks are assigned)
 //! - projects: `projects`, `project_save {id?, version?, nume, descriere?, arhivat?}`,
 //!   `project_delete {id, version}` (refused while it has tasks)
-//! - tasks: `tasks {stare?, responsabil?, proiect?, text?, azi?, intarziate?, pana_la?}`,
+//! - tasks: `tasks {stare?, responsabil?, proiect?, text?, azi?, intarziate?, de_la?, pana_la?}`,
 //!   `task_save {id?, version?, titlu, …}`, `task_status {id, version, stare}`,
 //!   `task_delete {id, version}`
 //! - `summary {azi}`: counts by status, overdue, by person
@@ -137,6 +137,8 @@ struct TaskFilter {
     intarziate: bool,
     /// Only tasks due on or before this date.
     pana_la: Option<String>,
+    /// Only tasks due on or after this date (with `pana_la`: a calendar range).
+    de_la: Option<String>,
 }
 
 #[derive(Deserialize, Clone)]
@@ -394,6 +396,15 @@ impl Planner {
                     .ok_or_else(|| bad("data", d.to_string()))
             })
             .transpose()?;
+        let from = f
+            .de_la
+            .as_deref()
+            .map(|d| {
+                dates::parse(d)
+                    .map(|x| x.iso())
+                    .ok_or_else(|| bad("data", d.to_string()))
+            })
+            .transpose()?;
         let needle = f
             .text
             .as_deref()
@@ -414,6 +425,10 @@ impl Planner {
                 until
                     .as_ref()
                     .is_none_or(|u| t["termen"].as_str().is_some_and(|d| d <= u.as_str()))
+            })
+            .filter(|t| {
+                from.as_ref()
+                    .is_none_or(|u| t["termen"].as_str().is_some_and(|d| d >= u.as_str()))
             })
             .map(|mut t| {
                 t["intarziat"] = json!(overdue(&t, today.as_deref()));

@@ -113,13 +113,55 @@ try {
   check("după „Gata” nu mai e întârziat", true);
   await p.screenshot(join(shots, "02-gata.png"));
 
+  // Kanban: drag a card to another column; move one with the keyboard buttons.
+  await p.click("Kanban", ".sheet-tabs button");
+  await p.until("document.querySelectorAll('.kanban-col').length === 4");
+  const drag = (cardTitle, targetSelector) =>
+    p.eval(`(() => {
+      const card = [...document.querySelectorAll('.task-card, .cal-task')].find(c => c.innerText.includes(${JSON.stringify(cardTitle)}));
+      const target = document.querySelector(${JSON.stringify(targetSelector)});
+      const dt = new DataTransfer();
+      card.dispatchEvent(new DragEvent('dragstart', { dataTransfer: dt, bubbles: true }));
+      target.dispatchEvent(new DragEvent('dragover', { dataTransfer: dt, bubbles: true, cancelable: true }));
+      target.dispatchEvent(new DragEvent('drop', { dataTransfer: dt, bubbles: true, cancelable: true }));
+      return true; })()`);
+  const colOf = (title) =>
+    p.eval(`[...document.querySelectorAll('.kanban-col')].find(c => [...c.querySelectorAll('.task-card')].some(x => x.innerText.includes(${JSON.stringify(title)})))?.dataset.stare`);
+  await drag("Facturile lunii", ".kanban-col[data-stare='in_lucru']");
+  await p.until(`[...document.querySelectorAll(".kanban-col[data-stare='in_lucru'] .task-card")].some(x => x.innerText.includes('Facturile lunii'))`, 8000);
+  check("drag-and-drop în Kanban schimbă starea", (await colOf("Facturile lunii")) === "in_lucru");
+  await p.click("", "button[aria-label='Mută „Comandă etichete” la dreapta']");
+  await p.until(`[...document.querySelectorAll(".kanban-col[data-stare='in_lucru'] .task-card")].some(x => x.innerText.includes('Comandă etichete'))`, 8000);
+  check("butonul → mută cardul (fără mouse)", (await colOf("Comandă etichete")) === "in_lucru");
+  await p.screenshot(join(shots, "03-kanban.png"));
+
+  // Calendar: the task is on its due day; drag it to another day.
+  await p.click("Calendar", ".sheet-tabs button");
+  await p.until("!!document.querySelector('.cal-grid')");
+  await p.click("Săptămână", ".sheet-tabs button");
+  await p.click("›", ".calendar button");
+  const cellHas = (iso, title) =>
+    p.eval(`!![...document.querySelectorAll(".cal-day[data-date='${iso}'] .cal-task")].find(x => x.innerText.includes(${JSON.stringify(title)}))`);
+  await p.until(`!!document.querySelector(".cal-day[data-date='${nextWeek}']")`);
+  check("taskul apare în calendar la termen", await cellHas(nextWeek, "Facturile lunii"));
+  const target = iso(new Date(now.getTime() + 8 * 86400000));
+  await drag("Facturile lunii", `.cal-day[data-date='${target}']`);
+  await p.until(`!![...document.querySelectorAll(".cal-day[data-date='${target}'] .cal-task")].find(x => x.innerText.includes('Facturile lunii'))`, 8000);
+  check("drag-and-drop în calendar mută termenul", !(await cellHas(nextWeek, "Facturile lunii")));
+  await p.screenshot(join(shots, "04-calendar.png"));
+  await p.click("Lună", ".sheet-tabs button");
+  await p.click("Azi", ".calendar button");
+  await p.screenshot(join(shots, "05-calendar-luna.png"));
+  await p.click("Listă", ".sheet-tabs button");
+
   // Restart: the data is still there.
   p.close();
   execFileSync("taskkill", ["/F", "/T", "/PID", String(proc.pid)], { stdio: "ignore" });
   p = await start();
   await go(p, "Planificator");
   await p.until("document.querySelectorAll('table.tasks tbody tr').length === 3", 10000);
-  check("după repornire (forțată) totul e acolo", (await p.eval("document.querySelector('.planner-summary').innerText")).includes("Gata: 1"));
+  const sum = await p.eval("document.querySelector('.planner-summary').innerText");
+  check("după repornire (forțată) totul e acolo", sum.includes("Gata: 1") && sum.includes("În lucru: 2"), sum);
 
   p.close();
   execFileSync("taskkill", ["/F", "/T", "/PID", String(proc.pid)], { stdio: "ignore" });

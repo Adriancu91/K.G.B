@@ -635,3 +635,108 @@ table.tasks tr.done td:first-child button {
   color: white;
   border-color: #ef6c00;
 }
+
+/* Kanban */
+.kanban {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(180px, 1fr));
+  gap: 12px;
+  margin-top: 12px;
+  align-items: start;
+}
+.kanban-col {
+  background: rgba(128, 128, 128, 0.08);
+  border-radius: 8px;
+  padding: 8px;
+  min-height: 240px;
+}
+.kanban-col h3 {
+  margin: 4px 4px 8px;
+  font-size: 1rem;
+}
+.kanban-col.drop,
+.cal-day.drop {
+  outline: 2px dashed var(--accent, #3b6fb6);
+  outline-offset: -2px;
+}
+.task-card {
+  margin-bottom: 8px;
+  padding: 8px;
+  cursor: grab;
+}
+.task-card.late {
+  border-left: 3px solid #c62828;
+}
+/* Calendar */
+.cal-title {
+  margin: 0 8px;
+  font-size: 1.15rem;
+  text-transform: capitalize;
+}
+.cal-grid {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  gap: 2px;
+  margin-top: 8px;
+}
+.cal-head {
+  font-weight: 600;
+  padding: 4px;
+  text-align: center;
+}
+.cal-day {
+  min-height: 96px;
+  background: rgba(128, 128, 128, 0.06);
+  padding: 4px;
+  border-radius: 4px;
+  overflow: hidden;
+}
+.cal-grid.saptamana .cal-day {
+  min-height: 320px;
+}
+.cal-day.outside {
+  opacity: 0.45;
+}
+.cal-day.today {
+  box-shadow: inset 0 0 0 2px var(--accent, #3b6fb6);
+}
+.cal-num {
+  font-weight: 600;
+}
+.cal-day button.add {
+  visibility: hidden;
+}
+.cal-day:hover button.add {
+  visibility: visible;
+}
+.cal-task {
+  display: block;
+  width: 100%;
+  text-align: left;
+  font-size: 0.85em;
+  padding: 2px 4px;
+  margin-top: 2px;
+  border-radius: 3px;
+  border: none;
+  background: rgba(59, 111, 182, 0.15);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  cursor: grab;
+}
+.cal-task.prio-urgenta {
+  background: rgba(198, 40, 40, 0.2);
+}
+.cal-task.prio-ridicata {
+  background: rgba(239, 108, 0, 0.2);
+}
+.cal-task.done {
+  text-decoration: line-through;
+  opacity: 0.6;
+}
+.cal-task.late {
+  border-left: 3px solid #c62828;
+}
+.row input[type="checkbox"] {
+  flex: none;
+}

@@ -102,4 +102,6 @@ Pragurile de performanță sunt PROPUSE în ETAPA0_PLAN.md §3.2 și devin ofici
   - persoane și proiecte folosite protejate de ștergere;
   - datele păstrate după dezactivare și redeschidere;
   - date calendaristice reale.
-- `node app/e2e/planner.mjs <kgb-app.exe> <folder-capturi>`: Planificatorul în fereastra reală, inclusiv după o oprire forțată.
+- `node app/e2e/planner.mjs <kgb-app.exe> <folder-capturi>`: Planificatorul în fereastra reală.
+  - Include Kanban și calendar: drag-and-drop simulat cu evenimentele reale ale browserului și butoanele ← →.
+  - Verifică și datele după o oprire forțată.
