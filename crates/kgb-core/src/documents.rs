@@ -288,6 +288,18 @@ pub(crate) fn export(
     Ok(v)
 }
 
+/// Writes bytes a module produced (a conversion, a CSV export) to a path the
+/// user chose in the save dialog. Same rules as [`export`]: no silent replace,
+/// atomic write, nothing stored in the workspace.
+pub(crate) fn export_bytes(dest: &Path, data: &[u8], overwrite: bool) -> CoreResult<()> {
+    check_size(data)?;
+    if dest.exists() && !overwrite {
+        return Err(CoreError::AlreadyExists(dest.to_path_buf()));
+    }
+    write_atomic(dest, data)?;
+    Ok(())
+}
+
 /// Hashes referenced by any live version (protected from blob collection).
 pub(crate) fn referenced_hashes(ws: &Workspace) -> CoreResult<Vec<String>> {
     Ok(ws

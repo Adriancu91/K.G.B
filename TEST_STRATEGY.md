@@ -71,3 +71,9 @@ Pragurile de performanță sunt PROPUSE în ETAPA0_PLAN.md §3.2 și devin ofici
   - derularea pe 100.000 de rânduri, dacă fișierul mare există.
 - `node app/e2e/sheets.mjs <kgb-app.exe> <folder-capturi>`: modulul Foi de calcul în fereastra reală.
 - `cargo test -p kgb-sheets --test templates` (pasul 3.7) are 7 teste. Fiecare șablon e comparat cu valori calculate independent în test; se mai verifică faptul că o copie editată nu schimbă șablonul.
+- `cargo test -p kgb-sheets --test import_export` (pasul 3.8) are 6 teste:
+  - CSV în stil românesc (`;`, virgulă zecimală, marcaj UTF-8) și standard, cu diacritice, ghilimele și rânduri noi în celule, reimportat identic;
+  - CSV în Windows-1250 convertit în .xlsx editabil;
+  - separatorul detectat doar în afara ghilimelelor;
+  - ODS/XLS din corpus convertite cu aceleași valori;
+  - fișiere stricate sau necunoscute refuzate clar.

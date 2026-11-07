@@ -24,9 +24,14 @@
 //! - `save {id, based_on, edits, apply, accept_losses?}` → preview or new version
 //! - `templates` → the template library; `use_template {template}` → a new
 //!   workbook, the user's copy (the originals are code and never change, D-036)
+//! - `export_csv {id, version?, sheet, style: "ro"|"standard", bom?, dest}` → one
+//!   sheet as CSV at a path the user chose (step 3.8)
+//! - `convert {id, version?}` → a new, editable XLSX document from CSV, ODS,
+//!   XLS, XLSB or XLSM (values; other formats' formulas become their values)
 //! - `restore {id, version}`, `export {id, version?, dest, overwrite}`, `delete {id}`
 
 pub mod book;
+pub mod convert;
 pub mod save;
 pub mod templates;
 
@@ -119,6 +124,23 @@ struct Save {
     apply: bool,
     #[serde(default)]
     accept_losses: bool,
+}
+
+#[derive(Deserialize)]
+#[serde(deny_unknown_fields)]
+struct ExportCsv {
+    id: Uuid,
+    #[serde(default)]
+    version: Option<u64>,
+    sheet: String,
+    style: String,
+    #[serde(default = "yes")]
+    bom: bool,
+    dest: PathBuf,
+}
+
+fn yes() -> bool {
+    true
 }
 
 #[derive(Deserialize)]
@@ -334,6 +356,43 @@ impl Module for Sheets {
                 let d = ctx.import_document(&format!("{}.xlsx", t.name), &data)?;
                 ctx.log(&format!("șablon folosit: {}", t.id));
                 Ok(json!({"document": d}))
+            }
+            "export_csv" => {
+                let a: ExportCsv = args(a)?;
+                let style = match a.style.as_str() {
+                    "ro" => convert::CsvStyle::Ro,
+                    "standard" => convert::CsvStyle::Standard,
+                    other => return Err(bad(format!("stilul CSV „{other}” nu există (ro, standard)"))),
+                };
+                let (_, _, b) = self.book(ctx, a.id, a.version)?;
+                let sheet = b
+                    .sheets
+                    .iter()
+                    .find(|s| s.name == a.sheet)
+                    .ok_or_else(|| bad(format!("foaia „{}” nu există", a.sheet)))?;
+                let csv = convert::to_csv(sheet, style, a.bom).map_err(bad)?;
+                // The save dialog has already asked before replacing a file.
+                ctx.export_bytes(&a.dest, &csv, true)?;
+                let (rows, cols) = sheet.size();
+                Ok(json!({"rows": rows, "cols": cols, "bytes": csv.len()}))
+            }
+            "convert" => {
+                let a: Which = args(a)?;
+                let (number, name, b) = self.book(ctx, a.id, a.version)?;
+                if format_of(&name)? == Format::Xlsx {
+                    return Err(bad("documentul este deja .xlsx"));
+                }
+                let c = convert::to_xlsx(&b).map_err(bad)?;
+                let stem = name.rsplit_once('.').map(|(s, _)| s).unwrap_or(&name);
+                let d = ctx.import_document(&format!("{stem}.xlsx"), &c.bytes)?;
+                let mut summary = format!("convertit din „{name}” (versiunea {number})");
+                if c.formulas_as_values > 0 {
+                    summary += &format!(
+                        "; {} au devenit valori",
+                        plural(c.formulas_as_values, "formulă", "formule")
+                    );
+                }
+                Ok(json!({"document": d, "summary": summary, "formulas_as_values": c.formulas_as_values}))
             }
             "restore" => {
                 let a: Restore = args(a)?;

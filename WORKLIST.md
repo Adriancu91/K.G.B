@@ -71,7 +71,7 @@ Interdicții permanente: fără baze de date (D-005, D-018), fără schimbări d
 - [x] 3.5 Modulul PDF (beta) `kgb.pdf`: import prin dialog, miniaturi (hayro), afișare (pdf.js), rotire/scoatere/extragere/unire cu previzualizare și verificarea textului fiecărei pagini, versiuni + restaurare, export; deteriorate/criptate doar citire; 6 teste + e2e 20/20 (poarta 15/15, backup 8/8); installer 2,1 → 5,3 MB
 - [x] 3.6 Modulul Foi de calcul (beta) `kgb.sheets`: XLSX/XLSM/XLS/XLSB/ODS/CSV (Windows-1250), tabel care încarcă doar rândurile vizibile (100k rânduri: deschidere ~0,6 s, salt la final ~0,3 s), editare XLSX cu previzualizare (ce se recalculează, ce s-ar pierde, ce formule nu se pot recalcula sigur — D-039), versiuni, export; bombă zip/parolă refuzate; 10 teste + e2e 18/18; installer 7,5 MB
 - [x] 3.7 Șabloane (D-036): 5 șabloane (buget lunar, factură cu TVA 21%, registru de casă, cost/km, rate credit cu grafic pe 60 de luni), originale în cod, „Folosește” = copie nouă cu versiuni; formule documentate în `docs/etapa3/SABLOANE.md` și verificate cu valori calculate de mână (7 teste); e2e 21/21
-- [ ] 3.8 Import/export CSV/XLSX/PDF
+- [x] 3.8 Import/export: import prin dialog (PDF, XLSX/XLSM/XLS/XLSB/ODS/CSV), export ca copie în formatul original, foaie → CSV (stil românesc sau standard, verificat prin reimport), CSV/ODS/XLS/XLSB/XLSM → .xlsx editabil (verificat celulă cu celulă; formulele altor formate devin valori); `ctx.export_bytes` în nucleu; 6 teste + e2e
 - [ ] 3.9 Extragere inițială de date (fără OCR, D-035)
 - [x] OCR în română: test tesseract.js + `ron` rulat cu acordul proprietarului (text corect cu diacritice ~0,6 s/pagină; tabele slabe → recunoaștere pe zone, pas viitor) — D-035
 - [ ] 3.10 Test de necorupere pe tot setul + fișiere stricate

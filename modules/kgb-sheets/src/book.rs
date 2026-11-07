@@ -121,12 +121,31 @@ fn explain(e: &str) -> String {
 /// CSV: UTF-8 (with or without BOM) or, if not valid UTF-8, Windows-1250 (the
 /// old Romanian code page); separator detected from the first line.
 pub fn read_csv(data: &[u8]) -> Result<Book, String> {
+    read_csv_with(data, None)
+}
+
+/// The separator that occurs most often outside quotes in the first record.
+fn detect_delimiter(text: &str) -> u8 {
+    let mut counts = [0usize; 3];
+    let mut quoted = false;
+    for ch in text.chars() {
+        match ch {
+            '"' => quoted = !quoted,
+            '\n' if !quoted => break,
+            ';' if !quoted => counts[0] += 1,
+            ',' if !quoted => counts[1] += 1,
+            '\t' if !quoted => counts[2] += 1,
+            _ => {}
+        }
+    }
+    let best = (0..3).max_by_key(|i| (counts[*i], 2 - *i)).unwrap_or(1);
+    if counts[best] == 0 { b',' } else { (*b";,\t")[best] }
+}
+
+/// CSV with a known separator, or detected when `None`.
+pub fn read_csv_with(data: &[u8], delim: Option<u8>) -> Result<Book, String> {
     let text = decode(data);
-    let first = text.lines().next().unwrap_or("");
-    let delim = (*b";,\t")
-        .into_iter()
-        .max_by_key(|d| first.bytes().filter(|b| b == d).count())
-        .unwrap_or(b',');
+    let delim = delim.unwrap_or_else(|| detect_delimiter(&text));
     let mut rdr = csv::ReaderBuilder::new()
         .has_headers(false)
         .flexible(true)

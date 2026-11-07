@@ -81,6 +81,7 @@ export function SheetsPage({ onError }: { onError: (e: string | null) => void })
   const [busy, setBusy] = useState(false);
   const [notice, setNotice] = useState<string | null>(null);
   const [library, setLibrary] = useState<{ templates: Template[]; note: string } | null>(null);
+  const [csvStyle, setCsvStyle] = useState<"ro" | "standard">("ro");
   const loading = useRef(new Set<number>());
 
   const refresh = useCallback(async () => {
@@ -260,6 +261,28 @@ export function SheetsPage({ onError }: { onError: (e: string | null) => void })
       setNotice(`Copie salvată: ${dest}`);
     });
 
+  const onExportCsv = () =>
+    run(async () => {
+      if (!info) return;
+      const base = info.name.replace(/\.[^.]+$/, "");
+      const dest = await save({
+        defaultPath: info.sheets.length > 1 ? `${base} - ${sheet}.csv` : `${base}.csv`,
+        filters: [{ name: "CSV", extensions: ["csv"] }],
+      });
+      if (!dest) return;
+      const r = await api.moduleCall<{ rows: number }>(ID, "export_csv", { id: info.id, version: info.version, sheet, style: csvStyle, dest });
+      setNotice(`Foaia „${sheet}” salvată ca CSV (${r.rows} rânduri): ${dest}`);
+    });
+
+  const onConvert = () =>
+    run(async () => {
+      if (!info) return;
+      const r = await api.moduleCall<{ document: Doc; summary: string }>(ID, "convert", { id: info.id, version: info.version });
+      setNotice(`Document nou ${r.document.name}: ${r.summary}. Originalul rămâne neschimbat.`);
+      await refresh();
+      setCurrent(r.document.id);
+    });
+
   const pending = Object.keys(edits).length;
   const doc = docs.find((d) => d.id === current);
   const selCell = sel ? cellAt(sel.r, sel.c) : null;
@@ -333,6 +356,20 @@ export function SheetsPage({ onError }: { onError: (e: string | null) => void })
               <button disabled={busy} onClick={() => void onExport()}>
                 Exportă o copie…
               </button>
+              <span className="row">
+                <button disabled={busy || !sheet} onClick={() => void onExportCsv()}>
+                  Exportă foaia ca CSV…
+                </button>
+                <select aria-label="Stilul CSV" value={csvStyle} onChange={(e) => setCsvStyle(e.target.value as "ro" | "standard")}>
+                  <option value="ro">românesc (; și virgulă zecimală)</option>
+                  <option value="standard">standard (, și punct zecimal)</option>
+                </select>
+              </span>
+              {!info.editable && (
+                <button className="primary" disabled={busy} onClick={() => void onConvert()}>
+                  Convertește în .xlsx editabil
+                </button>
+              )}
               <button className="danger-text" disabled={busy} onClick={() => setToDelete(doc)}>
                 Șterge
               </button>

@@ -628,6 +628,13 @@ impl ModuleContext<'_> {
         documents::export(self.ws, &m, id, version, dest, overwrite)
     }
 
+    /// Writes a file the module produced (for example a conversion) to a
+    /// path the user chose; an existing file is replaced only with `overwrite`.
+    pub fn export_bytes(&mut self, dest: &Path, data: &[u8], overwrite: bool) -> CoreResult<()> {
+        self.require("files.own")?;
+        documents::export_bytes(dest, data, overwrite)
+    }
+
     /// Structured log line tagged with the module id (no permission needed:
     /// modules must use the core log instead of their own, Master Plan §4.1).
     pub fn log(&self, message: &str) {

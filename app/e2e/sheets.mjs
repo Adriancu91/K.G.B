@@ -6,7 +6,7 @@
 // Usage: node app/e2e/sheets.mjs <path-to-kgb-app.exe> <screenshot-dir>
 // Uses a throw-away data folder (KGB_DATA_DIR), never the user's real data.
 import { spawn, execFileSync } from "node:child_process";
-import { existsSync, mkdtempSync, mkdirSync, rmSync } from "node:fs";
+import { existsSync, mkdtempSync, mkdirSync, readFileSync, rmSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join, resolve } from "node:path";
 import { connect, sleep } from "./cdp.mjs";
@@ -126,6 +126,19 @@ try {
   check("CSV Windows-1250 cu diacritice corecte", (await cellText(p, 2, 2)) === "Ţăndărei", await cellText(p, 2, 2));
   check("CSV-ul e doar pentru citire", (await p.eval("document.querySelector('.pdf-doc').innerText")).includes("doar pentru citire"));
 
+  // Convert the CSV into an editable workbook; export a sheet as CSV.
+  await p.click("Convertește în .xlsx editabil", ".pdf-doc button");
+  await p.until("document.querySelector('.pdf-doc h2')?.textContent === 'windows-1250.xlsx'", 10000);
+  await p.until("document.querySelectorAll('.grid-row').length > 2", 10000);
+  await sleep(300);
+  check("CSV-ul convertit în .xlsx editabil, cu diacritice", (await cellText(p, 2, 2)) === "Ţăndărei" && !(await p.eval("document.querySelector('.pdf-doc').innerText")).includes("doar pentru citire"));
+  const list = await p.eval(`window.__TAURI_INTERNALS__.invoke("module_call", {id: "kgb.sheets", command: "list", args: {}})`);
+  const formule = list.find((d) => d.name === "formule.xlsx");
+  const csvPath = join(data, "formule.csv");
+  await p.eval(`window.__TAURI_INTERNALS__.invoke("module_call", ${JSON.stringify({ id: "kgb.sheets", command: "export_csv", args: { id: formule.id, sheet: "Formule", style: "ro", dest: csvPath } })})`);
+  const csvText = readFileSync(csvPath, "utf8");
+  check("exportul CSV în stil românesc (; și virgulă zecimală)", csvText.includes("SUM;81,75"), csvText.split("\r\n")[7]);
+
   // Templates: use the invoice template, check its totals, edit the copy.
   await p.click("Șabloane de calcul…");
   await p.until("!!document.querySelector('.templates')", 10000);
@@ -153,7 +166,7 @@ try {
     check("import 100.000 de rânduri", (await tryImport(p, "large/100k-randuri.xlsx")) === "ok", `${Date.now() - t0} ms`);
     await go(p, "Acasă");
     await go(p, "Foi de calcul");
-    await p.until("document.querySelectorAll('.pdf-docs li .grow').length === 5", 10000);
+    await p.until("document.querySelectorAll('.pdf-docs li .grow').length === 6", 10000);
     const t1 = Date.now();
     await openDoc(p, "100k-randuri.xlsx");
     const openMs = Date.now() - t1;

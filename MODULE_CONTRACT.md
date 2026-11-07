@@ -68,7 +68,7 @@ Nucleul verifică **fiecare scriere** a modulului. O înregistrare greșită e r
 ## Fișiere din afara aplicației (Etapa 3)
 - Modulele `kgb.pdf` și `kgb.sheets` folosesc acest mecanism.
 - Un modul nu are acces la discul utilizatorului. Fișierul ales în dialogul sistemului e citit de aplicație (`module_import_file`, cu limita de 64 MB) și dat comenzii `import` a modulului, ca nume + conținut.
-- Exportul primește calea aleasă de utilizator în dialogul de salvare. Dialogul sistemului cere el confirmarea înainte de a înlocui un fișier existent.
+- Exportul primește calea aleasă de utilizator în dialogul de salvare. Un modul poate scrie acolo o copie a unei versiuni (`ctx.export_document`) sau un fișier produs de el, de exemplu o conversie (`ctx.export_bytes`, permisiunea `files.own`, Etapa 3). Dialogul sistemului cere el confirmarea înainte de a înlocui un fișier existent.
 
 ## Ce nu acoperă încă v1
 - Evenimentele dintre module sunt declarate, dar **nu există încă magistrala de evenimente**: vine când un al doilea modul are nevoie de ea, cel mai devreme în Etapa 4.
