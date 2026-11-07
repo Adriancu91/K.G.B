@@ -58,6 +58,22 @@ Interdicții permanente: fără baze de date (D-005, D-018), fără schimbări d
 - [x] 2.9 Backup/restore în aplicație (backup verificat; restaurare ca spațiu NOU, D-030; backup automat înainte de migrări și de conversia v1→v2; păstrate ultimele 5 automate; compactare, colectare fișiere, ștergerea resturilor la cerere; 6 teste + e2e 8/8)
 - [x] 2.10 Teste de concurență (6 fire cu transferuri optimiste + conflicte reale, cititor care verifică invarianta, compactare și backup în paralel, a doua deschidere refuzată, un singur câștigător pe versiune; 3 teste, stabile la 5 rulări)
 - [x] 2.11 Volum + corupere + opriri forțate pe laptop (10k/100k/1M pe v2; 1.000 opriri + 300 cu compactare: 0 pierderi; praguri D-022 toate atinse la 100k — vezi docs/etapa2/BENCH.md)
-- [ ] 🔒 2.12 Pierderea alimentării pe VM
+- [ ] 🔒 2.12 Pierderea alimentării pe VM — amânat (D-031, varianta b), obligatoriu înainte de date reale
 - [x] 2.13 Raport Etapa 2 (`docs/ETAPA2_RAPORT.md`)
-- [ ] 🔒 2.14 Poarta Etapei 2
+- [x] 2.14 Poarta Etapei 2: aprobată (D-031)
+
+## Etapa 3 — pași (plan: `docs/ETAPA3_PLAN.md`)
+
+- [ ] 3.1 Set de fișiere de test `testdata/etapa3/` + manifest cu hash-uri
+- [ ] 3.2 Spike S4 — PDF (lopdf / pdf / pdf.js) → D-032
+- [ ] 3.3 Spike S5 — foi de calcul (calamine / rust_xlsxwriter / umya-spreadsheet / IronCalc) → D-033
+- [ ] 3.4 Documente versionate în spațiul de lucru (D-034)
+- [ ] 3.5 Modulul PDF (beta)
+- [ ] 3.6 Modulul Foi de calcul (beta)
+- [ ] 3.7 Șabloane (D-036)
+- [ ] 3.8 Import/export CSV/XLSX/PDF
+- [ ] 3.9 Extragere inițială de date (fără OCR, D-035)
+- [ ] 3.10 Test de necorupere pe tot setul + fișiere stricate
+- [ ] 🔒 3.11 Fișiere reale, fără date confidențiale, de la proprietar
+- [ ] 3.12 Raport Etapa 3 (`docs/ETAPA3_RAPORT.md`)
+- [ ] 🔒 3.13 Poarta Etapei 3

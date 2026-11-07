@@ -172,7 +172,7 @@ export function App() {
     <div className="shell" style={{ gridTemplateColumns: collapsed ? "48px 1fr" : `${width}px 1fr` }}>
       {info.pre_release && (
         <div className="banner">
-          Versiune de dinainte de lansare (Etapa 2 în lucru). Nu folosi încă pentru date importante.
+          Versiune de dinainte de lansare (Etapa 3 în lucru). Nu folosi încă pentru date importante.
         </div>
       )}
       <aside className={collapsed ? "collapsed" : undefined}>

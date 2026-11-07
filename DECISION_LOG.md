@@ -125,3 +125,17 @@ Deciziile DECIS se schimbă doar cu aprobarea explicită a proprietarului (Maste
 - **Data:** 6 nov. 2026 · **Statut:** DECIS, aplicat în pasul 2.9 (era PROPUS în planul Etapei 2, conform regulii din Metaprompt §7 „nu suprascrie singura copie validă”).
 - **Ce face aplicația:** verifică backupul fișier cu fișier, apoi îl deschide ca spațiu nou, numit „… (restaurat <dată>)”. Originalul rămâne neatins și se redeschide din „Date și backup”.
 - **Backupuri automate:** înainte de migrarea datelor unui modul și înainte de conversia formatului jurnalului. Se păstrează ultimele 5 automate; cele manuale rămân până le șterge utilizatorul. Ștergerea backupurilor din interfață nu există încă.
+
+### D-031 — Poarta Etapei 2
+- **Data:** 7 nov. 2026 · **Statut:** DECIS · **Aprobat de:** proprietar („Aprob”), ca răspuns la întrebarea din `docs/ETAPA2_RAPORT.md` (poartă + D-028…D-030 + varianta recomandată pentru 2.12)
+- **Conținut:** Etapa 2 se încheie. D-028, D-029, D-030 sunt confirmate. **Începe Etapa 3** (documente și foi de calcul).
+- **2.12, pierderea alimentării:** varianta (b). Testul se amână, dar rămâne **obligatoriu înainte de prima utilizare cu date reale** (R17 rămâne deschis).
+- **Notă:** proprietarul nu a testat personal aplicația. Aprobarea se bazează pe raport și pe testele automate.
+
+### D-032 … D-036 — Etapa 3 (Documente și foi de calcul)
+- **Data:** 7 nov. 2026 · **Statut:** PROPUS — detalii și alternative în `docs/ETAPA3_PLAN.md`
+- D-032: biblioteca PDF se alege după spike-ul S4 (licență, fidelitate, viteză);
+- D-033: biblioteca pentru foi de calcul se alege după spike-ul S5;
+- D-034: documentele nu se suprascriu niciodată. Fiecare salvare creează o versiune nouă, iar originalul importat rămâne neatins;
+- D-035: OCR-ul (text din scanări și imagini) se evaluează separat și nu intră în Etapa 3 dacă cere programe externe sau licențe neclare;
+- D-036: șabloanele originale sunt doar de citire. Utilizatorul lucrează pe o copie.
