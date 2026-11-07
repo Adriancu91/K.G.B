@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="ro"><head><meta charset="utf-8"><title>Raport vânzări</title>
+<style>
+body{font-family:"Segoe UI",Arial,sans-serif;font-size:11pt;margin:18mm}
+h1{font-size:16pt}
+.pb{page-break-before:always}
+table{border-collapse:collapse}
+td,th{border:1px solid #999;padding:1.5mm 3mm}
+</style></head><body>
+<h1>Raport trimestrial de vânzări</h1>
+<p>Graficul de mai jos este vectorial (SVG), deci textul etichetelor rămâne text în PDF.</p>
+<svg width="480" height="240" viewBox="0 0 480 240" xmlns="http://www.w3.org/2000/svg">
+  <line x1="40" y1="200" x2="460" y2="200" stroke="#000"/>
+  <rect x="70" y="80" width="60" height="120" fill="#3b6fb6"/>
+  <rect x="170" y="50" width="60" height="150" fill="#3b6fb6"/>
+  <rect x="270" y="110" width="60" height="90" fill="#3b6fb6"/>
+  <rect x="370" y="30" width="60" height="170" fill="#3b6fb6"/>
+  <text x="80" y="220" font-size="13">Iulie</text>
+  <text x="172" y="220" font-size="13">August</text>
+  <text x="266" y="220" font-size="13">Septembrie</text>
+  <text x="378" y="220" font-size="13">Total</text>
+</svg>
+<h2 class="pb">Tabel detaliat</h2>
+<table>
+<tr><th>Lună</th><th>Încasări</th><th>Cheltuieli</th></tr>
+<tr><td>Iulie</td><td>12.000</td><td>8.400</td></tr>
+<tr><td>August</td><td>15.000</td><td>9.100</td></tr>
+<tr><td>Septembrie</td><td>9.000</td><td>7.250</td></tr>
+</table>
+</body></html>

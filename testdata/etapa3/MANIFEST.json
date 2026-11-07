@@ -1,0 +1,484 @@
+{
+ "format": 1,
+ "generator": "testdata/etapa3/generate.py",
+ "files": [
+  {
+   "path": "files/pdf/simplu-1-pagina.pdf",
+   "size": 676,
+   "sha256": "605d3498b611af048ee4b8d59ff06bebe92233656e8d2ff92d7408c8f21befd0",
+   "producer": "generate.py",
+   "kind": "pdf",
+   "pages": 1,
+   "text": [
+    "K.G.B. test simplu"
+   ]
+  },
+  {
+   "path": "files/pdf/multipagina-50.pdf",
+   "size": 17029,
+   "sha256": "04dbd62f654d94bebefad09afcc604eda5bdb25883bcf688ff0ad25c5f19db74",
+   "producer": "generate.py",
+   "kind": "pdf",
+   "pages": 50,
+   "text": [
+    "Pagina 1 din 50",
+    "Pagina 50 din 50",
+    "Continut unic 395950"
+   ]
+  },
+  {
+   "path": "files/pdf/rotite-si-formate.pdf",
+   "size": 1646,
+   "sha256": "a7039681d9d8feb8887c4e384f3b9d7298bfac81cb12fda64dc974c027c074dd",
+   "producer": "generate.py",
+   "kind": "pdf",
+   "pages": 4,
+   "rotate": [
+    0,
+    90,
+    180,
+    270
+   ],
+   "text": [
+    "Letter, rotita 180"
+   ]
+  },
+  {
+   "path": "files/pdf/actualizare-incrementala.pdf",
+   "size": 1637,
+   "sha256": "945ae71def4b2ffb123d693a467b2943f88485f000e54cc5f163297b378cee19",
+   "producer": "generate.py",
+   "kind": "pdf",
+   "pages": 3,
+   "text": [
+    "Pagina 2 MODIFICATA",
+    "Pagina 3 adaugata"
+   ],
+   "text_absent": [
+    "Pagina 2 originala"
+   ],
+   "note": "a doua revizie înlocuiește pagina 2 și adaugă pagina 3"
+  },
+  {
+   "path": "files/pdf/xref-stream-pdf15.pdf",
+   "size": 935,
+   "sha256": "1d7e0c722bd02b18dd1a4fee4fd14a6fa424783917aca04669cffb47c02e72f0",
+   "producer": "generate.py",
+   "kind": "pdf",
+   "pages": 3,
+   "text": [
+    "Obiecte comprimate 3"
+   ],
+   "note": "PDF 1.5: obiecte în ObjStm, tabel xref ca flux binar"
+  },
+  {
+   "path": "files/pdf/formular.pdf",
+   "size": 1105,
+   "sha256": "a29d083044b8ff871a51179242aec5ac18a924b822d98a4cb544ab43f896fcd5",
+   "producer": "generate.py",
+   "kind": "pdf",
+   "pages": 1,
+   "form_fields": {
+    "Nume": "Ion Popescu",
+    "Acord": "Yes"
+   }
+  },
+  {
+   "path": "files/pdf/cu-imagine.pdf",
+   "size": 9075,
+   "sha256": "7a2f801f18792c423151c986fae320416afa692144cecb276c3ec74ba306a1d9",
+   "producer": "generate.py",
+   "kind": "pdf",
+   "pages": 1,
+   "images": 1,
+   "text": [
+    "Imagine 64x64"
+   ]
+  },
+  {
+   "path": "files/pdf/semne-de-carte-si-legaturi.pdf",
+   "size": 1983,
+   "sha256": "2183baf8166cb4f8167d1a63009977ec2dd9ef7c3132ea081598ac50ec385db9",
+   "producer": "generate.py",
+   "kind": "pdf",
+   "pages": 3,
+   "outlines": [
+    "Capitolul 1",
+    "Capitolul 2",
+    "Capitolul 3"
+   ],
+   "links": 1,
+   "metadata": {
+    "Title": "Test semne de carte",
+    "Author": "K.G.B."
+   }
+  },
+  {
+   "path": "files/pdf/stricat-trunchiat.pdf",
+   "size": 2032,
+   "sha256": "61e05eddd98d683075c4ce3e8f943092240f31011be4508ae1cbe27aec7191a4",
+   "producer": "generate.py",
+   "kind": "pdf",
+   "broken": true,
+   "note": "tăiat la 60%: fără xref, fără %%EOF"
+  },
+  {
+   "path": "files/pdf/stricat-octeti.pdf",
+   "size": 3388,
+   "sha256": "202c7f5c8f32685dede326b0dd9bf9206123a363f7634ce3a59c3e4e182d7af7",
+   "producer": "generate.py",
+   "kind": "pdf",
+   "broken": true,
+   "note": "octeți alterați în primele obiecte"
+  },
+  {
+   "path": "files/pdf/stricat-xref-gresit.pdf",
+   "size": 3388,
+   "sha256": "7385ae649c8202c947caa54aded8f4880c7698a0a3ea14b11ed008493f0e8a2b",
+   "producer": "generate.py",
+   "kind": "pdf",
+   "broken": true,
+   "recoverable": true,
+   "pages": 10,
+   "note": "offseturile din xref sunt deplasate; un cititor tolerant reconstruiește"
+  },
+  {
+   "path": "files/pdf/nu-e-pdf.pdf",
+   "size": 37,
+   "sha256": "4ed7ec9527f2e23ff503d568fe1a41b82cf19d00c2e558bff26dc4bb1463c69d",
+   "producer": "generate.py",
+   "kind": "pdf",
+   "broken": true
+  },
+  {
+   "path": "files/pdf/gol.pdf",
+   "size": 0,
+   "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "producer": "generate.py",
+   "kind": "pdf",
+   "broken": true
+  },
+  {
+   "path": "files/pdf/ostil-imbricare-adanca.pdf",
+   "size": 400246,
+   "sha256": "ce7e4e5c70fd57393920b5a1325c3e41ad64e740be66c48e276932be99708581",
+   "producer": "generate.py",
+   "kind": "pdf",
+   "broken": true,
+   "hostile": true,
+   "note": "200.000 de tablouri imbricate: un parser recursiv fără limită se prăbușește"
+  },
+  {
+   "path": "files/xlsx/simplu.xlsx",
+   "size": 3543,
+   "sha256": "22fb1bf061c0c9ed0f9c439bee8f173308af8e8edbaeabae62fedd80b33c598f",
+   "producer": "generate.py",
+   "kind": "xlsx",
+   "sheets": [
+    "Date"
+   ],
+   "cells": {
+    "Date!A1": "Produs",
+    "Date!B11": 30,
+    "Date!C4": 7.5
+   }
+  },
+  {
+   "path": "files/xlsx/diacritice-foi-multiple.xlsx",
+   "size": 4232,
+   "sha256": "43a74dbc3803792cf0e88cf4f269daa17cea96f3ba0029504dd0888a5d593831",
+   "producer": "generate.py",
+   "kind": "xlsx",
+   "sheets": [
+    "Ianuarie",
+    "Februarie",
+    "Sumar ș ț"
+   ],
+   "cells": {
+    "Ianuarie!A2": "Încasări școală",
+    "'Sumar ș ț'!B1": 2180.75,
+    "'Sumar ș ț'!A2": "ĂÂÎȘȚ ăâîșț"
+   },
+   "formulas": {
+    "'Sumar ș ț'!B1": "Ianuarie!B2+Februarie!B2"
+   }
+  },
+  {
+   "path": "files/xlsx/formule.xlsx",
+   "size": 3872,
+   "sha256": "4569ae59d30404c9c18dea1c4a6422c751bc6475e5e3fe7d0f9459b213e1f0fd",
+   "producer": "generate.py",
+   "kind": "xlsx",
+   "sheets": [
+    "Formule"
+   ],
+   "cells": {
+    "Formule!B8": 71.75,
+    "Formule!B9": 14.35,
+    "Formule!B10": "mare",
+    "Formule!B12": 30,
+    "Formule!B13": 30.25,
+    "Formule!B17": -1013.819714,
+    "Formule!B19": true
+   },
+   "formulas": {
+    "Formule!B8": "SUM(B2:B6)",
+    "Formule!B12": "VLOOKUP(\"prune\",A2:B6,2,FALSE)"
+   },
+   "note": "valorile din cache sunt calculate în Python; PMT rotunjit la 6 zecimale în așteptări"
+  },
+  {
+   "path": "files/xlsx/formate.xlsx",
+   "size": 3660,
+   "sha256": "c68cb44dcb33878305f3b87e7047bd4bea5f211cbaa20964eacd8f6a3609b283",
+   "producer": "generate.py",
+   "kind": "xlsx",
+   "sheets": [
+    "Formate"
+   ],
+   "cells": {
+    "Formate!B2": 46333,
+    "Formate!C2": 1234.5
+   },
+   "number_formats": {
+    "Formate!B2": "dd\\.mm\\.yyyy",
+    "Formate!C2": "#,##0.00\\ \"lei\"",
+    "Formate!C4": "0.00%"
+   },
+   "merged": [
+    "Formate!A5:C5"
+   ],
+   "frozen_rows": 1,
+   "col_widths": {
+    "A": 32
+   }
+  },
+  {
+   "path": "files/xlsx/functii-avansate.xlsx",
+   "size": 3998,
+   "sha256": "2d94a5a7f06eb2723b531d65a24c8317ff40c8599b5a30fe95753d6f2663e055",
+   "producer": "generate.py",
+   "kind": "xlsx",
+   "sheets": [
+    "Avansat"
+   ],
+   "cells": {
+    "Avansat!B5": 185
+   },
+   "preserve": [
+    "conditionalFormatting",
+    "dataValidation",
+    "hyperlink",
+    "definedName Preturi"
+   ],
+   "note": "măsurăm ce păstrează fiecare bibliotecă la deschidere → salvare"
+  },
+  {
+   "path": "files/xlsx/tipuri-celule.xlsx",
+   "size": 3574,
+   "sha256": "b710bfac80a3e0decba1ddddc543f71e850ba2faf84eccca577d065b72e5b26f",
+   "producer": "generate.py",
+   "kind": "xlsx",
+   "sheets": [
+    "Tipuri"
+   ],
+   "cells": {
+    "Tipuri!B1": "text inline ș",
+    "Tipuri!B2": true,
+    "Tipuri!B3": "#DIV/0!",
+    "Tipuri!B5": -0.000125,
+    "Tipuri!B6": 123456789012345,
+    "Tipuri!B7": "  cu spații la capete  ",
+    "Tipuri!B8": "linia 1\nlinia 2"
+   }
+  },
+  {
+   "path": "files/xlsx/stricat-trunchiat.xlsx",
+   "size": 1771,
+   "sha256": "d3ab70d92a9b8c1db5d97577fa3e5be31ca896284262d07c9fb4c6b4f075d598",
+   "producer": "generate.py",
+   "kind": "xlsx",
+   "broken": true
+  },
+  {
+   "path": "files/xlsx/nu-e-zip.xlsx",
+   "size": 22,
+   "sha256": "6778ae0f49e14c90cb426c94dd8243b7fa9e2df9204b1cbf141fdc13ff8159ac",
+   "producer": "generate.py",
+   "kind": "xlsx",
+   "broken": true
+  },
+  {
+   "path": "files/xlsx/zip-fara-workbook.xlsx",
+   "size": 123,
+   "sha256": "52bce3fd63a47e11c56944a251d70f7677a9eefeb4c2dacfcfd7ccef44cf5bdd",
+   "producer": "generate.py",
+   "kind": "xlsx",
+   "broken": true
+  },
+  {
+   "path": "files/xlsx/stricat-octeti.xlsx",
+   "size": 3543,
+   "sha256": "a3a46a5f8fb7ad6fe1b09dec334a80f835e9491257dde4314124c0ce97372527",
+   "producer": "generate.py",
+   "kind": "xlsx",
+   "broken": true,
+   "note": "CRC-urile ZIP nu mai corespund"
+  },
+  {
+   "path": "files/csv/utf8-bom-virgula.csv",
+   "size": 66,
+   "sha256": "9827190f3567063e4a8e6c034d53000f3df5ceb8ec3353c224c513a154585c01",
+   "producer": "generate.py",
+   "kind": "csv",
+   "encoding": "utf-8-sig",
+   "delimiter": ",",
+   "rows": 3,
+   "cells": {
+    "B2": "București"
+   }
+  },
+  {
+   "path": "files/csv/ro-punct-si-virgula.csv",
+   "size": 85,
+   "sha256": "76f2b1055dcd7a09b7212bee28bcd638863206e53c32af0f99fafe3653e48de5",
+   "producer": "generate.py",
+   "kind": "csv",
+   "encoding": "utf-8",
+   "delimiter": ";",
+   "decimal": ",",
+   "thousands": ".",
+   "rows": 3,
+   "cells": {
+    "C2": "-1.234,56"
+   },
+   "parsed": {
+    "C2": -1234.56,
+    "A2": "2026-11-07"
+   }
+  },
+  {
+   "path": "files/csv/windows-1250.csv",
+   "size": 48,
+   "sha256": "18161dae58472bb1022ae0fab0c7351506348e539b48f4ab3fde3905b17feafa",
+   "producer": "generate.py",
+   "kind": "csv",
+   "encoding": "cp1250",
+   "delimiter": ";",
+   "rows": 3,
+   "cells": {
+    "B2": "Ţăndărei"
+   },
+   "note": "codificare veche Windows; Ş/Ţ cu sedilă, cum le scriau programele vechi"
+  },
+  {
+   "path": "files/csv/ghilimele-multilinie.csv",
+   "size": 75,
+   "sha256": "fea7df3b7e78a6e14e8454b49b26e76661e0520d3ae751981d02b6aba8bdf278",
+   "producer": "generate.py",
+   "kind": "csv",
+   "encoding": "utf-8",
+   "delimiter": ",",
+   "rows": 4,
+   "cells": {
+    "B2": "are, virgulă",
+    "B3": "are \"ghilimele\"",
+    "B4": "pe două\r\nrânduri"
+   }
+  },
+  {
+   "path": "files/csv/randuri-inegale.csv",
+   "size": 21,
+   "sha256": "6a0a4dfde85a7b38d6f5b439a17fd1d9326a9c1c7d684b3f497695d3e0229fa0",
+   "producer": "generate.py",
+   "kind": "csv",
+   "encoding": "utf-8",
+   "delimiter": ",",
+   "rows": 5,
+   "ragged": true
+  },
+  {
+   "path": "large/mare-500-pagini.pdf",
+   "size": 211914,
+   "sha256": "54bee0defa45ed84e7f98f06661ee6b50d8ea324fe23fa783bb1cc54fd606db7",
+   "producer": "generate.py",
+   "kind": "pdf",
+   "pages": 500,
+   "text": [
+    "Pagina 500 din 500"
+   ],
+   "large": true
+  },
+  {
+   "path": "large/100k-randuri.xlsx",
+   "size": 4680647,
+   "sha256": "31e41aacb048344b74a245c409d48281da2a5cb6150384571c724c65d334b534",
+   "producer": "generate.py",
+   "kind": "xlsx",
+   "sheets": [
+    "Vanzari"
+   ],
+   "rows": 100001,
+   "cells": {
+    "Vanzari!A100001": 100000
+   },
+   "large": true
+  },
+  {
+   "path": "large/100k-randuri.csv",
+   "size": 2267582,
+   "sha256": "f5b8984042b4d338f4d949a97a979393afe8dbf9a8c84ff758fc43144f4ad937",
+   "producer": "generate.py",
+   "kind": "csv",
+   "delimiter": ";",
+   "rows": 100001,
+   "large": true
+  },
+  {
+   "path": "large/ostil-bomba-zip.xlsx",
+   "size": 207074,
+   "sha256": "6392055d0dbb5d9735ae20dd54be1ecad45862716042cf1252ee273ad75e40c6",
+   "producer": "generate.py",
+   "kind": "xlsx",
+   "broken": true,
+   "hostile": true,
+   "note": "200 MB după dezarhivare; trebuie refuzat de limita de mărime, nu încărcat în memorie"
+  },
+  {
+   "path": "files/edge/factura.pdf",
+   "size": 45207,
+   "sha256": "d90214af20821d026b692fb8a6bc572f4d32e8abdcb13abde048d35cef2bc211",
+   "producer": "Microsoft Edge --print-to-pdf",
+   "kind": "pdf",
+   "pages": 1,
+   "fonts_embedded": true,
+   "text": [
+    "FACTURĂ FISCALĂ nr. FCT-0042",
+    "Școala Gimnazială",
+    "1.673,14 lei"
+   ],
+   "extract": {
+    "numar": "FCT-0042",
+    "data": "07.11.2026",
+    "total": "1.673,14",
+    "tva": "267,14"
+   },
+   "note": "fonturi TrueType încorporate (subset), diacritice românești cu virgulă; ținta pasului 3.9"
+  },
+  {
+   "path": "files/edge/raport-grafic.pdf",
+   "size": 34115,
+   "sha256": "6cf16ccd4894869b2bda2bdb348142f0d2eb6812356f2a15d7b590f86d47109e",
+   "producer": "Microsoft Edge --print-to-pdf",
+   "kind": "pdf",
+   "pages": 2,
+   "fonts_embedded": true,
+   "text": [
+    "Raport trimestrial de vânzări",
+    "Septembrie",
+    "Tabel detaliat"
+   ],
+   "note": "grafic vectorial SVG + tabel pe pagina a doua"
+  }
+ ]
+}

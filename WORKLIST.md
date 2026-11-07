@@ -64,7 +64,7 @@ Interdicții permanente: fără baze de date (D-005, D-018), fără schimbări d
 
 ## Etapa 3 — pași (plan: `docs/ETAPA3_PLAN.md`)
 
-- [ ] 3.1 Set de fișiere de test `testdata/etapa3/` + manifest cu hash-uri
+- [x] 3.1 Set de fișiere de test `testdata/etapa3/` (35 fișiere: 33 generate determinist + 2 PDF din Edge, manifest SHA-256; verificat cu cititorul PDF din Windows)
 - [ ] 3.2 Spike S4 — PDF (lopdf / pdf / pdf.js) → D-032
 - [ ] 3.3 Spike S5 — foi de calcul (calamine / rust_xlsxwriter / umya-spreadsheet / IronCalc) → D-033
 - [ ] 3.4 Documente versionate în spațiul de lucru (D-034)

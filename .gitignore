@@ -20,3 +20,6 @@ Thumbs.db
 desktop.ini
 .vscode/
 .idea/
+
+# Etapa 3: fișiere mari de test, se regenerează cu generate.py
+testdata/etapa3/large/

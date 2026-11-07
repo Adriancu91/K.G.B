@@ -36,3 +36,11 @@ Pragurile de performanță sunt PROPUSE în ETAPA0_PLAN.md §3.2 și devin ofici
 - `target/release/crashtest.exe run <dir> <n> [compact]`: opriri forțate, opțional cu compactare în timpul scrierilor.
 - `target/release/bench.exe <dir> <n>`: măsurători; rezultatele sunt în `docs/etapa2/BENCH.md`.
 - `node app/e2e/backup.mjs <kgb-app.exe> <folder-capturi>`: backup → modificare → verificare → restaurare ca spațiu nou → redeschiderea originalului.
+
+## Etapa 3 — documente și foi de calcul
+- Setul de fișiere de test este `testdata/etapa3/` (vezi `README.md` de acolo):
+  - fișierele sunt generate doar cu biblioteca standard Python și cu Edge, deci nu de bibliotecile evaluate;
+  - pentru fiecare fișier, `MANIFEST.json` notează hash-ul SHA-256 și ce trebuie să conțină (pagini, text, celule, formule) sau că trebuie refuzat.
+- `python testdata/etapa3/generate.py --check`: verifică că fișierele nu s-au schimbat.
+- `powershell -File testdata/etapa3/validate-windows-pdf.ps1`: verificare independentă cu cititorul PDF din Windows.
+- Regula de necorupere pentru orice operație: originalul rămâne identic (același hash), rezultatul se redeschide și păstrează paginile, textul și valorile din manifest.
