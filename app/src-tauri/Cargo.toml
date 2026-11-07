@@ -13,8 +13,12 @@ tauri-build = { version = "2.7", features = [] }
 kgb-core.workspace = true
 kgb-store.workspace = true
 kgb-notes.workspace = true
+kgb-pdf.workspace = true
 tracing.workspace = true
 tauri = { version = "2.12", features = [] }
+# System file dialogs (open/save) for importing and exporting documents (Etapa 3).
+tauri-plugin-dialog = "=2.8.4"
+base64 = "0.22.1"
 serde.workspace = true
 serde_json.workspace = true
 uuid.workspace = true

@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useRef, useState, type ComponentType, type PointerEvent as ReactPointerEvent } from "react";
 import { api, message, type AppInfo, type ModulesReply, type Settings, type SettingsReply } from "./api";
 import { NotesPage } from "./modules/notes/NotesPage";
+import { PdfPage } from "./modules/pdf/PdfPage";
 import { Catalog } from "./pages/Catalog";
 import { DataPage } from "./pages/DataPage";
 import { DiagnosticsPage } from "./pages/DiagnosticsPage";
@@ -12,6 +13,7 @@ import { SettingsPage } from "./pages/SettingsPage";
 /// Interfaces of the built-in modules, by module id.
 const MODULE_PAGES: Record<string, ComponentType<{ onError: (e: string | null) => void }>> = {
   "kgb.notes": NotesPage,
+  "kgb.pdf": PdfPage,
 };
 
 const SIDEBAR_MIN = 160;

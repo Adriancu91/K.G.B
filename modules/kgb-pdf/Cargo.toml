@@ -1,0 +1,20 @@
+[package]
+name = "kgb-pdf"
+version = "0.1.0"
+edition.workspace = true
+publish.workspace = true
+license.workspace = true
+description = "K.G.B. module: PDF documents (view, merge, split, extract, rotate, text) on versioned documents."
+
+[dependencies]
+kgb-core.workspace = true
+serde.workspace = true
+serde_json.workspace = true
+uuid.workspace = true
+tracing.workspace = true
+lopdf = "0.47.0"
+hayro = { version = "0.9.0", features = ["embed-fonts"] }
+base64 = "0.22.1"
+
+[dev-dependencies]
+tempfile.workspace = true

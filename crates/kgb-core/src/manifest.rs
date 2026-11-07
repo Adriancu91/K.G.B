@@ -30,7 +30,7 @@ pub const PERMISSIONS: &[(&str, &str)] = &[
     ),
     (
         "files.own",
-        "salvează și citește fișierele atașate proprii (verificate prin amprentă BLAKE3)",
+        "salvează și citește fișierele și documentele proprii, cu versiuni (originalul nu se modifică; conținutul e verificat prin amprentă BLAKE3)",
     ),
 ];
 

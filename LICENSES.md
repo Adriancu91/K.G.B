@@ -100,5 +100,12 @@ Verificat automat de `cargo-deny` în CI pe workspace-ul rădăcină (`Cargo.tom
 | `zeroize` 1.9.1 | Apache-2.0 OR MIT | ștergerea cheii din memorie | 1.6 |
 | `semver` 1 | MIT OR Apache-2.0 | versiunile modulelor și compatibilitatea cu nucleul | 1.7 |
 | `windows-sys` (Cryptography) | MIT OR Apache-2.0 | Windows DPAPI pentru sigilarea cheii (D-025) | 1.6 |
+| `lopdf` 0.47.0 | MIT | operații PDF în modulul `kgb.pdf` (D-032) | 3.5 |
+| `hayro` 0.9.0 (+ hayro-syntax/-interpret/-font, vello_cpu, skrifa, read-fonts) | Apache-2.0 OR MIT | miniaturile paginilor PDF (D-032) | 3.5 |
+| ↳ fonturile standard Foxit din `hayro-font` | BSD-3-Clause (© PDFium Authors) | **atribuire obligatorie în notices** (fișierul `LICENSE_FOXIT`) — de inclus în installer înainte de distribuire | 3.5 |
+| ↳ profilurile ICC din `hayro-interpret` | CC0-1.0 | — | 3.5 |
+| `base64` 0.22.1 | MIT OR Apache-2.0 | conținutul fișierelor între interfață și module | 3.5 |
+| `tauri-plugin-dialog` 2.8.4 (+ npm `@tauri-apps/plugin-dialog` 2.8.4) | MIT OR Apache-2.0 | dialogurile sistemului pentru import și export (doar `allow-open`, `allow-save`) | 3.5 |
+| npm `pdfjs-dist` 6.4.299 | Apache-2.0 | afișarea paginilor PDF în fereastră (D-032); la `npm install` aduce opțional `@napi-rs/canvas` (MIT), folosit doar de Node, nu intră în aplicație | 3.5 |
 
 Restul dependențelor (Tauri, React, Vite, serde, uuid, blake3) sunt cele din S1 și S3, deja în acest registru.

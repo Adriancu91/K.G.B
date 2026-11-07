@@ -52,3 +52,11 @@ Pragurile de performanță sunt PROPUSE în ETAPA0_PLAN.md §3.2 și devin ofici
   - exportul scrie o copie fără să înlocuiască fișiere existente;
   - conținutul alterat e detectat;
   - **25 de opriri forțate ale unui proces care salvează continuu**: nicio versiune pe jumătate, originalul neatins.
+- `cargo test -p kgb-pdf` (pasul 3.5) rulează pe setul de test:
+  - clasificarea fiecărui fișier: intact, deteriorat sau „nu e PDF”, cu originalul stocat octet cu octet;
+  - PDF-urile deteriorate sunt doar pentru citire;
+  - rotire, scoatere, extragere și unire, cu previzualizare, versiune nouă și verificarea textului pe fiecare pagină;
+  - miniaturi, restaurare, export;
+  - argumente greșite refuzate.
+- `node app/e2e/pdf.mjs <kgb-app.exe> <folder-capturi>`: modulul PDF în fereastra reală (20 de verificări).
+  - Testul nu poate acționa dialogul de fișiere al sistemului. Apelează aceeași comandă (`module_import_file`) care primește rezultatul dialogului.

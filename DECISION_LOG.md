@@ -203,3 +203,13 @@ Deciziile DECIS se schimbă doar cu aprobarea explicită a proprietarului (Maste
   - Restaurarea unei versiuni vechi creează o versiune nouă.
   - Exportul scrie o copie și nu înlocuiește un fișier existent fără confirmare.
 - **Verificat:** 7 teste, inclusiv 25 de opriri forțate în timpul salvărilor, fără nicio versiune pe jumătate și cu originalul neatins.
+
+### D-038 — Fișierele utilizatorului intră și ies prin dialogurile sistemului
+- **Data:** 7 nov. 2026 · **Statut:** DECIS (pasul 3.5; detaliu de implementare a D-034, fără schimbare de arhitectură).
+- **Import:** modulele nu primesc acces la disc. Aplicația citește fișierul ales de utilizator în dialogul sistemului (`tauri-plugin-dialog`, doar `allow-open`/`allow-save`; limita de 64 MB) și îl dă modulului ca nume + conținut.
+- **Export:** se scrie o copie în calea aleasă în dialogul de salvare; dialogul sistemului confirmă înlocuirea unui fișier existent.
+- **Politica de securitate a ferestrei (CSP), lărgită minim pentru pdf.js:**
+  - `worker-src 'self'`: lucrătorul pdf.js vine din aplicație;
+  - `wasm-unsafe-eval`: decodoarele de imagini pdf.js sunt WebAssembly;
+  - `img-src blob:`.
+- **Neschimbat:** `eval` rămâne interzis, iar rețeaua nu e permisă.

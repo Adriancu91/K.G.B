@@ -121,6 +121,8 @@ export const api = {
   setModuleVisible: (id: string, visible: boolean) => invoke<void>("set_module_visible", { id, visible }),
   moduleCall: <T>(id: string, command: string, args: Record<string, unknown> = {}) =>
     invoke<T>("module_call", { id, command, args }),
+  /** Hands a file the user picked to a module's `import` command. */
+  importFile: <T>(id: string, path: string) => invoke<T>("module_import_file", { id, path }),
   diagnostics: () => invoke<Diagnostics>("diagnostics"),
   exportDiagnostics: () => invoke<string>("export_diagnostics"),
   dataInfo: () => invoke<DataInfo>("data_info"),

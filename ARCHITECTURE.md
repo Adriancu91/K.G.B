@@ -29,3 +29,8 @@
 - **Biblioteci pentru documente** (alese prin spike-urile S4/S5, D-032/D-033):
   - PDF: lopdf (operații), pdf.js (afișare), hayro (miniaturi), plus o verificare strictă proprie;
   - foi de calcul: calamine (citire), umya (salvare, cu comparație înainte/după), IronCalc (formule), rust_xlsxwriter (export), plus o protecție proprie anti-„bombă zip”.
+- **Modulul `modules/kgb-pdf`** (`kgb.pdf`, beta):
+  - logica: verificare strictă, operații, verificarea rezultatului;
+  - interfața: `app/src/modules/pdf/` (pdf.js);
+  - fișierele intră prin comanda aplicației `module_import_file` (dialogul sistemului) și ies prin export în calea aleasă.
+  - Politica de securitate a ferestrei permite acum `worker-src 'self'` (lucrătorul pdf.js) și `wasm-unsafe-eval` (decodoarele de imagini din pdf.js). `eval` rămâne interzis.

@@ -45,7 +45,7 @@ fn err(e: impl std::fmt::Display) -> String {
 }
 
 fn builtin_modules() -> Vec<Box<dyn Module>> {
-    vec![Box::new(kgb_notes::Notes::new())]
+    vec![Box::new(kgb_notes::Notes::new()), Box::new(kgb_pdf::Pdf::new())]
 }
 
 fn known_profiles() -> Vec<&'static str> {
@@ -420,6 +420,35 @@ fn module_call(app: State<AppState>, id: String, command: String, args: Value) -
     })
 }
 
+/// Reads a file the user picked in the system dialog and hands it to the
+/// module's `import` command (name + base64 contents). The module never gets
+/// file system access itself; the size limit is the core's (64 MB).
+#[tauri::command]
+fn module_import_file(app: State<AppState>, id: String, path: PathBuf) -> CmdResult<Value> {
+    use base64::Engine as _;
+    let meta = std::fs::metadata(&path).map_err(err)?;
+    if meta.len() > kgb_core::files::MAX_FILE_BYTES as u64 {
+        return Err(format!(
+            "fișierul are {} MB; limita este {} MB",
+            meta.len() >> 20,
+            kgb_core::files::MAX_FILE_BYTES >> 20
+        ));
+    }
+    let data = std::fs::read(&path).map_err(err)?;
+    let name = path
+        .file_name()
+        .map(|n| n.to_string_lossy().to_string())
+        .unwrap_or_default();
+    let args = serde_json::json!({
+        "name": name,
+        "data": base64::engine::general_purpose::STANDARD.encode(&data),
+    });
+    with_session(&app, |s| {
+        let fp = s.device.fingerprint();
+        s.mm.call(&mut s.ws, Some(&fp), &id, "import", args)
+    })
+}
+
 // ---------- diagnostics ----------
 
 #[derive(Serialize)]
@@ -507,6 +536,7 @@ fn working_set_mb() -> f64 {
 fn main() {
     let t0 = Instant::now();
     tauri::Builder::default()
+        .plugin(tauri_plugin_dialog::init())
         .setup(move |app| {
             // KGB_DATA_DIR lets automated tests use a throw-away folder instead
             // of the user's real data (%LOCALAPPDATA%\ro.kronos.kgb).
@@ -543,6 +573,7 @@ fn main() {
             disable_module,
             set_module_visible,
             module_call,
+            module_import_file,
             diagnostics,
             export_diagnostics,
             data_info,

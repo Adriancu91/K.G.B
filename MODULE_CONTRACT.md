@@ -65,6 +65,10 @@ Nucleul verifică **fiecare scriere** a modulului. O înregistrare greșită e r
 - **Loguri:** modulele folosesc logul nucleului (`ctx.log`), nu un mecanism propriu.
 - **Catalog:** modulele `experimental` apar doar în versiunile de dinainte de lansare, marcate „experimental”. Modulele etapelor viitoare apar ca „Neimplementat — Etapa N” și nu pot fi activate.
 
+## Fișiere din afara aplicației (Etapa 3)
+- Un modul nu are acces la discul utilizatorului. Fișierul ales în dialogul sistemului e citit de aplicație (`module_import_file`, cu limita de 64 MB) și dat comenzii `import` a modulului, ca nume + conținut.
+- Exportul primește calea aleasă de utilizator în dialogul de salvare. Dialogul sistemului cere el confirmarea înainte de a înlocui un fișier existent.
+
 ## Ce nu acoperă încă v1
 - Evenimentele dintre module sunt declarate, dar **nu există încă magistrala de evenimente**: vine când un al doilea modul are nevoie de ea, cel mai devreme în Etapa 4.
 - Exportul datelor unui modul: Etapa 2, odată cu backup/restore în aplicație.
