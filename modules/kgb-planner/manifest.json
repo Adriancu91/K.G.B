@@ -1,0 +1,176 @@
+{
+  "manifest_format": 1,
+  "id": "kgb.planner",
+  "name": "Planificator",
+  "description": "Taskuri, proiecte și checklisturi, atribuite persoanelor din echipă, cu termene, priorități și stări. Vederi: listă, Kanban și calendar.",
+  "version": "0.1.0",
+  "core": ">=0.1.0, <0.2.0",
+  "status": "beta",
+  "permissions": [
+    "storage.own"
+  ],
+  "services": [
+    "storage",
+    "log"
+  ],
+  "data_types": [
+    {
+      "collection": "persoane",
+      "description": "persoanele echipei (listă locală; conturile vin în Etapa 6)",
+      "schema": {
+        "fields": {
+          "nume": {
+            "type": "string",
+            "required": true,
+            "nullable": false,
+            "max_len": 100
+          },
+          "rol": {
+            "type": "string",
+            "required": false,
+            "nullable": true,
+            "max_len": 100
+          },
+          "email": {
+            "type": "string",
+            "required": false,
+            "nullable": true,
+            "max_len": 200
+          },
+          "activ": {
+            "type": "bool",
+            "required": true
+          },
+          "creat_ms": {
+            "type": "integer",
+            "required": true,
+            "min": 0
+          }
+        },
+        "additional": false
+      }
+    },
+    {
+      "collection": "proiecte",
+      "description": "proiectele",
+      "schema": {
+        "fields": {
+          "nume": {
+            "type": "string",
+            "required": true,
+            "nullable": false,
+            "max_len": 150
+          },
+          "descriere": {
+            "type": "string",
+            "required": false,
+            "nullable": true,
+            "max_len": 2000
+          },
+          "arhivat": {
+            "type": "bool",
+            "required": true
+          },
+          "creat_ms": {
+            "type": "integer",
+            "required": true,
+            "min": 0
+          }
+        },
+        "additional": false
+      }
+    },
+    {
+      "collection": "taskuri",
+      "description": "taskurile: titlu, descriere, responsabil, proiect, termen, prioritate, stare, checklist",
+      "schema": {
+        "fields": {
+          "titlu": {
+            "type": "string",
+            "required": true,
+            "nullable": false,
+            "max_len": 200
+          },
+          "descriere": {
+            "type": "string",
+            "required": false,
+            "nullable": true,
+            "max_len": 4000
+          },
+          "responsabil": {
+            "type": "string",
+            "required": false,
+            "nullable": true,
+            "max_len": 36
+          },
+          "proiect": {
+            "type": "string",
+            "required": false,
+            "nullable": true,
+            "max_len": 36
+          },
+          "termen": {
+            "type": "string",
+            "required": false,
+            "nullable": true,
+            "max_len": 10
+          },
+          "prioritate": {
+            "type": "string",
+            "required": true,
+            "enum": [
+              "scazuta",
+              "normala",
+              "ridicata",
+              "urgenta"
+            ]
+          },
+          "stare": {
+            "type": "string",
+            "required": true,
+            "enum": [
+              "de_facut",
+              "in_lucru",
+              "blocat",
+              "gata"
+            ]
+          },
+          "checklist": {
+            "type": "array",
+            "required": true,
+            "max_len": 100
+          },
+          "creat_ms": {
+            "type": "integer",
+            "required": true,
+            "min": 0
+          },
+          "actualizat_ms": {
+            "type": "integer",
+            "required": true,
+            "min": 0
+          },
+          "finalizat_ms": {
+            "type": "integer",
+            "required": false,
+            "min": 0,
+            "nullable": true
+          }
+        },
+        "additional": false
+      },
+      "indexes": [
+        "stare",
+        "responsabil",
+        "proiect"
+      ]
+    }
+  ],
+  "events": {
+    "emits": [],
+    "listens": []
+  },
+  "data_format": 1,
+  "migrations": [],
+  "on_disable": "Taskurile, proiectele și persoanele rămân în spațiul de lucru și reapar când modulul este activat din nou."
+}

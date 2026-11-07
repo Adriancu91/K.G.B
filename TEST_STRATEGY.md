@@ -92,3 +92,14 @@ Pragurile de performanță sunt PROPUSE în ETAPA0_PLAN.md §3.2 și devin ofici
   - Pe tot setul și pe corpus: originalul neatins, operația verificată, 5 variante stricate pe fiecare fișier.
   - Rezultatele sunt în `docs/etapa3/NECORUPERE.md`.
 - `cargo test -p kgb-core --test module_panic`: oprirea neașteptată a unui modul devine o eroare înregistrată în audit, nu închiderea aplicației.
+
+## Etapa 4 — organizare și productivitate
+- `cargo test -p kgb-planner` (pasul 4.1) are 6 teste:
+  - creare, atribuire, urmărire, filtre (persoană, neatribuite, întârziate, text, termen), sumar;
+  - checklist;
+  - modificări concurente refuzate;
+  - date greșite refuzate clar;
+  - persoane și proiecte folosite protejate de ștergere;
+  - datele păstrate după dezactivare și redeschidere;
+  - date calendaristice reale.
+- `node app/e2e/planner.mjs <kgb-app.exe> <folder-capturi>`: Planificatorul în fereastra reală, inclusiv după o oprire forțată.

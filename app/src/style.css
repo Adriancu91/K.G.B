@@ -588,3 +588,50 @@ button.thumb {
 td.num {
   text-align: right;
 }
+
+/* ---------- Planner module ---------- */
+.planner-summary {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+.filters select,
+.filters input:not([type="checkbox"]) {
+  max-width: 220px;
+}
+table.tasks tr.done td {
+  opacity: 0.6;
+}
+table.tasks tr.done td:first-child button {
+  text-decoration: line-through;
+}
+.task-form label {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-bottom: 8px;
+}
+.task-form textarea {
+  font: inherit;
+}
+.task-form fieldset {
+  border: 1px solid rgba(128, 128, 128, 0.3);
+  border-radius: 6px;
+  padding: 8px 12px;
+}
+.filters label.check {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  width: auto;
+}
+.badge.prio-urgenta {
+  background: #c62828;
+  color: white;
+  border-color: #c62828;
+}
+.badge.prio-ridicata {
+  background: #ef6c00;
+  color: white;
+  border-color: #ef6c00;
+}

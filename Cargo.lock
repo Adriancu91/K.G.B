@@ -2356,6 +2356,7 @@ dependencies = [
  "kgb-extract",
  "kgb-notes",
  "kgb-pdf",
+ "kgb-planner",
  "kgb-sheets",
  "kgb-store",
  "serde",
@@ -2428,6 +2429,18 @@ dependencies = [
  "serde_json",
  "tempfile",
  "tracing",
+ "uuid",
+]
+
+[[package]]
+name = "kgb-planner"
+version = "0.1.0"
+dependencies = [
+ "kgb-core",
+ "kgb-store",
+ "serde",
+ "serde_json",
+ "tempfile",
  "uuid",
 ]
 

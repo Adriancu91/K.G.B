@@ -45,3 +45,11 @@
   - `fields.rs` găsește câmpurile după etichetă și le verifică independent: total fără TVA + TVA = total, cifra de control a CUI, data din calendar.
   - Modulul are colecțiile proprii `facturi` și `jurnal`, cu scheme.
   - Folosește ca biblioteci funcțiile pure de citire din `kgb-pdf` și `kgb-sheets`, fără să le vadă datele.
+
+## Adăugat în Etapa 4
+- **Modulul `modules/kgb-planner`** (`kgb.planner`, beta):
+  - colecțiile `persoane`, `proiecte` și `taskuri`, cu scheme;
+  - indexuri pe stare, responsabil și proiect;
+  - datele calendaristice (`dates.rs`) fără fus orar: termenul e o zi, nu un moment.
+  - „Azi” vine din calculatorul utilizatorului, ca parametru.
+  - Interfața: `app/src/modules/planner/`.
