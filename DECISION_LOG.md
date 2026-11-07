@@ -163,7 +163,10 @@ Deciziile DECIS se schimbă doar cu aprobarea explicită a proprietarului (Maste
 - **Recomandare actualizată (7 nov. 2026, după corpusul suitei proprietarului):** candidatul principal devine **tesseract.js 7 (Apache-2.0) cu datele pentru română `@tesseract.js-data/ron` (MIT)**:
   - e local, în fereastră, fără setări Windows;
   - e folosit deja de suita de birou a proprietarului.
-- **Ce mai trebuie:** testul de recunoaștere pe factura de test. Rularea codului descărcat cere acordul proprietarului (🔒).
+- **Testat** cu acordul proprietarului („Da”, 7 nov. 2026):
+  - textul obișnuit iese corect, cu diacritice, în ~0,6 s pe pagină;
+  - tabelele ies slab, deci e nevoie de recunoaștere pe zone.
+- **Recomandare:** tesseract.js + `ron` devine motorul OCR. Intră în extragerea de date doar cu confirmarea utilizatorului pentru fiecare valoare. Tabelele se recunosc pe zone într-un pas următor.
 - **Până atunci:** OCR nu intră în extragerea de date. Orice valoare citită cu OCR cere confirmarea utilizatorului.
 
 ### D-037 — Office Suite Test (programul proprietarului) ca unealtă de testare

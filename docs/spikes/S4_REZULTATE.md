@@ -138,7 +138,14 @@ Setul propriu rămâne 17/17 corect.
   - datele de limbă **`@tesseract.js-data/ron` (MIT, 1,7 MB în varianta `best_int`)**.
 - Asta înseamnă OCR în română **fără programe externe și fără setări Windows**. E mai bun decât OCR-ul din Windows, care pe laptop are doar engleza.
 - Pachetele sunt instalate în `spikes/s4-pdf/ocr`. Toate licențele sunt permisive, iar scriptul de instalare (opencollective) nu a rulat.
-- Testul (`ocr.mjs`, pe imaginea facturii) **nu a rulat încă**: execuția codului descărcat a fost oprită de regula de permisiuni a sesiunii. 🔒 Rămâne de rulat cu acordul proprietarului.
+- **Testul, rulat cu acordul proprietarului** (7 nov. 2026; `node spikes/s4-pdf/ocr/ocr.mjs docs/spikes/s4/factura-hayro.png ron`):
+  - **Timp:** pornire 0,2–0,4 s, recunoaștere 0,5–0,7 s pe o pagină; încredere medie 83%.
+  - **Text obișnuit: excelent.** Furnizorul, clientul și adresele ies corect, cu toate diacriticele (Țesături, Șerban, Școala, Mărășești, Brașov). Numărul și datele facturii sunt corecte.
+  - **Tabelul: slab.** Capul de tabel iese deformat, rândurile 2–3 lipsesc, iar totalul „1.673,14 lei” lipsește. Totalul fără TVA (1.406,00) și TVA-ul (267,14) sunt corecte. Ambele variante ale datelor de limbă dau același rezultat.
+  - **Ce înseamnă pentru K.G.B.:**
+    - OCR-ul în română e utilizabil pentru text, fără setări Windows;
+    - pentru tabele e nevoie de recunoaștere pe zone sau celule (pas viitor);
+    - orice valoare citită cu OCR se arată utilizatorului spre confirmare (§6.4) și nu se importă niciodată singură.
 
 ## Decizia propusă (D-032)
 | Rol | Alegere | De ce |
