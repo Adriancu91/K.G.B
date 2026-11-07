@@ -739,4 +739,28 @@ table.tasks tr.done td:first-child button {
 }
 .row input[type="checkbox"] {
   flex: none;
+  min-width: 0;
+}
+
+/* Repeating tasks (step 4.3). */
+.task-form label.inline,
+.task-form label.check {
+  display: inline-flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 0;
+}
+.task-form label.inline input[type="number"] {
+  width: 5em;
+  flex: 0 0 5em;
+  min-width: 0;
+}
+.task-form .repeat .row {
+  gap: 8px 16px;
+  align-items: center;
+  margin-bottom: 6px;
+}
+.repeats {
+  cursor: help;
 }

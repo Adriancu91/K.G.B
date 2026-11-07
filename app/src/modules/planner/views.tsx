@@ -1,7 +1,7 @@
 // Kanban and calendar views of the planner (Etapa 4, step 4.2). Tasks move
 // by drag-and-drop or, for the keyboard, with the ← → buttons on each card.
 import { useState, type DragEvent } from "react";
-import { PRIORITY, STATUS, ro, today, type Person, type Task } from "./PlannerPage";
+import { PRIORITY, Repeats, STATUS, ro, today, type Person, type Task } from "./PlannerPage";
 
 type Status = Task["stare"];
 const ORDER: Status[] = ["de_facut", "in_lucru", "blocat", "gata"];
@@ -65,6 +65,7 @@ export function KanbanView({ tasks, people, busy, onStatus, onEdit }: Actions & 
                 <button className="link" onClick={() => onEdit(t)}>
                   {t.titlu}
                 </button>
+                {t.repetare && <Repeats text={t.repetare} />}
                 <div className="muted small">
                   {who(people, t.responsabil)} · {ro(t.termen)}
                   {t.intarziat && <span className="error"> · întârziat</span>}
@@ -184,9 +185,10 @@ export function CalendarView({
                   draggable={!busy}
                   onDragStart={(e) => onDragStart(e, t)}
                   onClick={() => onEdit(t)}
-                  title={`${t.titlu} — ${who(people, t.responsabil)} · ${STATUS[t.stare]}`}
+                  title={`${t.titlu} — ${who(people, t.responsabil)} · ${STATUS[t.stare]}${t.repetare ? ` · se repetă ${t.repetare}` : ""}`}
                   data-id={t.id}
                 >
+                  {t.repetare ? "🔁 " : ""}
                   {t.titlu}
                 </button>
               ))}

@@ -38,8 +38,25 @@ export interface Task {
   prioritate: Priority;
   stare: Status;
   checklist: CheckItem[];
+  recurenta?: Rule | null;
+  /** Romanian description of the rule, e.g. „lunar”. */
+  repetare?: string;
   intarziat?: boolean;
 }
+export interface Rule {
+  frecventa: "zilnic" | "saptamanal" | "lunar" | "anual";
+  interval: number;
+  zile: number[];
+  zi?: number | null;
+  pana_la?: string | null;
+}
+const FREQ: Record<Rule["frecventa"], [string, string]> = {
+  zilnic: ["Zilnic", "zile"],
+  saptamanal: ["Săptămânal", "săptămâni"],
+  lunar: ["Lunar", "luni"],
+  anual: ["Anual", "ani"],
+};
+const WEEKDAYS = ["Lu", "Ma", "Mi", "Jo", "Vi", "Sâ", "Du"];
 type Status = "de_facut" | "in_lucru" | "blocat" | "gata";
 type Priority = "scazuta" | "normala" | "ridicata" | "urgenta";
 
@@ -65,8 +82,9 @@ interface Draft {
   prioritate: Priority;
   stare: Status;
   checklist: CheckItem[];
+  recurenta: Rule | null;
 }
-const empty: Draft = { titlu: "", descriere: "", responsabil: "", proiect: "", termen: "", prioritate: "normala", stare: "de_facut", checklist: [] };
+const empty: Draft = { titlu: "", descriere: "", responsabil: "", proiect: "", termen: "", prioritate: "normala", stare: "de_facut", checklist: [], recurenta: null };
 
 export function TaskEditor(props: {
   draft: Draft;
@@ -175,17 +193,101 @@ export function TaskEditor(props: {
               + Adaugă un punct
             </button>
           </fieldset>
+          <fieldset className="repeat">
+            <legend>Se repetă</legend>
+            <div className="row wrap">
+              <select
+                aria-label="Repetare"
+                value={d.recurenta?.frecventa ?? ""}
+                onChange={(e) => {
+                  const f = e.target.value as Rule["frecventa"] | "";
+                  set("recurenta", f ? { frecventa: f, interval: d.recurenta?.interval ?? 1, zile: [], pana_la: d.recurenta?.pana_la ?? null } : null);
+                }}
+              >
+                <option value="">Nu se repetă</option>
+                {Object.entries(FREQ).map(([k, [label]]) => (
+                  <option key={k} value={k}>
+                    {label}
+                  </option>
+                ))}
+              </select>
+              {d.recurenta && (
+                <>
+                  <label className="inline">
+                    la fiecare
+                    <input
+                      aria-label="Interval"
+                      type="number"
+                      min={1}
+                      max={366}
+                      value={d.recurenta.interval}
+                      onChange={(e) => d.recurenta && set("recurenta", { ...d.recurenta, interval: Math.min(366, Math.max(1, Number(e.target.value) || 1)) })}
+                    />
+                    {FREQ[d.recurenta.frecventa][1]}
+                  </label>
+                  <label className="inline">
+                    până la
+                    <input
+                      aria-label="Se repetă până la"
+                      type="date"
+                      value={d.recurenta.pana_la ?? ""}
+                      onChange={(e) => d.recurenta && set("recurenta", { ...d.recurenta, pana_la: e.target.value || null })}
+                    />
+                  </label>
+                </>
+              )}
+            </div>
+            {d.recurenta?.frecventa === "saptamanal" && (
+              <div className="row wrap" role="group" aria-label="Zilele săptămânii">
+                {WEEKDAYS.map((w, i) => (
+                  <label key={w} className="check">
+                    <input
+                      type="checkbox"
+                      aria-label={`Ziua ${w}`}
+                      checked={d.recurenta?.zile.includes(i + 1) ?? false}
+                      onChange={(e) =>
+                        d.recurenta &&
+                        set("recurenta", {
+                          ...d.recurenta,
+                          zile: e.target.checked ? [...d.recurenta.zile, i + 1].sort((a, b) => a - b) : d.recurenta.zile.filter((z) => z !== i + 1),
+                        })
+                      }
+                    />{" "}
+                    {w}
+                  </label>
+                ))}
+                <span className="muted small">(nicio zi bifată = aceeași zi ca termenul)</span>
+              </div>
+            )}
+            {d.recurenta && (
+              <p className={d.termen ? "muted small" : "error small"}>
+                {d.termen
+                  ? "Când taskul e marcat „Gata”, următorul apare singur, cu checklistul debifat."
+                  : "Alege un termen: repetarea pornește de la el."}
+              </p>
+            )}
+          </fieldset>
           <div className="dialog-actions">
             <button type="button" onClick={props.onCancel}>
               Renunță
             </button>
-            <button type="submit" className="primary" disabled={props.busy || !d.titlu.trim()}>
+            <button type="submit" className="primary" disabled={props.busy || !d.titlu.trim() || (!!d.recurenta && !d.termen)}>
               Salvează
             </button>
           </div>
         </form>
       </div>
     </div>
+  );
+}
+
+/** The 🔁 mark on repeating tasks, with the rule as tooltip and screen-reader text. */
+export function Repeats({ text }: { text: string }) {
+  return (
+    <span className="repeats" title={`Se repetă: ${text}`} aria-label={`Se repetă: ${text}`} role="img">
+      {" "}
+      🔁
+    </span>
   );
 }
 
@@ -255,6 +357,7 @@ export function PlannerPage({ onError }: { onError: (e: string | null) => void }
     prioritate: t.prioritate,
     stare: t.stare,
     checklist: t.checklist,
+    recurenta: t.recurenta ?? null,
   });
   const setStatus = (t: Task, stare: Status) => void run(() => api.moduleCall(ID, "task_status", { id: t.id, version: t.version, stare }));
   const moveDate = (t: Task, termen: string) => void save({ ...draftOf(t), termen }, false);
@@ -271,6 +374,7 @@ export function PlannerPage({ onError }: { onError: (e: string | null) => void }
         prioritate: d.prioritate,
         stare: d.stare,
         checklist: d.checklist,
+        recurenta: d.recurenta,
       });
       if (close) setEditing(null);
     });
@@ -385,23 +489,11 @@ export function PlannerPage({ onError }: { onError: (e: string | null) => void }
                   <td>
                     <button
                       className="link"
-                      onClick={() =>
-                        setEditing({
-                          id: t.id,
-                          version: t.version,
-                          titlu: t.titlu,
-                          descriere: t.descriere ?? "",
-                          responsabil: t.responsabil ?? "",
-                          proiect: t.proiect ?? "",
-                          termen: t.termen ?? "",
-                          prioritate: t.prioritate,
-                          stare: t.stare,
-                          checklist: t.checklist,
-                        })
-                      }
+                      onClick={() => setEditing(draftOf(t))}
                     >
                       {t.titlu}
                     </button>
+                    {t.repetare && <Repeats text={t.repetare} />}
                   </td>
                   <td>{name(t.responsabil, people)}</td>
                   <td>{name(t.proiect, projects)}</td>

@@ -2,7 +2,7 @@
   "manifest_format": 1,
   "id": "kgb.planner",
   "name": "Planificator",
-  "description": "Taskuri, proiecte și checklisturi, atribuite persoanelor din echipă, cu termene, priorități și stări. Vederi: listă, Kanban și calendar.",
+  "description": "Taskuri, proiecte și checklisturi, atribuite persoanelor din echipă, cu termene, priorități, stări și repetare. Vederi: listă, Kanban și calendar.",
   "version": "0.1.0",
   "core": ">=0.1.0, <0.2.0",
   "status": "beta",
@@ -155,6 +155,23 @@
             "required": false,
             "min": 0,
             "nullable": true
+          },
+          "recurenta": {
+            "type": "object",
+            "required": false,
+            "nullable": true
+          },
+          "serie": {
+            "type": "string",
+            "required": false,
+            "nullable": true,
+            "max_len": 36
+          },
+          "urmator": {
+            "type": "string",
+            "required": false,
+            "nullable": true,
+            "max_len": 36
           }
         },
         "additional": false

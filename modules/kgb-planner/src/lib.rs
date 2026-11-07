@@ -18,6 +18,7 @@
 //! - `summary {azi}`: counts by status, overdue, by person
 
 pub mod dates;
+pub mod recur;
 
 use std::collections::BTreeMap;
 
@@ -70,6 +71,13 @@ fn view(r: &RecordState) -> Value {
     let mut v = Value::Object(r.fields.clone());
     v["id"] = json!(r.id);
     v["version"] = json!(r.version);
+    if let Some(rule) = r
+        .fields
+        .get("recurenta")
+        .and_then(|x| serde_json::from_value::<recur::Rule>(x.clone()).ok())
+    {
+        v["repetare"] = json!(recur::describe(&rule));
+    }
     v
 }
 
@@ -161,6 +169,9 @@ struct TaskSave {
     prioritate: Option<String>,
     stare: Option<String>,
     checklist: Option<Vec<CheckItem>>,
+    /// Repetition (D-046); `null` = does not repeat. Needs a due date.
+    #[serde(default)]
+    recurenta: Option<recur::Rule>,
 }
 
 #[derive(Deserialize)]
@@ -175,6 +186,44 @@ struct TaskStatus {
 #[serde(deny_unknown_fields)]
 struct Summary {
     azi: String,
+}
+
+/// When a repeating task is done: the next occurrence (same title, person,
+/// project, priority and rule; checklist unticked), unless one was already
+/// created for this task or the series has ended.
+fn next_occurrence(done: &Fields) -> Option<(Uuid, Fields)> {
+    if done.get("urmator").is_some_and(|v| !v.is_null()) {
+        return None;
+    }
+    let rule: recur::Rule = serde_json::from_value(done.get("recurenta")?.clone()).ok()?;
+    let due = done.get("termen")?.as_str().and_then(dates::parse)?;
+    let next = recur::next(&rule, due)?;
+    let mut f = Fields::new();
+    for k in [
+        "titlu",
+        "descriere",
+        "responsabil",
+        "proiect",
+        "prioritate",
+        "recurenta",
+        "serie",
+    ] {
+        f.insert(k.into(), done.get(k).cloned().unwrap_or(Value::Null));
+    }
+    let unticked: Vec<Value> = done
+        .get("checklist")
+        .and_then(Value::as_array)
+        .map(|c| c.iter().map(|i| json!({"text": i["text"], "gata": false})).collect())
+        .unwrap_or_default();
+    let now = now_ms();
+    f.insert("checklist".into(), json!(unticked));
+    f.insert("termen".into(), json!(next.iso()));
+    f.insert("stare".into(), json!("de_facut"));
+    f.insert("creat_ms".into(), json!(now));
+    f.insert("actualizat_ms".into(), json!(now));
+    f.insert("finalizat_ms".into(), Value::Null);
+    f.insert("urmator".into(), Value::Null);
+    Some((Uuid::now_v7(), f))
 }
 
 fn one_of(v: &str, allowed: &[&str], what: &str) -> CoreResult<()> {
@@ -305,13 +354,54 @@ impl Planner {
             items.push(json!({"text": t, "gata": c.gata}));
         }
         f.insert("checklist".into(), json!(items));
+        let rule = match a.recurenta {
+            None => Value::Null,
+            Some(mut r) => {
+                r.check().map_err(|e| bad("repetarea", e))?;
+                let due = f["termen"]
+                    .as_str()
+                    .and_then(dates::parse)
+                    .ok_or_else(|| bad("repetarea", "un task care se repetă are nevoie de un termen"))?;
+                if let Some(end) = r.pana_la.as_deref().filter(|s| !s.is_empty()) {
+                    r.pana_la = Some(
+                        dates::parse(end)
+                            .ok_or_else(|| bad("repetarea", format!("„{end}” nu este o dată")))?
+                            .iso(),
+                    );
+                } else {
+                    r.pana_la = None;
+                }
+                // Keep the anchor only while it explains the due date (31 → 28
+                // Feb); a due date moved by hand sets a new anchor.
+                let keeps = r.zi.is_some_and(|z| z.min(dates::days_in_month(due.y, due.m)) == due.d);
+                if !keeps {
+                    r.zi = Some(due.d);
+                }
+                json!(r)
+            }
+        };
+        f.insert("recurenta".into(), rule);
         let now = now_ms();
         f.insert("actualizat_ms".into(), json!(now));
+        let mut extra = Vec::new();
         let (id, w) = match a.id {
             Some(id) => {
                 let cur = live(ctx, TASKS, id, "taskul")?;
                 f.insert("creat_ms".into(), cur.fields["creat_ms"].clone());
+                for k in ["serie", "urmator"] {
+                    f.insert(k.into(), cur.fields.get(k).cloned().unwrap_or(Value::Null));
+                }
+                if !f["recurenta"].is_null() && f["serie"].is_null() {
+                    f.insert("serie".into(), json!(id.to_string()));
+                }
                 let was_done = cur.fields.get("stare") == Some(&json!("gata"));
+                if stare == "gata"
+                    && !was_done
+                    && let Some((nid, nf)) = next_occurrence(&f)
+                {
+                    f.insert("urmator".into(), json!(nid.to_string()));
+                    extra.push(Write::put(TASKS, nid, nf).expect(0));
+                }
                 f.insert(
                     "finalizat_ms".into(),
                     if stare == "gata" {
@@ -331,6 +421,21 @@ impl Planner {
                 let id = Uuid::now_v7();
                 f.insert("creat_ms".into(), json!(now));
                 f.insert(
+                    "serie".into(),
+                    if f["recurenta"].is_null() {
+                        Value::Null
+                    } else {
+                        json!(id.to_string())
+                    },
+                );
+                f.insert("urmator".into(), Value::Null);
+                if stare == "gata"
+                    && let Some((nid, nf)) = next_occurrence(&f)
+                {
+                    f.insert("urmator".into(), json!(nid.to_string()));
+                    extra.push(Write::put(TASKS, nid, nf).expect(0));
+                }
+                f.insert(
                     "finalizat_ms".into(),
                     if stare == "gata" { json!(now) } else { Value::Null },
                 );
@@ -338,7 +443,10 @@ impl Planner {
                 (id, Write::put(TASKS, id, f).expect(0))
             }
         };
-        ctx.write(vec![w])?;
+        // The task and its next occurrence (if any) in one atomic write.
+        let mut batch = vec![w];
+        batch.extend(extra);
+        ctx.write(batch)?;
         ctx.log("task salvat");
         Ok(view(&live(ctx, TASKS, id, "taskul")?))
     }
@@ -525,7 +633,16 @@ impl Module for Planner {
                 } else if a.stare != "gata" {
                     f.insert("finalizat_ms".into(), Value::Null);
                 }
-                ctx.write(vec![Write::put(TASKS, a.id, f).expect(a.version)])?;
+                let mut batch = Vec::new();
+                if a.stare == "gata"
+                    && !was_done
+                    && let Some((nid, nf)) = next_occurrence(&f)
+                {
+                    f.insert("urmator".into(), json!(nid.to_string()));
+                    batch.push(Write::put(TASKS, nid, nf).expect(0));
+                }
+                batch.insert(0, Write::put(TASKS, a.id, f).expect(a.version));
+                ctx.write(batch)?;
                 Ok(view(&live(ctx, TASKS, a.id, "taskul")?))
             }
             "task_delete" => {

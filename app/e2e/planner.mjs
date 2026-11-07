@@ -163,6 +163,30 @@ try {
   const sum = await p.eval("document.querySelector('.planner-summary').innerText");
   check("după repornire (forțată) totul e acolo", sum.includes("Gata: 1") && sum.includes("În lucru: 2"), sum);
 
+  // Step 4.3: a weekly task; marking it done creates next week's occurrence.
+  const todayIso = iso(now);
+  await p.click("+ Task nou");
+  await p.until("!!document.querySelector('.task-form')");
+  await p.fill("input[aria-label='Titlu']", "Raport săptămânal");
+  await p.fill("input[aria-label='Termen']", todayIso);
+  await p.click("+ Adaugă un punct", ".task-form button");
+  await p.fill("input[aria-label='Punctul 1']", "trimis la contabil");
+  await p.eval("document.querySelector(\"input[aria-label='Bifat: trimis la contabil']\").click()");
+  await p.fill("select[aria-label='Repetare']", "saptamanal");
+  await p.until("!!document.querySelector(\"[aria-label='Zilele săptămânii']\")");
+  await p.screenshot(join(shots, "06-repetare-formular.png"));
+  await p.click("Salvează", ".task-form button");
+  await p.until("[...document.querySelectorAll('table.tasks tbody tr')].some(r => r.cells[0]?.innerText.includes('Raport săptămânal'))", 8000);
+  const mark = await p.eval("[...document.querySelectorAll('table.tasks tbody tr')].find(r => r.cells[0].innerText.includes('Raport săptămânal')).querySelector('.repeats')?.getAttribute('aria-label') ?? ''");
+  check("taskul repetat are semnul 🔁 cu regula", mark === "Se repetă: săptămânal", mark);
+  await p.fill("select[aria-label='Starea: Raport săptămânal']", "gata");
+  await p.until("document.querySelectorAll('table.tasks tbody tr').length === 5", 8000);
+  const nextIso = iso(new Date(now.getFullYear(), now.getMonth(), now.getDate() + 7));
+  const occ = await p.eval(`[...document.querySelectorAll('table.tasks tbody tr')].filter(r => r.cells[0].innerText.includes('Raport săptămânal')).map(r => r.cells[3].innerText.trim() + '|' + r.cells[5].innerText.trim() + '|' + r.querySelector('select').value)`);
+  const want = `${nextIso.split("-").reverse().join(".")}|0/1|de_facut`;
+  check("„Gata” creează apariția de săptămâna viitoare, checklist debifat", occ.includes(want), JSON.stringify(occ));
+  await p.screenshot(join(shots, "07-repetare-urmatorul.png"));
+
   p.close();
   execFileSync("taskkill", ["/F", "/T", "/PID", String(proc.pid)], { stdio: "ignore" });
 } catch (e) {
