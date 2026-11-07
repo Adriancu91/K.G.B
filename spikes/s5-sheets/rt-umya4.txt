@@ -1,0 +1,130 @@
+123233_charts.xlsx                                   umya           4.8 ms  pierdut: desene 1→0, grafice 4→0
+123233_charts.xlsx                                   ironcalc       3.5 ms  pierdut: desene 1→0, grafice 4→0
+45540_form_Header.xlsx                               umya          64.7 ms  pierdut: imagini 3→1
+45540_form_Header.xlsx                               ironcalc       4.9 ms  valori schimbate 3/87, formule 0/0, celule noi 0; ex. Application Form (CEP)!R22C1 "                    City                                          Province/State                                                                                          Country                                                            Postal Code"→Some("City                                          Province/State                                                                                          Country                                                            Postal Code"); pierdut: desene 1→0, imagini 3→0, protecție 1→0
+46535.xlsx                                           umya         113.4 ms  pierdut: date-externe 6→0
+46535.xlsx                                           ironcalc      28.4 ms  valori schimbate 2/7156, formule 0/342, celule noi 0; ex. Map!R1C1 "Ref  "→Some("Ref"); pierdut: date-externe 6→0
+47668.xlsx                                           umya           5.9 ms  identic (valori, formule, elemente)
+47668.xlsx                                           ironcalc       2.8 ms  pierdut: desene 2→0, imagini 1→0
+49609.xlsx                                           umya          44.0 ms  identic (valori, formule, elemente)
+49609.xlsx                                           ironcalc       0.2 ms  EȘEC: Zip("specified file not found in archive")
+50784-font_theme_colours.xlsx                        umya           4.0 ms  identic (valori, formule, elemente)
+50784-font_theme_colours.xlsx                        ironcalc       3.0 ms  identic (valori, formule, elemente)
+51585.xlsx                                           umya         301.6 ms  identic (valori, formule, elemente)
+51585.xlsx                                           ironcalc      76.4 ms  identic (valori, formule, elemente)
+53568.xlsx                                           umya          19.8 ms  identic (valori, formule, elemente)
+53568.xlsx                                           ironcalc      19.4 ms  pierdut: desene 3→0, imagini 4→0
+54084 - Greek - beyond BMP.xlsx                      umya           3.5 ms  identic (valori, formule, elemente)
+54084 - Greek - beyond BMP.xlsx                      ironcalc       3.0 ms  identic (valori, formule, elemente)
+55406_Conditional_formatting_sample.xlsx             umya          65.5 ms  identic (valori, formule, elemente)
+55406_Conditional_formatting_sample.xlsx             ironcalc       7.1 ms  identic (valori, formule, elemente)
+55906-MultiSheetRefs.xlsx                            umya           3.8 ms  identic (valori, formule, elemente)
+55906-MultiSheetRefs.xlsx                            ironcalc       3.2 ms  identic (valori, formule, elemente)
+57893-many-merges.xlsx                               umya         819.1 ms  identic (valori, formule, elemente)
+57893-many-merges.xlsx                               ironcalc     985.9 ms  identic (valori, formule, elemente)
+58325_lt.xlsx                                        umya           5.0 ms  identic (valori, formule, elemente)
+58325_lt.xlsx                                        ironcalc       2.5 ms  pierdut: desene 1→0, imagini 1→0
+AverageTaxRates.xlsx                                 umya         158.4 ms  identic (valori, formule, elemente)
+AverageTaxRates.xlsx                                 ironcalc       6.0 ms  valori schimbate 8/1110, formule 0/0, celule noi 0; ex. Avgselemp!R30C10 " "→Some(""); 
+CVLKRA-KYC_Download_File_Structure_V3.1.xlsx         umya         215.2 ms  identic (valori, formule, elemente)
+CVLKRA-KYC_Download_File_Structure_V3.1.xlsx         ironcalc      51.9 ms  valori schimbate 12/2987, formule 103/103, celule noi 0; ex. ADDL INFO!R5C7 "Pan No of the Director "→Some("Pan No of the Director"); pierdut: protecție 4→0
+ConditionalFormattingSamples.xlsx                    umya         483.6 ms  pierdut: formate-număr 34→12
+ConditionalFormattingSamples.xlsx                    ironcalc      19.0 ms  valori schimbate 9/1723, formule 15/352, celule noi 0; ex. Banded rows!R3C2 "Actuals  "→Some("Actuals"); pierdut: desene 18→0, imagini 16→0, tabele 9→0, validare 3→0
+DataValidations-49244.xlsx                           umya           4.7 ms  identic (valori, formule, elemente)
+DataValidations-49244.xlsx                           ironcalc       3.4 ms  valori schimbate 1/138, formule 0/0, celule noi 0; ex. Sheet1!R29C2 " "→Some(""); pierdut: validare 52→0
+DateFormatTests.xlsx                                 umya         106.2 ms  identic (valori, formule, elemente)
+DateFormatTests.xlsx                                 ironcalc       4.3 ms  identic (valori, formule, elemente)
+ExcelPivotTableSample.xlsx                           umya           5.2 ms  pierdut: formate-număr 1→0, pivot 4→2
+ExcelPivotTableSample.xlsx                           ironcalc       3.5 ms  pierdut: pivot 4→0, tabele 1→0
+FormulaEvalTestData_Copy.xlsx                        umya         167.8 ms  valori schimbate 17/4177, formule 0/1295, celule noi 0; ex. EverythingTests!R88C12 ""→None; 
+FormulaEvalTestData_Copy.xlsx                        ironcalc      28.9 ms  valori schimbate 10/4177, formule 20/1295, celule noi 0; ex. EverythingTests!R10C5 "endsWithSpace "→Some("endsWithSpace"); pierdut: comentarii 1→0
+InlineStrings.xlsx                                   umya           9.9 ms  identic (valori, formule, elemente)
+InlineStrings.xlsx                                   ironcalc       3.2 ms  identic (valori, formule, elemente)
+LIBRE_OFFICE-116306-0.xlsx                           umya        2669.2 ms  valori schimbate 5393/662923, formule 0/0, celule noi 0; ex. Documents Per Project!R4C17 ""→None; pierdut: pivot 2→1
+LIBRE_OFFICE-116306-0.xlsx                           ironcalc     739.1 ms  valori schimbate 16381/662923, formule 0/0, celule noi 0; ex. Documents Analysis!R1C8 "Sum of Signed Contract document "→Some("Sum of Signed Contract document"); pierdut: filtru 1→0, pivot 2→0
+MalformedSSTCount.xlsx                               umya           3.8 ms  identic (valori, formule, elemente)
+MalformedSSTCount.xlsx                               ironcalc       3.0 ms  identic (valori, formule, elemente)
+NumberFormatTests.xlsx                               umya         132.7 ms  identic (valori, formule, elemente)
+NumberFormatTests.xlsx                               ironcalc       8.3 ms  identic (valori, formule, elemente)
+SampleSS.strict.xlsx                                 umya           3.7 ms  valori schimbate 15/15, formule 1/1, celule noi 0; ex. First Sheet!R1C1 "Test spreadsheet"→None; 
+SampleSS.strict.xlsx                                 ironcalc       0.4 ms  EȘEC: Xml("Missing \"r:id\" XML attribute")
+SimpleHistogram.xlsx                                 umya           4.8 ms  pierdut: desene 1→0, grafice 1→0
+SimpleHistogram.xlsx                                 ironcalc       3.5 ms  pierdut: desene 1→0, grafice 1→0
+SimpleMacro.xlsm                                     umya           4.5 ms  identic (valori, formule, elemente)
+SimpleMacro.xlsm                                     ironcalc       3.2 ms  pierdut: macro 1→0
+SimpleScatterChart.xlsx                              umya           5.5 ms  pierdut: desene 2→1, grafice 2→1
+SimpleScatterChart.xlsx                              ironcalc       3.3 ms  pierdut: desene 2→0, grafice 2→0
+Tables.xlsx                                          umya         600.2 ms  identic (valori, formule, elemente)
+Tables.xlsx                                          ironcalc      13.3 ms  valori schimbate 40/2111, formule 0/21, celule noi 0; ex. Exp1!R5C1 "Married couple, one income, no children taxed under PAYE "→Some("Married couple, one income, no children taxed under PAYE"); 
+WithChartSheet.xlsx                                  umya           9.5 ms  pierdut: desene 1→0, grafice 1→0, pivot 10→5
+WithChartSheet.xlsx                                  ironcalc       4.9 ms  pierdut: desene 1→0, grafice 1→0, pivot 10→0
+WithDrawing.xlsx                                     umya           8.4 ms  identic (valori, formule, elemente)
+WithDrawing.xlsx                                     ironcalc       3.4 ms  pierdut: desene 1→0, imagini 5→0
+WithThreeCharts.xlsx                                 umya           6.1 ms  identic (valori, formule, elemente)
+WithThreeCharts.xlsx                                 ironcalc       3.7 ms  pierdut: desene 2→0, grafice 3→0
+boxWhisker.xlsx                                      umya           5.0 ms  pierdut: desene 1→0, grafice 1→0
+boxWhisker.xlsx                                      ironcalc       3.7 ms  pierdut: desene 1→0, grafice 1→0
+clusterfuzz-testcase-minimized-POIXSSFFuzzer-5937385 umya         541.3 ms  valori schimbate 155/2111, formule 0/21, celule noi 0; ex. Exp8!R1C1 "EXAMPLE 8"→None; 
+clusterfuzz-testcase-minimized-POIXSSFFuzzer-5937385 ironcalc       5.7 ms  EȘEC: Xml("number too large to fit in target type")
+commentTest.xlsx                                     umya           4.4 ms  identic (valori, formule, elemente)
+commentTest.xlsx                                     ironcalc       3.7 ms  pierdut: comentarii 1→0
+diacritice-foi-multiple.xlsx                         umya           4.0 ms  identic (valori, formule, elemente)
+diacritice-foi-multiple.xlsx                         ironcalc       3.3 ms  identic (valori, formule, elemente)
+formate.xlsx                                         umya           3.7 ms  identic (valori, formule, elemente)
+formate.xlsx                                         ironcalc       3.0 ms  identic (valori, formule, elemente)
+formule.xlsx                                         umya           4.0 ms  identic (valori, formule, elemente)
+formule.xlsx                                         ironcalc       3.8 ms  identic (valori, formule, elemente)
+functii-avansate.xlsx                                umya           4.7 ms  identic (valori, formule, elemente)
+functii-avansate.xlsx                                ironcalc       4.5 ms  pierdut: validare 1→0
+funnel1.xlsx                                         umya           6.4 ms  pierdut: desene 1→0, grafice 1→0
+funnel1.xlsx                                         ironcalc       3.7 ms  pierdut: desene 1→0, grafice 1→0
+mv-calculator-final-2-20-2013.xlsm                   umya         721.8 ms  identic (valori, formule, elemente)
+mv-calculator-final-2-20-2013.xlsm                   ironcalc      67.4 ms  valori schimbate 11/24765, formule 0/3, celule noi 0; ex. User Guide!R24C2 "Select this option to indicate a grandfathered plan. Doing so removes restrictions on the OOP maximum and cost sharing for preventive care. "→Some("Select this option to indicate a grandfathered plan. Doing so removes restrictions on the OOP maximum and cost sharing for preventive care."); pierdut: desene 1→0, filtru 1→0, macro 1→0, protecție 1→0, validare 8→0
+noSharedStringTable.xlsx                             umya           3.6 ms  identic (valori, formule, elemente)
+noSharedStringTable.xlsx                             ironcalc       3.1 ms  identic (valori, formule, elemente)
+paretoLine.xlsx                                      umya           4.9 ms  pierdut: desene 1→0, grafice 1→0
+paretoLine.xlsx                                      ironcalc       3.5 ms  pierdut: desene 1→0, grafice 1→0
+picture.xlsx                                         umya          19.4 ms  identic (valori, formule, elemente)
+picture.xlsx                                         ironcalc       3.6 ms  pierdut: desene 1→0, imagini 1→0
+right-to-left.xlsx                                   umya           4.9 ms  identic (valori, formule, elemente)
+right-to-left.xlsx                                   ironcalc       3.6 ms  valori schimbate 1/8, formule 0/0, celule noi 0; ex. عربى!R4C1 " ע\u{5b4}ב\u{5b0}ר\u{5b4}ית and ا\u{64e}ل\u{652}ع\u{64e}ر\u{64e}ب\u{650}ي\u{64e}\u{651}ة\u{64f}"→Some("ע\u{5b4}ב\u{5b0}ר\u{5b4}ית and ا\u{64e}ل\u{652}ع\u{64e}ر\u{64e}ب\u{650}ي\u{64e}\u{651}ة\u{64f}"); pierdut: comentarii 2→0
+shared_formulas.xlsx                                 umya           5.4 ms  identic (valori, formule, elemente)
+shared_formulas.xlsx                                 ironcalc       4.1 ms  identic (valori, formule, elemente)
+simple-monthly-budget.xlsx                           umya           6.7 ms  pierdut: formate-număr 6→2, imagini 1→0
+simple-monthly-budget.xlsx                           ironcalc       4.9 ms  pierdut: desene 1→0, grafice 1→0, imagini 1→0, tabele 2→0
+simplu.xlsx                                          umya           3.8 ms  identic (valori, formule, elemente)
+simplu.xlsx                                          ironcalc       3.1 ms  identic (valori, formule, elemente)
+sunburst.xlsx                                        umya           5.4 ms  pierdut: desene 1→0, grafice 1→0
+sunburst.xlsx                                        ironcalc       3.6 ms  pierdut: desene 1→0, grafice 1→0
+tipuri-celule.xlsx                                   umya           3.9 ms  identic (valori, formule, elemente)
+tipuri-celule.xlsx                                   ironcalc       3.4 ms  valori schimbate 1/16, formule 0/1, celule noi 0; ex. Tipuri!R7C2 "  cu spații la capete  "→Some("cu spații la capete"); 
+treemap.xlsx                                         umya           5.4 ms  pierdut: desene 1→0, grafice 1→0
+treemap.xlsx                                         ironcalc       3.7 ms  pierdut: desene 1→0, grafice 1→0
+unicodeSheetName.xlsx                                umya           4.8 ms  identic (valori, formule, elemente)
+unicodeSheetName.xlsx                                ironcalc       3.5 ms  identic (valori, formule, elemente)
+waterfall.xlsx                                       umya           5.7 ms  pierdut: desene 1→0, grafice 1→0
+waterfall.xlsx                                       ironcalc       4.4 ms  pierdut: desene 1→0, grafice 1→0
+waterfall2.xlsx                                      umya           7.8 ms  pierdut: desene 1→0, grafice 1→0
+waterfall2.xlsx                                      ironcalc       4.8 ms  pierdut: desene 1→0, grafice 1→0
+xlookup.xlsx                                         umya           7.3 ms  identic (valori, formule, elemente)
+xlookup.xlsx                                         ironcalc       5.4 ms  identic (valori, formule, elemente)
+xlsxwriter-embed_image01.xlsx                        umya           4.5 ms  pierdut: imagini 1→0
+xlsxwriter-embed_image01.xlsx                        ironcalc       5.4 ms  rezultatul nu se mai deschide: Xlsx error: Unsupported cell error value '#CALC!'
+xlsxwriter-embed_image02.xlsx                        umya           7.3 ms  pierdut: imagini 1→0
+xlsxwriter-embed_image02.xlsx                        ironcalc       6.1 ms  rezultatul nu se mai deschide: Xlsx error: Unsupported cell error value '#CALC!'
+xlsxwriter-embed_image03.xlsx                        umya           5.3 ms  pierdut: imagini 2→0
+xlsxwriter-embed_image03.xlsx                        ironcalc       5.8 ms  rezultatul nu se mai deschide: Xlsx error: Unsupported cell error value '#CALC!'
+xlsxwriter-embed_image04.xlsx                        umya           5.7 ms  pierdut: imagini 2→0
+xlsxwriter-embed_image04.xlsx                        ironcalc       5.1 ms  rezultatul nu se mai deschide: Xlsx error: Unsupported cell error value '#CALC!'
+xlsxwriter-embed_image05.xlsx                        umya           5.2 ms  pierdut: imagini 1→0
+xlsxwriter-embed_image05.xlsx                        ironcalc       4.9 ms  rezultatul nu se mai deschide: Xlsx error: Unsupported cell error value '#CALC!'
+xlsxwriter-embed_image07.xlsx                        umya           5.9 ms  pierdut: imagini 3→1
+xlsxwriter-embed_image07.xlsx                        ironcalc       5.0 ms  rezultatul nu se mai deschide: Xlsx error: Unsupported cell error value '#CALC!'
+xlsxwriter-embed_image09.xlsx                        umya           5.0 ms  pierdut: imagini 1→0
+xlsxwriter-embed_image09.xlsx                        ironcalc       4.2 ms  rezultatul nu se mai deschide: Xlsx error: Unsupported cell error value '#CALC!'
+xlsxwriter-embed_image11.xlsx                        umya           4.6 ms  pierdut: imagini 1→0
+xlsxwriter-embed_image11.xlsx                        ironcalc       4.0 ms  rezultatul nu se mai deschide: Xlsx error: Unsupported cell error value '#CALC!'
+
+Rezumat: fișiere / salvate / valori+formule identice / fără elemente pierdute; ce se pierde (în câte fișiere)
+  ironcalc  63 / 60 / 40 / 21   {"comentarii": 3, "date-externe": 1, "desene": 21, "filtru": 2, "grafice": 13, "imagini": 8, "macro": 2, "pivot": 3, "protecție": 3, "tabele": 3, "validare": 4}
+  umya      63 / 63 / 59 / 38   {"date-externe": 1, "desene": 11, "formate-număr": 3, "grafice": 11, "imagini": 10, "pivot": 3}

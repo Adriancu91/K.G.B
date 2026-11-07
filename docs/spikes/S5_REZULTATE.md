@@ -11,13 +11,22 @@
 | Bibliotecă | Versiune | Licență | Ce face |
 |---|---|---|---|
 | **calamine** | 0.38.0 | MIT | doar citire: XLSX, XLSM, XLSB, XLS, ODS |
-| **umya-spreadsheet** | 3.1.1 | MIT | citire + scriere XLSX, păstrând structura |
+| **umya-spreadsheet** | 3.1.1 → **4.0.0-beta.1** | MIT | citire + scriere XLSX, păstrând structura |
 | **IronCalc** | 0.9.1 | MIT OR Apache-2.0 | motor de formule + citire/scriere XLSX |
 | **rust_xlsxwriter** | 0.102.0 | MIT OR Apache-2.0 | doar scriere (fișiere noi, exporturi) |
 
 **Dependențe:** 148 de crate-uri, toate permisive, **niciun motor de baze de date**. O bibliotecă bzip2 (licență „bzip2-1.0.6”) venea doar din opțiunile implicite ale `zip` folosit direct de spike; le-am oprit, pentru că XLSX folosește doar deflate.
 
 **Observație din suita proprietarului:** aceasta folosește SheetJS (Apache-2.0) în JavaScript și sql.js. sql.js este SQLite, deci nu e permis în K.G.B. (D-005/D-018) și nu îl preluăm.
+
+**De ce versiunea beta a umya:**
+- umya 3.1.1 depinde de `zip` 8.6, care are 4 vulnerabilități publicate (RUSTSEC-2026-0367/0368/0369/0429). CI (`cargo-deny`) a oprit build-ul.
+- Toate vulnerabilitățile sunt în funcția `ZipArchive::extract` (dezarhivare pe disc), pe care umya nu o apelează (verificat în sursă). Totuși, nu ascundem vulnerabilități în CI.
+- umya 4.0.0-beta.1 folosește `zip` 9, versiunea corectată. Testul de salvare a fost repetat cu 4.0.0-beta.1 și **dă aceleași rezultate**:
+  - setul propriu: 6/6 identice;
+  - corpusul: aceleași pierderi;
+  - aceleași 2 fișiere ostile o prăbușesc.
+- **Risc:** e o versiune beta. Înainte de modulul Foi de calcul (3.6) verificăm dacă a apărut 4.0 stabilă. Altfel rămânem pe beta, fixată exact (`=4.0.0-beta.1`).
 
 ## 1. Citire
 **Setul propriu.** Toate trei bibliotecile citesc corect toate valorile din manifest și refuză cele 4 fișiere stricate.
@@ -104,7 +113,7 @@ Bibliotecile încarcă orice „bombă zip” fără limită. Spike-ul conține 
 | Rol | Alegere | De ce |
 |---|---|---|
 | Citire / import (XLSX, XLSM, XLS, ODS) | **calamine 0.38** | 0 prăbușiri pe XLSX, cel mai rapid, singurul cu ODS/XLS |
-| Editare și salvare XLSX | **umya-spreadsheet 3.1** + **comparație înainte/după** + salvare ca versiune nouă | păstrează cel mai mult (61/65 valori identice, 6/6 pe setul propriu); pierderile rămase sunt detectate și anunțate |
+| Editare și salvare XLSX | **umya-spreadsheet 4.0.0-beta.1** (fixată exact; 3.1 avea `zip` vulnerabil) + **comparație înainte/după** + salvare ca versiune nouă | păstrează cel mai mult (61/65 valori identice, 6/6 pe setul propriu); pierderile rămase sunt detectate și anunțate |
 | Calculul formulelor | **IronCalc 0.9** | 95,9% identic cu Excel pe formule obișnuite, 12/12 pe formulele uzuale; diferențele sunt marcate, nu ascunse |
 | Fișiere noi / export | **rust_xlsxwriter 0.102**, cu rezultatele formulelor scrise | rapid, corect |
 | Siguranță | verificare proprie (mărime, raport de comprimare) + fiecare fișier necunoscut deschis întâi în proces separat | umya și IronCalc pot prăbuși procesul pe fișiere ostile |

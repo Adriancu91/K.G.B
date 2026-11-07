@@ -82,10 +82,10 @@ Verificat 7 nov. 2026:
 | Dependență | Versiune | Licență | Rol |
 |---|---|---|---|
 | calamine | 0.38.0 | MIT | citire XLSX/XLSM/XLSB/XLS/ODS (ales, D-033) |
-| umya-spreadsheet | 3.1.1 | MIT | editare + salvare XLSX (ales, D-033) |
+| umya-spreadsheet | 4.0.0-beta.1 (fixat exact) | MIT | editare + salvare XLSX (ales, D-033). 3.1.1 respinsă: `zip` 8.6 vulnerabil (RUSTSEC-2026-0367/0368/0369/0429) |
 | ironcalc / ironcalc_base | 0.9.1 | MIT OR Apache-2.0 | motor de formule (ales, D-033) |
 | rust_xlsxwriter | 0.102.0 | MIT OR Apache-2.0 | fișiere noi / export (ales, D-033) |
-| zip | 9.4.1 / 8.6.0 | MIT | arhive XLSX. Doar `deflate`: opțiunea implicită bzip2 (licență „bzip2-1.0.6”) e oprită |
+| zip | 9.4.1 | MIT | arhive XLSX. Doar `deflate`: opțiunea implicită bzip2 (licență „bzip2-1.0.6”) e oprită |
 | quick-xml | 0.41 / 0.42 | MIT | XML |
 
 ## Cod de produs (Etapa 1): `crates/kgb-store`, `crates/kgb-core`, `app/`

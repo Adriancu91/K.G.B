@@ -183,7 +183,7 @@ Deciziile DECIS se schimbă doar cu aprobarea explicită a proprietarului (Maste
 - **Data:** 7 nov. 2026 · **Statut:** DECIS după spike-ul S5, conform regulii din `docs/ETAPA3_PLAN.md`: licențe permisive, alegere măsurată, se confirmă la poarta Etapei 3. Detalii: `docs/spikes/S5_REZULTATE.md`.
 - **Ce s-a ales:**
   - **calamine 0.38 (MIT)** pentru citire și import: 0 prăbușiri pe XLSX reale, citește și ODS/XLS;
-  - **umya-spreadsheet 3.1 (MIT)** pentru editare și salvare XLSX: 61/65 fișiere reale cu valori și formule identice, 6/6 pe setul propriu;
+  - **umya-spreadsheet 4.0.0-beta.1 (MIT)** pentru editare și salvare XLSX: 61/65 fișiere reale cu valori și formule identice, 6/6 pe setul propriu. Versiunea 3.1 trage după ea `zip` 8.6, cu 4 vulnerabilități (CI oprit); beta-ul folosește `zip` 9 și dă aceleași rezultate. Se reverifică la 3.6 dacă a apărut 4.0 stabilă;
   - **IronCalc 0.9 (MIT/Apache)** pentru formule: 95,9% identic cu Excel pe formulele obișnuite, 12/12 pe cele uzuale;
   - **rust_xlsxwriter (MIT/Apache)** pentru fișiere noi, cu rezultatele formulelor scrise.
 - **Reguli noi:**
