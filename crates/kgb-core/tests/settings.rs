@@ -113,7 +113,7 @@ fn s3_prototype_shape_is_migrated() {
     // Saving writes the current schema.
     settings::save(w.store_mut(), &l.settings, l.version, PROFILES).unwrap();
     let r = w.store().get(SETTINGS_COLLECTION, SETTINGS_ID).unwrap().unwrap();
-    assert_eq!(r.fields["schema"], 1);
+    assert_eq!(r.fields["schema"], kgb_core::settings::SETTINGS_SCHEMA);
     assert!(!settings::load(w.store()).unwrap().migrated);
 }
 
@@ -123,4 +123,83 @@ fn newer_schema_is_refused() {
     let mut w = ws(&tmp);
     raw_put(&mut w, json!({"schema": 7, "theme": "dark"}));
     assert!(matches!(settings::load(w.store()), Err(CoreError::Invalid { .. })));
+}
+
+/// Step 4.10 (D-047): the start page's arrangement is part of the settings
+/// (schema 2); schema-1 settings get the default arrangement; bad panels are
+/// refused.
+#[test]
+fn home_panels_saved_migrated_and_checked() {
+    use kgb_core::settings::{Home, Panel};
+    let tmp = tempfile::tempdir().unwrap();
+    let mut w = ws(&tmp);
+    raw_put(
+        &mut w,
+        json!({"schema": 1, "theme": "dark", "density": "normal", "language": "ro", "profile": "birou",
+               "layout": {"sidebar_width": 240, "sidebar_collapsed": false}}),
+    );
+    let l = settings::load(w.store()).unwrap();
+    assert!(l.migrated);
+    assert_eq!(l.settings.theme, Theme::Dark);
+    assert_eq!(l.settings.home, Home::default());
+
+    let mut s = l.settings.clone();
+    s.home.panels = vec![
+        Panel {
+            id: "notificari".into(),
+            w: 3,
+            h: 2,
+        },
+        Panel {
+            id: "azi".into(),
+            w: 1,
+            h: 1,
+        },
+    ];
+    let v = settings::save(w.store_mut(), &s, l.version, PROFILES).unwrap();
+    let back = settings::load(w.store()).unwrap();
+    assert!(!back.migrated);
+    assert_eq!(back.settings.home.panels[0].id, "notificari");
+    assert_eq!(back.settings.home.panels[0].w, 3);
+
+    for bad in [
+        vec![Panel {
+            id: "spion".into(),
+            w: 1,
+            h: 1,
+        }],
+        vec![
+            Panel {
+                id: "azi".into(),
+                w: 1,
+                h: 1,
+            },
+            Panel {
+                id: "azi".into(),
+                w: 2,
+                h: 1,
+            },
+        ],
+        vec![Panel {
+            id: "azi".into(),
+            w: 4,
+            h: 1,
+        }],
+        vec![Panel {
+            id: "azi".into(),
+            w: 1,
+            h: 0,
+        }],
+    ] {
+        let mut b = s.clone();
+        b.home.panels = bad;
+        assert!(matches!(
+            settings::save(w.store_mut(), &b, v, PROFILES),
+            Err(CoreError::Invalid { .. })
+        ));
+    }
+    // All panels hidden is allowed (an empty start page with a way back).
+    let mut none = s.clone();
+    none.home.panels.clear();
+    settings::save(w.store_mut(), &none, v, PROFILES).unwrap();
 }

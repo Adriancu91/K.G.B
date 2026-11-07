@@ -226,7 +226,7 @@ export function App() {
             </button>
           </p>
         )}
-        {page === "home" && <Home info={info} modules={modules} onOpen={setPage} />}
+        {page === "home" && <Home info={info} modules={modules} settings={s} onSave={(next) => void saveSettings(next)} onOpen={setPage} onError={setError} />}
         {page === "catalog" && (
           <Catalog modules={modules} profileName={profileName} onChanged={loadModules} onError={setError} />
         )}

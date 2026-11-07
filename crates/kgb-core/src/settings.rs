@@ -17,7 +17,7 @@ use crate::error::{CoreError, CoreResult};
 
 pub const SETTINGS_COLLECTION: &str = "core.settings";
 pub const SETTINGS_ID: Uuid = Uuid::from_u128(1);
-pub const SETTINGS_SCHEMA: u32 = 1;
+pub const SETTINGS_SCHEMA: u32 = 2;
 
 pub const SIDEBAR_MIN: u16 = 160;
 pub const SIDEBAR_MAX: u16 = 480;
@@ -65,6 +65,42 @@ impl Default for Layout {
     }
 }
 
+/// Panels the start page can show (Etapa 4, step 4.10; D-047).
+pub const HOME_PANELS: &[&str] = &["azi", "notificari", "documente", "module", "despre"];
+pub const HOME_COLUMNS: u8 = 3;
+pub const HOME_ROWS_MAX: u8 = 3;
+
+/// One panel of the start page: which one, how many columns (of 3) and rows.
+#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(deny_unknown_fields)]
+pub struct Panel {
+    pub id: String,
+    pub w: u8,
+    pub h: u8,
+}
+
+/// The start page's arrangement: panels in order (hidden ones are absent).
+#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(deny_unknown_fields)]
+pub struct Home {
+    pub panels: Vec<Panel>,
+}
+
+impl Default for Home {
+    fn default() -> Self {
+        let p = |id: &str, w, h| Panel { id: id.into(), w, h };
+        Home {
+            panels: vec![
+                p("azi", 2, 1),
+                p("notificari", 1, 1),
+                p("documente", 1, 1),
+                p("module", 1, 1),
+                p("despre", 1, 1),
+            ],
+        }
+    }
+}
+
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 #[serde(deny_unknown_fields)]
 pub struct Settings {
@@ -74,6 +110,9 @@ pub struct Settings {
     /// Id of the active work profile (see `modules::PROFILES`).
     pub profile: String,
     pub layout: Layout,
+    /// Start page panels (schema 2).
+    #[serde(default)]
+    pub home: Home,
 }
 
 impl Default for Settings {
@@ -84,6 +123,7 @@ impl Default for Settings {
             language: Language::default(),
             profile: "birou".into(),
             layout: Layout::default(),
+            home: Home::default(),
         }
     }
 }
@@ -98,6 +138,30 @@ impl Settings {
                 "lățimea panoului lateral",
                 format!("{w} nu este între {SIDEBAR_MIN} și {SIDEBAR_MAX}"),
             ));
+        }
+        let mut seen = std::collections::BTreeSet::new();
+        for p in &self.home.panels {
+            if !HOME_PANELS.contains(&p.id.as_str()) {
+                return Err(CoreError::invalid(
+                    "ecranul de start",
+                    format!("panoul „{}” nu există", p.id),
+                ));
+            }
+            if !seen.insert(p.id.as_str()) {
+                return Err(CoreError::invalid(
+                    "ecranul de start",
+                    format!("panoul „{}” apare de două ori", p.id),
+                ));
+            }
+            if !(1..=HOME_COLUMNS).contains(&p.w) || !(1..=HOME_ROWS_MAX).contains(&p.h) {
+                return Err(CoreError::invalid(
+                    "ecranul de start",
+                    format!(
+                        "panoul „{}” are mărimea {}×{} (permis: 1–{HOME_COLUMNS} × 1–{HOME_ROWS_MAX})",
+                        p.id, p.w, p.h
+                    ),
+                ));
+            }
         }
         if !known_profiles.contains(&self.profile.as_str()) {
             return Err(CoreError::invalid(
@@ -122,6 +186,7 @@ pub struct Loaded {
 /// Upgrades an older stored shape to the current one.
 ///
 /// - schema 0: written by the Etapa 0 S3 prototype — `{"theme": "..."}` only.
+/// - schema 1: no start-page arrangement yet; it gets the default one.
 fn migrate(mut fields: Fields) -> CoreResult<(Settings, bool)> {
     let schema = fields.get("schema").and_then(Value::as_u64).unwrap_or(0) as u32;
     if schema > SETTINGS_SCHEMA {

@@ -11,12 +11,20 @@ export interface Layout {
   sidebar_collapsed: boolean;
 }
 
+export interface HomePanel {
+  id: string;
+  w: number;
+  h: number;
+}
+
 export interface Settings {
   theme: Theme;
   density: Density;
   language: "ro";
   profile: string;
   layout: Layout;
+  /** Start page panels (Etapa 4, D-047). */
+  home: { panels: HomePanel[] };
 }
 
 export interface Profile {

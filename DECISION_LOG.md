@@ -263,4 +263,4 @@ Deciziile DECIS se schimbă doar cu aprobarea explicită a proprietarului (Maste
 - D-044: notificări desktop Windows doar cât rulează aplicația; fără serviciu de fundal sau email fără acord;
 - D-045: generarea documentelor — propus după S6: DOCX cu completator propriu, PDF prin WebView2 (Typst ca alternativă, +11,7 MB);
 - D-046: recurență cu reguli simple;
-- D-047: aranjamentul panourilor e salvat în setările spațiului de lucru.
+- D-047: aranjamentul panourilor e salvat în setările spațiului de lucru (aplicat la 4.10: setări schema 2, migrare automată de la schema 1).
