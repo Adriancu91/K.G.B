@@ -442,7 +442,8 @@
    "kind": "xlsx",
    "broken": true,
    "hostile": true,
-   "note": "200 MB după dezarhivare; trebuie refuzat de limita de mărime, nu încărcat în memorie"
+   "note": "200 MB după dezarhivare; trebuie refuzat de limita de mărime, nu încărcat în memorie",
+   "large": true
   },
   {
    "path": "files/edge/factura.pdf",

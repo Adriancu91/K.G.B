@@ -702,7 +702,7 @@ def main():
     for p, expect in entries:
         rel = p.relative_to(HERE).as_posix()
         files.append({"path": rel, "size": p.stat().st_size, "sha256": sha256(p),
-                      "producer": "generate.py", **expect})
+                      "producer": "generate.py", **expect, **({"large": True} if p.is_relative_to(LARGE) else {})})
     # Fișierele produse de Edge (motor real de tipărire PDF) se păstrează; nu sunt deterministe.
     for p in sorted((FILES / "edge").glob("*.pdf")):
         meta = json.loads(p.with_suffix(".json").read_text(encoding="utf-8"))
