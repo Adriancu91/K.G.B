@@ -24,7 +24,7 @@ use std::collections::BTreeMap;
 
 use kgb_core::manifest::Manifest;
 use kgb_core::modules::{Module, ModuleContext};
-use kgb_core::notifications::Notice;
+use kgb_core::notifications::{Level, Notice};
 use kgb_core::workspace::now_ms;
 use kgb_core::{CoreError, CoreResult};
 use kgb_store::{Cond, Fields, Query, RecordState, Write};
@@ -580,9 +580,86 @@ impl Planner {
     }
 }
 
+/// At most this many reminders per kind in one round (the app calls again a
+/// minute later), and overdue tasks only up to this many days back: older
+/// ones are in the list's „Întârziate” count, not worth a burst of messages.
+const REMIND_BATCH: usize = 10;
+const OVERDUE_DAYS: i64 = 7;
+
+impl Planner {
+    fn reminders(&self, ctx: &mut ModuleContext<'_>, today: &str) -> CoreResult<()> {
+        let now = dates::parse(today).ok_or_else(|| bad("ziua de azi", format!("„{today}” nu este o dată")))?;
+        let (today, tomorrow, oldest) = (
+            now.iso(),
+            recur::add_days(now, 1).iso(),
+            recur::add_days(now, -OVERDUE_DAYS).iso(),
+        );
+        let people: BTreeMap<String, String> = ctx
+            .scan(PEOPLE, |_| true)?
+            .into_iter()
+            .map(|r| {
+                (
+                    r.id.to_string(),
+                    r.fields
+                        .get("nume")
+                        .and_then(Value::as_str)
+                        .unwrap_or_default()
+                        .to_string(),
+                )
+            })
+            .collect();
+        let mut open = ctx.scan(TASKS, |r| {
+            r.fields.get("stare") != Some(&json!("gata")) && r.fields.get("termen").and_then(Value::as_str).is_some()
+        })?;
+        open.sort_by(|a, b| a.fields["termen"].as_str().cmp(&b.fields["termen"].as_str()));
+        let mut sent: BTreeMap<&str, usize> = BTreeMap::new();
+        for t in open {
+            let termen = t.fields["termen"].as_str().unwrap_or_default().to_string();
+            let (kind, level, head) = if termen == tomorrow {
+                ("maine", Level::Info, "Mâine")
+            } else if termen == today {
+                ("azi", Level::Atentie, "Azi")
+            } else if termen < today && termen >= oldest {
+                ("intarziat", Level::Urgent, "Întârziat")
+            } else {
+                continue;
+            };
+            let count = sent.entry(kind).or_default();
+            if *count >= REMIND_BATCH {
+                continue;
+            }
+            let key = format!("{kind}:{}:{termen}", t.id);
+            if ctx.notify_key_used(&key)? {
+                continue;
+            }
+            let titlu = t.fields.get("titlu").and_then(Value::as_str).unwrap_or_default();
+            let date = dates::parse(&termen).map(|d| d.ro()).unwrap_or(termen.clone());
+            let who = t
+                .fields
+                .get("responsabil")
+                .and_then(Value::as_str)
+                .and_then(|id| people.get(id))
+                .map(|n| format!(" · {n}"))
+                .unwrap_or_default();
+            let text = if kind == "intarziat" {
+                format!("Termenul a fost {date}{who}.")
+            } else {
+                format!("Termen {date}{who}.")
+            };
+            ctx.notify(&Notice::new(format!("{head}: {titlu}"), text).level(level).key(key))?;
+            *count += 1;
+        }
+        Ok(())
+    }
+}
+
 impl Module for Planner {
     fn manifest(&self) -> &Manifest {
         &self.manifest
+    }
+
+    fn remind(&self, ctx: &mut ModuleContext<'_>, today: &str) -> CoreResult<()> {
+        self.reminders(ctx, today)
     }
 
     fn handle(&self, ctx: &mut ModuleContext<'_>, command: &str, a: Value) -> CoreResult<Value> {

@@ -85,7 +85,7 @@ Interdicții permanente: fără baze de date (D-005, D-018), fără schimbări d
 - [x] 4.2 Kanban (drag-and-drop pe stări + butoane ← → pentru tastatură) și calendar (lună/săptămână, drag-and-drop pe zile mută termenul, + task nou pe o zi); filtru pe interval de date; e2e 12/12
 - [x] 4.3 Activități recurente (D-046): zilnic, săptămânal (pe zile), lunar, anual, la fiecare N, până la o dată; „Gata” creează următoarea apariție (checklist debifat, o singură dată); ziua 31 → ultima zi a lunii, 29 feb → 28 feb; 8 teste noi + e2e 14/14
 - [x] 4.4 Notificări în nucleu + centrul de notificări (D-043): `ctx.notify` cu permisiunea `notify.send` (refuz în jurnal fără ea), fără dubluri pe cheie, listă limitată la 500 (se șterg întâi cele citite); clopoțel cu numărul necitite, „Marchează citit”, „Șterge cele citite”; Planificatorul anunță următorul task dintr-o serie; catalogul arată permisiunile noi după actualizare; 5 teste noi + e2e
-- [ ] 4.5 Remindere: termene de taskuri, scadențe de facturi; notificări desktop (D-044)
+- [x] 4.5 Remindere (D-044): taskuri — cu o zi înainte, în ziua termenului, o dată la întârziere (până la 7 zile); facturi — cu o zi înainte și în ziua scadenței; niciodată de două ori (nucleul ține minte cheile, și după repornire sau ștergere); notificări Windows doar cât rulează aplicația (max. 3, altfel rezumat); 7 teste noi (171) + e2e remindere 4/4, planner 18/18
 - [ ] 4.6 Rapoarte și export (CSV, XLSX)
 - [ ] 4.7 Spike S6 — generarea documentelor → D-045
 - [ ] 4.8 Bibliotecă de documente și modele (§6.5)

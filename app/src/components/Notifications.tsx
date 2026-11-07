@@ -6,6 +6,13 @@ import { api, message, type NotificationView } from "../api";
 
 const LEVEL: Record<NotificationView["nivel"], string> = { info: "Info", atentie: "Atenție", urgent: "Urgent" };
 const POLL_MS = 5000;
+const REMIND_MS = 60000;
+
+/** Today on the user's computer, as YYYY-MM-DD. */
+function today(): string {
+  const d = new Date();
+  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
+}
 
 function when(ms: number): string {
   const d = new Date(ms);
@@ -32,6 +39,20 @@ export function NotificationBell(props: { moduleName: (id: string) => string; on
 
   // New notifications come from module calls anywhere in the app: refresh
   // often (a cheap local read) and when the window regains focus.
+  // Reminders (step 4.5): at start and every minute while the app runs.
+  useEffect(() => {
+    const tick = async () => {
+      try {
+        if ((await api.remindersTick(today())) > 0) await load();
+      } catch (e) {
+        onError(message(e));
+      }
+    };
+    void tick();
+    const t = window.setInterval(() => void tick(), REMIND_MS);
+    return () => window.clearInterval(t);
+  }, [load, onError]);
+
   useEffect(() => {
     void load();
     const t = window.setInterval(() => void load(), POLL_MS);

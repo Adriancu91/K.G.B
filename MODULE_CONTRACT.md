@@ -5,7 +5,7 @@
 ## Cum există un modul
 - Modulele din Etapele 1–5 sunt **incluse în aplicație** (D-024). Nu se încarcă cod străin la rulare.
 - Fiecare modul are un crate Rust propriu (logica), interfața în `app/src/modules/<id>/` și un `manifest.json` inclus în crate.
-- Codul implementează trăsătura `Module`: `manifest()`, `handle(ctx, comandă, argumente)` și, la nevoie, `migrate(ctx, de_la)`.
+- Codul implementează trăsătura `Module`: `manifest()`, `handle(ctx, comandă, argumente)` și, la nevoie, `migrate(ctx, de_la)` și `remind(ctx, azi)` (memento-uri, Etapa 4).
 
 ## Manifest (`manifest_format: 1`)
 | Câmp | Obligatoriu | Regulă |
@@ -46,7 +46,7 @@ Nucleul verifică **fiecare scriere** a modulului. O înregistrare greșită e r
 | `settings.read` | citirea setărilor spațiului de lucru |
 | `identity.read` | numele proprietarului și amprenta dispozitivului |
 | `files.own` | Fișiere atașate proprii: `ctx.put_file/get_file/delete_file/list_files`. **Documente versionate** (Etapa 3, D-034): `ctx.import_document/save_document/read_document/document_versions/restore_document_version/list_documents/delete_document/export_document`. Limite și reguli: maximum 64 MB pe fișier; conținutul e verificat prin BLAKE3 la fiecare citire; un modul nu vede fișierele sau documentele altui modul |
-| `notify.send` | Notificări în centrul de notificări al aplicației (Etapa 4, D-043): `ctx.notify(&Notice)`, cu titlu (max. 120 caractere), text (max. 500), nivel (`info`, `atentie`, `urgent`) și cheie opțională: aceeași cheie de la același modul nu creează o a doua notificare cât timp prima există (și după repornire); o notificare ștearsă de utilizator nu mai blochează cheia, deci modulul își ține singur evidența a ce a anunțat. Fiecare notificare nouă e înregistrată în jurnal. Textul e afișat ca text simplu. `ctx.has("notify.send")` verifică fără să scrie un refuz în jurnal (util când o actualizare a adăugat permisiunea și utilizatorul nu a acordat-o încă) |
+| `notify.send` | Notificări în centrul de notificări al aplicației (Etapa 4, D-043): `ctx.notify(&Notice)`, cu titlu (max. 120 caractere), text (max. 500), nivel (`info`, `atentie`, `urgent`) și cheie opțională: aceeași cheie de la același modul nu creează niciodată o a doua notificare: nucleul ține minte cheile folosite (și după repornire, și după ce utilizatorul șterge notificarea), timp de 400 de zile. `ctx.notify_key_used(cheie)` spune dacă o cheie a fost deja folosită. Fiecare notificare nouă e înregistrată în jurnal. Textul e afișat ca text simplu. `ctx.has("notify.send")` verifică fără să scrie un refuz în jurnal (util când o actualizare a adăugat permisiunea și utilizatorul nu a acordat-o încă) |
 
 În listă intră doar permisiuni pe care nucleul le verifică efectiv. Una nouă se adaugă împreună cu verificarea ei.
 
@@ -63,6 +63,7 @@ Nucleul verifică **fiecare scriere** a modulului. O înregistrare greșită e r
   - o salvare făcută pe o versiune care nu mai e cea curentă este refuzată („salvat între timp”), nu suprascrisă;
   - exportul scrie o copie în locul ales și nu înlocuiește un fișier existent fără confirmare;
   - conținutul oricărei versiuni a unui document existent e protejat de colectare.
+- **Memento-uri (Etapa 4, D-044):** cât timp aplicația rulează, cam o dată pe minut, nucleul apelează `remind(ctx, azi)` pentru modulele activate care au primit `notify.send` (`azi` = data locală a utilizatorului). Un modul care greșește sau se oprește brusc e sărit, celelalte rulează. Memento-urile noi apar în centrul de notificări și ca notificări Windows: cel mult 3 separate, mai multe devin un singur rezumat. Fără serviciu în fundal: cu aplicația închisă nu apare nimic, iar la pornire se recuperează ce e scadent.
 - **Loguri:** modulele folosesc logul nucleului (`ctx.log`), nu un mecanism propriu.
 - **Catalog:** modulele `experimental` apar doar în versiunile de dinainte de lansare, marcate „experimental”. Modulele etapelor viitoare apar ca „Neimplementat — Etapa N” și nu pot fi activate.
 

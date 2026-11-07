@@ -42,8 +42,12 @@ fn setup() -> (tempfile::TempDir, Workspace, ModuleManager) {
     .unwrap();
     mm.enable(&mut ws, "kgb.pdf", &["files.own".into()]).unwrap();
     mm.enable(&mut ws, "kgb.sheets", &["files.own".into()]).unwrap();
-    mm.enable(&mut ws, "kgb.extract", &["storage.own".into(), "files.own".into()])
-        .unwrap();
+    mm.enable(
+        &mut ws,
+        "kgb.extract",
+        &["storage.own".into(), "files.own".into(), "notify.send".into()],
+    )
+    .unwrap();
     (tmp, ws, mm)
 }
 

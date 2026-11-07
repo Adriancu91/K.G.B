@@ -8,11 +8,13 @@
   "status": "beta",
   "permissions": [
     "storage.own",
-    "files.own"
+    "files.own",
+    "notify.send"
   ],
   "services": [
     "storage",
     "files",
+    "notify",
     "log"
   ],
   "data_types": [

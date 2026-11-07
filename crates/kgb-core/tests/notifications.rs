@@ -113,6 +113,23 @@ fn send_see_mark_read_and_no_duplicates() {
     assert_eq!(notifications::list(&ws, false, 50).unwrap().len(), 2);
     assert_eq!(notifications::clear_read(&mut ws).unwrap(), 2);
     assert!(notifications::list(&ws, false, 50).unwrap().is_empty());
+    // A cleared notification does not come back: its key stays used.
+    let again = mm
+        .call(
+            &mut ws,
+            None,
+            "t.sender",
+            "send",
+            json!({"titlu": "Factură scadentă", "cheie": "f12"}),
+        )
+        .unwrap();
+    assert_eq!(again["new"], false);
+    assert!(notifications::list(&ws, false, 50).unwrap().is_empty());
+    assert!(notifications::key_used(&ws, "t.sender", "f12").unwrap());
+    assert!(
+        !notifications::key_used(&ws, "alt.modul", "f12").unwrap(),
+        "keys are per module"
+    );
 }
 
 #[test]

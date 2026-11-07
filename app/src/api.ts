@@ -135,6 +135,8 @@ export const api = {
   /** Hands a file the user picked to a module's `import` command. */
   importFile: <T>(id: string, path: string) => invoke<T>("module_import_file", { id, path }),
   notifications: () => invoke<{ items: NotificationView[]; unread: number }>("notifications_list"),
+  /** Reminders round; `azi` is the local date (YYYY-MM-DD). Returns how many are new. */
+  remindersTick: (azi: string) => invoke<number>("reminders_tick", { azi }),
   notificationRead: (id: string) => invoke<void>("notification_read", { id }),
   notificationsReadAll: () => invoke<number>("notifications_read_all"),
   notificationsClearRead: () => invoke<number>("notifications_clear_read"),

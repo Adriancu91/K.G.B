@@ -444,6 +444,41 @@ fn notifications_list(app: State<AppState>) -> CmdResult<NotificationsReply> {
     })
 }
 
+/// Reminders round (step 4.5, D-044): the page calls this about once a minute
+/// with the user's local date. New reminders also go to Windows as desktop
+/// notifications — only while the app runs; Windows' own settings (Focus
+/// assist / „Nu deranja”) still decide whether they pop up.
+#[tauri::command]
+fn reminders_tick(app: State<AppState>, handle: tauri::AppHandle, azi: String) -> CmdResult<usize> {
+    let new = with_session(&app, |s| s.mm.remind_all(&mut s.ws, &azi))?;
+    desktop_notify(&handle, &new);
+    Ok(new.len())
+}
+
+/// At most 3 separate pop-ups; more become one summary (no burst on screen).
+fn desktop_notify(handle: &tauri::AppHandle, new: &[NotificationView]) {
+    use tauri_plugin_notification::NotificationExt as _;
+    let show = |title: &str, body: &str| {
+        if let Err(e) = handle.notification().builder().title(title).body(body).show() {
+            tracing::warn!("desktop notification failed: {e}");
+        }
+    };
+    if new.len() <= 3 {
+        for n in new {
+            show(&n.titlu, &n.text);
+        }
+    } else {
+        let first: Vec<&str> = new.iter().take(3).map(|n| n.titlu.as_str()).collect();
+        show(
+            &format!("K.G.B.: {} memento-uri noi", new.len()),
+            &format!(
+                "{} … Deschide clopoțelul din aplicație pentru toate.",
+                first.join(" · ")
+            ),
+        );
+    }
+}
+
 #[tauri::command]
 fn notification_read(app: State<AppState>, id: uuid::Uuid) -> CmdResult<()> {
     with_session(&app, |s| notifications::mark_read(&mut s.ws, id))
@@ -576,6 +611,7 @@ fn main() {
     let t0 = Instant::now();
     tauri::Builder::default()
         .plugin(tauri_plugin_dialog::init())
+        .plugin(tauri_plugin_notification::init())
         .setup(move |app| {
             // KGB_DATA_DIR lets automated tests use a throw-away folder instead
             // of the user's real data (%LOCALAPPDATA%\ro.kronos.kgb).
@@ -614,6 +650,7 @@ fn main() {
             module_call,
             module_import_file,
             notifications_list,
+            reminders_tick,
             notification_read,
             notifications_read_all,
             notifications_clear_read,

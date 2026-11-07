@@ -164,7 +164,8 @@ try {
   check("după repornire (forțată) totul e acolo", sum.includes("Gata: 1") && sum.includes("În lucru: 2"), sum);
 
   // Step 4.3: a weekly task; marking it done creates next week's occurrence.
-  const todayIso = iso(now);
+  // Three days ahead: no reminder (step 4.5) can interfere with the checks.
+  const todayIso = iso(new Date(now.getFullYear(), now.getMonth(), now.getDate() + 3));
   await p.click("+ Task nou");
   await p.until("!!document.querySelector('.task-form')");
   await p.fill("input[aria-label='Titlu']", "Raport săptămânal");
@@ -181,7 +182,7 @@ try {
   check("taskul repetat are semnul 🔁 cu regula", mark === "Se repetă: săptămânal", mark);
   await p.fill("select[aria-label='Starea: Raport săptămânal']", "gata");
   await p.until("document.querySelectorAll('table.tasks tbody tr').length === 5", 8000);
-  const nextIso = iso(new Date(now.getFullYear(), now.getMonth(), now.getDate() + 7));
+  const nextIso = iso(new Date(now.getFullYear(), now.getMonth(), now.getDate() + 10));
   const occ = await p.eval(`[...document.querySelectorAll('table.tasks tbody tr')].filter(r => r.cells[0].innerText.includes('Raport săptămânal')).map(r => r.cells[3].innerText.trim() + '|' + r.cells[5].innerText.trim() + '|' + r.querySelector('select').value)`);
   const want = `${nextIso.split("-").reverse().join(".")}|0/1|de_facut`;
   check("„Gata” creează apariția de săptămâna viitoare, checklist debifat", occ.includes(want), JSON.stringify(occ));

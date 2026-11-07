@@ -104,6 +104,16 @@ pub trait Module: Send + Sync {
 
     /// Handles one command from the UI.
     fn handle(&self, ctx: &mut ModuleContext<'_>, command: &str, args: Value) -> CoreResult<Value>;
+
+    /// Reminders (Etapa 4, step 4.5): called by the app about once a minute
+    /// while it runs, only for enabled modules granted `notify.send`.
+    /// `today` is the user's local date (YYYY-MM-DD). A module sends what is
+    /// due through `ctx.notify` and keeps its own record of what it already
+    /// announced, so nothing repeats after a restart.
+    fn remind(&self, ctx: &mut ModuleContext<'_>, today: &str) -> CoreResult<()> {
+        let _ = (ctx, today);
+        Ok(())
+    }
 }
 
 /// Stored state of one module.
@@ -393,6 +403,40 @@ impl ModuleManager {
         audit(ws, id, "disable", "ok", "datele au fost păstrate")?;
         tracing::info!(module = id, "module disabled");
         Ok(())
+    }
+
+    /// Runs every enabled module's reminders (see [`Module::remind`]) and
+    /// returns the notifications they created. A module that fails or panics
+    /// is skipped (logged); the others still run.
+    pub fn remind_all(&self, ws: &mut Workspace, today: &str) -> CoreResult<Vec<notifications::NotificationView>> {
+        let before: BTreeSet<Uuid> = notifications::list(ws, false, usize::MAX)?
+            .into_iter()
+            .map(|n| n.id)
+            .collect();
+        for m in &self.modules {
+            let id = m.manifest().id.clone();
+            let st = self.state(ws, &id)?;
+            if !st.enabled || !st.granted.contains("notify.send") {
+                continue;
+            }
+            let mut ctx = ModuleContext {
+                manifest: m.manifest(),
+                granted: &st.granted,
+                ws: &mut *ws,
+                fingerprint: None,
+            };
+            match std::panic::catch_unwind(std::panic::AssertUnwindSafe(|| m.remind(&mut ctx, today))) {
+                Ok(Ok(())) => {}
+                Ok(Err(e)) => tracing::warn!(module = %id, "reminders failed: {e}"),
+                Err(_) => tracing::error!(module = %id, "reminders panicked"),
+            }
+        }
+        let mut new: Vec<_> = notifications::list(ws, false, usize::MAX)?
+            .into_iter()
+            .filter(|n| !before.contains(&n.id))
+            .collect();
+        new.reverse(); // oldest first
+        Ok(new)
     }
 
     /// Runs a module command through the permission framework.
@@ -686,6 +730,13 @@ impl ModuleContext<'_> {
             )?;
         }
         Ok((nid, new))
+    }
+
+    /// Whether this module already sent a notification with `key` (permission
+    /// `notify.send`); lets a module skip work for reminders already given.
+    pub fn notify_key_used(&mut self, key: &str) -> CoreResult<bool> {
+        self.require("notify.send")?;
+        notifications::key_used(self.ws, &self.manifest.id, key)
     }
 
     pub fn log(&self, message: &str) {

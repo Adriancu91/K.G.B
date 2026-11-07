@@ -23,8 +23,16 @@ fn setup() -> (tempfile::TempDir, Workspace, ModuleManager) {
     let tmp = tempfile::tempdir().unwrap();
     let mut ws = Workspace::create(&tmp.path().join("ws"), "T").unwrap();
     let mm = ModuleManager::new(vec![Box::new(Extract::new())], CORE_VERSION).unwrap();
-    mm.enable(&mut ws, ID, &["storage.own".to_string(), "files.own".to_string()])
-        .unwrap();
+    mm.enable(
+        &mut ws,
+        ID,
+        &[
+            "storage.own".to_string(),
+            "files.own".to_string(),
+            "notify.send".to_string(),
+        ],
+    )
+    .unwrap();
     (tmp, ws, mm)
 }
 
@@ -329,4 +337,37 @@ fn every_real_file_of_the_corpus_is_handled_without_a_crash() {
     }
     eprintln!("{files} fișiere, {extracted} citite și analizate");
     assert!(extracted > files / 2, "{extracted}/{files}");
+}
+
+/// Step 4.5: invoice due dates — a reminder the day before and on the day,
+/// once each; no „overdue” (the app does not know whether it was paid).
+#[test]
+fn invoice_due_date_reminders() {
+    let (_t, mut ws, mm) = setup();
+    let coll = "mod.kgb.extract.facturi";
+    let mut f = kgb_store::Fields::new();
+    for (k, v) in [
+        ("numar", json!("F-12")),
+        ("data", json!("01.12.2026")),
+        ("scadenta", json!("31.12.2026")),
+        ("furnizor", json!("Alfa SRL")),
+        ("total", json!(1200.5)),
+    ] {
+        f.insert(k.into(), v);
+    }
+    ws.store_mut()
+        .write(vec![kgb_store::Write::put(coll, uuid::Uuid::now_v7(), f).expect(0)])
+        .unwrap();
+    assert!(mm.remind_all(&mut ws, "2026-12-29").unwrap().is_empty());
+    let n = mm.remind_all(&mut ws, "2026-12-30").unwrap();
+    assert_eq!(n.len(), 1);
+    assert_eq!(n[0].titlu, "Factura F-12 scade mâine");
+    assert_eq!(n[0].text, "Alfa SRL: Total 1200.50 · scadență 31.12.2026.");
+    assert!(mm.remind_all(&mut ws, "2026-12-30").unwrap().is_empty());
+    let n = mm.remind_all(&mut ws, "2026-12-31").unwrap();
+    assert_eq!(n[0].titlu, "Factura F-12 scade azi");
+    assert!(
+        mm.remind_all(&mut ws, "2027-01-01").unwrap().is_empty(),
+        "no overdue reminder"
+    );
 }

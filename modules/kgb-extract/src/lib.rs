@@ -29,6 +29,7 @@ use base64::Engine as _;
 use base64::engine::general_purpose::STANDARD as B64;
 use kgb_core::manifest::Manifest;
 use kgb_core::modules::{Module, ModuleContext};
+use kgb_core::notifications::{Level, Notice};
 use kgb_core::workspace::now_ms;
 use kgb_core::{CoreError, CoreResult};
 use kgb_sheets::book::{self, Format};
@@ -187,7 +188,81 @@ fn normalise(key: &str, v: &str) -> Result<Value, String> {
     }
 }
 
+/// `dd.mm.yyyy` → `yyyy-mm-dd` (the form compared with today).
+fn iso_of(ro: &str) -> Option<String> {
+    let p: Vec<&str> = ro.split('.').collect();
+    match p.as_slice() {
+        [d, m, y] if d.len() == 2 && m.len() == 2 && y.len() == 4 => Some(format!("{y}-{m}-{d}")),
+        _ => None,
+    }
+}
+
+/// The day after `iso` (yyyy-mm-dd), without a date library.
+fn next_day(iso: &str) -> Option<String> {
+    let p: Vec<u32> = iso.split('-').map(|x| x.parse().ok()).collect::<Option<_>>()?;
+    let [y, m, d] = p[..] else { return None };
+    let dim = match m {
+        1 | 3 | 5 | 7 | 8 | 10 | 12 => 31,
+        4 | 6 | 9 | 11 => 30,
+        2 if (y % 4 == 0 && y % 100 != 0) || y % 400 == 0 => 29,
+        2 => 28,
+        _ => return None,
+    };
+    Some(match (d < dim, m < 12) {
+        (true, _) => format!("{y:04}-{m:02}-{:02}", d + 1),
+        (false, true) => format!("{y:04}-{:02}-01", m + 1),
+        (false, false) => format!("{:04}-01-01", y + 1),
+    })
+}
+
+impl Extract {
+    /// Invoice due dates (step 4.5): a reminder the day before and on the
+    /// day. The app does not know whether an invoice was paid, so there is
+    /// no „overdue” reminder; the text says what it knows.
+    fn reminders(&self, ctx: &mut ModuleContext<'_>, today: &str) -> CoreResult<()> {
+        let tomorrow = next_day(today).ok_or_else(|| bad(format!("„{today}” nu este o dată")))?;
+        let invoices = ctx.scan(INVOICES, |r| r.fields.get("scadenta").and_then(Value::as_str).is_some())?;
+        let mut sent = 0;
+        for f in invoices {
+            let scad = f.fields["scadenta"].as_str().unwrap_or_default();
+            let Some(iso) = iso_of(scad) else { continue };
+            let (kind, level, when) = if iso == today {
+                ("azi", Level::Urgent, "azi")
+            } else if iso == tomorrow {
+                ("maine", Level::Atentie, "mâine")
+            } else {
+                continue;
+            };
+            let key = format!("scadenta-{kind}:{}:{iso}", f.id);
+            if sent >= 10 || ctx.notify_key_used(&key)? {
+                continue;
+            }
+            let s = |k: &str| f.fields.get(k).and_then(Value::as_str).unwrap_or_default().to_string();
+            let total = f
+                .fields
+                .get("total")
+                .and_then(Value::as_f64)
+                .map(|t| format!("Total {t:.2} · "))
+                .unwrap_or_default();
+            ctx.notify(
+                &Notice::new(
+                    format!("Factura {} scade {when}", s("numar")),
+                    format!("{}: {total}scadență {scad}.", s("furnizor")),
+                )
+                .level(level)
+                .key(key),
+            )?;
+            sent += 1;
+        }
+        Ok(())
+    }
+}
+
 impl Module for Extract {
+    fn remind(&self, ctx: &mut ModuleContext<'_>, today: &str) -> CoreResult<()> {
+        self.reminders(ctx, today)
+    }
+
     fn manifest(&self) -> &Manifest {
         &self.manifest
     }

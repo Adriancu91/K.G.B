@@ -32,8 +32,12 @@ fn owner_files_open_edit_and_extract_without_loss() {
     .unwrap();
     mm.enable(&mut ws, "kgb.pdf", &["files.own".into()]).unwrap();
     mm.enable(&mut ws, "kgb.sheets", &["files.own".into()]).unwrap();
-    mm.enable(&mut ws, "kgb.extract", &["storage.own".into(), "files.own".into()])
-        .unwrap();
+    mm.enable(
+        &mut ws,
+        "kgb.extract",
+        &["storage.own".into(), "files.own".into(), "notify.send".into()],
+    )
+    .unwrap();
     let mut names: Vec<_> = std::fs::read_dir(&dir).unwrap().flatten().map(|e| e.path()).collect();
     names.sort();
     for p in names {
