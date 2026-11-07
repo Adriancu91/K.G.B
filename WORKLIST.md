@@ -88,7 +88,8 @@ Interdicții permanente: fără baze de date (D-005, D-018), fără schimbări d
 - [x] 4.5 Remindere (D-044): taskuri — cu o zi înainte, în ziua termenului, o dată la întârziere (până la 7 zile); facturi — cu o zi înainte și în ziua scadenței; niciodată de două ori (nucleul ține minte cheile, și după repornire sau ștergere); notificări Windows doar cât rulează aplicația (max. 3, altfel rezumat); 7 teste noi (171) + e2e remindere 4/4, planner 18/18
 - [x] 4.6 Rapoarte și export: fila „Rapoarte” în Planificator — pe persoane și pe proiecte, pe stări, cu întârziate și total, după filtrele alese; export XLSX (3 foi) sau CSV (stil românesc), recitit și verificat celulă cu celulă; un titlu care arată ca o formulă rămâne text; 2 teste noi (173) + e2e planner 22/22
 - [x] 4.7 Spike S6 — generarea documentelor → D-045 propus (`docs/spikes/S6_REZULTATE.md`): DOCX cu completator propriu (9/9; corpus 50 DOCX: 46 neschimbate, 4 refuzate, 0 prăbușiri; ~0,3 MB); PDF prin WebView2 (0 MB) sau Typst (+11,7 MB), ambele cu diacritice căutabile și valori tratate ca text
-- [ ] 4.8 Bibliotecă de documente și modele (§6.5)
+- [x] 4.8 Bibliotecă de documente și modele (§6.5): modulul beta `kgb.docs` „Documente și modele” — 5 modele Word incluse (cerere, ofertă, contract de prestări servicii, adeverință de salariat, proces-verbal de recepție), import de modele proprii, câmpuri `{{…}}` (și când Word le taie în bucăți), date firmă completate o singură dată și folosite doar de acolo, valori lipsă refuzate, fiecare document generat verificat și păstrat cu modelul și versiunea lui; originalul modelului nu se schimbă; 3 teste (176 în total) + e2e 8/8
+- [ ] 4.8b Generare PDF din modele HTML prin WebView2 (D-045, după confirmarea la poartă)
 - [ ] 4.9 Formulare
 - [ ] 4.10 Panouri drag-and-drop pe ecranul de start (D-047)
 - [ ] 4.11 Raport Etapa 4 (`docs/ETAPA4_RAPORT.md`)

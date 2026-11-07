@@ -2572,6 +2572,7 @@ version = "0.1.0"
 dependencies = [
  "base64 0.22.1",
  "kgb-core",
+ "kgb-docs",
  "kgb-extract",
  "kgb-notes",
  "kgb-pdf",
@@ -2606,6 +2607,21 @@ dependencies = [
  "uuid",
  "windows-sys 0.61.2",
  "zeroize",
+]
+
+[[package]]
+name = "kgb-docs"
+version = "0.1.0"
+dependencies = [
+ "base64 0.22.1",
+ "kgb-core",
+ "kgb-store",
+ "quick-xml 0.42.0",
+ "serde",
+ "serde_json",
+ "tempfile",
+ "uuid",
+ "zip",
 ]
 
 [[package]]

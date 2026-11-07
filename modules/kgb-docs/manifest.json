@@ -1,0 +1,200 @@
+{
+  "manifest_format": 1,
+  "id": "kgb.docs",
+  "name": "Documente și modele",
+  "description": "Bibliotecă de modele Word (administrative, comerciale, HR, tehnice) cu câmpuri {{…}}. Datele firmei se completează o singură dată; fiecare document generat se păstrează cu modelul și versiunea din care a fost făcut. Modelul original nu se schimbă.",
+  "version": "0.1.0",
+  "core": ">=0.1.0, <0.2.0",
+  "status": "beta",
+  "permissions": [
+    "storage.own",
+    "files.own"
+  ],
+  "services": [
+    "storage",
+    "files",
+    "log"
+  ],
+  "data_types": [
+    {
+      "collection": "firma",
+      "description": "datele firmei folosite în documente (nume, CUI, adresă, cont, reprezentant)",
+      "schema": {
+        "fields": {
+          "nume": {
+            "type": "string",
+            "required": false,
+            "nullable": true,
+            "max_len": 300
+          },
+          "cui": {
+            "type": "string",
+            "required": false,
+            "nullable": true,
+            "max_len": 300
+          },
+          "reg_com": {
+            "type": "string",
+            "required": false,
+            "nullable": true,
+            "max_len": 300
+          },
+          "adresa": {
+            "type": "string",
+            "required": false,
+            "nullable": true,
+            "max_len": 300
+          },
+          "iban": {
+            "type": "string",
+            "required": false,
+            "nullable": true,
+            "max_len": 300
+          },
+          "banca": {
+            "type": "string",
+            "required": false,
+            "nullable": true,
+            "max_len": 300
+          },
+          "telefon": {
+            "type": "string",
+            "required": false,
+            "nullable": true,
+            "max_len": 300
+          },
+          "email": {
+            "type": "string",
+            "required": false,
+            "nullable": true,
+            "max_len": 300
+          },
+          "reprezentant": {
+            "type": "string",
+            "required": false,
+            "nullable": true,
+            "max_len": 300
+          },
+          "functie_reprezentant": {
+            "type": "string",
+            "required": false,
+            "nullable": true,
+            "max_len": 300
+          },
+          "actualizat_ms": {
+            "type": "integer",
+            "required": true,
+            "min": 0
+          }
+        },
+        "additional": false
+      }
+    },
+    {
+      "collection": "modele",
+      "description": "modelele de documente: incluse în aplicație sau importate de tine",
+      "schema": {
+        "fields": {
+          "nume": {
+            "type": "string",
+            "required": true,
+            "nullable": false,
+            "max_len": 200
+          },
+          "categorie": {
+            "type": "string",
+            "required": true,
+            "nullable": false,
+            "enum": [
+              "administrativ",
+              "comercial",
+              "hr",
+              "tehnic",
+              "altele"
+            ]
+          },
+          "sursa": {
+            "type": "string",
+            "required": true,
+            "nullable": false,
+            "enum": [
+              "inclus",
+              "importat"
+            ]
+          },
+          "cheie": {
+            "type": "string",
+            "required": false,
+            "nullable": true,
+            "max_len": 100
+          },
+          "document": {
+            "type": "string",
+            "required": true,
+            "nullable": false,
+            "max_len": 36
+          },
+          "creat_ms": {
+            "type": "integer",
+            "required": true,
+            "min": 0
+          }
+        },
+        "additional": false
+      }
+    },
+    {
+      "collection": "generate",
+      "description": "documentele generate, cu modelul, versiunea lui și valorile folosite",
+      "schema": {
+        "fields": {
+          "nume": {
+            "type": "string",
+            "required": true,
+            "nullable": false,
+            "max_len": 200
+          },
+          "model": {
+            "type": "string",
+            "required": true,
+            "nullable": false,
+            "max_len": 36
+          },
+          "model_nume": {
+            "type": "string",
+            "required": true,
+            "nullable": false,
+            "max_len": 200
+          },
+          "model_versiune": {
+            "type": "integer",
+            "required": true,
+            "min": 1
+          },
+          "document": {
+            "type": "string",
+            "required": true,
+            "nullable": false,
+            "max_len": 36
+          },
+          "valori": {
+            "type": "object",
+            "required": true,
+            "nullable": false
+          },
+          "creat_ms": {
+            "type": "integer",
+            "required": true,
+            "min": 0
+          }
+        },
+        "additional": false
+      },
+      "indexes": [
+        "model"
+      ]
+    }
+  ],
+  "data_format": 1,
+  "on_disable": "Modelele, datele firmei și documentele generate rămân salvate; le regăsești la reactivare."
+}

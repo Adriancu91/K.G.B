@@ -67,6 +67,141 @@ fn model() -> Vec<u8> {
     buf.into_inner()
 }
 
+/// The built-in models of the documents module (step 4.8), written once with
+/// docx-rs and committed as files; docx-rs itself does not go into the app.
+#[cfg(feature = "docxrs")]
+fn models(dir: &Path) {
+    use docx_rs::*;
+    let p = |t: &str| Paragraph::new().add_run(Run::new().add_text(t));
+    let title = |t: &str| Paragraph::new().align(AlignmentType::Center).add_run(Run::new().add_text(t).bold().size(28));
+    let right = |t: &str| Paragraph::new().align(AlignmentType::Right).add_run(Run::new().add_text(t));
+    let head = || {
+        Header::new()
+            .add_paragraph(Paragraph::new().add_run(Run::new().add_text("{{firma.nume}}").bold()))
+            .add_paragraph(Paragraph::new().add_run(
+                Run::new().add_text("CUI {{firma.cui}} · Reg. Com. {{firma.reg_com}} · {{firma.adresa}}").size(16),
+            ))
+    };
+    let cell = |t: &str, bold: bool| {
+        let r = Run::new().add_text(t);
+        TableCell::new().add_paragraph(Paragraph::new().add_run(if bold { r.bold() } else { r }))
+    };
+    let save = |name: &str, d: Docx| {
+        let mut f = std::fs::File::create(dir.join(name)).unwrap();
+        d.build().pack(&mut f).unwrap();
+        println!("{name}");
+    };
+    let sign = || {
+        vec![
+            p(""),
+            p("Data: {{data}}"),
+            p("{{firma.reprezentant}}, {{firma.functie_reprezentant}}"),
+            p("Semnătura și ștampila: ______________________"),
+        ]
+    };
+
+    // Administrativ
+    let mut d = Docx::new()
+        .header(head())
+        .add_paragraph(right("Nr. înregistrare: {{numar}} / {{data}}"))
+        .add_paragraph(p("Către: {{destinatar}}"))
+        .add_paragraph(title("CERERE"))
+        .add_paragraph(p(
+            "Subsemnatul {{firma.reprezentant}}, în calitate de {{firma.functie_reprezentant}} al {{firma.nume}}, cu sediul în {{firma.adresa}}, CUI {{firma.cui}}, vă rog să aprobați următoarea solicitare:",
+        ))
+        .add_paragraph(p("{{solicitare}}"))
+        .add_paragraph(p("Motivul solicitării: {{motiv}}"))
+        .add_paragraph(p("Vă mulțumesc."));
+    for x in sign() {
+        d = d.add_paragraph(x);
+    }
+    save("administrativ-cerere.docx", d);
+
+    // Comercial: ofertă
+    let t = Table::new(vec![
+        TableRow::new(vec![cell("Descriere", true), cell("Valoare", true)]),
+        TableRow::new(vec![cell("{{obiect}}", false), cell("{{valoare}}", false)]),
+    ]);
+    let mut d = Docx::new()
+        .header(head())
+        .add_paragraph(title("OFERTĂ COMERCIALĂ"))
+        .add_paragraph(right("Nr. {{numar}} din {{data}}"))
+        .add_paragraph(p("Către: {{client}}"))
+        .add_paragraph(p("Vă transmitem oferta noastră pentru:"))
+        .add_table(t)
+        .add_paragraph(p("Termen de livrare: {{termen_livrare}}"))
+        .add_paragraph(p("Condiții de plată: {{conditii_plata}}"))
+        .add_paragraph(p("Oferta este valabilă până la {{valabil_pana_la}}."))
+        .add_paragraph(p("Persoană de contact: {{firma.telefon}} · {{firma.email}}"));
+    for x in sign() {
+        d = d.add_paragraph(x);
+    }
+    save("comercial-oferta.docx", d);
+
+    // Comercial: contract
+    let mut d = Docx::new()
+        .header(head())
+        .add_paragraph(title("CONTRACT DE PRESTĂRI SERVICII"))
+        .add_paragraph(right("Nr. {{numar}} din {{data}}"))
+        .add_paragraph(p("1. PĂRȚILE").bold())
+        .add_paragraph(p(
+            "{{firma.nume}}, cu sediul în {{firma.adresa}}, CUI {{firma.cui}}, Reg. Com. {{firma.reg_com}}, cont {{firma.iban}} deschis la {{firma.banca}}, reprezentată de {{firma.reprezentant}}, în calitate de prestator,",
+        ))
+        .add_paragraph(p(
+            "și {{client}}, cu sediul în {{client.adresa}}, CUI {{client.cui}}, reprezentată de {{client.reprezentant}}, în calitate de beneficiar,",
+        ))
+        .add_paragraph(p("au convenit încheierea prezentului contract."))
+        .add_paragraph(p("2. OBIECTUL CONTRACTULUI").bold())
+        .add_paragraph(p("Prestatorul se obligă să presteze următoarele servicii: {{obiect}}."))
+        .add_paragraph(p("3. PREȚUL ȘI PLATA").bold())
+        .add_paragraph(p("Prețul serviciilor este de {{pret}}. Plata se face în {{termen_plata}} de la emiterea facturii."))
+        .add_paragraph(p("4. DURATA").bold())
+        .add_paragraph(p("Contractul intră în vigoare la data semnării și este valabil {{durata}}."))
+        .add_paragraph(p("5. DISPOZIȚII FINALE").bold())
+        .add_paragraph(p("Prezentul contract s-a încheiat în două exemplare, câte unul pentru fiecare parte."))
+        .add_paragraph(p(""))
+        .add_table(Table::new(vec![
+            TableRow::new(vec![cell("PRESTATOR", true), cell("BENEFICIAR", true)]),
+            TableRow::new(vec![cell("{{firma.nume}}", false), cell("{{client}}", false)]),
+            TableRow::new(vec![cell("{{firma.reprezentant}}", false), cell("{{client.reprezentant}}", false)]),
+        ]));
+    save("comercial-contract-servicii.docx", d);
+
+    // HR
+    let mut d = Docx::new()
+        .header(head())
+        .add_paragraph(right("Nr. {{numar}} / {{data}}"))
+        .add_paragraph(title("ADEVERINȚĂ"))
+        .add_paragraph(p(
+            "Prin prezenta se adeverește că {{angajat}} este angajat(ă) al(a) {{firma.nume}}, CUI {{firma.cui}}, în funcția de {{functie}}, cu contract individual de muncă pe durată {{durata_contract}}, începând cu data de {{data_angajarii}}.",
+        ))
+        .add_paragraph(p("Adeverința se eliberează pentru a-i servi la {{scop}}."));
+    for x in sign() {
+        d = d.add_paragraph(x);
+    }
+    save("hr-adeverinta-salariat.docx", d);
+
+    // Tehnic
+    let t = Table::new(vec![
+        TableRow::new(vec![cell("Lucrare / echipament", true), cell("Constatări", true)]),
+        TableRow::new(vec![cell("{{obiect}}", false), cell("{{constatari}}", false)]),
+    ]);
+    let d = Docx::new()
+        .header(head())
+        .add_paragraph(title("PROCES-VERBAL DE RECEPȚIE"))
+        .add_paragraph(right("Nr. {{numar}} din {{data}}"))
+        .add_paragraph(p("Încheiat astăzi, {{data}}, la {{locatie}}, între {{firma.nume}}, reprezentată de {{firma.reprezentant}}, și {{client}}, reprezentată de {{client.reprezentant}}."))
+        .add_paragraph(p("Comisia a verificat:"))
+        .add_table(t)
+        .add_paragraph(p("Concluzie: {{concluzie}}"))
+        .add_paragraph(p(""))
+        .add_table(Table::new(vec![
+            TableRow::new(vec![cell("Am predat,", true), cell("Am primit,", true)]),
+            TableRow::new(vec![cell("{{firma.reprezentant}}", false), cell("{{client.reprezentant}}", false)]),
+        ]));
+    save("tehnic-pv-receptie.docx", d);
+}
+
 fn entries(data: &[u8]) -> BTreeMap<String, Vec<u8>> {
     let mut z = zip::ZipArchive::new(Cursor::new(data)).expect("zip");
     let mut out = BTreeMap::new();
@@ -298,6 +433,11 @@ fn main() {
         #[cfg(feature = "docxrs")]
         Some("model") => {
             std::fs::write(&args[2], model()).unwrap();
+            true
+        }
+        #[cfg(feature = "docxrs")]
+        Some("models") => {
+            models(Path::new(&args[2]));
             true
         }
         #[cfg(feature = "docxrs")]

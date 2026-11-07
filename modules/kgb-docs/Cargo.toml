@@ -1,0 +1,21 @@
+[package]
+name = "kgb-docs"
+version = "0.1.0"
+edition.workspace = true
+publish.workspace = true
+license.workspace = true
+description = "K.G.B. module: library of document models (DOCX) filled with {{fields}}, company data, generated documents."
+
+[dependencies]
+kgb-core.workspace = true
+kgb-store.workspace = true
+serde.workspace = true
+serde_json.workspace = true
+uuid.workspace = true
+base64 = "0.22.1"
+# DOCX = zip + XML; the same versions the project already uses (D-045, spike S6).
+zip = { version = "9.4.1", default-features = false, features = ["deflate"] }
+quick-xml = "0.42.0"
+
+[dev-dependencies]
+tempfile.workspace = true

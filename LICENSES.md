@@ -112,6 +112,8 @@ Verificat automat de `cargo-deny` în CI pe workspace-ul rădăcină (`Cargo.tom
 | `zip` 9.4.1 (doar `deflate`) | MIT | verificarea proprie anti-„bombă zip” | 3.6 |
 | `csv` 1.4.0 | Unlicense OR MIT | citirea CSV | 3.6 |
 | `encoding_rs` 0.8.44 | (Apache-2.0 OR MIT) AND BSD-3-Clause | CSV în codificarea veche Windows-1250 | 3.6 |
+| `tauri-plugin-notification` 2.8.0 | Apache-2.0 OR MIT | notificările Windows pentru memento-uri, folosit doar din Rust (D-044) | 4.5 |
+| `quick-xml` 0.42.0 | MIT | completarea câmpurilor din modelele Word în `kgb.docs` (D-045, spike S6) | 4.8 |
 | npm `pdfjs-dist` 6.4.299 | Apache-2.0 | afișarea paginilor PDF în fereastră (D-032); la `npm install` aduce opțional `@napi-rs/canvas` (MIT), folosit doar de Node, nu intră în aplicație | 3.5 |
 
 Restul dependențelor (Tauri, React, Vite, serde, uuid, blake3) sunt cele din S1 și S3, deja în acest registru.

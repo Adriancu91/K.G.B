@@ -7,6 +7,7 @@ import { PdfPage } from "./modules/pdf/PdfPage";
 import { SheetsPage } from "./modules/sheets/SheetsPage";
 import { ExtractPage } from "./modules/extract/ExtractPage";
 import { PlannerPage } from "./modules/planner/PlannerPage";
+import { DocsPage } from "./modules/docs/DocsPage";
 import { NotificationBell } from "./components/Notifications";
 import { Catalog } from "./pages/Catalog";
 import { DataPage } from "./pages/DataPage";
@@ -21,6 +22,7 @@ const MODULE_PAGES: Record<string, ComponentType<{ onError: (e: string | null) =
   "kgb.sheets": SheetsPage,
   "kgb.extract": ExtractPage,
   "kgb.planner": PlannerPage,
+  "kgb.docs": DocsPage,
 };
 
 const SIDEBAR_MIN = 160;

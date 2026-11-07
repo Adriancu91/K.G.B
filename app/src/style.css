@@ -851,3 +851,34 @@ table.report th:not(:first-child) {
 table.report tfoot th {
   border-top: 2px solid rgba(128, 128, 128, 0.4);
 }
+
+/* Documents and models (step 4.8). */
+.docs .cards {
+  margin-bottom: 8px;
+}
+.model-card header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  justify-content: space-between;
+}
+.doc-preview pre {
+  white-space: pre-wrap;
+  font: inherit;
+  max-height: 50vh;
+  overflow: auto;
+  margin: 8px 0;
+}
+.doc-preview header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.company-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 0 16px;
+}
+.facts .contents {
+  display: contents;
+}
