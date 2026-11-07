@@ -1,0 +1,11 @@
+{
+  "name": "kgb-s4-ocr",
+  "private": true,
+  "version": "0.0.0",
+  "description": "Spike S4 / D-035: OCR tesseract.js cu limba romana",
+  "type": "module",
+  "dependencies": {
+    "@tesseract.js-data/ron": "1.0.0",
+    "tesseract.js": "7.0.0"
+  }
+}

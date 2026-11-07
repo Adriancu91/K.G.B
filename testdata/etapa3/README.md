@@ -38,3 +38,16 @@ powershell -File testdata/etapa3/validate-windows-pdf.ps1
 ## Limite
 - Pe laptop nu există Microsoft Excel sau LibreOffice, deci XLSX-urile **nu sunt verificate în Excel**. Fișierele reale de la proprietar (pasul 🔒 3.11) acoperă acest gol.
 - **Lipsesc:** PDF-uri scanate (pentru OCR), PDF-uri criptate și fișiere XLS vechi.
+
+## Corpus extern (nepublicat)
+`python testdata/etapa3/extern.py` copiază **doar în citire** fișierele publice de test din corpusul suitei de birou a proprietarului (`Desktop/workspace/test-corpus`, D-037) în `extern/` (ignorat de Git).
+
+Conține 161 de fișiere: 48 PDF, 63 XLSX, 32 ODS, 13 CSV, 2 XLS, 2 XLSM, 1 XLSB. Proveniența fiecărui fișier e în `extern/MANIFEST.json`:
+- Apache POI;
+- LibreOffice;
+- pdf.js;
+- Apache Commons CSV;
+- XlsxWriter;
+- formulare publice ANAF.
+
+Fișierele nu se publică în acest repo, pentru că au licențe diferite.

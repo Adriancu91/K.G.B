@@ -73,7 +73,7 @@ Interdicții permanente: fără baze de date (D-005, D-018), fără schimbări d
 - [ ] 3.7 Șabloane (D-036)
 - [ ] 3.8 Import/export CSV/XLSX/PDF
 - [ ] 3.9 Extragere inițială de date (fără OCR, D-035)
-- [ ] 🔒 OCR în română: limba română pentru OCR în Windows (setare de sistem, proprietarul) — D-035
+- [ ] 🔒 OCR în română: acordul proprietarului pentru rularea testului tesseract.js + `ron` (`spikes/s4-pdf/ocr/ocr.mjs`) — D-035
 - [ ] 3.10 Test de necorupere pe tot setul + fișiere stricate
 - [ ] 🔒 3.11 Fișiere reale, fără date confidențiale, de la proprietar
 - [ ] 3.12 Raport Etapa 3 (`docs/ETAPA3_RAPORT.md`)

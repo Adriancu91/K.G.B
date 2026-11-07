@@ -18,6 +18,7 @@ use serde::Serialize;
 use serde_json::{Value, json};
 use sha2::{Digest, Sha256};
 
+static LENIENT: std::sync::atomic::AtomicBool = std::sync::atomic::AtomicBool::new(false);
 const LIBS: [&str; 4] = ["lopdf", "pdf-rs", "pdf-extract", "hayro"];
 const CHILD_TIMEOUT: Duration = Duration::from_secs(60);
 
@@ -29,6 +30,7 @@ fn main() {
         Some("ops") => ops(Path::new(&a[2]), Path::new(&a[3])),
         Some("probe") => probe(Path::new(&a[2])),
         Some("strict") => strict_all(Path::new(&a[2])),
+        Some("scan") => scan(Path::new(&a[2])),
         Some("render") => render_png(Path::new(&a[2]), Path::new(&a[3])),
         Some("repair") => repair(Path::new(&a[2]), Path::new(&a[3])),
         _ => eprintln!("folosire: s4 read|ops <testdata> <ieșire>"),
@@ -378,13 +380,18 @@ fn view(bytes: &[u8], render: &[usize]) -> Result<(usize, Vec<PageView>, Vec<i64
                 .unwrap_or(0)
         })
         .collect();
-    let f = pdf::file::FileOptions::cached()
-        .load(bytes.to_vec())
-        .map_err(|e| format!("pdf-rs: {e}"))?;
-    if f.num_pages() as usize != n {
-        return Err(format!("pdf-rs vede {} pagini, lopdf {n}", f.num_pages()));
+    match pdf::file::FileOptions::cached().load(bytes.to_vec()) {
+        Ok(f) if f.num_pages() as usize != n => {
+            return Err(format!("pdf-rs vede {} pagini, lopdf {n}", f.num_pages()));
+        }
+        Ok(_) => {}
+        // Pe corpusul extern pdf-rs refuză și originale valide: acolo e doar a doua opinie.
+        Err(e) if !LENIENT.load(std::sync::atomic::Ordering::Relaxed) => return Err(format!("pdf-rs: {e}")),
+        Err(_) => {}
     }
-    let texts = pdf_extract::extract_text_from_mem_by_pages(bytes).map_err(|e| format!("pdf-extract: {e}"))?;
+    let texts = std::panic::catch_unwind(|| pdf_extract::extract_text_from_mem_by_pages(bytes))
+        .map_err(|_| "pdf-extract: panică".to_string())?
+        .map_err(|e| format!("pdf-extract: {e}"))?;
     let pdf = hayro::hayro_syntax::Pdf::new(bytes.to_vec()).map_err(|e| format!("hayro: {e:?}"))?;
     let cache = hayro::RenderCache::new();
     let pages = pdf.pages();
@@ -707,6 +714,9 @@ fn strict_check(b: &[u8]) -> Result<usize, String> {
                     return Err("tabel xref neterminat".into());
                 };
                 let h = h.trim();
+                if h.is_empty() {
+                    continue;
+                }
                 if h.starts_with("trailer") {
                     break;
                 }
@@ -749,9 +759,16 @@ fn strict_check(b: &[u8]) -> Result<usize, String> {
     }
     // Toate obiectele se parsează și toate fluxurile se decomprimă.
     let doc = Document::load_mem(b).map_err(|e| format!("parsare: {e}"))?;
+    if doc.is_encrypted() || doc.was_encrypted() {
+        return Err("criptat: protejat (cu sau fără parolă); doar citire".into());
+    }
     for (id, o) in &doc.objects {
+        // Filtrele de imagine (JPEG, JPEG 2000, CCITT, JBIG2) nu sunt compresie
+        // generală; le verifică cititorul de imagini, nu lopdf.
         if let Object::Stream(st) = o
-            && st.dict.get(b"Filter").is_ok()
+            && let Ok(f) = st.dict.get(b"Filter")
+            && filters(f).iter().all(|n| GENERAL_FILTERS.contains(&n.as_slice()))
+            && !filters(f).is_empty()
             && st.decompressed_content().is_err()
         {
             return Err(format!("fluxul {} {} nu se decomprimă", id.0, id.1));
@@ -762,6 +779,16 @@ fn strict_check(b: &[u8]) -> Result<usize, String> {
         return Err("documentul nu are nicio pagină".into());
     }
     Ok(n)
+}
+
+const GENERAL_FILTERS: [&[u8]; 4] = [b"FlateDecode", b"LZWDecode", b"ASCIIHexDecode", b"ASCII85Decode"];
+
+fn filters(f: &Object) -> Vec<Vec<u8>> {
+    match f {
+        Object::Name(n) => vec![n.clone()],
+        Object::Array(a) => a.iter().filter_map(|x| x.as_name().ok().map(<[u8]>::to_vec)).collect(),
+        _ => vec![],
+    }
 }
 
 fn strict_all(td: &Path) {
@@ -816,4 +843,69 @@ fn render_png(input: &Path, output: &Path) {
     );
     println!("randare {}x{} în {} ms", px.width(), px.height(), ms(t));
     std::fs::write(output, px.into_png().unwrap()).unwrap();
+}
+
+/// Corpus extern (fără așteptări în manifest): verificare strictă, câte pagini
+/// vede fiecare bibliotecă și dacă salvarea cu lopdf păstrează textul și randarea.
+fn scan(dir: &Path) {
+    LENIENT.store(true, std::sync::atomic::Ordering::Relaxed);
+    std::panic::set_hook(Box::new(|_| {}));
+    let mut files: Vec<_> = std::fs::read_dir(dir).unwrap().flatten().map(|e| e.path()).collect();
+    files.sort();
+    let (mut agree, mut rt_ok, mut n) = (0, 0, 0);
+    for p in files.iter().filter(|p| p.extension().is_some_and(|e| e.eq_ignore_ascii_case("pdf"))) {
+        n += 1;
+        let b = std::fs::read(p).unwrap();
+        let strict = strict_check(&b);
+        let counts: Vec<String> = LIBS
+            .iter()
+            .filter(|l| **l != "pdf-extract")
+            .map(|l| {
+                let r = run_child(l, p);
+                if r["ok"].as_bool() == Some(true) {
+                    r["pages"].to_string()
+                } else if r["crashed"].as_bool() == Some(true) {
+                    "PRĂBUȘIT".into()
+                } else if r["timeout"].as_bool() == Some(true) {
+                    "TIMP".into()
+                } else {
+                    "refuz".into()
+                }
+            })
+            .collect();
+        let same = counts.windows(2).all(|w| w[0] == w[1]) && counts[0] != "refuz";
+        agree += same as usize;
+        // salvare cu lopdf → aceleași pagini, text și randarea primelor 3 pagini
+        let rt = std::panic::catch_unwind(|| {
+            let doc = Document::load_mem(&b).map_err(|e| e.to_string())?;
+            let pages = doc.get_pages().len();
+            let sample: Vec<usize> = (0..pages.min(3)).collect();
+            let before = view(&b, &sample)?;
+            let mut d = doc.clone();
+            let out = save(&mut d);
+            let after = view(&out, &sample)?;
+            if before.0 != after.0 {
+                return Err(format!("{} → {} pagini", before.0, after.0));
+            }
+            compare(&before.1, &after.1, &sample)?;
+            Ok::<_, String>(())
+        })
+        .unwrap_or_else(|_| Err("panică".into()));
+        rt_ok += rt.is_ok() as usize;
+        println!(
+            "{:<58} strict={:<6} pagini lopdf/pdf-rs/hayro={:<22} salvare={}",
+            p.file_name().unwrap().to_string_lossy().chars().take(58).collect::<String>(),
+            if strict.is_ok() { "intact" } else { "NU" },
+            counts.join("/"),
+            match &rt {
+                Ok(()) => "identică".to_string(),
+                Err(e) => format!("— {}", e.chars().take(70).collect::<String>()),
+            }
+        );
+        if let Err(e) = strict {
+            println!("{:<58}   strict: {e}", "");
+        }
+    }
+    println!("
+{n} PDF-uri; pagini la fel în toate bibliotecile: {agree}; salvare identică (pagini, text, randare): {rt_ok}");
 }

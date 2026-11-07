@@ -160,7 +160,11 @@ Deciziile DECIS se schimbă doar cu aprobarea explicită a proprietarului (Maste
 - **Ce am testat:** OCR-ul inclus în Windows (`Windows.Media.Ocr`) funcționează fără nimic descărcat: 109 ms pe o factură.
 - **Problema:** pe laptop e instalată doar limba engleză pentru OCR, așa că diacriticele și unele cifre ies greșit.
 - **Ce e nevoie:** limba română pentru OCR, o setare de sistem pe care o face proprietarul.
-- **Recomandare:** OCR nu intră în Etapa 3. Se reia după ce proprietarul adaugă limba română pentru OCR în Windows. Orice valoare citită cu OCR cere confirmarea utilizatorului.
+- **Recomandare actualizată (7 nov. 2026, după corpusul suitei proprietarului):** candidatul principal devine **tesseract.js 7 (Apache-2.0) cu datele pentru română `@tesseract.js-data/ron` (MIT)**:
+  - e local, în fereastră, fără setări Windows;
+  - e folosit deja de suita de birou a proprietarului.
+- **Ce mai trebuie:** testul de recunoaștere pe factura de test. Rularea codului descărcat cere acordul proprietarului (🔒).
+- **Până atunci:** OCR nu intră în extragerea de date. Orice valoare citită cu OCR cere confirmarea utilizatorului.
 
 ### D-037 — Office Suite Test (programul proprietarului) ca unealtă de testare
 - **Data:** 7 nov. 2026 · **Statut:** DECIS · **Aprobat de:** proprietar („Poți folosi dacă ai nevoie unelte din cyber office suite”).

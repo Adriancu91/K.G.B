@@ -109,6 +109,37 @@ lopdf poate reconstrui un fișier stricat și îl poate salva ca **copie** (orig
 - Tesseract (Apache-2.0) ar cere programe și date descărcate separat, deci tot 🔒.
 - **Propunere:** OCR nu intră în Etapa 3. Extragerea inițială de date (3.9) lucrează pe PDF-uri cu text și pe foi de calcul. OCR cu Windows + limba română se reia după decizia proprietarului. Orice valoare din OCR va cere oricum confirmarea utilizatorului (§6.4).
 
+## 8. Corpus real: 48 de PDF-uri publice (copiate doar în citire din corpusul suitei proprietarului, D-037)
+**Ce conține corpusul** (`testdata/etapa3/extern/`, nepublicat în repo; proveniența fiecărui fișier e în manifest):
+- fișiere de test pdf.js (Apache-2.0) și Apache POI/PDFBox;
+- **7 formulare reale ANAF** (XFA);
+- o carte de 352 de pagini;
+- fișiere criptate, deteriorate, cu imagini JPEG 2000 / CCITT / JBIG2, cu fonturi japoneze și arabe.
+
+**Comanda:** `s4 scan` (rezultat în `spikes/s4-pdf/scan-extern.txt`).
+
+| Ce | Rezultat |
+|---|---|
+| Salvare cu lopdf → pagini, text și randare identice | **43/48**, inclusiv toate cele 7 formulare ANAF și cartea de 352 de pagini |
+| Prăbușiri ale programului | 0 (pdf-extract are o panică internă pe un font japonez, prinsă) |
+| Verificarea strictă: refuzate | 4: 2 criptate (separate corect, doar citire) și 2 cu `startxref` greșit (deteriorate, doar citire) |
+| lopdf nu extrage textul | `issue13343.pdf`, codare japoneză `90ms-RKSJ-H`. pdf.js îl afișează |
+| Atenție | un PDF criptat salvat cu lopdf **iese diferit** (randare schimbată). Regulă: PDF-urile criptate nu se modifică, doar se citesc |
+
+**Corecturi aduse verificării stricte după corpus.** Prima variantă respingea greșit 11 fișiere reale. Am făcut două corecturi:
+- filtrele de imagine (JPEG, JPEG 2000, CCITT, JBIG2) nu mai sunt decomprimate de verificare;
+- rândurile goale din tabelul xref sunt acceptate.
+
+Setul propriu rămâne 17/17 corect.
+
+## 9. OCR cu tesseract.js (descoperit în suita proprietarului)
+- Suita de birou a proprietarului face deja OCR cu:
+  - **tesseract.js 7.0.0 (Apache-2.0)**, care rulează ca WebAssembly, în fereastră;
+  - datele de limbă **`@tesseract.js-data/ron` (MIT, 1,7 MB în varianta `best_int`)**.
+- Asta înseamnă OCR în română **fără programe externe și fără setări Windows**. E mai bun decât OCR-ul din Windows, care pe laptop are doar engleza.
+- Pachetele sunt instalate în `spikes/s4-pdf/ocr`. Toate licențele sunt permisive, iar scriptul de instalare (opencollective) nu a rulat.
+- Testul (`ocr.mjs`, pe imaginea facturii) **nu a rulat încă**: execuția codului descărcat a fost oprită de regula de permisiuni a sesiunii. 🔒 Rămâne de rulat cu acordul proprietarului.
+
 ## Decizia propusă (D-032)
 | Rol | Alegere | De ce |
 |---|---|---|

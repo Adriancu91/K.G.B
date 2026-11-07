@@ -1,0 +1,54 @@
+160F-2019.pdf                                              strict=intact pagini lopdf/pdf-rs/hayro=1/1/1                  salvare=identică
+ArabicCIDTrueType.pdf                                      strict=intact pagini lopdf/pdf-rs/hayro=1/1/1                  salvare=identică
+PDFBOX-3148-2-fuzzed.pdf                                   strict=intact pagini lopdf/pdf-rs/hayro=1/refuz/1              salvare=— pdf-extract: PDF error: IO error: failed to fill whole buffer
+TAMReview.pdf                                              strict=intact pagini lopdf/pdf-rs/hayro=23/23/23               salvare=identică
+alphatrans.pdf                                             strict=intact pagini lopdf/pdf-rs/hayro=1/refuz/1              salvare=identică
+anaf_31.OrdinPlataElectronic_2026_06_18_A2.0.46.pdf        strict=intact pagini lopdf/pdf-rs/hayro=1/1/1                  salvare=identică
+anaf_C300_v1.0.1_18122025.pdf                              strict=intact pagini lopdf/pdf-rs/hayro=1/1/1                  salvare=identică
+anaf_C486_2026_290926.pdf                                  strict=intact pagini lopdf/pdf-rs/hayro=1/1/1                  salvare=identică
+anaf_CA300_XML_2025_160126.pdf                             strict=intact pagini lopdf/pdf-rs/hayro=1/1/1                  salvare=identică
+anaf_CA486_XML_2026_290929.pdf                             strict=intact pagini lopdf/pdf-rs/hayro=1/1/1                  salvare=identică
+anaf_CP300_v1.0.1_16122025.pdf                             strict=intact pagini lopdf/pdf-rs/hayro=1/1/1                  salvare=identică
+anaf_confirmare_2021_290621.pdf                            strict=intact pagini lopdf/pdf-rs/hayro=1/1/1                  salvare=identică
+annotation-button-widget.pdf                               strict=intact pagini lopdf/pdf-rs/hayro=1/1/1                  salvare=identică
+annotation-choice-widget.pdf                               strict=intact pagini lopdf/pdf-rs/hayro=1/1/1                  salvare=identică
+annotation-freetext.pdf                                    strict=intact pagini lopdf/pdf-rs/hayro=1/1/1                  salvare=identică
+annotation-highlight.pdf                                   strict=intact pagini lopdf/pdf-rs/hayro=1/1/1                  salvare=identică
+annotation-ink-without-appearance.pdf                      strict=intact pagini lopdf/pdf-rs/hayro=1/1/1                  salvare=identică
+annotation-stamp.pdf                                       strict=intact pagini lopdf/pdf-rs/hayro=1/1/1                  salvare=identică
+annotation-text-widget.pdf                                 strict=intact pagini lopdf/pdf-rs/hayro=1/1/1                  salvare=identică
+attachment.pdf                                             strict=intact pagini lopdf/pdf-rs/hayro=1/1/1                  salvare=identică
+bomb_giant.pdf                                             strict=intact pagini lopdf/pdf-rs/hayro=1/1/1                  salvare=identică
+bug1019475_1.pdf                                           strict=intact pagini lopdf/pdf-rs/hayro=1/refuz/1              salvare=identică
+bug1337429.pdf                                             strict=intact pagini lopdf/pdf-rs/hayro=1/1/1                  salvare=identică
+bug1947248_forms.pdf                                       strict=intact pagini lopdf/pdf-rs/hayro=1/1/1                  salvare=identică
+bug_jpx.pdf                                                strict=intact pagini lopdf/pdf-rs/hayro=1/1/1                  salvare=identică
+calrgb.pdf                                                 strict=intact pagini lopdf/pdf-rs/hayro=17/refuz/17            salvare=identică
+ccitt_EndOfBlock_false.pdf                                 strict=intact pagini lopdf/pdf-rs/hayro=1/1/1                  salvare=identică
+cmykjpeg.pdf                                               strict=intact pagini lopdf/pdf-rs/hayro=1/1/1                  salvare=identică
+crypt_filters.pdf                                          strict=NU     pagini lopdf/pdf-rs/hayro=1/refuz/1              salvare=— randarea paginii 1 diferă: Some("200x150:68ad200466b7eb28") vs Some("2
+                                                             strict: criptat: protejat (cu sau fără parolă); doar citire
+devicen.pdf                                                strict=intact pagini lopdf/pdf-rs/hayro=1/1/1                  salvare=identică
+empty.pdf                                                  strict=intact pagini lopdf/pdf-rs/hayro=1/1/1                  salvare=identică
+empty_protected.pdf                                        strict=NU     pagini lopdf/pdf-rs/hayro=1/refuz/1              salvare=identică
+                                                             strict: criptat: protejat (cu sau fără parolă); doar citire
+encrypted-attachment.pdf                                   strict=NU     pagini lopdf/pdf-rs/hayro=0/refuz/refuz          salvare=— pdf-extract: PDF error: couldn't parse input: invalid file trailer
+                                                             strict: startxref nu indică un tabel xref
+fields_order.pdf                                           strict=intact pagini lopdf/pdf-rs/hayro=1/1/1                  salvare=identică
+file_pdfjs_form.pdf                                        strict=intact pagini lopdf/pdf-rs/hayro=1/refuz/1              salvare=identică
+form_two_pages.pdf                                         strict=intact pagini lopdf/pdf-rs/hayro=2/2/2                  salvare=identică
+franz.pdf                                                  strict=intact pagini lopdf/pdf-rs/hayro=1/1/1                  salvare=identică
+freeculture.pdf                                            strict=intact pagini lopdf/pdf-rs/hayro=352/352/352            salvare=identică
+french_diacritics.pdf                                      strict=intact pagini lopdf/pdf-rs/hayro=1/1/1                  salvare=identică
+german-umlaut-r.pdf                                        strict=intact pagini lopdf/pdf-rs/hayro=1/1/1                  salvare=identică
+images_1bit_grayscale.pdf                                  strict=intact pagini lopdf/pdf-rs/hayro=1/1/1                  salvare=identică
+issue11651.pdf                                             strict=intact pagini lopdf/pdf-rs/hayro=1/1/1                  salvare=identică
+issue12295.pdf                                             strict=intact pagini lopdf/pdf-rs/hayro=1/1/1                  salvare=identică
+issue13343.pdf                                             strict=intact pagini lopdf/pdf-rs/hayro=refuz/2/2              salvare=— pdf-extract: panică
+issue14046.pdf                                             strict=intact pagini lopdf/pdf-rs/hayro=1/1/1                  salvare=identică
+issue6108.pdf                                              strict=NU     pagini lopdf/pdf-rs/hayro=1/refuz/1              salvare=— pdf-extract: PDF error: couldn't parse input: invalid file trailer
+                                                             strict: startxref nu indică un tabel xref
+tracemonkey.pdf                                            strict=intact pagini lopdf/pdf-rs/hayro=14/14/14               salvare=identică
+xfa_issue14315.pdf                                         strict=intact pagini lopdf/pdf-rs/hayro=1/1/1                  salvare=identică
+
+48 PDF-uri; pagini la fel în toate bibliotecile: 38; salvare identică (pagini, text, randare): 43
