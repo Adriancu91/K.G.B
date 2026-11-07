@@ -1,3 +1,5 @@
 * text=auto eol=lf
 *.ps1 text eol=crlf
 *.bat text eol=crlf
+# Fișierele de test se păstrează octet cu octet (hash-uri în MANIFEST.json)
+testdata/** -text
