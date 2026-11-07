@@ -33,7 +33,7 @@ Proprietarul a observat că Etapa 3 a avut mult lucru „invizibil” (spike-uri
 | D-042 | **Cui se atribuie** un task: până la Etapa 6 (rețea, conturi, roluri) există o **listă locală de persoane** în spațiul de lucru, nu conturi de utilizator | Da. Conturile și rolurile reale vin cu rețeaua (Master Plan §7, Etapa 6) |
 | D-043 | **Notificările** sunt un serviciu al nucleului: modulele trimit prin `ctx.notify` (permisiunea nouă `notify.send`), iar nucleul le păstrează, le afișează și le auditează | Da. E primul serviciu folosit de mai multe module; magistrala de evenimente rămâne pentru când e nevoie de ea |
 | D-044 | **Notificări desktop** prin notificările Windows, doar cât timp aplicația rulează. Fără serviciu permanent în fundal și fără email | Da. Un serviciu de fundal sau email ar cere setări de sistem sau conturi externe: doar cu acordul proprietarului |
-| D-045 | **Generarea documentelor** (DOCX/PDF) | Se decide după spike-ul S6, cu aceleași reguli ca în Etapa 3 (licențe permisive, măsurători) |
+| D-045 | **Generarea documentelor** (DOCX/PDF) | După S6 (`docs/spikes/S6_REZULTATE.md`): DOCX cu un completator propriu de câmpuri (zip + quick-xml, ~0,3 MB); PDF din modele HTML cu motorul WebView2 deja prezent (0 MB). Typst rămâne alternativa (+11,7 MB). De confirmat la poartă |
 | D-046 | **Recurența:** reguli simple (zilnic, săptămânal pe zile, lunar pe zi, anual, la fiecare N), nu standardul complet iCalendar | Da. Acoperă nevoile obișnuite și se poate testa complet |
 | D-047 | **Aranjamentul panourilor** e salvat în setările spațiului de lucru (format versionat) | Da |
 

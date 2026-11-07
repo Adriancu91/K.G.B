@@ -27,3 +27,4 @@ testdata/etapa3/extern/
 
 # Fișierele reale ale proprietarului (D-041): doar local, conțin date reale și personale
 testdata/proprietar/
+spikes/s6-docgen/out/

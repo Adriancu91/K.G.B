@@ -85,6 +85,8 @@ export async function connect(port = 9333, timeoutMs = 15000) {
       await sleep(150);
     },
     text: () => page.eval("document.body.innerText"),
+    // Raw DevTools call (used by spike S6 for Page.printToPDF).
+    send,
     close: () => ws.close(),
   };
   await send("Runtime.enable");

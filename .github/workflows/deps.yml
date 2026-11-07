@@ -27,6 +27,7 @@ jobs:
           - spikes/s2-network/Cargo.toml
           - spikes/s4-pdf/Cargo.toml
           - spikes/s5-sheets/Cargo.toml
+          - spikes/s6-docgen/Cargo.toml
     steps:
       - uses: actions/checkout@v4
       - uses: EmbarkStudios/cargo-deny-action@v2

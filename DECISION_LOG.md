@@ -261,6 +261,6 @@ Deciziile DECIS se schimbă doar cu aprobarea explicită a proprietarului (Maste
 - D-042: taskurile se atribuie unei liste locale de persoane; conturile și rolurile vin în Etapa 6;
 - D-043: notificările sunt un serviciu al nucleului (`ctx.notify`, permisiunea `notify.send`);
 - D-044: notificări desktop Windows doar cât rulează aplicația; fără serviciu de fundal sau email fără acord;
-- D-045: biblioteca pentru generarea documentelor, după spike-ul S6;
+- D-045: generarea documentelor — propus după S6: DOCX cu completator propriu, PDF prin WebView2 (Typst ca alternativă, +11,7 MB);
 - D-046: recurență cu reguli simple;
 - D-047: aranjamentul panourilor e salvat în setările spațiului de lucru.

@@ -87,7 +87,7 @@ Interdicții permanente: fără baze de date (D-005, D-018), fără schimbări d
 - [x] 4.4 Notificări în nucleu + centrul de notificări (D-043): `ctx.notify` cu permisiunea `notify.send` (refuz în jurnal fără ea), fără dubluri pe cheie, listă limitată la 500 (se șterg întâi cele citite); clopoțel cu numărul necitite, „Marchează citit”, „Șterge cele citite”; Planificatorul anunță următorul task dintr-o serie; catalogul arată permisiunile noi după actualizare; 5 teste noi + e2e
 - [x] 4.5 Remindere (D-044): taskuri — cu o zi înainte, în ziua termenului, o dată la întârziere (până la 7 zile); facturi — cu o zi înainte și în ziua scadenței; niciodată de două ori (nucleul ține minte cheile, și după repornire sau ștergere); notificări Windows doar cât rulează aplicația (max. 3, altfel rezumat); 7 teste noi (171) + e2e remindere 4/4, planner 18/18
 - [x] 4.6 Rapoarte și export: fila „Rapoarte” în Planificator — pe persoane și pe proiecte, pe stări, cu întârziate și total, după filtrele alese; export XLSX (3 foi) sau CSV (stil românesc), recitit și verificat celulă cu celulă; un titlu care arată ca o formulă rămâne text; 2 teste noi (173) + e2e planner 22/22
-- [ ] 4.7 Spike S6 — generarea documentelor → D-045
+- [x] 4.7 Spike S6 — generarea documentelor → D-045 propus (`docs/spikes/S6_REZULTATE.md`): DOCX cu completator propriu (9/9; corpus 50 DOCX: 46 neschimbate, 4 refuzate, 0 prăbușiri; ~0,3 MB); PDF prin WebView2 (0 MB) sau Typst (+11,7 MB), ambele cu diacritice căutabile și valori tratate ca text
 - [ ] 4.8 Bibliotecă de documente și modele (§6.5)
 - [ ] 4.9 Formulare
 - [ ] 4.10 Panouri drag-and-drop pe ecranul de start (D-047)

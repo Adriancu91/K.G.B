@@ -1,0 +1,195 @@
+<title>Evoluția K.G.B.</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans+Condensed:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+<style>
+/* Layout: one reading column; a stage track on top, then the current stage's steps, each with its screenshot. */
+:root {
+  --bg: #f6f7fa;
+  --surface: #ffffff;
+  --ink: #18223a;
+  --muted: #5b6478;
+  --line: #dde1ea;
+  --accent: #1e4fa8;
+  --accent-soft: #e6edfa;
+  --amber: #a85600;
+  --amber-soft: #fbefe1;
+  --done: #2c7a4b;
+  --done-soft: #e3f3e9;
+  --display: "IBM Plex Sans Condensed", "Arial Narrow", system-ui, sans-serif;
+  --body: "IBM Plex Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --mono: "IBM Plex Mono", ui-monospace, Consolas, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #11151f; --surface: #181e2b; --ink: #e6e9f1; --muted: #9aa3b6; --line: #2a3243;
+    --accent: #7ea6ef; --accent-soft: #1d2a45; --amber: #f0a65a; --amber-soft: #3a2a17;
+    --done: #6fcf97; --done-soft: #17301f; color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #11151f; --surface: #181e2b; --ink: #e6e9f1; --muted: #9aa3b6; --line: #2a3243;
+  --accent: #7ea6ef; --accent-soft: #1d2a45; --amber: #f0a65a; --amber-soft: #3a2a17;
+  --done: #6fcf97; --done-soft: #17301f; color-scheme: dark;
+}
+body { background: var(--bg); color: var(--ink); font: 16px/1.55 var(--body); }
+.wrap {
+  max-width: 980px; margin: 0 auto;
+  padding-block: 32px 64px;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  display: grid; gap: 40px;
+}
+h1, h2, h3 { font-family: var(--display); text-wrap: balance; margin: 0; line-height: 1.15; }
+h1 { font-size: clamp(2rem, 5vw, 2.8rem); font-weight: 700; letter-spacing: -0.01em; }
+h2 { font-size: 1.5rem; font-weight: 600; }
+h3 { font-size: 1.15rem; font-weight: 600; }
+p { margin: 0; max-width: 68ch; }
+.muted { color: var(--muted); }
+.eyebrow { font: 600 0.78rem/1 var(--display); letter-spacing: 0.08em; text-transform: uppercase; color: var(--amber); }
+header { display: grid; gap: 12px; }
+.facts { display: flex; flex-wrap: wrap; gap: 8px 24px; font-family: var(--mono); font-size: 0.85rem; color: var(--muted); }
+.facts b { color: var(--ink); font-weight: 500; font-variant-numeric: tabular-nums; }
+section { display: grid; gap: 16px; }
+
+/* Stage track: 0–9, the real sequence of the master plan. */
+.track { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 8px; }
+.track li { border: 1px solid var(--line); background: var(--surface); border-radius: 6px; padding: 10px 12px; display: grid; gap: 2px; min-width: 0; }
+.track .n { font: 500 0.75rem var(--mono); color: var(--muted); }
+.track .t { font: 600 0.95rem/1.25 var(--display); }
+.track .s { font-size: 0.78rem; color: var(--muted); }
+.track li.done { border-color: color-mix(in srgb, var(--done) 35%, var(--line)); }
+.track li.done .s { color: var(--done); }
+.track li.now { border: 2px solid var(--amber); background: var(--amber-soft); }
+.track li.now .s { color: var(--amber); font-weight: 600; }
+
+/* Steps of the current stage. */
+.steps { list-style: none; margin: 0; padding: 0; display: grid; gap: 28px; }
+.step { display: grid; gap: 12px; }
+.step-head { display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px 12px; }
+.code { font: 500 0.85rem var(--mono); color: var(--muted); }
+.chip { font: 600 0.72rem/1 var(--display); letter-spacing: 0.05em; text-transform: uppercase; padding: 5px 8px; border-radius: 999px; }
+.chip.ok { background: var(--done-soft); color: var(--done); }
+.chip.wip { background: var(--amber-soft); color: var(--amber); }
+.chip.next { background: var(--accent-soft); color: var(--accent); }
+.chip.lock { background: var(--line); color: var(--muted); }
+figure { margin: 0; display: grid; gap: 6px; }
+figure img { width: 100%; height: auto; border: 1px solid var(--line); border-radius: 6px; background: var(--surface); }
+figcaption { font-size: 0.85rem; color: var(--muted); }
+.todo { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
+.todo li { display: flex; gap: 12px; align-items: baseline; padding: 10px 0; border-top: 1px solid var(--line); }
+.todo li > :last-child { min-width: 0; }
+.gallery { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; }
+hr { border: 0; border-top: 1px solid var(--line); margin: 0; }
+footer { font-size: 0.85rem; color: var(--muted); display: grid; gap: 6px; }
+@media (max-width: 720px) {
+  .track { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .gallery { grid-template-columns: minmax(0, 1fr); }
+}
+</style>
+
+<div class="wrap">
+  <header>
+    <span class="eyebrow">Kronos Global Business · pre-lansare</span>
+    <h1>Evoluția K.G.B.</h1>
+    <p>Aplicația de birou pentru firmă, construită pas cu pas. Pagina se actualizează după fiecare pas terminat, cu capturi din aplicația reală (date de test, nu date reale).</p>
+    <div class="facts">
+      <span>Actualizat: <b>7 nov. 2026, 21:10</b></span>
+      <span>Etapa curentă: <b>4 din 9</b></span>
+      <span>Teste automate: <b>173 trec</b></span>
+      <span>Versiune: <b>0.1.0</b></span>
+    </div>
+  </header>
+
+  <section aria-labelledby="etape">
+    <h2 id="etape">Etapele planului</h2>
+    <ol class="track">
+      <li class="done"><span class="n">Etapa 0</span><span class="t">Specificație și teste tehnice</span><span class="s">încheiată</span></li>
+      <li class="done"><span class="n">Etapa 1</span><span class="t">Nucleul aplicației</span><span class="s">încheiată</span></li>
+      <li class="done"><span class="n">Etapa 2</span><span class="t">Stocarea datelor</span><span class="s">încheiată</span></li>
+      <li class="done"><span class="n">Etapa 3</span><span class="t">Documente și foi de calcul</span><span class="s">încheiată</span></li>
+      <li class="now"><span class="n">Etapa 4</span><span class="t">Organizare și productivitate</span><span class="s">în lucru · 6 din 12 pași</span></li>
+      <li><span class="n">Etapa 5</span><span class="t">Business</span><span class="s">neîncepută</span></li>
+      <li><span class="n">Etapa 6</span><span class="t">Echipe și rețea</span><span class="s">neîncepută</span></li>
+      <li><span class="n">Etapa 7</span><span class="t">Informații și proceduri</span><span class="s">neîncepută</span></li>
+      <li><span class="n">Etapa 8</span><span class="t">Comercializare</span><span class="s">neîncepută</span></li>
+      <li><span class="n">Etapa 9</span><span class="t">Extindere</span><span class="s">neîncepută</span></li>
+    </ol>
+  </section>
+
+  <hr>
+
+  <section aria-labelledby="e4">
+    <span class="eyebrow">Etapa 4 · acum</span>
+    <h2 id="e4">Organizare și productivitate</h2>
+    <p class="muted">Poarta etapei: poți crea, atribui, urmări și raporta activități.</p>
+    <ol class="steps">
+      <li class="step">
+        <div class="step-head"><span class="code">4.1</span><h3>Planificator: taskuri, persoane, proiecte</h3><span class="chip ok">gata</span></div>
+        <p>Taskuri cu responsabil, proiect, termen, prioritate, stare și checklist. Filtre pe persoană, stare, proiect și întârziate.</p>
+        <figure><img src="etapa4/01-taskuri.png" alt="Lista de taskuri cu filtre și un task întârziat marcat cu roșu" loading="lazy"><figcaption>Lista de taskuri; taskul de ieri apare întârziat.</figcaption></figure>
+      </li>
+      <li class="step">
+        <div class="step-head"><span class="code">4.2</span><h3>Kanban și calendar</h3><span class="chip ok">gata</span></div>
+        <p>Muți taskurile între coloane cu mouse-ul sau cu săgețile. În calendar, tragi un task pe altă zi și i se schimbă termenul.</p>
+        <div class="gallery">
+          <figure><img src="etapa4/03-kanban.png" alt="Tabla Kanban cu patru coloane: De făcut, În lucru, Blocat, Gata" loading="lazy"><figcaption>Kanban pe cele patru stări.</figcaption></figure>
+          <figure><img src="etapa4/05-calendar-luna.png" alt="Calendarul lunii cu taskurile la zilele lor" loading="lazy"><figcaption>Calendar pe lună.</figcaption></figure>
+        </div>
+      </li>
+      <li class="step">
+        <div class="step-head"><span class="code">4.3</span><h3>Taskuri care se repetă</h3><span class="chip ok">gata</span></div>
+        <p>Zilnic, săptămânal pe zilele alese, lunar sau anual, până la o dată. Când îl marchezi „Gata”, următorul apare singur, cu checklistul debifat.</p>
+        <div class="gallery">
+          <figure><img src="etapa4/06-repetare-formular.png" alt="Formularul unui task cu secțiunea Se repetă" loading="lazy"><figcaption>Secțiunea „Se repetă” din formular.</figcaption></figure>
+          <figure><img src="etapa4/07-repetare-urmatorul.png" alt="Lista cu taskul repetat terminat și următoarea apariție peste o săptămână" loading="lazy"><figcaption>După „Gata”: apariția de săptămâna viitoare.</figcaption></figure>
+        </div>
+      </li>
+      <li class="step">
+        <div class="step-head"><span class="code">4.4</span><h3>Centrul de notificări</h3><span class="chip ok">gata</span></div>
+        <p>Clopoțelul arată notificările necitite. Un modul trimite notificări doar cu permisiunea ta, iar fiecare trimitere e înregistrată în jurnal.</p>
+        <figure><img src="etapa4/08-notificari.png" alt="Panoul de notificări deschis din clopoțel" loading="lazy"><figcaption>Notificarea trimisă de Planificator.</figcaption></figure>
+      </li>
+      <li class="step">
+        <div class="step-head"><span class="code">4.5</span><h3>Memento-uri și notificări Windows</h3><span class="chip ok">gata</span></div>
+        <p>Pentru termenele taskurilor și scadențele facturilor: cu o zi înainte și în ziua respectivă, fără repetări. Notificările Windows apar cât timp aplicația e pornită.</p>
+        <figure><img src="remindere/01-memento.png" alt="Clopoțelul cu două memento-uri: azi și mâine" loading="lazy"><figcaption>La pornire, memento-urile pentru azi și mâine.</figcaption></figure>
+      </li>
+      <li class="step">
+        <div class="step-head"><span class="code">4.6</span><h3>Rapoarte și export</h3><span class="chip ok">gata</span></div>
+        <p>Taskurile pe persoane și pe proiecte, pe stări, cu întârziate și totaluri. Export în Excel (3 foi) sau CSV, verificat celulă cu celulă.</p>
+        <figure><img src="etapa4/09-rapoarte.png" alt="Fila Rapoarte cu tabele pe persoane și pe proiecte" loading="lazy"><figcaption>Fila „Rapoarte” din Planificator.</figcaption></figure>
+      </li>
+    </ol>
+
+    <h3>Ce urmează în Etapa 4</h3>
+    <ul class="todo">
+      <li><span class="chip wip">în lucru</span><span><b>4.7</b> Test de biblioteci pentru documente Word și PDF din modele (contracte, facturi). Îți propun una la final.</span></li>
+      <li><span class="chip next">urmează</span><span><b>4.8</b> Biblioteca de documente și modele: administrative, comerciale, HR, tehnice.</span></li>
+      <li><span class="chip next">urmează</span><span><b>4.9</b> Formulare: câmpuri, completare, răspunsuri salvate, export.</span></li>
+      <li><span class="chip next">urmează</span><span><b>4.10</b> Ecran de start cu panouri pe care le muți și le redimensionezi.</span></li>
+      <li><span class="chip next">urmează</span><span><b>4.11</b> Raportul etapei.</span></li>
+      <li><span class="chip lock">aprobarea ta</span><span><b>4.12</b> Poarta Etapei 4.</span></li>
+    </ul>
+  </section>
+
+  <hr>
+
+  <section aria-labelledby="e3">
+    <span class="eyebrow">Etapa 3 · încheiată</span>
+    <h2 id="e3">Documente și foi de calcul</h2>
+    <p class="muted">Module PDF, foi de calcul și extragere de date din facturi. Originalele nu se modifică niciodată; fiecare salvare e o versiune nouă.</p>
+    <div class="gallery">
+      <figure><img src="etapa3/pdf-01-factura.png" alt="O factură PDF deschisă în aplicație" loading="lazy"><figcaption>PDF: vizualizare, rotire, unire.</figcaption></figure>
+      <figure><img src="etapa3/sheets-04-sabloane.png" alt="Lista de șabloane de foi de calcul" loading="lazy"><figcaption>Foi de calcul: cele 5 șabloane.</figcaption></figure>
+      <figure><img src="etapa3/sheets-05-factura-din-sablon.png" alt="O factură completată dintr-un șablon de foaie de calcul" loading="lazy"><figcaption>Factură făcută dintr-un șablon.</figcaption></figure>
+      <figure><img src="etapa3/extract-01-extragere.png" alt="Datele extrase dintr-o factură, cu sursa și nivelul de încredere" loading="lazy"><figcaption>Extragere date: fiecare valoare cu sursa ei.</figcaption></figure>
+    </div>
+  </section>
+
+  <footer>
+    <span>Capturile sunt făcute automat de testele care rulează aplicația reală, cu date de test.</span>
+    <span>Ce rămâne în așteptare: testul cu 2 calculatoare (înainte de Etapa 6) și testul de pierdere a curentului (înainte de date reale).</span>
+  </footer>
+</div>
