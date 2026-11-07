@@ -193,3 +193,13 @@ Deciziile DECIS se schimbă doar cu aprobarea explicită a proprietarului (Maste
 - **Respinse:**
   - SheetJS, care e JavaScript; logica rămâne în Rust;
   - sql.js, folosit de suita proprietarului, pentru că e SQLite (D-018).
+
+### D-034 — Documentele nu se suprascriu niciodată (aplicată)
+- **Data:** 7 nov. 2026 · **Statut:** DECIS, aplicat în pasul 3.4 (era PROPUS în planul Etapei 3; e chiar criteriul Master Plan §6.1, „preview și copie de siguranță”).
+- **Ce face nucleul:** serviciul `kgb_core::documents`, accesibil modulelor cu permisiunea `files.own`.
+  - Importul devine versiunea 1, originalul.
+  - Fiecare salvare adaugă o versiune nouă, într-o singură scriere atomică.
+  - O salvare pe o versiune depășită e refuzată.
+  - Restaurarea unei versiuni vechi creează o versiune nouă.
+  - Exportul scrie o copie și nu înlocuiește un fișier existent fără confirmare.
+- **Verificat:** 7 teste, inclusiv 25 de opriri forțate în timpul salvărilor, fără nicio versiune pe jumătate și cu originalul neatins.

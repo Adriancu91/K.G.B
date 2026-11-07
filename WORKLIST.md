@@ -67,7 +67,7 @@ Interdicții permanente: fără baze de date (D-005, D-018), fără schimbări d
 - [x] 3.1 Set de fișiere de test `testdata/etapa3/` (35 fișiere: 33 generate determinist + 2 PDF din Edge, manifest SHA-256; verificat cu cititorul PDF din Windows)
 - [x] 3.2 Spike S4 — PDF → D-032: lopdf (operații, 48/48 fără corupere), pdf.js (afișare), hayro (miniaturi), verificare strictă proprie 17/17; OCR Windows testat, română 🔒 (D-035) — `docs/spikes/S4_REZULTATE.md`
 - [x] 3.3 Spike S5 — foi de calcul → D-033: calamine (citire, 0 prăbușiri pe XLSX reale), umya (salvare, 61/65 identice), IronCalc (formule, 95,9% ca Excel; 12/12 uzuale), rust_xlsxwriter (export); verificare anti-bombă zip proprie — `docs/spikes/S5_REZULTATE.md`
-- [ ] 3.4 Documente versionate în spațiul de lucru (D-034)
+- [x] 3.4 Documente versionate în spațiul de lucru (D-034): `kgb_core::documents` prin `files.own`; original neatins, versiune nouă la fiecare salvare, salvare depășită refuzată, export ca copie; 7 teste (25 opriri forțate: nicio versiune pe jumătate); 108 teste în total
 - [ ] 3.5 Modulul PDF (beta)
 - [ ] 3.6 Modulul Foi de calcul (beta)
 - [ ] 3.7 Șabloane (D-036)

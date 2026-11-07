@@ -18,3 +18,14 @@
 - `crates/kgb-store` — stocarea (S1). `crates/kgb-core` — workspace, setări, identitate, module, permisiuni, profiluri, loguri. `modules/kgb-notes` — modulul demonstrativ. `app/` — Tauri: un strat subțire de comenzi peste `kgb-core` și interfața React.
 - Interfața nu atinge fișierele. Fiecare acțiune e o comandă Rust care trece prin nucleu. Modulele ajung la date doar prin `ModuleContext` (vezi `MODULE_CONTRACT.md`).
 - Date: `%LOCALAPPDATA%\ro.kronos.kgb\` (`device/`, `logs/`, `workspaces/<id>/`, `workspaces.json`).
+
+## Adăugat în Etapele 2–3
+- **`kgb-core::files`:** fișiere atașate pentru module (`core.files`, blob-uri BLAKE3).
+- **`kgb-core::backup`:** backup și restaurare (`<rădăcină>/backups/`).
+- **`kgb-core::schema`:** scheme și indexuri declarate în manifest.
+- **`kgb-core::documents`** (Etapa 3, D-034): documente versionate.
+  - Fiecare document are o înregistrare în `core.documents`, iar fiecare versiune una în `core.document_versions`. Id-ul versiunii e derivat din document și număr, deci o versiune nu poate fi scrisă de două ori.
+  - Conținutul stă în blob-uri BLAKE3. Versiunile vechi și originalul nu se modifică niciodată.
+- **Biblioteci pentru documente** (alese prin spike-urile S4/S5, D-032/D-033):
+  - PDF: lopdf (operații), pdf.js (afișare), hayro (miniaturi), plus o verificare strictă proprie;
+  - foi de calcul: calamine (citire), umya (salvare, cu comparație înainte/după), IronCalc (formule), rust_xlsxwriter (export), plus o protecție proprie anti-„bombă zip”.

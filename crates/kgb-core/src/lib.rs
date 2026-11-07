@@ -7,6 +7,7 @@
 pub const CORE_VERSION: &str = env!("CARGO_PKG_VERSION");
 
 pub mod backup;
+pub mod documents;
 pub mod error;
 pub mod files;
 pub mod identity;

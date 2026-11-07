@@ -45,7 +45,7 @@ Nucleul verifică **fiecare scriere** a modulului. O înregistrare greșită e r
 | `storage.own` | citire/scriere doar în colecțiile proprii declarate (`mod.<id>.<colecție>`) |
 | `settings.read` | citirea setărilor spațiului de lucru |
 | `identity.read` | numele proprietarului și amprenta dispozitivului |
-| `files.own` | fișiere atașate proprii (`ctx.put_file/get_file/delete_file/list_files`); maximum 64 MB pe fișier; conținutul e verificat prin BLAKE3 la fiecare citire; un modul nu vede fișierele altui modul |
+| `files.own` | Fișiere atașate proprii: `ctx.put_file/get_file/delete_file/list_files`. **Documente versionate** (Etapa 3, D-034): `ctx.import_document/save_document/read_document/document_versions/restore_document_version/list_documents/delete_document/export_document`. Limite și reguli: maximum 64 MB pe fișier; conținutul e verificat prin BLAKE3 la fiecare citire; un modul nu vede fișierele sau documentele altui modul |
 
 În listă intră doar permisiuni pe care nucleul le verifică efectiv. Una nouă se adaugă împreună cu verificarea ei.
 
@@ -56,6 +56,12 @@ Nucleul verifică **fiecare scriere** a modulului. O înregistrare greșită e r
 - **Izolare:** un modul ajunge la date doar prin `ModuleContext`, care verifică permisiunea la fiecare operație și limitează stocarea la colecțiile declarate. Două module cu aceeași colecție logică au colecții fizice diferite.
 - **Audit:** fiecare refuz, activare, dezactivare și migrare se scrie în `core.audit`.
 - **Fișiere:** ștergerea doar marchează înregistrarea. Conținutul fără nicio referință e mutat în `retired/blobs/` doar de colectarea explicită (`files::collect_unreferenced`), niciodată imediat.
+- **Documente (D-034):**
+  - importul devine versiunea 1, originalul, care nu se schimbă niciodată;
+  - fiecare salvare adaugă o versiune nouă, într-o singură scriere atomică, iar restaurarea unei versiuni vechi creează una nouă;
+  - o salvare făcută pe o versiune care nu mai e cea curentă este refuzată („salvat între timp”), nu suprascrisă;
+  - exportul scrie o copie în locul ales și nu înlocuiește un fișier existent fără confirmare;
+  - conținutul oricărei versiuni a unui document existent e protejat de colectare.
 - **Loguri:** modulele folosesc logul nucleului (`ctx.log`), nu un mecanism propriu.
 - **Catalog:** modulele `experimental` apar doar în versiunile de dinainte de lansare, marcate „experimental”. Modulele etapelor viitoare apar ca „Neimplementat — Etapa N” și nu pot fi activate.
 

@@ -18,6 +18,7 @@ use serde_json::Value;
 use uuid::Uuid;
 
 use crate::backup;
+use crate::documents::{self, DocumentRef, VersionRef};
 use crate::error::{CoreError, CoreResult};
 use crate::files;
 use crate::identity;
@@ -562,6 +563,69 @@ impl ModuleContext<'_> {
         self.require("files.own")?;
         let m = self.manifest.id.clone();
         files::list(self.ws, &m)
+    }
+
+    /// Imports a versioned document (permission `files.own`): the bytes
+    /// become version 1, the original, which is never changed (D-034).
+    pub fn import_document(&mut self, name: &str, data: &[u8]) -> CoreResult<DocumentRef> {
+        self.require("files.own")?;
+        let m = self.manifest.id.clone();
+        documents::import(self.ws, &m, name, data)
+    }
+
+    /// Saves new content as the next version; refused if `based_on` is not
+    /// the current version (someone saved in the meantime).
+    pub fn save_document(&mut self, id: Uuid, based_on: u64, data: &[u8], note: &str) -> CoreResult<VersionRef> {
+        self.require("files.own")?;
+        let m = self.manifest.id.clone();
+        documents::save_version(self.ws, &m, id, based_on, data, note)
+    }
+
+    /// Reads a version (`None` = current); bytes verified against their hash.
+    pub fn read_document(&mut self, id: Uuid, version: Option<u64>) -> CoreResult<(VersionRef, Vec<u8>)> {
+        self.require("files.own")?;
+        let m = self.manifest.id.clone();
+        documents::read(self.ws, &m, id, version)
+    }
+
+    pub fn document_versions(&mut self, id: Uuid) -> CoreResult<Vec<VersionRef>> {
+        self.require("files.own")?;
+        let m = self.manifest.id.clone();
+        documents::versions(self.ws, &m, id)
+    }
+
+    /// Creates a new version with the content of an older one.
+    pub fn restore_document_version(&mut self, id: Uuid, version: u64) -> CoreResult<VersionRef> {
+        self.require("files.own")?;
+        let m = self.manifest.id.clone();
+        documents::restore_version(self.ws, &m, id, version)
+    }
+
+    pub fn list_documents(&mut self) -> CoreResult<Vec<DocumentRef>> {
+        self.require("files.own")?;
+        let m = self.manifest.id.clone();
+        documents::list(self.ws, &m)
+    }
+
+    pub fn delete_document(&mut self, id: Uuid) -> CoreResult<()> {
+        self.require("files.own")?;
+        let m = self.manifest.id.clone();
+        documents::delete(self.ws, &m, id)
+    }
+
+    /// Writes a copy of a version to a path the user chose (export). The
+    /// stored document is untouched; an existing file is replaced only with
+    /// `overwrite`.
+    pub fn export_document(
+        &mut self,
+        id: Uuid,
+        version: Option<u64>,
+        dest: &Path,
+        overwrite: bool,
+    ) -> CoreResult<VersionRef> {
+        self.require("files.own")?;
+        let m = self.manifest.id.clone();
+        documents::export(self.ws, &m, id, version, dest, overwrite)
     }
 
     /// Structured log line tagged with the module id (no permission needed:

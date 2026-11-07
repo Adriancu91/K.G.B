@@ -134,15 +134,18 @@ pub struct CollectReport {
     pub bytes_retired: u64,
 }
 
-/// Moves blobs that no live file record points to into `retired/blobs/`.
+/// Moves blobs that no live file record or document version points to into
+/// `retired/blobs/`.
 /// Run explicitly (maintenance), never as part of a delete.
 pub fn collect_unreferenced(ws: &mut Workspace) -> CoreResult<CollectReport> {
-    let referenced: HashSet<String> = ws
+    let mut referenced: HashSet<String> = ws
         .store()
         .scan(FILES_COLLECTION, |_| true)?
         .iter()
         .filter_map(|r| r.fields.get("hash").and_then(Value::as_str).map(String::from))
         .collect();
+    // Every version of every live document keeps its bytes (D-034).
+    referenced.extend(crate::documents::referenced_hashes(ws)?);
     let orphans: Vec<String> = ws
         .store()
         .blob_hashes()?

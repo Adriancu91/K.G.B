@@ -44,3 +44,11 @@ Pragurile de performanță sunt PROPUSE în ETAPA0_PLAN.md §3.2 și devin ofici
 - `python testdata/etapa3/generate.py --check`: verifică că fișierele nu s-au schimbat.
 - `powershell -File testdata/etapa3/validate-windows-pdf.ps1`: verificare independentă cu cititorul PDF din Windows.
 - Regula de necorupere pentru orice operație: originalul rămâne identic (același hash), rezultatul se redeschide și păstrează paginile, textul și valorile din manifest.
+- `cargo test -p kgb-core --test documents` (pasul 3.4) verifică documentele versionate:
+  - originalul rămâne identic după salvări și restaurări;
+  - salvarea pe o versiune veche e refuzată;
+  - documentele sunt izolate între module;
+  - conținutul versiunilor e protejat de colectare;
+  - exportul scrie o copie fără să înlocuiască fișiere existente;
+  - conținutul alterat e detectat;
+  - **25 de opriri forțate ale unui proces care salvează continuu**: nicio versiune pe jumătate, originalul neatins.
