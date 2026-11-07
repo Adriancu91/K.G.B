@@ -176,3 +176,57 @@ pub fn to_xlsx(src: &Book) -> Result<Converted, String> {
         formulas_as_values: formulas,
     })
 }
+
+/// A cell of a table built by another module (reports, Etapa 4 step 4.6).
+#[derive(Clone, Debug, PartialEq)]
+pub enum Cell {
+    Text(String),
+    Number(f64),
+    Empty,
+}
+
+impl From<&str> for Cell {
+    fn from(s: &str) -> Cell {
+        if s.is_empty() {
+            Cell::Empty
+        } else {
+            Cell::Text(s.to_string())
+        }
+    }
+}
+impl From<String> for Cell {
+    fn from(s: String) -> Cell {
+        Cell::from(s.as_str())
+    }
+}
+impl From<usize> for Cell {
+    fn from(n: usize) -> Cell {
+        Cell::Number(n as f64)
+    }
+}
+
+/// A sheet made of rows (values only), ready for [`to_xlsx`] / [`to_csv`].
+pub fn table(name: &str, rows: &[Vec<Cell>]) -> Sheet {
+    let h = rows.len() as u32;
+    let w = rows.iter().map(Vec::len).max().unwrap_or(0) as u32;
+    let mut values = if h == 0 || w == 0 {
+        calamine::Range::empty()
+    } else {
+        calamine::Range::new((0, 0), (h - 1, w - 1))
+    };
+    for (r, row) in rows.iter().enumerate() {
+        for (c, cell) in row.iter().enumerate() {
+            let d = match cell {
+                Cell::Text(t) => calamine::Data::String(t.clone()),
+                Cell::Number(n) => calamine::Data::Float(*n),
+                Cell::Empty => continue,
+            };
+            values.set_value((r as u32, c as u32), d);
+        }
+    }
+    Sheet {
+        name: name.to_string(),
+        values,
+        formulas: calamine::Range::empty(),
+    }
+}

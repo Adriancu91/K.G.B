@@ -2657,6 +2657,7 @@ name = "kgb-planner"
 version = "0.1.0"
 dependencies = [
  "kgb-core",
+ "kgb-sheets",
  "kgb-store",
  "serde",
  "serde_json",

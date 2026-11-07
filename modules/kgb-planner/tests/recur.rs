@@ -11,8 +11,12 @@ fn setup() -> (tempfile::TempDir, Workspace, ModuleManager) {
     let tmp = tempfile::tempdir().unwrap();
     let mut ws = Workspace::create(&tmp.path().join("ws"), "T").unwrap();
     let mm = ModuleManager::new(vec![Box::new(Planner::new())], CORE_VERSION).unwrap();
-    mm.enable(&mut ws, ID, &["storage.own".into(), "notify.send".into()])
-        .unwrap();
+    mm.enable(
+        &mut ws,
+        ID,
+        &["storage.own".into(), "notify.send".into(), "files.own".into()],
+    )
+    .unwrap();
     (tmp, ws, mm)
 }
 

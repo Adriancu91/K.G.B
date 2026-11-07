@@ -8,7 +8,7 @@ Sursa: Master Plan §13. Nu se trece la etapa următoare doar pentru că etapa c
 | 1 | Nucleul desktop | **Încheiată** — poartă aprobată (D-027, 6 nov. 2026); drag-and-drop panouri → Etapa 4 |
 | 2 | Storage Engine | **Încheiată** — poartă aprobată (D-031, 7 nov. 2026); 🔒 testul de pierdere a alimentării amânat, obligatoriu înainte de date reale |
 | 3 | Documente și foi de calcul | **Încheiată** — poartă aprobată (D-041, 7 nov. 2026); module beta: PDF, foi de calcul (+5 șabloane), extragere date; fișierele reale ale proprietarului trec fără pierderi |
-| 4 | Organizare și productivitate | **În lucru** — plan `docs/ETAPA4_PLAN.md`; 4.1 Planificator (taskuri, persoane, proiecte); 4.2 Kanban și calendar; 4.3 taskuri care se repetă; 4.4 centrul de notificări; 4.5 memento-uri și notificări Windows |
+| 4 | Organizare și productivitate | **În lucru** — plan `docs/ETAPA4_PLAN.md`; 4.1 Planificator (taskuri, persoane, proiecte); 4.2 Kanban și calendar; 4.3 taskuri care se repetă; 4.4 centrul de notificări; 4.5 memento-uri și notificări Windows; 4.6 rapoarte și export |
 | 5 | Business | Neînceput |
 | 6 | Echipe și rețea | Neînceput |
 | 7 | Informații și proceduri | Neînceput |

@@ -4,6 +4,7 @@
 import { useCallback, useEffect, useState } from "react";
 import { api, message } from "../../api";
 import { Confirm } from "../../components/Confirm";
+import { ReportsView } from "./reports";
 import { CalendarView, KanbanView } from "./views";
 
 const ID = "kgb.planner";
@@ -293,7 +294,8 @@ export function Repeats({ text }: { text: string }) {
 
 export function PlannerPage({ onError }: { onError: (e: string | null) => void }) {
   const [tab, setTab] = useState<"taskuri" | "persoane" | "proiecte">("taskuri");
-  const [view, setView] = useState<"lista" | "kanban" | "calendar">("lista");
+  const [view, setView] = useState<"lista" | "kanban" | "calendar" | "rapoarte">("lista");
+  const [rev, setRev] = useState(0);
   const [tasks, setTasks] = useState<Task[]>([]);
   const [people, setPeople] = useState<Person[]>([]);
   const [projects, setProjects] = useState<Project[]>([]);
@@ -320,6 +322,7 @@ export function PlannerPage({ onError }: { onError: (e: string | null) => void }
         api.moduleCall<{ pe_stare: Record<Status, number>; intarziate: number }>(ID, "summary", { azi: today() }),
       ]);
       setTasks(t);
+      setRev((x) => x + 1);
       setPeople(p);
       setProjects(pr);
       setSummary(s);
@@ -344,6 +347,12 @@ export function PlannerPage({ onError }: { onError: (e: string | null) => void }
     }
     await refresh();
   };
+
+  const reportFilter: Record<string, unknown> = { intarziate: filter.intarziate };
+  if (filter.responsabil !== "*") reportFilter.responsabil = filter.responsabil;
+  if (filter.stare) reportFilter.stare = filter.stare;
+  if (filter.proiect) reportFilter.proiect = filter.proiect;
+  if (filter.text.trim()) reportFilter.text = filter.text;
 
   const name = (id: string | null, list: { id: string; nume: string }[]) => list.find((x) => x.id === id)?.nume ?? "—";
   const draftOf = (t: Task): Draft => ({
@@ -443,13 +452,14 @@ export function PlannerPage({ onError }: { onError: (e: string | null) => void }
             </label>
             <span className="grow" />
             <div className="sheet-tabs" role="tablist" aria-label="Vedere">
-              {(["lista", "kanban", "calendar"] as const).map((v) => (
+              {(["lista", "kanban", "calendar", "rapoarte"] as const).map((v) => (
                 <button key={v} role="tab" aria-selected={view === v} className={view === v ? "active" : ""} onClick={() => setView(v)}>
-                  {v === "lista" ? "Listă" : v === "kanban" ? "Kanban" : "Calendar"}
+                  {v === "lista" ? "Listă" : v === "kanban" ? "Kanban" : v === "calendar" ? "Calendar" : "Rapoarte"}
                 </button>
               ))}
             </div>
           </div>
+          {view === "rapoarte" && <ReportsView azi={today()} filtru={reportFilter} version={rev} onError={onError} />}
           {view === "kanban" && <KanbanView tasks={tasks} people={people} busy={busy} onStatus={setStatus} onEdit={(t) => setEditing(draftOf(t))} />}
           {view === "calendar" && (
             <CalendarView

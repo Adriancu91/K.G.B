@@ -842,3 +842,12 @@ table.tasks tr.done td:first-child button {
   background: #b35c00;
   color: #fff;
 }
+
+/* Planner reports (step 4.6). */
+table.report td:not(:first-child),
+table.report th:not(:first-child) {
+  text-align: right;
+}
+table.report tfoot th {
+  border-top: 2px solid rgba(128, 128, 128, 0.4);
+}

@@ -27,8 +27,12 @@ fn reminders_on_the_right_day_and_never_twice() {
     let dir = tmp.path().join("ws");
     let mut ws = Workspace::create(&dir, "T").unwrap();
     let mm = manager();
-    mm.enable(&mut ws, ID, &["storage.own".into(), "notify.send".into()])
-        .unwrap();
+    mm.enable(
+        &mut ws,
+        ID,
+        &["storage.own".into(), "notify.send".into(), "files.own".into()],
+    )
+    .unwrap();
     let ana = call(&mut ws, &mm, "person_save", json!({"nume": "Ana"})).unwrap();
     for (t, d) in [
         ("Raport", "2026-11-10"),
@@ -103,8 +107,12 @@ fn many_due_at_once_come_in_batches_and_bad_day_is_refused() {
     let tmp = tempfile::tempdir().unwrap();
     let mut ws = Workspace::create(&tmp.path().join("ws"), "T").unwrap();
     let mm = manager();
-    mm.enable(&mut ws, ID, &["storage.own".into(), "notify.send".into()])
-        .unwrap();
+    mm.enable(
+        &mut ws,
+        ID,
+        &["storage.own".into(), "notify.send".into(), "files.own".into()],
+    )
+    .unwrap();
     for i in 0..13 {
         call(
             &mut ws,
@@ -126,8 +134,12 @@ fn no_reminders_without_permission_or_when_disabled() {
     let tmp = tempfile::tempdir().unwrap();
     let mut ws = Workspace::create(&tmp.path().join("ws"), "T").unwrap();
     let mm = manager();
-    mm.enable(&mut ws, ID, &["storage.own".into(), "notify.send".into()])
-        .unwrap();
+    mm.enable(
+        &mut ws,
+        ID,
+        &["storage.own".into(), "notify.send".into(), "files.own".into()],
+    )
+    .unwrap();
     call(&mut ws, &mm, "task_save", json!({"titlu": "X", "termen": "2026-11-10"})).unwrap();
     mm.disable(&mut ws, ID).unwrap();
     assert!(mm.remind_all(&mut ws, "2026-11-10").unwrap().is_empty());

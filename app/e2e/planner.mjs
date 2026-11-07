@@ -5,7 +5,7 @@
 // Usage: node app/e2e/planner.mjs <path-to-kgb-app.exe> <screenshot-dir>
 // Uses a throw-away data folder (KGB_DATA_DIR), never the user's real data.
 import { spawn, execFileSync } from "node:child_process";
-import { mkdtempSync, mkdirSync, rmSync } from "node:fs";
+import { mkdtempSync, mkdirSync, readFileSync, rmSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { connect, sleep } from "./cdp.mjs";
@@ -204,6 +204,37 @@ try {
   await p.until("document.querySelector('.notif-panel')?.innerText.includes('Nicio notificare')", 8000);
   check("„Șterge cele citite” golește lista", true);
   await p.eval(`${bell}.click()`);
+
+  // Step 4.6: reports per person and project; exports reopen with the same data.
+  await p.click("Rapoarte", ".sheet-tabs button");
+  await p.until("document.querySelectorAll('table.report').length === 2", 8000);
+  const rowsOf = (i) =>
+    p.eval(`[...document.querySelectorAll('table.report')[${i}].querySelectorAll('tbody tr, tfoot tr')].map(r => [...r.cells].map(c => c.innerText.trim()).join('|'))`);
+  const byPerson = await rowsOf(0);
+  check(
+    "raportul pe persoane are totalurile corecte",
+    JSON.stringify(byPerson) ===
+      JSON.stringify(["Ana Popescu|0|1|0|0|1|0", "Ion Ionescu|0|0|0|1|1|0", "Neatribuit|1|1|0|1|3|0", "Total|1|2|0|2|5|0"]),
+    JSON.stringify(byPerson),
+  );
+  const byProject = await rowsOf(1);
+  check("raportul pe proiecte", byProject[0]?.startsWith("Fără proiect|") && byProject.at(-1) === "Total|1|2|0|2|5|0", JSON.stringify(byProject));
+  await p.screenshot(join(shots, "09-rapoarte.png"));
+  const xlsx = join(data, "raport.xlsx");
+  const csv = join(data, "taskuri.csv");
+  const az = iso(new Date());
+  const ex = (args) => p.eval(`window.__TAURI_INTERNALS__.invoke("module_call", { id: "kgb.planner", command: "export_report", args: ${JSON.stringify(args)} })`);
+  const rx = await ex({ azi: az, format: "xlsx", dest: xlsx });
+  await ex({ azi: az, format: "csv", tabel: "taskuri", stil: "ro", dest: csv });
+  const head = readFileSync(xlsx).subarray(0, 2).toString("latin1");
+  check("exportul XLSX e un fișier Excel valid (verificat de aplicație la scriere)", rx.taskuri === 5 && head === "PK", JSON.stringify(rx));
+  const csvText = readFileSync(csv, "utf8");
+  check(
+    "exportul CSV are capul de tabel și taskurile",
+    csvText.startsWith("﻿Task;Responsabil;Proiect;Termen;") && csvText.includes("Facturile lunii;Ana Popescu;") && csvText.trim().split("\r\n").length === 6,
+    csvText.split("\r\n")[0],
+  );
+  await p.click("Listă", ".sheet-tabs button");
 
   p.close();
   execFileSync("taskkill", ["/F", "/T", "/PID", String(proc.pid)], { stdio: "ignore" });

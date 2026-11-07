@@ -19,6 +19,7 @@
 
 pub mod dates;
 pub mod recur;
+pub mod report;
 
 use std::collections::BTreeMap;
 
@@ -130,6 +131,32 @@ struct ProjectSave {
 struct ById {
     id: Uuid,
     version: u64,
+}
+
+#[derive(Deserialize)]
+#[serde(deny_unknown_fields)]
+struct ReportArgs {
+    azi: String,
+    #[serde(default)]
+    filtru: TaskFilter,
+}
+
+#[derive(Deserialize)]
+#[serde(deny_unknown_fields)]
+struct ExportReport {
+    azi: String,
+    #[serde(default)]
+    filtru: TaskFilter,
+    /// `xlsx` (three sheets) or `csv` (one table).
+    format: String,
+    /// For CSV: `persoane`, `proiecte` or `taskuri`.
+    #[serde(default)]
+    tabel: Option<String>,
+    /// For CSV: `ro` (`;` and decimal comma) or `standard`.
+    #[serde(default)]
+    stil: Option<String>,
+    /// Chosen by the user in the system save dialog.
+    dest: std::path::PathBuf,
 }
 
 #[derive(Deserialize, Default)]
@@ -587,6 +614,24 @@ const REMIND_BATCH: usize = 10;
 const OVERDUE_DAYS: i64 = 7;
 
 impl Planner {
+    fn report(&self, ctx: &mut ModuleContext<'_>, azi: String, mut filtru: TaskFilter) -> CoreResult<report::Report> {
+        filtru.azi = Some(azi);
+        let tasks = self.tasks(ctx, filtru)?;
+        let mut names = BTreeMap::new();
+        for coll in [PEOPLE, PROJECTS] {
+            for r in ctx.scan(coll, |_| true)? {
+                let n = r
+                    .fields
+                    .get("nume")
+                    .and_then(Value::as_str)
+                    .unwrap_or_default()
+                    .to_string();
+                names.insert(r.id.to_string(), n);
+            }
+        }
+        Ok(report::build(tasks, names))
+    }
+
     fn reminders(&self, ctx: &mut ModuleContext<'_>, today: &str) -> CoreResult<()> {
         let now = dates::parse(today).ok_or_else(|| bad("ziua de azi", format!("„{today}” nu este o dată")))?;
         let (today, tomorrow, oldest) = (
@@ -760,6 +805,46 @@ impl Module for Planner {
                 live(ctx, TASKS, a.id, "taskul")?;
                 ctx.write(vec![Write::delete(TASKS, a.id).expect(a.version)])?;
                 Ok(json!({"deleted": a.id}))
+            }
+            "report" => {
+                let a: ReportArgs = args(command, a)?;
+                Ok(self.report(ctx, a.azi, a.filtru)?.json())
+            }
+            "export_report" => {
+                let a: ExportReport = args(command, a)?;
+                let r = self.report(ctx, a.azi, a.filtru)?;
+                let bytes = match a.format.as_str() {
+                    "xlsx" => {
+                        kgb_sheets::convert::to_xlsx(&r.book())
+                            .map_err(|e| bad("exportul", e))?
+                            .bytes
+                    }
+                    "csv" => {
+                        let which = a.tabel.as_deref().unwrap_or("taskuri");
+                        let sheet = r.csv_sheet(which).ok_or_else(|| {
+                            bad(
+                                "exportul",
+                                format!("tabelul „{which}” nu există (persoane, proiecte, taskuri)"),
+                            )
+                        })?;
+                        let style = match a.stil.as_deref().unwrap_or("ro") {
+                            "ro" => kgb_sheets::convert::CsvStyle::Ro,
+                            "standard" => kgb_sheets::convert::CsvStyle::Standard,
+                            other => {
+                                return Err(bad(
+                                    "exportul",
+                                    format!("stilul CSV „{other}” nu există (ro, standard)"),
+                                ));
+                            }
+                        };
+                        kgb_sheets::convert::to_csv(&sheet, style, true).map_err(|e| bad("exportul", e))?
+                    }
+                    other => return Err(bad("exportul", format!("formatul „{other}” nu există (xlsx, csv)"))),
+                };
+                // The user confirmed replacing an existing file in the save dialog.
+                ctx.export_bytes(&a.dest, &bytes, true)?;
+                ctx.log("raport exportat");
+                Ok(json!({"taskuri": r.tasks.len(), "octeti": bytes.len()}))
             }
             "summary" => {
                 let a: Summary = args(command, a)?;

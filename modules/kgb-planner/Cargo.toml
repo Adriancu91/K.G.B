@@ -9,6 +9,8 @@ description = "K.G.B. module: planner — tasks, projects, checklists and the te
 [dependencies]
 kgb-core.workspace = true
 kgb-store.workspace = true
+# The Sheets module's verified XLSX/CSV writers, for report exports (step 4.6).
+kgb-sheets.workspace = true
 serde.workspace = true
 serde_json.workspace = true
 uuid.workspace = true
