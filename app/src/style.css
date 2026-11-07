@@ -764,3 +764,81 @@ table.tasks tr.done td:first-child button {
 .repeats {
   cursor: help;
 }
+
+/* Notification centre (step 4.4). */
+.page-head {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.page-head h1 {
+  flex: 1;
+}
+.notif {
+  position: relative;
+}
+.notif .bell {
+  position: relative;
+  font-size: 1.3em;
+}
+.notif .bell .count {
+  position: absolute;
+  top: -4px;
+  right: -6px;
+  min-width: 18px;
+  padding: 0 4px;
+  border-radius: 9px;
+  background: #c62828;
+  color: #fff;
+  font-size: 11px;
+  line-height: 18px;
+  text-align: center;
+}
+.notif-panel {
+  position: absolute;
+  right: 0;
+  top: calc(100% + 6px);
+  z-index: 50;
+  width: min(420px, 90vw);
+  max-height: 70vh;
+  overflow: auto;
+  padding: 10px 12px;
+  border: 1px solid rgba(128, 128, 128, 0.35);
+  border-radius: 8px;
+  background: var(--bg, #fff);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.18);
+}
+.notif-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.notif-list li {
+  padding: 8px 6px;
+  border-top: 1px solid rgba(128, 128, 128, 0.2);
+  border-left: 3px solid transparent;
+}
+.notif-list li.unread {
+  border-left-color: #1e4fa8;
+}
+.notif-list li.unread .notif-title {
+  font-weight: 600;
+}
+.notif-list li.read {
+  opacity: 0.75;
+}
+.notif-list li.lvl-urgent {
+  border-left-color: #c62828;
+}
+.notif-text {
+  white-space: pre-wrap;
+  margin: 2px 0;
+}
+.badge.lvl-urgent {
+  background: #c62828;
+  color: #fff;
+}
+.badge.lvl-atentie {
+  background: #b35c00;
+  color: #fff;
+}

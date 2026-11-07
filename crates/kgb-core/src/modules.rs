@@ -23,6 +23,7 @@ use crate::error::{CoreError, CoreResult};
 use crate::files;
 use crate::identity;
 use crate::manifest::{Manifest, ModuleStatus};
+use crate::notifications;
 use crate::settings::{self, Settings};
 use crate::workspace::{Workspace, now_ms};
 
@@ -470,6 +471,12 @@ impl ModuleContext<'_> {
         }
     }
 
+    /// Whether the user granted `permission` (no audit entry; for optional
+    /// features such as notifications after an update added the permission).
+    pub fn has(&self, permission: &str) -> bool {
+        self.granted.contains(permission)
+    }
+
     fn require(&mut self, permission: &str) -> CoreResult<()> {
         if self.granted.contains(permission) {
             Ok(())
@@ -662,6 +669,25 @@ impl ModuleContext<'_> {
 
     /// Structured log line tagged with the module id (no permission needed:
     /// modules must use the core log instead of their own, Master Plan §4.1).
+    /// Sends a notification to the app's notification centre (permission
+    /// `notify.send`, D-043). Returns the id and whether it is new (a repeated
+    /// key returns the existing one). Every new notification is audited.
+    pub fn notify(&mut self, n: &notifications::Notice) -> CoreResult<(Uuid, bool)> {
+        self.require("notify.send")?;
+        let id = self.manifest.id.clone();
+        let (nid, new) = notifications::send(self.ws, &id, n)?;
+        if new {
+            audit(
+                self.ws,
+                &id,
+                "notify.send",
+                "ok",
+                &n.titlu.chars().take(120).collect::<String>(),
+            )?;
+        }
+        Ok((nid, new))
+    }
+
     pub fn log(&self, message: &str) {
         tracing::info!(module = %self.manifest.id, "{message}");
     }

@@ -10,6 +10,7 @@ use std::time::Instant;
 use kgb_core::identity::{self, DeviceIdentity};
 use kgb_core::log::{self, LogConfig, LogHandle};
 use kgb_core::modules::{self, Module, ModuleManager, ModuleView, PLANNED, PROFILES, Planned};
+use kgb_core::notifications::{self, NotificationView};
 use kgb_core::settings::{self, Settings};
 use kgb_core::workspace::{self, Workspace};
 use kgb_core::{CORE_VERSION, CoreError, profiles};
@@ -426,6 +427,38 @@ fn module_call(app: State<AppState>, id: String, command: String, args: Value) -
     })
 }
 
+#[derive(Serialize)]
+struct NotificationsReply {
+    items: Vec<NotificationView>,
+    unread: usize,
+}
+
+/// The notification centre (D-043): newest first, at most 100 shown.
+#[tauri::command]
+fn notifications_list(app: State<AppState>) -> CmdResult<NotificationsReply> {
+    with_session(&app, |s| {
+        Ok(NotificationsReply {
+            items: notifications::list(&s.ws, false, 100)?,
+            unread: notifications::unread_count(&s.ws)?,
+        })
+    })
+}
+
+#[tauri::command]
+fn notification_read(app: State<AppState>, id: uuid::Uuid) -> CmdResult<()> {
+    with_session(&app, |s| notifications::mark_read(&mut s.ws, id))
+}
+
+#[tauri::command]
+fn notifications_read_all(app: State<AppState>) -> CmdResult<usize> {
+    with_session(&app, |s| notifications::mark_all_read(&mut s.ws))
+}
+
+#[tauri::command]
+fn notifications_clear_read(app: State<AppState>) -> CmdResult<usize> {
+    with_session(&app, |s| notifications::clear_read(&mut s.ws))
+}
+
 /// Reads a file the user picked in the system dialog and hands it to the
 /// module's `import` command (name + base64 contents). The module never gets
 /// file system access itself; the size limit is the core's (64 MB).
@@ -580,6 +613,10 @@ fn main() {
             set_module_visible,
             module_call,
             module_import_file,
+            notifications_list,
+            notification_read,
+            notifications_read_all,
+            notifications_clear_read,
             diagnostics,
             export_diagnostics,
             data_info,

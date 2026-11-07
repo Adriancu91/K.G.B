@@ -7,6 +7,7 @@ import { PdfPage } from "./modules/pdf/PdfPage";
 import { SheetsPage } from "./modules/sheets/SheetsPage";
 import { ExtractPage } from "./modules/extract/ExtractPage";
 import { PlannerPage } from "./modules/planner/PlannerPage";
+import { NotificationBell } from "./components/Notifications";
 import { Catalog } from "./pages/Catalog";
 import { DataPage } from "./pages/DataPage";
 import { DiagnosticsPage } from "./pages/DiagnosticsPage";
@@ -211,7 +212,10 @@ export function App() {
         {!collapsed && <div className="resizer" onPointerDown={startDrag} title="Trage pentru a redimensiona" />}
       </aside>
       <main>
-        <h1>{current.label}</h1>
+        <div className="page-head">
+          <h1>{current.label}</h1>
+          <NotificationBell moduleName={(id) => modules.modules.find((m) => m.id === id)?.name ?? id} onError={setError} />
+        </div>
         {error && (
           <p className="error" role="alert">
             {error}{" "}

@@ -14,6 +14,7 @@ pub mod identity;
 pub mod log;
 pub mod manifest;
 pub mod modules;
+pub mod notifications;
 pub mod profiles;
 pub mod schema;
 pub mod settings;

@@ -54,6 +54,19 @@ export function Catalog(props: {
                 <dd>{m.records}</dd>
               </dl>
               {!m.compatible && <p className="error">Incompatibil cu această versiune a nucleului.</p>}
+              {m.enabled && m.permissions.some((p) => !p.granted) && (
+                <p className="warn">
+                  După actualizare, modulul cere și:{" "}
+                  {m.permissions
+                    .filter((p) => !p.granted)
+                    .map((p) => p.id)
+                    .join(", ")}
+                  . Până le acorzi, funcțiile care depind de ele nu rulează.{" "}
+                  <button className="link" onClick={() => setEnabling(m)}>
+                    Vezi și acordă…
+                  </button>
+                </p>
+              )}
               <div className="row">
                 {m.enabled ? (
                   <button onClick={() => setDisabling(m)}>Dezactivează</button>
@@ -94,8 +107,8 @@ export function Catalog(props: {
 
       {enabling && (
         <Confirm
-          title={`Activezi „${enabling.name}”?`}
-          confirmLabel="Acordă și activează"
+          title={enabling.enabled ? `Acorzi permisiunile noi pentru „${enabling.name}”?` : `Activezi „${enabling.name}”?`}
+          confirmLabel={enabling.enabled ? "Acordă" : "Acordă și activează"}
           onCancel={() => setEnabling(null)}
           onConfirm={() => {
             const m = enabling;
@@ -117,6 +130,7 @@ export function Catalog(props: {
                 {enabling.permissions.map((p) => (
                   <li key={p.id}>
                     <code>{p.id}</code> — {p.description}
+                    {enabling.enabled && !p.granted && <strong> (nouă)</strong>}
                   </li>
                 ))}
               </ul>

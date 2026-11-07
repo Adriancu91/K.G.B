@@ -106,3 +106,4 @@ Pragurile de performanță sunt PROPUSE în ETAPA0_PLAN.md §3.2 și devin ofici
   - Include Kanban și calendar: drag-and-drop simulat cu evenimentele reale ale browserului și butoanele ← →.
   - Verifică și datele după o oprire forțată.
   - Un task săptămânal marcat „Gata” creează apariția de săptămâna viitoare, cu checklistul debifat.
+  - Centrul de notificări: clopoțelul arată notificarea trimisă de Planificator; „Marchează citit” și „Șterge cele citite”.

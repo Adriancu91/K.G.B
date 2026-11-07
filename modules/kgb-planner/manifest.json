@@ -7,10 +7,12 @@
   "core": ">=0.1.0, <0.2.0",
   "status": "beta",
   "permissions": [
-    "storage.own"
+    "storage.own",
+    "notify.send"
   ],
   "services": [
     "storage",
+    "notify",
     "log"
   ],
   "data_types": [

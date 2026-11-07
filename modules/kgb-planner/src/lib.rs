@@ -24,6 +24,7 @@ use std::collections::BTreeMap;
 
 use kgb_core::manifest::Manifest;
 use kgb_core::modules::{Module, ModuleContext};
+use kgb_core::notifications::Notice;
 use kgb_core::workspace::now_ms;
 use kgb_core::{CoreError, CoreResult};
 use kgb_store::{Cond, Fields, Query, RecordState, Write};
@@ -224,6 +225,34 @@ fn next_occurrence(done: &Fields) -> Option<(Uuid, Fields)> {
     f.insert("finalizat_ms".into(), Value::Null);
     f.insert("urmator".into(), Value::Null);
     Some((Uuid::now_v7(), f))
+}
+
+/// The notification for a next occurrence in this batch (the second write).
+fn next_notice(batch: &[Write]) -> Option<Notice> {
+    let Some(Write::Put { id, fields, .. }) = batch.get(1) else {
+        return None;
+    };
+    let titlu = fields.get("titlu")?.as_str()?;
+    let termen = fields.get("termen")?.as_str().and_then(dates::parse)?;
+    Some(
+        Notice::new(
+            format!("Următorul: {titlu}"),
+            format!("Taskul se repetă; următoarea dată este {}.", termen.ro()),
+        )
+        .key(format!("urmator:{id}")),
+    )
+}
+
+/// Notifications are a convenience: the task is already saved, so a missing
+/// permission (granted before the module asked for it) or an error only
+/// skips the notification.
+fn announce(ctx: &mut ModuleContext<'_>, n: Option<Notice>) {
+    if let Some(n) = n
+        && ctx.has("notify.send")
+        && let Err(e) = ctx.notify(&n)
+    {
+        ctx.log(&format!("notificarea nu a fost trimisă: {e}"));
+    }
 }
 
 fn one_of(v: &str, allowed: &[&str], what: &str) -> CoreResult<()> {
@@ -446,7 +475,9 @@ impl Planner {
         // The task and its next occurrence (if any) in one atomic write.
         let mut batch = vec![w];
         batch.extend(extra);
+        let next = next_notice(&batch);
         ctx.write(batch)?;
+        announce(ctx, next);
         ctx.log("task salvat");
         Ok(view(&live(ctx, TASKS, id, "taskul")?))
     }
@@ -642,7 +673,9 @@ impl Module for Planner {
                     batch.push(Write::put(TASKS, nid, nf).expect(0));
                 }
                 batch.insert(0, Write::put(TASKS, a.id, f).expect(a.version));
+                let next = next_notice(&batch);
                 ctx.write(batch)?;
+                announce(ctx, next);
                 Ok(view(&live(ctx, TASKS, a.id, "taskul")?))
             }
             "task_delete" => {

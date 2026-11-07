@@ -109,6 +109,17 @@ export interface DataInfo {
   current: string;
 }
 
+export interface NotificationView {
+  id: string;
+  version: number;
+  module: string;
+  titlu: string;
+  text: string;
+  nivel: "info" | "atentie" | "urgent";
+  creat_ms: number;
+  citit_ms: number | null;
+}
+
 export const api = {
   appInfo: () => invoke<AppInfo>("app_info"),
   getSettings: () => invoke<SettingsReply>("get_settings"),
@@ -123,6 +134,10 @@ export const api = {
     invoke<T>("module_call", { id, command, args }),
   /** Hands a file the user picked to a module's `import` command. */
   importFile: <T>(id: string, path: string) => invoke<T>("module_import_file", { id, path }),
+  notifications: () => invoke<{ items: NotificationView[]; unread: number }>("notifications_list"),
+  notificationRead: (id: string) => invoke<void>("notification_read", { id }),
+  notificationsReadAll: () => invoke<number>("notifications_read_all"),
+  notificationsClearRead: () => invoke<number>("notifications_clear_read"),
   diagnostics: () => invoke<Diagnostics>("diagnostics"),
   exportDiagnostics: () => invoke<string>("export_diagnostics"),
   dataInfo: () => invoke<DataInfo>("data_info"),

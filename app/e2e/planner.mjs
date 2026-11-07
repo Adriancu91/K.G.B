@@ -187,6 +187,23 @@ try {
   check("„Gata” creează apariția de săptămâna viitoare, checklist debifat", occ.includes(want), JSON.stringify(occ));
   await p.screenshot(join(shots, "07-repetare-urmatorul.png"));
 
+  // Step 4.4: the planner announced the next occurrence; the bell shows it.
+  const bell = "document.querySelector('.notif .bell')";
+  await p.until(`${bell}?.getAttribute('aria-label') === 'Notificări: 1 necitite'`, 10000);
+  check("clopoțelul arată 1 notificare necitită", true);
+  await p.eval(`${bell}.click()`);
+  await p.until("!!document.querySelector('.notif-panel li')");
+  const first = await p.eval("document.querySelector('.notif-panel li').innerText");
+  check("notificarea spune ce urmează și de la ce modul", first.includes("Următorul: Raport săptămânal") && first.includes("Planificator"), first);
+  await p.screenshot(join(shots, "08-notificari.png"));
+  await p.click("", "button[aria-label='Marchează citit: Următorul: Raport săptămânal']");
+  await p.until(`${bell}.getAttribute('aria-label') === 'Notificări'`, 8000);
+  check("după „Marchează citit” nu mai e nimic necitit", !(await p.eval("!!document.querySelector('.notif .bell .count')")));
+  await p.click("Șterge cele citite", ".notif-panel button");
+  await p.until("document.querySelector('.notif-panel')?.innerText.includes('Nicio notificare')", 8000);
+  check("„Șterge cele citite” golește lista", true);
+  await p.eval(`${bell}.click()`);
+
   p.close();
   execFileSync("taskkill", ["/F", "/T", "/PID", String(proc.pid)], { stdio: "ignore" });
 } catch (e) {

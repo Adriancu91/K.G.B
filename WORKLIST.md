@@ -84,7 +84,7 @@ Interdicții permanente: fără baze de date (D-005, D-018), fără schimbări d
 - [x] 4.1 Modulul Planificator (beta) `kgb.planner`: taskuri (responsabil, proiect, termen, prioritate, stare, checklist), persoane (D-042), proiecte, listă cu filtre (persoană, stare, proiect, text, întârziate), sumar; 6 teste + e2e 8/8 (inclusiv după oprire forțată)
 - [x] 4.2 Kanban (drag-and-drop pe stări + butoane ← → pentru tastatură) și calendar (lună/săptămână, drag-and-drop pe zile mută termenul, + task nou pe o zi); filtru pe interval de date; e2e 12/12
 - [x] 4.3 Activități recurente (D-046): zilnic, săptămânal (pe zile), lunar, anual, la fiecare N, până la o dată; „Gata” creează următoarea apariție (checklist debifat, o singură dată); ziua 31 → ultima zi a lunii, 29 feb → 28 feb; 8 teste noi + e2e 14/14
-- [ ] 4.4 Notificări în nucleu + centrul de notificări (D-043)
+- [x] 4.4 Notificări în nucleu + centrul de notificări (D-043): `ctx.notify` cu permisiunea `notify.send` (refuz în jurnal fără ea), fără dubluri pe cheie, listă limitată la 500 (se șterg întâi cele citite); clopoțel cu numărul necitite, „Marchează citit”, „Șterge cele citite”; Planificatorul anunță următorul task dintr-o serie; catalogul arată permisiunile noi după actualizare; 5 teste noi + e2e
 - [ ] 4.5 Remindere: termene de taskuri, scadențe de facturi; notificări desktop (D-044)
 - [ ] 4.6 Rapoarte și export (CSV, XLSX)
 - [ ] 4.7 Spike S6 — generarea documentelor → D-045

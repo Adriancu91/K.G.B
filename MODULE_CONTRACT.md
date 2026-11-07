@@ -16,7 +16,7 @@
 | `core` | da | versiunile de nucleu compatibile, cerință semver (`>=0.1.0, <0.2.0`) |
 | `status` | da | `stable` · `beta` · `experimental` · `disabled` |
 | `permissions` | nu | doar din lista nucleului (mai jos) |
-| `services` | nu | `storage`, `settings`, `identity`, `files`, `log`; o permisiune cere serviciul ei |
+| `services` | nu | `storage`, `settings`, `identity`, `files`, `notify`, `log`; o permisiune cere serviciul ei |
 | `data_types` | nu | colecții logice `[a-z0-9_]+`; cer `storage.own`; fiecare poate avea o `schema` (mai jos) și `indexes` (câmpuri indexate, din schemă dacă există) |
 | `events.emits` / `events.listens` | nu | evenimentele emise încep cu `<id>.` |
 | `data_format` | da | formatul curent al datelor, de la 1 |
@@ -46,6 +46,7 @@ Nucleul verifică **fiecare scriere** a modulului. O înregistrare greșită e r
 | `settings.read` | citirea setărilor spațiului de lucru |
 | `identity.read` | numele proprietarului și amprenta dispozitivului |
 | `files.own` | Fișiere atașate proprii: `ctx.put_file/get_file/delete_file/list_files`. **Documente versionate** (Etapa 3, D-034): `ctx.import_document/save_document/read_document/document_versions/restore_document_version/list_documents/delete_document/export_document`. Limite și reguli: maximum 64 MB pe fișier; conținutul e verificat prin BLAKE3 la fiecare citire; un modul nu vede fișierele sau documentele altui modul |
+| `notify.send` | Notificări în centrul de notificări al aplicației (Etapa 4, D-043): `ctx.notify(&Notice)`, cu titlu (max. 120 caractere), text (max. 500), nivel (`info`, `atentie`, `urgent`) și cheie opțională: aceeași cheie de la același modul nu creează o a doua notificare cât timp prima există (și după repornire); o notificare ștearsă de utilizator nu mai blochează cheia, deci modulul își ține singur evidența a ce a anunțat. Fiecare notificare nouă e înregistrată în jurnal. Textul e afișat ca text simplu. `ctx.has("notify.send")` verifică fără să scrie un refuz în jurnal (util când o actualizare a adăugat permisiunea și utilizatorul nu a acordat-o încă) |
 
 În listă intră doar permisiuni pe care nucleul le verifică efectiv. Una nouă se adaugă împreună cu verificarea ei.
 

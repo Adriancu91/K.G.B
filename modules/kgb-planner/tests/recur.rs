@@ -11,7 +11,8 @@ fn setup() -> (tempfile::TempDir, Workspace, ModuleManager) {
     let tmp = tempfile::tempdir().unwrap();
     let mut ws = Workspace::create(&tmp.path().join("ws"), "T").unwrap();
     let mm = ModuleManager::new(vec![Box::new(Planner::new())], CORE_VERSION).unwrap();
-    mm.enable(&mut ws, ID, &["storage.own".into()]).unwrap();
+    mm.enable(&mut ws, ID, &["storage.own".into(), "notify.send".into()])
+        .unwrap();
     (tmp, ws, mm)
 }
 
@@ -138,4 +139,60 @@ fn until_ends_series_and_bad_rules_are_refused() {
     assert_eq!(p["serie"], Value::Null);
     status(&mut ws, &mm, &p, "gata");
     assert_eq!(all(&mut ws, &mm).len(), 2);
+}
+
+#[test]
+fn next_occurrence_is_announced_once() {
+    let (_t, mut ws, mm) = setup();
+    let t = call(
+        &mut ws,
+        &mm,
+        "task_save",
+        json!({"titlu": "Inventar", "termen": "2026-12-01", "recurenta": {"frecventa": "lunar"}}),
+    )
+    .unwrap();
+    let done = status(&mut ws, &mm, &t, "gata");
+    let re = status(&mut ws, &mm, &done, "in_lucru");
+    status(&mut ws, &mm, &re, "gata");
+    let list = kgb_core::notifications::list(&ws, false, 10).unwrap();
+    assert_eq!(list.len(), 1, "{list:?}");
+    assert_eq!(list[0].module, ID);
+    assert_eq!(list[0].titlu, "Următorul: Inventar");
+    assert!(list[0].text.contains("01.01.2027"), "{}", list[0].text);
+}
+
+#[test]
+fn without_notify_permission_the_task_still_repeats() {
+    let (_t, mut ws, mm) = setup();
+    // As on a computer where the module was enabled before it asked for
+    // notify.send: the stored grant has only storage.own.
+    let rec = ws
+        .store()
+        .scan(kgb_core::modules::MODULES_COLLECTION, |r| {
+            r.fields.get("module_id") == Some(&json!(ID))
+        })
+        .unwrap()
+        .remove(0);
+    let mut f = rec.fields.clone();
+    f.insert("granted".into(), json!(["storage.own"]));
+    ws.store_mut()
+        .write(vec![
+            kgb_store::Write::put(kgb_core::modules::MODULES_COLLECTION, rec.id, f).expect(rec.version),
+        ])
+        .unwrap();
+    let t = call(
+        &mut ws,
+        &mm,
+        "task_save",
+        json!({"titlu": "Inventar", "termen": "2026-12-01", "recurenta": {"frecventa": "lunar"}}),
+    )
+    .unwrap();
+    status(&mut ws, &mm, &t, "gata");
+    assert_eq!(all(&mut ws, &mm).len(), 2, "the next occurrence is still created");
+    assert!(kgb_core::notifications::list(&ws, false, 10).unwrap().is_empty());
+    let refused = kgb_core::modules::audit_log(&ws, 50)
+        .unwrap()
+        .iter()
+        .any(|e| e.get("outcome") == Some(&json!("refuzat")));
+    assert!(!refused, "no refusal noise: the module checks first");
 }
