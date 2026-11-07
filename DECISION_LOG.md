@@ -255,3 +255,12 @@ Deciziile DECIS se schimbă doar cu aprobarea explicită a proprietarului (Maste
 - **3.11:** proprietarul a trimis odată cu aprobarea fișiere reale: un PDF de tranzacție bancară, 4 registre Excel și poze ale unor documente. Ele conțin date reale, inclusiv personale.
   - Se folosesc **doar local** (`testdata/proprietar/`, ignorat de Git) și nu se publică.
   - Rezultatele se raportează doar agregat, fără conținut.
+
+### D-042 … D-047 — Etapa 4 (Organizare și productivitate)
+- **Data:** 7 nov. 2026 · **Statut:** PROPUS — detalii în `docs/ETAPA4_PLAN.md`
+- D-042: taskurile se atribuie unei liste locale de persoane; conturile și rolurile vin în Etapa 6;
+- D-043: notificările sunt un serviciu al nucleului (`ctx.notify`, permisiunea `notify.send`);
+- D-044: notificări desktop Windows doar cât rulează aplicația; fără serviciu de fundal sau email fără acord;
+- D-045: biblioteca pentru generarea documentelor, după spike-ul S6;
+- D-046: recurență cu reguli simple;
+- D-047: aranjamentul panourilor e salvat în setările spațiului de lucru.

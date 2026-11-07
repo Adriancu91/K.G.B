@@ -78,3 +78,18 @@ Interdicții permanente: fără baze de date (D-005, D-018), fără schimbări d
 - [x] 3.11 Fișiere reale ale proprietarului (doar local, D-041): PDF + 4 registre Excel; corectat: XML cu prefix de spațiu de nume și legături absolute (biblioteca de salvare vedea 0 foi), alarmă falsă la formatele de număr standard; 226/226 formule ca în Excel; pozele cer OCR
 - [x] 3.12 Raport Etapa 3 (`docs/ETAPA3_RAPORT.md`)
 - [x] 3.13 Poarta Etapei 3: aprobată (D-041)
+
+## Etapa 4 — pași (plan: `docs/ETAPA4_PLAN.md`)
+
+- [ ] 4.1 Modulul Planner (beta): taskuri, proiecte, checklist, persoane (D-042), vedere listă cu filtre
+- [ ] 4.2 Kanban (drag-and-drop) și calendar
+- [ ] 4.3 Activități recurente (D-046)
+- [ ] 4.4 Notificări în nucleu + centrul de notificări (D-043)
+- [ ] 4.5 Remindere: termene de taskuri, scadențe de facturi; notificări desktop (D-044)
+- [ ] 4.6 Rapoarte și export (CSV, XLSX)
+- [ ] 4.7 Spike S6 — generarea documentelor → D-045
+- [ ] 4.8 Bibliotecă de documente și modele (§6.5)
+- [ ] 4.9 Formulare
+- [ ] 4.10 Panouri drag-and-drop pe ecranul de start (D-047)
+- [ ] 4.11 Raport Etapa 4 (`docs/ETAPA4_RAPORT.md`)
+- [ ] 🔒 4.12 Poarta Etapei 4
