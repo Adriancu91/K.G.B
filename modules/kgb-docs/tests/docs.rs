@@ -58,8 +58,11 @@ fn built_in_models_generate_with_the_right_fields() {
             "Cerere",
             "Contract de prestări servicii",
             "Ofertă comercială",
+            "Ofertă comercială (PDF)",
             "Adeverință de salariat",
-            "Proces-verbal de recepție"
+            "Adeverință de salariat (PDF)",
+            "Proces-verbal de recepție",
+            "Proces-verbal de recepție (PDF)"
         ]
     );
     // Listing again does not add them twice.
@@ -69,7 +72,7 @@ fn built_in_models_generate_with_the_right_fields() {
             .as_array()
             .unwrap()
             .len(),
-        5
+        8
     );
 
     let c = model(&list, "Contract de prestări servicii").clone();

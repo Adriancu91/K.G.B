@@ -20,6 +20,7 @@
 
 pub mod fill;
 pub mod forms;
+pub mod pdf;
 
 use std::collections::{BTreeMap, BTreeSet};
 use std::path::PathBuf;
@@ -56,7 +57,7 @@ pub const COMPANY_FIELDS: [(&str, &str); 10] = [
     ("functie_reprezentant", "Funcția reprezentantului"),
 ];
 
-/// The built-in models (key, name, category, file).
+/// The built-in Word models (key, name, category, file).
 const BUILT_IN: [(&str, &str, &str, &[u8]); 5] = [
     (
         "cerere",
@@ -87,6 +88,27 @@ const BUILT_IN: [(&str, &str, &str, &[u8]); 5] = [
         "Proces-verbal de recepție",
         "tehnic",
         include_bytes!("../models/tehnic-pv-receptie.docx"),
+    ),
+];
+/// The built-in PDF models, written in Typst (step 4.8b; D-045).
+const BUILT_IN_PDF: [(&str, &str, &str, &str); 3] = [
+    (
+        "pdf-oferta",
+        "Ofertă comercială (PDF)",
+        "comercial",
+        include_str!("../models/pdf-oferta.typ"),
+    ),
+    (
+        "pdf-pv-receptie",
+        "Proces-verbal de recepție (PDF)",
+        "tehnic",
+        include_str!("../models/pdf-pv-receptie.typ"),
+    ),
+    (
+        "pdf-adeverinta-salariat",
+        "Adeverință de salariat (PDF)",
+        "hr",
+        include_str!("../models/pdf-adeverinta-salariat.typ"),
     ),
 ];
 const CATEGORIES: [&str; 5] = ["administrativ", "comercial", "hr", "tehnic", "altele"];
@@ -255,6 +277,25 @@ fn decode(data: &str) -> CoreResult<Vec<u8>> {
         .map_err(|_| bad("conținutul nu este valid (base64)"))
 }
 
+/// `docx` (Word) or `pdf` (built-in Typst model); older records are Word.
+fn format_of(r: &RecordState) -> String {
+    r.fields
+        .get("format")
+        .and_then(Value::as_str)
+        .unwrap_or("docx")
+        .to_string()
+}
+
+fn fields_of(r: &RecordState, data: &[u8]) -> CoreResult<BTreeSet<String>> {
+    if format_of(r) == "pdf" {
+        Ok(pdf::fields_in(
+            std::str::from_utf8(data).map_err(|_| bad("modelul PDF nu este text UTF-8"))?,
+        ))
+    } else {
+        fill::fields_in(data).map_err(bad)
+    }
+}
+
 /// A model must be a readable DOCX with at least one `{{field}}`.
 fn check_model(data: &[u8]) -> CoreResult<BTreeSet<String>> {
     let fields = fill::fields_in(data).map_err(bad)?;
@@ -276,16 +317,27 @@ impl Docs {
             .iter()
             .map(|r| s(r, "cheie"))
             .collect();
-        for (key, name, cat, data) in BUILT_IN {
+        let all = BUILT_IN.iter().map(|(k, n, c, d)| (*k, *n, *c, *d, "docx")).chain(
+            BUILT_IN_PDF
+                .iter()
+                .map(|(k, n, c, d)| (*k, *n, *c, d.as_bytes(), "pdf")),
+        );
+        for (key, name, cat, data, format) in all {
             if have.contains(key) {
                 continue;
             }
-            let d = ctx.import_document(&format!("{name}.docx"), data)?;
+            let file = if format == "pdf" {
+                format!("{name}.typ")
+            } else {
+                format!("{name}.docx")
+            };
+            let d = ctx.import_document(&file, data)?;
             let mut f = Fields::new();
             f.insert("nume".into(), json!(name));
             f.insert("categorie".into(), json!(cat));
             f.insert("sursa".into(), json!("inclus"));
             f.insert("cheie".into(), json!(key));
+            f.insert("format".into(), json!(format));
             f.insert("document".into(), json!(d.id.to_string()));
             f.insert("creat_ms".into(), json!(now_ms()));
             ctx.write(vec![Write::put(MODELS, Uuid::now_v7(), f).expect(0)])?;
@@ -296,14 +348,14 @@ impl Docs {
     fn model_view(&self, ctx: &mut ModuleContext<'_>, r: &RecordState) -> CoreResult<Value> {
         let doc = uuid_of(r, "document")?;
         let (v, data) = ctx.read_document(doc, None)?;
-        let fields: Vec<Value> = fill::fields_in(&data)
-            .map_err(bad)?
+        let fields: Vec<Value> = fields_of(r, &data)?
             .into_iter()
             .map(|f| json!({"camp": f, "eticheta": label(&f), "din_firma": f.starts_with("firma.")}))
             .collect();
         Ok(json!({
             "id": r.id, "version": r.version, "nume": s(r, "nume"), "categorie": s(r, "categorie"),
             "sursa": s(r, "sursa"), "document": doc, "versiune": v.number, "campuri": fields,
+            "format": format_of(r),
         }))
     }
 
@@ -313,7 +365,8 @@ impl Docs {
             .filter(|r| !r.deleted)
             .ok_or_else(|| bad("modelul nu mai există"))?;
         let (ver, data) = ctx.read_document(uuid_of(&m, "document")?, None)?;
-        let wanted = fill::fields_in(&data).map_err(bad)?;
+        let wanted = fields_of(&m, &data)?;
+        let format = format_of(&m);
 
         // Company fields come only from „Date firmă”.
         if let Some(k) = a.valori.keys().find(|k| k.starts_with("firma.")) {
@@ -342,23 +395,46 @@ impl Docs {
         if !missing.is_empty() {
             return Err(bad(format!("lipsesc valori pentru: {}", missing.join(", "))));
         }
-        let filled = fill::fill(&data, &values).map_err(bad)?;
-        // The check before keeping it: a readable DOCX, no field left, and
-        // every value present in the text.
-        let left = fill::fields_in(&filled.bytes).map_err(|e| bad(format!("verificarea a eșuat: {e}")))?;
-        if !left.is_empty() {
-            return Err(bad(format!(
-                "verificarea a eșuat: au rămas câmpuri ({})",
-                left.into_iter().collect::<Vec<_>>().join(", ")
-            )));
-        }
-        let text = fill::text(&filled.bytes).map_err(bad)?;
-        if let Some((k, _)) = values.iter().find(|(_, v)| !v.lines().all(|l| text.contains(l))) {
-            return Err(bad(format!(
-                "verificarea a eșuat: valoarea „{}” nu apare în document",
-                label(k)
-            )));
-        }
+        let (bytes, replaced) = if format == "pdf" {
+            let src = String::from_utf8(data).map_err(|_| bad("modelul PDF nu este text UTF-8"))?;
+            let pdf = pdf::render(&src, &values).map_err(|e| bad(format!("PDF-ul nu a putut fi generat: {e}")))?;
+            // The check before keeping it: the PDF opens and every word of
+            // every value is in its text (lines may wrap differently).
+            let text: String = pdf::text(&pdf)
+                .map_err(bad)?
+                .split_whitespace()
+                .collect::<Vec<_>>()
+                .join(" ");
+            if let Some((k, _)) = values
+                .iter()
+                .find(|(_, v)| !v.split_whitespace().all(|w| text.contains(w)))
+            {
+                return Err(bad(format!(
+                    "verificarea a eșuat: valoarea „{}” nu apare în PDF",
+                    label(k)
+                )));
+            }
+            (pdf, wanted.len())
+        } else {
+            let filled = fill::fill(&data, &values).map_err(bad)?;
+            // The check before keeping it: a readable DOCX, no field left, and
+            // every value present in the text.
+            let left = fill::fields_in(&filled.bytes).map_err(|e| bad(format!("verificarea a eșuat: {e}")))?;
+            if !left.is_empty() {
+                return Err(bad(format!(
+                    "verificarea a eșuat: au rămas câmpuri ({})",
+                    left.into_iter().collect::<Vec<_>>().join(", ")
+                )));
+            }
+            let text = fill::text(&filled.bytes).map_err(bad)?;
+            if let Some((k, _)) = values.iter().find(|(_, v)| !v.lines().all(|l| text.contains(l))) {
+                return Err(bad(format!(
+                    "verificarea a eșuat: valoarea „{}” nu apare în document",
+                    label(k)
+                )));
+            }
+            (filled.bytes, filled.replaced)
+        };
 
         let model_name = s(&m, "nume");
         let name = a
@@ -367,7 +443,7 @@ impl Docs {
             .filter(|n| !n.is_empty())
             .unwrap_or_else(|| model_name.clone());
         let name: String = name.chars().filter(|c| !"\\/:*?\"<>|".contains(*c)).take(150).collect();
-        let doc = ctx.import_document(&format!("{name}.docx"), &filled.bytes)?;
+        let doc = ctx.import_document(&format!("{name}.{format}"), &bytes)?;
         let mut f = Fields::new();
         f.insert("nume".into(), json!(name));
         f.insert("model".into(), json!(m.id.to_string()));
@@ -375,12 +451,13 @@ impl Docs {
         f.insert("model_versiune".into(), json!(ver.number));
         f.insert("document".into(), json!(doc.id.to_string()));
         f.insert("valori".into(), json!(values));
+        f.insert("format".into(), json!(format));
         f.insert("creat_ms".into(), json!(now_ms()));
         let id = Uuid::now_v7();
         ctx.write(vec![Write::put(GENERATED, id, f).expect(0)])?;
         ctx.log("document generat");
         Ok(
-            json!({"id": id, "document": doc.id, "nume": name, "inlocuiri": filled.replaced, "model_versiune": ver.number}),
+            json!({"id": id, "document": doc.id, "nume": name, "inlocuiri": replaced, "model_versiune": ver.number, "format": format}),
         )
     }
 }
@@ -509,6 +586,11 @@ impl Module for Docs {
                     .get(MODELS, a.id)?
                     .filter(|r| !r.deleted)
                     .ok_or_else(|| bad("modelul nu mai există"))?;
+                if format_of(&m) == "pdf" {
+                    return Err(bad(
+                        "modelele PDF incluse nu se înlocuiesc; folosește un model Word propriu",
+                    ));
+                }
                 let data = decode(&a.data)?;
                 check_model(&data)?;
                 let doc = uuid_of(&m, "document")?;
@@ -563,7 +645,12 @@ impl Module for Docs {
                     .filter(|r| !r.deleted)
                     .ok_or_else(|| bad("documentul nu mai există"))?;
                 let (_, data) = ctx.read_document(uuid_of(&r, "document")?, None)?;
-                Ok(json!({"text": fill::text(&data).map_err(bad)?}))
+                let text = if format_of(&r) == "pdf" {
+                    pdf::text(&data).map_err(bad)?
+                } else {
+                    fill::text(&data).map_err(bad)?
+                };
+                Ok(json!({"text": text}))
             }
             "export" => {
                 let a: Export = args(a)?;

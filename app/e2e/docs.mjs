@@ -52,9 +52,9 @@ try {
   await p.click("Acordă și activează");
   await p.until("[...document.querySelectorAll('nav .nav')].some(e => e.textContent.includes('Documente și modele'))");
   await p.click("Documente și modele", "nav .nav");
-  await p.until("document.querySelectorAll('.model-card').length === 5", 10000);
+  await p.until("document.querySelectorAll('.model-card').length === 8", 10000);
   const cats = await p.eval("[...document.querySelectorAll('.docs h2')].map(h => h.innerText)");
-  check("5 modele incluse, pe categorii", JSON.stringify(cats) === JSON.stringify(["Administrative", "Comerciale", "Resurse umane", "Tehnice"]), JSON.stringify(cats));
+  check("8 modele incluse (5 Word, 3 PDF), pe categorii", JSON.stringify(cats) === JSON.stringify(["Administrative", "Comerciale", "Resurse umane", "Tehnice"]), JSON.stringify(cats));
   await p.screenshot(join(shots, "01-modele.png"));
 
   // Company data.
@@ -70,7 +70,7 @@ try {
   check("datele firmei se salvează", true);
 
   // Generate a contract through the form.
-  await p.click("Modele (5)", ".sheet-tabs button");
+  await p.click("Modele (8)", ".sheet-tabs button");
   await p.eval("[...document.querySelectorAll('.model-card')].find(c => c.dataset.model === 'Contract de prestări servicii').querySelector('button.primary').click()");
   await p.until("!!document.querySelector('#gen-title')");
   const fromCompany = await p.eval("document.querySelector('.dialog fieldset')?.innerText ?? ''");
@@ -98,13 +98,29 @@ try {
   const head = readFileSync(dest).subarray(0, 2).toString("latin1");
   check("exportul .docx e un fișier Word", head === "PK" && gen[0].model_versiune === 1, `${gen[0].nume} · v${gen[0].model_versiune}`);
 
+  // Step 4.8b: a PDF from a built-in Typst model.
+  await p.click("Modele (8)", ".sheet-tabs button");
+  await p.eval("[...document.querySelectorAll('.model-card')].find(c => c.dataset.model === 'Ofertă comercială (PDF)').querySelector('button.primary').click()");
+  await p.until("!!document.querySelector('#gen-title')");
+  const pdfVals = { Număr: "7", Client: "Școala Gimnazială „Ion Creangă” Iași", Obiectul: "mentenanță", Valoarea: "1.673,14 lei", "Termen de livrare": "10 zile", "Condiții de plată": "ordin de plată", "Valabil până la": "30.11.2026" };
+  for (const [k, v] of Object.entries(pdfVals)) await p.fill(`.dialog input[aria-label='${k}']`, v);
+  await p.click("Generează documentul", ".dialog button");
+  await p.until("!!document.querySelector('.doc-preview pre') && document.querySelector('.doc-preview pre').innerText.includes('OFERTĂ')", 15000);
+  const pdfText = await p.eval("document.querySelector('.doc-preview pre').innerText.replace(/\\s+/g, ' ')");
+  check("PDF-ul din modelul Typst are valorile (text căutabil)", pdfText.includes("Școala Gimnazială „Ion Creangă” Iași") && pdfText.includes("1.673,14 lei") && pdfText.includes("RO12345678"), pdfText.slice(0, 120));
+  await p.screenshot(join(shots, "06-pdf.png"));
+  const gens = await invoke(p, "module_call", { id: "kgb.docs", command: "generated", args: {} });
+  const pdfDest = join(data, "oferta.pdf");
+  await invoke(p, "module_call", { id: "kgb.docs", command: "export", args: { id: gens[0].id, dest: pdfDest } });
+  check("exportul .pdf e un fișier PDF", readFileSync(pdfDest).subarray(0, 5).toString("latin1") === "%PDF-" && gens[0].format === "pdf");
+
   // Import an own Word model (the dialog's result is a path).
   const own = resolve("modules/kgb-docs/models/hr-adeverinta-salariat.docx");
   await invoke(p, "module_import_file", { id: "kgb.docs", path: own });
   // The import button reloads the page itself; here the command was called directly, so reopen the page.
   await p.click("Acasă", "nav .nav");
   await p.click("Documente și modele", "nav .nav");
-  await p.until("document.querySelectorAll('.model-card').length === 6", 8000);
+  await p.until("document.querySelectorAll('.model-card').length === 9", 8000);
   check("un model Word propriu se importă la „Altele”", await p.eval("[...document.querySelectorAll('.docs h2')].some(h => h.innerText === 'Altele')"));
 
   // Step 4.9: a form with text, number and list fields; a bad answer is refused.
@@ -150,9 +166,9 @@ try {
   stop(p);
   p = await start();
   await p.click("Documente și modele", "nav .nav");
-  await p.until("document.querySelectorAll('.model-card').length === 6", 10000);
+  await p.until("document.querySelectorAll('.model-card').length === 9", 10000);
   const tabs = await p.eval("[...document.querySelectorAll('.sheet-tabs button')].map(b => b.innerText).join(' | ')");
-  check("după repornire: modelele și documentul generat sunt acolo", tabs.includes("Modele (6)") && tabs.includes("Documente generate (1)"), tabs);
+  check("după repornire: modelele și documentul generat sunt acolo", tabs.includes("Modele (9)") && tabs.includes("Documente generate (2)"), tabs);
   const after = await invoke(p, "module_call", { id: "kgb.docs", command: "forms", args: {} });
   check("după repornire: formularul și răspunsul sunt acolo", after.length === 1 && after[0].raspunsuri === 1);
   stop(p);

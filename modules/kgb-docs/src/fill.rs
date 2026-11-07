@@ -101,7 +101,7 @@ pub fn fill(data: &[u8], values: &BTreeMap<String, String>) -> Result<Filled, St
 }
 
 /// Placeholder names: letters, digits, `_` and `.` (e.g. `firma.cui`).
-fn placeholders(text: &str) -> Vec<(usize, usize, String)> {
+pub fn placeholders(text: &str) -> Vec<(usize, usize, String)> {
     let mut out = Vec::new();
     let mut from = 0;
     while let Some(s) = text[from..].find("{{").map(|i| i + from) {

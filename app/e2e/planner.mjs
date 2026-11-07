@@ -144,7 +144,9 @@ try {
     p.eval(`!![...document.querySelectorAll(".cal-day[data-date='${iso}'] .cal-task")].find(x => x.innerText.includes(${JSON.stringify(title)}))`);
   await p.until(`!!document.querySelector(".cal-day[data-date='${nextWeek}']")`);
   check("taskul apare în calendar la termen", await cellHas(nextWeek, "Facturile lunii"));
-  const target = iso(new Date(now.getTime() + 8 * 86400000));
+  // A day in the same Monday–Sunday week as the due date (the week view shows one week).
+  const due = new Date(now.getTime() + 7 * 86400000);
+  const target = iso(new Date(due.getTime() + (due.getDay() === 0 ? -1 : 1) * 86400000));
   await drag("Facturile lunii", `.cal-day[data-date='${target}']`);
   await p.until(`!![...document.querySelectorAll(".cal-day[data-date='${target}'] .cal-task")].find(x => x.innerText.includes('Facturile lunii'))`, 8000);
   check("drag-and-drop în calendar mută termenul", !(await cellHas(nextWeek, "Facturile lunii")));

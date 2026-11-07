@@ -24,6 +24,8 @@ interface Model {
   nume: string;
   categorie: string;
   sursa: "inclus" | "importat";
+  /** `docx` (Word) or `pdf` (built-in Typst model). */
+  format: "docx" | "pdf";
   versiune: number;
   campuri: Field[];
 }
@@ -32,6 +34,7 @@ interface Generated {
   nume: string;
   model_nume: string;
   model_versiune: number;
+  format?: "docx" | "pdf";
   creat_ms: number;
 }
 interface Company {
@@ -231,7 +234,10 @@ export function DocsPage({ onError }: { onError: (e: string | null) => void }) {
                     <article key={m.id} className="card model-card" data-model={m.nume}>
                       <header>
                         <h3>{m.nume}</h3>
-                        <span className={`badge ${m.sursa === "inclus" ? "stable" : "beta"}`}>{m.sursa === "inclus" ? "inclus" : "importat"}</span>
+                        <span className="row">
+                          <span className="badge">{m.format === "pdf" ? "PDF" : "Word"}</span>
+                          <span className={`badge ${m.sursa === "inclus" ? "stable" : "beta"}`}>{m.sursa === "inclus" ? "inclus" : "importat"}</span>
+                        </span>
                       </header>
                       <p className="muted small">
                         Versiunea {m.versiune} · {m.campuri.length} câmpuri: {m.campuri.slice(0, 6).map((f) => f.eticheta).join(", ")}
@@ -303,14 +309,18 @@ export function DocsPage({ onError }: { onError: (e: string | null) => void }) {
                       className="link"
                       onClick={() =>
                         void run(async () => {
-                          const dest = await save({ defaultPath: `${g.nume}.docx`, filters: [{ name: "Word", extensions: ["docx"] }] });
+                          const pdf = g.format === "pdf";
+                          const dest = await save({
+                            defaultPath: `${g.nume}.${pdf ? "pdf" : "docx"}`,
+                            filters: [pdf ? { name: "PDF", extensions: ["pdf"] } : { name: "Word", extensions: ["docx"] }],
+                          });
                           if (!dest) return;
                           await api.moduleCall(ID, "export", { id: g.id, dest });
                           setNotice(`Salvat: ${dest}`);
                         })
                       }
                     >
-                      Exportă .docx…
+                      Exportă {g.format === "pdf" ? ".pdf" : ".docx"}…
                     </button>
                     <button className="danger-text" aria-label={`Șterge ${g.nume}`} onClick={() => void run(() => api.moduleCall(ID, "delete_generated", { id: g.id }))}>
                       Șterge
@@ -329,7 +339,7 @@ export function DocsPage({ onError }: { onError: (e: string | null) => void }) {
                 </button>
               </header>
               <pre>{preview.text}</pre>
-              <p className="muted small">Doar textul; aspectul complet îl vezi deschizând fișierul exportat în Word.</p>
+              <p className="muted small">Doar textul; aspectul complet îl vezi deschizând fișierul exportat.</p>
             </div>
           )}
         </>

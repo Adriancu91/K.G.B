@@ -62,3 +62,5 @@ Fișierul se verifică înainte de deschidere, la fel ca la foile de calcul: num
 2. **PDF:** **motorul WebView2 (D)**, pe care aplicația îl are deja. Nu adaugă nimic la installer, calitatea e bună și modelele sunt HTML. Rulează într-o fereastră ascunsă, separată, fără acces la comenzile aplicației, fără rețea, cu valorile puse doar ca text.
 3. **Typst (C)** rămâne alternativa documentată, dacă va fi nevoie de PDF-uri identice peste ani (arhivare) sau de paginare mai fină. Costul e de ~11,7 MB, iar decizia o ia proprietarul.
 4. **Verificarea fiecărui document generat:** DOCX-ul se recitește, iar PDF-ul se deschide cu verificarea strictă a modulului PDF și se caută în el valorile completate. Abia apoi documentul e salvat ca versiune nouă (D-034).
+
+**Decizia proprietarului (8 nov. 2026, D-045):** Typst. Aplicat la pasul 4.8b, cu fonturile Typst incluse (installer 21,8 MB).

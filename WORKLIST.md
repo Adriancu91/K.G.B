@@ -89,8 +89,21 @@ Interdicții permanente: fără baze de date (D-005, D-018), fără schimbări d
 - [x] 4.6 Rapoarte și export: fila „Rapoarte” în Planificator — pe persoane și pe proiecte, pe stări, cu întârziate și total, după filtrele alese; export XLSX (3 foi) sau CSV (stil românesc), recitit și verificat celulă cu celulă; un titlu care arată ca o formulă rămâne text; 2 teste noi (173) + e2e planner 22/22
 - [x] 4.7 Spike S6 — generarea documentelor → D-045 propus (`docs/spikes/S6_REZULTATE.md`): DOCX cu completator propriu (9/9; corpus 50 DOCX: 46 neschimbate, 4 refuzate, 0 prăbușiri; ~0,3 MB); PDF prin WebView2 (0 MB) sau Typst (+11,7 MB), ambele cu diacritice căutabile și valori tratate ca text
 - [x] 4.8 Bibliotecă de documente și modele (§6.5): modulul beta `kgb.docs` „Documente și modele” — 5 modele Word incluse (cerere, ofertă, contract de prestări servicii, adeverință de salariat, proces-verbal de recepție), import de modele proprii, câmpuri `{{…}}` (și când Word le taie în bucăți), date firmă completate o singură dată și folosite doar de acolo, valori lipsă refuzate, fiecare document generat verificat și păstrat cu modelul și versiunea lui; originalul modelului nu se schimbă; 3 teste (176 în total) + e2e 8/8
-- [ ] 🔒 4.8b Generare PDF din modele HTML prin WebView2 — așteaptă confirmarea D-045 de către proprietar
+- [x] 4.8b PDF din modele cu Typst (D-045, ales de proprietar): 3 modele PDF incluse (ofertă, proces-verbal de recepție, adeverință de salariat) cu aceleași câmpuri {{…}}; valorile intră ca text, nu ca cod; fonturile sunt în aplicație, deci același model și aceleași valori dau exact același PDF; PDF-ul e recitit și verificat înainte de salvare; installerul crește de la 8,4 la 21,8 MB; 1 test + e2e documente 15/15
 - [x] 4.9 Formulare (în modulul Documente și modele): câmpuri text, număr, dată, listă (obligatorii, limite, opțiuni); fiecare răspuns verificat după definiția formularului, cu toate problemele raportate deodată; un formular cu răspunsuri, modificat, primește o versiune nouă, iar răspunsurile vechi își păstrează versiunea; export XLSX/CSV recitit celulă cu celulă; 2 teste (178 în total) + e2e documente 13/13; erorile din ferestrele de editare (task, document, formular) apar acum în fereastră, nu în spatele ei
 - [x] 4.10 Panouri drag-and-drop pe ecranul de start (D-047): 5 panouri (de făcut azi, notificări necitite, documente recente, module active, despre versiune) mutate prin tragere de titlu sau cu ← →, redimensionate prin tragere de colț sau cu butoane (1–3 coloane × 1–3 rânduri), ascunse și aduse înapoi, „Aranjamentul inițial”; aranjamentul e salvat în setări (schema 2, migrare de la schema 1, validat); 1 test + e2e 7/7 (inclusiv după repornire forțată); regresie: planificator 22/22, documente 13/13, memento-uri 4/4, poartă 15/15, backup 8/8
 - [x] 4.11 Raport Etapa 4 (`docs/ETAPA4_RAPORT.md`) — propunere de poartă; CI-ul GitHub oprit de la 4.7 din cauza facturării contului (de rezolvat de proprietar)
-- [ ] 🔒 4.12 Poarta Etapei 4
+- [x] 4.12 Poarta Etapei 4: aprobată (D-048, 8 nov. 2026); PDF cu Typst
+
+## Etapa 5 — pași (plan: `docs/ETAPA5_PLAN.md`; decizii propuse D-049 … D-054)
+
+- [ ] 5.1 Modulul Business (beta), stocuri 1: produse, depozite, recepții și ieșiri (mișcări care nu se modifică), stoc pe depozit, stoc minim cu notificare
+- [ ] 5.2 Stocuri 2: transferuri, inventar, cost mediu ponderat (D-050), loturi și serii
+- [ ] 5.3 Parteneri și facturi emise: serii fără goluri (D-054), TVA pe linie (D-049), storno, chitanțe, factura PDF (Typst)
+- [ ] 5.4 Facturi primite și cheltuieli (și preluare din Extragere date prin export/import)
+- [ ] 5.5 Casă și bancă: registru de casă, extrase CSV, încasări și plăți legate de facturi, avansuri și deconturi
+- [ ] 5.6 Scadențar, fișa partenerului, memento-uri pentru scadențe
+- [ ] 5.7 Rapoarte: vânzări, cheltuieli, stoc valoric, profitabilitate simplă, export
+- [ ] 5.8 Audit și consistență: soldurile refăcute din istoric, exemple calculate de mână, 1.000 de operații aleatoare
+- [ ] 5.9 Raport Etapa 5 (`docs/ETAPA5_RAPORT.md`)
+- [ ] 🔒 5.10 Poarta Etapei 5

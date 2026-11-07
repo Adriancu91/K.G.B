@@ -1,6 +1,6 @@
 # K.G.B. — Etapa 4 (Organizare și productivitate): raport și propunere de poartă
 
-**Data:** 7 nov. 2026 · **Statut:** PROPUS — așteaptă aprobarea proprietarului (pasul 🔒 4.12).
+**Data:** 7 nov. 2026 · **Statut:** **APROBAT** de proprietar (D-048, „aprob”), pe 8 nov. 2026. Pentru PDF din modele proprietarul a ales Typst (D-045).
 **Poarta cerută de Master Plan §13:** utilizatorul poate **crea, atribui, urmări și raporta** activități.
 **Plan:** `docs/ETAPA4_PLAN.md` · **Spike S6:** `docs/spikes/S6_REZULTATE.md`
 
@@ -80,3 +80,10 @@ Pe lângă poartă, etapa a mai adus documentele și formularele cerute de Maste
 | D-045 | PDF din modele: **motorul Edge** (0 MB, deja în aplicație) sau **Typst** (+12 MB, PDF identic peste ani)? | Motorul Edge; Typst doar dacă e nevoie de arhivare pe termen lung |
 | CI | Verifici facturarea GitHub (Settings → Billing & plans), ca verificările automate să ruleze din nou? Repo-ul e privat, iar minutele gratuite pentru Actions sunt limitate. | Da. Alternativ, repo-ul ar putea deveni public, dar nu recomand, codul e al firmei |
 | Poartă | Considerăm Etapa 4 încheiată și trecem la **Etapa 5 (Business)**? | Da, după D-045 și 4.8b, sau cu 4.8b mutat la începutul Etapei 5 |
+
+## După aprobare: pasul 4.8b (PDF cu Typst)
+- **Ce:** 3 modele PDF incluse (ofertă comercială, proces-verbal de recepție, adeverință de salariat), cu aceleași câmpuri `{{…}}` ca modelele Word. Valorile intră ca text, nu pot rula cod, iar modelul nu poate citi fișiere de pe calculator.
+- **Același model și aceleași valori dau exact același PDF**, octet cu octet, pentru că fonturile sunt incluse în aplicație. PDF-ul e recitit și verificat (fiecare valoare apare în text) înainte de salvare.
+- **Cost:** installerul crește de la 8,4 la **21,8 MB**, iar programul de la 30 la 73 MB (Typst cu fonturile lui).
+- **Limită:** modelele PDF proprii nu se pot importa; un model Typst e un mic program și ar putea rula la nesfârșit. Modelele proprii rămân fișiere Word.
+- **Teste:** 1 test nou; documente și formulare 15/15, ecran de start 7/7, Planificator 22/22 în fereastra reală. Testul Planificatorului depindea de ziua săptămânii (o duminică muta ziua țintă în săptămâna următoare); corectat.

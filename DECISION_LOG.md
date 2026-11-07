@@ -257,10 +257,24 @@ Deciziile DECIS se schimbă doar cu aprobarea explicită a proprietarului (Maste
   - Rezultatele se raportează doar agregat, fără conținut.
 
 ### D-042 … D-047 — Etapa 4 (Organizare și productivitate)
-- **Data:** 7 nov. 2026 · **Statut:** PROPUS — detalii în `docs/ETAPA4_PLAN.md`
+- **Data:** 7 nov. 2026 · **Statut:** DECIS (confirmate la poarta Etapei 4, D-048) — detalii în `docs/ETAPA4_PLAN.md`
 - D-042: taskurile se atribuie unei liste locale de persoane; conturile și rolurile vin în Etapa 6;
 - D-043: notificările sunt un serviciu al nucleului (`ctx.notify`, permisiunea `notify.send`);
 - D-044: notificări desktop Windows doar cât rulează aplicația; fără serviciu de fundal sau email fără acord;
-- D-045: generarea documentelor — propus după S6: DOCX cu completator propriu, PDF prin WebView2 (Typst ca alternativă, +11,7 MB);
+- D-045: generarea documentelor — DOCX cu completator propriu; **PDF cu Typst** (ales de proprietar pe 8 nov. 2026, „Typst”, în locul WebView2 recomandat: PDF-uri identice peste ani, cu prețul de ~+11,7 MB la installer);
 - D-046: recurență cu reguli simple;
 - D-047: aranjamentul panourilor e salvat în setările spațiului de lucru (aplicat la 4.10: setări schema 2, migrare automată de la schema 1).
+
+### D-048 — Poarta Etapei 4
+- **Data:** 8 nov. 2026 · **Statut:** DECIS · **Aprobat de:** proprietar („aprob”), ca răspuns la `docs/ETAPA4_RAPORT.md`.
+- **Conținut:** Etapa 4 se încheie; D-042 … D-047 sunt confirmate, iar pentru D-045 proprietarul a ales **Typst** pentru PDF. Pasul 4.8b (PDF din modele) se face cu Typst. **Începe Etapa 5** (Business).
+- **De rezolvat de proprietar:** facturarea GitHub (CI oprit de la pasul 4.7).
+
+### D-049 … D-054 — Etapa 5 (Business)
+- **Data:** 8 nov. 2026 · **Statut:** PROPUS — detalii în `docs/ETAPA5_PLAN.md`, de confirmat la poarta Etapei 5
+- D-049: sume în bani (numere întregi), cantități cu 3 zecimale fixe, TVA pe linie rotunjit la ban; doar RON la început;
+- D-050: costul stocului — cost mediu ponderat, pe depozit;
+- D-051: documentele înregistrate nu se modifică; corecturile se fac prin storno, vizibil;
+- D-052: „evidență primară”, nu contabilitate certificată; cotele de TVA se pot configura, cu dată de început (implicit 21%, 11%, 0%, de confirmat de proprietar sau de contabil); e-Factura și SAF-T nu fac parte din Etapa 5;
+- D-053: un singur modul „Business” pentru stocuri și financiar;
+- D-054: facturi pe serii, cu numere consecutive, fără goluri și fără refolosire.
