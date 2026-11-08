@@ -86,6 +86,51 @@ export interface ModulesReply {
   modules: ModuleView[];
   planned: Planned[];
   hidden: string[];
+  /** What the person on this PC may do per module (Etapa 6, D-056). */
+  access: Record<string, Access>;
+  /** Whether the person on this PC manages modules and the organization. */
+  admin: boolean;
+}
+
+export type Access = "niciunul" | "citire" | "scriere";
+export const ACCESS_LABEL: Record<Access, string> = { niciunul: "fără acces", citire: "doar citire", scriere: "scriere" };
+
+export interface Role {
+  id: string;
+  name: string;
+  builtin: boolean;
+  admin: boolean;
+  default: Access;
+  modules: Record<string, Access>;
+  version: number;
+}
+
+export interface Member {
+  id: string;
+  name: string;
+  role: string;
+  devices: string[];
+  active: boolean;
+  created_ms: number;
+  version: number;
+}
+
+export interface OrgReply {
+  organization: { name: string; created_ms: number; version: number } | null;
+  current: { member: Member; role: Role } | null;
+  roles: Role[];
+  members: Member[];
+  modules: Array<[string, string]>;
+  fingerprint: string;
+  owner_name: string | null;
+}
+
+export interface RoleInput {
+  id?: string;
+  name: string;
+  default: Access;
+  modules: Record<string, Access>;
+  version: number;
 }
 
 export interface Diagnostics {
@@ -140,6 +185,15 @@ export const api = {
   setModuleVisible: (id: string, visible: boolean) => invoke<void>("set_module_visible", { id, visible }),
   moduleCall: <T>(id: string, command: string, args: Record<string, unknown> = {}) =>
     invoke<T>("module_call", { id, command, args }),
+  org: () => invoke<OrgReply>("org_info"),
+  orgCreate: (name: string, admin: string) => invoke<void>("org_create", { name, admin }),
+  orgRename: (name: string, version: number) => invoke<number>("org_rename", { name, version }),
+  memberAdd: (name: string, role: string) => invoke<string>("org_member_add", { name, role }),
+  memberUpdate: (id: string, name: string, role: string, version: number) =>
+    invoke<number>("org_member_update", { id, name, role, version }),
+  memberRemove: (id: string, version: number) => invoke<void>("org_member_remove", { id, version }),
+  roleSave: (role: RoleInput) => invoke<string>("org_role_save", { role }),
+  roleDelete: (id: string) => invoke<void>("org_role_delete", { id }),
   /** Hands a file the user picked to a module's `import` command. */
   importFile: <T>(id: string, path: string) => invoke<T>("module_import_file", { id, path }),
   /** Same, for another module command with extra arguments (e.g. the bank account). */

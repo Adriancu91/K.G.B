@@ -106,7 +106,12 @@ impl fmt::Display for CoreError {
                 permission,
                 detail,
             } => {
-                write!(f, "modulul {module} nu are permisiunea {permission}: {detail}")
+                if permission == "rol" {
+                    // The person's role (D-056), not a module permission.
+                    write!(f, "{detail}")
+                } else {
+                    write!(f, "modulul {module} nu are permisiunea {permission}: {detail}")
+                }
             }
             CoreError::Invalid { what, detail } => write!(f, "{what}: {detail}"),
         }

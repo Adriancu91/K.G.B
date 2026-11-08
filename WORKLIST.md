@@ -111,7 +111,7 @@ Interdicții permanente: fără baze de date (D-005, D-018), fără schimbări d
 
 ## Etapa 6 — pași (plan: `docs/ETAPA6_PLAN.md`; decizii propuse D-056 … D-060; întâi partea care merge pe un singur PC)
 
-- [ ] 6.1 Organizație și roluri pe module (D-056); ecranul „Organizație”
+- [x] 6.1 Organizație și roluri pe module (D-056): fără organizație nimic nu se schimbă (o persoană, acces total); primul administrator creează organizația, iar acest PC devine dispozitivul lui; roluri implicite Administrator, Membru (fără Business), Doar citire, plus roluri proprii cu „fără acces / doar citire / scriere” pe fiecare modul; rolul se aplică într-un singur loc, la apelul modulului (fără acces = modulul nu se deschide și dispare din meniu; doar citire = orice scriere refuzată și trecută în jurnal); activarea modulelor și organizația doar pentru administratori; organizația nu rămâne niciodată fără administrator; ecranul „Organizație”; 3 teste + e2e org 11/11
 - [ ] 6.2 Invitații (expirare, o singură folosire, fără chei private) și aprobarea dispozitivelor; registru de membri semnat (D-058)
 - [ ] 6.3 Protocolul de sincronizare, independent de rețea (D-057), doar datele permise de rol (D-059)
 - [ ] 6.4 Conflicte în aplicație; decizia ajunge pe toate dispozitivele

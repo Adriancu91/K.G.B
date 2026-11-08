@@ -15,6 +15,7 @@ import { DataPage } from "./pages/DataPage";
 import { DiagnosticsPage } from "./pages/DiagnosticsPage";
 import { Home } from "./pages/Home";
 import { SettingsPage } from "./pages/SettingsPage";
+import { OrgPage } from "./pages/OrgPage";
 
 /// Interfaces of the built-in modules, by module id.
 const MODULE_PAGES: Record<string, ComponentType<{ onError: (e: string | null) => void }>> = {
@@ -102,11 +103,16 @@ export function App() {
   const s = settings?.settings;
   const nav: NavItem[] = [{ id: "home", label: "Acasă" }];
   for (const m of modules?.modules ?? []) {
-    if (m.enabled && !modules?.hidden.includes(m.id)) {
-      nav.push({ id: m.id, label: m.name, badge: m.status === "experimental" ? "exp." : undefined });
+    const access = modules?.access[m.id] ?? "scriere";
+    if (m.enabled && !modules?.hidden.includes(m.id) && access !== "niciunul") {
+      nav.push({
+        id: m.id,
+        label: m.name,
+        badge: access === "citire" ? "citire" : m.status === "experimental" ? "exp." : undefined,
+      });
     }
   }
-  nav.push({ id: "catalog", label: "Catalog module" }, { id: "settings", label: "Setări" }, { id: "data", label: "Date și backup" }, { id: "diagnostics", label: "Diagnostic" });
+  nav.push({ id: "catalog", label: "Catalog module" }, { id: "org", label: "Organizație" }, { id: "settings", label: "Setări" }, { id: "data", label: "Date și backup" }, { id: "diagnostics", label: "Diagnostic" });
 
   // If the open module was disabled or hidden, fall back to the start page.
   useEffect(() => {
@@ -185,7 +191,7 @@ export function App() {
     <div className="shell" style={{ gridTemplateColumns: collapsed ? "48px 1fr" : `${width}px 1fr` }}>
       {info.pre_release && (
         <div className="banner">
-          Versiune de dinainte de lansare (Etapa 5 în lucru). Nu folosi încă pentru date importante.
+          Versiune de dinainte de lansare (Etapa 6 în lucru). Nu folosi încă pentru date importante.
         </div>
       )}
       <aside className={collapsed ? "collapsed" : undefined}>
@@ -218,6 +224,11 @@ export function App() {
       <main>
         <div className="page-head">
           <h1>{current.label}</h1>
+          {modules.access[current.id] === "citire" && (
+            <span className="badge planned" title="Rolul tău poate doar citi în acest modul">
+              doar citire
+            </span>
+          )}
           <NotificationBell moduleName={(id) => modules.modules.find((m) => m.id === id)?.name ?? id} onError={setError} />
         </div>
         {error && (
@@ -235,6 +246,7 @@ export function App() {
         {page === "settings" && (
           <SettingsPage reply={settings} info={info} onSave={saveSettings} onInfoChanged={loadInfo} onError={setError} />
         )}
+        {page === "org" && <OrgPage onError={setError} onChanged={() => void loadModules()} />}
         {page === "diagnostics" && <DiagnosticsPage onError={setError} />}
         {page === "data" && <DataPage onError={setError} onSwitched={() => window.location.reload()} />}
         {ModulePage && <ModulePage onError={setError} />}

@@ -11,6 +11,7 @@ use kgb_core::identity::{self, DeviceIdentity};
 use kgb_core::log::{self, LogConfig, LogHandle};
 use kgb_core::modules::{self, Module, ModuleManager, ModuleView, PLANNED, PROFILES, Planned};
 use kgb_core::notifications::{self, NotificationView};
+use kgb_core::org::{self, Access};
 use kgb_core::settings::{self, Settings};
 use kgb_core::workspace::{self, Workspace};
 use kgb_core::{CORE_VERSION, CoreError, profiles};
@@ -389,28 +390,47 @@ struct ModulesReply {
     planned: &'static [Planned],
     /// Ids hidden in the active profile.
     hidden: Vec<String>,
+    /// What the person on this PC may do per module (D-056); every module
+    /// has "scriere" when there is no organization.
+    access: std::collections::BTreeMap<String, Access>,
+    /// Whether the person on this PC manages modules and the organization.
+    admin: bool,
 }
 
 #[tauri::command]
 fn list_modules(app: State<AppState>) -> CmdResult<ModulesReply> {
     with_session(&app, |s| {
         let profile = settings::load(s.ws.store())?.settings.profile;
+        let fp = s.device.fingerprint();
+        let modules = s.mm.list(&s.ws, PRE_RELEASE)?;
+        let mut access = std::collections::BTreeMap::new();
+        for m in &modules {
+            access.insert(m.id.clone(), org::access(s.ws.store(), Some(&fp), &m.id)?.0);
+        }
         Ok(ModulesReply {
-            modules: s.mm.list(&s.ws, PRE_RELEASE)?,
+            modules,
             planned: PLANNED,
             hidden: profiles::hidden(s.ws.store(), &profile)?.into_iter().collect(),
+            access,
+            admin: org::require_admin(s.ws.store(), Some(&fp), "").is_ok(),
         })
     })
 }
 
 #[tauri::command]
 fn enable_module(app: State<AppState>, id: String, grant: Vec<String>) -> CmdResult<()> {
-    with_session(&app, |s| s.mm.enable(&mut s.ws, &id, &grant))
+    with_session(&app, |s| {
+        org::require_admin(s.ws.store(), Some(&s.device.fingerprint()), "activarea modulelor")?;
+        s.mm.enable(&mut s.ws, &id, &grant)
+    })
 }
 
 #[tauri::command]
 fn disable_module(app: State<AppState>, id: String) -> CmdResult<()> {
-    with_session(&app, |s| s.mm.disable(&mut s.ws, &id))
+    with_session(&app, |s| {
+        org::require_admin(s.ws.store(), Some(&s.device.fingerprint()), "dezactivarea modulelor")?;
+        s.mm.disable(&mut s.ws, &id)
+    })
 }
 
 #[tauri::command]
@@ -427,6 +447,96 @@ fn module_call(app: State<AppState>, id: String, command: String, args: Value) -
         let fp = s.device.fingerprint();
         s.mm.call(&mut s.ws, Some(&fp), &id, &command, args)
     })
+}
+
+// ---------- organization (Etapa 6, step 6.1, D-056) ----------
+
+#[derive(Serialize)]
+struct OrgReply {
+    organization: Option<org::Organization>,
+    /// The person on this PC (None without an organization).
+    current: Option<org::Current>,
+    roles: Vec<org::Role>,
+    members: Vec<org::Member>,
+    /// Modules a role can be given access to: (id, name).
+    modules: Vec<(String, String)>,
+    fingerprint: String,
+    owner_name: Option<String>,
+}
+
+#[tauri::command]
+fn org_info(app: State<AppState>) -> CmdResult<OrgReply> {
+    with_session(&app, |s| {
+        let fp = s.device.fingerprint();
+        Ok(OrgReply {
+            organization: org::organization(s.ws.store())?,
+            current: org::current(s.ws.store(), &fp)?,
+            roles: org::roles(s.ws.store())?,
+            members: org::members(s.ws.store(), false)?,
+            modules: s
+                .mm
+                .list(&s.ws, PRE_RELEASE)?
+                .into_iter()
+                .map(|m| (m.id, m.name))
+                .collect(),
+            fingerprint: fp,
+            owner_name: identity::owner(s.ws.store())?.map(|o| o.display_name),
+        })
+    })
+}
+
+#[tauri::command]
+fn org_create(app: State<AppState>, name: String, admin: String) -> CmdResult<()> {
+    with_session(&app, |s| {
+        let fp = s.device.fingerprint();
+        org::create(s.ws.store_mut(), &name, &admin, &fp)?;
+        modules::audit(&mut s.ws, "core.org", "creare organizație", "ok", &name)
+    })
+}
+
+/// Runs an organization change after checking that the person on this PC is
+/// an administrator; every change is written to the audit journal.
+fn org_admin<T>(app: &State<AppState>, what: &str, f: impl FnOnce(&mut Session, &str) -> Result<T, CoreError>) -> CmdResult<T> {
+    with_session(app, |s| {
+        let fp = s.device.fingerprint();
+        org::require_admin(s.ws.store(), Some(&fp), "organizația")?;
+        let r = f(s, &fp)?;
+        modules::audit(&mut s.ws, "core.org", what, "ok", "")?;
+        Ok(r)
+    })
+}
+
+#[tauri::command]
+fn org_rename(app: State<AppState>, name: String, version: u64) -> CmdResult<u64> {
+    org_admin(&app, "redenumire organizație", |s, _| org::rename(s.ws.store_mut(), &name, version))
+}
+
+#[tauri::command]
+fn org_member_add(app: State<AppState>, name: String, role: uuid::Uuid) -> CmdResult<uuid::Uuid> {
+    org_admin(&app, "persoană adăugată", |s, _| org::add_member(s.ws.store_mut(), &name, role))
+}
+
+#[tauri::command]
+fn org_member_update(app: State<AppState>, id: uuid::Uuid, name: String, role: uuid::Uuid, version: u64) -> CmdResult<u64> {
+    org_admin(&app, "persoană modificată", |s, _| org::update_member(s.ws.store_mut(), id, &name, role, version))
+}
+
+#[tauri::command]
+fn org_member_remove(app: State<AppState>, id: uuid::Uuid, version: u64) -> CmdResult<()> {
+    org_admin(&app, "persoană scoasă", |s, fp| org::remove_member(s.ws.store_mut(), id, Some(fp), version))
+}
+
+#[tauri::command]
+fn org_role_save(app: State<AppState>, role: org::RoleInput) -> CmdResult<uuid::Uuid> {
+    org_admin(&app, "rol salvat", |s, _| {
+        let known: Vec<String> = s.mm.list(&s.ws, PRE_RELEASE)?.into_iter().map(|m| m.id).collect();
+        org::save_role(s.ws.store_mut(), role, &known)
+    })
+}
+
+#[tauri::command]
+fn org_role_delete(app: State<AppState>, id: uuid::Uuid) -> CmdResult<()> {
+    org_admin(&app, "rol șters", |s, _| org::delete_role(s.ws.store_mut(), id))
 }
 
 #[derive(Serialize)]
@@ -452,7 +562,10 @@ fn notifications_list(app: State<AppState>) -> CmdResult<NotificationsReply> {
 /// assist / „Nu deranja”) still decide whether they pop up.
 #[tauri::command]
 fn reminders_tick(app: State<AppState>, handle: tauri::AppHandle, azi: String) -> CmdResult<usize> {
-    let new = with_session(&app, |s| s.mm.remind_all(&mut s.ws, &azi))?;
+    let new = with_session(&app, |s| {
+        let fp = s.device.fingerprint();
+        s.mm.remind_for(&mut s.ws, Some(&fp), &azi)
+    })?;
     desktop_notify(&handle, &new);
     Ok(new.len())
 }
@@ -669,6 +782,14 @@ fn main() {
             disable_module,
             set_module_visible,
             module_call,
+            org_info,
+            org_create,
+            org_rename,
+            org_member_add,
+            org_member_update,
+            org_member_remove,
+            org_role_save,
+            org_role_delete,
             module_import_file,
             module_import_file_with,
             notifications_list,

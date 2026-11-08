@@ -24,6 +24,7 @@ use crate::files;
 use crate::identity;
 use crate::manifest::{Manifest, ModuleStatus};
 use crate::notifications;
+use crate::org::{self, Access};
 use crate::settings::{self, Settings};
 use crate::workspace::{Workspace, now_ms};
 
@@ -342,6 +343,9 @@ impl ModuleManager {
                     granted: &st.granted,
                     ws: &mut *ws,
                     fingerprint: None,
+                    // Migrations convert the module's own data, whatever the role.
+                    access: Access::Scriere,
+                    role: String::new(),
                 };
                 m.migrate(&mut ctx, from)?;
             }
@@ -389,6 +393,27 @@ impl ModuleManager {
     /// returns the notifications they created. A module that fails or panics
     /// is skipped (logged); the others still run.
     pub fn remind_all(&self, ws: &mut Workspace, today: &str) -> CoreResult<Vec<notifications::NotificationView>> {
+        self.remind_inner(ws, None, today)
+    }
+
+    /// Like [`remind_all`](Self::remind_all), for the person on the device
+    /// with `fingerprint`: modules their role cannot open send nothing, and a
+    /// read-only role's reminders cannot write (Etapa 6, D-056).
+    pub fn remind_for(
+        &self,
+        ws: &mut Workspace,
+        fingerprint: Option<&str>,
+        today: &str,
+    ) -> CoreResult<Vec<notifications::NotificationView>> {
+        self.remind_inner(ws, Some(fingerprint), today)
+    }
+
+    fn remind_inner(
+        &self,
+        ws: &mut Workspace,
+        person: Option<Option<&str>>,
+        today: &str,
+    ) -> CoreResult<Vec<notifications::NotificationView>> {
         let before: BTreeSet<Uuid> = notifications::list(ws, false, usize::MAX)?
             .into_iter()
             .map(|n| n.id)
@@ -399,11 +424,20 @@ impl ModuleManager {
             if !st.enabled || !st.granted.contains("notify.send") {
                 continue;
             }
+            let (access, role) = match person {
+                Some(fp) => org::access(ws.store(), fp, &id)?,
+                None => (Access::Scriere, String::new()),
+            };
+            if access == Access::Niciunul {
+                continue;
+            }
             let mut ctx = ModuleContext {
                 manifest: m.manifest(),
                 granted: &st.granted,
                 ws: &mut *ws,
-                fingerprint: None,
+                fingerprint: person.flatten(),
+                access,
+                role,
             };
             match std::panic::catch_unwind(std::panic::AssertUnwindSafe(|| m.remind(&mut ctx, today))) {
                 Ok(Ok(())) => {}
@@ -434,11 +468,24 @@ impl ModuleManager {
             audit(ws, id, command, "refuzat", "modulul nu este activat")?;
             return Err(CoreError::ModuleNotEnabled(id.into()));
         }
+        // The person's role (Etapa 6, D-056). Without an organization the
+        // workspace belongs to one person and everything is allowed.
+        let (access, role) = org::access(ws.store(), fingerprint, id)?;
+        if access == Access::Niciunul {
+            audit(ws, id, command, "refuzat", &format!("rol fără acces: {role}"))?;
+            return Err(CoreError::PermissionDenied {
+                module: id.into(),
+                permission: "rol".into(),
+                detail: format!("rolul tău ({role}) nu are acces la acest modul"),
+            });
+        }
         let mut ctx = ModuleContext {
             manifest: m.manifest(),
             granted: &st.granted,
             ws,
             fingerprint,
+            access,
+            role,
         };
         // A module that panics (for example a library on a hostile file) must
         // never close the app: the panic becomes an error and an audit entry.
@@ -475,6 +522,9 @@ pub struct ModuleContext<'a> {
     granted: &'a BTreeSet<String>,
     ws: &'a mut Workspace,
     fingerprint: Option<&'a str>,
+    /// What the person's role allows in this module (D-056).
+    access: Access,
+    role: String,
 }
 
 impl ModuleContext<'_> {
@@ -506,6 +556,21 @@ impl ModuleContext<'_> {
             Ok(())
         } else {
             Err(self.deny(permission, "permisiune neacordată".into()))
+        }
+    }
+
+    /// Whether the person's role may change data in this module.
+    pub fn can_write(&self) -> bool {
+        self.access == Access::Scriere
+    }
+
+    /// Refuses a change when the person's role only reads this module.
+    fn require_write(&mut self) -> CoreResult<()> {
+        if self.can_write() {
+            Ok(())
+        } else {
+            let detail = format!("rolul tău ({}) poate doar citi în acest modul", self.role);
+            Err(self.deny("rol", detail))
         }
     }
 
@@ -545,6 +610,7 @@ impl ModuleContext<'_> {
     /// Atomic batch on the module's own collections. Collection names in the
     /// batch are logical (as declared in the manifest).
     pub fn write(&mut self, batch: Vec<Write>) -> CoreResult<Vec<u64>> {
+        self.require_write()?;
         let mut mapped = Vec::with_capacity(batch.len());
         for w in batch {
             mapped.push(match w {
@@ -598,6 +664,7 @@ impl ModuleContext<'_> {
     /// Stores a file owned by this module (permission `files.own`).
     pub fn put_file(&mut self, name: &str, data: &[u8]) -> CoreResult<files::FileRef> {
         self.require("files.own")?;
+        self.require_write()?;
         let id = self.manifest.id.clone();
         files::put(self.ws, &id, name, data)
     }
@@ -611,6 +678,7 @@ impl ModuleContext<'_> {
 
     pub fn delete_file(&mut self, id: Uuid) -> CoreResult<()> {
         self.require("files.own")?;
+        self.require_write()?;
         let m = self.manifest.id.clone();
         files::delete(self.ws, &m, id)
     }
@@ -625,6 +693,7 @@ impl ModuleContext<'_> {
     /// become version 1, the original, which is never changed (D-034).
     pub fn import_document(&mut self, name: &str, data: &[u8]) -> CoreResult<DocumentRef> {
         self.require("files.own")?;
+        self.require_write()?;
         let m = self.manifest.id.clone();
         documents::import(self.ws, &m, name, data)
     }
@@ -633,6 +702,7 @@ impl ModuleContext<'_> {
     /// the current version (someone saved in the meantime).
     pub fn save_document(&mut self, id: Uuid, based_on: u64, data: &[u8], note: &str) -> CoreResult<VersionRef> {
         self.require("files.own")?;
+        self.require_write()?;
         let m = self.manifest.id.clone();
         documents::save_version(self.ws, &m, id, based_on, data, note)
     }
@@ -653,6 +723,7 @@ impl ModuleContext<'_> {
     /// Creates a new version with the content of an older one.
     pub fn restore_document_version(&mut self, id: Uuid, version: u64) -> CoreResult<VersionRef> {
         self.require("files.own")?;
+        self.require_write()?;
         let m = self.manifest.id.clone();
         documents::restore_version(self.ws, &m, id, version)
     }
@@ -665,6 +736,7 @@ impl ModuleContext<'_> {
 
     pub fn delete_document(&mut self, id: Uuid) -> CoreResult<()> {
         self.require("files.own")?;
+        self.require_write()?;
         let m = self.manifest.id.clone();
         documents::delete(self.ws, &m, id)
     }
