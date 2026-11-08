@@ -23,8 +23,9 @@
 //! `invoice_storno`, `invoice_pdf`; `purchases`, `purchase_save`,
 //! `purchase_storno`, `import` (CSV from „Extragere date”); `accounts`,
 //! `account_save`, `payments`, `payment_save`, `payment_link`, `payment_storno`,
-//! `open_documents`, `settle`, `bank_import`.
+//! `open_documents`, `settle`, `bank_import`; `aging`, `partner_sheet`.
 
+pub mod aging;
 pub mod cash;
 pub mod invoices;
 pub mod num;
@@ -235,6 +236,18 @@ struct Storno {
     data: String,
     #[serde(default)]
     nota: Option<String>,
+}
+
+#[derive(Deserialize)]
+#[serde(deny_unknown_fields)]
+struct Today {
+    azi: String,
+}
+
+#[derive(Deserialize)]
+#[serde(deny_unknown_fields)]
+struct ById {
+    id: Uuid,
 }
 
 #[derive(Deserialize)]
@@ -875,7 +888,8 @@ impl Module for Business {
     }
 
     fn remind(&self, ctx: &mut ModuleContext<'_>, today: &str) -> CoreResult<()> {
-        self.reminders(ctx, today)
+        self.reminders(ctx, today)?;
+        self.due_reminders(ctx, today)
     }
 
     fn handle(&self, ctx: &mut ModuleContext<'_>, command: &str, a: Value) -> CoreResult<Value> {
@@ -949,6 +963,15 @@ impl Module for Business {
             "invoice_issue" => self.invoice_issue(ctx, args(a)?),
             "invoices" => self.invoices(ctx),
             "invoice_storno" => self.invoice_storno(ctx, args(a)?),
+            // Step 5.6: due dates and partner statements.
+            "aging" => {
+                let a: Today = args(a)?;
+                self.aging(ctx, &a.azi)
+            }
+            "partner_sheet" => {
+                let a: ById = args(a)?;
+                self.partner_sheet(ctx, a.id)
+            }
             // Step 5.5: cash and bank.
             "accounts" => self.accounts(ctx),
             "account_save" => self.account_save(ctx, args(a)?),

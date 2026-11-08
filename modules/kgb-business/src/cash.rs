@@ -115,6 +115,14 @@ pub(crate) struct BankImport {
     data: String,
 }
 
+/// „Factură”, „Bon fiscal”, „Alt document”.
+pub(crate) fn kind_label(tip: &str) -> &'static str {
+    crate::purchases::KINDS
+        .iter()
+        .find(|(k, _)| *k == tip)
+        .map_or("Document", |(_, l)| l)
+}
+
 impl Business {
     /// Live (not reversed) payments.
     fn live_payments(&self, ctx: &mut ModuleContext<'_>) -> CoreResult<Vec<RecordState>> {
@@ -190,7 +198,11 @@ impl Business {
                 if p.fields.get("storno_de").is_some_and(|v| !v.is_null()) {
                     return Err(bad("cheltuiala", "un storno nu se plătește"));
                 }
-                Ok((i(&p, "total"), "plata", format!("{} {}", s(&p, "tip"), s(&p, "numar"))))
+                Ok((
+                    i(&p, "total"),
+                    "plata",
+                    format!("{} {}", kind_label(&s(&p, "tip")), s(&p, "numar")),
+                ))
             }
             other => Err(bad(
                 "documentul",
@@ -482,7 +494,7 @@ impl Business {
             }
             let left = i(&p, "total") - self.paid_on(ctx, p.id)?;
             if left > 0 {
-                out.push(json!({"tip": "cheltuiala", "id": p.id, "eticheta": format!("{} {} · {}", s(&p, "tip"), s(&p, "numar"), s(&p, "furnizor_nume")), "rest": left, "rest_text": num::fmt_money(left), "scadenta": p.fields.get("scadenta").cloned().unwrap_or(Value::Null), "partener": s(&p, "furnizor")}));
+                out.push(json!({"tip": "cheltuiala", "id": p.id, "eticheta": format!("{} {} · {}", kind_label(&s(&p, "tip")), s(&p, "numar"), s(&p, "furnizor_nume")), "rest": left, "rest_text": num::fmt_money(left), "scadenta": p.fields.get("scadenta").cloned().unwrap_or(Value::Null), "partener": s(&p, "furnizor")}));
             }
         }
         Ok(json!(out))

@@ -281,6 +281,18 @@ try {
   check("soldurile: casa 379,00, banca −960,00", sold.includes("Casa principală|379,00") && sold.includes("Banca X|-960,00"), JSON.stringify(sold));
   await p.screenshot(join(shots, "08-casa-banca.png"));
 
+  // Step 5.6: the aging and a partner statement (F-1 from Beta is unpaid;
+  // the receipt B 77 was paid from cash).
+  await tab(p, "Scadențar");
+  await p.until("document.querySelectorAll('.aging-summary tbody tr').length === 2", 8000);
+  const ag = await p.eval("[...document.querySelectorAll('.aging-summary tbody tr')].map(r => r.cells[0].innerText + '|' + r.cells[r.cells.length - 1].innerText)");
+  check("scadențarul: de plătit 1.210,00, de încasat 0,00", ag.includes("De plătit|1.210,00") && ag.includes("De încasat|0,00"), JSON.stringify(ag));
+  await selectByText(p, "select[aria-label='Partenerul pentru fișă']", "Beta Construct SRL");
+  await p.until("!!document.querySelector('.partner-sheet')", 8000);
+  const sh = await p.eval("document.querySelector('.aging').innerText");
+  check("fișa partenerului arată soldul", sh.includes("de plătit 1.210,00 lei"), sh.split("\n").slice(-1)[0]);
+  await p.screenshot(join(shots, "09-scadentar.png"));
+
   // Forced restart: the stock is recomputed from the movements.
   stop(p);
   p = await start();
