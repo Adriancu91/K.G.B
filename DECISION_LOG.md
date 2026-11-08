@@ -309,5 +309,5 @@ Deciziile DECIS se schimbă doar cu aprobarea explicită a proprietarului (Maste
 - **De ce:** fără ea, Business și „Documente și modele” ar ține fiecare propria listă de clienți și ar trebui completate de două ori.
 
 ### D-067 — Preluarea codului propriu din Cyber Office Studio și ERP
-- **Data:** 8 nov. 2026 · **Statut:** PROPUS (cerut de proprietar: „importă tot ce ai propus și analizează și cyber office suite, modulele ei sunt foarte bune”) — se confirmă pe fiecare modul, după analiza comparativă
+- **Data:** 8 nov. 2026 · **Statut:** DECIS pentru 5 module (proprietarul: „da confirm”, după analiza comparativă): PDF, Note, e-Factura + verificări CNP/CUI/IBAN, Foi de calcul, Editor de documente, în această ordine; imagini, prezentări și video lăsate pentru mai târziu
 - **Conținut:** codul propriu al proprietarului din `Desktop\workspace\suite` poate fi adus în K.G.B. (D-019 cerea acordul lui; acesta e acordul de principiu), cu condițiile: în folderul sursă nu se modifică nimic (D-037); datele trec prin nucleul K.G.B. (fără sql.js/SQLite, localStorage, IndexedDB, API-uri Electron); licențele dependențelor verificate (fără GPL/AGPL/SSPL/BUSL; LGPL doar cu decizie separată; nimic încărcat de pe CDN); fișierele monolitice împărțite; testele refăcute în K.G.B.; originea consemnată în `LICENSES.md`.

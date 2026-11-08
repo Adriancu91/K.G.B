@@ -27,3 +27,14 @@ Module: Sheets (~42.6k linii), Docs (~30.7k), PDF (~29.6k), Images, Slides, Note
 
 ## Când contează
 Pentru Etapa 0 nu e nevoie de cod de aici. Devine relevant în Etapa 3 (foi de calcul, PDF) și Etapa 5 (stocuri, e-Factura).
+
+## Comparație pe module cu K.G.B. (8 nov. 2026, doar citire)
+| Modul | COS | K.G.B. | Verdict | Cum se preia |
+|---|---|---|---|---|
+| PDF | adnotări, formulare XFDF/FDF, redactare, OCR (tesseract.js, date incluse), semnare, PDF/A, filigran, antet/subsol, comprimare, n-up, comparare (~29,6k linii, 102 teste Node) | vizualizare, combinare/separare/extragere/rotire, versiuni | COS mult mai bun | unelte pure pdf-lib, una câte una; semnarea doar ca idee (certificatele Windows prin Electron); pdfjs 4 → 6 |
+| Foi de calcul | motor propriu ~500 funcții, pivot, solver, formatare condițională, grafice SVG, citire/scriere XLSX/ODS/XLS/CSV (~42,6k linii, ~150 teste) | IronCalc (Rust), editare simplă, 5 modele | COS mai bun la interfață; K.G.B. la arhitectură | părți pure (grafice, pivot, completare, formate, sortare/filtrare); un singur motor de calcul |
+| Documente | editor TipTap complet, DOCX import/export, ODT/RTF (~30,7k linii, 92 teste) | completare de modele DOCX, PDF Typst | se completează | editorul, salvat prin nucleu, legat de modelele {{câmpuri}} |
+| Note | liste, Markdown, șabloane, criptare, importuri (~10,5k linii, 31 teste) | demonstrativ | COS mult mai bun | logica și interfața; o notă = o înregistrare |
+| Imagini / Prezentări / Video | foarte complete | — | doar COS | mai târziu; `libheif-js` (LGPL-3.0) exclus; video cere ffmpeg extern |
+
+**Riscuri:** fișiere monolitice (3,5k–12,4k linii) de împărțit; două motoare de calcul de evitat; React 18→19, pdfjs 4→6, TipTap 2; `jszip` cu alegerea licenței MIT; testele CDP legate de Electron se refac; textele UI în cod și traducerea prin observator DOM nu se preiau; `localStorage` (2–11 fișiere pe modul) mutat în setările K.G.B.
