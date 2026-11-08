@@ -108,6 +108,7 @@ Verificat automat de `cargo-deny` în CI pe workspace-ul rădăcină (`Cargo.tom
 | `tauri-plugin-dialog` 2.8.4 (+ npm `@tauri-apps/plugin-dialog` 2.8.4) | MIT OR Apache-2.0 | dialogurile sistemului pentru import și export (doar `allow-open`, `allow-save`) | 3.5 |
 | `calamine` 0.38.0 | MIT | citirea foilor de calcul în `kgb.sheets` (D-033) | 3.6 |
 | `umya-spreadsheet` =4.0.0-beta.1 | MIT | editarea și salvarea XLSX (D-033; beta fixată exact, `zip` 9) | 3.6 |
+| `iroh` 1.4.1 (+ `noq`, `rustls`, `ring`, `tokio`, `portmapper`, `webpki-roots`; aceleași ca în spike-ul S2) | MIT OR Apache-2.0 / ISC / CDLA-Permissive-2.0; `attohttpc` MPL-2.0 (D-021) | rețeaua între calculatoarele organizației, crate-ul `kgb-net` (D-015) | 6.5 |
 | `ironcalc` 0.9.1 (+ `ironcalc_base`) | MIT OR Apache-2.0 | recalcularea formulelor (D-033) | 3.6 |
 | `zip` 9.4.1 (doar `deflate`) | MIT | verificarea proprie anti-„bombă zip” | 3.6 |
 | `csv` 1.4.0 | Unlicense OR MIT | citirea CSV | 3.6 |

@@ -69,6 +69,7 @@ try {
   await p.until("!!document.querySelector(\"textarea[aria-label='Codul invitației']\")");
   const invite = await p.eval("document.querySelector(\"textarea[aria-label='Codul invitației']\").value");
   check("invitația are formatul așteptat", invite.startsWith("KGB-INVITATIE-1:"), invite.slice(0, 20));
+  await p.eval("document.querySelectorAll('textarea').forEach(t => { if (t.value.startsWith('KGB-')) t.value = '(codul conține adresele de rețea ale laptopului; ascuns în captură)'; })");
   await p.screenshot(join(shots, "01-invitatie.png"));
   const fpA = await p.eval("document.querySelector('.org-current').innerText.split('amprenta PC-ului: ')[1].trim()");
   stop(p);
@@ -88,6 +89,7 @@ try {
   const request = await p.eval("document.querySelector(\"textarea[aria-label='Codul cererii']\").value");
   const fpB = await p.eval("document.querySelector('.join-answer strong.fingerprint').innerText.trim()");
   check("cererea are formatul așteptat", request.startsWith("KGB-CERERE-1:"));
+  await p.eval("document.querySelectorAll('textarea').forEach(t => { if (t.value.startsWith('KGB-')) t.value = '(codul conține adresele de rețea ale laptopului; ascuns în captură)'; })");
   await p.screenshot(join(shots, "02-pc-nou.png"));
   stop(p);
 

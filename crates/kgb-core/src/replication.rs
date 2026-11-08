@@ -130,6 +130,12 @@ fn readable(st: &RegState, key: &str, coll: &str) -> bool {
 
 /// Step 1: what this device asks a peer for.
 pub fn request(store: &Store, dev: &DeviceIdentity) -> CoreResult<Value> {
+    request_from(store, dev, None)
+}
+
+/// Like [`request`], also telling the peer where this device can be reached
+/// (step 6.5; signed with the rest).
+pub fn request_from(store: &Store, dev: &DeviceIdentity, addr: Option<&str>) -> CoreResult<Value> {
     let vv: BTreeMap<String, u64> = store
         .version_vector()
         .into_iter()
@@ -139,11 +145,20 @@ pub fn request(store: &Store, dev: &DeviceIdentity) -> CoreResult<Value> {
         "kind": "cerere", "v": 1, "org": my_org(store)?, "key": dev.public_hex(),
         "store": store.device(), "vv": vv, "unfilled": store.unfilled()?, "ts_ms": now_ms(),
     });
+    let mut body = body;
+    if let Some(a) = addr {
+        body["addr"] = json!(a);
+    }
     Ok(sign(dev, &body))
 }
 
 /// Step 2: a peer's answer to a request.
 pub fn answer(store: &Store, dev: &DeviceIdentity, req: &Value) -> CoreResult<Value> {
+    answer_from(store, dev, req, None)
+}
+
+/// Like [`answer`], also telling where this device can be reached.
+pub fn answer_from(store: &Store, dev: &DeviceIdentity, req: &Value, addr: Option<&str>) -> CoreResult<Value> {
     let (body, key) = open(req, "cerere")?;
     let st = registry::verify(store)?;
     let org = st
@@ -191,7 +206,20 @@ pub fn answer(store: &Store, dev: &DeviceIdentity, req: &Value) -> CoreResult<Va
         "kind": "raspuns", "v": 1, "org": org.0.to_string(), "key": dev.public_hex(),
         "store": store.device(), "ops": ops, "fills": fills, "ts_ms": now_ms(),
     });
+    let mut body = body;
+    if let Some(a) = addr {
+        body["addr"] = json!(a);
+    }
     Ok(sign(dev, &body))
+}
+
+/// The sender's key and network address carried by a message (read without
+/// checking: use it only after `answer` or `apply` accepted the message).
+pub fn sender(msg: &Value) -> (String, Option<String>) {
+    (
+        msg.get("key").and_then(Value::as_str).unwrap_or_default().to_string(),
+        msg.get("addr").and_then(Value::as_str).map(String::from),
+    )
 }
 
 /// What one round did, for the screen and the audit journal.

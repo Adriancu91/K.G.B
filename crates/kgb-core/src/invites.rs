@@ -131,7 +131,25 @@ pub fn create(store: &mut Store, dev: &DeviceIdentity, member_id: Uuid, hours: u
             format!("valabilitatea trebuie să fie între 1 și {MAX_HOURS} de ore"),
         ));
     }
-    create_until(store, dev, member_id, now_ms() + hours * HOUR_MS)
+    create_inner(store, dev, member_id, now_ms() + hours * HOUR_MS, None)
+}
+
+/// Like [`create`], with the administrator's network address (step 6.5) so
+/// the new PC can connect for its first synchronisation.
+pub fn create_from(
+    store: &mut Store,
+    dev: &DeviceIdentity,
+    member_id: Uuid,
+    hours: u64,
+    addr: Option<&str>,
+) -> CoreResult<NewInvite> {
+    if !(1..=MAX_HOURS).contains(&hours) {
+        return Err(bad(
+            "invitația",
+            format!("valabilitatea trebuie să fie între 1 și {MAX_HOURS} de ore"),
+        ));
+    }
+    create_inner(store, dev, member_id, now_ms() + hours * HOUR_MS, addr)
 }
 
 /// Same as [`create`] with an exact expiry (tests use one in the past).
@@ -141,6 +159,16 @@ pub fn create_until(
     dev: &DeviceIdentity,
     member_id: Uuid,
     expires_ms: u64,
+) -> CoreResult<NewInvite> {
+    create_inner(store, dev, member_id, expires_ms, None)
+}
+
+fn create_inner(
+    store: &mut Store,
+    dev: &DeviceIdentity,
+    member_id: Uuid,
+    expires_ms: u64,
+    addr: Option<&str>,
 ) -> CoreResult<NewInvite> {
     org::require_admin(store, Some(&dev.fingerprint()), "invitația")?;
     let (org_id, org_name) = org_uuid(store)?;
@@ -156,6 +184,10 @@ pub fn create_until(
         "v": 1, "org": org_id.to_string(), "org_name": org_name, "member": m.name,
         "token": token, "expires_ms": expires_ms, "admin_key": dev.public_hex(),
     });
+    let mut body = body;
+    if let Some(a) = addr {
+        body["addr"] = json!(a);
+    }
     let code = encode(INVITE_PREFIX, &body, sign(dev, INVITE_DOMAIN, &body));
     let mut f = Fields::new();
     f.insert("member".into(), json!(member_id.to_string()));
@@ -281,6 +313,18 @@ pub fn request(
     dev: &DeviceIdentity,
     device_label: &str,
 ) -> CoreResult<JoinRequest> {
+    request_from(store, invite_code, dev, device_label, None)
+}
+
+/// Like [`request`], with this PC's network address (step 6.5). The
+/// administrator's address from the invitation goes to the address book.
+pub fn request_from(
+    store: &mut Store,
+    invite_code: &str,
+    dev: &DeviceIdentity,
+    device_label: &str,
+    addr: Option<&str>,
+) -> CoreResult<JoinRequest> {
     let (inv, info) = read_body(invite_code, now_ms())?;
     let label = validate_name("numele dispozitivului", device_label)?;
     if let Some((org, _)) = registry::verify(store)?.org
@@ -295,6 +339,13 @@ pub fn request(
         "v": 1, "org": s(&inv, "org"), "token": s(&inv, "token"),
         "key": dev.public_hex(), "label": label, "ts_ms": now_ms(), "store": store.device(),
     });
+    let mut body = body;
+    if let Some(a) = addr {
+        body["addr"] = json!(a);
+    }
+    if let Some(a) = inv.get("addr").and_then(Value::as_str) {
+        crate::peers::remember(store, &s(&inv, "admin_key"), a)?;
+    }
     let mut anchor = Fields::new();
     anchor.insert("org".into(), json!(s(&inv, "org")));
     anchor.insert("org_name".into(), json!(info.org_name));
@@ -373,6 +424,9 @@ pub fn receive(store: &mut Store, dev: &DeviceIdentity, request_code: &str) -> C
         Write::put(INVITES_COLLECTION, inv.id, used).expect(inv.version),
         Write::put(REQUESTS_COLLECTION, id, f).expect(0),
     ])?;
+    if let Some(a) = body.get("addr").and_then(Value::as_str) {
+        crate::peers::remember(store, &key, a)?;
+    }
     Ok(Pending {
         id,
         member_id,

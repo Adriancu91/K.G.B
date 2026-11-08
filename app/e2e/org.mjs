@@ -97,7 +97,8 @@ try {
   const nav = await navLabels(p);
   check("modulul fără acces dispare din meniu", !nav.some((l) => l.startsWith("Business")), nav.join("|"));
   check("modulul doar-citire e marcat în meniu", nav.some((l) => l.startsWith("Note") && l.includes("citire")), nav.join("|"));
-  check("pagina organizației nu mai permite schimbări", (await p.eval("document.querySelectorAll('.org-page select, .org-page form').length")) === 0);
+  // The relay choice in the network panel is this PC's own setting, not the organization's.
+  check("pagina organizației nu mai permite schimbări", (await p.eval("[...document.querySelectorAll('.org-page select, .org-page form')].filter(e => !e.closest('.net-panel')).length")) === 0);
 
   await p.click("Note (demonstrativ)", "nav .nav");
   await p.until("!!document.querySelector(\"input[aria-label='Notă nouă']\")");

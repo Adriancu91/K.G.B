@@ -140,6 +140,37 @@ export interface ConflictView {
   poate_decide: boolean;
 }
 
+export interface PeerView {
+  key: string;
+  fingerprint: string;
+  label: string;
+  member: string;
+  addr: string | null;
+  ok_ms: number | null;
+  path: "direct" | "relay" | null;
+  tried_ms: number | null;
+  error: string | null;
+}
+
+export interface NetStatus {
+  pornita: boolean;
+  motiv: string | null;
+  relay: string;
+  port: number;
+  amprenta: string;
+  peers: PeerView[];
+  ultima_runda_ms: number | null;
+}
+
+export interface SyncOutcome {
+  key: string;
+  label: string;
+  member: string;
+  path: "direct" | "relay" | "unknown" | null;
+  summary: { create: number; actualizate: number; refuzate: number; conflicte: number; ascunse: number; completate: number } | null;
+  error: string | null;
+}
+
 export interface InviteView {
   id: string;
   member: string;
@@ -236,6 +267,9 @@ export const api = {
     invoke<{ id: string; code: string; member: string; expires_ms: number }>("invite_create", { member, hours }),
   conflicts: () => invoke<{ items: ConflictView[]; modules: Array<[string, string]> }>("conflicts_list"),
   conflictDecide: (id: string, keepHere: boolean) => invoke<void>("conflict_decide", { id, keepHere }),
+  netStatus: () => invoke<NetStatus>("net_status"),
+  netSetRelay: (relay: string) => invoke<void>("net_set_relay", { relay }),
+  syncNow: () => invoke<SyncOutcome[]>("sync_now"),
   inviteCancel: (id: string) => invoke<void>("invite_cancel", { id }),
   inviteAnswer: (code: string) => invoke<JoinRequest>("invite_answer", { code }),
   requestReceive: (code: string) => invoke<PendingDevice>("request_receive", { code }),

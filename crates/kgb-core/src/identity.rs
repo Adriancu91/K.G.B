@@ -111,6 +111,13 @@ impl DeviceIdentity {
     pub fn created(&self) -> bool {
         self.created
     }
+    /// The secret key, for the network layer only (Etapa 6, step 6.5): iroh
+    /// authenticates every connection with this same key, so a connection
+    /// proves the device identity that the signed registry lists.
+    pub fn secret_bytes(&self) -> Zeroizing<[u8; 32]> {
+        Zeroizing::new(self.key.to_bytes())
+    }
+
     pub fn sign(&self, msg: &[u8]) -> Signature {
         self.key.sign(msg)
     }

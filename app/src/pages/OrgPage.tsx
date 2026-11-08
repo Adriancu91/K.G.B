@@ -5,6 +5,7 @@
 import { useCallback, useEffect, useState, type FormEvent } from "react";
 import { ACCESS_LABEL, api, message, type Access, type Member, type OrgReply, type Role } from "../api";
 import { InviteButton, JoinOrg, Requests } from "./Devices";
+import { NetPanel } from "./NetPanel";
 
 const ACCESSES: Access[] = ["niciunul", "citire", "scriere"];
 
@@ -34,7 +35,13 @@ export function OrgPage({ onError, onChanged }: { onError: (e: string | null) =>
   };
 
   if (!org) return <p className="muted">Se încarcă…</p>;
-  if (!org.organization) return <CreateOrg org={org} run={run} />;
+  if (!org.organization)
+    return (
+      <>
+        <CreateOrg org={org} run={run} />
+        <NetPanel onError={onError} onSynced={() => void load()} />
+      </>
+    );
 
   const admin = org.current?.role.admin ?? false;
   return (
@@ -51,6 +58,7 @@ export function OrgPage({ onError, onChanged }: { onError: (e: string | null) =>
           </ul>
         </div>
       )}
+      <NetPanel onError={onError} onSynced={() => void load()} />
       <Members org={org} admin={admin} run={run} />
       {admin && <Requests org={org} run={run} />}
       <Roles org={org} admin={admin} run={run} />

@@ -11,6 +11,7 @@ tauri-build = { version = "2.7", features = [] }
 
 [dependencies]
 kgb-core.workspace = true
+kgb-net.workspace = true
 kgb-store.workspace = true
 kgb-notes.workspace = true
 kgb-pdf.workspace = true

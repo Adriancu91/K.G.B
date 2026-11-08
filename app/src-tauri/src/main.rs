@@ -4,7 +4,9 @@
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
 
 use std::path::{Path, PathBuf};
-use std::sync::Mutex;
+use std::sync::{Arc, Mutex};
+
+mod net;
 use std::time::Instant;
 
 use kgb_core::identity::{self, DeviceIdentity};
@@ -34,7 +36,9 @@ struct Session {
 }
 
 struct AppState {
-    session: Mutex<Option<Session>>,
+    session: net::SharedSession,
+    /// The network (Etapa 6, step 6.5).
+    net: Arc<net::NetSlot>,
     startup_error: Option<String>,
     root: PathBuf,
     log: Option<LogHandle>,
@@ -206,7 +210,10 @@ fn verify_backup(app: State<AppState>, id: String) -> CmdResult<usize> {
 fn restore_backup(app: State<AppState>, id: String) -> CmdResult<()> {
     let root = app.root.clone();
     let dir = with_session(&app, |s| backup_dir(&root, s, &id))?;
-    switch_to(&app, |root| backup::restore(&dir, root))
+    net::stop(&app.net);
+    let r = switch_to(&app, |root| backup::restore(&dir, root));
+    let _ = net::ensure(&app.net, &app.session, false);
+    r
 }
 
 #[tauri::command]
@@ -218,7 +225,10 @@ fn open_workspace(app: State<AppState>, id: String) -> CmdResult<()> {
         .find(|w| w.id.to_string() == id)
         .cloned()
         .ok_or("spațiul de lucru nu există")?;
-    switch_to(&app, |_| Workspace::open(&k.dir))
+    net::stop(&app.net);
+    let r = switch_to(&app, |_| Workspace::open(&k.dir));
+    let _ = net::ensure(&app.net, &app.session, false);
+    r
 }
 
 #[derive(Serialize)]
@@ -508,7 +518,10 @@ fn org_create(app: State<AppState>, name: String, admin: String) -> CmdResult<()
     with_session(&app, |s| {
         org::create(s.ws.store_mut(), &name, &admin, &s.device, &device_label())?;
         modules::audit(&mut s.ws, "core.org", "creare organizație", "ok", &name)
-    })
+    })?;
+    // The organization needs the network: start it now (step 6.5).
+    let _ = net::ensure(&app.net, &app.session, false);
+    Ok(())
 }
 
 /// Runs an organization change after checking that the person on this PC is
@@ -613,8 +626,11 @@ fn conflict_decide(app: State<AppState>, id: uuid::Uuid, keep_here: bool) -> Cmd
 
 #[tauri::command]
 fn invite_create(app: State<AppState>, member: uuid::Uuid, hours: u64) -> CmdResult<invites::NewInvite> {
+    // The invitation carries this PC's address, for the new PC's first
+    // synchronisation (none if the network could not start).
+    let addr = net::ensure(&app.net, &app.session, false).ok().flatten();
     org_admin(&app, "invitație creată", |s, _| {
-        invites::create(s.ws.store_mut(), &s.device, member, hours)
+        invites::create_from(s.ws.store_mut(), &s.device, member, hours, addr.as_deref())
     })
 }
 
@@ -628,9 +644,73 @@ fn invite_cancel(app: State<AppState>, id: uuid::Uuid) -> CmdResult<()> {
 /// On the new PC: checks an invitation and makes the signed request.
 #[tauri::command]
 fn invite_answer(app: State<AppState>, code: String) -> CmdResult<invites::JoinRequest> {
+    // The new PC starts its network to tell the administrator where it is.
+    let addr = net::ensure(&app.net, &app.session, true).ok().flatten();
     with_session(&app, |s| {
-        invites::request(s.ws.store_mut(), &code, &s.device, &device_label())
+        invites::request_from(s.ws.store_mut(), &code, &s.device, &device_label(), addr.as_deref())
     })
+}
+
+// ---------- network (Etapa 6, step 6.5) ----------
+
+#[derive(Serialize)]
+struct NetStatus {
+    pornita: bool,
+    /// Why it is not running, if it is not.
+    motiv: Option<String>,
+    relay: String,
+    port: u16,
+    /// This device's key fingerprint.
+    amprenta: String,
+    peers: Vec<kgb_core::peers::PeerView>,
+    ultima_runda_ms: Option<u64>,
+}
+
+#[tauri::command]
+fn net_status(app: State<AppState>) -> CmdResult<NetStatus> {
+    let running = app.net.running.lock().ok().and_then(|g| g.clone());
+    let motiv = app.net.why_not.lock().ok().and_then(|w| w.clone());
+    let last = app.net.last.lock().ok().and_then(|l| l.as_ref().map(|(t, _)| *t));
+    with_session(&app, |s| {
+        let (relay, port) = kgb_core::peers::network_settings(s.ws.store())?;
+        Ok(NetStatus {
+            pornita: running.is_some(),
+            motiv: if running.is_some() { None } else { motiv },
+            relay,
+            port,
+            amprenta: s.device.fingerprint(),
+            peers: kgb_core::peers::list(s.ws.store(), &s.device.public_hex())?,
+            ultima_runda_ms: last,
+        })
+    })
+}
+
+/// Changes the relay ("off", "n0" for tests, or an https:// URL) and
+/// restarts the network.
+#[tauri::command]
+fn net_set_relay(app: State<AppState>, relay: String) -> CmdResult<()> {
+    with_session(&app, |s| {
+        let (_, port) = kgb_core::peers::network_settings(s.ws.store())?;
+        kgb_core::peers::save_network_settings(s.ws.store_mut(), &relay, port)?;
+        modules::audit(&mut s.ws, "core.sync", "relay schimbat", "ok", &relay)
+    })?;
+    net::stop(&app.net);
+    net::ensure(&app.net, &app.session, false).map(|_| ())
+}
+
+/// One synchronisation round now, off the window's thread.
+#[tauri::command]
+async fn sync_now(app: State<'_, AppState>) -> CmdResult<Vec<kgb_net::sync::Outcome>> {
+    let slot = app.net.clone();
+    let session = app.session.clone();
+    let (tx, rx) = std::sync::mpsc::channel();
+    std::thread::spawn(move || {
+        let r = net::ensure(&slot, &session, false).and_then(|_| net::round(&slot));
+        let _ = tx.send(r);
+    });
+    tauri::async_runtime::spawn_blocking(move || rx.recv().unwrap_or_else(|_| Err("sincronizarea s-a oprit".into())))
+        .await
+        .map_err(err)?
 }
 
 #[tauri::command]
@@ -877,8 +957,12 @@ fn main() {
                     (None, Some(e.to_string()))
                 }
             };
+            let session = Arc::new(Mutex::new(session));
+            let slot = Arc::new(net::NetSlot::default());
+            net::background(slot.clone(), session.clone());
             app.manage(AppState {
-                session: Mutex::new(session),
+                session,
+                net: slot,
                 startup_error,
                 root,
                 log,
@@ -906,6 +990,9 @@ fn main() {
             org_role_save,
             org_role_delete,
             conflicts_list,
+            net_status,
+            net_set_relay,
+            sync_now,
             conflict_decide,
             invite_create,
             invite_cancel,

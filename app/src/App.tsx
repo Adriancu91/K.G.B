@@ -261,7 +261,7 @@ export function App() {
         <span title={info.workspace?.dir}>
           Stocare: {info.recovery?.note ?? "în regulă"} · deschisă în {info.recovery?.open_ms} ms
         </span>
-        <span>Lucru local · sincronizarea între PC-uri vine în Etapa 6</span>
+        <span>Lucru local · sincronizarea între PC-uri: pagina Organizație</span>
         <span className="grow" />
         <span>
           v{info.app_version}
