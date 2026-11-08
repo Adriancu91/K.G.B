@@ -5,7 +5,7 @@
 // Usage: node app/e2e/business.mjs <path-to-kgb-app.exe> <screenshot-dir>
 // Uses a throw-away data folder (KGB_DATA_DIR), never the user's real data.
 import { spawn, execFileSync } from "node:child_process";
-import { mkdtempSync, mkdirSync, readFileSync, rmSync } from "node:fs";
+import { mkdtempSync, mkdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { connect, sleep } from "./cdp.mjs";
@@ -197,12 +197,41 @@ try {
   check("factura a scăzut stocul (19 → 16)", (await stockRows(p)).some((r) => r.startsWith("CIM-40|Ciment 40 kg|Depozit central|16|")));
   await tab(p, "Facturare");
   await p.until("!!document.querySelector('.invoice-list')");
+  await p.until("!!document.querySelector(\"button[aria-label='Stornează factura KGB 1']\")", 8000);
   await p.click("", "button[aria-label='Stornează factura KGB 1']");
   await p.until("document.body.innerText.includes('stornată prin factura KGB 2')", 10000);
   await p.screenshot(join(shots, "06-facturi.png"));
   await tab(p, "Stoc");
   await p.until("!!document.querySelector('.stock-table tbody tr')", 8000);
   check("stornarea facturii readuce stocul (16 → 19)", (await stockRows(p)).some((r) => r.startsWith("CIM-40|Ciment 40 kg|Depozit central|19|")));
+
+  // Step 5.4: expenses — taken over from the Extract CSV export, then one by hand.
+  const csvPath = join(data, "Facturi extrase.csv");
+  writeFileSync(
+    csvPath,
+    "﻿Număr factură;Data emiterii;Scadența;Furnizor;CUI furnizor;Client;Total fără TVA;TVA;Total de plată\r\nF-1;01.11.2026;15.11.2026;Beta Construct SRL;RO18547290;Noi SRL;1000,00;210,00;1210,00\r\n",
+  );
+  await tab(p, "Cheltuieli");
+  await p.until("!!document.querySelector('.purchases')");
+  const imp = await p.eval(`window.__TAURI_INTERNALS__.invoke("module_import_file", { id: "kgb.business", path: ${JSON.stringify(csvPath)} })`);
+  check("factura din „Extragere date” e preluată, cu furnizor nou", imp.importate === 1, JSON.stringify(imp));
+  await tab(p, "Stoc");
+  await tab(p, "Cheltuieli");
+  await p.until("!!document.querySelector('.purchase-form')", 8000);
+  await p.fill("input[aria-label='Numărul documentului primit']", "B 77");
+  await p.fill("select[aria-label='Tipul documentului']", "bon");
+  await p.fill("input[aria-label='Total fără TVA']", "100");
+  await p.fill("input[aria-label='TVA']", "21");
+  await p.fill("input[aria-label='Total de plată']", "122");
+  await p.click("Înregistrează", ".purchase-form button");
+  await p.until("!!document.querySelector('.purchase-form [role=alert]')", 8000);
+  check("un total greșit e refuzat", (await p.eval("document.querySelector('.purchase-form [role=alert]').innerText")).includes("nu este egal"));
+  await p.fill("input[aria-label='Total de plată']", "121");
+  await p.click("Înregistrează", ".purchase-form button");
+  await p.until("document.querySelectorAll('.purchase-list tbody tr').length === 2", 8000);
+  const pl = await p.eval("[...document.querySelectorAll('.purchase-list tbody tr')].map(r => r.cells[0].innerText + '|' + r.cells[5].innerText)");
+  check("cheltuielile apar în listă", pl.includes("Bon fiscal B 77|121,00") && pl.some((x) => x.startsWith("Factură F-1") && x.endsWith("|1.210,00")), JSON.stringify(pl));
+  await p.screenshot(join(shots, "07-cheltuieli.png"));
 
   // Forced restart: the stock is recomputed from the movements.
   stop(p);

@@ -20,10 +20,12 @@
 //! `receive`, `issue`, `transfer`, `inventory`, `storno`, `documents`,
 //! `stock`, `movements`; `partners`, `partner_save`, `settings`,
 //! `settings_save`, `series`, `series_save`, `invoice_issue`, `invoices`,
-//! `invoice_storno`, `invoice_pdf`.
+//! `invoice_storno`, `invoice_pdf`; `purchases`, `purchase_save`,
+//! `purchase_storno`, `import` (CSV from „Extragere date”).
 
 pub mod invoices;
 pub mod num;
+pub mod purchases;
 pub mod valuation;
 
 use std::collections::{BTreeMap, BTreeSet};
@@ -230,6 +232,20 @@ struct Storno {
     data: String,
     #[serde(default)]
     nota: Option<String>,
+}
+
+#[derive(Deserialize)]
+#[serde(deny_unknown_fields)]
+struct FromDialog {
+    name: String,
+    data: String,
+}
+
+fn base64_decode(data: &str) -> CoreResult<Vec<u8>> {
+    use base64::Engine as _;
+    base64::engine::general_purpose::STANDARD
+        .decode(data.as_bytes())
+        .map_err(|_| bad("fișierul", "conținutul nu este valid (base64)"))
 }
 
 #[derive(Deserialize)]
@@ -930,6 +946,16 @@ impl Module for Business {
             "invoice_issue" => self.invoice_issue(ctx, args(a)?),
             "invoices" => self.invoices(ctx),
             "invoice_storno" => self.invoice_storno(ctx, args(a)?),
+            // Step 5.4: received invoices and expenses.
+            "purchases" => self.purchases(ctx),
+            "purchase_save" => self.purchase_save(ctx, args(a)?),
+            "purchase_storno" => self.purchase_storno(ctx, args(a)?),
+            // From the system file dialog: the CSV exported by „Extragere date”.
+            "import" => {
+                let a: FromDialog = args(a)?;
+                let data = base64_decode(&a.data)?;
+                self.import_extract(ctx, &a.name, &data)
+            }
             "invoice_pdf" => {
                 let a: InvoicePdf = args(a)?;
                 let pdf = self.invoice_pdf(ctx, a.id)?;

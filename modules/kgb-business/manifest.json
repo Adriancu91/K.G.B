@@ -497,6 +497,117 @@
         "partener",
         "storno_de"
       ]
+    },
+    {
+      "collection": "cheltuieli",
+      "description": "facturile primite, bonurile și alte cheltuieli; nu se modifică, se stornează",
+      "schema": {
+        "fields": {
+          "tip": {
+            "type": "string",
+            "required": true,
+            "nullable": false,
+            "enum": [
+              "factura",
+              "bon",
+              "alt"
+            ]
+          },
+          "furnizor": {
+            "type": "string",
+            "required": true,
+            "nullable": false,
+            "max_len": 36
+          },
+          "furnizor_nume": {
+            "type": "string",
+            "required": true,
+            "nullable": false,
+            "max_len": 200
+          },
+          "furnizor_cui": {
+            "type": "string",
+            "required": false,
+            "nullable": true,
+            "max_len": 20
+          },
+          "numar": {
+            "type": "string",
+            "required": true,
+            "nullable": false,
+            "max_len": 60
+          },
+          "cheie": {
+            "type": "string",
+            "required": true,
+            "nullable": false,
+            "max_len": 300
+          },
+          "data": {
+            "type": "string",
+            "required": true,
+            "nullable": false,
+            "max_len": 10
+          },
+          "scadenta": {
+            "type": "string",
+            "required": false,
+            "nullable": true,
+            "max_len": 10
+          },
+          "categorie": {
+            "type": "string",
+            "required": false,
+            "nullable": true,
+            "max_len": 100
+          },
+          "total_fara_tva": {
+            "type": "integer",
+            "required": false,
+            "nullable": true
+          },
+          "tva": {
+            "type": "integer",
+            "required": false,
+            "nullable": true
+          },
+          "total": {
+            "type": "integer",
+            "required": true
+          },
+          "sursa": {
+            "type": "string",
+            "required": true,
+            "nullable": false,
+            "enum": [
+              "manual",
+              "extragere"
+            ]
+          },
+          "storno_de": {
+            "type": "string",
+            "required": false,
+            "nullable": true,
+            "max_len": 36
+          },
+          "nota": {
+            "type": "string",
+            "required": false,
+            "nullable": true,
+            "max_len": 500
+          },
+          "creat_ms": {
+            "type": "integer",
+            "required": true,
+            "min": 0
+          }
+        },
+        "additional": false
+      },
+      "indexes": [
+        "cheie",
+        "furnizor"
+      ]
     }
   ],
   "data_format": 1,

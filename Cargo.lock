@@ -3180,8 +3180,10 @@ dependencies = [
 name = "kgb-business"
 version = "0.1.0"
 dependencies = [
+ "base64 0.22.1",
  "kgb-core",
  "kgb-docs",
+ "kgb-sheets",
  "kgb-store",
  "serde",
  "serde_json",

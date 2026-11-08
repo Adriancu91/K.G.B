@@ -11,6 +11,9 @@ kgb-core.workspace = true
 kgb-store.workspace = true
 # Typst rendering of the documents module (code, not data): invoice PDFs (D-045).
 kgb-docs.workspace = true
+# CSV reading (and its checks) of the spreadsheet module, for importing the Extract register.
+kgb-sheets.workspace = true
+base64 = "0.22.1"
 serde.workspace = true
 serde_json.workspace = true
 uuid.workspace = true
