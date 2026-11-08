@@ -236,14 +236,17 @@ impl Store {
                 changed: op.changed.clone(),
                 compacted: false,
             };
-            self.append_txn(std::slice::from_ref(&stored), false)?;
-            self.note_decision(&stored)?;
-            report.filled += 1;
+            // Conflicts and decisions are written *before* the change: if the
+            // process stops in between, the change is fetched again and the
+            // conflict is already there (never a silent overwrite).
             for c in conflicts {
                 if self.record_conflict(&stored.state, c)? {
                     report.conflicts += 1;
                 }
             }
+            self.note_decision(&stored)?;
+            self.append_txn(std::slice::from_ref(&stored), false)?;
+            report.filled += 1;
         }
         if self.opts.durability == Durability::Sync {
             self.flush()?;
@@ -303,13 +306,15 @@ impl Store {
                 changed: op.changed.clone(),
                 compacted: false,
             };
-            self.append_txn(std::slice::from_ref(&stored), false)?;
-            self.note_decision(&stored)?;
+            // Conflicts and decisions first (see `fill`): a stop in between
+            // leaves the change to be fetched again, never a lost conflict.
             for c in conflicts {
                 if self.record_conflict(&stored.state, c)? {
                     report.conflicts += 1;
                 }
             }
+            self.note_decision(&stored)?;
+            self.append_txn(std::slice::from_ref(&stored), false)?;
         }
         if self.opts.durability == Durability::Sync {
             self.flush()?;

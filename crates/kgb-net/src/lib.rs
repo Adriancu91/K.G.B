@@ -17,7 +17,7 @@
 use std::sync::Arc;
 use std::time::Duration;
 
-use iroh::endpoint::{Connection, RecvStream, SendStream, presets};
+use iroh::endpoint::{Connection, QuicTransportConfig, RecvStream, SendStream, presets};
 use iroh::protocol::{AcceptError, ProtocolHandler, Router};
 use iroh::{Endpoint, EndpointAddr, RelayMap, RelayMode, RelayUrl, SecretKey};
 use serde::Serialize;
@@ -30,6 +30,9 @@ pub const ALPN: &[u8] = b"kgb/sync/1";
 pub const MAX_MESSAGE: u32 = 256 * 1024 * 1024;
 const CONNECT_TIMEOUT: Duration = Duration::from_secs(15);
 const EXCHANGE_TIMEOUT: Duration = Duration::from_secs(120);
+/// A connection whose other side went silent (PC off, cable out, process
+/// killed) is given up after this long (step 6.6), instead of the default.
+const IDLE_TIMEOUT: Duration = Duration::from_secs(10);
 
 /// Which relay the endpoint may use.
 #[derive(Clone, Debug, PartialEq, Eq)]
@@ -188,7 +191,15 @@ impl Net {
                     b.bind_addr(format!("0.0.0.0:{p}").as_str())
                         .map_err(|e| e.to_string())?
                 };
+                let transport = QuicTransportConfig::builder()
+                    .max_idle_timeout(Some(
+                        IDLE_TIMEOUT
+                            .try_into()
+                            .map_err(|_| "timp de așteptare greșit".to_string())?,
+                    ))
+                    .build();
                 let ep = b
+                    .transport_config(transport)
                     .secret_key(key)
                     .alpns(vec![ALPN.to_vec()])
                     .bind()
