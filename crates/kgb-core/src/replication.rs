@@ -126,16 +126,22 @@ fn module_for(op: &Op) -> Option<String> {
     module_of(coll).map(String::from)
 }
 
+/// Shared work data every member may read and write (the partner
+/// directory, D-066).
+fn member_table(coll: &str) -> bool {
+    coll == crate::partners::PARTNERS_COLLECTION
+}
+
 /// Changes that travel between devices; everything else is local.
 fn shared(op: &Op) -> bool {
     let coll = op.state.coll.as_str();
-    coll == registry::REGISTRY_COLLECTION || org_table(coll) || module_for(op).is_some()
+    coll == registry::REGISTRY_COLLECTION || org_table(coll) || member_table(coll) || module_for(op).is_some()
 }
 
 /// Whether the device with key `key` may receive `op`.
 fn readable(st: &RegState, key: &str, op: &Op) -> bool {
     let coll = op.state.coll.as_str();
-    if coll == registry::REGISTRY_COLLECTION || org_table(coll) {
+    if coll == registry::REGISTRY_COLLECTION || org_table(coll) || member_table(coll) {
         return st.member_of(key).is_some();
     }
     match module_for(op) {
@@ -320,6 +326,8 @@ pub fn apply(store: &mut Store, dev: &DeviceIdentity, resp: &Value) -> CoreResul
         };
         let ok = if org_table(coll) {
             then.is_admin(author)
+        } else if member_table(coll) {
+            then.member_of(author).is_some()
         } else {
             module_for(op).is_some_and(|m| then.access(author, &m) == Access::Scriere)
         };

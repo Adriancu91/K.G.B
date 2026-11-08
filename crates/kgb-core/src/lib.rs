@@ -19,6 +19,7 @@ pub mod manifest;
 pub mod modules;
 pub mod notifications;
 pub mod org;
+pub mod partners;
 pub mod peers;
 pub mod profiles;
 pub mod registry;

@@ -777,6 +777,26 @@ impl ModuleContext<'_> {
         Ok((nid, new))
     }
 
+    /// Partner cards matching `query` (permission `partners.read`, D-066).
+    pub fn partners_search(&mut self, query: &str, limit: usize) -> CoreResult<Vec<crate::partners::Partner>> {
+        self.require("partners.read")?;
+        crate::partners::search(self.ws.store(), query, limit)
+    }
+
+    /// One partner card (permission `partners.read`).
+    pub fn partner(&mut self, id: Uuid) -> CoreResult<crate::partners::Partner> {
+        self.require("partners.read")?;
+        crate::partners::get(self.ws.store(), id)
+    }
+
+    /// Adds or completes a partner card (permission `partners.write`, and a
+    /// role that may write in this module).
+    pub fn partner_save(&mut self, p: crate::partners::Partner) -> CoreResult<Uuid> {
+        self.require("partners.write")?;
+        self.require_write()?;
+        crate::partners::save(self.ws.store_mut(), p)
+    }
+
     /// Active external sources of a kind (permission `sources.read`, Etapa 7,
     /// D-062): only approved sources, each with its terms of use.
     pub fn sources(&mut self, kind: Option<&str>) -> CoreResult<Vec<crate::sources::Source>> {

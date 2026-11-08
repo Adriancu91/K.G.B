@@ -664,6 +664,73 @@ fn source_delete(app: State<AppState>, id: uuid::Uuid) -> CmdResult<()> {
     })
 }
 
+// ---------- partner directory (Etapa 7, step 7.4a, D-066) ----------
+
+/// Who may change the shared partner directory: everyone without an
+/// organization; in one, a person whose role can write somewhere.
+fn partners_writable(store: &kgb_store::Store, fp: &str) -> Result<bool, CoreError> {
+    if org::organization(store)?.is_none() {
+        return Ok(true);
+    }
+    Ok(org::current(store, fp)?.is_some_and(|c| {
+        c.role.admin || c.role.default == Access::Scriere || c.role.modules.values().any(|a| *a == Access::Scriere)
+    }))
+}
+
+fn partners_readable(store: &kgb_store::Store, fp: &str) -> Result<bool, CoreError> {
+    Ok(org::organization(store)?.is_none() || org::current(store, fp)?.is_some())
+}
+
+#[derive(Serialize)]
+struct PartnersReply {
+    items: Vec<kgb_core::partners::Partner>,
+    poate_modifica: bool,
+    expira: Vec<kgb_core::partners::Expiring>,
+}
+
+#[tauri::command]
+fn partners_list(app: State<AppState>, cauta: String, inactivi: bool, azi: String) -> CmdResult<PartnersReply> {
+    with_session(&app, |s| {
+        let fp = s.device.fingerprint();
+        if !partners_readable(s.ws.store(), &fp)? {
+            return Err(CoreError::invalid("agenda de parteneri", "acest PC nu aparține nimănui din organizație"));
+        }
+        let items = if cauta.trim().is_empty() {
+            kgb_core::partners::list(s.ws.store(), inactivi)?
+        } else {
+            kgb_core::partners::search(s.ws.store(), &cauta, 200)?
+        };
+        Ok(PartnersReply {
+            items,
+            poate_modifica: partners_writable(s.ws.store(), &fp)?,
+            expira: kgb_core::partners::expiring(s.ws.store(), &azi, 60).unwrap_or_default(),
+        })
+    })
+}
+
+#[tauri::command]
+fn partner_save(app: State<AppState>, partner: kgb_core::partners::Partner) -> CmdResult<uuid::Uuid> {
+    with_session(&app, |s| {
+        if !partners_writable(s.ws.store(), &s.device.fingerprint())? {
+            return Err(CoreError::invalid("agenda de parteneri", "rolul tău nu poate modifica agenda"));
+        }
+        let name = partner.denumire.clone();
+        let id = kgb_core::partners::save(s.ws.store_mut(), partner)?;
+        modules::audit(&mut s.ws, kgb_core::partners::PARTNERS_SOURCE, "fișă salvată", "ok", &name)?;
+        Ok(id)
+    })
+}
+
+#[tauri::command]
+fn partner_set_active(app: State<AppState>, id: uuid::Uuid, active: bool) -> CmdResult<()> {
+    with_session(&app, |s| {
+        if !partners_writable(s.ws.store(), &s.device.fingerprint())? {
+            return Err(CoreError::invalid("agenda de parteneri", "rolul tău nu poate modifica agenda"));
+        }
+        kgb_core::partners::set_active(s.ws.store_mut(), id, active)
+    })
+}
+
 // ---------- conflicts (Etapa 6, step 6.4) ----------
 
 #[derive(Serialize)]
@@ -843,7 +910,20 @@ fn notifications_list(app: State<AppState>) -> CmdResult<NotificationsReply> {
 fn reminders_tick(app: State<AppState>, handle: tauri::AppHandle, azi: String) -> CmdResult<usize> {
     let new = with_session(&app, |s| {
         let fp = s.device.fingerprint();
-        s.mm.remind_for(&mut s.ws, Some(&fp), &azi)
+        let before: std::collections::BTreeSet<uuid::Uuid> =
+            notifications::list(&s.ws, false, usize::MAX)?.into_iter().map(|n| n.id).collect();
+        // Partner documents that expire (D-066), for people who can see the directory.
+        if partners_readable(s.ws.store(), &fp)? {
+            kgb_core::partners::remind(&mut s.ws, &azi)?;
+        }
+        let mut new = s.mm.remind_for(&mut s.ws, Some(&fp), &azi)?;
+        let known: std::collections::BTreeSet<uuid::Uuid> = new.iter().map(|n| n.id).collect();
+        for n in notifications::list(&s.ws, false, usize::MAX)? {
+            if !before.contains(&n.id) && !known.contains(&n.id) {
+                new.push(n);
+            }
+        }
+        Ok(new)
     })?;
     desktop_notify(&handle, &new);
     Ok(new.len())
@@ -1078,6 +1158,9 @@ fn main() {
             source_save,
             source_set_active,
             source_delete,
+            partners_list,
+            partner_save,
+            partner_set_active,
             conflicts_list,
             net_status,
             net_set_relay,

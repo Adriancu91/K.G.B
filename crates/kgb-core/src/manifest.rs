@@ -37,13 +37,21 @@ pub const PERMISSIONS: &[(&str, &str)] = &[
         "trimite notificări în centrul de notificări al aplicației (fiecare trimitere e înregistrată în jurnal)",
     ),
     (
+        "partners.read",
+        "citește agenda de parteneri (clienți și furnizori) ca să propună și să completeze datele lor",
+    ),
+    (
+        "partners.write",
+        "adaugă sau completează fișe în agenda de parteneri",
+    ),
+    (
         "sources.read",
         "citește sursele externe aprobate în registrul de surse (doar cele active, cu condițiile lor de folosire)",
     ),
 ];
 
 /// Core services a module may use.
-pub const SERVICES: &[&str] = &["storage", "settings", "identity", "files", "notify", "sources", "log"];
+pub const SERVICES: &[&str] = &["storage", "settings", "identity", "files", "notify", "sources", "partners", "log"];
 
 /// Which service each permission belongs to (a permission needs its service).
 fn service_of(permission: &str) -> &'static str {
@@ -54,6 +62,7 @@ fn service_of(permission: &str) -> &'static str {
         "files.own" => "files",
         "notify.send" => "notify",
         "sources.read" => "sources",
+        "partners.read" | "partners.write" => "partners",
         _ => "",
     }
 }
