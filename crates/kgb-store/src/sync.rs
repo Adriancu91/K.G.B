@@ -29,6 +29,13 @@ use crate::model::{DELETED_FIELD, DeviceId, Op, Origin, RecordState, Rev};
 use crate::store::{Durability, Store};
 
 pub const CONFLICTS: &str = "_conflicts";
+/// Decision records live in `<collection>~conflicts`, with the conflict's id.
+pub const DECISIONS_SUFFIX: &str = "~conflicts";
+
+pub fn decisions_coll(coll: &str) -> String {
+    format!("{coll}{DECISIONS_SUFFIX}")
+}
+
 /// Redaction markers (see the module documentation).
 pub const REDACTED: &str = "_sync.redacted";
 
@@ -230,6 +237,7 @@ impl Store {
                 compacted: false,
             };
             self.append_txn(std::slice::from_ref(&stored), false)?;
+            self.note_decision(&stored)?;
             report.filled += 1;
             for c in conflicts {
                 if self.record_conflict(&stored.state, c)? {
@@ -296,6 +304,7 @@ impl Store {
                 compacted: false,
             };
             self.append_txn(std::slice::from_ref(&stored), false)?;
+            self.note_decision(&stored)?;
             for c in conflicts {
                 if self.record_conflict(&stored.state, c)? {
                     report.conflicts += 1;
@@ -321,14 +330,16 @@ impl Store {
         if self.keydir.contains(CONFLICTS, &id) {
             return Ok(false);
         }
+        // Already decided on another copy (the decision arrived first).
+        let decided = self.keydir.contains(&decisions_coll(&rec.coll), &id);
         let provisional = if c.remote_rev > c.local_rev { "remote" } else { "local" };
         let fields = json!({
             "coll": rec.coll, "record": rec.id.to_string(), "field": c.field,
-            "local": c.local, "remote": c.remote, "provisional": provisional, "resolved": false,
+            "local": c.local, "remote": c.remote, "provisional": provisional, "resolved": decided,
         });
         let Value::Object(fields) = fields else { unreachable!() };
         self.put_system(CONFLICTS, id, fields)?;
-        Ok(true)
+        Ok(!decided)
     }
 
     pub fn conflicts(&self, include_resolved: bool) -> Result<Vec<Conflict>> {
@@ -354,8 +365,11 @@ impl Store {
         Ok(out)
     }
 
-    /// The user's decision: keep `value` for the conflicting field (a normal local
-    /// change that propagates to peers) and mark the conflict resolved.
+    /// The user's decision: keep `value` for the conflicting field. The data
+    /// change and a **decision record** (`<collection>~conflicts`, same id as
+    /// the conflict) are written together and synchronised; every copy that
+    /// has the same conflict marks it resolved when the decision arrives
+    /// (Etapa 6, step 6.4).
     pub fn resolve_conflict(&mut self, conflict: Uuid, value: Option<Value>) -> Result<()> {
         let st = self.get(CONFLICTS, conflict)?.ok_or(Error::NotFound {
             coll: CONFLICTS.into(),
@@ -365,19 +379,64 @@ impl Store {
         let coll = f["coll"].as_str().unwrap_or_default().to_string();
         let record: Uuid = f["record"].as_str().and_then(|s| s.parse().ok()).unwrap_or_default();
         let field = f["field"].as_str().unwrap_or_default().to_string();
-        if field != DELETED_FIELD
-            && let Some(cur) = self.get(&coll, record)?
-        {
+        let mut batch = Vec::new();
+        if field == DELETED_FIELD {
+            // The chosen whole record: {"deleted": bool, "fields": {...}}.
+            let chosen = value.clone().unwrap_or(Value::Null);
+            let deleted = chosen.get("deleted").and_then(Value::as_bool).unwrap_or(false);
+            let live = self.get(&coll, record)?.is_some();
+            if deleted && live {
+                batch.push(crate::store::Write::delete(&coll, record));
+            } else if !deleted {
+                if !live && self.get_any(&coll, record)?.is_some() {
+                    batch.push(crate::store::Write::restore(&coll, record));
+                }
+                if let Some(Value::Object(fields)) = chosen.get("fields") {
+                    batch.push(crate::store::Write::put(&coll, record, fields.clone()));
+                }
+            }
+        } else if let Some(cur) = self.get(&coll, record)? {
             let mut fields = cur.fields.clone();
-            match value {
-                Some(v) => fields.insert(field, v),
-                None => fields.remove(&field),
+            match value.clone() {
+                Some(Value::Null) | None => fields.remove(&field),
+                Some(v) => fields.insert(field.clone(), v),
             };
-            self.write(vec![crate::store::Write::put(&coll, record, fields)])?;
+            batch.push(crate::store::Write::put(&coll, record, fields));
         }
+        let mut d = crate::model::Fields::new();
+        d.insert("field".into(), Value::String(field));
+        d.insert("value".into(), value.unwrap_or(Value::Null));
+        batch.push(crate::store::Write::put(&decisions_coll(&coll), conflict, d));
+        self.write(batch)?;
         let mut done = f;
         done.insert("resolved".into(), Value::Bool(true));
         self.put_system(CONFLICTS, conflict, done)?;
+        Ok(())
+    }
+
+    /// Keeps one side of a conflict: the value on this copy, or the one that
+    /// came from the other copy.
+    pub fn decide_conflict(&mut self, conflict: Uuid, keep_local: bool) -> Result<()> {
+        let st = self.get(CONFLICTS, conflict)?.ok_or(Error::NotFound {
+            coll: CONFLICTS.into(),
+            id: conflict,
+        })?;
+        let v = st.fields[if keep_local { "local" } else { "remote" }].clone();
+        self.resolve_conflict(conflict, Some(v))
+    }
+
+    /// A decision record arrived: the conflict it names is resolved here too.
+    fn note_decision(&mut self, op: &Op) -> Result<()> {
+        if !op.state.coll.ends_with(DECISIONS_SUFFIX) || is_redacted(op) {
+            return Ok(());
+        }
+        if let Some(st) = self.get(CONFLICTS, op.state.id)?
+            && st.fields.get("resolved").and_then(Value::as_bool) != Some(true)
+        {
+            let mut done = st.fields.clone();
+            done.insert("resolved".into(), Value::Bool(true));
+            self.put_system(CONFLICTS, op.state.id, done)?;
+        }
         Ok(())
     }
 }

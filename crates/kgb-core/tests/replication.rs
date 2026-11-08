@@ -218,3 +218,66 @@ fn widened_and_narrowed_roles_and_bad_messages() {
         "answer from another organization"
     );
 }
+
+#[test]
+fn conflicts_are_shown_by_role_and_decided_everywhere() {
+    use kgb_core::conflicts;
+    let Two {
+        t,
+        mut a,
+        mut b,
+        da,
+        db,
+        ion,
+    } = two();
+    let n = Uuid::new_v4();
+    put(&mut a, NOTES, n, "start");
+    pull(&mut b, &db, &a, &da);
+    put(&mut a, NOTES, n, "varianta Anei");
+    put(&mut b, NOTES, n, "varianta lui Ion");
+    pull(&mut a, &da, &b, &db);
+    pull(&mut b, &db, &a, &da);
+    let (fa, fb) = (da.fingerprint(), db.fingerprint());
+    let ca = conflicts::list(&a, Some(&fa)).unwrap();
+    let cb = conflicts::list(&b, Some(&fb)).unwrap();
+    assert_eq!((ca.len(), cb.len()), (1, 1));
+    assert_eq!(ca[0].id, cb[0].id, "the same conflict on both PCs");
+    assert_eq!(
+        (ca[0].aici.as_str(), ca[0].venit.as_str()),
+        ("varianta Anei", "varianta lui Ion")
+    );
+    assert_eq!(ca[0].modul.as_deref(), Some("kgb.notes"));
+    assert_eq!(ca[0].camp.as_deref(), Some("t"));
+    assert!(ca[0].poate_decide && cb[0].poate_decide);
+
+    // As "Doar citire", Ion sees it but cannot decide.
+    let v = org::members(a.store(), false)
+        .unwrap()
+        .into_iter()
+        .find(|m| m.id == ion)
+        .unwrap()
+        .version;
+    org::update_member(a.store_mut(), &da, ion, "Ion", org::role_reader(), v).unwrap();
+    pull(&mut b, &db, &a, &da);
+    let cb = conflicts::list(&b, Some(&fb)).unwrap();
+    assert!(!cb[0].poate_decide);
+    let e = conflicts::decide(&mut b, Some(&fb), cb[0].id, true).unwrap_err();
+    assert!(e.to_string().contains("nu poate decide"), "{e}");
+
+    // Ana keeps Ion's version; Ion's PC gets the decision.
+    conflicts::decide(&mut a, Some(&fa), ca[0].id, false).unwrap();
+    assert!(conflicts::list(&a, Some(&fa)).unwrap().is_empty());
+    let s = pull(&mut b, &db, &a, &da);
+    assert_eq!(s.refuzate, 0, "{s:?}");
+    assert!(
+        conflicts::list(&b, Some(&fb)).unwrap().is_empty(),
+        "resolved on Ion's PC too"
+    );
+    assert_eq!(text(&a, NOTES, n).as_deref(), Some("varianta lui Ion"));
+    assert_eq!(text(&b, NOTES, n).as_deref(), Some("varianta lui Ion"));
+    assert!(
+        conflicts::decide(&mut a, Some(&fa), ca[0].id, true).is_err(),
+        "only once"
+    );
+    let _ = t;
+}

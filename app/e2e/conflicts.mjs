@@ -1,0 +1,106 @@
+// Etapa 6 step 6.4, end to end in the real window, with a real
+// synchronisation conflict: a note is written in the app; the helper
+// `make_conflict` (crates/kgb-core/examples) makes a second copy of the
+// workspace, both copies change the note offline and are synchronised; the
+// app shows the conflict with both values; keeping the other PC's value
+// changes the note and the conflict is gone, also after a forced restart.
+//
+// Usage: node app/e2e/conflicts.mjs <path-to-kgb-app.exe> <screenshot-dir>
+// Uses a throw-away data folder (KGB_DATA_DIR), never the user's real data.
+import { spawn, execFileSync } from "node:child_process";
+import { mkdtempSync, mkdirSync, rmSync } from "node:fs";
+import { tmpdir } from "node:os";
+import { join } from "node:path";
+import { connect, sleep } from "./cdp.mjs";
+
+const [exe, shots] = process.argv.slice(2);
+if (!exe || !shots) {
+  console.error("usage: node conflicts.mjs <kgb-app.exe> <screenshot-dir>");
+  process.exit(2);
+}
+mkdirSync(shots, { recursive: true });
+const data = mkdtempSync(join(tmpdir(), "kgb-conflicts-"));
+const PORT = 9347;
+let proc;
+let page;
+const results = [];
+const check = (name, ok, detail = "") => {
+  results.push(ok);
+  console.log(`${ok ? "PASS" : "FAIL"}  ${name}${detail ? ` — ${detail}` : ""}`);
+};
+
+async function start() {
+  proc = spawn(exe, [], {
+    env: { ...process.env, COMPUTERNAME: "PC-TEST", KGB_DATA_DIR: data, WEBVIEW2_ADDITIONAL_BROWSER_ARGUMENTS: `--remote-debugging-port=${PORT}` },
+    stdio: "ignore",
+  });
+  const p = await connect(PORT, 20000);
+  page = p;
+  await p.until("!!document.querySelector('aside')", 15000);
+  return p;
+}
+function stop(p) {
+  p.close();
+  execFileSync("taskkill", ["/F", "/T", "/PID", String(proc.pid)], { stdio: "ignore" });
+}
+const noteTexts = (p) => p.eval("[...document.querySelectorAll('.list li')].map(l => l.innerText)");
+
+try {
+  let p = await start();
+  await p.click("Catalog module", "nav .nav");
+  const card = "[...document.querySelectorAll('.card')].find(c => c.querySelector('h3')?.innerText === 'Note (demonstrativ)')";
+  await p.until(`!!${card}`);
+  await p.eval(`${card}.querySelector('button').click()`);
+  await sleep(200);
+  await p.click("Acordă și activează");
+  await p.until("[...document.querySelectorAll('nav .nav')].some(e => e.textContent.includes('Note'))");
+  await p.click("Note (demonstrativ)", "nav .nav");
+  await p.fill("input[aria-label='Notă nouă']", "Nota de test");
+  await p.click("Adaugă");
+  await p.until("[...document.querySelectorAll('.list li')].some(l => l.innerText.includes('Nota de test'))");
+  await p.click("Conflicte", "nav .nav");
+  await p.until("!!document.querySelector('.conflicts-page')");
+  check("fără sincronizare: niciun conflict", (await p.eval("document.querySelector('.conflicts-page').innerText")).includes("Niciun conflict"));
+  stop(p);
+  await sleep(500);
+
+  const out = execFileSync("cargo", ["run", "-q", "-p", "kgb-core", "--example", "make_conflict", "--", data], { encoding: "utf8" });
+  check("ajutorul a creat un conflict real (două copii sincronizate)", out.includes("conflicte: 1"), out.trim());
+
+  p = await start();
+  await p.click("Conflicte", "nav .nav");
+  await p.until("!!document.querySelector('.conflicts-table tbody tr')", 8000);
+  const row = await p.eval("document.querySelector('.conflicts-table tbody tr').innerText");
+  check("conflictul apare cu ambele valori", row.includes("Versiunea de pe acest PC") && row.includes("Versiunea de pe celălalt PC") && row.includes("Note"), row);
+  await p.screenshot(join(shots, "01-conflict.png"));
+  await p.click("Păstrează venit");
+  await p.until("document.querySelector('.conflicts-page').innerText.includes('Niciun conflict')", 5000);
+  check("după alegere conflictul dispare", true);
+  await p.click("Note (demonstrativ)", "nav .nav");
+  await p.until("document.querySelectorAll('.list li').length > 0");
+  const notes = await noteTexts(p);
+  check("nota are valoarea aleasă", notes.some((n) => n.includes("Versiunea de pe celălalt PC")) && !notes.some((n) => n.includes("acest PC")), notes.join(" | "));
+  await p.screenshot(join(shots, "02-ales.png"));
+  stop(p);
+
+  p = await start();
+  await p.click("Conflicte", "nav .nav");
+  await p.until("!!document.querySelector('.conflicts-page')");
+  await sleep(300);
+  check("după repornire (forțată) conflictul rămâne rezolvat", (await p.eval("document.querySelector('.conflicts-page').innerText")).includes("Niciun conflict"));
+  stop(p);
+} catch (e) {
+  check("scenariul a rulat până la capăt", false, e.message);
+  await page?.screenshot(join(shots, "eroare.png")).catch(() => {});
+  try {
+    execFileSync("taskkill", ["/F", "/T", "/PID", String(proc?.pid)], { stdio: "ignore" });
+  } catch {
+    /* already gone */
+  }
+} finally {
+  await sleep(500);
+  rmSync(data, { recursive: true, force: true });
+}
+const failed = results.filter((r) => !r).length;
+console.log(`\n${results.length - failed}/${results.length} verificări trecute`);
+process.exit(failed ? 1 : 0);

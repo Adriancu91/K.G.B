@@ -128,6 +128,18 @@ export interface OrgReply {
   registry_problems: string[];
 }
 
+export interface ConflictView {
+  id: string;
+  modul: string | null;
+  colectie: string;
+  inregistrare: string;
+  camp: string | null;
+  aici: string;
+  venit: string;
+  provizoriu: "aici" | "venit";
+  poate_decide: boolean;
+}
+
 export interface InviteView {
   id: string;
   member: string;
@@ -222,6 +234,8 @@ export const api = {
   roleDelete: (id: string) => invoke<void>("org_role_delete", { id }),
   inviteCreate: (member: string, hours: number) =>
     invoke<{ id: string; code: string; member: string; expires_ms: number }>("invite_create", { member, hours }),
+  conflicts: () => invoke<{ items: ConflictView[]; modules: Array<[string, string]> }>("conflicts_list"),
+  conflictDecide: (id: string, keepHere: boolean) => invoke<void>("conflict_decide", { id, keepHere }),
   inviteCancel: (id: string) => invoke<void>("invite_cancel", { id }),
   inviteAnswer: (code: string) => invoke<JoinRequest>("invite_answer", { code }),
   requestReceive: (code: string) => invoke<PendingDevice>("request_receive", { code }),

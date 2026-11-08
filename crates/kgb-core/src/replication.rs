@@ -97,19 +97,29 @@ fn my_org(store: &Store) -> CoreResult<String> {
     }
 }
 
+/// The collection a decision collection (`<coll>~conflicts`, step 6.4)
+/// belongs to; decisions travel and are checked like their collection.
+fn base(coll: &str) -> &str {
+    coll.split('~').next().unwrap_or(coll)
+}
+
 /// Which module a collection belongs to (`mod.<id>.<collection>`).
 fn module_of(coll: &str) -> Option<&str> {
-    coll.strip_prefix("mod.")?.rsplit_once('.').map(|(m, _)| m)
+    base(coll).strip_prefix("mod.")?.rsplit_once('.').map(|(m, _)| m)
+}
+
+fn org_table(coll: &str) -> bool {
+    ORG_TABLES.contains(&base(coll))
 }
 
 /// Collections that travel between devices; everything else is local.
 fn shared(coll: &str) -> bool {
-    coll == registry::REGISTRY_COLLECTION || ORG_TABLES.contains(&coll) || module_of(coll).is_some()
+    coll == registry::REGISTRY_COLLECTION || org_table(coll) || module_of(coll).is_some()
 }
 
 /// Whether the device with key `key` may receive `coll`.
 fn readable(st: &RegState, key: &str, coll: &str) -> bool {
-    if coll == registry::REGISTRY_COLLECTION || ORG_TABLES.contains(&coll) {
+    if coll == registry::REGISTRY_COLLECTION || org_table(coll) {
         return st.member_of(key).is_some();
     }
     match module_of(coll) {
@@ -264,7 +274,7 @@ pub fn apply(store: &mut Store, dev: &DeviceIdentity, resp: &Value) -> CoreResul
             reason(sum, "făcută înainte ca autorul să fie în organizație");
             return false;
         };
-        let ok = if ORG_TABLES.contains(&coll) {
+        let ok = if org_table(coll) {
             then.is_admin(author)
         } else {
             module_of(coll).is_some_and(|m| then.access(author, m) == Access::Scriere)

@@ -16,6 +16,7 @@ import { DiagnosticsPage } from "./pages/DiagnosticsPage";
 import { Home } from "./pages/Home";
 import { SettingsPage } from "./pages/SettingsPage";
 import { OrgPage } from "./pages/OrgPage";
+import { ConflictsPage } from "./pages/ConflictsPage";
 
 /// Interfaces of the built-in modules, by module id.
 const MODULE_PAGES: Record<string, ComponentType<{ onError: (e: string | null) => void }>> = {
@@ -112,7 +113,7 @@ export function App() {
       });
     }
   }
-  nav.push({ id: "catalog", label: "Catalog module" }, { id: "org", label: "Organizație" }, { id: "settings", label: "Setări" }, { id: "data", label: "Date și backup" }, { id: "diagnostics", label: "Diagnostic" });
+  nav.push({ id: "catalog", label: "Catalog module" }, { id: "org", label: "Organizație" }, { id: "conflicts", label: "Conflicte" }, { id: "settings", label: "Setări" }, { id: "data", label: "Date și backup" }, { id: "diagnostics", label: "Diagnostic" });
 
   // If the open module was disabled or hidden, fall back to the start page.
   useEffect(() => {
@@ -246,6 +247,7 @@ export function App() {
         {page === "settings" && (
           <SettingsPage reply={settings} info={info} onSave={saveSettings} onInfoChanged={loadInfo} onError={setError} />
         )}
+        {page === "conflicts" && <ConflictsPage onError={setError} />}
         {page === "org" && <OrgPage onError={setError} onChanged={() => void loadModules()} />}
         {page === "diagnostics" && <DiagnosticsPage onError={setError} />}
         {page === "data" && <DataPage onError={setError} onSwitched={() => window.location.reload()} />}

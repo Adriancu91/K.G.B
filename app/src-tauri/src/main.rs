@@ -16,7 +16,7 @@ use kgb_core::settings::{self, Settings};
 use kgb_core::workspace::{self, Workspace};
 use kgb_core::{CORE_VERSION, CoreError, profiles};
 use kgb_core::{backup, files};
-use kgb_core::{invites, registry};
+use kgb_core::{conflicts, invites, registry};
 use serde::Serialize;
 use serde_json::Value;
 use tauri::{Manager, State};
@@ -576,6 +576,39 @@ fn org_role_delete(app: State<AppState>, id: uuid::Uuid) -> CmdResult<()> {
     })
 }
 
+// ---------- conflicts (Etapa 6, step 6.4) ----------
+
+#[derive(Serialize)]
+struct ConflictsReply {
+    items: Vec<conflicts::ConflictView>,
+    /// Module names, to show "Note" instead of "kgb.notes".
+    modules: Vec<(String, String)>,
+}
+
+#[tauri::command]
+fn conflicts_list(app: State<AppState>) -> CmdResult<ConflictsReply> {
+    with_session(&app, |s| {
+        let fp = s.device.fingerprint();
+        Ok(ConflictsReply {
+            items: conflicts::list(&s.ws, Some(&fp))?,
+            modules: s
+                .mm
+                .list(&s.ws, PRE_RELEASE)?
+                .into_iter()
+                .map(|m| (m.id, m.name))
+                .collect(),
+        })
+    })
+}
+
+#[tauri::command]
+fn conflict_decide(app: State<AppState>, id: uuid::Uuid, keep_here: bool) -> CmdResult<()> {
+    with_session(&app, |s| {
+        let fp = s.device.fingerprint();
+        conflicts::decide(&mut s.ws, Some(&fp), id, keep_here)
+    })
+}
+
 // ---------- invitations (Etapa 6, step 6.2, D-058) ----------
 
 #[tauri::command]
@@ -872,6 +905,8 @@ fn main() {
             org_member_remove,
             org_role_save,
             org_role_delete,
+            conflicts_list,
+            conflict_decide,
             invite_create,
             invite_cancel,
             invite_answer,
