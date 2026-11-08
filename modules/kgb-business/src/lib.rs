@@ -1,7 +1,8 @@
 //! `kgb.business` — primary business records (Etapa 5; Master Plan §6.7).
 //! Step 5.1: products, warehouses, receipts and issues, stock per warehouse,
 //! minimum-stock reminders. Step 5.2: transfers between warehouses,
-//! inventory counts, stock value at weighted average cost (D-050).
+//! inventory counts, stock value at weighted average cost (D-050). Step 5.3:
+//! partners, VAT settings, invoice series, issued invoices, storno, PDF.
 //!
 //! Rules (docs/ETAPA5_PLAN.md):
 //! - **Exact numbers (D-049):** quantities in thousandths and money in bani,
@@ -17,8 +18,11 @@
 //!
 //! Commands: `products`, `product_save`, `warehouses`, `warehouse_save`,
 //! `receive`, `issue`, `transfer`, `inventory`, `storno`, `documents`,
-//! `stock`, `movements`.
+//! `stock`, `movements`; `partners`, `partner_save`, `settings`,
+//! `settings_save`, `series`, `series_save`, `invoice_issue`, `invoices`,
+//! `invoice_storno`, `invoice_pdf`.
 
+pub mod invoices;
 pub mod num;
 pub mod valuation;
 
@@ -38,7 +42,7 @@ use uuid::Uuid;
 use num::{Money, Qty};
 
 pub const ID: &str = "kgb.business";
-const PRODUCTS: &str = "produse";
+pub(crate) const PRODUCTS: &str = "produse";
 const WAREHOUSES: &str = "depozite";
 const DOCS: &str = "documente_stoc";
 const MOVES: &str = "miscari";
@@ -62,7 +66,7 @@ impl Default for Business {
     }
 }
 
-fn bad(what: &str, detail: impl Into<String>) -> CoreError {
+pub(crate) fn bad(what: &str, detail: impl Into<String>) -> CoreError {
     CoreError::invalid(what, detail)
 }
 
@@ -70,15 +74,15 @@ fn args<T: DeserializeOwned>(v: Value) -> CoreResult<T> {
     serde_json::from_value(v).map_err(|e| CoreError::invalid("argumentele comenzii", e.to_string()))
 }
 
-fn s(r: &RecordState, k: &str) -> String {
+pub(crate) fn s(r: &RecordState, k: &str) -> String {
     r.fields.get(k).and_then(Value::as_str).unwrap_or_default().to_string()
 }
 
-fn i(r: &RecordState, k: &str) -> i64 {
+pub(crate) fn i(r: &RecordState, k: &str) -> i64 {
     r.fields.get(k).and_then(Value::as_i64).unwrap_or_default()
 }
 
-fn text(v: Option<String>, what: &str, max: usize, required: bool) -> CoreResult<Value> {
+pub(crate) fn text(v: Option<String>, what: &str, max: usize, required: bool) -> CoreResult<Value> {
     let t = v.map(|s| s.trim().to_string()).unwrap_or_default();
     if t.is_empty() {
         return if required {
@@ -114,7 +118,7 @@ pub fn date(s: &str) -> Option<String> {
     ((1990..=2200).contains(&y) && (1..=dim).contains(&d)).then(|| format!("{y:04}-{m:02}-{d:02}"))
 }
 
-fn live(ctx: &mut ModuleContext<'_>, coll: &str, id: Uuid, what: &str) -> CoreResult<RecordState> {
+pub(crate) fn live(ctx: &mut ModuleContext<'_>, coll: &str, id: Uuid, what: &str) -> CoreResult<RecordState> {
     ctx.get(coll, id)?
         .filter(|r| !r.deleted)
         .ok_or_else(|| bad(what, "nu există"))
@@ -226,6 +230,13 @@ struct Storno {
     data: String,
     #[serde(default)]
     nota: Option<String>,
+}
+
+#[derive(Deserialize)]
+#[serde(deny_unknown_fields)]
+struct InvoicePdf {
+    id: Uuid,
+    dest: std::path::PathBuf,
 }
 
 #[derive(Deserialize, Default)]
@@ -403,18 +414,34 @@ impl Business {
     /// The opposite movements of a document, once. Refused if it would take
     /// a stock below zero (an issued product cannot be „un-received”).
     fn storno(&self, ctx: &mut ModuleContext<'_>, a: Storno) -> CoreResult<Value> {
-        let doc = live(ctx, DOCS, a.document, "documentul")?;
+        let data = date(&a.data).ok_or_else(|| bad("data", format!("„{}” nu este o dată", a.data)))?;
+        let nota = text(a.nota, "nota", 500, false)?;
+        let (sid, batch) = self.storno_writes(ctx, a.document, &data, nota)?;
+        ctx.write(batch)?;
+        ctx.log("storno înregistrat");
+        Ok(json!({"document": sid}))
+    }
+
+    /// The writes of a storno (not yet written), so that an invoice storno
+    /// can put them in the same atomic batch as the invoice.
+    pub(crate) fn storno_writes(
+        &self,
+        ctx: &mut ModuleContext<'_>,
+        document: Uuid,
+        data: &str,
+        nota: Value,
+    ) -> CoreResult<(Uuid, Vec<Write>)> {
+        let doc = live(ctx, DOCS, document, "documentul")?;
         if s(&doc, "tip") == "storno" {
             return Err(bad(
                 "documentul",
                 "un storno nu se stornează; înregistrează un document nou",
             ));
         }
-        let id = json!(a.document.to_string());
+        let id = json!(document.to_string());
         if !ctx.scan(DOCS, |r| r.fields.get("storno_de") == Some(&id))?.is_empty() {
             return Err(bad("documentul", "a fost deja stornat"));
         }
-        let data = date(&a.data).ok_or_else(|| bad("data", format!("„{}” nu este o dată", a.data)))?;
         let moves = ctx.scan(MOVES, |r| r.fields.get("document") == Some(&id))?;
         let stock = self.balances(ctx)?;
         let mut after = stock.clone();
@@ -454,7 +481,7 @@ impl Business {
             "partener".into(),
             doc.fields.get("partener").cloned().unwrap_or(Value::Null),
         );
-        d.insert("nota".into(), text(a.nota, "nota", 500, false)?);
+        d.insert("nota".into(), nota);
         d.insert("storno_de".into(), id);
         d.insert(
             "depozit_destinatie".into(),
@@ -472,9 +499,70 @@ impl Business {
             f.insert("creat_ms".into(), json!(now));
             batch.push(Write::put(MOVES, Uuid::now_v7(), f).expect(0));
         }
-        ctx.write(batch)?;
-        ctx.log("storno înregistrat");
-        Ok(json!({"document": sid}))
+        Ok((sid, batch))
+    }
+
+    /// The writes of an issue (not yet written), checked against the stock:
+    /// used by invoices that take goods out of a warehouse.
+    pub(crate) fn issue_writes(
+        &self,
+        ctx: &mut ModuleContext<'_>,
+        depozit: Uuid,
+        numar: &str,
+        data: &str,
+        partener: Value,
+        lines: &[(RecordState, Qty)],
+    ) -> CoreResult<(Uuid, Vec<Write>)> {
+        let wh = self.active_warehouse(ctx, depozit)?;
+        let stock = self.balances(ctx)?;
+        let mut need: BTreeMap<Uuid, Qty> = BTreeMap::new();
+        for (p, q) in lines {
+            *need.entry(p.id).or_default() += q;
+        }
+        let mut errs = Vec::new();
+        for (pid, q) in &need {
+            let have = stock.get(&(pid.to_string(), depozit.to_string())).copied().unwrap_or(0);
+            if *q > have {
+                let name = lines
+                    .iter()
+                    .find(|(p, _)| p.id == *pid)
+                    .map(|(p, _)| s(p, "nume"))
+                    .unwrap_or_default();
+                errs.push(format!(
+                    "„{name}”: în „{}” sunt {}, se cer {}",
+                    s(&wh, "nume"),
+                    num::fmt_qty(have),
+                    num::fmt_qty(*q)
+                ));
+            }
+        }
+        if !errs.is_empty() {
+            return Err(bad("stocul", errs.join("; ")));
+        }
+        let now = now_ms();
+        let doc = Uuid::now_v7();
+        let mut d = self.header(
+            "iesire",
+            json!(numar.chars().take(40).collect::<String>()),
+            data,
+            depozit,
+            None,
+            Value::Null,
+            now,
+        );
+        d.insert("partener".into(), partener);
+        let mut batch = vec![Write::put(DOCS, doc, d).expect(0)];
+        for (p, q) in lines {
+            batch.push(
+                Write::put(
+                    MOVES,
+                    Uuid::now_v7(),
+                    Self::movement(doc, p.id, depozit, -q, data, None, now),
+                )
+                .expect(0),
+            );
+        }
+        Ok((doc, batch))
     }
 
     fn active_warehouse(&self, ctx: &mut ModuleContext<'_>, id: Uuid) -> CoreResult<RecordState> {
@@ -824,6 +912,31 @@ impl Module for Business {
             "transfer" => self.transfer(ctx, args(a)?),
             "inventory" => self.inventory(ctx, args(a)?),
             "storno" => self.storno(ctx, args(a)?),
+            // Step 5.3: partners, settings, series, invoices.
+            "partners" => {
+                let mut list = ctx.scan(invoices::PARTNERS, |_| true)?;
+                list.sort_by_key(|r| s(r, "nume").to_lowercase());
+                Ok(json!(list.iter().map(view).collect::<Vec<_>>()))
+            }
+            "partner_save" => self.partner_save(ctx, args(a)?),
+            "settings" => self.settings_view(ctx),
+            "settings_save" => self.settings_save(ctx, args(a)?),
+            "series" => {
+                let mut list = ctx.scan(invoices::SERIES, |_| true)?;
+                list.sort_by_key(|r| s(r, "cod"));
+                Ok(json!(list.iter().map(view).collect::<Vec<_>>()))
+            }
+            "series_save" => self.series_save(ctx, args(a)?),
+            "invoice_issue" => self.invoice_issue(ctx, args(a)?),
+            "invoices" => self.invoices(ctx),
+            "invoice_storno" => self.invoice_storno(ctx, args(a)?),
+            "invoice_pdf" => {
+                let a: InvoicePdf = args(a)?;
+                let pdf = self.invoice_pdf(ctx, a.id)?;
+                // The user confirmed replacing an existing file in the save dialog.
+                ctx.export_bytes(&a.dest, &pdf, true)?;
+                Ok(json!({"octeti": pdf.len()}))
+            }
             "documents" => {
                 let docs = ctx.scan(DOCS, |_| true)?;
                 let reversed: BTreeSet<String> = docs

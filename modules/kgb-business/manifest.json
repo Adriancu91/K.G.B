@@ -2,17 +2,19 @@
   "manifest_format": 1,
   "id": "kgb.business",
   "name": "Business",
-  "description": "Evidență primară pentru firmă: produse, depozite, recepții, ieșiri și stocuri (urmează facturi, casă și bancă). Nu este contabilitate certificată. Ce s-a înregistrat nu se modifică; greșelile se corectează prin storno, vizibil.",
+  "description": "Evidență primară pentru firmă: produse, depozite, recepții, ieșiri, transferuri, inventar, stocuri la cost mediu; parteneri și facturi emise cu TVA (urmează casă și bancă). Nu este contabilitate certificată. Ce s-a înregistrat nu se modifică; greșelile se corectează prin storno, vizibil.",
   "version": "0.1.0",
   "core": ">=0.1.0, <0.2.0",
   "status": "beta",
   "permissions": [
     "storage.own",
-    "notify.send"
+    "notify.send",
+    "files.own"
   ],
   "services": [
     "storage",
     "notify",
+    "files",
     "log"
   ],
   "data_types": [
@@ -231,6 +233,269 @@
         "produs",
         "depozit",
         "document"
+      ]
+    },
+    {
+      "collection": "parteneri",
+      "description": "clienții și furnizorii (CUI verificat cu cifra de control)",
+      "schema": {
+        "fields": {
+          "nume": {
+            "type": "string",
+            "required": true,
+            "nullable": false,
+            "max_len": 200
+          },
+          "cui": {
+            "type": "string",
+            "required": false,
+            "nullable": true,
+            "max_len": 20
+          },
+          "reg_com": {
+            "type": "string",
+            "required": false,
+            "nullable": true,
+            "max_len": 40
+          },
+          "adresa": {
+            "type": "string",
+            "required": false,
+            "nullable": true,
+            "max_len": 300
+          },
+          "iban": {
+            "type": "string",
+            "required": false,
+            "nullable": true,
+            "max_len": 40
+          },
+          "email": {
+            "type": "string",
+            "required": false,
+            "nullable": true,
+            "max_len": 100
+          },
+          "telefon": {
+            "type": "string",
+            "required": false,
+            "nullable": true,
+            "max_len": 40
+          },
+          "tip": {
+            "type": "string",
+            "required": true,
+            "nullable": false,
+            "enum": [
+              "client",
+              "furnizor",
+              "ambele"
+            ]
+          },
+          "activ": {
+            "type": "bool",
+            "required": true
+          },
+          "creat_ms": {
+            "type": "integer",
+            "required": true,
+            "min": 0
+          }
+        },
+        "additional": false
+      }
+    },
+    {
+      "collection": "setari",
+      "description": "cotele de TVA folosite și datele firmei tipărite pe facturi",
+      "schema": {
+        "fields": {
+          "cote_tva": {
+            "type": "array",
+            "required": true,
+            "nullable": false
+          },
+          "actualizat_ms": {
+            "type": "integer",
+            "required": true,
+            "min": 0
+          },
+          "firma_nume": {
+            "type": "string",
+            "required": false,
+            "nullable": true,
+            "max_len": 300
+          },
+          "firma_cui": {
+            "type": "string",
+            "required": false,
+            "nullable": true,
+            "max_len": 300
+          },
+          "firma_reg_com": {
+            "type": "string",
+            "required": false,
+            "nullable": true,
+            "max_len": 300
+          },
+          "firma_adresa": {
+            "type": "string",
+            "required": false,
+            "nullable": true,
+            "max_len": 300
+          },
+          "firma_iban": {
+            "type": "string",
+            "required": false,
+            "nullable": true,
+            "max_len": 300
+          },
+          "firma_banca": {
+            "type": "string",
+            "required": false,
+            "nullable": true,
+            "max_len": 300
+          },
+          "firma_capital": {
+            "type": "string",
+            "required": false,
+            "nullable": true,
+            "max_len": 300
+          },
+          "firma_email": {
+            "type": "string",
+            "required": false,
+            "nullable": true,
+            "max_len": 300
+          }
+        },
+        "additional": false
+      }
+    },
+    {
+      "collection": "serii",
+      "description": "seriile de facturi și următorul număr din fiecare",
+      "schema": {
+        "fields": {
+          "cod": {
+            "type": "string",
+            "required": true,
+            "nullable": false,
+            "max_len": 10
+          },
+          "urmator": {
+            "type": "integer",
+            "required": true,
+            "min": 1
+          },
+          "creat_ms": {
+            "type": "integer",
+            "required": true,
+            "min": 0
+          }
+        },
+        "additional": false
+      },
+      "indexes": [
+        "cod"
+      ]
+    },
+    {
+      "collection": "facturi",
+      "description": "facturile emise; nu se modifică, se stornează cu o factură nouă",
+      "schema": {
+        "fields": {
+          "serie": {
+            "type": "string",
+            "required": true,
+            "nullable": false,
+            "max_len": 10
+          },
+          "numar": {
+            "type": "integer",
+            "required": true,
+            "min": 1
+          },
+          "data": {
+            "type": "string",
+            "required": true,
+            "nullable": false,
+            "max_len": 10
+          },
+          "scadenta": {
+            "type": "string",
+            "required": false,
+            "nullable": true,
+            "max_len": 10
+          },
+          "partener": {
+            "type": "string",
+            "required": true,
+            "nullable": false,
+            "max_len": 36
+          },
+          "client": {
+            "type": "object",
+            "required": true,
+            "nullable": false
+          },
+          "furnizor": {
+            "type": "object",
+            "required": true,
+            "nullable": false
+          },
+          "depozit": {
+            "type": "string",
+            "required": false,
+            "nullable": true,
+            "max_len": 36
+          },
+          "document_stoc": {
+            "type": "string",
+            "required": false,
+            "nullable": true,
+            "max_len": 36
+          },
+          "linii": {
+            "type": "array",
+            "required": true,
+            "nullable": false
+          },
+          "total_fara_tva": {
+            "type": "integer",
+            "required": true
+          },
+          "total_tva": {
+            "type": "integer",
+            "required": true
+          },
+          "total": {
+            "type": "integer",
+            "required": true
+          },
+          "storno_de": {
+            "type": "string",
+            "required": false,
+            "nullable": true,
+            "max_len": 36
+          },
+          "nota": {
+            "type": "string",
+            "required": false,
+            "nullable": true,
+            "max_len": 500
+          },
+          "creat_ms": {
+            "type": "integer",
+            "required": true,
+            "min": 0
+          }
+        },
+        "additional": false
+      },
+      "indexes": [
+        "partener",
+        "storno_de"
       ]
     }
   ],

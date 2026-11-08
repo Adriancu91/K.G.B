@@ -974,3 +974,10 @@ table.report tfoot th {
 .stock-doc .doc-line select {
   min-width: 260px;
 }
+.invoice-form .doc-line input.tiny {
+  flex: 0 0 4.5em;
+  min-width: 0;
+}
+.invoices .sheet-tabs {
+  margin: 8px 0;
+}

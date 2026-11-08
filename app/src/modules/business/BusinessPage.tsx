@@ -3,6 +3,7 @@
 // documents never change, a storno reverses them visibly (D-051).
 import { useCallback, useEffect, useState } from "react";
 import { api, message } from "../../api";
+import { InvoicesView } from "./invoices";
 
 const ID = "kgb.business";
 
@@ -337,7 +338,7 @@ function InventoryForm(props: { stock: StockRow[]; warehouses: Warehouse[]; busy
 }
 
 export function BusinessPage({ onError }: { onError: (e: string | null) => void }) {
-  const [tab, setTab] = useState<"stoc" | "documente" | "receptie" | "iesire" | "transfer" | "inventar" | "produse" | "depozite">("stoc");
+  const [tab, setTab] = useState<"stoc" | "documente" | "receptie" | "iesire" | "transfer" | "inventar" | "produse" | "depozite" | "facturare">("stoc");
   const [products, setProducts] = useState<Product[]>([]);
   const [warehouses, setWarehouses] = useState<Warehouse[]>([]);
   const [stock, setStock] = useState<StockRow[]>([]);
@@ -401,6 +402,7 @@ export function BusinessPage({ onError }: { onError: (e: string | null) => void 
             ["inventar", "Inventar"],
             ["produse", `Produse (${products.length})`],
             ["depozite", `Depozite (${warehouses.length})`],
+            ["facturare", "Facturare"],
           ] as const
         ).map(([t, label]) => (
           <button
@@ -572,6 +574,8 @@ export function BusinessPage({ onError }: { onError: (e: string | null) => void 
           }
         />
       )}
+
+      {tab === "facturare" && <InvoicesView products={products} warehouses={warehouses} onError={onError} onChanged={() => void refresh()} />}
 
       {tab === "produse" && (
         <>

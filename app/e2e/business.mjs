@@ -5,7 +5,7 @@
 // Usage: node app/e2e/business.mjs <path-to-kgb-app.exe> <screenshot-dir>
 // Uses a throw-away data folder (KGB_DATA_DIR), never the user's real data.
 import { spawn, execFileSync } from "node:child_process";
-import { mkdtempSync, mkdirSync, rmSync } from "node:fs";
+import { mkdtempSync, mkdirSync, readFileSync, rmSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { connect, sleep } from "./cdp.mjs";
@@ -148,6 +148,61 @@ try {
   await p.until("document.body.innerText.includes('Diferențe: Ciment 40 kg -1')", 8000);
   check("inventarul înregistrează diferența", (await stockRows(p)).includes("CIM-40|Ciment 40 kg|Depozit central|19|sac|32,50|617,50"));
   await p.screenshot(join(shots, "04-valoare.png"));
+
+  // Step 5.3: settings, a series, a client, an invoice that takes goods out
+  // of stock, its PDF and its storno.
+  await tab(p, "Facturare");
+  await p.until("!!document.querySelector('.invoices')");
+  const sub = (label) => p.eval(`[...document.querySelectorAll('.invoices .sheet-tabs button')].find(b => b.innerText.startsWith(${JSON.stringify(label)})).click()`);
+  await sub("Setări facturare");
+  await p.until("!!document.querySelector('.company-form')");
+  for (const [k, v] of [["Denumire", "Kronos Global Business SRL"], ["CUI", "RO18547290"], ["Sediu", "Iași, Str. Lăpușneanu 1"], ["IBAN", "RO49AAAA1B31007593840000"]])
+    await p.fill(`input[aria-label='Firma: ${k}']`, v);
+  await p.click("Salvează setările", ".company-form button");
+  await p.until("document.body.innerText.includes('Setările de facturare au fost salvate')", 8000);
+  await p.fill("input[aria-label='Cod serie']", "KGB");
+  await p.click("Adaugă seria", ".invoices button");
+  await p.until("document.body.innerText.includes('KGB — următorul număr: 1')", 8000);
+  await sub("Parteneri");
+  await p.fill("input[aria-label='Nume partener']", "Client SRL");
+  await p.fill("input[aria-label='CUI partener']", "RO12345675");
+  await p.click("Adaugă partenerul", ".invoices button");
+  await p.until("!!document.querySelector('.invoices [role=alert]')", 8000);
+  check("un CUI greșit e refuzat", (await p.eval("document.querySelector('.invoices [role=alert]').innerText")).includes("cifra de control"));
+  await p.fill("input[aria-label='CUI partener']", "RO12345674");
+  await p.click("Adaugă partenerul", ".invoices button");
+  await p.until("document.body.innerText.includes('RO12345674')", 8000);
+  await sub("Factură nouă");
+  await p.until("!!document.querySelector('.invoice-form')");
+  await selectByText(p, "select[aria-label='Scade din stoc']", "Depozit central");
+  await selectByText(p, "select[aria-label='Produsul 1']", "CIM-40");
+  await p.fill("input[aria-label='Cantitatea 1']", "3");
+  await p.fill("input[aria-label='Prețul 1']", "32,50");
+  await p.click("+ Adaugă o linie", ".invoice-form button");
+  await p.fill("input[aria-label='Descrierea 2']", "Transport");
+  await p.fill("input[aria-label='Cantitatea 2']", "1");
+  await p.fill("input[aria-label='Prețul 2']", "100");
+  await p.fill("select[aria-label='Cota TVA 2']", "11");
+  await p.screenshot(join(shots, "05-factura-noua.png"));
+  await p.click("Emite factura", ".invoice-form button");
+  await p.until("document.body.innerText.includes('Factura KGB 1 a fost emisă')", 10000);
+  const emitted = await p.eval("document.querySelector('.invoices [role=status]').innerText");
+  check("factura KGB 1: 228,98 lei (calculat de mână)", emitted.includes("228,98 lei"), emitted);
+  const invs = await p.eval(`window.__TAURI_INTERNALS__.invoke("module_call", { id: "kgb.business", command: "invoices", args: {} })`);
+  const pdfPath = join(shots, "factura-KGB-1.pdf");
+  await p.eval(`window.__TAURI_INTERNALS__.invoke("module_call", { id: "kgb.business", command: "invoice_pdf", args: { id: ${JSON.stringify(invs[0].id)}, dest: ${JSON.stringify(pdfPath)} } })`);
+  check("PDF-ul facturii se generează", readFileSync(pdfPath).subarray(0, 5).toString("latin1") === "%PDF-");
+  await tab(p, "Stoc");
+  await p.until("!!document.querySelector('.stock-table tbody tr')", 8000);
+  check("factura a scăzut stocul (19 → 16)", (await stockRows(p)).some((r) => r.startsWith("CIM-40|Ciment 40 kg|Depozit central|16|")));
+  await tab(p, "Facturare");
+  await p.until("!!document.querySelector('.invoice-list')");
+  await p.click("", "button[aria-label='Stornează factura KGB 1']");
+  await p.until("document.body.innerText.includes('stornată prin factura KGB 2')", 10000);
+  await p.screenshot(join(shots, "06-facturi.png"));
+  await tab(p, "Stoc");
+  await p.until("!!document.querySelector('.stock-table tbody tr')", 8000);
+  check("stornarea facturii readuce stocul (16 → 19)", (await stockRows(p)).some((r) => r.startsWith("CIM-40|Ciment 40 kg|Depozit central|19|")));
 
   // Forced restart: the stock is recomputed from the movements.
   stop(p);

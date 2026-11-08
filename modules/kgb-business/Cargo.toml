@@ -9,6 +9,8 @@ description = "K.G.B. module: business — stock, invoices, cash and bank (prima
 [dependencies]
 kgb-core.workspace = true
 kgb-store.workspace = true
+# Typst rendering of the documents module (code, not data): invoice PDFs (D-045).
+kgb-docs.workspace = true
 serde.workspace = true
 serde_json.workspace = true
 uuid.workspace = true

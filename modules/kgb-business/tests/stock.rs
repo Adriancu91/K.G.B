@@ -32,8 +32,12 @@ fn receive_issue_storno_and_reopen() {
     let dir = tmp.path().join("ws");
     let mut ws = Workspace::create(&dir, "T").unwrap();
     let mm = manager();
-    mm.enable(&mut ws, ID, &["storage.own".into(), "notify.send".into()])
-        .unwrap();
+    mm.enable(
+        &mut ws,
+        ID,
+        &["storage.own".into(), "notify.send".into(), "files.own".into()],
+    )
+    .unwrap();
 
     let p = call(
         &mut ws,
