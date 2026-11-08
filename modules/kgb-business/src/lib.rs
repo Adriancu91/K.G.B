@@ -21,8 +21,11 @@
 //! `stock`, `movements`; `partners`, `partner_save`, `settings`,
 //! `settings_save`, `series`, `series_save`, `invoice_issue`, `invoices`,
 //! `invoice_storno`, `invoice_pdf`; `purchases`, `purchase_save`,
-//! `purchase_storno`, `import` (CSV from „Extragere date”).
+//! `purchase_storno`, `import` (CSV from „Extragere date”); `accounts`,
+//! `account_save`, `payments`, `payment_save`, `payment_link`, `payment_storno`,
+//! `open_documents`, `settle`, `bank_import`.
 
+pub mod cash;
 pub mod invoices;
 pub mod num;
 pub mod purchases;
@@ -946,6 +949,16 @@ impl Module for Business {
             "invoice_issue" => self.invoice_issue(ctx, args(a)?),
             "invoices" => self.invoices(ctx),
             "invoice_storno" => self.invoice_storno(ctx, args(a)?),
+            // Step 5.5: cash and bank.
+            "accounts" => self.accounts(ctx),
+            "account_save" => self.account_save(ctx, args(a)?),
+            "payments" => self.payments(ctx),
+            "payment_save" => self.payment_save(ctx, args(a)?),
+            "payment_link" => self.payment_link(ctx, args(a)?),
+            "payment_storno" => self.payment_storno(ctx, args(a)?),
+            "open_documents" => self.open_documents(ctx),
+            "settle" => self.settle(ctx, args(a)?),
+            "bank_import" => self.bank_import(ctx, args(a)?),
             // Step 5.4: received invoices and expenses.
             "purchases" => self.purchases(ctx),
             "purchase_save" => self.purchase_save(ctx, args(a)?),

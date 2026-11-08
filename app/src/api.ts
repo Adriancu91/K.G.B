@@ -142,6 +142,9 @@ export const api = {
     invoke<T>("module_call", { id, command, args }),
   /** Hands a file the user picked to a module's `import` command. */
   importFile: <T>(id: string, path: string) => invoke<T>("module_import_file", { id, path }),
+  /** Same, for another module command with extra arguments (e.g. the bank account). */
+  importFileWith: <T>(id: string, path: string, command: string, args: Record<string, unknown>) =>
+    invoke<T>("module_import_file_with", { id, path, command, args }),
   notifications: () => invoke<{ items: NotificationView[]; unread: number }>("notifications_list"),
   /** Reminders round; `azi` is the local date (YYYY-MM-DD). Returns how many are new. */
   remindersTick: (azi: string) => invoke<number>("reminders_tick", { azi }),

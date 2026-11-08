@@ -2,7 +2,7 @@
   "manifest_format": 1,
   "id": "kgb.business",
   "name": "Business",
-  "description": "Evidență primară pentru firmă: produse, depozite, recepții, ieșiri, transferuri, inventar, stocuri la cost mediu; parteneri și facturi emise cu TVA (urmează casă și bancă). Nu este contabilitate certificată. Ce s-a înregistrat nu se modifică; greșelile se corectează prin storno, vizibil.",
+  "description": "Evidență primară pentru firmă: stocuri la cost mediu, parteneri, facturi emise cu TVA, cheltuieli, casă și bancă (încasări, plăți, chitanțe, extrase, avansuri). Nu este contabilitate certificată. Ce s-a înregistrat nu se modifică; greșelile se corectează prin storno, vizibil.",
   "version": "0.1.0",
   "core": ">=0.1.0, <0.2.0",
   "status": "beta",
@@ -607,6 +607,219 @@
       "indexes": [
         "cheie",
         "furnizor"
+      ]
+    },
+    {
+      "collection": "conturi",
+      "description": "casele de marcat (registre de casă) și conturile bancare",
+      "schema": {
+        "fields": {
+          "tip": {
+            "type": "string",
+            "required": true,
+            "nullable": false,
+            "enum": [
+              "casa",
+              "banca"
+            ]
+          },
+          "nume": {
+            "type": "string",
+            "required": true,
+            "nullable": false,
+            "max_len": 100
+          },
+          "iban": {
+            "type": "string",
+            "required": false,
+            "nullable": true,
+            "max_len": 40
+          },
+          "creat_ms": {
+            "type": "integer",
+            "required": true,
+            "min": 0
+          }
+        },
+        "additional": false
+      }
+    },
+    {
+      "collection": "plati",
+      "description": "încasările și plățile (casă și bancă); nu se modifică, se stornează",
+      "schema": {
+        "fields": {
+          "cont": {
+            "type": "string",
+            "required": true,
+            "nullable": false,
+            "max_len": 36
+          },
+          "data": {
+            "type": "string",
+            "required": true,
+            "nullable": false,
+            "max_len": 10
+          },
+          "sens": {
+            "type": "string",
+            "required": true,
+            "nullable": false,
+            "enum": [
+              "incasare",
+              "plata"
+            ]
+          },
+          "suma": {
+            "type": "integer",
+            "required": true,
+            "min": 1
+          },
+          "partener": {
+            "type": "string",
+            "required": false,
+            "nullable": true,
+            "max_len": 36
+          },
+          "partener_nume": {
+            "type": "string",
+            "required": false,
+            "nullable": true,
+            "max_len": 200
+          },
+          "avans_persoana": {
+            "type": "string",
+            "required": false,
+            "nullable": true,
+            "max_len": 100
+          },
+          "numar": {
+            "type": "string",
+            "required": false,
+            "nullable": true,
+            "max_len": 60
+          },
+          "explicatie": {
+            "type": "string",
+            "required": false,
+            "nullable": true,
+            "max_len": 300
+          },
+          "sursa": {
+            "type": "string",
+            "required": true,
+            "nullable": false,
+            "enum": [
+              "manual",
+              "extras"
+            ]
+          },
+          "cheie_extras": {
+            "type": "string",
+            "required": false,
+            "nullable": true,
+            "max_len": 400
+          },
+          "storno_de": {
+            "type": "string",
+            "required": false,
+            "nullable": true,
+            "max_len": 36
+          },
+          "creat_ms": {
+            "type": "integer",
+            "required": true,
+            "min": 0
+          }
+        },
+        "additional": false
+      },
+      "indexes": [
+        "cont",
+        "storno_de"
+      ]
+    },
+    {
+      "collection": "potriviri",
+      "description": "legătura unei plăți cu documentul pe care îl achită (o singură dată pe plată)",
+      "schema": {
+        "fields": {
+          "plata": {
+            "type": "string",
+            "required": true,
+            "nullable": false,
+            "max_len": 36
+          },
+          "document": {
+            "type": "string",
+            "required": true,
+            "nullable": false,
+            "max_len": 36
+          },
+          "tip_document": {
+            "type": "string",
+            "required": true,
+            "nullable": false,
+            "enum": [
+              "factura",
+              "cheltuiala"
+            ]
+          },
+          "creat_ms": {
+            "type": "integer",
+            "required": true,
+            "min": 0
+          }
+        },
+        "additional": false
+      },
+      "indexes": [
+        "plata",
+        "document"
+      ]
+    },
+    {
+      "collection": "deconturi",
+      "description": "deconturile avansurilor: cheltuielile plătite din avans și restul restituit",
+      "schema": {
+        "fields": {
+          "avans": {
+            "type": "string",
+            "required": true,
+            "nullable": false,
+            "max_len": 36
+          },
+          "data": {
+            "type": "string",
+            "required": true,
+            "nullable": false,
+            "max_len": 10
+          },
+          "cheltuieli": {
+            "type": "array",
+            "required": true,
+            "nullable": false
+          },
+          "cheltuit": {
+            "type": "integer",
+            "required": true,
+            "min": 0
+          },
+          "restituit": {
+            "type": "integer",
+            "required": true,
+            "min": 0
+          },
+          "creat_ms": {
+            "type": "integer",
+            "required": true,
+            "min": 0
+          }
+        },
+        "additional": false
+      },
+      "indexes": [
+        "avans"
       ]
     }
   ],

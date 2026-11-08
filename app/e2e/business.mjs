@@ -233,6 +233,54 @@ try {
   check("cheltuielile apar în listă", pl.includes("Bon fiscal B 77|121,00") && pl.some((x) => x.startsWith("Factură F-1") && x.endsWith("|1.210,00")), JSON.stringify(pl));
   await p.screenshot(join(shots, "07-cheltuieli.png"));
 
+  // Step 5.5: cash and bank — a cash register, a receipt, a payment linked to
+  // an expense (refused while the cash is short), a bank statement.
+  await p.eval(`window.__TAURI_INTERNALS__.invoke("module_call", { id: "kgb.business", command: "series_save", args: { cod: "CH" } })`);
+  await tab(p, "Casă și bancă");
+  await p.until("!!document.querySelector('.cash')");
+  for (const [tip, nume] of [["casa", "Casa principală"], ["banca", "Banca X"]]) {
+    await p.fill("select[aria-label='Tip cont']", tip);
+    await p.fill("input[aria-label='Nume cont']", nume);
+    await p.click("Adaugă contul", ".cash button");
+    await p.until(`document.querySelector('.accounts').innerText.includes(${JSON.stringify(nume)})`, 8000);
+  }
+  const payForm = async (vals) => {
+    for (const [sel, v] of vals) await p.fill(sel, v);
+    await p.click("Înregistrează", ".payment-form button");
+  };
+  await selectByText(p, "select[aria-label='Cont']", "Casa principală");
+  await p.fill("select[aria-label='Sens']", "plata");
+  await p.until("!!document.querySelector(\"select[aria-label='Documentul achitat']\")");
+  await selectByText(p, "select[aria-label='Documentul achitat']", "B 77");
+  await payForm([["input[aria-label='Suma']", "121"]]);
+  await p.until("!!document.querySelector('.cash [role=alert]')", 8000);
+  check("casa nu poate avea sold negativ", (await p.eval("document.querySelector('.cash [role=alert]').innerText")).includes("sold negativ"));
+  await p.fill("select[aria-label='Sens']", "incasare");
+  await p.until("!!document.querySelector(\"select[aria-label='Seria chitanței']\")");
+  await selectByText(p, "select[aria-label='Seria chitanței']", "CH");
+  await payForm([["input[aria-label='Suma']", "500"], ["input[aria-label='Explicație']", "aport"]]);
+  await p.until("document.body.innerText.includes('Chitanța CH 1')", 8000);
+  check("încasarea în casă primește chitanța CH 1", true);
+  await p.fill("select[aria-label='Sens']", "plata");
+  await p.until("!!document.querySelector(\"select[aria-label='Documentul achitat']\")");
+  await selectByText(p, "select[aria-label='Documentul achitat']", "B 77");
+  await payForm([["input[aria-label='Suma']", "121"]]);
+  await p.until("document.body.innerText.includes('Plata a fost înregistrată')", 8000);
+  const bankCsv = join(data, "extras.csv");
+  writeFileSync(bankCsv, "Data;Descriere;Debit;Credit\r\n03.11.2026;Plată Beta Construct F-1;1.210,00;\r\n04.11.2026;Încasare;;250,00\r\n");
+  const accs = await p.eval(`window.__TAURI_INTERNALS__.invoke("module_call", { id: "kgb.business", command: "accounts", args: {} })`);
+  const bank = accs.find((a) => a.tip === "banca");
+  const r1 = await p.eval(`window.__TAURI_INTERNALS__.invoke("module_import_file_with", { id: "kgb.business", path: ${JSON.stringify(bankCsv)}, command: "bank_import", args: { cont: ${JSON.stringify(bank.id)} } })`);
+  const r2 = await p.eval(`window.__TAURI_INTERNALS__.invoke("module_import_file_with", { id: "kgb.business", path: ${JSON.stringify(bankCsv)}, command: "bank_import", args: { cont: ${JSON.stringify(bank.id)} } })`);
+  check("extrasul intră o singură dată", r1.importate === 2 && r2.importate === 0 && r2.sarite === 2, JSON.stringify([r1, r2]));
+  await tab(p, "Stoc");
+  await tab(p, "Casă și bancă");
+  await p.until("document.querySelectorAll('.accounts tbody tr').length === 2", 8000);
+  const sold = await p.eval("[...document.querySelectorAll('.accounts tbody tr')].map(r => r.cells[0].innerText + '|' + r.cells[3].innerText)");
+  // casa: 500 − 121 = 379; bancă: −1.210 + 250 = −960
+  check("soldurile: casa 379,00, banca −960,00", sold.includes("Casa principală|379,00") && sold.includes("Banca X|-960,00"), JSON.stringify(sold));
+  await p.screenshot(join(shots, "08-casa-banca.png"));
+
   // Forced restart: the stock is recomputed from the movements.
   stop(p);
   p = await start();

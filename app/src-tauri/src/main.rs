@@ -501,6 +501,20 @@ fn notifications_clear_read(app: State<AppState>) -> CmdResult<usize> {
 /// file system access itself; the size limit is the core's (64 MB).
 #[tauri::command]
 fn module_import_file(app: State<AppState>, id: String, path: PathBuf) -> CmdResult<Value> {
+    module_import_file_with(app, id, path, "import".into(), Value::Object(Default::default()))
+}
+
+/// Like `module_import_file`, for a module command other than `import`, with
+/// extra arguments (e.g. the bank account a statement goes into). The file's
+/// name and contents are added as `name` and `data`.
+#[tauri::command]
+fn module_import_file_with(
+    app: State<AppState>,
+    id: String,
+    path: PathBuf,
+    command: String,
+    args: Value,
+) -> CmdResult<Value> {
     use base64::Engine as _;
     let meta = std::fs::metadata(&path).map_err(err)?;
     if meta.len() > kgb_core::files::MAX_FILE_BYTES as u64 {
@@ -515,13 +529,18 @@ fn module_import_file(app: State<AppState>, id: String, path: PathBuf) -> CmdRes
         .file_name()
         .map(|n| n.to_string_lossy().to_string())
         .unwrap_or_default();
-    let args = serde_json::json!({
-        "name": name,
-        "data": base64::engine::general_purpose::STANDARD.encode(&data),
-    });
+    let mut args = match args {
+        Value::Object(m) => m,
+        _ => return Err("argumentele trebuie să fie un obiect".into()),
+    };
+    args.insert("name".into(), Value::String(name));
+    args.insert(
+        "data".into(),
+        Value::String(base64::engine::general_purpose::STANDARD.encode(&data)),
+    );
     with_session(&app, |s| {
         let fp = s.device.fingerprint();
-        s.mm.call(&mut s.ws, Some(&fp), &id, "import", args)
+        s.mm.call(&mut s.ws, Some(&fp), &id, &command, Value::Object(args))
     })
 }
 
@@ -651,6 +670,7 @@ fn main() {
             set_module_visible,
             module_call,
             module_import_file,
+            module_import_file_with,
             notifications_list,
             reminders_tick,
             notification_read,
