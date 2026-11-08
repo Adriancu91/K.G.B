@@ -112,18 +112,34 @@ fn org_table(coll: &str) -> bool {
     ORG_TABLES.contains(&base(coll))
 }
 
-/// Collections that travel between devices; everything else is local.
-fn shared(coll: &str) -> bool {
-    coll == registry::REGISTRY_COLLECTION || org_table(coll) || module_of(coll).is_some()
+/// Core tables that belong to a module through their `module` field
+/// (attached files and versioned documents, step 6.8).
+const FILE_TABLES: &[&str] = &["core.files", "core.documents", "core.document_versions"];
+
+/// The module a change belongs to: from the collection name, or from the
+/// record for the file tables (their decision records stay local).
+fn module_for(op: &Op) -> Option<String> {
+    let coll = op.state.coll.as_str();
+    if FILE_TABLES.contains(&coll) {
+        return op.state.fields.get("module").and_then(Value::as_str).map(String::from);
+    }
+    module_of(coll).map(String::from)
 }
 
-/// Whether the device with key `key` may receive `coll`.
-fn readable(st: &RegState, key: &str, coll: &str) -> bool {
+/// Changes that travel between devices; everything else is local.
+fn shared(op: &Op) -> bool {
+    let coll = op.state.coll.as_str();
+    coll == registry::REGISTRY_COLLECTION || org_table(coll) || module_for(op).is_some()
+}
+
+/// Whether the device with key `key` may receive `op`.
+fn readable(st: &RegState, key: &str, op: &Op) -> bool {
+    let coll = op.state.coll.as_str();
     if coll == registry::REGISTRY_COLLECTION || org_table(coll) {
         return st.member_of(key).is_some();
     }
-    match module_of(coll) {
-        Some(m) => st.access(key, m) != Access::Niciunul,
+    match module_for(op) {
+        Some(m) => st.access(key, &m) != Access::Niciunul,
         None => false,
     }
 }
@@ -190,7 +206,7 @@ pub fn answer_from(store: &Store, dev: &DeviceIdentity, req: &Value, addr: Optio
         .changes_since(&vv)?
         .into_iter()
         .map(|op| {
-            if is_redacted(&op) || (shared(&op.state.coll) && readable(&st, &key, &op.state.coll)) {
+            if is_redacted(&op) || (shared(&op) && readable(&st, &key, &op)) {
                 op
             } else {
                 redact(&op)
@@ -200,7 +216,7 @@ pub fn answer_from(store: &Store, dev: &DeviceIdentity, req: &Value, addr: Optio
     let fills: Vec<Op> = store
         .changes_at(&unfilled)?
         .into_iter()
-        .filter(|op| shared(&op.state.coll) && readable(&st, &key, &op.state.coll))
+        .filter(|op| shared(op) && readable(&st, &key, op))
         .collect();
     let body = json!({
         "kind": "raspuns", "v": 1, "org": org.0.to_string(), "key": dev.public_hex(),
@@ -286,11 +302,11 @@ pub fn apply(store: &mut Store, dev: &DeviceIdentity, resp: &Value) -> CoreResul
         if coll == registry::REGISTRY_COLLECTION {
             return true; // self-verifying: bad entries are ignored on replay
         }
-        if !shared(coll) {
+        if !shared(op) {
             reason(sum, "date locale ale altui PC");
             return false;
         }
-        if !readable(&hist.last, &me, coll) {
+        if !readable(&hist.last, &me, op) {
             return false; // not for us (the sender should not have sent it)
         }
         let Some(author) = hist.last.key_of_store(op.origin.0) else {
@@ -305,7 +321,7 @@ pub fn apply(store: &mut Store, dev: &DeviceIdentity, resp: &Value) -> CoreResul
         let ok = if org_table(coll) {
             then.is_admin(author)
         } else {
-            module_of(coll).is_some_and(|m| then.access(author, m) == Access::Scriere)
+            module_for(op).is_some_and(|m| then.access(author, &m) == Access::Scriere)
         };
         if !ok {
             reason(sum, "autorul nu avea dreptul să o facă");

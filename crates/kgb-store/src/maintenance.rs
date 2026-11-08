@@ -321,6 +321,65 @@ impl Store {
         Ok(hash)
     }
 
+    /// Whether a blob is present (not checked; see [`Store::get_blob`]).
+    pub fn has_blob(&self, hash: &str) -> bool {
+        valid_hash(hash) && blob_path(&self.dir, hash).is_file()
+    }
+
+    /// The blob's file, for streaming it to another device (Etapa 6, 6.8).
+    pub fn blob_file(&self, hash: &str) -> Result<PathBuf> {
+        if !valid_hash(hash) {
+            return Err(Error::InvalidInput(format!("not a blob hash: {hash}")));
+        }
+        let p = blob_path(&self.dir, hash);
+        if !p.is_file() {
+            return Err(Error::InvalidInput(format!("blob not here: {hash}")));
+        }
+        Ok(p)
+    }
+
+    /// Where a blob being received is kept until it is complete. A transfer
+    /// that stops keeps what arrived and continues from there.
+    pub fn incoming_blob_path(&self, hash: &str) -> Result<PathBuf> {
+        if !valid_hash(hash) {
+            return Err(Error::InvalidInput(format!("not a blob hash: {hash}")));
+        }
+        let d = self.dir.join("incoming");
+        fs::create_dir_all(&d)?;
+        Ok(d.join(format!("{hash}.part")))
+    }
+
+    /// Checks a fully received blob against its hash (BLAKE3, read in pieces)
+    /// and moves it into the blob store. On a mismatch the partial file is
+    /// deleted, so the next transfer starts over.
+    pub fn adopt_incoming_blob(&self, hash: &str) -> Result<()> {
+        let part = self.incoming_blob_path(hash)?;
+        let mut h = blake3::Hasher::new();
+        let mut f = fs::File::open(&part)?;
+        let mut buf = vec![0u8; 1 << 20];
+        loop {
+            let n = std::io::Read::read(&mut f, &mut buf)?;
+            if n == 0 {
+                break;
+            }
+            h.update(&buf[..n]);
+        }
+        drop(f);
+        if h.finalize().to_hex().as_str() != hash {
+            let _ = fs::remove_file(&part);
+            return Err(Error::BlobMismatch(hash.into()));
+        }
+        let dest = blob_path(&self.dir, hash);
+        if dest.exists() {
+            fs::remove_file(&part)?;
+            return Ok(());
+        }
+        fs::create_dir_all(dest.parent().unwrap())?;
+        fsutil::sync_path(&part)?;
+        fs::rename(&part, &dest)?;
+        Ok(())
+    }
+
     /// Read a blob and verify it still matches its hash.
     pub fn get_blob(&self, hash: &str) -> Result<Vec<u8>> {
         if hash.len() != 64 || !hash.bytes().all(|b| b.is_ascii_hexdigit()) {
@@ -418,6 +477,10 @@ impl Store {
         }
         Ok(bytes)
     }
+}
+
+fn valid_hash(hash: &str) -> bool {
+    hash.len() == 64 && hash.bytes().all(|b| b.is_ascii_hexdigit())
 }
 
 fn blob_path(dir: &Path, hash: &str) -> PathBuf {

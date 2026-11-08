@@ -43,6 +43,7 @@ export function NetPanel({ onError, onSynced, admin = false }: { onError: (e: st
         ) : (
           <>Rețeaua e oprită{st.motiv ? `: ${st.motiv}` : "."}</>
         )}
+        {st.fisiere_lipsa > 0 && <span className="small"> · {st.fisiere_lipsa} fișiere atașate încă în drum</span>}
         <span className="muted small"> · amprenta acestui PC: {st.amprenta}</span>
       </p>
       <div className="row wrap">
@@ -161,6 +162,8 @@ export function NetPanel({ onError, onSynced, admin = false }: { onError: (e: st
               {o.summary
                 ? `${o.summary.create} noi, ${o.summary.actualizate} actualizate${o.summary.refuzate ? `, ${o.summary.refuzate} refuzate` : ""}${o.summary.conflicte ? `, ${o.summary.conflicte} conflicte` : ""}`
                 : o.error}
+              {o.files && o.files.primite > 0 && ` · ${o.files.primite} fișiere primite`}
+              {o.files && o.files.lipsa > 0 && ` · ${o.files.lipsa} fișiere încă în drum`}
             </li>
           ))}
         </ul>

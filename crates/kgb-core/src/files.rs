@@ -66,7 +66,7 @@ pub fn clean_name(name: &str) -> CoreResult<String> {
     Ok(n.to_string())
 }
 
-pub(crate) fn put(ws: &mut Workspace, module: &str, name: &str, data: &[u8]) -> CoreResult<FileRef> {
+pub fn put(ws: &mut Workspace, module: &str, name: &str, data: &[u8]) -> CoreResult<FileRef> {
     let name = clean_name(name)?;
     if data.len() > MAX_FILE_BYTES {
         return Err(CoreError::invalid(
@@ -104,6 +104,12 @@ pub(crate) fn get(ws: &Workspace, module: &str, id: Uuid) -> CoreResult<(FileRef
     let r = owned(ws, module, id)?;
     let f = from_record(&r);
     // The store re-hashes the bytes: a damaged file is an error, never silent.
+    if !ws.store().has_blob(&f.hash) {
+        return Err(CoreError::invalid(
+            "fișierul",
+            "conținutul nu a ajuns încă de pe celălalt calculator; vine la următoarea sincronizare",
+        ));
+    }
     let data = ws.store().get_blob(&f.hash)?;
     Ok((f, data))
 }

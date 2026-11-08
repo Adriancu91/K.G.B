@@ -160,6 +160,7 @@ export interface NetStatus {
   amprenta: string;
   peers: PeerView[];
   ultima_runda_ms: number | null;
+  fisiere_lipsa: number;
 }
 
 export interface SyncOutcome {
@@ -169,6 +170,7 @@ export interface SyncOutcome {
   path: "direct" | "relay" | "unknown" | null;
   summary: { create: number; actualizate: number; refuzate: number; conflicte: number; ascunse: number; completate: number } | null;
   error: string | null;
+  files: { primite: number; lipsa: number; erori: string[] } | null;
 }
 
 export interface InviteView {

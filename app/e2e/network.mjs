@@ -104,6 +104,7 @@ try {
   const outB = JSON.parse(nodeRun("pull-all", wsB, keyB));
   check("PC B primește datele de la aplicație prin rețea", outB.length === 1 && !outB[0].error && outB[0].summary.create > 0 && outB[0].path === "direct", JSON.stringify(outB[0]).slice(0, 200));
   nodeRun("note", wsB, "Notă de pe PC-ul B");
+  nodeRun("file", wsB, "kgb.notes", "anexa-test.bin", "5000000");
 
   // PC B serves; the app synchronises now.
   serving = spawn(nodeExe, ["serve", wsB, keyB, join(dataB, "addr.json")], { stdio: "ignore" });
@@ -117,6 +118,7 @@ try {
   await p.until("!!document.querySelector('.sync-result')", 30000);
   const res = await p.eval("document.querySelector('.sync-result').innerText");
   check("„Sincronizează acum” aduce schimbările lui Ion", /[1-9]\d* noi/.test(res), res);
+  check("fișierul atașat de Ion vine separat, verificat (6.8)", res.includes("1 fișiere primite"), res);
   await p.until("[...document.querySelectorAll('.peers-table tbody tr')].some(r => r.innerText.includes('directă'))", 20000);
   check("starea arată calea directă", true);
   await p.eval("document.querySelector('.invite-box button.link')?.click()");

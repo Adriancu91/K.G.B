@@ -227,6 +227,12 @@ pub(crate) fn read(ws: &Workspace, module: &str, id: Uuid, number: Option<u64>) 
         .get(VERSIONS_COLLECTION, version_id(id, number))?
         .ok_or_else(|| CoreError::invalid("versiunea", format!("{number} nu există")))?;
     let v = version_ref(&v);
+    if !ws.store().has_blob(&v.hash) {
+        return Err(CoreError::invalid(
+            "fișierul",
+            "conținutul nu a ajuns încă de pe celălalt calculator; vine la următoarea sincronizare",
+        ));
+    }
     let data = ws.store().get_blob(&v.hash)?;
     Ok((v, data))
 }

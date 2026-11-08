@@ -672,6 +672,8 @@ struct NetStatus {
     amprenta: String,
     peers: Vec<kgb_core::peers::PeerView>,
     ultima_runda_ms: Option<u64>,
+    /// Attached files known here whose content has not arrived yet (6.8).
+    fisiere_lipsa: usize,
 }
 
 #[tauri::command]
@@ -689,6 +691,7 @@ fn net_status(app: State<AppState>) -> CmdResult<NetStatus> {
             amprenta: s.device.fingerprint(),
             peers: kgb_core::peers::list(s.ws.store(), &s.device.public_hex())?,
             ultima_runda_ms: last,
+            fisiere_lipsa: kgb_core::blobs::missing(s.ws.store())?.len(),
         })
     })
 }

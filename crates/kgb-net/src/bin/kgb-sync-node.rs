@@ -11,6 +11,8 @@
 //!       one round with every known device; prints the outcomes as JSON
 //!   kgb-sync-node note <workspace> <text>
 //!       writes a note (as the Notes module stores them)
+//!   kgb-sync-node file <workspace> <module> <name> <bytes>
+//!       attaches a file of that size (test bytes) to the module
 //!
 //! The port is kept in the workspace's network settings, like the app does,
 //! so `serve` listens where `join` said it would.
@@ -124,6 +126,13 @@ fn main() {
                     f,
                 )])
                 .expect("note");
+        }
+        ["file", ws, module, name, size] => {
+            let mut w = Workspace::open(ws.as_ref()).expect("workspace");
+            let n: usize = size.parse().expect("size");
+            let data: Vec<u8> = (0..n).map(|i| (i * 31 % 251) as u8).collect();
+            let f = kgb_core::files::put(&mut w, module, name, &data).expect("file");
+            println!("{}", f.hash);
         }
         _ => {
             eprintln!(

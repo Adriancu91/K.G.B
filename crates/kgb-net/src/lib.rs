@@ -66,6 +66,80 @@ impl Relay {
 /// connection was authenticated with.
 pub trait Handler: Send + Sync + 'static {
     fn answer(&self, peer: &str, request: Value) -> Result<Value, String>;
+    /// The file with BLAKE3 `hash` to send to `peer`, if it may have it
+    /// (step 6.8).
+    fn blob_file(&self, peer: &str, hash: &str) -> Result<std::path::PathBuf, String>;
+}
+
+/// ALPN of file transfers (step 6.8): `{hash, offset}` → `{ok: size}` then
+/// the bytes from `offset` to the end.
+pub const BLOB_ALPN: &[u8] = b"kgb/blob/1";
+const CHUNK: usize = 256 * 1024;
+const READ_TIMEOUT: Duration = Duration::from_secs(30);
+
+#[derive(Clone)]
+struct BlobServer {
+    handler: Arc<dyn Handler>,
+}
+
+impl std::fmt::Debug for BlobServer {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        f.write_str("BlobServer")
+    }
+}
+
+impl BlobServer {
+    async fn serve(&self, conn: &Connection) -> Result<(), String> {
+        use tokio::io::{AsyncReadExt, AsyncSeekExt};
+        let peer = hex(conn.remote_id().as_bytes());
+        let (mut send, mut recv) = conn.accept_bi().await.map_err(|e| e.to_string())?;
+        let req = read_frame(&mut recv).await?;
+        let hash = req.get("hash").and_then(Value::as_str).unwrap_or_default().to_string();
+        let offset = req.get("offset").and_then(Value::as_u64).unwrap_or(0);
+        let h = self.handler.clone();
+        let p = peer.clone();
+        let hh = hash.clone();
+        let path = tokio::task::spawn_blocking(move || h.blob_file(&p, &hh))
+            .await
+            .map_err(|e| e.to_string())?;
+        let path = match path {
+            Ok(p) => p,
+            Err(e) => {
+                write_frame(&mut send, &serde_json::json!({"eroare": e})).await?;
+                send.finish().map_err(|e| e.to_string())?;
+                return Ok(());
+            }
+        };
+        let mut file = tokio::fs::File::open(&path).await.map_err(|e| e.to_string())?;
+        let total = file.metadata().await.map_err(|e| e.to_string())?.len();
+        if offset > total {
+            write_frame(&mut send, &serde_json::json!({"eroare": "poziție de reluare greșită"})).await?;
+            send.finish().map_err(|e| e.to_string())?;
+            return Ok(());
+        }
+        write_frame(&mut send, &serde_json::json!({"ok": total})).await?;
+        file.seek(std::io::SeekFrom::Start(offset))
+            .await
+            .map_err(|e| e.to_string())?;
+        let mut buf = vec![0u8; CHUNK];
+        loop {
+            let n = file.read(&mut buf).await.map_err(|e| e.to_string())?;
+            if n == 0 {
+                break;
+            }
+            send.write_all(&buf[..n]).await.map_err(|e| e.to_string())?;
+        }
+        send.finish().map_err(|e| e.to_string())?;
+        Ok(())
+    }
+}
+
+impl ProtocolHandler for BlobServer {
+    async fn accept(&self, conn: Connection) -> Result<(), AcceptError> {
+        let r = self.serve(&conn).await;
+        conn.closed().await;
+        r.map_err(|e| AcceptError::from_boxed(Box::<dyn std::error::Error + Send + Sync>::from(e)))
+    }
 }
 
 /// How the last exchange travelled.
@@ -201,11 +275,16 @@ impl Net {
                 let ep = b
                     .transport_config(transport)
                     .secret_key(key)
-                    .alpns(vec![ALPN.to_vec()])
+                    .alpns(vec![ALPN.to_vec(), BLOB_ALPN.to_vec()])
                     .bind()
                     .await
                     .map_err(|e| format!("rețeaua nu a putut porni: {e}"))?;
-                Ok::<_, String>(Router::builder(ep).accept(ALPN, Server { handler: h }).spawn())
+                Ok::<_, String>(
+                    Router::builder(ep)
+                        .accept(ALPN, Server { handler: h.clone() })
+                        .accept(BLOB_ALPN, BlobServer { handler: h })
+                        .spawn(),
+                )
             });
             match res {
                 Ok(router) => return Ok(Net { rt, router, relay }),
@@ -308,6 +387,85 @@ impl Net {
     }
 
     /// Stops the endpoint (connections are closed politely).
+    /// Fetches the file with BLAKE3 `hash` from the peer at `addr` into
+    /// `dest`, continuing from what `dest` already holds. Returns true when
+    /// the file is complete (to be checked against its hash by the caller).
+    /// `stop_after` (tests only) stops after that many bytes, as a cut
+    /// connection would.
+    pub fn fetch_blob(
+        &self,
+        addr: &str,
+        hash: &str,
+        dest: &std::path::Path,
+        stop_after: Option<u64>,
+    ) -> Result<bool, String> {
+        use tokio::io::AsyncWriteExt;
+        let to: EndpointAddr =
+            serde_json::from_str(addr).map_err(|_| "adresa dispozitivului nu e validă".to_string())?;
+        let ep = self.router.endpoint().clone();
+        let hash = hash.to_string();
+        let dest = dest.to_path_buf();
+        self.rt.block_on(async move {
+            let mut file = tokio::fs::OpenOptions::new()
+                .create(true)
+                .append(true)
+                .open(&dest)
+                .await
+                .map_err(|e| e.to_string())?;
+            let offset = file.metadata().await.map_err(|e| e.to_string())?.len();
+            let conn = tokio::time::timeout(CONNECT_TIMEOUT, ep.connect(to, BLOB_ALPN))
+                .await
+                .map_err(|_| "dispozitivul nu a răspuns (oprit, fără rețea sau blocat de firewall)".to_string())?
+                .map_err(|e| format!("conexiune eșuată: {e}"))?;
+            let (mut send, mut recv) = conn.open_bi().await.map_err(|e| e.to_string())?;
+            write_frame(&mut send, &serde_json::json!({"hash": hash, "offset": offset})).await?;
+            send.finish().map_err(|e| e.to_string())?;
+            let head = tokio::time::timeout(READ_TIMEOUT, read_frame(&mut recv))
+                .await
+                .map_err(|_| "dispozitivul nu mai răspunde".to_string())??;
+            let total = match (
+                head.get("ok").and_then(Value::as_u64),
+                head.get("eroare").and_then(Value::as_str),
+            ) {
+                (Some(t), _) => t,
+                (None, Some(e)) => return Err(format!("celălalt dispozitiv a refuzat: {e}")),
+                _ => return Err("răspuns necunoscut".into()),
+            };
+            let mut got = offset;
+            let mut received = 0u64;
+            let mut buf = vec![0u8; CHUNK];
+            let r: Result<(), String> = async {
+                while got < total {
+                    let want = match stop_after {
+                        Some(limit) if received >= limit => return Err("transfer întrerupt (test)".into()),
+                        Some(limit) => buf.len().min((limit - received) as usize),
+                        None => buf.len(),
+                    };
+                    let n = tokio::time::timeout(READ_TIMEOUT, recv.read(&mut buf[..want]))
+                        .await
+                        .map_err(|_| "dispozitivul nu mai trimite".to_string())?
+                        .map_err(|e| e.to_string())?;
+                    let Some(n) = n else { break };
+                    file.write_all(&buf[..n]).await.map_err(|e| e.to_string())?;
+                    got += n as u64;
+                    received += n as u64;
+                }
+                Ok(())
+            }
+            .await;
+            file.flush().await.map_err(|e| e.to_string())?;
+            file.sync_all().await.map_err(|e| e.to_string())?;
+            conn.close(0u32.into(), b"gata");
+            r?;
+            if got < total {
+                return Err(format!(
+                    "transfer întrerupt la {got} din {total} octeți; se reia data viitoare"
+                ));
+            }
+            Ok(got == total)
+        })
+    }
+
     pub fn shutdown(self) {
         let Net { rt, router, .. } = self;
         rt.block_on(async move {

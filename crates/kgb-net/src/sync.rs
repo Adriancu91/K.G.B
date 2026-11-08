@@ -10,7 +10,7 @@ use std::sync::{Arc, Mutex};
 use kgb_core::identity::DeviceIdentity;
 use kgb_core::replication::{self, Summary};
 use kgb_core::workspace::Workspace;
-use kgb_core::{modules, peers};
+use kgb_core::{blobs, modules, peers};
 use serde::Serialize;
 use serde_json::Value;
 
@@ -53,6 +53,12 @@ impl<L: Local> SyncHandler<L> {
 }
 
 impl<L: Local> Handler for SyncHandler<L> {
+    fn blob_file(&self, peer: &str, hash: &str) -> Result<std::path::PathBuf, String> {
+        with(&*self.local, |ws, _| {
+            blobs::may_serve(ws.store(), peer, hash).map_err(|e| e.to_string())
+        })?
+    }
+
     fn answer(&self, _peer: &str, request: Value) -> Result<Value, String> {
         let addr = self.addr.lock().ok().and_then(|a| a.clone());
         with(&*self.local, |ws, dev| {
@@ -75,6 +81,8 @@ pub struct Outcome {
     pub path: Option<Path>,
     pub summary: Option<Summary>,
     pub error: Option<String>,
+    /// Attached files fetched in the same round (step 6.8).
+    pub files: Option<FilesOutcome>,
 }
 
 /// Pulls from the device with `key` at `addr`; records the result in the
@@ -130,6 +138,52 @@ pub fn pull<L: Local + ?Sized>(
     })?
 }
 
+/// What fetching the missing files from one device did.
+#[derive(Clone, Debug, Default, Serialize)]
+pub struct FilesOutcome {
+    pub primite: usize,
+    pub lipsa: usize,
+    pub erori: Vec<String>,
+}
+
+/// Fetches from the device at `addr` every file whose record is here but
+/// whose content is not; each one resumes where it stopped and is checked
+/// against its hash before use.
+pub fn fetch_missing<L: Local + ?Sized>(
+    net: &Net,
+    local: &L,
+    addr: &str,
+    stop_after: Option<u64>,
+) -> Result<FilesOutcome, String> {
+    let todo = with(local, |ws, _| blobs::missing(ws.store()).map_err(|e| e.to_string()))??;
+    let mut out = FilesOutcome {
+        lipsa: todo.len(),
+        ..Default::default()
+    };
+    for m in todo {
+        let dest = with(local, |ws, _| {
+            ws.store().incoming_blob_path(&m.hash).map_err(|e| e.to_string())
+        })??;
+        match net.fetch_blob(addr, &m.hash, &dest, stop_after) {
+            Ok(true) => match with(local, |ws, _| {
+                ws.store().adopt_incoming_blob(&m.hash).map_err(|e| e.to_string())
+            })? {
+                Ok(()) => {
+                    out.primite += 1;
+                    out.lipsa -= 1;
+                }
+                Err(e) => out.erori.push(format!(
+                    "„{}”: conținutul nu corespunde (va fi cerut din nou): {e}",
+                    m.name
+                )),
+            },
+            Ok(false) => {}
+            Err(e) => out.erori.push(format!("„{}”: {e}", m.name)),
+        }
+    }
+    Ok(out)
+}
+
 /// Pulls from every known device of the organization.
 pub fn pull_all<L: Local + ?Sized>(net: &Net, local: &L, my_addr: Option<&str>) -> Result<Vec<Outcome>, String> {
     let list = with(local, |ws, dev| {
@@ -145,6 +199,7 @@ pub fn pull_all<L: Local + ?Sized>(net: &Net, local: &L, my_addr: Option<&str>) 
                 path: None,
                 summary: None,
                 error: None,
+                files: None,
             };
             match p.addr {
                 None => {
@@ -154,6 +209,7 @@ pub fn pull_all<L: Local + ?Sized>(net: &Net, local: &L, my_addr: Option<&str>) 
                     Ok((s, path)) => {
                         o.summary = Some(s);
                         o.path = Some(path);
+                        o.files = fetch_missing(net, local, &a, None).ok();
                     }
                     Err(e) => o.error = Some(e),
                 },
