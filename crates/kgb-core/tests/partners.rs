@@ -158,3 +158,49 @@ fn modules_need_the_permissions() {
     let e = mm.call(&mut ws2, None, "t.m", "add", json!({"n": "X"})).unwrap_err();
     assert!(e.to_string().contains("partners.write"), "{e}");
 }
+
+/// Step 7.4c: what is typed in a form stays in the directory for next time,
+/// without overwriting what the card already has.
+#[test]
+fn forms_are_remembered_without_overwriting() {
+    let t = tempfile::tempdir().unwrap();
+    let mut ws = Workspace::create(&t.path().join("ws"), "T").unwrap();
+    // A new name makes a card, marked as coming from a document.
+    let mut a = card("Delta Logistic SRL", "");
+    a.reprezentant = "Ion Pop".into();
+    let r = partners::remember(ws.store_mut(), a, "document", "2026-11-08").unwrap();
+    assert!(r.noua);
+    let p = partners::get(ws.store(), r.id).unwrap();
+    assert_eq!(p.reprezentant, "Ion Pop");
+    assert_eq!(p.surse["reprezentant"]["sursa"], "document");
+
+    // Same name (other diacritics/case): empty fields filled, extra fields
+    // added, a different value left alone and reported.
+    let mut b = card("DELTA LOGISTIC SRL", "");
+    b.reprezentant = "Altcineva".into();
+    b.sediu = "Str. Portului 3".into();
+    b.campuri = vec![ExtraField { nume: "Licență transport".into(), valoare: "LT-77".into() }];
+    b.puncte_lucru = vec![WorkPoint { denumire: "Depozit".into(), adresa: "Str. Gării 1".into(), contact: String::new() }];
+    let r2 = partners::remember(ws.store_mut(), b.clone(), "document", "2026-11-09").unwrap();
+    assert!(!r2.noua && r2.id == r.id);
+    assert_eq!(r2.diferite, ["reprezentant"]);
+    let p = partners::get(ws.store(), r.id).unwrap();
+    assert_eq!((p.reprezentant.as_str(), p.sediu.as_str()), ("Ion Pop", "Str. Portului 3"));
+    assert_eq!(p.campuri[0].valoare, "LT-77");
+    assert_eq!(p.puncte_lucru.len(), 1);
+    // Nothing new: the card is not written again.
+    let v = p.version;
+    let r3 = partners::remember(ws.store_mut(), b, "document", "2026-11-10").unwrap();
+    assert!(r3.completate.is_empty());
+    assert_eq!(partners::get(ws.store(), r.id).unwrap().version, v);
+
+    // Found by CUI even under another name; a wrong CUI is refused.
+    partners::save(ws.store_mut(), card("Firma Cu CUI SRL", "RO14399840")).unwrap();
+    let mut c = card("Alt nume", "14399840");
+    c.telefon = "0700".into();
+    let r4 = partners::remember(ws.store_mut(), c, "business", "2026-11-08").unwrap();
+    assert_eq!(partners::get(ws.store(), r4.id).unwrap().denumire, "Firma Cu CUI SRL");
+    assert!(partners::remember(ws.store_mut(), card("Greșit", "14399841"), "business", "2026-11-08").is_err());
+    assert!(partners::remember(ws.store_mut(), card(" ", ""), "business", "2026-11-08").is_err());
+    assert_eq!(partners::list(ws.store(), true).unwrap().len(), 2);
+}

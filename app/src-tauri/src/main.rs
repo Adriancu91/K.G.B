@@ -729,6 +729,29 @@ fn partner_save(app: State<AppState>, partner: kgb_core::partners::Partner) -> C
     })
 }
 
+/// Keeps what a form had (a document, a Business partner) in the directory
+/// for next time (step 7.4c); never overwrites a card's values. Nothing is
+/// kept (`None`) when the person's role cannot change the directory.
+#[tauri::command]
+fn partner_remember(
+    app: State<AppState>,
+    partner: kgb_core::partners::Partner,
+    sursa: String,
+    azi: String,
+) -> CmdResult<Option<kgb_core::partners::Remembered>> {
+    with_session(&app, |s| {
+        if !partners_writable(s.ws.store(), &s.device.fingerprint())? {
+            return Ok(None);
+        }
+        let sursa = if ["document", "business"].contains(&sursa.as_str()) { sursa } else { "manual".into() };
+        let r = kgb_core::partners::remember(s.ws.store_mut(), partner, &sursa, &azi)?;
+        if r.noua || !r.completate.is_empty() {
+            modules::audit(&mut s.ws, "core.partners", "fișă completată dintr-un formular", "ok", "")?;
+        }
+        Ok(Some(r))
+    })
+}
+
 #[tauri::command]
 fn partner_set_active(app: State<AppState>, id: uuid::Uuid, active: bool) -> CmdResult<()> {
     with_session(&app, |s| {
@@ -1209,6 +1232,7 @@ fn main() {
             partners_list,
             partner_save,
             partner_set_active,
+            partner_remember,
             conflicts_list,
             net_status,
             net_set_relay,

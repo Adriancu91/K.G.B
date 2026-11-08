@@ -2,6 +2,7 @@
 // every amount (whole bani, VAT per line) and numbers the invoices; the page
 // only collects what is typed and shows the result.
 import { useCallback, useEffect, useState } from "react";
+import { SuggestInput, fullCardAddress, partyToCard, rememberPartner } from "../../components/PartnerSuggest";
 import { AnafLookup, fullAddress } from "../../components/AnafLookup";
 import { save } from "@tauri-apps/plugin-dialog";
 import { api, message } from "../../api";
@@ -365,11 +366,22 @@ export function InvoicesView(props: { products: ProductLite[]; warehouses: Wareh
               e.preventDefault();
               void run(async () => {
                 await api.moduleCall(ID, "partner_save", pf);
+                // Also kept in the partner directory for next time (7.4c).
+                const card = partyToCard("client", { client: pf.nume, "client.cui": pf.cui, "client.adresa": pf.adresa });
+                const kept = await rememberPartner({ ...card, tip: pf.tip }, "business");
+                setNotice(kept ?? `Partenerul „${pf.nume.trim()}” a fost adăugat.`);
                 setPf({ nume: "", cui: "", adresa: "", tip: pf.tip });
               });
             }}
           >
-            <input aria-label="Nume partener" placeholder="Nume" value={pf.nume} maxLength={200} onChange={(e) => setPf({ ...pf, nume: e.target.value })} />
+            <SuggestInput
+              ariaLabel="Nume partener"
+              placeholder="Nume"
+              value={pf.nume}
+              maxLength={200}
+              onChange={(v) => setPf((x) => ({ ...x, nume: v }))}
+              onPick={(c) => setPf((x) => ({ ...x, nume: c.denumire, cui: c.cui, adresa: fullCardAddress(c) }))}
+            />
             <input aria-label="CUI partener" placeholder="CUI (opțional)" value={pf.cui} maxLength={20} onChange={(e) => setPf({ ...pf, cui: e.target.value })} />
             <AnafLookup cui={pf.cui} onFound={(c) => setPf((x) => ({ ...x, nume: c.denumire || x.nume, adresa: fullAddress(c) || x.adresa }))} />
             <input aria-label="Adresă partener" placeholder="Adresă" value={pf.adresa} maxLength={300} onChange={(e) => setPf({ ...pf, adresa: e.target.value })} />

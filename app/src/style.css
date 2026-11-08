@@ -1096,3 +1096,41 @@ form[aria-label="Răspunde la invitație"] textarea {
 .anaf-note {
   font-size: 0.9em;
 }
+
+/* Etapa 7: partner suggestions while typing */
+.suggest {
+  position: relative;
+  display: inline-block;
+}
+label > .suggest,
+label > .suggest > input {
+  display: block;
+  width: 100%;
+}
+.suggest-list {
+  position: absolute;
+  z-index: 30;
+  left: 0;
+  right: 0;
+  min-width: 280px;
+  margin: 2px 0 0;
+  padding: 4px;
+  list-style: none;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  box-shadow: 0 6px 18px rgb(0 0 0 / 18%);
+}
+.suggest-list button {
+  display: grid;
+  width: 100%;
+  text-align: left;
+  gap: 2px;
+  padding: 6px 8px;
+  border: 0;
+  background: transparent;
+}
+.suggest-list button:hover,
+.suggest-list button:focus {
+  background: var(--hover, rgb(0 0 0 / 6%));
+}

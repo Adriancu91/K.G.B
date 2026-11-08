@@ -276,6 +276,130 @@ pub fn save(store: &mut Store, p: Partner) -> CoreResult<Uuid> {
     Ok(id)
 }
 
+/// What `remember` did with a card.
+#[derive(Clone, Debug, PartialEq, Eq, Serialize)]
+pub struct Remembered {
+    pub id: Uuid,
+    /// A new card was made.
+    pub noua: bool,
+    /// Fields filled in or added on an existing card.
+    pub completate: Vec<String>,
+    /// Fields where the card already had another value; left as they were.
+    pub diferite: Vec<String>,
+}
+
+/// Keeps what was typed in a form (a document, an invoice partner) in the
+/// directory, for next time (step 7.4c). The card is found by CUI, else by
+/// the exact name (without diacritics); a missing one is made. On an existing
+/// card only empty fields are filled and new extra fields added: a value the
+/// card already has is never overwritten from a form (it is reported in
+/// `diferite`; the card is changed on the „Parteneri” page). Hidden cards
+/// are found too and stay hidden.
+pub fn remember(store: &mut Store, input: Partner, sursa: &str, azi: &str) -> CoreResult<Remembered> {
+    if input.denumire.trim().is_empty() {
+        return Err(bad("lipsește denumirea"));
+    }
+    let digits = cui_digits(&input.cui);
+    let name = fold(input.denumire.trim());
+    let all = list(store, true)?;
+    let found = all
+        .iter()
+        .find(|o| !digits.is_empty() && cui_digits(&o.cui) == digits)
+        .or_else(|| all.iter().find(|o| fold(o.denumire.trim()) == name && (digits.is_empty() || o.cui.trim().is_empty())))
+        .cloned();
+    let mark = json!({"sursa": sursa, "data": azi});
+    let Some(mut card) = found else {
+        let mut p = input;
+        p.id = None;
+        p.version = 0;
+        p.activ = Some(true);
+        let filled: Vec<String> = base_values(&p).into_iter().filter(|(_, v)| !v.trim().is_empty()).map(|(k, _)| k.to_string()).collect();
+        for k in &filled {
+            p.surse.insert(k.clone(), mark.clone());
+        }
+        let id = save(store, p)?;
+        return Ok(Remembered { id, noua: true, completate: filled, diferite: vec![] });
+    };
+    let mut done = Vec::new();
+    let mut differ = Vec::new();
+    {
+        let new_vals = base_values(&input).into_iter().map(|(k, v)| (k, v.trim().to_string())).collect::<Vec<_>>();
+        for (k, v) in new_vals {
+            if v.is_empty() {
+                continue;
+            }
+            let slot = base_slot(&mut card, k);
+            if slot.trim().is_empty() {
+                *slot = v;
+                card.surse.insert(k.to_string(), mark.clone());
+                done.push(k.to_string());
+            } else if fold(slot.trim()) != fold(&v) {
+                differ.push(k.to_string());
+            }
+        }
+    }
+    for f in input.campuri.into_iter().filter(|f| !f.nume.trim().is_empty() && !f.valoare.trim().is_empty()) {
+        match card.campuri.iter_mut().find(|c| fold(c.nume.trim()) == fold(f.nume.trim())) {
+            Some(c) if c.valoare.trim().is_empty() => {
+                c.valoare = f.valoare.trim().to_string();
+                done.push(f.nume.trim().to_string());
+            }
+            Some(c) if fold(c.valoare.trim()) != fold(f.valoare.trim()) => differ.push(f.nume.trim().to_string()),
+            Some(_) => {}
+            None => {
+                done.push(f.nume.trim().to_string());
+                card.campuri.push(ExtraField { nume: f.nume.trim().into(), valoare: f.valoare.trim().into() });
+            }
+        }
+    }
+    for w in input.puncte_lucru.into_iter().filter(|w| !(w.denumire.trim().is_empty() && w.adresa.trim().is_empty())) {
+        let same = |o: &WorkPoint| fold(o.adresa.trim()) == fold(w.adresa.trim()) && fold(o.denumire.trim()) == fold(w.denumire.trim());
+        if !card.puncte_lucru.iter().any(same) {
+            card.puncte_lucru.push(w);
+            done.push("puncte_lucru".into());
+        }
+    }
+    let id = card.id.ok_or_else(|| bad("fișa nu are id"))?;
+    if !done.is_empty() {
+        save(store, card)?;
+    }
+    Ok(Remembered { id, noua: false, completate: done, diferite: differ })
+}
+
+fn base_values(p: &Partner) -> Vec<(&'static str, String)> {
+    vec![
+        ("cui", p.cui.clone()),
+        ("nr_reg_com", p.nr_reg_com.clone()),
+        ("sediu", p.sediu.clone()),
+        ("localitate", p.localitate.clone()),
+        ("judet", p.judet.clone()),
+        ("tara", p.tara.clone()),
+        ("telefon", p.telefon.clone()),
+        ("email", p.email.clone()),
+        ("iban", p.iban.clone()),
+        ("banca", p.banca.clone()),
+        ("reprezentant", p.reprezentant.clone()),
+        ("functie_reprezentant", p.functie_reprezentant.clone()),
+    ]
+}
+
+fn base_slot<'a>(p: &'a mut Partner, k: &str) -> &'a mut String {
+    match k {
+        "cui" => &mut p.cui,
+        "nr_reg_com" => &mut p.nr_reg_com,
+        "sediu" => &mut p.sediu,
+        "localitate" => &mut p.localitate,
+        "judet" => &mut p.judet,
+        "tara" => &mut p.tara,
+        "telefon" => &mut p.telefon,
+        "email" => &mut p.email,
+        "iban" => &mut p.iban,
+        "banca" => &mut p.banca,
+        "reprezentant" => &mut p.reprezentant,
+        _ => &mut p.functie_reprezentant,
+    }
+}
+
 /// Hides a card (kept for documents that refer to it).
 pub fn set_active(store: &mut Store, id: Uuid, active: bool) -> CoreResult<()> {
     let mut p = get(store, id)?;

@@ -1,6 +1,8 @@
 // Documents and models (Etapa 4, step 4.8): Word models with {{fields}},
 // company data entered once, generated documents kept with their model.
 import { useCallback, useEffect, useState } from "react";
+import { SuggestInput, cardToParty, fold, matches, partyOf, partyToCard, rememberPartner } from "../../components/PartnerSuggest";
+import type { Partner } from "../../pages/PartnersPage";
 import { AnafLookup, fullAddress } from "../../components/AnafLookup";
 import { open, save } from "@tauri-apps/plugin-dialog";
 import { api, message } from "../../api";
@@ -37,6 +39,7 @@ interface Generated {
   model_versiune: number;
   format?: "docx" | "pdf";
   creat_ms: number;
+  valori?: Record<string, string>;
 }
 interface Company {
   campuri: { camp: string; eticheta: string; valoare: string }[];
@@ -61,8 +64,10 @@ function GenerateDialog(props: {
   onGenerate: (valori: Record<string, string>, nume: string) => void;
   onCancel: () => void;
   onCompany: () => void;
+  /** Documents generated before: their party values become suggestions (7.4c). */
+  past: Generated[];
 }) {
-  const { model, company } = props;
+  const { model, company, past } = props;
   const own = model.campuri.filter((f) => !f.din_firma);
   const fromCompany = model.campuri.filter((f) => f.din_firma);
   const companyValue = (camp: string) => company.campuri.find((c) => `firma.${c.camp}` === camp)?.valoare ?? "";
@@ -72,6 +77,23 @@ function GenerateDialog(props: {
   );
   const [name, setName] = useState(`${model.nume} ${today()}`);
   const empty = own.filter((f) => !vals[f.camp]?.trim());
+  const partyCamps = (root: string) => own.filter((x) => partyOf(x.camp) === root).map((x) => x.camp);
+  const fromPast = useCallback(
+    (root: string) => (q: string) => {
+      const seen = new Set<string>();
+      const out: Partner[] = [];
+      for (const g of past) {
+        if (!g.valori) continue;
+        const c = partyToCard(root, g.valori);
+        if (c.denumire && !seen.has(fold(c.denumire)) && matches(c, q)) {
+          seen.add(fold(c.denumire));
+          out.push(c);
+        }
+      }
+      return out;
+    },
+    [past],
+  );
   return (
     <div className="overlay" role="presentation" onClick={props.onCancel}>
       <div className="dialog wide" role="dialog" aria-modal="true" aria-labelledby="gen-title" onClick={(e) => e.stopPropagation()}>
@@ -87,17 +109,26 @@ function GenerateDialog(props: {
             Numele documentului
             <input aria-label="Numele documentului" value={name} maxLength={150} onChange={(e) => setName(e.target.value)} />
           </label>
-          {own.map((f) => (
-            <label key={f.camp}>
-              {f.eticheta}
-              <input
-                aria-label={f.eticheta}
-                value={vals[f.camp] ?? ""}
-                maxLength={2000}
-                onChange={(e) => setVals({ ...vals, [f.camp]: e.target.value })}
-              />
-            </label>
-          ))}
+          {own.map((f) => {
+            const root = partyOf(f.camp);
+            return (
+              <label key={f.camp}>
+                {f.eticheta}
+                {root ? (
+                  <SuggestInput
+                    ariaLabel={f.eticheta}
+                    value={vals[f.camp] ?? ""}
+                    maxLength={2000}
+                    onChange={(v) => setVals((x) => ({ ...x, [f.camp]: v }))}
+                    onPick={(card) => setVals((x) => ({ ...x, ...cardToParty(card, partyCamps(root)) }))}
+                    extra={fromPast(root)}
+                  />
+                ) : (
+                  <input aria-label={f.eticheta} value={vals[f.camp] ?? ""} maxLength={2000} onChange={(e) => setVals({ ...vals, [f.camp]: e.target.value })} />
+                )}
+              </label>
+            );
+          })}
           {fromCompany.length > 0 && (
             <fieldset>
               <legend>Din „Date firmă” (nu se schimbă aici)</legend>
@@ -392,6 +423,7 @@ export function DocsPage({ onError }: { onError: (e: string | null) => void }) {
         <GenerateDialog
           model={filling}
           company={company}
+          past={generated}
           busy={busy}
           error={dialogError}
           onCancel={() => {
@@ -409,7 +441,10 @@ export function DocsPage({ onError }: { onError: (e: string | null) => void }) {
               const r = await api.moduleCall<{ id: string; nume: string; inlocuiri: number }>(ID, "generate", { model: filling.id, valori, nume });
               setFilling(null);
               setTab("generate");
-              setNotice(`Documentul „${r.nume}” a fost generat (${r.inlocuiri} câmpuri completate) și verificat.`);
+              // What was typed for each party stays in the partner directory (7.4c).
+              const roots = [...new Set(Object.keys(valori).map(partyOf).filter((x): x is string => !!x))];
+              const kept = (await Promise.all(roots.map((root) => rememberPartner(partyToCard(root, valori), "document")))).filter(Boolean);
+              setNotice(`Documentul „${r.nume}” a fost generat (${r.inlocuiri} câmpuri completate) și verificat.${kept.length ? " " + kept.join(" ") : ""}`);
               const t = await api.moduleCall<{ text: string }>(ID, "text", { id: r.id });
               setPreview({ id: r.id, text: t.text });
                 setDialogError(null);
