@@ -9,6 +9,7 @@ use std::collections::BTreeMap;
 
 use kgb_core::manifest::Manifest;
 use kgb_core::modules::{Module, ModuleContext, ModuleManager, audit_log};
+use kgb_core::identity::DeviceIdentity;
 use kgb_core::org::{self, Access, RoleInput};
 use kgb_core::workspace::Workspace;
 use kgb_core::{CoreError, CoreResult};
@@ -58,17 +59,17 @@ fn manager() -> ModuleManager {
     .unwrap()
 }
 
-const ADMIN_PC: &str = "aa:aa";
 const OTHER_PC: &str = "bb:bb";
 
-fn setup() -> (tempfile::TempDir, Workspace, ModuleManager) {
+fn setup() -> (tempfile::TempDir, Workspace, ModuleManager, DeviceIdentity) {
     let tmp = tempfile::tempdir().unwrap();
+    let dev = DeviceIdentity::load_or_create(&tmp.path().join("device")).unwrap();
     let mut ws = Workspace::create(&tmp.path().join("ws"), "T").unwrap();
     let mm = manager();
     for id in ["kgb.notes", "kgb.business"] {
         mm.enable(&mut ws, id, &["storage.own".into()]).unwrap();
     }
-    (tmp, ws, mm)
+    (tmp, ws, mm, dev)
 }
 
 /// Puts `fp` on member `id` (devices join by invitation in 6.2; the test
@@ -83,8 +84,9 @@ fn give_device(ws: &mut Workspace, id: Uuid, fp: &str) {
 }
 
 #[test]
+#[allow(non_snake_case)]
 fn without_organization_everything_is_allowed() {
-    let (_t, mut ws, mm) = setup();
+    let (_t, mut ws, mm, _dev) = setup();
     assert!(org::organization(ws.store()).unwrap().is_none());
     mm.call(&mut ws, None, "kgb.business", "add", json!({"t": "x"})).unwrap();
     mm.call(&mut ws, Some(OTHER_PC), "kgb.notes", "add", json!({"t": "x"})).unwrap();
@@ -92,10 +94,13 @@ fn without_organization_everything_is_allowed() {
 }
 
 #[test]
+#[allow(non_snake_case)]
 fn roles_limit_modules_and_writes() {
-    let (_t, mut ws, mm) = setup();
-    let admin = org::create(ws.store_mut(), "Firma Test SRL", "Ana", ADMIN_PC).unwrap();
-    assert!(org::create(ws.store_mut(), "Alta", "Ion", ADMIN_PC).is_err(), "only one organization");
+    let (_t, mut ws, mm, dev) = setup();
+    let admin_pc = dev.fingerprint();
+    let ADMIN_PC: &str = &admin_pc;
+    let admin = org::create(ws.store_mut(), "Firma Test SRL", "Ana", &dev, "Laptop").unwrap();
+    assert!(org::create(ws.store_mut(), "Alta", "Ion", &dev, "Laptop").is_err(), "only one organization");
     let names: Vec<_> = org::roles(ws.store()).unwrap().into_iter().map(|r| r.name).collect();
     assert_eq!(names, ["Administrator", "Membru", "Doar citire"]);
 
@@ -110,7 +115,7 @@ fn roles_limit_modules_and_writes() {
     assert!(e.to_string().contains("nu are acces"), "{e}");
 
     // Membru: notes yes, business no.
-    let ion = org::add_member(ws.store_mut(), "Ion", org::role_member()).unwrap();
+    let ion = org::add_member(ws.store_mut(), &dev, "Ion", org::role_member()).unwrap();
     give_device(&mut ws, ion, OTHER_PC);
     mm.call(&mut ws, Some(OTHER_PC), "kgb.notes", "add", json!({"t": "n1"})).unwrap();
     let e = mm.call(&mut ws, Some(OTHER_PC), "kgb.business", "count", json!({})).unwrap_err();
@@ -119,7 +124,7 @@ fn roles_limit_modules_and_writes() {
 
     // Doar citire: reads, every write refused, nothing written, audited.
     let v = org::members(ws.store(), false).unwrap().into_iter().find(|m| m.id == ion).unwrap();
-    org::update_member(ws.store_mut(), ion, "Ion", org::role_reader(), v.version).unwrap();
+    org::update_member(ws.store_mut(), &dev, ion, "Ion", org::role_reader(), v.version).unwrap();
     assert_eq!(mm.call(&mut ws, Some(OTHER_PC), "kgb.notes", "count", json!({})).unwrap(), json!(1));
     assert_eq!(mm.call(&mut ws, Some(OTHER_PC), "kgb.notes", "can_write", json!({})).unwrap(), json!(false));
     let e = mm.call(&mut ws, Some(OTHER_PC), "kgb.notes", "add", json!({"t": "n2"})).unwrap_err();
@@ -133,12 +138,13 @@ fn roles_limit_modules_and_writes() {
     modules.insert("kgb.business".to_string(), Access::Citire);
     let contabil = org::save_role(
         ws.store_mut(),
+        &dev,
         RoleInput { id: None, name: "Contabil".into(), default: Access::Niciunul, modules, version: 0 },
         &["kgb.notes".into(), "kgb.business".into()],
     )
     .unwrap();
     let v = org::members(ws.store(), false).unwrap().into_iter().find(|m| m.id == ion).unwrap();
-    org::update_member(ws.store_mut(), ion, "Ion", contabil, v.version).unwrap();
+    org::update_member(ws.store_mut(), &dev, ion, "Ion", contabil, v.version).unwrap();
     assert_eq!(mm.call(&mut ws, Some(OTHER_PC), "kgb.business", "count", json!({})).unwrap(), json!(1));
     assert!(mm.call(&mut ws, Some(OTHER_PC), "kgb.business", "add", json!({"t": "x"})).is_err());
     assert!(mm.call(&mut ws, Some(OTHER_PC), "kgb.notes", "count", json!({})).is_err());
@@ -147,15 +153,17 @@ fn roles_limit_modules_and_writes() {
     bad.insert("kgb.nimic".to_string(), Access::Scriere);
     assert!(org::save_role(
         ws.store_mut(),
+        &dev,
         RoleInput { id: None, name: "X".into(), default: Access::Citire, modules: bad, version: 0 },
         &["kgb.notes".into()],
     )
     .is_err());
     // A role in use cannot be deleted; the Administrator role cannot change.
-    assert!(org::delete_role(ws.store_mut(), contabil).unwrap_err().to_string().contains("Ion"));
-    assert!(org::delete_role(ws.store_mut(), org::role_reader()).is_err());
+    assert!(org::delete_role(ws.store_mut(), &dev, contabil).unwrap_err().to_string().contains("Ion"));
+    assert!(org::delete_role(ws.store_mut(), &dev, org::role_reader()).is_err());
     assert!(org::save_role(
         ws.store_mut(),
+        &dev,
         RoleInput { id: Some(org::role_admin()), name: "A".into(), default: Access::Citire, modules: BTreeMap::new(), version: 1 },
         &[],
     )
@@ -163,31 +171,45 @@ fn roles_limit_modules_and_writes() {
 
     // Removed person: their device loses access.
     let v = org::members(ws.store(), false).unwrap().into_iter().find(|m| m.id == ion).unwrap();
-    org::remove_member(ws.store_mut(), ion, Some(ADMIN_PC), v.version).unwrap();
+    org::remove_member(ws.store_mut(), &dev, ion, v.version).unwrap();
     assert!(mm.call(&mut ws, Some(OTHER_PC), "kgb.business", "count", json!({})).is_err());
-    org::delete_role(ws.store_mut(), contabil).unwrap();
+    org::delete_role(ws.store_mut(), &dev, contabil).unwrap();
 }
 
 #[test]
+#[allow(non_snake_case)]
 fn never_without_an_administrator_and_survives_reopen() {
-    let (t, mut ws, _mm) = setup();
-    let ana = org::create(ws.store_mut(), "Firma Test SRL", "Ana", ADMIN_PC).unwrap();
+    let (t, mut ws, _mm, dev) = setup();
+    let admin_pc = dev.fingerprint();
+    let ADMIN_PC: &str = &admin_pc;
+    let ion_dev = DeviceIdentity::load_or_create(&t.path().join("device-ion")).unwrap();
+    let ana = org::create(ws.store_mut(), "Firma Test SRL", "Ana", &dev, "Laptop").unwrap();
     let ver = |ws: &Workspace, id| org::members(ws.store(), false).unwrap().into_iter().find(|m| m.id == id).unwrap().version;
 
-    let e = { let v = ver(&ws, ana); org::update_member(ws.store_mut(), ana, "Ana", org::role_member(), v) }.unwrap_err();
+    let e = { let v = ver(&ws, ana); org::update_member(ws.store_mut(), &dev, ana, "Ana", org::role_member(), v) }.unwrap_err();
     assert!(e.to_string().contains("fără administrator"), "{e}");
-    let e = { let v = ver(&ws, ana); org::remove_member(ws.store_mut(), ana, Some(OTHER_PC), v) }.unwrap_err();
-    assert!(e.to_string().contains("ultimul administrator"), "{e}");
-
-    // With a second administrator, Ana can step down to Membru.
-    let ion = org::add_member(ws.store_mut(), "Ion", org::role_admin()).unwrap();
-    assert!(org::add_member(ws.store_mut(), "ion", org::role_member()).is_err(), "same name");
-    { let v = ver(&ws, ana); org::update_member(ws.store_mut(), ana, "Ana", org::role_member(), v) }.unwrap();
-    // But Ion, now the only administrator, cannot be removed.
-    assert!({ let v = ver(&ws, ion); org::remove_member(ws.store_mut(), ion, Some(ADMIN_PC), v) }.is_err());
-    // Nobody removes themselves from this PC.
-    let e = { let v = ver(&ws, ana); org::remove_member(ws.store_mut(), ana, Some(ADMIN_PC), v) }.unwrap_err();
+    // Nobody removes themselves from their own PC.
+    let e = { let v = ver(&ws, ana); org::remove_member(ws.store_mut(), &dev, ana, v) }.unwrap_err();
     assert!(e.to_string().contains("singur"), "{e}");
+
+    // A second administrator, Ion, with his own PC.
+    let ion = org::add_member(ws.store_mut(), &dev, "Ion", org::role_admin()).unwrap();
+    assert!(org::add_member(ws.store_mut(), &dev, "ion", org::role_member()).is_err(), "same name");
+    give_device(&mut ws, ion, &ion_dev.fingerprint());
+    // Ana steps down to Membru; from now on her PC cannot change the organization.
+    { let v = ver(&ws, ana); org::update_member(ws.store_mut(), &dev, ana, "Ana", org::role_member(), v) }.unwrap();
+    let e = org::add_member(ws.store_mut(), &dev, "Maria", org::role_member()).unwrap_err();
+    assert!(e.to_string().contains("doar un administrator"), "{e}");
+    // Ion, now the only administrator, cannot be removed or demoted.
+    let e = { let v = ver(&ws, ion); org::update_member(ws.store_mut(), &ion_dev, ion, "Ion", org::role_member(), v) }.unwrap_err();
+    assert!(e.to_string().contains("fără administrator"), "{e}");
+    let maria = org::add_member(ws.store_mut(), &ion_dev, "Maria", org::role_admin()).unwrap();
+    let e = { let v = ver(&ws, ion); org::remove_member(ws.store_mut(), &ion_dev, ion, v) }.unwrap_err();
+    assert!(e.to_string().contains("singur"), "{e}");
+    // Maria (no device yet) is admin too, so the last-admin rule is about Ion+Maria.
+    { let v = ver(&ws, maria); org::update_member(ws.store_mut(), &ion_dev, maria, "Maria", org::role_member(), v) }.unwrap();
+    let e = { let v = ver(&ws, ion); org::update_member(ws.store_mut(), &ion_dev, ion, "Ion", org::role_reader(), v) }.unwrap_err();
+    assert!(e.to_string().contains("fără administrator"), "{e}");
 
     let dir = ws.dir().to_path_buf();
     drop(ws);

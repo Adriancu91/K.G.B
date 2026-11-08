@@ -123,6 +123,32 @@ export interface OrgReply {
   modules: Array<[string, string]>;
   fingerprint: string;
   owner_name: string | null;
+  invites: InviteView[];
+  pending: PendingDevice[];
+  registry_problems: string[];
+}
+
+export interface InviteView {
+  id: string;
+  member: string;
+  expires_ms: number;
+  stare: "activă" | "folosită" | "expirată";
+}
+
+export interface PendingDevice {
+  id: string;
+  member_id: string;
+  member: string;
+  label: string;
+  fingerprint: string;
+  received_ms: number;
+  version: number;
+}
+
+export interface JoinRequest {
+  code: string;
+  info: { org_name: string; member: string; expires_ms: number; admin_fingerprint: string };
+  fingerprint: string;
 }
 
 export interface RoleInput {
@@ -194,6 +220,13 @@ export const api = {
   memberRemove: (id: string, version: number) => invoke<void>("org_member_remove", { id, version }),
   roleSave: (role: RoleInput) => invoke<string>("org_role_save", { role }),
   roleDelete: (id: string) => invoke<void>("org_role_delete", { id }),
+  inviteCreate: (member: string, hours: number) =>
+    invoke<{ id: string; code: string; member: string; expires_ms: number }>("invite_create", { member, hours }),
+  inviteCancel: (id: string) => invoke<void>("invite_cancel", { id }),
+  inviteAnswer: (code: string) => invoke<JoinRequest>("invite_answer", { code }),
+  requestReceive: (code: string) => invoke<PendingDevice>("request_receive", { code }),
+  requestApprove: (id: string) => invoke<void>("request_approve", { id }),
+  requestRefuse: (id: string) => invoke<void>("request_refuse", { id }),
   /** Hands a file the user picked to a module's `import` command. */
   importFile: <T>(id: string, path: string) => invoke<T>("module_import_file", { id, path }),
   /** Same, for another module command with extra arguments (e.g. the bank account). */

@@ -4,6 +4,7 @@
 // invitations (step 6.2).
 import { useCallback, useEffect, useState, type FormEvent } from "react";
 import { ACCESS_LABEL, api, message, type Access, type Member, type OrgReply, type Role } from "../api";
+import { InviteButton, JoinOrg, Requests } from "./Devices";
 
 const ACCESSES: Access[] = ["niciunul", "citire", "scriere"];
 
@@ -40,7 +41,18 @@ export function OrgPage({ onError, onChanged }: { onError: (e: string | null) =>
     <div className="org-page">
       <OrgHeader org={org} admin={admin} run={run} />
       {!admin && <p className="muted">Doar un administrator poate schimba persoanele și rolurile.</p>}
+      {org.registry_problems.length > 0 && (
+        <div className="error" role="alert">
+          Registrul semnat al organizației nu se potrivește cu datele de aici:
+          <ul>
+            {org.registry_problems.map((p) => (
+              <li key={p}>{p}</li>
+            ))}
+          </ul>
+        </div>
+      )}
       <Members org={org} admin={admin} run={run} />
+      {admin && <Requests org={org} run={run} />}
       <Roles org={org} admin={admin} run={run} />
     </div>
   );
@@ -72,9 +84,7 @@ function CreateOrg({ org, run }: { org: OrgReply; run: Run }) {
           Creează organizația
         </button>
       </form>
-      <p className="muted small">
-        Alți oameni și calculatoarele lor se adaugă prin invitații (pasul următor al Etapei 6). Sincronizarea între PC-uri nu funcționează încă.
-      </p>
+      <JoinOrg run={run} />
     </div>
   );
 }
@@ -195,6 +205,7 @@ function MemberRow(props: { m: Member; org: OrgReply; admin: boolean; roleName: 
       <td className="num">{m.devices.length === 0 ? <span className="muted">niciunul încă</span> : m.devices.length}</td>
       {admin && (
         <td>
+          {m.active && <InviteButton member={m} run={run} />}{" "}
           {!here && (
             <button
               className="link"

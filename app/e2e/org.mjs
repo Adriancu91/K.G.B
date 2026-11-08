@@ -36,7 +36,7 @@ const setSelect = (p, sel, text) =>
 
 async function start() {
   proc = spawn(exe, [], {
-    env: { ...process.env, KGB_DATA_DIR: data, WEBVIEW2_ADDITIONAL_BROWSER_ARGUMENTS: `--remote-debugging-port=${PORT}` },
+    env: { ...process.env, COMPUTERNAME: "PC-TEST", KGB_DATA_DIR: data, WEBVIEW2_ADDITIONAL_BROWSER_ARGUMENTS: `--remote-debugging-port=${PORT}` },
     stdio: "ignore",
   });
   const p = await connect(PORT, 20000);

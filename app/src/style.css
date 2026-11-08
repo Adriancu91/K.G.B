@@ -987,3 +987,30 @@ table.report tfoot th {
   color: #2c7a4b;
   font-weight: 600;
 }
+
+/* Etapa 6: invitation and request codes */
+.code-box {
+  display: flex;
+  gap: 8px;
+  align-items: flex-start;
+  margin: 8px 0;
+}
+.code-box textarea,
+form[aria-label="Primește o cerere"] textarea,
+form[aria-label="Răspunde la invitație"] textarea {
+  flex: 1;
+  min-width: 260px;
+  font-family: ui-monospace, Consolas, monospace;
+  font-size: 12px;
+  word-break: break-all;
+}
+.invite-box {
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 8px 12px;
+  margin: 6px 0;
+  max-width: 640px;
+}
+.fingerprint {
+  font-family: ui-monospace, Consolas, monospace;
+}

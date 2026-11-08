@@ -24,6 +24,8 @@ use serde_json::{Value, json};
 use uuid::Uuid;
 
 use crate::error::{CoreError, CoreResult};
+use crate::identity::DeviceIdentity;
+use crate::registry::{self, RegRole};
 use crate::workspace::{now_ms, validate_name};
 
 pub const ORG_COLLECTION: &str = "core.org";
@@ -174,6 +176,19 @@ fn role_fields(name: &str, builtin: bool, admin: bool, default: Access, modules:
     f
 }
 
+fn member_payload(m: &Member) -> Value {
+    json!({"id": m.id.to_string(), "name": m.name, "role": m.role.to_string(), "active": m.active})
+}
+
+fn reg_role(name: &str, admin: bool, default: Access, modules: &BTreeMap<String, Access>) -> RegRole {
+    RegRole { name: name.into(), admin, default, modules: modules.clone() }
+}
+
+/// Signer check shared by every change: the device must be an administrator's.
+fn signer_admin(store: &Store, dev: &DeviceIdentity) -> CoreResult<()> {
+    require_admin(store, Some(&dev.fingerprint()), "organizația")
+}
+
 fn member_fields(m: &Member) -> Fields {
     let mut f = Fields::new();
     f.insert("name".into(), json!(m.name));
@@ -237,7 +252,9 @@ fn member(store: &Store, id: Uuid) -> CoreResult<Member> {
 
 /// Creates the organization: built-in roles and the first administrator,
 /// whose device is this PC. Refused if an organization already exists.
-pub fn create(store: &mut Store, name: &str, admin_name: &str, fingerprint: &str) -> CoreResult<Uuid> {
+pub fn create(store: &mut Store, name: &str, admin_name: &str, dev: &DeviceIdentity, device_label: &str) -> CoreResult<Uuid> {
+    let fingerprint = dev.fingerprint();
+    let fingerprint = fingerprint.as_str();
     if organization(store)?.is_some() {
         return Err(CoreError::invalid("organizația", "există deja în acest spațiu de lucru"));
     }
@@ -264,7 +281,20 @@ pub fn create(store: &mut Store, name: &str, admin_name: &str, fingerprint: &str
         created_ms: now,
         version: 0,
     };
-    store.write(vec![
+    let roles = json!({
+        role_admin().to_string(): registry::role_payload(role_admin(), &reg_role("Administrator", true, Access::Scriere, &none)),
+        role_member().to_string(): registry::role_payload(role_member(), &reg_role("Membru", false, Access::Scriere, &member_limits)),
+        role_reader().to_string(): registry::role_payload(role_reader(), &reg_role("Doar citire", false, Access::Citire, &none)),
+    });
+    let genesis = json!({
+        "org": Uuid::new_v4().to_string(),
+        "name": name,
+        "roles": roles,
+        "admin": {"id": admin.id.to_string(), "name": admin.name, "role": role_admin().to_string(),
+                  "device": dev.public_hex(), "label": validate_name("numele dispozitivului", device_label)?},
+    });
+    let mut batch = registry::signed_writes(store, dev, vec![("organizatie", genesis)]);
+    batch.extend([
         Write::put(ORG_COLLECTION, org_id(), org).expect(0),
         Write::put(
             ROLES_COLLECTION,
@@ -285,18 +315,22 @@ pub fn create(store: &mut Store, name: &str, admin_name: &str, fingerprint: &str
         )
         .expect(0),
         Write::put(MEMBERS_COLLECTION, admin.id, member_fields(&admin)).expect(0),
-    ])?;
+    ]);
+    store.write(batch)?;
     Ok(admin.id)
 }
 
 /// Renames the organization.
-pub fn rename(store: &mut Store, name: &str, expected_version: u64) -> CoreResult<u64> {
+pub fn rename(store: &mut Store, dev: &DeviceIdentity, name: &str, expected_version: u64) -> CoreResult<u64> {
+    signer_admin(store, dev)?;
     let org = organization(store)?.ok_or_else(|| CoreError::invalid("organizația", "nu există"))?;
     let name = validate_name("numele organizației", name)?;
     let mut f = Fields::new();
     f.insert("name".into(), json!(name));
     f.insert("created_ms".into(), json!(org.created_ms));
-    Ok(store.write(vec![Write::put(ORG_COLLECTION, org_id(), f).expect(expected_version)])?[0])
+    let mut batch = vec![Write::put(ORG_COLLECTION, org_id(), f).expect(expected_version)];
+    batch.extend(registry::signed_writes(store, dev, vec![("redenumire", json!({"name": name}))]));
+    Ok(store.write(batch)?[0])
 }
 
 /// The member using the device with `fingerprint`, with their role.
@@ -351,10 +385,11 @@ fn active_admins(store: &Store) -> CoreResult<Vec<Member>> {
 }
 
 /// Adds a person (without a device; devices join by invitation, step 6.2).
-pub fn add_member(store: &mut Store, name: &str, role_id: Uuid) -> CoreResult<Uuid> {
+pub fn add_member(store: &mut Store, dev: &DeviceIdentity, name: &str, role_id: Uuid) -> CoreResult<Uuid> {
     if organization(store)?.is_none() {
         return Err(CoreError::invalid("organizația", "nu există; creeaz-o întâi"));
     }
+    signer_admin(store, dev)?;
     let name = validate_name("numele persoanei", name)?;
     role(store, role_id)?;
     if members(store, false)?
@@ -372,13 +407,23 @@ pub fn add_member(store: &mut Store, name: &str, role_id: Uuid) -> CoreResult<Uu
         created_ms: now_ms(),
         version: 0,
     };
-    store.write(vec![Write::put(MEMBERS_COLLECTION, m.id, member_fields(&m)).expect(0)])?;
+    let mut batch = vec![Write::put(MEMBERS_COLLECTION, m.id, member_fields(&m)).expect(0)];
+    batch.extend(registry::signed_writes(store, dev, vec![("persoana", member_payload(&m))]));
+    store.write(batch)?;
     Ok(m.id)
 }
 
 /// Changes a person's name and role. Refused if it would leave the
 /// organization without an administrator.
-pub fn update_member(store: &mut Store, id: Uuid, name: &str, role_id: Uuid, expected_version: u64) -> CoreResult<u64> {
+pub fn update_member(
+    store: &mut Store,
+    dev: &DeviceIdentity,
+    id: Uuid,
+    name: &str,
+    role_id: Uuid,
+    expected_version: u64,
+) -> CoreResult<u64> {
+    signer_admin(store, dev)?;
     let mut m = member(store, id)?;
     if !m.active {
         return Err(CoreError::invalid("persoana", "a fost scoasă din organizație"));
@@ -400,14 +445,17 @@ pub fn update_member(store: &mut Store, id: Uuid, name: &str, role_id: Uuid, exp
     }
     m.name = name;
     m.role = role_id;
-    Ok(store.write(vec![
-        Write::put(MEMBERS_COLLECTION, id, member_fields(&m)).expect(expected_version),
-    ])?[0])
+    let mut batch = vec![Write::put(MEMBERS_COLLECTION, id, member_fields(&m)).expect(expected_version)];
+    batch.extend(registry::signed_writes(store, dev, vec![("persoana", member_payload(&m))]));
+    Ok(store.write(batch)?[0])
 }
 
 /// Removes a person from the organization (kept in history, devices lose
 /// access). Refused for the last administrator and for the person on this PC.
-pub fn remove_member(store: &mut Store, id: Uuid, this_fingerprint: Option<&str>, expected_version: u64) -> CoreResult<()> {
+pub fn remove_member(store: &mut Store, dev: &DeviceIdentity, id: Uuid, expected_version: u64) -> CoreResult<()> {
+    signer_admin(store, dev)?;
+    let this = dev.fingerprint();
+    let this_fingerprint = Some(this.as_str());
     let mut m = member(store, id)?;
     if !m.active {
         return Ok(());
@@ -423,9 +471,9 @@ pub fn remove_member(store: &mut Store, id: Uuid, this_fingerprint: Option<&str>
         return Err(CoreError::invalid("persoana", "este ultimul administrator"));
     }
     m.active = false;
-    store.write(vec![
-        Write::put(MEMBERS_COLLECTION, id, member_fields(&m)).expect(expected_version),
-    ])?;
+    let mut batch = vec![Write::put(MEMBERS_COLLECTION, id, member_fields(&m)).expect(expected_version)];
+    batch.extend(registry::signed_writes(store, dev, vec![("persoana", member_payload(&m))]));
+    store.write(batch)?;
     Ok(())
 }
 
@@ -446,10 +494,11 @@ pub struct RoleInput {
 /// Creates or changes a role. The Administrator role cannot be changed; the
 /// other built-in roles keep their name but their access can be adjusted.
 /// `known_modules` are the module ids the app has (anything else is refused).
-pub fn save_role(store: &mut Store, input: RoleInput, known_modules: &[String]) -> CoreResult<Uuid> {
+pub fn save_role(store: &mut Store, dev: &DeviceIdentity, input: RoleInput, known_modules: &[String]) -> CoreResult<Uuid> {
     if organization(store)?.is_none() {
         return Err(CoreError::invalid("organizația", "nu există; creeaz-o întâi"));
     }
+    signer_admin(store, dev)?;
     for m in input.modules.keys() {
         if !known_modules.iter().any(|k| k == m) {
             return Err(CoreError::invalid("rolul", format!("modulul „{m}” nu există")));
@@ -485,19 +534,23 @@ pub fn save_role(store: &mut Store, input: RoleInput, known_modules: &[String]) 
         .into_iter()
         .filter(|(_, a)| *a != input.default)
         .collect();
-    store.write(vec![
+    let mut batch = vec![
         Write::put(
             ROLES_COLLECTION,
             id,
             role_fields(&name, builtin, false, input.default, &modules),
         )
         .expect(expected),
-    ])?;
+    ];
+    let payload = registry::role_payload(id, &reg_role(&name, false, input.default, &modules));
+    batch.extend(registry::signed_writes(store, dev, vec![("rol", payload)]));
+    store.write(batch)?;
     Ok(id)
 }
 
 /// Deletes a custom role nobody uses.
-pub fn delete_role(store: &mut Store, id: Uuid) -> CoreResult<()> {
+pub fn delete_role(store: &mut Store, dev: &DeviceIdentity, id: Uuid) -> CoreResult<()> {
+    signer_admin(store, dev)?;
     let r = role(store, id)?;
     if r.builtin {
         return Err(CoreError::invalid("rolul", "rolurile implicite nu se pot șterge"));
@@ -513,6 +566,44 @@ pub fn delete_role(store: &mut Store, id: Uuid) -> CoreResult<()> {
             format!("este folosit de: {}", users.join(", ")),
         ));
     }
-    store.write(vec![Write::delete(ROLES_COLLECTION, id).expect(r.version)])?;
+    let mut batch = vec![Write::delete(ROLES_COLLECTION, id).expect(r.version)];
+    batch.extend(registry::signed_writes(store, dev, vec![("rol", json!({"id": id.to_string(), "deleted": true}))]));
+    store.write(batch)?;
     Ok(())
+}
+
+/// Adds an approved device to a person (from an invitation, see `invites`),
+/// signed in the registry, together with `extra` writes in the same batch.
+pub(crate) fn add_device(
+    store: &mut Store,
+    dev: &DeviceIdentity,
+    member_id: Uuid,
+    key_hex: &str,
+    label: &str,
+    extra: Vec<Write>,
+) -> CoreResult<()> {
+    signer_admin(store, dev)?;
+    let mut m = member(store, member_id)?;
+    if !m.active {
+        return Err(CoreError::invalid("persoana", "a fost scoasă din organizație"));
+    }
+    let key = registry::parse_key(key_hex).ok_or_else(|| CoreError::invalid("dispozitivul", "cheie publică greșită"))?;
+    let fp = crate::identity::fingerprint(&key);
+    if members(store, false)?.iter().any(|o| o.devices.contains(&fp)) {
+        return Err(CoreError::invalid("dispozitivul", "aparține deja cuiva din organizație"));
+    }
+    m.devices.push(fp);
+    let mut batch = vec![Write::put(MEMBERS_COLLECTION, member_id, member_fields(&m)).expect(m.version)];
+    batch.extend(extra);
+    batch.extend(registry::signed_writes(
+        store,
+        dev,
+        vec![("dispozitiv", json!({"member": member_id.to_string(), "key": key_hex, "label": label}))],
+    ));
+    store.write(batch)?;
+    Ok(())
+}
+
+pub(crate) fn member_by_id(store: &Store, id: Uuid) -> CoreResult<Member> {
+    member(store, id)
 }
