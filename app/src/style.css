@@ -1296,3 +1296,44 @@ label > .suggest > input {
 .page-head .pin {
   margin-left: auto;
 }
+
+/* Etapa 7, step 7.4e: rates, weather, media, alert panels */
+.fx,
+.weather,
+.media,
+.alert-box {
+  display: grid;
+  gap: 6px;
+  align-content: start;
+}
+.fx-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  border-bottom: 1px solid var(--line);
+  padding: 2px 0;
+}
+.fx-row .v,
+.wx-now .v {
+  font-size: 1.4em;
+  font-variant-numeric: tabular-nums;
+}
+.wx-now {
+  display: flex;
+  gap: 10px;
+  align-items: baseline;
+  flex-wrap: wrap;
+}
+.media-now {
+  display: grid;
+  gap: 2px;
+  min-width: 0;
+}
+.media-now strong {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.alert-box .tag {
+  justify-self: start;
+}

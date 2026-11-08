@@ -68,7 +68,7 @@ impl Default for Layout {
 /// Panels the start page can show (Etapa 4, D-047; the control centre of
 /// step 7.4d added `bani`, `cifre` and `rezolvat`). A page pinned to the
 /// start page is a panel `fix:<page id>`.
-pub const HOME_PANELS: &[&str] = &["azi", "notificari", "documente", "module", "despre", "bani", "cifre", "rezolvat"];
+pub const HOME_PANELS: &[&str] = &["azi", "notificari", "documente", "module", "despre", "bani", "cifre", "rezolvat", "alerta", "curs", "vreme", "media"];
 /// Prefix of a page pinned to the start page.
 pub const PINNED_PREFIX: &str = "fix:";
 /// Horizontal position and width are in thousandths of the page width, so a
@@ -101,6 +101,9 @@ pub struct Home {
     pub panels: Vec<Panel>,
     #[serde(default)]
     pub amanate: std::collections::BTreeMap<String, String>,
+    /// The town of the weather panel (a key of `weather::TOWNS`), empty = not chosen (7.4e).
+    #[serde(default)]
+    pub vreme: String,
 }
 
 fn panel(id: &str, x: u16, y: u32, w: u16, h: u16) -> Panel {
@@ -119,8 +122,12 @@ impl Home {
                 panel("azi", 670, 212, 330, 320),
                 panel("notificari", 0, 544, 495, 240),
                 panel("documente", 505, 544, 495, 240),
+                panel("curs", 0, 796, 240, 190),
+                panel("vreme", 250, 796, 330, 190),
+                panel("media", 590, 796, 410, 190),
             ],
             amanate: Default::default(),
+            vreme: String::new(),
         }
     }
 
@@ -134,6 +141,7 @@ impl Home {
                 panel("documente", 505, 352, 495, 260),
             ],
             amanate: Default::default(),
+            vreme: String::new(),
         }
     }
 
@@ -215,6 +223,9 @@ impl Settings {
         }
         if self.home.amanate.len() > SNOOZE_MAX {
             return bad(format!("prea multe elemente amânate (cel mult {SNOOZE_MAX})"));
+        }
+        if !self.home.vreme.is_empty() && crate::weather::town_name(&self.home.vreme).is_none() {
+            return bad(format!("orașul „{}” nu e în lista pentru vreme", self.home.vreme));
         }
         for (k, d) in &self.home.amanate {
             if k.is_empty() || k.len() > 200 || !valid_day(d) {

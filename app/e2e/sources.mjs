@@ -55,7 +55,7 @@ try {
   let p = await start();
   // K.G.B. adds only ANAF (step 7.4b), filled in but switched off (D-063).
   const first = await p.eval("[...document.querySelectorAll('.sources-table tbody tr')].map(r => r.innerText)");
-  check("la început e doar ANAF, oprită (nicio sursă activă)", first.length === 1 && first[0].includes("ANAF") && first[0].includes("oprită"), JSON.stringify(first).slice(0, 120));
+  check("la început sunt doar sursele adăugate de K.G.B. (ANAF, BNR, MET), toate oprite", first.length === 3 && first.every((r) => r.includes("oprită")), JSON.stringify(first).slice(0, 120));
   await p.click("Adaugă o sursă");
   await p.until("!!document.querySelector('.source-form')");
   await setValue(p, "input[aria-label='Numele sursei']", "Flux de test");

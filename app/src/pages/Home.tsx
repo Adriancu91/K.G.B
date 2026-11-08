@@ -21,6 +21,10 @@ const TITLES: Record<string, string> = {
   documente: "Documente recente",
   module: "Module active",
   despre: "Ce face această versiune",
+  alerta: "Alertă",
+  curs: "Curs BNR",
+  vreme: "Vremea",
+  media: "Ce se aude acum",
 };
 const BUILT_IN = Object.keys(TITLES);
 const WIDTH = 1000;
@@ -105,8 +109,14 @@ const state = (late: number) => (late > 0 ? "bad" : late === 0 ? "warn" : "ok");
 const when = (late: number) => (late > 0 ? `întârziat ${late} ${late === 1 ? "zi" : "zile"}` : late === 0 ? "azi" : `în ${-late} ${late === -1 ? "zi" : "zile"}`);
 
 /** Loads everything the panels show, once per visit. */
-function useData(modules: ModulesReply, onError: (e: string | null) => void): Data {
+function useData(modules: ModulesReply, onError: (e: string | null) => void): [Data, () => void] {
   const [d, setD] = useState<Data>({ tasks: null, notes: null, docs: null, aging: null, accounts: null, expiring: null });
+  const reloadNotes = useCallback(() => {
+    api.notifications().then(
+      (r) => setD((x) => ({ ...x, notes: r.items.filter((n) => !n.citit_ms) })),
+      (e: unknown) => onError(message(e)),
+    );
+  }, [onError]);
   const on = useCallback((m: string) => modules.modules.some((x) => x.id === m && x.enabled) && modules.access[m] !== "niciunul", [modules]);
   useEffect(() => {
     let live = true;
@@ -131,7 +141,149 @@ function useData(modules: ModulesReply, onError: (e: string | null) => void): Da
       live = false;
     };
   }, [on, onError]);
-  return d;
+  return [d, reloadNotes];
+}
+
+interface Rates {
+  curs: { data: string; cursuri: { moneda: string; text: string; multiplicator: number }[] };
+  sursa: string;
+}
+interface Weather {
+  vreme: { oras: string; temperatura: number; vant_ms: number; cer: string; minima: number; maxima: number; precipitatii_6h: number; actualizat: string };
+  sursa: string;
+}
+interface Playing {
+  aplicatie: string;
+  titlu: string;
+  artist: string;
+  canta: boolean;
+}
+const deg = (n: number) => `${n.toLocaleString("ro-RO", { maximumFractionDigits: 1 })} °C`;
+
+/** A source switched off: say so and offer the way to it. */
+function Off({ err, onOpen }: { err: string; onOpen: (id: string) => void }) {
+  return (
+    <p className="muted">
+      {err}{" "}
+      {err.includes("Surse externe") && (
+        <button className="link" onClick={() => onOpen("sources")}>
+          Deschide „Surse externe”
+        </button>
+      )}
+    </p>
+  );
+}
+
+/** EUR/RON and USD/RON, with the day of the rate and the source (7.4e). */
+function RatesPanel({ onOpen }: { onOpen: (id: string) => void }) {
+  const [r, setR] = useState<Rates | null>(null);
+  const [err, setErr] = useState<string | null>(null);
+  useEffect(() => {
+    invoke<Rates>("fx_rates").then(setR, (e) => setErr(message(e)));
+  }, []);
+  if (err) return <Off err={err} onOpen={onOpen} />;
+  if (!r) return <p className="muted">Se încarcă…</p>;
+  const row = (m: string) => {
+    const x = r.curs.cursuri.find((c) => c.moneda === m);
+    return x ? (
+      <div className="fx-row" key={m}>
+        <span className="k">{m}/RON</span>
+        <span className="v">{x.text.replace(".", ",")}</span>
+      </div>
+    ) : null;
+  };
+  return (
+    <div className="fx">
+      {row("EUR")}
+      {row("USD")}
+      <p className="muted small">
+        Cursul din {ro(r.curs.data)}. {r.sursa}.
+      </p>
+    </div>
+  );
+}
+
+/** Today's weather in the chosen town (7.4e). */
+function WeatherPanel({ town, onTown, onOpen }: { town: string; onTown: (t: string) => void; onOpen: (id: string) => void }) {
+  const [towns, setTowns] = useState<[string, string][]>([]);
+  const [w, setW] = useState<Weather | null>(null);
+  const [err, setErr] = useState<string | null>(null);
+  useEffect(() => {
+    invoke<[string, string][]>("weather_towns").then(setTowns, () => setTowns([]));
+  }, []);
+  useEffect(() => {
+    if (!town) return;
+    setW(null);
+    setErr(null);
+    invoke<Weather>("weather_today", { azi: today(), offsetMin: -new Date().getTimezoneOffset() }).then(setW, (e) => setErr(message(e)));
+  }, [town]);
+  const picker = (
+    <select aria-label="Orașul pentru vreme" value={town} onChange={(e) => onTown(e.target.value)}>
+      <option value="">alege orașul…</option>
+      {towns.map(([k, n]) => (
+        <option key={k} value={k}>
+          {n}
+        </option>
+      ))}
+    </select>
+  );
+  if (!town) return <div className="weather">{picker}</div>;
+  return (
+    <div className="weather">
+      {err && <Off err={err} onOpen={onOpen} />}
+      {!err && !w && <p className="muted">Se încarcă…</p>}
+      {w && (
+        <>
+          <div className="wx-now">
+            <span className="v">{deg(w.vreme.temperatura)}</span>
+            <span>{w.vreme.cer}</span>
+          </div>
+          <p className="small">
+            Azi între {deg(w.vreme.minima)} și {deg(w.vreme.maxima)} · vânt {w.vreme.vant_ms.toLocaleString("ro-RO")} m/s
+            {w.vreme.precipitatii_6h > 0 ? ` · ${w.vreme.precipitatii_6h.toLocaleString("ro-RO")} mm în 6 ore` : ""}
+          </p>
+          <p className="muted small">{w.sursa}.</p>
+        </>
+      )}
+      {picker}
+    </div>
+  );
+}
+
+/** The player in Windows' media controls (Spotify or any other), 7.4e. */
+function MediaPanel() {
+  const [m, setM] = useState<Playing | null | undefined>(undefined);
+  const [err, setErr] = useState<string | null>(null);
+  const load = useCallback(() => invoke<Playing | null>("media_now").then(setM, (e) => setErr(message(e))), []);
+  useEffect(() => {
+    void load();
+    const t = setInterval(() => void load(), 5000);
+    return () => clearInterval(t);
+  }, [load]);
+  const act = (action: string) => invoke("media_control", { action }).then(() => setTimeout(() => void load(), 400), (e) => setErr(message(e)));
+  if (err) return <p className="muted">{err}</p>;
+  if (m === undefined) return <p className="muted">Se încarcă…</p>;
+  if (!m) return <p className="muted">Nu cântă nimic pe acest PC. Pornește Spotify sau alt player și apare aici.</p>;
+  return (
+    <div className="media">
+      <div className="media-now">
+        <strong>{m.titlu || "—"}</strong>
+        <span className="muted">{m.artist}</span>
+        <span className="muted small">{m.aplicatie}</span>
+      </div>
+      <div className="row">
+        <button onClick={() => void act("previous")} aria-label="Melodia anterioară">
+          ⏮
+        </button>
+        <button className="primary" onClick={() => void act("play_pause")} aria-label={m.canta ? "Pauză" : "Pornește"}>
+          {m.canta ? "⏸" : "▶"}
+        </button>
+        <button onClick={() => void act("next")} aria-label="Melodia următoare">
+          ⏭
+        </button>
+      </div>
+    </div>
+  );
 }
 
 function Content(props: {
@@ -142,6 +294,9 @@ function Content(props: {
   pageLabel: (id: string) => string | undefined;
   onOpen: (id: string, intent?: string) => void;
   onSnooze: (key: string, until: string) => void;
+  town: string;
+  onTown: (t: string) => void;
+  onRead: (id: string) => void;
 }) {
   const { id, data, modules, onOpen } = props;
   const enabled = (m: string) => modules.modules.some((x) => x.id === m && x.enabled);
@@ -168,6 +323,31 @@ function Content(props: {
   }
 
   switch (id) {
+    case "curs":
+      return <RatesPanel onOpen={onOpen} />;
+    case "vreme":
+      return <WeatherPanel town={props.town} onTown={props.onTown} onOpen={onOpen} />;
+    case "media":
+      return <MediaPanel />;
+    case "alerta": {
+      const notes = data.notes;
+      if (!notes) return loading;
+      const rank = { urgent: 0, atentie: 1, info: 2 } as const;
+      const top = [...notes].sort((a, b) => rank[a.nivel] - rank[b.nivel] || b.creat_ms - a.creat_ms)[0];
+      if (!top) return <p className="muted">Nicio alertă. Aici apare cea mai importantă notificare necitită.</p>;
+      const label = top.nivel === "urgent" ? "urgent" : top.nivel === "atentie" ? "atenție" : "info";
+      return (
+        <div className="alert-box">
+          <span className={`tag ${top.nivel === "urgent" ? "bad" : top.nivel === "atentie" ? "warn" : "ok"}`}>{label}</span>
+          <strong>{top.titlu}</strong>
+          {top.text && <p className="small">{top.text}</p>}
+          <button className="link small" onClick={() => props.onRead(top.id)}>
+            Am văzut
+          </button>
+          {notes.length > 1 && <span className="muted small">încă {notes.length - 1} necitite</span>}
+        </div>
+      );
+    }
     case "bani": {
       if (!enabled("kgb.business")) return <p className="muted">Sumele apar după ce activezi Business din {open("catalog", "Catalog module")}.</p>;
       if (!data.aging || !data.accounts) return loading;
@@ -345,7 +525,7 @@ export function Home(props: {
   onError: (e: string | null) => void;
 }) {
   const { panels, amanate } = props.settings.home;
-  const data = useData(props.modules, props.onError);
+  const [data, reloadNotes] = useData(props.modules, props.onError);
   const canvas = useRef<HTMLDivElement>(null);
   const [cw, setCw] = useState(1000);
   // While a panel is moved or resized, its place follows the pointer; it is saved on release.
@@ -361,7 +541,7 @@ export function Home(props: {
   }, []);
   const narrow = cw < NARROW;
 
-  const save = (home: Partial<Settings["home"]>) => props.onSave({ ...props.settings, home: { panels, amanate, ...home } });
+  const save = (home: Partial<Settings["home"]>) => props.onSave({ ...props.settings, home: { ...props.settings.home, panels, amanate, ...home } });
   const openAt = (id: string, intent?: string) => {
     if (intent) setIntent(id, intent);
     props.onOpen(id);
@@ -530,7 +710,18 @@ export function Home(props: {
                 </button>
               </header>
               <div className="panel-body">
-                <Content id={p.id} data={data} modules={props.modules} todos={todos} pageLabel={pageLabel} onOpen={openAt} onSnooze={snooze} />
+                <Content
+                  id={p.id}
+                  data={data}
+                  modules={props.modules}
+                  todos={todos}
+                  pageLabel={pageLabel}
+                  onOpen={openAt}
+                  onSnooze={snooze}
+                  town={props.settings.home.vreme ?? ""}
+                  onTown={(vreme) => save({ vreme })}
+                  onRead={(nid) => void api.notificationRead(nid).then(reloadNotes, (e: unknown) => props.onError(message(e)))}
+                />
               </div>
               {!narrow && (
                 <>

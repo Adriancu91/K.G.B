@@ -3752,6 +3752,7 @@ dependencies = [
  "tauri-plugin-notification",
  "tracing",
  "uuid",
+ "windows",
  "windows-sys 0.61.2",
 ]
 

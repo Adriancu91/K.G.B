@@ -27,7 +27,7 @@ export interface Settings {
   profile: string;
   layout: Layout;
   /** Start page panels (Etapa 4, D-047). */
-  home: { panels: HomePanel[]; amanate: Record<string, string> };
+  home: { panels: HomePanel[]; amanate: Record<string, string>; vreme?: string };
 }
 
 export interface Profile {

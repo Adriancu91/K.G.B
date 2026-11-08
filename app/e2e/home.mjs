@@ -82,7 +82,7 @@ try {
   await p.until("document.querySelector(\".panel[data-panel='rezolvat']\")?.innerText.includes('Autorizație de mediu')", 8000);
 
   const first = await ids(p);
-  check("pornirea pentru proprietar: întâi banii", first === "bani cifre rezolvat azi notificari documente", first);
+  check("pornirea pentru proprietar: întâi banii", first === "bani cifre rezolvat azi notificari documente curs vreme media", first);
   const band = await p.eval("document.querySelector('.cc-band').innerText");
   check("banda de sus: salut, data, spațiul de lucru, ce e urgent", band.includes("Proprietar") && /\d{4}/.test(band) && band.includes("acte expiră în 7 zile"), band.replace(/\n/g, " "));
   const acts = await p.eval("document.querySelector('.cc-actions').innerText");
@@ -134,13 +134,13 @@ try {
   await p.until("!!document.querySelector('.partners-page')", 5000);
   check("o pagină fixată pe Acasă se deschide de acolo", true);
   await p.click("Acasă", "nav .nav");
-  await p.until("document.querySelectorAll('.panel.free').length === 7", 5000);
+  await p.until("document.querySelectorAll('.panel.free').length === 10", 5000);
 
   // Everything is kept after a forced restart.
   const kept = { n: await rel(p, "notificari"), d: await rel(p, "documente") };
   stop(p);
   p = await start();
-  await p.until("document.querySelectorAll('.panel.free').length === 7", 8000);
+  await p.until("document.querySelectorAll('.panel.free').length === 10", 8000);
   const after = { n: await rel(p, "notificari"), d: await rel(p, "documente") };
   check("după repornire (forțată) pozițiile și mărimile sunt aceleași", JSON.stringify(after) === JSON.stringify(kept), JSON.stringify(after));
   check("după repornire elementul amânat rămâne ascuns", !(await p.eval("document.querySelector(\".panel[data-panel='rezolvat']\").innerText")).includes("AM-7"));
@@ -164,7 +164,7 @@ try {
   await p.until("!document.querySelector(\".panel[data-panel='notificari']\")", 5000);
   check("un panou ascuns se poate aduce înapoi", await p.eval("[...document.querySelectorAll('.cc-actions button')].some(b => b.innerText === '+ Notificări necitite')"));
   await p.click("Revino la implicit", ".cc-actions button");
-  await p.until("[...document.querySelectorAll('.panel.free')].map(e => e.dataset.panel).join(' ') === 'bani cifre rezolvat azi notificari documente'", 5000);
+  await p.until("[...document.querySelectorAll('.panel.free')].map(e => e.dataset.panel).join(' ') === 'bani cifre rezolvat azi notificari documente curs vreme media'", 5000);
   check("„Revino la implicit” aduce pornirea pentru rolul tău", true);
   stop(p);
 } catch (e) {

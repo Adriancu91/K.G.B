@@ -37,3 +37,6 @@ uuid.workspace = true
 
 [target.'cfg(windows)'.dependencies]
 windows-sys = { workspace = true, features = ["Win32_System_ProcessStatus", "Win32_System_Threading"] }
+# "Ce se aude acum" on the start page (7.4e): the Windows media controls.
+# Already used by Tauri at this version, so nothing new is downloaded.
+windows = { version = "0.62.2", features = ["Media_Control", "Foundation"] }

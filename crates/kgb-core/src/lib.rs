@@ -13,6 +13,7 @@ pub mod conflicts;
 pub mod documents;
 pub mod error;
 pub mod files;
+pub mod fx;
 pub mod identity;
 pub mod invites;
 pub mod log;
@@ -28,6 +29,7 @@ pub mod replication;
 pub mod schema;
 pub mod settings;
 pub mod sources;
+pub mod weather;
 pub mod workspace;
 
 pub use error::{CoreError, CoreResult};

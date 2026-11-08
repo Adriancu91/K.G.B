@@ -6,6 +6,8 @@
 use std::path::{Path, PathBuf};
 use std::sync::{Arc, Mutex};
 
+mod external;
+mod media;
 mod net;
 use std::time::Instant;
 
@@ -633,11 +635,20 @@ fn sources_list(app: State<AppState>) -> CmdResult<SourcesReply> {
     with_session(&app, |s| {
         // ANAF (step 7.4b) is added filled in but switched off; only an
         // administrator's PC adds it (the register is theirs).
-        if org::require_admin(s.ws.store(), Some(&s.device.fingerprint()), "").is_ok()
-            && kgb_core::anaf::source(s.ws.store())?.is_none()
-        {
-            kgb_core::anaf::ensure_source(s.ws.store_mut())?;
-            modules::audit(&mut s.ws, "core.sources", "sursa ANAF adăugată (oprită)", "ok", "")?;
+        // So are BNR and MET Norway (step 7.4e).
+        if org::require_admin(s.ws.store(), Some(&s.device.fingerprint()), "").is_ok() {
+            if kgb_core::anaf::source(s.ws.store())?.is_none() {
+                kgb_core::anaf::ensure_source(s.ws.store_mut())?;
+                modules::audit(&mut s.ws, "core.sources", "sursa ANAF adăugată (oprită)", "ok", "")?;
+            }
+            if kgb_core::fx::source(s.ws.store())?.is_none() {
+                kgb_core::fx::ensure_source(s.ws.store_mut())?;
+                modules::audit(&mut s.ws, "core.sources", "sursa BNR adăugată (oprită)", "ok", "")?;
+            }
+            if kgb_core::weather::source(s.ws.store())?.is_none() {
+                kgb_core::weather::ensure_source(s.ws.store_mut())?;
+                modules::audit(&mut s.ws, "core.sources", "sursa MET Norway adăugată (oprită)", "ok", "")?;
+            }
         }
         Ok(SourcesReply {
             items: kgb_core::sources::list(s.ws.store())?,
@@ -896,6 +907,56 @@ fn net_set_relay(app: State<AppState>, relay: String) -> CmdResult<()> {
     })?;
     net::stop(&app.net);
     net::ensure(&app.net, &app.session, false).map(|_| ())
+}
+
+#[derive(Serialize)]
+struct RatesReply {
+    curs: kgb_core::fx::Day,
+    sursa: &'static str,
+}
+
+/// EUR/RON and USD/RON for the start page (step 7.4e), only with the BNR source on.
+#[tauri::command]
+async fn fx_rates(app: State<'_, AppState>) -> CmdResult<RatesReply> {
+    with_session(&app, |s| kgb_core::fx::usable(s.ws.store()).map(|_| ()))?;
+    Ok(RatesReply { curs: external::rates().await?, sursa: kgb_core::fx::BNR_CREDIT })
+}
+
+#[derive(Serialize)]
+struct WeatherReply {
+    vreme: kgb_core::weather::Today,
+    sursa: &'static str,
+}
+
+/// Today's weather in the town chosen on the start page, only with the MET Norway source on.
+#[tauri::command]
+async fn weather_today(app: State<'_, AppState>, azi: String, offset_min: i64) -> CmdResult<WeatherReply> {
+    let town = with_session(&app, |s| {
+        kgb_core::weather::usable(s.ws.store())?;
+        Ok(settings::load(s.ws.store())?.settings.home.vreme)
+    })?;
+    if town.is_empty() {
+        return Err("alege orașul".into());
+    }
+    Ok(WeatherReply { vreme: external::today(&town, &azi, offset_min).await?, sursa: kgb_core::weather::MET_CREDIT })
+}
+
+/// The towns the weather panel offers: (key, name).
+#[tauri::command]
+fn weather_towns() -> Vec<(&'static str, &'static str)> {
+    kgb_core::weather::TOWNS.iter().map(|t| (t.0, t.1)).collect()
+}
+
+/// The player shown in Windows' media controls (step 7.4e), off the window's thread.
+#[tauri::command]
+async fn media_now() -> CmdResult<Option<media::NowPlaying>> {
+    tauri::async_runtime::spawn_blocking(media::now).await.map_err(err)?
+}
+
+/// Play/pause, next or previous on that player.
+#[tauri::command]
+async fn media_control(action: String) -> CmdResult<bool> {
+    tauri::async_runtime::spawn_blocking(move || media::control(&action)).await.map_err(err)?
 }
 
 /// When the last ANAF request left (the service allows one per second).
@@ -1244,6 +1305,11 @@ fn main() {
             org_device_revoke,
             sources_list,
             anaf_lookup,
+            media_now,
+            fx_rates,
+            weather_today,
+            weather_towns,
+            media_control,
             source_save,
             source_set_active,
             source_delete,

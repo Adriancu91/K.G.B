@@ -56,3 +56,40 @@ pub async fn post_json(url: &str, body: String) -> Result<(u16, String), String>
     }
     Ok((status, String::from_utf8_lossy(&bytes).into_owned()))
 }
+
+/// What a GET brought back.
+#[derive(Clone, Debug)]
+pub struct Answer {
+    pub status: u16,
+    pub body: String,
+    /// `Expires` and `Last-Modified`, as sent (for sources that ask to be
+    /// asked again only after a time, like MET Norway).
+    pub expires: Option<String>,
+    pub last_modified: Option<String>,
+}
+
+/// GETs `url`, naming the app as `user_agent`; with `if_modified_since`, an
+/// unchanged answer comes back as status 304 with an empty body.
+pub async fn get(url: &str, user_agent: &str, if_modified_since: Option<&str>) -> Result<Answer, String> {
+    crypto();
+    let client = reqwest::Client::builder()
+        .connect_timeout(CONNECT_TIMEOUT)
+        .timeout(TOTAL_TIMEOUT)
+        .user_agent(user_agent)
+        .build()
+        .map_err(|e| format!("clientul web nu a pornit ({e})"))?;
+    let mut req = client.get(url);
+    if let Some(t) = if_modified_since {
+        req = req.header("If-Modified-Since", t);
+    }
+    let r = req.send().await.map_err(|e| why(&e))?;
+    let status = r.status().as_u16();
+    let header = |k: &str| r.headers().get(k).and_then(|v| v.to_str().ok()).map(String::from);
+    let expires = header("expires");
+    let last_modified = header("last-modified");
+    let bytes = r.bytes().await.map_err(|e| why(&e))?;
+    if bytes.len() > MAX_ANSWER {
+        return Err("răspunsul e prea mare".into());
+    }
+    Ok(Answer { status, body: String::from_utf8_lossy(&bytes).into_owned(), expires, last_modified })
+}
