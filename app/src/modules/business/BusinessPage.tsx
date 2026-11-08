@@ -32,10 +32,14 @@ interface StockRow {
   depozit_nume: string;
   cantitate_text: string;
   sub_minim: boolean;
+  valoare: number;
+  valoare_text: string;
+  cost_mediu_text: string | null;
 }
 interface Doc {
   id: string;
-  tip: "receptie" | "iesire" | "storno";
+  tip: "receptie" | "iesire" | "storno" | "transfer" | "inventar";
+  depozit_destinatie: string | null;
   numar: string;
   data: string;
   depozit: string;
@@ -49,7 +53,15 @@ interface LineDraft {
   pret_unitar: string;
 }
 
-const TIP: Record<Doc["tip"], string> = { receptie: "Recepție", iesire: "Ieșire", storno: "Storno" };
+const TIP: Record<Doc["tip"], string> = { receptie: "Recepție", iesire: "Ieșire", storno: "Storno", transfer: "Transfer", inventar: "Inventar" };
+const lei = (bani: number) => {
+  const neg = bani < 0;
+  const a = Math.abs(bani);
+  const int = Math.floor(a / 100)
+    .toString()
+    .replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+  return `${neg ? "-" : ""}${int},${String(a % 100).padStart(2, "0")}`;
+};
 const ro = (iso: string) => iso.split("-").reverse().join(".");
 const today = () => {
   const d = new Date();
@@ -160,8 +172,172 @@ function StockDocForm(props: {
   );
 }
 
+function TransferForm(props: { products: Product[]; warehouses: Warehouse[]; busy: boolean; error: string | null; onSave: (doc: Record<string, unknown>) => void }) {
+  const wh = props.warehouses.filter((w) => w.activ);
+  const active = props.products.filter((p) => p.activ);
+  const [from, setFrom] = useState(wh[0]?.id ?? "");
+  const [to, setTo] = useState(wh[1]?.id ?? "");
+  const [numar, setNumar] = useState("");
+  const [data, setData] = useState(today());
+  const [lines, setLines] = useState<{ produs: string; cantitate: string }[]>([{ produs: active[0]?.id ?? "", cantitate: "" }]);
+  if (wh.length < 2 || active.length === 0) return <p className="muted">Un transfer are nevoie de cel puțin două depozite și un produs.</p>;
+  return (
+    <form
+      className="task-form stock-doc"
+      onSubmit={(e) => {
+        e.preventDefault();
+        props.onSave({ depozit: from, depozit_destinatie: to, numar, data, linii: lines });
+      }}
+    >
+      <div className="row wrap">
+        <label>
+          Din depozitul
+          <select aria-label="Din depozitul" value={from} onChange={(e) => setFrom(e.target.value)}>
+            {wh.map((w) => (
+              <option key={w.id} value={w.id}>
+                {w.nume}
+              </option>
+            ))}
+          </select>
+        </label>
+        <label>
+          În depozitul
+          <select aria-label="În depozitul" value={to} onChange={(e) => setTo(e.target.value)}>
+            {wh.map((w) => (
+              <option key={w.id} value={w.id}>
+                {w.nume}
+              </option>
+            ))}
+          </select>
+        </label>
+        <label>
+          Nr. aviz / bon de transfer
+          <input aria-label="Numărul documentului" value={numar} maxLength={40} onChange={(e) => setNumar(e.target.value)} />
+        </label>
+        <label>
+          Data
+          <input aria-label="Data documentului" type="date" value={data} onChange={(e) => setData(e.target.value)} />
+        </label>
+      </div>
+      <fieldset>
+        <legend>Produse</legend>
+        {lines.map((l, i) => (
+          <div key={i} className="row wrap doc-line">
+            <select aria-label={`Produsul ${i + 1}`} value={l.produs} onChange={(e) => setLines(lines.map((x, j) => (j === i ? { ...x, produs: e.target.value } : x)))}>
+              {active.map((x) => (
+                <option key={x.id} value={x.id}>
+                  {x.cod} · {x.nume}
+                </option>
+              ))}
+            </select>
+            <input aria-label={`Cantitatea ${i + 1}`} className="short" inputMode="decimal" placeholder="cantitate" value={l.cantitate} onChange={(e) => setLines(lines.map((x, j) => (j === i ? { ...x, cantitate: e.target.value } : x)))} />
+            <button type="button" className="link" disabled={lines.length === 1} onClick={() => setLines(lines.filter((_, j) => j !== i))}>
+              Scoate
+            </button>
+          </div>
+        ))}
+        <button type="button" className="link" onClick={() => setLines([...lines, { produs: active[0]?.id ?? "", cantitate: "" }])}>
+          + Adaugă un produs
+        </button>
+      </fieldset>
+      {props.error && (
+        <p className="error" role="alert">
+          {props.error}
+        </p>
+      )}
+      <div className="dialog-actions">
+        <button type="submit" className="primary" disabled={props.busy || !numar.trim()}>
+          Înregistrează transferul
+        </button>
+      </div>
+    </form>
+  );
+}
+
+function InventoryForm(props: { stock: StockRow[]; warehouses: Warehouse[]; busy: boolean; error: string | null; onSave: (doc: Record<string, unknown>) => void }) {
+  const wh = props.warehouses.filter((w) => w.activ);
+  const [depozit, setDepozit] = useState(wh[0]?.id ?? "");
+  const [numar, setNumar] = useState("");
+  const [data, setData] = useState(today());
+  const [counted, setCounted] = useState<Record<string, string>>({});
+  const rows = props.stock.filter((r) => r.depozit === depozit);
+  return (
+    <form
+      className="task-form stock-doc"
+      onSubmit={(e) => {
+        e.preventDefault();
+        const linii = rows.filter((r) => (counted[r.produs] ?? "").trim() !== "").map((r) => ({ produs: r.produs, cantitate_numarata: counted[r.produs] }));
+        props.onSave({ depozit, numar, data, linii });
+      }}
+    >
+      <div className="row wrap">
+        <label>
+          Depozit
+          <select aria-label="Depozit" value={depozit} onChange={(e) => setDepozit(e.target.value)}>
+            {wh.map((w) => (
+              <option key={w.id} value={w.id}>
+                {w.nume}
+              </option>
+            ))}
+          </select>
+        </label>
+        <label>
+          Nr. listă de inventar
+          <input aria-label="Numărul documentului" value={numar} maxLength={40} onChange={(e) => setNumar(e.target.value)} />
+        </label>
+        <label>
+          Data
+          <input aria-label="Data documentului" type="date" value={data} onChange={(e) => setData(e.target.value)} />
+        </label>
+      </div>
+      <table className="audit inventory-table">
+        <thead>
+          <tr>
+            <th>Produs</th>
+            <th>Scriptic</th>
+            <th>Faptic (numărat)</th>
+          </tr>
+        </thead>
+        <tbody>
+          {rows.length === 0 && (
+            <tr>
+              <td colSpan={3} className="muted">
+                Niciun produs în acest depozit.
+              </td>
+            </tr>
+          )}
+          {rows.map((r) => (
+            <tr key={r.produs}>
+              <td>
+                {r.cod} · {r.nume}
+              </td>
+              <td className="num">
+                {r.cantitate_text} {r.um}
+              </td>
+              <td>
+                <input aria-label={`Numărat: ${r.nume}`} className="short" inputMode="decimal" value={counted[r.produs] ?? ""} onChange={(e) => setCounted({ ...counted, [r.produs]: e.target.value })} />
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+      <p className="muted small">Produsele lăsate necompletate nu se schimbă. Diferențele devin mișcări de corecție, vizibile în documente.</p>
+      {props.error && (
+        <p className="error" role="alert">
+          {props.error}
+        </p>
+      )}
+      <div className="dialog-actions">
+        <button type="submit" className="primary" disabled={props.busy || !numar.trim()}>
+          Înregistrează inventarul
+        </button>
+      </div>
+    </form>
+  );
+}
+
 export function BusinessPage({ onError }: { onError: (e: string | null) => void }) {
-  const [tab, setTab] = useState<"stoc" | "documente" | "receptie" | "iesire" | "produse" | "depozite">("stoc");
+  const [tab, setTab] = useState<"stoc" | "documente" | "receptie" | "iesire" | "transfer" | "inventar" | "produse" | "depozite">("stoc");
   const [products, setProducts] = useState<Product[]>([]);
   const [warehouses, setWarehouses] = useState<Warehouse[]>([]);
   const [stock, setStock] = useState<StockRow[]>([]);
@@ -221,6 +397,8 @@ export function BusinessPage({ onError }: { onError: (e: string | null) => void 
             ["documente", `Documente (${docs.length})`],
             ["receptie", "Recepție nouă"],
             ["iesire", "Ieșire nouă"],
+            ["transfer", "Transfer"],
+            ["inventar", "Inventar"],
             ["produse", `Produse (${products.length})`],
             ["depozite", `Depozite (${warehouses.length})`],
           ] as const
@@ -254,12 +432,14 @@ export function BusinessPage({ onError }: { onError: (e: string | null) => void 
               <th>Depozit</th>
               <th>Cantitate</th>
               <th>UM</th>
+              <th>Cost mediu</th>
+              <th>Valoare (lei)</th>
             </tr>
           </thead>
           <tbody>
             {stock.length === 0 && (
               <tr>
-                <td colSpan={5} className="muted">
+                <td colSpan={7} className="muted">
                   Niciun produs în stoc. Înregistrează o recepție.
                 </td>
               </tr>
@@ -274,9 +454,19 @@ export function BusinessPage({ onError }: { onError: (e: string | null) => void 
                 <td>{s.depozit_nume}</td>
                 <td className="num">{s.cantitate_text}</td>
                 <td>{s.um}</td>
+                <td className="num">{s.cost_mediu_text ?? ""}</td>
+                <td className="num">{s.valoare_text}</td>
               </tr>
             ))}
           </tbody>
+          {stock.length > 0 && (
+            <tfoot>
+              <tr>
+                <th colSpan={6}>Valoarea stocului, la cost mediu ponderat</th>
+                <th className="num">{lei(stock.reduce((a, r) => a + r.valoare, 0))}</th>
+              </tr>
+            </tfoot>
+          )}
         </table>
       )}
 
@@ -298,7 +488,10 @@ export function BusinessPage({ onError }: { onError: (e: string | null) => void 
                 <td>{TIP[d.tip]}</td>
                 <td>{d.numar}</td>
                 <td>{ro(d.data)}</td>
-                <td>{whName_(d.depozit)}</td>
+                <td>
+                  {whName_(d.depozit)}
+                  {d.depozit_destinatie ? ` → ${whName_(d.depozit_destinatie)}` : ""}
+                </td>
                 <td>{d.partener ?? ""}</td>
                 <td>
                   {d.tip !== "storno" && !d.stornat && (
@@ -336,6 +529,43 @@ export function BusinessPage({ onError }: { onError: (e: string | null) => void 
             void run(async () => {
               const r = await api.moduleCall<{ linii: number }>(ID, tab === "receptie" ? "receive" : "issue", doc);
               setNotice(`${tab === "receptie" ? "Recepția" : "Ieșirea"} a fost înregistrată (${r.linii} linii).`);
+              setFormKey((k) => k + 1);
+              setTab("stoc");
+            }, true)
+          }
+        />
+      )}
+
+      {tab === "transfer" && (
+        <TransferForm
+          key={`t-${formKey}`}
+          products={products}
+          warehouses={warehouses}
+          busy={busy}
+          error={formError}
+          onSave={(doc) =>
+            void run(async () => {
+              const r = await api.moduleCall<{ linii: number }>(ID, "transfer", doc);
+              setNotice(`Transferul a fost înregistrat (${r.linii} linii).`);
+              setFormKey((k) => k + 1);
+              setTab("stoc");
+            }, true)
+          }
+        />
+      )}
+
+      {tab === "inventar" && (
+        <InventoryForm
+          key={`i-${formKey}`}
+          stock={stock}
+          warehouses={warehouses}
+          busy={busy}
+          error={formError}
+          onSave={(doc) =>
+            void run(async () => {
+              const r = await api.moduleCall<{ linii: { nume: string; diferenta: string }[] }>(ID, "inventory", doc);
+              const diffs = r.linii.filter((l) => l.diferenta !== "0");
+              setNotice(diffs.length ? `Inventar înregistrat. Diferențe: ${diffs.map((d) => `${d.nume} ${d.diferenta}`).join(", ")}.` : "Inventar înregistrat, fără diferențe.");
               setFormKey((k) => k + 1);
               setTab("stoc");
             }, true)

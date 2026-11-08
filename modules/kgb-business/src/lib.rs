@@ -1,6 +1,7 @@
 //! `kgb.business` — primary business records (Etapa 5; Master Plan §6.7).
 //! Step 5.1: products, warehouses, receipts and issues, stock per warehouse,
-//! minimum-stock reminders.
+//! minimum-stock reminders. Step 5.2: transfers between warehouses,
+//! inventory counts, stock value at weighted average cost (D-050).
 //!
 //! Rules (docs/ETAPA5_PLAN.md):
 //! - **Exact numbers (D-049):** quantities in thousandths and money in bani,
@@ -15,9 +16,11 @@
 //! - **Not certified accounting (D-052):** the UI says so on every screen.
 //!
 //! Commands: `products`, `product_save`, `warehouses`, `warehouse_save`,
-//! `receive`, `issue`, `storno`, `documents`, `stock`, `movements`.
+//! `receive`, `issue`, `transfer`, `inventory`, `storno`, `documents`,
+//! `stock`, `movements`.
 
 pub mod num;
+pub mod valuation;
 
 use std::collections::{BTreeMap, BTreeSet};
 
@@ -187,6 +190,37 @@ struct StockDoc {
 
 #[derive(Deserialize)]
 #[serde(deny_unknown_fields)]
+struct Transfer {
+    depozit: Uuid,
+    depozit_destinatie: Uuid,
+    numar: String,
+    data: String,
+    #[serde(default)]
+    nota: Option<String>,
+    linii: Vec<Line>,
+}
+
+#[derive(Deserialize)]
+#[serde(deny_unknown_fields)]
+struct CountLine {
+    produs: Uuid,
+    /// The quantity counted, as typed.
+    cantitate_numarata: Amount,
+}
+
+#[derive(Deserialize)]
+#[serde(deny_unknown_fields)]
+struct Inventory {
+    depozit: Uuid,
+    numar: String,
+    data: String,
+    #[serde(default)]
+    nota: Option<String>,
+    linii: Vec<CountLine>,
+}
+
+#[derive(Deserialize)]
+#[serde(deny_unknown_fields)]
 struct Storno {
     document: Uuid,
     data: String,
@@ -340,6 +374,7 @@ impl Business {
         d.insert("partener".into(), text(a.partener, "partenerul", 200, false)?);
         d.insert("nota".into(), text(a.nota, "nota", 500, false)?);
         d.insert("storno_de".into(), Value::Null);
+        d.insert("depozit_destinatie".into(), Value::Null);
         d.insert("creat_ms".into(), json!(now));
         let mut batch = vec![Write::put(DOCS, doc_id, d).expect(0)];
         let sign = if kind == "iesire" { -1 } else { 1 };
@@ -350,6 +385,8 @@ impl Business {
             m.insert("depozit".into(), json!(a.depozit.to_string()));
             m.insert("cantitate".into(), json!(sign * q));
             m.insert("pret_unitar".into(), price.map_or(Value::Null, |v| json!(v)));
+            m.insert("pereche".into(), Value::Null);
+            m.insert("storno_de_miscare".into(), Value::Null);
             m.insert("data".into(), json!(data));
             m.insert("creat_ms".into(), json!(now));
             batch.push(Write::put(MOVES, Uuid::now_v7(), m).expect(0));
@@ -419,11 +456,17 @@ impl Business {
         );
         d.insert("nota".into(), text(a.nota, "nota", 500, false)?);
         d.insert("storno_de".into(), id);
+        d.insert(
+            "depozit_destinatie".into(),
+            doc.fields.get("depozit_destinatie").cloned().unwrap_or(Value::Null),
+        );
         d.insert("creat_ms".into(), json!(now));
         let mut batch = vec![Write::put(DOCS, sid, d).expect(0)];
         for m in &moves {
             let mut f = m.fields.clone();
             f.insert("document".into(), json!(sid.to_string()));
+            f.insert("storno_de_miscare".into(), json!(m.id.to_string()));
+            f.insert("pereche".into(), Value::Null);
             f.insert("cantitate".into(), json!(-i(m, "cantitate")));
             f.insert("data".into(), json!(data));
             f.insert("creat_ms".into(), json!(now));
@@ -434,8 +477,212 @@ impl Business {
         Ok(json!({"document": sid}))
     }
 
+    fn active_warehouse(&self, ctx: &mut ModuleContext<'_>, id: Uuid) -> CoreResult<RecordState> {
+        let wh = live(ctx, WAREHOUSES, id, "depozitul")?;
+        if wh.fields.get("activ") == Some(&json!(false)) {
+            return Err(bad("depozitul", format!("„{}” este inactiv", s(&wh, "nume"))));
+        }
+        Ok(wh)
+    }
+
+    #[allow(clippy::too_many_arguments)]
+    fn header(
+        &self,
+        kind: &str,
+        numar: Value,
+        data: &str,
+        depozit: Uuid,
+        dest: Option<Uuid>,
+        nota: Value,
+        now: u64,
+    ) -> Fields {
+        let mut d = Fields::new();
+        d.insert("tip".into(), json!(kind));
+        d.insert("numar".into(), numar);
+        d.insert("data".into(), json!(data));
+        d.insert("depozit".into(), json!(depozit.to_string()));
+        d.insert(
+            "depozit_destinatie".into(),
+            dest.map_or(Value::Null, |x| json!(x.to_string())),
+        );
+        d.insert("partener".into(), Value::Null);
+        d.insert("nota".into(), nota);
+        d.insert("storno_de".into(), Value::Null);
+        d.insert("creat_ms".into(), json!(now));
+        d
+    }
+
+    fn movement(doc: Uuid, produs: Uuid, depozit: Uuid, q: Qty, data: &str, pereche: Option<Uuid>, now: u64) -> Fields {
+        let mut m = Fields::new();
+        m.insert("document".into(), json!(doc.to_string()));
+        m.insert("produs".into(), json!(produs.to_string()));
+        m.insert("depozit".into(), json!(depozit.to_string()));
+        m.insert("cantitate".into(), json!(q));
+        m.insert("pret_unitar".into(), Value::Null);
+        m.insert("pereche".into(), pereche.map_or(Value::Null, |x| json!(x.to_string())));
+        m.insert("storno_de_miscare".into(), Value::Null);
+        m.insert("data".into(), json!(data));
+        m.insert("creat_ms".into(), json!(now));
+        m
+    }
+
+    /// Moves goods between two warehouses: an issue at the source and a
+    /// receipt at the destination, in one atomic write; the goods keep their
+    /// average cost from the source (D-050).
+    fn transfer(&self, ctx: &mut ModuleContext<'_>, a: Transfer) -> CoreResult<Value> {
+        if a.depozit == a.depozit_destinatie {
+            return Err(bad("transferul", "depozitul de destinație trebuie să fie altul"));
+        }
+        let from = self.active_warehouse(ctx, a.depozit)?;
+        self.active_warehouse(ctx, a.depozit_destinatie)?;
+        let data = date(&a.data).ok_or_else(|| bad("data", format!("„{}” nu este o dată", a.data)))?;
+        if a.linii.is_empty() || a.linii.len() > MAX_LINES {
+            return Err(bad("documentul", format!("are nevoie de 1–{MAX_LINES} linii")));
+        }
+        let numar = text(Some(a.numar), "numărul documentului", 40, true)?;
+        let stock = self.balances(ctx)?;
+        let mut need: BTreeMap<Uuid, Qty> = BTreeMap::new();
+        let mut lines = Vec::new();
+        let mut errs = Vec::new();
+        for (n, l) in a.linii.iter().enumerate() {
+            let p = live(ctx, PRODUCTS, l.produs, "produsul")?;
+            let label = format!("linia {} ({})", n + 1, s(&p, "nume"));
+            match amount(&l.cantitate, num::qty, &label) {
+                Ok(q) if q > 0 => {
+                    *need.entry(p.id).or_default() += q;
+                    lines.push((p, q));
+                }
+                Ok(_) => errs.push(format!("{label}: cantitatea trebuie să fie mai mare decât 0")),
+                Err(e) => errs.push(e.to_string()),
+            }
+        }
+        for (pid, q) in &need {
+            let have = stock
+                .get(&(pid.to_string(), a.depozit.to_string()))
+                .copied()
+                .unwrap_or(0);
+            if *q > have {
+                let name = lines
+                    .iter()
+                    .find(|(p, _)| p.id == *pid)
+                    .map(|(p, _)| s(p, "nume"))
+                    .unwrap_or_default();
+                errs.push(format!(
+                    "„{name}”: în „{}” sunt {}, se cer {}",
+                    s(&from, "nume"),
+                    num::fmt_qty(have),
+                    num::fmt_qty(*q)
+                ));
+            }
+        }
+        if !errs.is_empty() {
+            return Err(bad("transferul", errs.join("; ")));
+        }
+        let now = now_ms();
+        let doc = Uuid::now_v7();
+        let nota = text(a.nota, "nota", 500, false)?;
+        let mut batch = vec![
+            Write::put(
+                DOCS,
+                doc,
+                self.header(
+                    "transfer",
+                    numar,
+                    &data,
+                    a.depozit,
+                    Some(a.depozit_destinatie),
+                    nota,
+                    now,
+                ),
+            )
+            .expect(0),
+        ];
+        for (p, q) in &lines {
+            let out = Uuid::now_v7();
+            batch.push(Write::put(MOVES, out, Self::movement(doc, p.id, a.depozit, -q, &data, None, now)).expect(0));
+            batch.push(
+                Write::put(
+                    MOVES,
+                    Uuid::now_v7(),
+                    Self::movement(doc, p.id, a.depozit_destinatie, *q, &data, Some(out), now),
+                )
+                .expect(0),
+            );
+        }
+        ctx.write(batch)?;
+        ctx.log("transfer înregistrat");
+        Ok(json!({"document": doc, "linii": lines.len()}))
+    }
+
+    /// An inventory count: the differences between what was counted and
+    /// the stock become correction movements (plus or minus); products not
+    /// listed are not touched. A plus is valued at the current average cost.
+    fn inventory(&self, ctx: &mut ModuleContext<'_>, a: Inventory) -> CoreResult<Value> {
+        self.active_warehouse(ctx, a.depozit)?;
+        let data = date(&a.data).ok_or_else(|| bad("data", format!("„{}” nu este o dată", a.data)))?;
+        if a.linii.is_empty() || a.linii.len() > 5_000 {
+            return Err(bad("inventarul", "are nevoie de 1–5000 de linii"));
+        }
+        let numar = text(Some(a.numar), "numărul documentului", 40, true)?;
+        let stock = self.balances(ctx)?;
+        let mut seen = BTreeSet::new();
+        let mut diffs = Vec::new();
+        let mut errs = Vec::new();
+        for (n, l) in a.linii.iter().enumerate() {
+            let p = live(ctx, PRODUCTS, l.produs, "produsul")?;
+            if !seen.insert(p.id) {
+                errs.push(format!("„{}” apare de două ori", s(&p, "nume")));
+                continue;
+            }
+            let label = format!("linia {} ({})", n + 1, s(&p, "nume"));
+            match amount(&l.cantitate_numarata, num::qty, &label) {
+                Ok(c) if c >= 0 => {
+                    let have = stock
+                        .get(&(p.id.to_string(), a.depozit.to_string()))
+                        .copied()
+                        .unwrap_or(0);
+                    diffs.push((p, c - have, have, c));
+                }
+                Ok(_) => errs.push(format!("{label}: cantitatea numărată nu poate fi negativă")),
+                Err(e) => errs.push(e.to_string()),
+            }
+        }
+        if !errs.is_empty() {
+            return Err(bad("inventarul", errs.join("; ")));
+        }
+        let now = now_ms();
+        let doc = Uuid::now_v7();
+        let nota = text(a.nota, "nota", 500, false)?;
+        let mut batch = vec![
+            Write::put(
+                DOCS,
+                doc,
+                self.header("inventar", numar, &data, a.depozit, None, nota, now),
+            )
+            .expect(0),
+        ];
+        let mut out = Vec::new();
+        for (p, d, have, counted) in &diffs {
+            out.push(json!({"produs": p.id, "nume": s(p, "nume"), "scriptic": num::fmt_qty(*have), "faptic": num::fmt_qty(*counted), "diferenta": num::fmt_qty(*d)}));
+            if *d != 0 {
+                batch.push(
+                    Write::put(
+                        MOVES,
+                        Uuid::now_v7(),
+                        Self::movement(doc, p.id, a.depozit, *d, &data, None, now),
+                    )
+                    .expect(0),
+                );
+            }
+        }
+        ctx.write(batch)?;
+        ctx.log("inventar înregistrat");
+        Ok(json!({"document": doc, "linii": out}))
+    }
+
     fn stock(&self, ctx: &mut ModuleContext<'_>, f: StockFilter) -> CoreResult<Value> {
         let balances = self.balances(ctx)?;
+        let values = valuation::replay(&ctx.scan(MOVES, |_| true)?).positions;
         let products = ctx.scan(PRODUCTS, |_| true)?;
         let warehouses: BTreeMap<String, String> = ctx
             .scan(WAREHOUSES, |_| true)?
@@ -462,6 +709,9 @@ impl Business {
                     "depozit": wid, "depozit_nume": wname,
                     "cantitate": q, "cantitate_text": num::fmt_qty(q),
                     "stoc_minim": min, "sub_minim": min.is_some_and(|m| q < m),
+                    "valoare": values.get(&(pid.clone(), wid.clone())).map_or(0, |v| v.value),
+                    "valoare_text": num::fmt_money(values.get(&(pid.clone(), wid.clone())).map_or(0, |v| v.value)),
+                    "cost_mediu_text": values.get(&(pid.clone(), wid.clone())).and_then(|v| v.average()).map(num::fmt_money),
                 }));
             }
         }
@@ -571,6 +821,8 @@ impl Module for Business {
             }
             "receive" => self.stock_doc(ctx, args(a)?, "receptie"),
             "issue" => self.stock_doc(ctx, args(a)?, "iesire"),
+            "transfer" => self.transfer(ctx, args(a)?),
+            "inventory" => self.inventory(ctx, args(a)?),
             "storno" => self.storno(ctx, args(a)?),
             "documents" => {
                 let docs = ctx.scan(DOCS, |_| true)?;
@@ -600,11 +852,15 @@ impl Module for Business {
                             .is_none_or(|d| r.fields.get("depozit") == Some(&json!(d.to_string())))
                 })?;
                 list.sort_by_key(|r| r.id);
+                let values = valuation::replay(&ctx.scan(MOVES, |_| true)?).moves;
                 Ok(json!(
                     list.iter()
                         .map(|r| {
                             let mut v = view(r);
                             v["cantitate_text"] = json!(num::fmt_qty(i(r, "cantitate")));
+                            let val = values.get(&r.id).copied().unwrap_or(0);
+                            v["valoare"] = json!(val);
+                            v["valoare_text"] = json!(num::fmt_money(val));
                             v
                         })
                         .collect::<Vec<_>>()

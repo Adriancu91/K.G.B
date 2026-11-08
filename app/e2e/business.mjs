@@ -95,7 +95,7 @@ try {
   await p.click("Înregistrează recepția", ".stock-doc button");
   await p.until("!!document.querySelector('.stock-table')", 8000);
   const s1 = await stockRows(p);
-  check("recepția intră în stoc", JSON.stringify(s1) === JSON.stringify(["CIM-40|Ciment 40 kg|Depozit central|25|sac", "SRB-6|Șurub 6 mm|Depozit central|2,5|kg"]), JSON.stringify(s1));
+  check("recepția intră în stoc", JSON.stringify(s1.map((r) => r.split("|").slice(0, 5).join("|"))) === JSON.stringify(["CIM-40|Ciment 40 kg|Depozit central|25|sac", "SRB-6|Șurub 6 mm|Depozit central|2,5|kg"]), JSON.stringify(s1));
 
   // Issue above the stock: refused, the form stays with the message.
   await tab(p, "Ieșire nouă");
@@ -123,13 +123,39 @@ try {
   check("stornoul apare ca document separat; originalul rămâne", docs.includes("Storno STORNO BC 1") && docs.includes("Ieșire BC 1") && docs.includes("Recepție NIR 1"), JSON.stringify(docs));
   await p.screenshot(join(shots, "03-documente.png"));
 
+  // Step 5.2: value at weighted average cost, a transfer and an inventory.
+  await tab(p, "Stoc");
+  await p.until("!!document.querySelector('.stock-table tbody tr')", 8000);
+  const v1 = await p.eval("[...document.querySelectorAll('.stock-table tbody tr')].map(r => r.cells[5].innerText + '|' + r.cells[6].innerText)");
+  check("costul mediu și valoarea", JSON.stringify(v1) === JSON.stringify(["32,50|812,50", "18,00|45,00"]), JSON.stringify(v1));
+  await tab(p, "Transfer");
+  await p.until("!!document.querySelector('.stock-doc')");
+  await selectByText(p, "select[aria-label='Din depozitul']", "Depozit central");
+  await selectByText(p, "select[aria-label='În depozitul']", "Șantier Iași");
+  await p.fill("input[aria-label='Numărul documentului']", "T 1");
+  await selectByText(p, "select[aria-label='Produsul 1']", "CIM-40");
+  await p.fill("input[aria-label='Cantitatea 1']", "5");
+  await p.click("Înregistrează transferul", ".stock-doc button");
+  await p.until("!!document.querySelector('.stock-table')", 8000);
+  const s4 = await stockRows(p);
+  check("transferul mută cantitatea și valoarea", s4.includes("CIM-40|Ciment 40 kg|Depozit central|20|sac|32,50|650,00") && s4.includes("CIM-40|Ciment 40 kg sub minim|Șantier Iași|5|sac|32,50|162,50"), JSON.stringify(s4));
+  await tab(p, "Inventar");
+  await p.until("!!document.querySelector('.inventory-table')");
+  await selectByText(p, "select[aria-label='Depozit']", "Depozit central");
+  await p.fill("input[aria-label='Numărul documentului']", "INV 1");
+  await p.fill("input[aria-label='Numărat: Ciment 40 kg']", "19");
+  await p.click("Înregistrează inventarul", ".stock-doc button");
+  await p.until("document.body.innerText.includes('Diferențe: Ciment 40 kg -1')", 8000);
+  check("inventarul înregistrează diferența", (await stockRows(p)).includes("CIM-40|Ciment 40 kg|Depozit central|19|sac|32,50|617,50"));
+  await p.screenshot(join(shots, "04-valoare.png"));
+
   // Forced restart: the stock is recomputed from the movements.
   stop(p);
   p = await start();
   await p.click("Business", "nav .nav");
   await p.until("!!document.querySelector('.stock-table tbody tr')", 10000);
   const s3 = await stockRows(p);
-  check("după repornire (forțată) stocul e același", s3[0] === "CIM-40|Ciment 40 kg|Depozit central|25|sac", JSON.stringify(s3));
+  check("după repornire (forțată) stocul și valoarea sunt aceleași", s3.includes("CIM-40|Ciment 40 kg|Depozit central|19|sac|32,50|617,50") && s3.includes("CIM-40|Ciment 40 kg sub minim|Șantier Iași|5|sac|32,50|162,50"), JSON.stringify(s3));
   stop(p);
 } catch (e) {
   check("scenariul a rulat până la capăt", false, e.message);

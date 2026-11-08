@@ -99,7 +99,7 @@
     },
     {
       "collection": "documente_stoc",
-      "description": "documentele de stoc (recepție, ieșire, storno); nu se modifică după înregistrare",
+      "description": "documentele de stoc (recepție, ieșire, transfer, inventar, storno); nu se modifică după înregistrare",
       "schema": {
         "fields": {
           "tip": {
@@ -109,7 +109,9 @@
             "enum": [
               "receptie",
               "iesire",
-              "storno"
+              "storno",
+              "transfer",
+              "inventar"
             ]
           },
           "numar": {
@@ -152,6 +154,12 @@
             "type": "integer",
             "required": true,
             "min": 0
+          },
+          "depozit_destinatie": {
+            "type": "string",
+            "required": false,
+            "nullable": true,
+            "max_len": 36
           }
         },
         "additional": false
@@ -162,7 +170,7 @@
     },
     {
       "collection": "miscari",
-      "description": "mișcările de stoc: cantitate cu semn (+ intrare, − ieșire), în miimi; prețul în bani",
+      "description": "mișcările de stoc: cantitate cu semn (+ intrare, − ieșire), în miimi; prețul în bani; transferul leagă ieșirea de intrare (pereche)",
       "schema": {
         "fields": {
           "document": {
@@ -203,6 +211,18 @@
             "type": "integer",
             "required": true,
             "min": 0
+          },
+          "pereche": {
+            "type": "string",
+            "required": false,
+            "nullable": true,
+            "max_len": 36
+          },
+          "storno_de_miscare": {
+            "type": "string",
+            "required": false,
+            "nullable": true,
+            "max_len": 36
           }
         },
         "additional": false
