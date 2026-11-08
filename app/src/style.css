@@ -1064,3 +1064,24 @@ form[aria-label="Răspunde la invitație"] textarea {
 .money-calcs form {
   margin-bottom: 12px;
 }
+
+/* Etapa 7: partner directory */
+.partner-editor {
+  display: grid;
+  gap: 10px;
+  max-width: 1000px;
+}
+.partner-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 8px;
+}
+.partner-grid label,
+.partner-editor > label {
+  display: grid;
+  gap: 4px;
+}
+.partner-editor fieldset {
+  border: 1px solid var(--line);
+  border-radius: 6px;
+}

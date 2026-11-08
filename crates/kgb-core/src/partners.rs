@@ -165,7 +165,13 @@ fn text(what: &str, s: &str, max: usize) -> CoreResult<String> {
 }
 
 fn from(r: &RecordState) -> Partner {
-    let mut p: Partner = serde_json::from_value(Value::Object(r.fields.clone())).unwrap_or_default();
+    let mut f = r.fields.clone();
+    // Stored-only bookkeeping, not part of the card the screen edits.
+    f.remove("actualizat_ms");
+    let mut p: Partner = serde_json::from_value(Value::Object(f)).unwrap_or_else(|e| {
+        tracing::warn!("partner card {} unreadable: {e}", r.id);
+        Partner { denumire: "(fișă ilizibilă)".into(), ..Partner::default() }
+    });
     p.id = Some(r.id);
     p.version = r.version;
     p
@@ -390,7 +396,7 @@ pub fn remind(ws: &mut Workspace, today: &str) -> CoreResult<usize> {
             30 => ("30", Level::Info),
             7 => ("7", Level::Atentie),
             0 => ("0", Level::Urgent),
-            n if n < 0 && n >= -28 && n % 7 == 0 => ("dupa", Level::Urgent),
+            n if (-28..0).contains(&n) && n % 7 == 0 => ("dupa", Level::Urgent),
             _ => continue,
         };
         let key = format!("doc:{}:{}:{}:{}:{}", x.partener, x.tip, x.expira, stage, x.zile);
