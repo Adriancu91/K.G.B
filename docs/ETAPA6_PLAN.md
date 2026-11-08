@@ -53,6 +53,7 @@ D-015 a ales iroh cu condiția ca testul pe două PC-uri reale (S2.3) să se fac
 - **6.5 — găsirea celuilalt PC:** iroh 1.4.1 nu are descoperire automată în rețeaua locală fără servere externe. K.G.B. ține o agendă de adrese locală: adresa administratorului vine în invitație, adresa PC-ului nou în cerere, iar fiecare mesaj de sincronizare o actualizează. Portul se păstrează între porniri. Dacă **ambele** PC-uri își schimbă adresa în același timp (alt Wi-Fi, IP nou de la router), nu se mai găsesc fără relay; cu relay-ul (de test sau propriu) se găsesc din nou. De verificat la 6.10.
 - **6.5 — mărimea:** iroh adaugă ~2,9 MB la installer (21,3 → 24,2 MB) și ~11 MB la programul instalat.
 - **Firewall-ul Windows** poate întreba la prima pornire a rețelei; aplicația nu îl configurează. Pe laptopul de dezvoltare testele pe aceeași mașină au mers fără întrebare.
+- **6.7 — revocarea durează până ajunge:** un PC care nu a sincronizat încă după revocare mai poate primi schimbări de la calculatorul revocat; ele rămân pe acel PC, dar sunt refuzate de toți cei care știu deja de revocare. Ce a copiat calculatorul revocat rămâne pe el (D-060).
 - **Ora PC-urilor:** dreptul autorului se verifică la momentul schimbării, după ceasul hibrid al jurnalului. Un ceas foarte greșit pe un PC poate face ca o schimbare să fie refuzată (devine marcaj, nu se pierde) până la corectarea ceasului.
 
 ## Riscuri

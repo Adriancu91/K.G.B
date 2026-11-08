@@ -267,6 +267,7 @@ export const api = {
     invoke<{ id: string; code: string; member: string; expires_ms: number }>("invite_create", { member, hours }),
   conflicts: () => invoke<{ items: ConflictView[]; modules: Array<[string, string]> }>("conflicts_list"),
   conflictDecide: (id: string, keepHere: boolean) => invoke<void>("conflict_decide", { id, keepHere }),
+  deviceRevoke: (fingerprint: string) => invoke<void>("org_device_revoke", { fingerprint }),
   netStatus: () => invoke<NetStatus>("net_status"),
   netSetRelay: (relay: string) => invoke<void>("net_set_relay", { relay }),
   syncNow: () => invoke<SyncOutcome[]>("sync_now"),

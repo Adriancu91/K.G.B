@@ -139,6 +139,15 @@ try {
   await p.until("!!document.querySelector('.sync-result') && document.querySelector('.sync-result').innerText.includes('nu a răspuns')", 40000);
   check("lipsa PC-ului B e spusă clar", true, await p.eval("document.querySelector('.sync-result').innerText"));
   await p.screenshot(join(shots, "02-offline.png"));
+
+  // Step 6.7: the administrator revokes PC B.
+  await p.eval("[...document.querySelectorAll('.peers-table button')].find(b => b.innerText === 'revocă').click()");
+  await p.until("!document.querySelector('.peers-table')", 5000);
+  check("după revocare PC-ul B dispare din listă", (await p.eval("document.querySelector('.net-panel').innerText")).includes("Niciun alt calculator"));
+  check("Ion rămâne în organizație, fără dispozitiv", (await p.eval(`${memberRow("Ion Test")}.cells[2].innerText`)).includes("niciunul"));
+  const outRev = JSON.parse(nodeRun("pull-all", wsB, keyB));
+  check("PC-ul B revocat e refuzat de aplicație", outRev.length === 1 && (outRev[0].error ?? "").includes("nu e aprobat"), JSON.stringify(outRev).slice(0, 200));
+  await p.screenshot(join(shots, "03-revocat.png"));
   p.close();
   execFileSync("taskkill", ["/F", "/T", "/PID", String(proc.pid)], { stdio: "ignore" });
 } catch (e) {

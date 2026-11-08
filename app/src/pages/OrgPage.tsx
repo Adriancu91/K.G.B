@@ -58,7 +58,7 @@ export function OrgPage({ onError, onChanged }: { onError: (e: string | null) =>
           </ul>
         </div>
       )}
-      <NetPanel onError={onError} onSynced={() => void load()} />
+      <NetPanel onError={onError} onSynced={() => void load()} admin={admin} />
       <Members org={org} admin={admin} run={run} />
       {admin && <Requests org={org} run={run} />}
       <Roles org={org} admin={admin} run={run} />

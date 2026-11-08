@@ -639,6 +639,12 @@ pub(crate) fn add_device(
     let key =
         registry::parse_key(key_hex).ok_or_else(|| CoreError::invalid("dispozitivul", "cheie publică greșită"))?;
     let fp = crate::identity::fingerprint(&key);
+    if registry::verify(store)?.devices.get(key_hex).is_some_and(|d| d.revoked) {
+        return Err(CoreError::invalid(
+            "dispozitivul",
+            "a fost revocat; poate intra din nou doar cu o cheie nouă (K.G.B. reinstalat pe acel PC)",
+        ));
+    }
     if members(store, false)?.iter().any(|o| o.devices.contains(&fp)) {
         return Err(CoreError::invalid(
             "dispozitivul",
@@ -654,6 +660,45 @@ pub(crate) fn add_device(
         vec![(
             "dispozitiv",
             json!({"member": member_id.to_string(), "key": key_hex, "label": label, "store": store_device}),
+        )],
+    ));
+    store.write(batch)?;
+    Ok(())
+}
+
+/// Revokes a device (Etapa 6, step 6.7; D-060): it leaves its person and
+/// the signed registry marks it revoked, so every device that learns this
+/// refuses it — it can no longer ask for data nor send any. Its person stays
+/// in the organization. What the device already copied stays on it: K.G.B.
+/// cannot erase another PC from a distance, and says so.
+pub fn revoke_device(store: &mut Store, dev: &DeviceIdentity, fingerprint: &str) -> CoreResult<()> {
+    signer_admin(store, dev)?;
+    if dev.fingerprint() == fingerprint {
+        return Err(CoreError::invalid(
+            "dispozitivul",
+            "nu poți revoca acest PC de pe el însuși",
+        ));
+    }
+    let st = registry::verify(store)?;
+    let (key, d) = st
+        .devices
+        .iter()
+        .find(|(_, d)| d.fingerprint == fingerprint)
+        .ok_or_else(|| CoreError::invalid("dispozitivul", "nu există în registrul organizației"))?;
+    if d.revoked {
+        return Err(CoreError::invalid("dispozitivul", "a fost deja revocat"));
+    }
+    let mut batch = Vec::new();
+    if let Ok(mut m) = member(store, d.member) {
+        m.devices.retain(|f| f != fingerprint);
+        batch.push(Write::put(MEMBERS_COLLECTION, m.id, member_fields(&m)).expect(m.version));
+    }
+    batch.extend(registry::signed_writes(
+        store,
+        dev,
+        vec![(
+            "dispozitiv",
+            json!({"member": d.member.to_string(), "key": key, "label": d.label, "store": d.store, "revoked": true}),
         )],
     ));
     store.write(batch)?;

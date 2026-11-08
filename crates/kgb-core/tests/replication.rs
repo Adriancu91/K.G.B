@@ -281,3 +281,90 @@ fn conflicts_are_shown_by_role_and_decided_everywhere() {
     );
     let _ = t;
 }
+
+#[test]
+fn revoked_device_is_refused_everywhere() {
+    let Two {
+        t,
+        mut a,
+        mut b,
+        da,
+        db,
+        ion: _,
+    } = two();
+    // A third PC: Maria's.
+    let dc = dev(&t, "pc-c");
+    let mut c = Workspace::create(&t.path().join("c"), "C").unwrap();
+    let maria = org::add_member(a.store_mut(), &da, "Maria", org::role_member()).unwrap();
+    let inv = invites::create(a.store_mut(), &da, maria, 24).unwrap();
+    let req = invites::request(c.store_mut(), &inv.code, &dc, "PC C").unwrap();
+    let p = invites::receive(a.store_mut(), &da, &req.code).unwrap();
+    invites::approve(a.store_mut(), &da, p.id).unwrap();
+    pull(&mut b, &db, &a, &da);
+    pull(&mut c, &dc, &a, &da);
+
+    // Before: Ion's note travels normally.
+    let before = Uuid::new_v4();
+    put(&mut b, NOTES, before, "înainte de revocare");
+    pull(&mut a, &da, &b, &db);
+    assert_eq!(text(&a, NOTES, before).as_deref(), Some("înainte de revocare"));
+
+    // Only an administrator revokes, never this PC itself.
+    assert!(org::revoke_device(b.store_mut(), &db, &dc.fingerprint()).is_err());
+    assert!(org::revoke_device(a.store_mut(), &da, &da.fingerprint()).is_err());
+    org::revoke_device(a.store_mut(), &da, &db.fingerprint()).unwrap();
+    assert!(
+        org::revoke_device(a.store_mut(), &da, &db.fingerprint()).is_err(),
+        "only once"
+    );
+    assert!(registry::consistency(a.store()).unwrap().is_empty());
+    // Ion stays in the organization; only that PC is out.
+    assert!(org::members(a.store(), false).unwrap().iter().any(|m| m.name == "Ion"));
+    assert_eq!(
+        org::access(a.store(), Some(&db.fingerprint()), "kgb.notes").unwrap().0,
+        Access::Niciunul
+    );
+
+    // The revoked PC can no longer ask, and its answers are not accepted.
+    let after = Uuid::new_v4();
+    put(&mut b, NOTES, after, "după revocare");
+    let req = replication::request(b.store(), &db).unwrap();
+    assert!(
+        replication::answer(a.store(), &da, &req)
+            .unwrap_err()
+            .to_string()
+            .contains("nu e aprobat")
+    );
+    let resp = replication::answer(b.store(), &db, &replication::request(a.store(), &da).unwrap()).unwrap();
+    assert!(replication::apply(a.store_mut(), &da, &resp).is_err());
+
+    // Maria's PC does not know yet: it still takes B's late change...
+    let s = pull(&mut c, &dc, &b, &db);
+    assert_eq!(text(&c, NOTES, after).as_deref(), Some("după revocare"), "{s:?}");
+    // ...but where the revocation is known, that change is refused, even
+    // when it comes through Maria's PC (its author was revoked by then).
+    let s = pull(&mut a, &da, &c, &dc);
+    assert!(s.refuzate >= 1, "{s:?}");
+    assert_eq!(text(&a, NOTES, after), None);
+    assert_eq!(
+        text(&a, NOTES, before).as_deref(),
+        Some("înainte de revocare"),
+        "earlier changes stay valid"
+    );
+
+    // The revocation reaches Maria's PC through A; from then on she refuses B.
+    pull(&mut c, &dc, &a, &da);
+    assert!(registry::verify(c.store()).unwrap().devices[&db.public_hex()].revoked);
+    let req = replication::request(b.store(), &db).unwrap();
+    assert!(replication::answer(c.store(), &dc, &req).is_err());
+    let resp = replication::answer(b.store(), &db, &replication::request(c.store(), &dc).unwrap()).unwrap();
+    assert!(replication::apply(c.store_mut(), &dc, &resp).is_err());
+    // Known limit (D-060): what Maria's PC took before it knew stays there.
+    assert_eq!(text(&c, NOTES, after).as_deref(), Some("după revocare"));
+
+    // The revoked key cannot be approved again with a new invitation.
+    let ion2 = org::add_member(a.store_mut(), &da, "Ion 2", org::role_member()).unwrap();
+    let inv = invites::create(a.store_mut(), &da, ion2, 24).unwrap();
+    let req = invites::request(b.store_mut(), &inv.code, &db, "PC B").unwrap();
+    assert!(invites::receive(a.store_mut(), &da, &req.code).is_err());
+}

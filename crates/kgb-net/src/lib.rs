@@ -275,7 +275,14 @@ impl Net {
                         CONNECT_TIMEOUT.as_secs()
                     )
                 })?
-                .map_err(|e| format!("conexiune eșuată: {e}"))?;
+                .map_err(|e| {
+                    let e = e.to_string();
+                    if e.contains("timed out") || e.contains("timeout") {
+                        "dispozitivul nu a răspuns (oprit, fără rețea sau blocat de firewall)".to_string()
+                    } else {
+                        format!("conexiune eșuată: {e}")
+                    }
+                })?;
             let r = tokio::time::timeout(EXCHANGE_TIMEOUT, async {
                 let (mut send, mut recv) = conn.open_bi().await.map_err(|e| e.to_string())?;
                 write_frame(&mut send, &req).await?;

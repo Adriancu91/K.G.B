@@ -11,7 +11,7 @@ const when = (ms: number | null) => {
   return `${p(d.getDate())}.${p(d.getMonth() + 1)} ${p(d.getHours())}:${p(d.getMinutes())}`;
 };
 
-export function NetPanel({ onError, onSynced }: { onError: (e: string | null) => void; onSynced?: () => void }) {
+export function NetPanel({ onError, onSynced, admin = false }: { onError: (e: string | null) => void; onSynced?: () => void; admin?: boolean }) {
   const [st, setSt] = useState<NetStatus | null>(null);
   const [busy, setBusy] = useState(false);
   const [last, setLast] = useState<SyncOutcome[] | null>(null);
@@ -108,6 +108,7 @@ export function NetPanel({ onError, onSynced }: { onError: (e: string | null) =>
               <th>Ultima sincronizare</th>
               <th>Cale</th>
               <th>Problemă</th>
+              {admin && <th></th>}
             </tr>
           </thead>
           <tbody>
@@ -121,6 +122,32 @@ export function NetPanel({ onError, onSynced }: { onError: (e: string | null) =>
                 <td className={p.error ? "error small" : "muted small"}>
                   {p.error && (p.tried_ms ?? 0) >= (p.ok_ms ?? 0) ? p.error : p.addr ? "" : "adresă necunoscută încă"}
                 </td>
+                {admin && (
+                  <td>
+                    <button
+                      className="link danger-text"
+                      onClick={() => {
+                        if (
+                          window.confirm(
+                            `Revoci calculatorul „${p.label}” al lui ${p.member}? Nu va mai putea primi sau trimite nimic. Ce a copiat deja rămâne pe el: K.G.B. nu poate șterge date de pe alt PC de la distanță.`,
+                          )
+                        )
+                          void (async () => {
+                            try {
+                              await api.deviceRevoke(p.fingerprint);
+                              onError(null);
+                              onSynced?.();
+                            } catch (e) {
+                              onError(message(e));
+                            }
+                            await load();
+                          })();
+                      }}
+                    >
+                      revocă
+                    </button>
+                  </td>
+                )}
               </tr>
             ))}
           </tbody>

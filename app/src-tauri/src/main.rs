@@ -589,6 +589,14 @@ fn org_role_delete(app: State<AppState>, id: uuid::Uuid) -> CmdResult<()> {
     })
 }
 
+/// Revokes another device of the organization (step 6.7, D-060).
+#[tauri::command]
+fn org_device_revoke(app: State<AppState>, fingerprint: String) -> CmdResult<()> {
+    org_admin(&app, "dispozitiv revocat", |s, _| {
+        org::revoke_device(s.ws.store_mut(), &s.device, &fingerprint)
+    })
+}
+
 // ---------- conflicts (Etapa 6, step 6.4) ----------
 
 #[derive(Serialize)]
@@ -989,6 +997,7 @@ fn main() {
             org_member_remove,
             org_role_save,
             org_role_delete,
+            org_device_revoke,
             conflicts_list,
             net_status,
             net_set_relay,
