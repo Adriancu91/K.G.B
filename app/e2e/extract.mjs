@@ -57,8 +57,8 @@ try {
   check("un PDF fără text e refuzat clar", scan.includes("pare scanat"), scan);
 
   await go(p, "Extragere date");
-  await p.until("document.querySelectorAll('.pdf-docs li button').length === 1", 10000);
-  await p.click("factura.pdf", ".pdf-docs button");
+  await p.until("document.querySelectorAll('.pdf-docs li button.link').length === 1", 10000);
+  await p.click("factura.pdf", ".pdf-docs button.link");
   await p.until("document.querySelectorAll('.extract-fields tbody tr').length === 9", 10000);
   const total = await row(p, "Total de plată");
   check("totalul găsit, sigur, cu sursa (pagina și rândul)", total.value === "1673.14" && total.level === "sigur" && total.source.startsWith("pagina 1, rândul"), JSON.stringify(total));
@@ -79,6 +79,18 @@ try {
   await p.click("Jurnal", ".sheet-tabs button");
   const jr = await p.eval("document.querySelector('.audit tbody')?.innerText ?? ''");
   check("importul e în jurnal (automate / confirmate)", jr.includes("total") && jr.includes("numar"), jr.slice(0, 120));
+
+  // Deleting the document (asked by the owner): confirmation, then gone from
+  // the list; the imported invoice stays in the register.
+  await p.click("Extragere", ".sheet-tabs button");
+  await p.until("!!document.querySelector(\"button[aria-label='Șterge factura.pdf']\")", 5000);
+  await p.eval("document.querySelector(\"button[aria-label='Șterge factura.pdf']\").click()");
+  await p.until("!!document.querySelector('[role=alertdialog]')", 5000);
+  await p.eval("[...document.querySelectorAll('[role=alertdialog] button')].find(b => b.textContent === 'Șterge').click()");
+  await p.until("document.querySelectorAll('.pdf-docs li button.link').length === 0", 5000);
+  await p.click("Registru", ".sheet-tabs button");
+  const reg2 = await p.eval("document.querySelector('.audit tbody')?.innerText ?? ''");
+  check("documentul se șterge cu confirmare; factura rămâne în registru", reg2.includes("FCT-0042"), reg2.slice(0, 80));
 
   p.close();
   execFileSync("taskkill", ["/F", "/T", "/PID", String(proc.pid)], { stdio: "ignore" });
