@@ -7,6 +7,7 @@ import { InvoicesView } from "./invoices";
 import { PurchasesView } from "./purchases";
 import { CashView } from "./cash";
 import { AgingView } from "./aging";
+import { BusinessReports } from "./reports";
 
 const ID = "kgb.business";
 
@@ -341,7 +342,7 @@ function InventoryForm(props: { stock: StockRow[]; warehouses: Warehouse[]; busy
 }
 
 export function BusinessPage({ onError }: { onError: (e: string | null) => void }) {
-  const [tab, setTab] = useState<"stoc" | "documente" | "receptie" | "iesire" | "transfer" | "inventar" | "produse" | "depozite" | "facturare" | "cheltuieli" | "casa" | "scadentar">("stoc");
+  const [tab, setTab] = useState<"stoc" | "documente" | "receptie" | "iesire" | "transfer" | "inventar" | "produse" | "depozite" | "facturare" | "cheltuieli" | "casa" | "scadentar" | "rapoarte">("stoc");
   const [products, setProducts] = useState<Product[]>([]);
   const [warehouses, setWarehouses] = useState<Warehouse[]>([]);
   const [stock, setStock] = useState<StockRow[]>([]);
@@ -409,6 +410,7 @@ export function BusinessPage({ onError }: { onError: (e: string | null) => void 
             ["cheltuieli", "Cheltuieli"],
             ["casa", "Casă și bancă"],
             ["scadentar", "Scadențar"],
+            ["rapoarte", "Rapoarte"],
           ] as const
         ).map(([t, label]) => (
           <button
@@ -585,6 +587,7 @@ export function BusinessPage({ onError }: { onError: (e: string | null) => void 
       {tab === "cheltuieli" && <PurchasesView onError={onError} />}
       {tab === "casa" && <CashView onError={onError} />}
       {tab === "scadentar" && <AgingView onError={onError} />}
+      {tab === "rapoarte" && <BusinessReports onError={onError} />}
       {tab === "facturare" && <InvoicesView products={products} warehouses={warehouses} onError={onError} onChanged={() => void refresh()} />}
 
       {tab === "produse" && (

@@ -27,6 +27,7 @@ const check = (name, ok, detail = "") => {
 };
 const stockRows = (p) =>
   p.eval("[...document.querySelectorAll('.stock-table tbody tr')].map(r => [...r.cells].map(c => c.innerText.trim()).join('|'))");
+const iso = (d) => `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
 const selectByText = (p, sel, text) =>
   p.eval(`(() => { const s = document.querySelector(${JSON.stringify(sel)});
     const o = [...s.options].find(o => o.textContent.includes(${JSON.stringify(text)}));
@@ -292,6 +293,21 @@ try {
   const sh = await p.eval("document.querySelector('.aging').innerText");
   check("fișa partenerului arată soldul", sh.includes("de plătit 1.210,00 lei"), sh.split("\n").slice(-1)[0]);
   await p.screenshot(join(shots, "09-scadentar.png"));
+
+  // Step 5.7: reports for a period (the invoice was cancelled; the expenses
+  // are F-1, 1.000,00 net, and the receipt B 77, 100,00 net).
+  await tab(p, "Rapoarte");
+  await p.until("!!document.querySelector('.report-summary')", 8000);
+  const todayIso = iso(new Date());
+  await p.fill("input[aria-label='Raport de la']", "2026-01-01");
+  await p.fill("input[aria-label='Raport până la']", todayIso);
+  await p.until("document.querySelector('.report-summary').innerText.includes('1.100,00')", 8000);
+  const rs = await p.eval("[...document.querySelectorAll('.report-summary tr')].map(r => r.cells[0].innerText + '|' + r.cells[1].innerText)");
+  check("raportul: vânzări 0, cheltuieli 1.100,00, stoc 825,00", rs.includes("Vânzări fără TVA|0,00") && rs.includes("− Cheltuieli fără TVA|1.100,00") && rs.includes("Valoarea stocului la sfârșitul perioadei|825,00"), JSON.stringify(rs));
+  await p.screenshot(join(shots, "10-rapoarte.png"));
+  const rx = join(data, "raport.xlsx");
+  await p.eval(`window.__TAURI_INTERNALS__.invoke("module_call", { id: "kgb.business", command: "report_export", args: { de_la: "2026-01-01", pana_la: ${JSON.stringify(todayIso)}, format: "xlsx", dest: ${JSON.stringify(rx)} } })`);
+  check("raportul se exportă în Excel", readFileSync(rx).subarray(0, 2).toString("latin1") === "PK");
 
   // Forced restart: the stock is recomputed from the movements.
   stop(p);

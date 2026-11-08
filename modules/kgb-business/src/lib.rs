@@ -23,13 +23,15 @@
 //! `invoice_storno`, `invoice_pdf`; `purchases`, `purchase_save`,
 //! `purchase_storno`, `import` (CSV from „Extragere date”); `accounts`,
 //! `account_save`, `payments`, `payment_save`, `payment_link`, `payment_storno`,
-//! `open_documents`, `settle`, `bank_import`; `aging`, `partner_sheet`.
+//! `open_documents`, `settle`, `bank_import`; `aging`, `partner_sheet`;
+//! `report`, `report_export`.
 
 pub mod aging;
 pub mod cash;
 pub mod invoices;
 pub mod num;
 pub mod purchases;
+pub mod reports;
 pub mod valuation;
 
 use std::collections::{BTreeMap, BTreeSet};
@@ -49,9 +51,9 @@ use num::{Money, Qty};
 
 pub const ID: &str = "kgb.business";
 pub(crate) const PRODUCTS: &str = "produse";
-const WAREHOUSES: &str = "depozite";
+pub(crate) const WAREHOUSES: &str = "depozite";
 const DOCS: &str = "documente_stoc";
-const MOVES: &str = "miscari";
+pub(crate) const MOVES: &str = "miscari";
 const MAX_LINES: usize = 500;
 
 pub struct Business {
@@ -236,6 +238,24 @@ struct Storno {
     data: String,
     #[serde(default)]
     nota: Option<String>,
+}
+
+#[derive(Deserialize)]
+#[serde(deny_unknown_fields)]
+struct Period {
+    de_la: String,
+    pana_la: String,
+}
+
+#[derive(Deserialize)]
+#[serde(deny_unknown_fields)]
+struct ReportExport {
+    de_la: String,
+    pana_la: String,
+    format: String,
+    #[serde(default)]
+    tabel: Option<String>,
+    dest: std::path::PathBuf,
 }
 
 #[derive(Deserialize)]
@@ -963,6 +983,18 @@ impl Module for Business {
             "invoice_issue" => self.invoice_issue(ctx, args(a)?),
             "invoices" => self.invoices(ctx),
             "invoice_storno" => self.invoice_storno(ctx, args(a)?),
+            // Step 5.7: reports and export.
+            "report" => {
+                let a: Period = args(a)?;
+                Ok(self.report(ctx, &a.de_la, &a.pana_la)?.json())
+            }
+            "report_export" => {
+                let a: ReportExport = args(a)?;
+                let bytes = self.report_export(ctx, &a.de_la, &a.pana_la, &a.format, a.tabel.as_deref())?;
+                // The user confirmed replacing an existing file in the save dialog.
+                ctx.export_bytes(&a.dest, &bytes, true)?;
+                Ok(json!({"octeti": bytes.len()}))
+            }
             // Step 5.6: due dates and partner statements.
             "aging" => {
                 let a: Today = args(a)?;
