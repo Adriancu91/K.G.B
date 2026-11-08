@@ -1085,3 +1085,14 @@ form[aria-label="Răspunde la invitație"] textarea {
   border: 1px solid var(--line);
   border-radius: 6px;
 }
+
+/* Etapa 7: "Caută la ANAF" */
+.anaf-lookup {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+}
+.anaf-note {
+  font-size: 0.9em;
+}

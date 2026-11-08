@@ -117,6 +117,7 @@ Verificat automat de `cargo-deny` în CI pe workspace-ul rădăcină (`Cargo.tom
 | `typst`, `typst-pdf`, `typst-layout` =0.15.1 (+ dependențele lor, toate permisive) | Apache-2.0 | PDF din modelele incluse în `kgb.docs` (D-045, ales de proprietar) | 4.8b |
 | `typst-assets` =0.15.1 (fonturile incluse) | Apache-2.0; fonturile: SIL OFL 1.1 | fonturile PDF-urilor, incluse ca documentele să arate la fel pe orice calculator | 4.8b |
 | `quick-xml` 0.42.0 | MIT | completarea câmpurilor din modelele Word în `kgb.docs` (D-045, spike S6) | 4.8 |
+| `reqwest` 0.13.5 (fără funcțiile implicite, doar `rustls-no-provider`; + `rustls-platform-verifier` 0.7.1), `rustls` 0.23 cu `ring` | MIT OR Apache-2.0 | cereri HTTPS către sursele externe pornite de proprietar, de ex. ANAF (D-062); erau deja în aplicație prin iroh, nu s-a descărcat nimic nou | 7.4b |
 | npm `pdfjs-dist` 6.4.299 | Apache-2.0 | afișarea paginilor PDF în fereastră (D-032); la `npm install` aduce opțional `@napi-rs/canvas` (MIT), folosit doar de Node, nu intră în aplicație | 3.5 |
 
 Restul dependențelor (Tauri, React, Vite, serde, uuid, blake3) sunt cele din S1 și S3, deja în acest registru.

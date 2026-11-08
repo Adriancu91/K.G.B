@@ -24,6 +24,7 @@ use serde::Serialize;
 use serde_json::Value;
 
 pub mod sync;
+pub mod web;
 
 pub const ALPN: &[u8] = b"kgb/sync/1";
 /// Largest message accepted (a first synchronisation can be big).

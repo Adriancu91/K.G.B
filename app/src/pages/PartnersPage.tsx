@@ -4,6 +4,7 @@
 import { invoke } from "@tauri-apps/api/core";
 import { useCallback, useEffect, useState } from "react";
 import { message } from "../api";
+import { AnafLookup, type AnafCompany } from "../components/AnafLookup";
 
 interface WorkPoint {
   denumire: string;
@@ -107,6 +108,24 @@ function Editor({ start, onSave, onCancel }: { start: Partner; onSave: (p: Partn
   const [p, setP] = useState(start);
   const [err, setErr] = useState<string | null>(null);
   const up = (patch: Partial<Partner>) => setP((x) => ({ ...x, ...patch }));
+  // A base field typed by hand is marked "manual" (it may have come from ANAF).
+  const upBase = (k: keyof Partner, v: string) =>
+    setP((x) => ({ ...x, [k]: v, surse: x.surse[k as string] ? { ...x.surse, [k as string]: { sursa: "manual", data: today() } } : x.surse }));
+  const fromAnaf = (c: AnafCompany) =>
+    setP((x) => {
+      const vals: Partial<Partner> = {
+        denumire: c.denumire,
+        nr_reg_com: c.nr_reg_com,
+        sediu: c.sediu,
+        localitate: c.localitate,
+        judet: c.judet,
+        telefon: c.telefon,
+      };
+      const filled = Object.fromEntries(Object.entries(vals).filter(([, v]) => String(v ?? "").trim())) as Partial<Partner>;
+      const surse = { ...x.surse };
+      for (const k of [...Object.keys(filled), "platitor_tva"]) surse[k] = { sursa: "anaf", data: c.data || today() };
+      return { ...x, ...filled, tara: x.tara || "România", platitor_tva: c.platitor_tva, surse };
+    });
   return (
     <form
       className="partner-editor"
@@ -125,11 +144,15 @@ function Editor({ start, onSave, onCancel }: { start: Partner; onSave: (p: Partn
           <option value="ambele">client și furnizor</option>
         </select>
       </label>
+      <div className="row wrap">
+        <AnafLookup cui={p.cui} onFound={fromAnaf} />
+      </div>
       <div className="partner-grid">
         {BASE.map(([k, l]) => (
           <label key={k}>
             {l}
-            <input value={String(p[k] ?? "")} onChange={(e) => up({ [k]: e.target.value } as Partial<Partner>)} aria-label={l} required={k === "denumire"} />
+            <input value={String(p[k] ?? "")} onChange={(e) => upBase(k, e.target.value)} aria-label={l} required={k === "denumire"} />
+            {(p.surse[k as string] as { sursa?: string } | undefined)?.sursa === "anaf" && <span className="small muted">de la ANAF</span>}
           </label>
         ))}
       </div>

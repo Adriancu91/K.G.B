@@ -613,6 +613,14 @@ struct SourcesReply {
 #[tauri::command]
 fn sources_list(app: State<AppState>) -> CmdResult<SourcesReply> {
     with_session(&app, |s| {
+        // ANAF (step 7.4b) is added filled in but switched off; only an
+        // administrator's PC adds it (the register is theirs).
+        if org::require_admin(s.ws.store(), Some(&s.device.fingerprint()), "").is_ok()
+            && kgb_core::anaf::source(s.ws.store())?.is_none()
+        {
+            kgb_core::anaf::ensure_source(s.ws.store_mut())?;
+            modules::audit(&mut s.ws, "core.sources", "sursa ANAF adăugată (oprită)", "ok", "")?;
+        }
         Ok(SourcesReply {
             items: kgb_core::sources::list(s.ws.store())?,
             kinds: kgb_core::sources::KINDS,
@@ -847,6 +855,45 @@ fn net_set_relay(app: State<AppState>, relay: String) -> CmdResult<()> {
     })?;
     net::stop(&app.net);
     net::ensure(&app.net, &app.session, false).map(|_| ())
+}
+
+/// When the last ANAF request left (the service allows one per second).
+static ANAF_LAST: std::sync::Mutex<Option<std::time::Instant>> = std::sync::Mutex::new(None);
+
+/// Company data by CUI from ANAF (step 7.4b), only while the ANAF source is
+/// switched on. Only the CUI and the day are sent.
+#[tauri::command]
+async fn anaf_lookup(app: State<'_, AppState>, cui: String, azi: String) -> CmdResult<kgb_core::anaf::Company> {
+    let body = with_session(&app, |s| {
+        kgb_core::anaf::usable(s.ws.store())?;
+        kgb_core::anaf::request_body(&[cui.trim()], azi.trim())
+    })?;
+    // At most one request per second, from this PC.
+    let wait = {
+        let mut last = ANAF_LAST.lock().map_err(|_| "starea aplicației este blocată".to_string())?;
+        let now = std::time::Instant::now();
+        let gap = std::time::Duration::from_millis(kgb_core::anaf::MIN_INTERVAL_MS);
+        let wait = last.map(|t| gap.saturating_sub(now.duration_since(t))).unwrap_or_default();
+        *last = Some(now + wait);
+        wait
+    };
+    if !wait.is_zero() {
+        std::thread::sleep(wait);
+    }
+    let (status, answer) = kgb_net::web::post_json(kgb_core::anaf::ANAF_URL, body).await.map_err(|e| format!("ANAF: {e}; completează de mână"))?;
+    let audit = |what: &str, outcome: &str| {
+        let _ = with_session(&app, |s| modules::audit(&mut s.ws, "core.sources", what, outcome, ""));
+    };
+    if status != 200 {
+        audit("căutare ANAF", "eroare");
+        return Err(format!("ANAF: serviciul a răspuns cu codul HTTP {status}; încearcă mai târziu sau completează de mână"));
+    }
+    let (found, _) = kgb_core::anaf::parse(&answer).map_err(|e| e.to_string())?;
+    audit("căutare ANAF după CUI", "ok");
+    found
+        .into_iter()
+        .next()
+        .ok_or_else(|| format!("ANAF: CUI-ul {} nu a fost găsit", cui.trim()))
 }
 
 /// One synchronisation round now, off the window's thread.
@@ -1155,6 +1202,7 @@ fn main() {
             org_role_delete,
             org_device_revoke,
             sources_list,
+            anaf_lookup,
             source_save,
             source_set_active,
             source_delete,

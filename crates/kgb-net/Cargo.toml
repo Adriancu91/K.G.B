@@ -15,6 +15,10 @@ tokio = { version = "1", features = ["rt-multi-thread", "time", "io-util", "macr
 serde.workspace = true
 serde_json.workspace = true
 tracing.workspace = true
+# HTTPS requests to the external sources switched on by the owner (Etapa 7, D-062),
+# e.g. ANAF company data. Both crates are already used by iroh: nothing new is downloaded.
+reqwest = { version = "0.13.5", default-features = false, features = ["rustls-no-provider"] }
+rustls = { version = "0.23", default-features = false, features = ["ring", "std", "tls12"] }
 
 [dev-dependencies]
 tempfile.workspace = true

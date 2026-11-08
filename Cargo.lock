@@ -3847,6 +3847,8 @@ dependencies = [
  "iroh",
  "kgb-core",
  "kgb-store",
+ "reqwest",
+ "rustls",
  "serde",
  "serde_json",
  "tempfile",

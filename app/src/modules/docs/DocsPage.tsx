@@ -1,6 +1,7 @@
 // Documents and models (Etapa 4, step 4.8): Word models with {{fields}},
 // company data entered once, generated documents kept with their model.
 import { useCallback, useEffect, useState } from "react";
+import { AnafLookup, fullAddress } from "../../components/AnafLookup";
 import { open, save } from "@tauri-apps/plugin-dialog";
 import { api, message } from "../../api";
 import { FormsView } from "./forms";
@@ -359,6 +360,18 @@ export function DocsPage({ onError }: { onError: (e: string | null) => void }) {
           }}
         >
           <p className="muted">Aceste date apar în documente prin câmpurile {"{{firma.…}}"}. Se completează doar aici.</p>
+          <AnafLookup
+            cui={form.cui ?? ""}
+            onFound={(c) =>
+              setForm((f) => ({
+                ...f,
+                nume: c.denumire || (f.nume ?? ""),
+                reg_com: c.nr_reg_com || (f.reg_com ?? ""),
+                adresa: fullAddress(c) || (f.adresa ?? ""),
+                telefon: c.telefon || (f.telefon ?? ""),
+              }))
+            }
+          />
           <div className="company-grid">
             {company.campuri.map((f) => (
               <label key={f.camp}>

@@ -31,7 +31,7 @@ const setValue = (p, sel, value) =>
     const proto = el.tagName === 'TEXTAREA' ? HTMLTextAreaElement.prototype : el.tagName === 'SELECT' ? HTMLSelectElement.prototype : HTMLInputElement.prototype;
     Object.getOwnPropertyDescriptor(proto, 'value').set.call(el, ${JSON.stringify(value)});
     el.dispatchEvent(new Event(el.tagName === 'SELECT' ? 'change' : 'input', { bubbles: true })); return true; })()`);
-const row = "document.querySelector('.sources-table tbody tr')";
+const row = "[...document.querySelectorAll('.sources-table tbody tr')].find(r => r.innerText.includes('Flux de test'))";
 const clickIn = (p, text) => p.eval(`[...${row}.querySelectorAll('button')].find(b => b.innerText === ${JSON.stringify(text)}).click()`);
 
 async function start() {
@@ -53,7 +53,9 @@ function stop(p) {
 
 try {
   let p = await start();
-  check("la început nu e nicio sursă", (await p.eval("document.querySelector('.sources-page').innerText")).includes("Nicio sursă în registru"));
+  // K.G.B. adds only ANAF (step 7.4b), filled in but switched off (D-063).
+  const first = await p.eval("[...document.querySelectorAll('.sources-table tbody tr')].map(r => r.innerText)");
+  check("la început e doar ANAF, oprită (nicio sursă activă)", first.length === 1 && first[0].includes("ANAF") && first[0].includes("oprită"), JSON.stringify(first).slice(0, 120));
   await p.click("Adaugă o sursă");
   await p.until("!!document.querySelector('.source-form')");
   await setValue(p, "input[aria-label='Numele sursei']", "Flux de test");

@@ -2,6 +2,7 @@
 // every amount (whole bani, VAT per line) and numbers the invoices; the page
 // only collects what is typed and shows the result.
 import { useCallback, useEffect, useState } from "react";
+import { AnafLookup, fullAddress } from "../../components/AnafLookup";
 import { save } from "@tauri-apps/plugin-dialog";
 import { api, message } from "../../api";
 
@@ -370,6 +371,7 @@ export function InvoicesView(props: { products: ProductLite[]; warehouses: Wareh
           >
             <input aria-label="Nume partener" placeholder="Nume" value={pf.nume} maxLength={200} onChange={(e) => setPf({ ...pf, nume: e.target.value })} />
             <input aria-label="CUI partener" placeholder="CUI (opțional)" value={pf.cui} maxLength={20} onChange={(e) => setPf({ ...pf, cui: e.target.value })} />
+            <AnafLookup cui={pf.cui} onFound={(c) => setPf((x) => ({ ...x, nume: c.denumire || x.nume, adresa: fullAddress(c) || x.adresa }))} />
             <input aria-label="Adresă partener" placeholder="Adresă" value={pf.adresa} maxLength={300} onChange={(e) => setPf({ ...pf, adresa: e.target.value })} />
             <select aria-label="Tip partener" value={pf.tip} onChange={(e) => setPf({ ...pf, tip: e.target.value })}>
               <option value="client">client</option>
@@ -426,6 +428,12 @@ export function InvoicesView(props: { products: ProductLite[]; warehouses: Wareh
               Cote de TVA (%), separate prin virgulă
               <input aria-label="Cote TVA" value={rates} onChange={(e) => setRates(e.target.value)} />
             </label>
+            <AnafLookup
+              cui={firma.firma_cui ?? ""}
+              onFound={(c) =>
+                setFirma((x) => ({ ...x, firma_nume: c.denumire || (x.firma_nume ?? ""), firma_reg_com: c.nr_reg_com || (x.firma_reg_com ?? ""), firma_adresa: fullAddress(c) || (x.firma_adresa ?? "") }))
+              }
+            />
             <div className="company-grid">
               {settings.firma.map((f) => (
                 <label key={f.camp}>

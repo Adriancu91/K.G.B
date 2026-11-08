@@ -172,6 +172,16 @@ pub fn missing_for_activation(src: &Source) -> Vec<&'static str> {
 /// Adds or changes a source. Changing the terms, licence or link of an
 /// active source switches it off: it must be approved again.
 pub fn save(store: &mut Store, input: SourceInput) -> CoreResult<Uuid> {
+    save_as(store, input, None)
+}
+
+/// A new source with a fixed id (a source K.G.B. itself adds, the same on
+/// every PC, so two PCs adding it before they synchronise make one record).
+pub(crate) fn add_fixed(store: &mut Store, id: Uuid, input: SourceInput) -> CoreResult<Uuid> {
+    save_as(store, input, Some(id))
+}
+
+fn save_as(store: &mut Store, input: SourceInput, fixed: Option<Uuid>) -> CoreResult<Uuid> {
     let nume = validate_name("numele sursei", &input.nume)?;
     if !KINDS.iter().any(|(k, _)| *k == input.tip) {
         return Err(bad("tipul nu e cunoscut"));
@@ -190,7 +200,7 @@ pub fn save(store: &mut Store, input: SourceInput) -> CoreResult<Uuid> {
         Ok(t.to_string())
     };
     let mut src = Source {
-        id: input.id.unwrap_or_else(Uuid::new_v4),
+        id: input.id.or(fixed).unwrap_or_else(Uuid::new_v4),
         nume,
         url,
         tip: input.tip,
