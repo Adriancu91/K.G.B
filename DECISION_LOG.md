@@ -271,10 +271,23 @@ Deciziile DECIS se schimbă doar cu aprobarea explicită a proprietarului (Maste
 - **De rezolvat de proprietar:** facturarea GitHub (CI oprit de la pasul 4.7).
 
 ### D-049 … D-054 — Etapa 5 (Business)
-- **Data:** 8 nov. 2026 · **Statut:** PROPUS — detalii în `docs/ETAPA5_PLAN.md`, de confirmat la poarta Etapei 5
+- **Data:** 8 nov. 2026 · **Statut:** DECIS (confirmate la poarta Etapei 5, D-055) — detalii în `docs/ETAPA5_PLAN.md`
 - D-049: sume în bani (numere întregi), cantități cu 3 zecimale fixe, TVA pe linie rotunjit la ban; doar RON la început;
 - D-050: costul stocului — cost mediu ponderat, pe depozit;
 - D-051: documentele înregistrate nu se modifică; corecturile se fac prin storno, vizibil;
 - D-052: „evidență primară”, nu contabilitate certificată; cotele de TVA se pot configura, cu dată de început (implicit 21%, 11%, 0%, de confirmat de proprietar sau de contabil); e-Factura și SAF-T nu fac parte din Etapa 5;
 - D-053: un singur modul „Business” pentru stocuri și financiar;
 - D-054: facturi pe serii, cu numere consecutive, fără goluri și fără refolosire.
+
+### D-055 — Poarta Etapei 5
+- **Data:** 8 nov. 2026 · **Statut:** DECIS · **Aprobat de:** proprietar („aprob”), ca răspuns la `docs/ETAPA5_RAPORT.md`.
+- **Conținut:** Etapa 5 se încheie; D-049 … D-054 sunt confirmate. **Începe Etapa 6** (Echipe și rețea), la cererea proprietarului **întâi cu partea care se poate face pe un singur PC** („un singur pc”). Testul pe două PC-uri (S2.3, acum 6.10) rămâne 🔒 și e condiția porții Etapei 6 și a lui D-015.
+- **De confirmat încă:** cotele de TVA 21/11/0 (cu contabilul); facturarea GitHub (CI oprit).
+
+### D-056 … D-060 — Etapa 6 (Echipe și rețea)
+- **Data:** 8 nov. 2026 · **Statut:** PROPUS — detalii în `docs/ETAPA6_PLAN.md`, de confirmat la poarta Etapei 6
+- D-056: roluri pe module (fără acces / citire / scriere); implicite Administrator, Membru, Doar citire;
+- D-057: protocolul de sincronizare e separat de rețea; iroh doar transportă mesajele;
+- D-058: registru de membri semnat de administratori; un dispozitiv acceptă date doar de la dispozitive din registru;
+- D-059: se sincronizează doar datele modulelor permise de rol, plus registrul; setările personale și cheile nu pleacă de pe PC;
+- D-060: revocarea scoate dispozitivul din registru; datele deja copiate pe el nu pot fi șterse garantat de la distanță.

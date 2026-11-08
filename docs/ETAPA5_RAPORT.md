@@ -1,6 +1,6 @@
 # K.G.B. — Etapa 5 (Business): raport și propunere de poartă
 
-**Data:** 8 nov. 2026 · **Statut:** PROPUS — așteaptă aprobarea proprietarului (pasul 🔒 5.10).
+**Data:** 8 nov. 2026 · **Statut:** APROBAT de proprietar („aprob”, 8 nov. 2026, D-055).
 **Poarta cerută de Master Plan §13:** calculele sunt **testate, auditabile** și **delimitate clar** față de contabilitatea certificată.
 **Plan:** `docs/ETAPA5_PLAN.md` · Capturi: `docs/etapa5/e2e-business/`
 

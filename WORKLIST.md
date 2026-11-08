@@ -107,4 +107,19 @@ Interdicții permanente: fără baze de date (D-005, D-018), fără schimbări d
 - [x] 5.7 Rapoarte pe o perioadă, refăcute din istoric: vânzări (pe clienți și pe produse, stornările incluse cu minus), cheltuieli (pe categorii și furnizori; unde e doar totalul, contează ca net), costul mărfurilor vândute la cost mediu, rezultat simplu (marcat clar: nu e rezultat contabil), valoarea stocului la sfârșitul perioadei; export XLSX (6 foi) sau CSV, recitit și verificat; 1 test cu exemplu de mână + e2e business 26/26
 - [x] 5.8 Audit și consistență: verificarea reface din înregistrări 7 reguli (stoc niciodată negativ și valoare 0 la stoc gol; fiecare mișcare cu documentul ei; fiecare linie și total de factură recalculate; numerotare fără goluri și dubluri, inclusiv chitanțele; casa niciodată pe minus; plăți legate o dată și niciodată peste total; cheltuieli și deconturi care se adună), cu numărul de înregistrări verificate și fiecare problemă; jurnalul tuturor operațiilor; testul cu 1.000 de operații aleatoare (multe refuzate intenționat): 0 probleme, și după redeschidere; viteză (optimizat): o recepție <1 ms, stocul ~6 ms la ~800 de operații; e2e business 28/28
 - [x] 5.9 Raport Etapa 5 (`docs/ETAPA5_RAPORT.md`) — propunere de poartă
-- [ ] 🔒 5.10 Poarta Etapei 5
+- [x] 5.10 Poarta Etapei 5: aprobată (D-055, 8 nov. 2026)
+
+## Etapa 6 — pași (plan: `docs/ETAPA6_PLAN.md`; decizii propuse D-056 … D-060; întâi partea care merge pe un singur PC)
+
+- [ ] 6.1 Organizație și roluri pe module (D-056); ecranul „Organizație”
+- [ ] 6.2 Invitații (expirare, o singură folosire, fără chei private) și aprobarea dispozitivelor; registru de membri semnat (D-058)
+- [ ] 6.3 Protocolul de sincronizare, independent de rețea (D-057), doar datele permise de rol (D-059)
+- [ ] 6.4 Conflicte în aplicație; decizia ajunge pe toate dispozitivele
+- [ ] 6.5 Transport iroh în aplicație (două procese pe același PC); stare vizibilă; mărimea installerului
+- [ ] 6.6 Offline și reconectare: coadă, reluare după întrerupere
+- [ ] 6.7 Revocare (D-060)
+- [ ] 6.8 Fișiere mari: transfer cu reluare și verificare BLAKE3
+- [ ] 6.9 Modulul „Dispozitive și sincronizare”; e2e
+- [ ] 🔒 6.10 Test pe două PC-uri, LAN + internet, cu întreruperi (fostul S2.3) — cere al doilea PC
+- [ ] 6.11 Raport Etapa 6 (`docs/ETAPA6_RAPORT.md`)
+- [ ] 🔒 6.12 Poarta Etapei 6

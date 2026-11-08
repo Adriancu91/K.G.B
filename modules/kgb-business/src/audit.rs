@@ -322,7 +322,7 @@ impl Business {
                 json!({"tip": t, "document": detail, "data": s(&p, "data"), "suma": num::fmt_money(i(&p, "suma"))}),
             ));
         }
-        out.sort_by(|a, b| b.0.cmp(&a.0));
+        out.sort_by_key(|e| std::cmp::Reverse(e.0));
         Ok(json!(
             out.into_iter()
                 .take(limit)
