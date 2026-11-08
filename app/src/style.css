@@ -981,3 +981,9 @@ table.report tfoot th {
 .invoices .sheet-tabs {
   margin: 8px 0;
 }
+
+/* Audit (step 5.8). */
+.ok-text {
+  color: #2c7a4b;
+  font-weight: 600;
+}

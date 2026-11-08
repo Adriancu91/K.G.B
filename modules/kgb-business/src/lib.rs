@@ -24,9 +24,10 @@
 //! `purchase_storno`, `import` (CSV from „Extragere date”); `accounts`,
 //! `account_save`, `payments`, `payment_save`, `payment_link`, `payment_storno`,
 //! `open_documents`, `settle`, `bank_import`; `aging`, `partner_sheet`;
-//! `report`, `report_export`.
+//! `report`, `report_export`; `verify`, `journal`.
 
 pub mod aging;
+pub mod audit;
 pub mod cash;
 pub mod invoices;
 pub mod num;
@@ -52,7 +53,7 @@ use num::{Money, Qty};
 pub const ID: &str = "kgb.business";
 pub(crate) const PRODUCTS: &str = "produse";
 pub(crate) const WAREHOUSES: &str = "depozite";
-const DOCS: &str = "documente_stoc";
+pub(crate) const DOCS: &str = "documente_stoc";
 pub(crate) const MOVES: &str = "miscari";
 const MAX_LINES: usize = 500;
 
@@ -238,6 +239,13 @@ struct Storno {
     data: String,
     #[serde(default)]
     nota: Option<String>,
+}
+
+#[derive(Deserialize)]
+#[serde(deny_unknown_fields)]
+struct JournalArgs {
+    #[serde(default)]
+    limit: Option<usize>,
 }
 
 #[derive(Deserialize)]
@@ -983,6 +991,12 @@ impl Module for Business {
             "invoice_issue" => self.invoice_issue(ctx, args(a)?),
             "invoices" => self.invoices(ctx),
             "invoice_storno" => self.invoice_storno(ctx, args(a)?),
+            // Step 5.8: audit and consistency.
+            "verify" => self.verify(ctx),
+            "journal" => {
+                let a: JournalArgs = args(a)?;
+                self.journal(ctx, a.limit.unwrap_or(200).min(5_000))
+            }
             // Step 5.7: reports and export.
             "report" => {
                 let a: Period = args(a)?;

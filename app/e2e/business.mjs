@@ -309,6 +309,16 @@ try {
   await p.eval(`window.__TAURI_INTERNALS__.invoke("module_call", { id: "kgb.business", command: "report_export", args: { de_la: "2026-01-01", pana_la: ${JSON.stringify(todayIso)}, format: "xlsx", dest: ${JSON.stringify(rx)} } })`);
   check("raportul se exportă în Excel", readFileSync(rx).subarray(0, 2).toString("latin1") === "PK");
 
+  // Step 5.8: the verification finds nothing wrong; the journal lists it all.
+  await tab(p, "Audit");
+  await p.until("!!document.querySelector('.audit-view')");
+  await p.click("Verifică acum", ".audit-view button");
+  await p.until("!!document.querySelector('.verify-table')", 15000);
+  const vr = await p.eval("document.querySelector('.audit-view [role=status]').innerText");
+  check("verificarea de consistență: 0 probleme", vr.includes("0 probleme"), vr);
+  check("jurnalul conține operațiile", (await p.eval("document.querySelectorAll('.journal-table tbody tr').length")) >= 15);
+  await p.screenshot(join(shots, "11-audit.png"));
+
   // Forced restart: the stock is recomputed from the movements.
   stop(p);
   p = await start();
