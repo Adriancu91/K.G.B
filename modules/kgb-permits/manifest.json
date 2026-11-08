@@ -1,0 +1,200 @@
+{
+  "manifest_format": 1,
+  "id": "kgb.permits",
+  "name": "Permise și autorizații",
+  "description": "Biblioteca de proceduri pentru autorizații (instituție, condiții, documente, taxe și termene), fiecare cu surse oficiale datate, și dosare pe proiect cu checklist, documente atașate și memento-uri pentru termene. Informație orientativă: nu înlocuiește consultanța juridică sau confirmarea instituției.",
+  "version": "0.1.0",
+  "core": ">=0.1.0, <0.2.0",
+  "status": "beta",
+  "permissions": [
+    "storage.own",
+    "files.own",
+    "notify.send"
+  ],
+  "services": [
+    "storage",
+    "files",
+    "notify",
+    "log"
+  ],
+  "data_types": [
+    {
+      "collection": "proceduri",
+      "description": "procedurile: instituție, condiții, documente, pași, taxe, termene, surse oficiale cu dată",
+      "schema": {
+        "fields": {
+          "titlu": {
+            "type": "string",
+            "required": true,
+            "nullable": false,
+            "max_len": 200
+          },
+          "domeniu": {
+            "type": "string",
+            "required": true,
+            "enum": [
+              "constructii",
+              "mediu",
+              "isu",
+              "functionare",
+              "sanitar",
+              "transport",
+              "comercial",
+              "altul"
+            ]
+          },
+          "institutie": {
+            "type": "string",
+            "required": false,
+            "nullable": true,
+            "max_len": 300
+          },
+          "descriere": {
+            "type": "string",
+            "required": false,
+            "nullable": true,
+            "max_len": 4000
+          },
+          "conditii": {
+            "type": "array",
+            "required": true,
+            "max_len": 100
+          },
+          "documente": {
+            "type": "array",
+            "required": true,
+            "max_len": 100
+          },
+          "pasi": {
+            "type": "array",
+            "required": true,
+            "max_len": 100
+          },
+          "taxe": {
+            "type": "string",
+            "required": false,
+            "nullable": true,
+            "max_len": 2000
+          },
+          "termen_legal": {
+            "type": "string",
+            "required": false,
+            "nullable": true,
+            "max_len": 300
+          },
+          "surse": {
+            "type": "array",
+            "required": true,
+            "max_len": 30
+          },
+          "verificat": {
+            "type": "string",
+            "required": false,
+            "nullable": true,
+            "max_len": 10
+          },
+          "creat_ms": {
+            "type": "integer",
+            "required": true,
+            "min": 0
+          },
+          "actualizat_ms": {
+            "type": "integer",
+            "required": true,
+            "min": 0
+          }
+        },
+        "additional": false
+      },
+      "indexes": [
+        "domeniu"
+      ]
+    },
+    {
+      "collection": "dosare",
+      "description": "dosarele: procedura urmată, client sau proiect, termen, stare, ce s-a bifat, documente atașate",
+      "schema": {
+        "fields": {
+          "titlu": {
+            "type": "string",
+            "required": true,
+            "nullable": false,
+            "max_len": 200
+          },
+          "procedura": {
+            "type": "string",
+            "required": true,
+            "nullable": false,
+            "max_len": 36
+          },
+          "client": {
+            "type": "string",
+            "required": false,
+            "nullable": true,
+            "max_len": 200
+          },
+          "deschis": {
+            "type": "string",
+            "required": true,
+            "nullable": false,
+            "max_len": 10
+          },
+          "termen": {
+            "type": "string",
+            "required": false,
+            "nullable": true,
+            "max_len": 10
+          },
+          "stare": {
+            "type": "string",
+            "required": true,
+            "enum": [
+              "deschis",
+              "depus",
+              "aprobat",
+              "respins",
+              "inchis"
+            ]
+          },
+          "bifate": {
+            "type": "object",
+            "required": true
+          },
+          "fisiere": {
+            "type": "array",
+            "required": true,
+            "max_len": 200
+          },
+          "note": {
+            "type": "string",
+            "required": false,
+            "nullable": true,
+            "max_len": 4000
+          },
+          "creat_ms": {
+            "type": "integer",
+            "required": true,
+            "min": 0
+          },
+          "actualizat_ms": {
+            "type": "integer",
+            "required": true,
+            "min": 0
+          }
+        },
+        "additional": false
+      },
+      "indexes": [
+        "procedura",
+        "stare"
+      ]
+    }
+  ],
+  "events": {
+    "emits": [],
+    "listens": []
+  },
+  "data_format": 1,
+  "migrations": [],
+  "on_disable": "Procedurile, dosarele și documentele atașate rămân în spațiul de lucru și reapar când modulul este activat din nou."
+}

@@ -1026,3 +1026,28 @@ form[aria-label="Răspunde la invitație"] textarea {
   display: grid;
   gap: 4px;
 }
+
+/* Etapa 7: permits */
+.permit-editor {
+  display: grid;
+  gap: 8px;
+  max-width: 760px;
+}
+.permit-editor label {
+  display: grid;
+  gap: 4px;
+}
+.permit-editor fieldset {
+  border: 1px solid var(--line);
+  border-radius: 6px;
+}
+.case-detail {
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 8px 12px;
+  margin: 12px 0;
+}
+.checklist {
+  list-style: none;
+  padding-left: 0;
+}
