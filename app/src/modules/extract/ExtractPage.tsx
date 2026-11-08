@@ -5,6 +5,7 @@
 import { useCallback, useEffect, useState } from "react";
 import { open, save } from "@tauri-apps/plugin-dialog";
 import { api, message } from "../../api";
+import { Confirm } from "../../components/Confirm";
 
 const ID = "kgb.extract";
 
@@ -54,6 +55,7 @@ export function ExtractPage({ onError }: { onError: (e: string | null) => void }
   const [tab, setTab] = useState<"extragere" | "registru" | "jurnal">("extragere");
   const [busy, setBusy] = useState(false);
   const [notice, setNotice] = useState<string | null>(null);
+  const [toDelete, setToDelete] = useState<Doc | null>(null);
 
   const refresh = useCallback(async () => {
     try {
@@ -150,6 +152,30 @@ export function ExtractPage({ onError }: { onError: (e: string | null) => void }
         {notice && <span className="muted grow">{notice}</span>}
       </div>
 
+      {toDelete && (
+        <Confirm
+          title={`Ștergi „${toDelete.name}”?`}
+          confirmLabel="Șterge"
+          danger
+          onCancel={() => setToDelete(null)}
+          onConfirm={() => {
+            const d = toDelete;
+            setToDelete(null);
+            void run(async () => {
+              await api.moduleCall(ID, "delete", { id: d.id });
+              if (current === d.id) {
+                setCurrent(null);
+                setX(null);
+              }
+              await refresh();
+              setNotice(`Șters: ${d.name}`);
+            });
+          }}
+        >
+          Documentul dispare din listă. Facturile deja importate în registru rămân acolo.
+        </Confirm>
+      )}
+
       {tab === "extragere" && (
         <div className="pdf-layout">
           <ul className="list pdf-docs" aria-label="Documente">
@@ -158,6 +184,9 @@ export function ExtractPage({ onError }: { onError: (e: string | null) => void }
               <li key={d.id} className={d.id === current ? "active" : ""}>
                 <button className="link grow" onClick={() => setCurrent(d.id)}>
                   {d.name}
+                </button>
+                <button className="danger-text" aria-label={`Șterge ${d.name}`} title="Șterge documentul" onClick={() => setToDelete(d)}>
+                  Șterge
                 </button>
               </li>
             ))}

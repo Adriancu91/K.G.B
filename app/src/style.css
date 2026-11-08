@@ -1051,3 +1051,16 @@ form[aria-label="Răspunde la invitație"] textarea {
   list-style: none;
   padding-left: 0;
 }
+
+/* Etapa 7: calculator */
+.calc-result {
+  font-size: 1.1em;
+  margin-left: 8px;
+}
+.calc-history {
+  list-style: none;
+  padding-left: 0;
+}
+.money-calcs form {
+  margin-bottom: 12px;
+}

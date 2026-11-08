@@ -1,0 +1,55 @@
+{
+  "manifest_format": 1,
+  "id": "kgb.calc",
+  "name": "Calculator și conversii",
+  "description": "Calculator cu istoric și calcul exact (fără erori de rotunjire ascunse), conversii de unități cu factori exacți (lungime, suprafață, volum, masă, temperatură, energie) și calcule uzuale: TVA, adaos și marjă, procente, dobândă simplă. Banii se socotesc în bani întregi.",
+  "version": "0.1.0",
+  "core": ">=0.1.0, <0.2.0",
+  "status": "beta",
+  "permissions": [
+    "storage.own"
+  ],
+  "services": [
+    "storage",
+    "log"
+  ],
+  "data_types": [
+    {
+      "collection": "istoric",
+      "description": "istoricul calculatorului: expresia, rezultatul, momentul",
+      "schema": {
+        "fields": {
+          "expresie": {
+            "type": "string",
+            "required": true,
+            "nullable": false,
+            "max_len": 500
+          },
+          "rezultat": {
+            "type": "string",
+            "required": true,
+            "nullable": false,
+            "max_len": 200
+          },
+          "exact": {
+            "type": "bool",
+            "required": true
+          },
+          "creat_ms": {
+            "type": "integer",
+            "required": true,
+            "min": 0
+          }
+        },
+        "additional": false
+      }
+    }
+  ],
+  "events": {
+    "emits": [],
+    "listens": []
+  },
+  "data_format": 1,
+  "migrations": [],
+  "on_disable": "Istoricul calculatorului rămâne în spațiul de lucru și reapare când modulul este activat din nou."
+}

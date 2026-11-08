@@ -302,3 +302,8 @@ Deciziile DECIS se schimbă doar cu aprobarea explicită a proprietarului (Maste
 - D-063: aplicația vine fără surse externe active; proprietarul le adaugă și le aprobă;
 - D-064: pontaj declarativ, fără urmărirea calculatorului, ecranului sau locației;
 - D-065: bani în bani întregi și în modulul de calcul; conversii cu factori exacți.
+
+### D-066 — Agenda de parteneri, comună modulelor
+- **Data:** 8 nov. 2026 · **Statut:** PROPUS (cerut de proprietar: fișa unui client/furnizor completată o dată, apoi folosită peste tot) — de confirmat la poarta Etapei 7
+- **Conținut:** clienții și furnizorii stau într-o agendă din nucleu (ca registrul de surse), cu permisiuni `partners.read` / `partners.write` pentru module; fișa are datele de bază, câmpuri adăugate de mână (puncte de lucru, autorizații cu număr și date, licențe) și istoricul de unde a venit fiecare valoare (ANAF, document, mână). Modulele nu își citesc datele unul altuia (D-053 rămâne); agenda e un serviciu al nucleului, cu acces doar prin permisiune.
+- **De ce:** fără ea, Business și „Documente și modele” ar ține fiecare propria listă de clienți și ar trebui completate de două ori.

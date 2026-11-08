@@ -22,6 +22,7 @@ kgb-docs.workspace = true
 kgb-business.workspace = true
 kgb-permits.workspace = true
 kgb-team.workspace = true
+kgb-calc.workspace = true
 tracing.workspace = true
 tauri = { version = "2.12", features = [] }
 # System file dialogs (open/save) for importing and exporting documents (Etapa 3).
