@@ -127,21 +127,30 @@ fn module_for(op: &Op) -> Option<String> {
 }
 
 /// Shared work data every member may read and write (the partner
-/// directory, D-066).
+/// directory, D-066; team messages, step 7.4f).
 fn member_table(coll: &str) -> bool {
-    coll == crate::partners::PARTNERS_COLLECTION
+    coll == crate::partners::PARTNERS_COLLECTION || base(coll) == crate::chat::CHAT_COLLECTION
+}
+
+/// A change to member data: a member table, or a voice message's file
+/// (a file record owned by the team messages).
+fn member_op(op: &Op) -> bool {
+    let coll = op.state.coll.as_str();
+    member_table(coll)
+        || (FILE_TABLES.contains(&coll)
+            && op.state.fields.get("module").and_then(Value::as_str) == Some(crate::chat::CHAT_MODULE))
 }
 
 /// Changes that travel between devices; everything else is local.
 fn shared(op: &Op) -> bool {
     let coll = op.state.coll.as_str();
-    coll == registry::REGISTRY_COLLECTION || org_table(coll) || member_table(coll) || module_for(op).is_some()
+    coll == registry::REGISTRY_COLLECTION || org_table(coll) || member_op(op) || module_for(op).is_some()
 }
 
 /// Whether the device with key `key` may receive `op`.
 fn readable(st: &RegState, key: &str, op: &Op) -> bool {
     let coll = op.state.coll.as_str();
-    if coll == registry::REGISTRY_COLLECTION || org_table(coll) || member_table(coll) {
+    if coll == registry::REGISTRY_COLLECTION || org_table(coll) || member_op(op) {
         return st.member_of(key).is_some();
     }
     match module_for(op) {
@@ -326,7 +335,7 @@ pub fn apply(store: &mut Store, dev: &DeviceIdentity, resp: &Value) -> CoreResul
         };
         let ok = if org_table(coll) {
             then.is_admin(author)
-        } else if member_table(coll) {
+        } else if member_op(op) {
             then.member_of(author).is_some()
         } else {
             module_for(op).is_some_and(|m| then.access(author, &m) == Access::Scriere)

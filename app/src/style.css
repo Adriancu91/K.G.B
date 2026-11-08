@@ -1337,3 +1337,53 @@ label > .suggest > input {
 .alert-box .tag {
   justify-self: start;
 }
+
+/* Etapa 7, step 7.4f: team messages */
+.chat {
+  display: grid;
+  gap: 10px;
+  max-width: 900px;
+}
+.chat-list {
+  display: grid;
+  gap: 8px;
+  max-height: 60vh;
+  overflow: auto;
+  padding: 8px;
+  border: 1px solid var(--line);
+  background: var(--panel);
+}
+.msg {
+  justify-self: start;
+  max-width: min(80%, 600px);
+  padding: 6px 10px;
+  border: 1px solid var(--line);
+  display: grid;
+  gap: 4px;
+}
+.msg.mine {
+  justify-self: end;
+  border-color: var(--accent);
+}
+.msg-head {
+  display: flex;
+  gap: 8px;
+  align-items: baseline;
+}
+.msg-text {
+  margin: 0;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+.chat-input {
+  display: grid;
+  gap: 6px;
+}
+.chat-input textarea {
+  width: 100%;
+  resize: vertical;
+}
+.chat .rec {
+  background: var(--danger);
+  border-color: var(--danger);
+}

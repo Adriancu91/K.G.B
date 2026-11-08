@@ -1065,6 +1065,8 @@ fn reminders_tick(app: State<AppState>, handle: tauri::AppHandle, azi: String) -
         if partners_readable(s.ws.store(), &fp)? {
             kgb_core::partners::remind(&mut s.ws, &azi)?;
         }
+        // Team messages from the other PCs (step 7.4f).
+        kgb_core::chat::notify(&mut s.ws, &fp)?;
         let mut new = s.mm.remind_for(&mut s.ws, Some(&fp), &azi)?;
         let known: std::collections::BTreeSet<uuid::Uuid> = new.iter().map(|n| n.id).collect();
         for n in notifications::list(&s.ws, false, usize::MAX)? {
@@ -1076,6 +1078,86 @@ fn reminders_tick(app: State<AppState>, handle: tauri::AppHandle, azi: String) -
     })?;
     desktop_notify(&handle, &new);
     Ok(new.len())
+}
+
+// ---------- team messages (Etapa 7, step 7.4f) ----------
+
+/// The name messages from this PC are signed with: the member's name in an
+/// organization, the owner's name otherwise.
+fn my_name(s: &Session) -> Result<String, CoreError> {
+    if let Some(c) = org::current(s.ws.store(), &s.device.fingerprint())? {
+        return Ok(c.member.name);
+    }
+    Ok(identity::owner(s.ws.store())?.map(|o| o.display_name).unwrap_or_else(|| "Proprietar".into()))
+}
+
+#[derive(Serialize)]
+struct ChatReply {
+    mesaje: Vec<kgb_core::chat::Message>,
+    /// This PC's fingerprint: messages written here are shown as "eu".
+    eu: String,
+    nume: String,
+    /// Whether this PC is in an organization (otherwise nobody else sees the messages).
+    organizatie: bool,
+}
+
+#[tauri::command]
+fn chat_list(app: State<AppState>) -> CmdResult<ChatReply> {
+    with_session(&app, |s| {
+        Ok(ChatReply {
+            mesaje: kgb_core::chat::list(s.ws.store(), 300)?,
+            eu: s.device.fingerprint(),
+            nume: my_name(s)?,
+            organizatie: org::organization(s.ws.store())?.is_some(),
+        })
+    })
+}
+
+#[tauri::command]
+fn chat_send(app: State<AppState>, text: String) -> CmdResult<uuid::Uuid> {
+    with_session(&app, |s| {
+        let name = my_name(s)?;
+        kgb_core::chat::send(&mut s.ws, &name, &s.device.fingerprint(), &text)
+    })
+}
+
+/// A voice message recorded in the window (base64 of the recording).
+#[tauri::command]
+fn chat_send_voice(app: State<AppState>, data: String, mime: String, durata_ms: u64) -> CmdResult<uuid::Uuid> {
+    use base64::Engine as _;
+    let bytes = base64::engine::general_purpose::STANDARD
+        .decode(data.as_bytes())
+        .map_err(|_| "înregistrarea nu a ajuns întreagă".to_string())?;
+    with_session(&app, |s| {
+        let name = my_name(s)?;
+        kgb_core::chat::send_voice(&mut s.ws, &name, &s.device.fingerprint(), &bytes, &mime, durata_ms)
+    })
+}
+
+#[derive(Serialize)]
+struct VoiceReply {
+    mime: String,
+    data: String,
+}
+
+/// The recording of a voice message, or None while it is still on its way.
+#[tauri::command]
+fn chat_voice(app: State<AppState>, id: uuid::Uuid) -> CmdResult<Option<VoiceReply>> {
+    use base64::Engine as _;
+    with_session(&app, |s| {
+        Ok(kgb_core::chat::voice(&s.ws, id)?.map(|(mime, bytes)| VoiceReply {
+            mime,
+            data: base64::engine::general_purpose::STANDARD.encode(bytes),
+        }))
+    })
+}
+
+#[tauri::command]
+fn chat_delete(app: State<AppState>, id: uuid::Uuid) -> CmdResult<()> {
+    with_session(&app, |s| {
+        let fp = s.device.fingerprint();
+        kgb_core::chat::delete(&mut s.ws, &fp, id)
+    })
 }
 
 /// At most 3 separate pop-ups; more become one summary (no burst on screen).
@@ -1306,6 +1388,11 @@ fn main() {
             sources_list,
             anaf_lookup,
             media_now,
+            chat_list,
+            chat_send,
+            chat_send_voice,
+            chat_voice,
+            chat_delete,
             fx_rates,
             weather_today,
             weather_towns,
