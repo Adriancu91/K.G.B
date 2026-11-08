@@ -35,6 +35,11 @@ semver = "1"
 tracing-subscriber = { version = "0.3", default-features = false, features = ["registry", "std"] }
 tempfile = "3.27.0"
 
+# Debug builds keep only line tables: the full debug info of the test
+# binaries (iroh included) made the Windows linker fail with LNK1318.
+[profile.dev]
+debug = "line-tables-only"
+
 [profile.release]
 lto = true
 codegen-units = 1

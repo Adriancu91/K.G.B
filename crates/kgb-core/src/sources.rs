@@ -143,7 +143,7 @@ fn fields(src: &Source) -> Fields {
 
 pub fn list(store: &Store) -> CoreResult<Vec<Source>> {
     let mut v: Vec<Source> = store.scan(SOURCES_COLLECTION, |_| true)?.iter().map(from).collect();
-    v.sort_by(|a, b| (!a.activa, a.nume.to_lowercase()).cmp(&(!b.activa, b.nume.to_lowercase())));
+    v.sort_by_key(|s| (!s.activa, s.nume.to_lowercase()));
     Ok(v)
 }
 
