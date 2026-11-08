@@ -12,7 +12,7 @@
 | **Delimitate** | Pe fiecare ecran: „Evidență primară, nu contabilitate certificată”. Cotele de TVA sunt setări de confirmat de tine sau de contabil (implicit 21%, 11%, 0%). Rezultatul din rapoarte e marcat ca indicator, nu rezultat contabil. e-Factura și SAF-T nu fac parte din etapă (D-052) |
 
 **Teste:**
-- **194 de teste automate** trec pe laptop, plus testul cu 1.000 de operații;
+- **195 de teste automate** trec pe laptop, printre ele și testul cu 1.000 de operații;
 - testul modulului Business în fereastra reală: **28/28 verificări**, cu repornire forțată.
 
 ## Ce s-a construit (modulul „Business”, beta)
