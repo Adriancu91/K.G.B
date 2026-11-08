@@ -1014,3 +1014,15 @@ form[aria-label="Răspunde la invitație"] textarea {
 .fingerprint {
   font-family: ui-monospace, Consolas, monospace;
 }
+
+/* Etapa 7: sources register */
+.source-form {
+  display: grid;
+  gap: 8px;
+  max-width: 640px;
+  margin-top: 12px;
+}
+.source-form label {
+  display: grid;
+  gap: 4px;
+}

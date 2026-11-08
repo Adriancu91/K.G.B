@@ -36,10 +36,14 @@ pub const PERMISSIONS: &[(&str, &str)] = &[
         "notify.send",
         "trimite notificări în centrul de notificări al aplicației (fiecare trimitere e înregistrată în jurnal)",
     ),
+    (
+        "sources.read",
+        "citește sursele externe aprobate în registrul de surse (doar cele active, cu condițiile lor de folosire)",
+    ),
 ];
 
 /// Core services a module may use.
-pub const SERVICES: &[&str] = &["storage", "settings", "identity", "files", "notify", "log"];
+pub const SERVICES: &[&str] = &["storage", "settings", "identity", "files", "notify", "sources", "log"];
 
 /// Which service each permission belongs to (a permission needs its service).
 fn service_of(permission: &str) -> &'static str {
@@ -49,6 +53,7 @@ fn service_of(permission: &str) -> &'static str {
         "identity.read" => "identity",
         "files.own" => "files",
         "notify.send" => "notify",
+        "sources.read" => "sources",
         _ => "",
     }
 }

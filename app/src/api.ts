@@ -186,6 +186,34 @@ export interface SyncOutcome {
   files: { primite: number; lipsa: number; erori: string[] } | null;
 }
 
+export interface Source {
+  id: string;
+  nume: string;
+  url: string;
+  tip: string;
+  termeni: string;
+  termeni_url: string;
+  licenta: string;
+  verificat: string;
+  activa: boolean;
+  aprobata_de: string;
+  note: string;
+  version: number;
+}
+
+export interface SourceInput {
+  id?: string;
+  nume: string;
+  url: string;
+  tip: string;
+  termeni: string;
+  termeni_url: string;
+  licenta: string;
+  verificat: string;
+  note: string;
+  version: number;
+}
+
 export interface InviteView {
   id: string;
   member: string;
@@ -283,6 +311,10 @@ export const api = {
   conflicts: () => invoke<{ items: ConflictView[]; modules: Array<[string, string]> }>("conflicts_list"),
   conflictDecide: (id: string, keepHere: boolean) => invoke<void>("conflict_decide", { id, keepHere }),
   deviceRevoke: (fingerprint: string) => invoke<void>("org_device_revoke", { fingerprint }),
+  sources: () => invoke<{ items: Source[]; kinds: Array<[string, string]>; poate_modifica: boolean }>("sources_list"),
+  sourceSave: (source: SourceInput) => invoke<string>("source_save", { source }),
+  sourceSetActive: (id: string, active: boolean) => invoke<void>("source_set_active", { id, active }),
+  sourceDelete: (id: string) => invoke<void>("source_delete", { id }),
   netStatus: () => invoke<NetStatus>("net_status"),
   netSetRelay: (relay: string) => invoke<void>("net_set_relay", { relay }),
   syncNow: () => invoke<SyncOutcome[]>("sync_now"),

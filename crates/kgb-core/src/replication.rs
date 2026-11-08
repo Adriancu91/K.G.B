@@ -46,7 +46,7 @@ use crate::workspace::now_ms;
 const DOMAIN: &[u8] = b"KGB-SYNC1\n";
 
 /// Organization tables: accepted only from administrators.
-const ORG_TABLES: &[&str] = &["core.org", "core.roles", "core.members"];
+const ORG_TABLES: &[&str] = &["core.org", "core.roles", "core.members", "core.sources"];
 
 fn bad(detail: impl Into<String>) -> CoreError {
     CoreError::invalid("sincronizarea", detail)

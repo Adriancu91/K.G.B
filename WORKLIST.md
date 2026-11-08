@@ -126,7 +126,7 @@ Interdicții permanente: fără baze de date (D-005, D-018), fără schimbări d
 
 ## Etapa 7 — pași (plan: `docs/ETAPA7_PLAN.md`; D-061 decis, D-062 … D-065 propuse; începută înaintea porții Etapei 6, la cererea proprietarului)
 
-- [ ] 7.1 Registrul de surse și licențe (nucleu): sursă, link, tip, condiții de folosire, licență, data verificării, aprobare
+- [x] 7.1 Registrul de surse și licențe (nucleu, D-062, D-063): pentru fiecare sursă externă — nume, adresă, tip (RSS, API, oficial, altul), condițiile de folosire (text și/sau link), licența, data verificării, cine a aprobat-o; o sursă se activează doar cu condiții, licență și dată; schimbarea adresei, condițiilor, licenței sau datei unei surse active o oprește; modulele văd doar sursele active, cu permisiunea nouă `sources.read`; nicio sursă activă la început; în organizație registrul se sincronizează și îl schimbă doar administratorii; pagina „Surse externe”; 2 teste + e2e
 - [ ] 7.2 Modulul „Permise și autorizații”: proceduri cu surse oficiale datate, dosare cu checklist, memento-uri
 - [ ] 7.3 Modulul „Echipă și pontaj”: angajați, ture, pontaj, ore suplimentare, concedii, raport lunar
 - [ ] 7.4 Modulul „Calculator și conversii”: calculator, unități, calcule uzuale (TVA, adaos, marjă)

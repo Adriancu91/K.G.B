@@ -777,6 +777,19 @@ impl ModuleContext<'_> {
         Ok((nid, new))
     }
 
+    /// Active external sources of a kind (permission `sources.read`, Etapa 7,
+    /// D-062): only approved sources, each with its terms of use.
+    pub fn sources(&mut self, kind: Option<&str>) -> CoreResult<Vec<crate::sources::Source>> {
+        self.require("sources.read")?;
+        crate::sources::active(self.ws.store(), kind)
+    }
+
+    /// One source by id, only if it is active (permission `sources.read`).
+    pub fn source(&mut self, id: Uuid) -> CoreResult<crate::sources::Source> {
+        self.require("sources.read")?;
+        crate::sources::usable(self.ws.store(), id)
+    }
+
     /// Whether this module already sent a notification with `key` (permission
     /// `notify.send`); lets a module skip work for reminders already given.
     pub fn notify_key_used(&mut self, key: &str) -> CoreResult<bool> {

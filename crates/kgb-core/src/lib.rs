@@ -25,6 +25,7 @@ pub mod registry;
 pub mod replication;
 pub mod schema;
 pub mod settings;
+pub mod sources;
 pub mod workspace;
 
 pub use error::{CoreError, CoreResult};

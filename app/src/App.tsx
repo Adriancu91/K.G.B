@@ -17,6 +17,7 @@ import { Home } from "./pages/Home";
 import { SettingsPage } from "./pages/SettingsPage";
 import { OrgPage } from "./pages/OrgPage";
 import { DevicesPage } from "./pages/DevicesPage";
+import { SourcesPage } from "./pages/SourcesPage";
 
 /// Interfaces of the built-in modules, by module id.
 const MODULE_PAGES: Record<string, ComponentType<{ onError: (e: string | null) => void }>> = {
@@ -113,7 +114,7 @@ export function App() {
       });
     }
   }
-  nav.push({ id: "catalog", label: "Catalog module" }, { id: "org", label: "Organizație" }, { id: "devices", label: "Dispozitive și sincronizare" }, { id: "settings", label: "Setări" }, { id: "data", label: "Date și backup" }, { id: "diagnostics", label: "Diagnostic" });
+  nav.push({ id: "catalog", label: "Catalog module" }, { id: "org", label: "Organizație" }, { id: "devices", label: "Dispozitive și sincronizare" }, { id: "sources", label: "Surse externe" }, { id: "settings", label: "Setări" }, { id: "data", label: "Date și backup" }, { id: "diagnostics", label: "Diagnostic" });
 
   // If the open module was disabled or hidden, fall back to the start page.
   useEffect(() => {
@@ -192,7 +193,7 @@ export function App() {
     <div className="shell" style={{ gridTemplateColumns: collapsed ? "48px 1fr" : `${width}px 1fr` }}>
       {info.pre_release && (
         <div className="banner">
-          Versiune de dinainte de lansare (Etapa 6 în lucru). Nu folosi încă pentru date importante.
+          Versiune de dinainte de lansare (Etapa 7 în lucru). Nu folosi încă pentru date importante.
         </div>
       )}
       <aside className={collapsed ? "collapsed" : undefined}>
@@ -248,6 +249,7 @@ export function App() {
           <SettingsPage reply={settings} info={info} onSave={saveSettings} onInfoChanged={loadInfo} onError={setError} />
         )}
         {page === "devices" && <DevicesPage onError={setError} />}
+        {page === "sources" && <SourcesPage onError={setError} />}
         {page === "org" && <OrgPage onError={setError} onChanged={() => void loadModules()} />}
         {page === "diagnostics" && <DiagnosticsPage onError={setError} />}
         {page === "data" && <DataPage onError={setError} onSwitched={() => window.location.reload()} />}

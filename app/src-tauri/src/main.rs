@@ -597,6 +597,70 @@ fn org_device_revoke(app: State<AppState>, fingerprint: String) -> CmdResult<()>
     })
 }
 
+// ---------- external sources and licences (Etapa 7, step 7.1, D-062) ----------
+
+#[derive(Serialize)]
+struct SourcesReply {
+    items: Vec<kgb_core::sources::Source>,
+    kinds: &'static [(&'static str, &'static str)],
+    /// Whether the person on this PC may change the register.
+    poate_modifica: bool,
+}
+
+#[tauri::command]
+fn sources_list(app: State<AppState>) -> CmdResult<SourcesReply> {
+    with_session(&app, |s| {
+        Ok(SourcesReply {
+            items: kgb_core::sources::list(s.ws.store())?,
+            kinds: kgb_core::sources::KINDS,
+            poate_modifica: org::require_admin(s.ws.store(), Some(&s.device.fingerprint()), "").is_ok(),
+        })
+    })
+}
+
+/// The register changes only by an administrator (or the single user
+/// without an organization); every change is audited.
+fn sources_admin<T>(
+    app: &State<AppState>,
+    what: &str,
+    f: impl FnOnce(&mut Session) -> Result<T, CoreError>,
+) -> CmdResult<T> {
+    with_session(app, |s| {
+        org::require_admin(s.ws.store(), Some(&s.device.fingerprint()), "registrul de surse")?;
+        let r = f(s)?;
+        modules::audit(&mut s.ws, "core.sources", what, "ok", "")?;
+        Ok(r)
+    })
+}
+
+#[tauri::command]
+fn source_save(app: State<AppState>, source: kgb_core::sources::SourceInput) -> CmdResult<uuid::Uuid> {
+    sources_admin(&app, "sursă salvată", |s| {
+        kgb_core::sources::save(s.ws.store_mut(), source)
+    })
+}
+
+#[tauri::command]
+fn source_set_active(app: State<AppState>, id: uuid::Uuid, active: bool) -> CmdResult<()> {
+    sources_admin(&app, if active { "sursă activată" } else { "sursă oprită" }, |s| {
+        let fp = s.device.fingerprint();
+        let by = match org::current(s.ws.store(), &fp)? {
+            Some(c) => c.member.name,
+            None => identity::owner(s.ws.store())?
+                .map(|o| o.display_name)
+                .unwrap_or_default(),
+        };
+        kgb_core::sources::set_active(s.ws.store_mut(), id, active, &by)
+    })
+}
+
+#[tauri::command]
+fn source_delete(app: State<AppState>, id: uuid::Uuid) -> CmdResult<()> {
+    sources_admin(&app, "sursă ștearsă", |s| {
+        kgb_core::sources::delete(s.ws.store_mut(), id)
+    })
+}
+
 // ---------- conflicts (Etapa 6, step 6.4) ----------
 
 #[derive(Serialize)]
@@ -1007,6 +1071,10 @@ fn main() {
             org_role_save,
             org_role_delete,
             org_device_revoke,
+            sources_list,
+            source_save,
+            source_set_active,
+            source_delete,
             conflicts_list,
             net_status,
             net_set_relay,
