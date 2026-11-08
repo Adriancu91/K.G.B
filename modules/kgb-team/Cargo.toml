@@ -1,0 +1,19 @@
+[package]
+name = "kgb-team"
+version = "0.1.0"
+edition.workspace = true
+publish.workspace = true
+license.workspace = true
+description = "K.G.B. module: team and timesheet — employees, shifts, declared working hours, overtime, leave with approval, monthly report."
+
+[dependencies]
+kgb-core.workspace = true
+kgb-store.workspace = true
+kgb-sheets.workspace = true
+serde.workspace = true
+serde_json.workspace = true
+uuid.workspace = true
+
+[dev-dependencies]
+tempfile.workspace = true
+calamine = "0.38.0"

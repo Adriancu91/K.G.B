@@ -1,6 +1,6 @@
 [workspace]
 resolver = "3"
-members = ["crates/kgb-store", "crates/kgb-core", "crates/kgb-net", "modules/kgb-notes", "modules/kgb-pdf", "modules/kgb-sheets", "modules/kgb-extract", "modules/kgb-planner", "modules/kgb-docs", "modules/kgb-business", "modules/kgb-permits", "app/src-tauri"]
+members = ["crates/kgb-store", "crates/kgb-core", "crates/kgb-net", "modules/kgb-notes", "modules/kgb-pdf", "modules/kgb-sheets", "modules/kgb-extract", "modules/kgb-planner", "modules/kgb-docs", "modules/kgb-business", "modules/kgb-permits", "modules/kgb-team", "app/src-tauri"]
 # Spike-urile Etapei 0 rămân proiecte independente, neatinse.
 exclude = ["spikes"]
 
@@ -22,6 +22,7 @@ kgb-planner = { path = "modules/kgb-planner" }
 kgb-docs = { path = "modules/kgb-docs" }
 kgb-business = { path = "modules/kgb-business" }
 kgb-permits = { path = "modules/kgb-permits" }
+kgb-team = { path = "modules/kgb-team" }
 blake3 = { version = "1.8.7", features = ["pure"] }
 crc32fast = "1.5.4"
 serde = { version = "1.0.229", features = ["derive"] }

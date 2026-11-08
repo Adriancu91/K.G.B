@@ -1,0 +1,226 @@
+{
+  "manifest_format": 1,
+  "id": "kgb.team",
+  "name": "Echipă și pontaj",
+  "description": "Angajați, ture, pontaj zilnic (intrare, ieșire, pauză), ore suplimentare, concedii cu aprobare și raport lunar exportabil. Orele se introduc de mână: aplicația nu urmărește calculatorul, ecranul sau locația nimănui. Datele sunt personale: le văd doar rolurile cărora le dai acces.",
+  "version": "0.1.0",
+  "core": ">=0.1.0, <0.2.0",
+  "status": "beta",
+  "permissions": [
+    "storage.own",
+    "files.own"
+  ],
+  "services": [
+    "storage",
+    "files",
+    "log"
+  ],
+  "data_types": [
+    {
+      "collection": "angajati",
+      "description": "angajații: nume, funcție, norma zilnică",
+      "schema": {
+        "fields": {
+          "nume": {
+            "type": "string",
+            "required": true,
+            "nullable": false,
+            "max_len": 100
+          },
+          "functie": {
+            "type": "string",
+            "required": false,
+            "nullable": true,
+            "max_len": 100
+          },
+          "norma_min": {
+            "type": "integer",
+            "required": true,
+            "min": 60,
+            "max": 720
+          },
+          "persoana": {
+            "type": "string",
+            "required": false,
+            "nullable": true,
+            "max_len": 36
+          },
+          "activ": {
+            "type": "bool",
+            "required": true
+          },
+          "creat_ms": {
+            "type": "integer",
+            "required": true,
+            "min": 0
+          }
+        },
+        "additional": false
+      }
+    },
+    {
+      "collection": "ture",
+      "description": "turele tip (început, sfârșit, pauză)",
+      "schema": {
+        "fields": {
+          "nume": {
+            "type": "string",
+            "required": true,
+            "nullable": false,
+            "max_len": 60
+          },
+          "inceput": {
+            "type": "string",
+            "required": true,
+            "nullable": false,
+            "max_len": 5
+          },
+          "sfarsit": {
+            "type": "string",
+            "required": true,
+            "nullable": false,
+            "max_len": 5
+          },
+          "pauza_min": {
+            "type": "integer",
+            "required": true,
+            "min": 0,
+            "max": 600
+          }
+        },
+        "additional": false
+      }
+    },
+    {
+      "collection": "pontaj",
+      "description": "pontajul zilnic declarat: intrare, ieșire, pauză",
+      "schema": {
+        "fields": {
+          "angajat": {
+            "type": "string",
+            "required": true,
+            "nullable": false,
+            "max_len": 36
+          },
+          "data": {
+            "type": "string",
+            "required": true,
+            "nullable": false,
+            "max_len": 10
+          },
+          "intrare": {
+            "type": "string",
+            "required": true,
+            "nullable": false,
+            "max_len": 5
+          },
+          "iesire": {
+            "type": "string",
+            "required": true,
+            "nullable": false,
+            "max_len": 5
+          },
+          "pauza_min": {
+            "type": "integer",
+            "required": true,
+            "min": 0,
+            "max": 600
+          },
+          "lucrat_min": {
+            "type": "integer",
+            "required": true,
+            "min": 0
+          },
+          "nota": {
+            "type": "string",
+            "required": false,
+            "nullable": true,
+            "max_len": 500
+          },
+          "actualizat_ms": {
+            "type": "integer",
+            "required": true,
+            "min": 0
+          }
+        },
+        "additional": false
+      },
+      "indexes": [
+        "angajat"
+      ]
+    },
+    {
+      "collection": "concedii",
+      "description": "concedii și absențe: tip, perioadă, stare",
+      "schema": {
+        "fields": {
+          "angajat": {
+            "type": "string",
+            "required": true,
+            "nullable": false,
+            "max_len": 36
+          },
+          "tip": {
+            "type": "string",
+            "required": true,
+            "enum": [
+              "odihna",
+              "medical",
+              "fara_plata",
+              "alt"
+            ]
+          },
+          "de_la": {
+            "type": "string",
+            "required": true,
+            "nullable": false,
+            "max_len": 10
+          },
+          "pana_la": {
+            "type": "string",
+            "required": true,
+            "nullable": false,
+            "max_len": 10
+          },
+          "stare": {
+            "type": "string",
+            "required": true,
+            "enum": [
+              "cerut",
+              "aprobat",
+              "respins"
+            ]
+          },
+          "nota": {
+            "type": "string",
+            "required": false,
+            "nullable": true,
+            "max_len": 500
+          },
+          "creat_ms": {
+            "type": "integer",
+            "required": true,
+            "min": 0
+          },
+          "decis_ms": {
+            "type": "integer",
+            "required": false,
+            "nullable": true,
+            "min": 0
+          }
+        },
+        "additional": false
+      },
+      "indexes": [
+        "angajat"
+      ]
+    }
+  ],
+  "events": {
+    "emits": [],
+    "listens": []
+  },
+  "data_format": 1,
+  "migrations": [],
+  "on_disable": "Angajații, pontajul și concediile rămân în spațiul de lucru și reapar când modulul este activat din nou."
+}

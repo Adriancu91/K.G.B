@@ -10,6 +10,7 @@ import { PlannerPage } from "./modules/planner/PlannerPage";
 import { DocsPage } from "./modules/docs/DocsPage";
 import { BusinessPage } from "./modules/business/BusinessPage";
 import { PermitsPage } from "./modules/permits/PermitsPage";
+import { TeamPage } from "./modules/team/TeamPage";
 import { NotificationBell } from "./components/Notifications";
 import { Catalog } from "./pages/Catalog";
 import { DataPage } from "./pages/DataPage";
@@ -30,6 +31,7 @@ const MODULE_PAGES: Record<string, ComponentType<{ onError: (e: string | null) =
   "kgb.docs": DocsPage,
   "kgb.business": BusinessPage,
   "kgb.permits": PermitsPage,
+  "kgb.team": TeamPage,
 };
 
 const SIDEBAR_MIN = 160;

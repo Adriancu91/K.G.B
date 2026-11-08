@@ -3742,6 +3742,7 @@ dependencies = [
  "kgb-planner",
  "kgb-sheets",
  "kgb-store",
+ "kgb-team",
  "serde",
  "serde_json",
  "tauri",
@@ -3924,6 +3925,20 @@ dependencies = [
  "tempfile",
  "uuid",
  "windows-sys 0.61.2",
+]
+
+[[package]]
+name = "kgb-team"
+version = "0.1.0"
+dependencies = [
+ "calamine",
+ "kgb-core",
+ "kgb-sheets",
+ "kgb-store",
+ "serde",
+ "serde_json",
+ "tempfile",
+ "uuid",
 ]
 
 [[package]]
