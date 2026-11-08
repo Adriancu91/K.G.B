@@ -7,6 +7,15 @@
 //! - concurrent changes to the *same* field, or edit vs delete, are conflicts:
 //!   a deterministic provisional value is kept (highest revision) and a conflict
 //!   record is stored for the user to decide. Nothing is overwritten silently.
+//!
+//! **Partial replication (Etapa 6, step 6.3).** A device may not be allowed to
+//! see every change (its role). Instead of the change it receives a
+//! *redaction marker*: an op with the same origin (device, seq) in the system
+//! collection [`REDACTED`], carrying only the original collection name. The
+//! per-device sequence stays complete (no gaps), markers are forwarded like
+//! any change, and the real change can arrive later ([`Store::fill`]) — for
+//! example when the role is widened, or from a peer that is allowed to send
+//! it. A filled marker is then sent as the real change.
 
 use std::collections::BTreeMap;
 use std::fs;
@@ -20,6 +29,47 @@ use crate::model::{DELETED_FIELD, DeviceId, Op, Origin, RecordState, Rev};
 use crate::store::{Durability, Store};
 
 pub const CONFLICTS: &str = "_conflicts";
+/// Redaction markers (see the module documentation).
+pub const REDACTED: &str = "_sync.redacted";
+
+/// The marker that stands in for `op`: same origin and revision, no content
+/// except the original collection name.
+pub fn redact(op: &Op) -> Op {
+    if op.state.coll == REDACTED {
+        return op.clone();
+    }
+    let Origin(dev, seq) = op.origin;
+    let id = Uuid::from_bytes(
+        *blake3::hash(format!("redacted|{dev}|{seq}").as_bytes())
+            .as_bytes()
+            .first_chunk::<16>()
+            .unwrap(),
+    );
+    let mut fields = crate::model::Fields::new();
+    fields.insert("coll".into(), Value::String(op.state.coll.clone()));
+    fields.insert("dev".into(), Value::from(dev));
+    fields.insert("seq".into(), Value::from(seq));
+    Op {
+        state: RecordState {
+            coll: REDACTED.into(),
+            id,
+            version: 1,
+            rev: op.state.rev,
+            deleted: false,
+            fields,
+            field_revs: BTreeMap::new(),
+        },
+        origin: op.origin,
+        record_base: None,
+        changed: BTreeMap::new(),
+        compacted: false,
+    }
+}
+
+/// Whether `op` is a redaction marker.
+pub fn is_redacted(op: &Op) -> bool {
+    op.state.coll == REDACTED
+}
 
 pub type VersionVector = BTreeMap<DeviceId, u64>;
 
@@ -31,6 +81,10 @@ pub struct SyncReport {
     pub identical: usize,
     pub skipped: usize,
     pub conflicts: usize,
+    /// Redaction markers stored (changes this copy may not see, or not yet).
+    pub redacted: usize,
+    /// Markers replaced by the real change.
+    pub filled: usize,
 }
 
 #[derive(Debug, Clone, PartialEq)]
@@ -82,6 +136,9 @@ impl Store {
             }
         }
         let mut out = Vec::new();
+        // Late fills are sent in place of their marker, so every device's
+        // changes stay in sequence order.
+        let mut fills: BTreeMap<(DeviceId, u64), Op> = BTreeMap::new();
         for &seg in &self.manifest.segments {
             let buf = fs::read(self.seg_path(seg))?;
             let mut off = 0;
@@ -89,12 +146,101 @@ impl Store {
                 let op: Op = crate::codec::decode_op(payload)?;
                 let Origin(dev, seq) = op.origin;
                 if !op.compacted && seq > 0 && seq > vv.get(&dev).copied().unwrap_or(0) {
-                    out.push(op);
+                    if dev != self.device() && !is_redacted(&op) && self.late.contains(&(dev, seq)) {
+                        fills.insert((dev, seq), op);
+                    } else {
+                        out.push(op);
+                    }
                 }
                 off = next;
             }
         }
+        for op in &mut out {
+            if is_redacted(op) {
+                let Origin(dev, seq) = op.origin;
+                if let Some(real) = fills.remove(&(dev, seq)) {
+                    *op = real;
+                }
+            }
+        }
         Ok(out)
+    }
+
+    /// Redaction markers not yet filled: the (device, seq) of changes this
+    /// copy knows exist but has not received.
+    pub fn unfilled(&self) -> Result<Vec<(DeviceId, u64)>> {
+        let mut v = Vec::new();
+        for id in self.ids(REDACTED) {
+            let Some(st) = self.get(REDACTED, id)? else { continue };
+            let dev = st.fields.get("dev").and_then(Value::as_u64).unwrap_or(0);
+            let seq = st.fields.get("seq").and_then(Value::as_u64).unwrap_or(0);
+            if !self.late.contains(&(dev, seq)) {
+                v.push((dev, seq));
+            }
+        }
+        v.sort();
+        Ok(v)
+    }
+
+    /// The real changes for the given (device, seq), if this copy has them
+    /// (not as a marker). Used to answer a peer's unfilled markers.
+    pub fn changes_at(&self, wanted: &[(DeviceId, u64)]) -> Result<Vec<Op>> {
+        if wanted.is_empty() {
+            return Ok(vec![]);
+        }
+        let want: std::collections::BTreeSet<_> = wanted.iter().copied().collect();
+        let mut found: BTreeMap<(DeviceId, u64), Op> = BTreeMap::new();
+        for &seg in &self.manifest.segments {
+            let buf = fs::read(self.seg_path(seg))?;
+            let mut off = 0;
+            while let Decoded::Frame { payload, next, .. } = frame::decode_at(&buf, off) {
+                let op: Op = crate::codec::decode_op(payload)?;
+                let Origin(dev, seq) = op.origin;
+                if !op.compacted && !is_redacted(&op) && want.contains(&(dev, seq)) {
+                    found.insert((dev, seq), op);
+                }
+                off = next;
+            }
+        }
+        Ok(found.into_values().collect())
+    }
+
+    /// Replaces unfilled markers with the real changes (merged like any remote
+    /// change). Changes without an unfilled marker here are ignored.
+    pub fn fill(&mut self, ops: Vec<Op>) -> Result<SyncReport> {
+        let mut report = SyncReport::default();
+        let open: std::collections::BTreeSet<_> = self.unfilled()?.into_iter().collect();
+        for op in ops {
+            let Origin(dev, seq) = op.origin;
+            if is_redacted(&op) || op.compacted || !open.contains(&(dev, seq)) || self.late.contains(&(dev, seq)) {
+                report.skipped += 1;
+                continue;
+            }
+            self.hlc.observe(op.state.rev.0);
+            let local = match self.keydir.get(&op.state.coll, &op.state.id) {
+                Some(l) => Some(self.read_state_at(l)?),
+                None => None,
+            };
+            let (state, _, conflicts) = merge(local.as_ref(), &op);
+            let stored = Op {
+                state,
+                origin: op.origin,
+                record_base: op.record_base,
+                changed: op.changed.clone(),
+                compacted: false,
+            };
+            self.append_txn(std::slice::from_ref(&stored), false)?;
+            report.filled += 1;
+            for c in conflicts {
+                if self.record_conflict(&stored.state, c)? {
+                    report.conflicts += 1;
+                }
+            }
+        }
+        if self.opts.durability == Durability::Sync {
+            self.flush()?;
+        }
+        Ok(report)
     }
 
     /// Apply changes received from a peer. Each change becomes a local journal entry
@@ -132,11 +278,15 @@ impl Store {
                 None => None,
             };
             let (state, outcome, conflicts) = merge(local.as_ref(), &op);
-            match outcome {
-                Outcome::Created => report.created += 1,
-                Outcome::FastForward => report.fast_forward += 1,
-                Outcome::Merged => report.merged += 1,
-                Outcome::Identical => report.identical += 1,
+            if is_redacted(&op) {
+                report.redacted += 1;
+            } else {
+                match outcome {
+                    Outcome::Created => report.created += 1,
+                    Outcome::FastForward => report.fast_forward += 1,
+                    Outcome::Merged => report.merged += 1,
+                    Outcome::Identical => report.identical += 1,
+                }
             }
             let stored = Op {
                 state,

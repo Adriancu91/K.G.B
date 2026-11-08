@@ -113,6 +113,8 @@ pub struct RegDevice {
     pub label: String,
     pub fingerprint: String,
     pub revoked: bool,
+    /// The device's journal id (`Store::device`), to recognise its changes.
+    pub store: Option<u64>,
 }
 
 /// What the registry says, after checking every signature.
@@ -129,6 +131,24 @@ pub struct RegState {
 }
 
 impl RegState {
+    /// Public key of the device whose journal id is `store`.
+    pub fn key_of_store(&self, store: u64) -> Option<&str> {
+        self.devices
+            .iter()
+            .find(|(_, d)| d.store == Some(store))
+            .map(|(k, _)| k.as_str())
+    }
+
+    /// What the device with public key `key` may do in `module` (its
+    /// person's role); nothing for unknown, revoked or removed devices.
+    pub fn access(&self, key: &str, module: &str) -> Access {
+        match self.member_of(key).and_then(|(_, m)| self.roles.get(&m.role)) {
+            Some(r) if r.admin => Access::Scriere,
+            Some(r) => r.modules.get(module).copied().unwrap_or(r.default),
+            None => Access::Niciunul,
+        }
+    }
+
     /// The member using the device with public key `key`, if the device is
     /// listed, not revoked, and the member is active.
     pub fn member_of(&self, key: &str) -> Option<(Uuid, &RegMember)> {
@@ -162,25 +182,64 @@ fn role_of(p: &Value) -> Option<RegRole> {
     })
 }
 
+/// The registry state after each accepted entry, to answer "what could this
+/// device do at that moment" (changes keep counting after a person leaves).
+#[derive(Clone, Debug, Default)]
+pub struct RegHistory {
+    snapshots: Vec<(u64, RegState)>,
+    pub last: RegState,
+}
+
+impl RegHistory {
+    /// State including every entry made at or before `ms`.
+    pub fn at(&self, ms: u64) -> Option<&RegState> {
+        let i = self.snapshots.partition_point(|(t, _)| *t <= ms);
+        (i > 0).then(|| &self.snapshots[i - 1].1)
+    }
+}
+
 /// Replays the registry and checks every entry.
 pub fn verify(store: &Store) -> CoreResult<RegState> {
-    let mut entries: Vec<Fields> = store
+    Ok(history(local_entries(store)?).last)
+}
+
+pub fn local_entries(store: &Store) -> CoreResult<Vec<Fields>> {
+    Ok(store
         .scan(REGISTRY_COLLECTION, |_| true)?
         .into_iter()
         .map(|r| r.fields)
-        .collect();
+        .collect())
+}
+
+/// Replays `entries` (in any order; they are sorted by time) and keeps the
+/// state after each accepted one.
+pub fn history(mut entries: Vec<Fields>) -> RegHistory {
+    let mut h = RegHistory::default();
     let num = |f: &Fields, k: &str| f.get(k).and_then(Value::as_u64).unwrap_or(0);
     entries.sort_by(|a, b| {
-        (num(a, "ts_ms"), num(a, "seq"), s(&json!(a), "signer")).cmp(&(num(b, "ts_ms"), num(b, "seq"), s(&json!(b), "signer")))
+        (num(a, "ts_ms"), num(a, "seq"), s(&json!(a), "signer")).cmp(&(
+            num(b, "ts_ms"),
+            num(b, "seq"),
+            s(&json!(b), "signer"),
+        ))
     });
+    entries.dedup_by(|a, b| a.get("sig") == b.get("sig"));
     let mut st = RegState::default();
     for f in entries {
+        let ts = num(&f, "ts_ms");
         let kind = f.get("kind").and_then(Value::as_str).unwrap_or_default().to_string();
         let payload = f.get("payload").cloned().unwrap_or(Value::Null);
         let signer = f.get("signer").and_then(Value::as_str).unwrap_or_default().to_string();
         let label = format!("{kind} ({})", num(&f, "ts_ms"));
-        let ok_sig = match (parse_key(&signer), f.get("sig").and_then(Value::as_str).and_then(parse_sig)) {
-            (Some(k), Some(sig)) => identity::verify(&k, &message(&kind, &payload, &signer, num(&f, "ts_ms"), num(&f, "seq")), &sig),
+        let ok_sig = match (
+            parse_key(&signer),
+            f.get("sig").and_then(Value::as_str).and_then(parse_sig),
+        ) {
+            (Some(k), Some(sig)) => identity::verify(
+                &k,
+                &message(&kind, &payload, &signer, num(&f, "ts_ms"), num(&f, "seq")),
+                &sig,
+            ),
             _ => false,
         };
         if !ok_sig {
@@ -193,7 +252,10 @@ pub fn verify(store: &Store) -> CoreResult<RegState> {
                 continue;
             }
             match apply_genesis(&mut st, &payload, &signer) {
-                Ok(()) => st.accepted += 1,
+                Ok(()) => {
+                    st.accepted += 1;
+                    h.snapshots.push((ts, st.clone()));
+                }
                 Err(e) => st.rejected.push(format!("{label}: {e}")),
             }
             continue;
@@ -203,15 +265,21 @@ pub fn verify(store: &Store) -> CoreResult<RegState> {
             continue;
         }
         if !st.is_admin(&signer) {
-            st.rejected.push(format!("{label}: semnat de un dispozitiv care nu e al unui administrator"));
+            st.rejected.push(format!(
+                "{label}: semnat de un dispozitiv care nu e al unui administrator"
+            ));
             continue;
         }
         match apply(&mut st, &kind, &payload) {
-            Ok(()) => st.accepted += 1,
+            Ok(()) => {
+                st.accepted += 1;
+                h.snapshots.push((ts, st.clone()));
+            }
             Err(e) => st.rejected.push(format!("{label}: {e}")),
         }
     }
-    Ok(st)
+    h.last = st;
+    h
 }
 
 fn apply_genesis(st: &mut RegState, p: &Value, signer: &str) -> Result<(), String> {
@@ -224,7 +292,10 @@ fn apply_genesis(st: &mut RegState, p: &Value, signer: &str) -> Result<(), Strin
     let roles = p.get("roles").and_then(Value::as_object).ok_or("lipsesc rolurile")?;
     let mut parsed = BTreeMap::new();
     for (id, r) in roles {
-        parsed.insert(id.parse::<Uuid>().map_err(|_| "rol greșit")?, role_of(r).ok_or("rol greșit")?);
+        parsed.insert(
+            id.parse::<Uuid>().map_err(|_| "rol greșit")?,
+            role_of(r).ok_or("rol greșit")?,
+        );
     }
     let role = uid(admin, "role").ok_or("lipsește rolul")?;
     if !parsed.get(&role).is_some_and(|r| r.admin) {
@@ -233,10 +304,23 @@ fn apply_genesis(st: &mut RegState, p: &Value, signer: &str) -> Result<(), Strin
     let key = parse_key(signer).ok_or("cheie greșită")?;
     st.org = Some((org, s(p, "name")));
     st.roles = parsed;
-    st.members.insert(member, RegMember { name: s(admin, "name"), role, active: true });
+    st.members.insert(
+        member,
+        RegMember {
+            name: s(admin, "name"),
+            role,
+            active: true,
+        },
+    );
     st.devices.insert(
         signer.to_string(),
-        RegDevice { member, label: s(admin, "label"), fingerprint: identity::fingerprint(&key), revoked: false },
+        RegDevice {
+            member,
+            label: s(admin, "label"),
+            fingerprint: identity::fingerprint(&key),
+            revoked: false,
+            store: admin.get("store").and_then(Value::as_u64),
+        },
     );
     Ok(())
 }
@@ -264,7 +348,11 @@ fn apply(st: &mut RegState, kind: &str, p: &Value) -> Result<(), String> {
             }
             st.members.insert(
                 id,
-                RegMember { name: s(p, "name"), role, active: p.get("active").and_then(Value::as_bool).unwrap_or(false) },
+                RegMember {
+                    name: s(p, "name"),
+                    role,
+                    active: p.get("active").and_then(Value::as_bool).unwrap_or(false),
+                },
             );
         }
         "dispozitiv" => {
@@ -281,6 +369,7 @@ fn apply(st: &mut RegState, kind: &str, p: &Value) -> Result<(), String> {
                     label: s(p, "label"),
                     fingerprint: identity::fingerprint(&key),
                     revoked: p.get("revoked").and_then(Value::as_bool).unwrap_or(false),
+                    store: p.get("store").and_then(Value::as_u64),
                 },
             );
         }
@@ -300,7 +389,12 @@ pub fn consistency(store: &Store) -> CoreResult<Vec<String>> {
         _ => out.push("organizația diferă de registru".into()),
     }
     for r in org::roles(store)? {
-        let want = RegRole { name: r.name.clone(), admin: r.admin, default: r.default, modules: r.modules.clone() };
+        let want = RegRole {
+            name: r.name.clone(),
+            admin: r.admin,
+            default: r.default,
+            modules: r.modules.clone(),
+        };
         if st.roles.get(&r.id) != Some(&want) {
             out.push(format!("rolul „{}” diferă de registru", r.name));
         }
@@ -309,12 +403,20 @@ pub fn consistency(store: &Store) -> CoreResult<Vec<String>> {
         out.push("numărul de roluri diferă de registru".into());
     }
     for m in org::members(store, true)? {
-        let want = RegMember { name: m.name.clone(), role: m.role, active: m.active };
+        let want = RegMember {
+            name: m.name.clone(),
+            role: m.role,
+            active: m.active,
+        };
         if st.members.get(&m.id) != Some(&want) {
             out.push(format!("persoana „{}” diferă de registru", m.name));
         }
         for fp in &m.devices {
-            if !st.devices.values().any(|d| &d.fingerprint == fp && d.member == m.id && !d.revoked) {
+            if !st
+                .devices
+                .values()
+                .any(|d| &d.fingerprint == fp && d.member == m.id && !d.revoked)
+            {
                 out.push(format!("un dispozitiv al lui „{}” lipsește din registru", m.name));
             }
         }

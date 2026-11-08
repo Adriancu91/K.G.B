@@ -35,6 +35,20 @@ use crate::workspace::{now_ms, validate_name};
 
 pub const INVITES_COLLECTION: &str = "core.invitations";
 pub const REQUESTS_COLLECTION: &str = "core.device_requests";
+/// On a new PC: the organization it asked to join and the administrator key
+/// that signed the invitation (used once, for the first synchronisation).
+pub const JOIN_COLLECTION: &str = "core.join";
+
+pub fn join_id() -> Uuid {
+    Uuid::new_v5(&Uuid::NAMESPACE_OID, b"kgb-join")
+}
+
+/// The trust anchor stored by [`request`]: (organization id, admin key).
+pub fn join_anchor(store: &Store) -> CoreResult<Option<(String, String)>> {
+    Ok(store
+        .get(JOIN_COLLECTION, join_id())?
+        .map(|r| (s(&json!(r.fields), "org"), s(&json!(r.fields), "admin_key"))))
+}
 const INVITE_PREFIX: &str = "KGB-INVITATIE-1:";
 const REQUEST_PREFIX: &str = "KGB-CERERE-1:";
 const INVITE_DOMAIN: &[u8] = b"KGB-INV1\n";
@@ -76,7 +90,8 @@ fn decode(prefix: &str, what: &str, code: &str) -> CoreResult<(Value, String)> {
     let bytes = URL_SAFE_NO_PAD
         .decode(b64.trim())
         .map_err(|_| bad(what, "codul e incomplet sau a fost modificat"))?;
-    let mut v: Value = serde_json::from_slice(&bytes).map_err(|_| bad(what, "codul e incomplet sau a fost modificat"))?;
+    let mut v: Value =
+        serde_json::from_slice(&bytes).map_err(|_| bad(what, "codul e incomplet sau a fost modificat"))?;
     let sig = v
         .as_object_mut()
         .and_then(|o| o.remove("sig"))
@@ -111,14 +126,22 @@ pub struct NewInvite {
 /// Invites `member_id` for `hours` (1 … 168).
 pub fn create(store: &mut Store, dev: &DeviceIdentity, member_id: Uuid, hours: u64) -> CoreResult<NewInvite> {
     if !(1..=MAX_HOURS).contains(&hours) {
-        return Err(bad("invitația", format!("valabilitatea trebuie să fie între 1 și {MAX_HOURS} de ore")));
+        return Err(bad(
+            "invitația",
+            format!("valabilitatea trebuie să fie între 1 și {MAX_HOURS} de ore"),
+        ));
     }
     create_until(store, dev, member_id, now_ms() + hours * HOUR_MS)
 }
 
 /// Same as [`create`] with an exact expiry (tests use one in the past).
 #[doc(hidden)]
-pub fn create_until(store: &mut Store, dev: &DeviceIdentity, member_id: Uuid, expires_ms: u64) -> CoreResult<NewInvite> {
+pub fn create_until(
+    store: &mut Store,
+    dev: &DeviceIdentity,
+    member_id: Uuid,
+    expires_ms: u64,
+) -> CoreResult<NewInvite> {
     org::require_admin(store, Some(&dev.fingerprint()), "invitația")?;
     let (org_id, org_name) = org_uuid(store)?;
     let m = org::member_by_id(store, member_id)?;
@@ -141,7 +164,12 @@ pub fn create_until(store: &mut Store, dev: &DeviceIdentity, member_id: Uuid, ex
     f.insert("used".into(), json!(false));
     f.insert("created_ms".into(), json!(now_ms()));
     store.write(vec![Write::put(INVITES_COLLECTION, id, f).expect(0)])?;
-    Ok(NewInvite { id, code, member: m.name, expires_ms })
+    Ok(NewInvite {
+        id,
+        code,
+        member: m.name,
+        expires_ms,
+    })
 }
 
 /// An invitation as the administrator sees it later (never the token).
@@ -173,7 +201,14 @@ pub fn list(store: &Store) -> CoreResult<Vec<InviteView>> {
                 id: r.id,
                 member,
                 expires_ms: exp,
-                stare: if used { "folosită" } else if exp <= now { "expirată" } else { "activă" }.into(),
+                stare: if used {
+                    "folosită"
+                } else if exp <= now {
+                    "expirată"
+                } else {
+                    "activă"
+                }
+                .into(),
             }
         })
         .collect();
@@ -184,7 +219,9 @@ pub fn list(store: &Store) -> CoreResult<Vec<InviteView>> {
 /// Cancels an unused invitation.
 pub fn cancel(store: &mut Store, dev: &DeviceIdentity, id: Uuid) -> CoreResult<()> {
     org::require_admin(store, Some(&dev.fingerprint()), "invitația")?;
-    let r = store.get(INVITES_COLLECTION, id)?.ok_or_else(|| bad("invitația", "nu există"))?;
+    let r = store
+        .get(INVITES_COLLECTION, id)?
+        .ok_or_else(|| bad("invitația", "nu există"))?;
     store.write(vec![Write::delete(INVITES_COLLECTION, id).expect(r.version)])?;
     Ok(())
 }
@@ -236,13 +273,34 @@ pub struct JoinRequest {
     pub fingerprint: String,
 }
 
-pub fn request(invite_code: &str, dev: &DeviceIdentity, device_label: &str) -> CoreResult<JoinRequest> {
+/// On the new PC: checks the invitation, remembers who invited (the trust
+/// anchor for the first synchronisation, D-058) and makes the signed request.
+pub fn request(
+    store: &mut Store,
+    invite_code: &str,
+    dev: &DeviceIdentity,
+    device_label: &str,
+) -> CoreResult<JoinRequest> {
     let (inv, info) = read_body(invite_code, now_ms())?;
     let label = validate_name("numele dispozitivului", device_label)?;
+    if let Some((org, _)) = registry::verify(store)?.org
+        && org.to_string() != s(&inv, "org")
+    {
+        return Err(bad(
+            "invitația",
+            "acest spațiu de lucru face deja parte din altă organizație",
+        ));
+    }
     let body = json!({
         "v": 1, "org": s(&inv, "org"), "token": s(&inv, "token"),
-        "key": dev.public_hex(), "label": label, "ts_ms": now_ms(),
+        "key": dev.public_hex(), "label": label, "ts_ms": now_ms(), "store": store.device(),
     });
+    let mut anchor = Fields::new();
+    anchor.insert("org".into(), json!(s(&inv, "org")));
+    anchor.insert("org_name".into(), json!(info.org_name));
+    anchor.insert("admin_key".into(), json!(s(&inv, "admin_key")));
+    let v = store.get(JOIN_COLLECTION, join_id())?.map(|r| r.version).unwrap_or(0);
+    store.write(vec![Write::put(JOIN_COLLECTION, join_id(), anchor).expect(v)])?;
     Ok(JoinRequest {
         code: encode(REQUEST_PREFIX, &body, sign(dev, REQUEST_DOMAIN, &body)),
         info,
@@ -278,7 +336,9 @@ pub fn receive(store: &mut Store, dev: &DeviceIdentity, request_code: &str) -> C
     }
     let hash = token_hash(&s(&body, "token"));
     let inv = store
-        .scan(INVITES_COLLECTION, |r| r.fields.get("token_hash").and_then(Value::as_str) == Some(hash.as_str()))?
+        .scan(INVITES_COLLECTION, |r| {
+            r.fields.get("token_hash").and_then(Value::as_str) == Some(hash.as_str())
+        })?
         .into_iter()
         .next()
         .ok_or_else(|| bad("cererea", "invitația nu există (anulată sau din alt spațiu de lucru)"))?;
@@ -308,11 +368,20 @@ pub fn receive(store: &mut Store, dev: &DeviceIdentity, request_code: &str) -> C
     f.insert("label".into(), json!(label));
     f.insert("fingerprint".into(), json!(fingerprint));
     f.insert("received_ms".into(), json!(received_ms));
+    f.insert("store".into(), body.get("store").cloned().unwrap_or(Value::Null));
     store.write(vec![
         Write::put(INVITES_COLLECTION, inv.id, used).expect(inv.version),
         Write::put(REQUESTS_COLLECTION, id, f).expect(0),
     ])?;
-    Ok(Pending { id, member_id, member: member.name, label, fingerprint, received_ms, version: 1 })
+    Ok(Pending {
+        id,
+        member_id,
+        member: member.name,
+        label,
+        fingerprint,
+        received_ms,
+        version: 1,
+    })
 }
 
 pub fn pending(store: &Store) -> CoreResult<Vec<Pending>> {
@@ -339,7 +408,9 @@ pub fn pending(store: &Store) -> CoreResult<Vec<Pending>> {
 
 /// Approves a waiting device: it joins the person, signed in the registry.
 pub fn approve(store: &mut Store, dev: &DeviceIdentity, id: Uuid) -> CoreResult<()> {
-    let r = store.get(REQUESTS_COLLECTION, id)?.ok_or_else(|| bad("cererea", "nu există"))?;
+    let r = store
+        .get(REQUESTS_COLLECTION, id)?
+        .ok_or_else(|| bad("cererea", "nu există"))?;
     let f = json!(r.fields);
     let member: Uuid = s(&f, "member").parse().map_err(|_| bad("cererea", "persoană lipsă"))?;
     org::add_device(
@@ -348,6 +419,7 @@ pub fn approve(store: &mut Store, dev: &DeviceIdentity, id: Uuid) -> CoreResult<
         member,
         &s(&f, "key"),
         &s(&f, "label"),
+        f.get("store").and_then(Value::as_u64),
         vec![Write::delete(REQUESTS_COLLECTION, id).expect(r.version)],
     )
 }
@@ -355,7 +427,9 @@ pub fn approve(store: &mut Store, dev: &DeviceIdentity, id: Uuid) -> CoreResult<
 /// Refuses a waiting device (its invitation stays used).
 pub fn refuse(store: &mut Store, dev: &DeviceIdentity, id: Uuid) -> CoreResult<()> {
     org::require_admin(store, Some(&dev.fingerprint()), "cererea")?;
-    let r = store.get(REQUESTS_COLLECTION, id)?.ok_or_else(|| bad("cererea", "nu există"))?;
+    let r = store
+        .get(REQUESTS_COLLECTION, id)?
+        .ok_or_else(|| bad("cererea", "nu există"))?;
     store.write(vec![Write::delete(REQUESTS_COLLECTION, id).expect(r.version)])?;
     Ok(())
 }

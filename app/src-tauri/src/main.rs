@@ -12,11 +12,11 @@ use kgb_core::log::{self, LogConfig, LogHandle};
 use kgb_core::modules::{self, Module, ModuleManager, ModuleView, PLANNED, PROFILES, Planned};
 use kgb_core::notifications::{self, NotificationView};
 use kgb_core::org::{self, Access};
-use kgb_core::{invites, registry};
 use kgb_core::settings::{self, Settings};
 use kgb_core::workspace::{self, Workspace};
 use kgb_core::{CORE_VERSION, CoreError, profiles};
 use kgb_core::{backup, files};
+use kgb_core::{invites, registry};
 use serde::Serialize;
 use serde_json::Value;
 use tauri::{Manager, State};
@@ -513,7 +513,11 @@ fn org_create(app: State<AppState>, name: String, admin: String) -> CmdResult<()
 
 /// Runs an organization change after checking that the person on this PC is
 /// an administrator; every change is written to the audit journal.
-fn org_admin<T>(app: &State<AppState>, what: &str, f: impl FnOnce(&mut Session, &str) -> Result<T, CoreError>) -> CmdResult<T> {
+fn org_admin<T>(
+    app: &State<AppState>,
+    what: &str,
+    f: impl FnOnce(&mut Session, &str) -> Result<T, CoreError>,
+) -> CmdResult<T> {
     with_session(app, |s| {
         let fp = s.device.fingerprint();
         org::require_admin(s.ws.store(), Some(&fp), "organizația")?;
@@ -525,16 +529,26 @@ fn org_admin<T>(app: &State<AppState>, what: &str, f: impl FnOnce(&mut Session, 
 
 #[tauri::command]
 fn org_rename(app: State<AppState>, name: String, version: u64) -> CmdResult<u64> {
-    org_admin(&app, "redenumire organizație", |s, _| org::rename(s.ws.store_mut(), &s.device, &name, version))
+    org_admin(&app, "redenumire organizație", |s, _| {
+        org::rename(s.ws.store_mut(), &s.device, &name, version)
+    })
 }
 
 #[tauri::command]
 fn org_member_add(app: State<AppState>, name: String, role: uuid::Uuid) -> CmdResult<uuid::Uuid> {
-    org_admin(&app, "persoană adăugată", |s, _| org::add_member(s.ws.store_mut(), &s.device, &name, role))
+    org_admin(&app, "persoană adăugată", |s, _| {
+        org::add_member(s.ws.store_mut(), &s.device, &name, role)
+    })
 }
 
 #[tauri::command]
-fn org_member_update(app: State<AppState>, id: uuid::Uuid, name: String, role: uuid::Uuid, version: u64) -> CmdResult<u64> {
+fn org_member_update(
+    app: State<AppState>,
+    id: uuid::Uuid,
+    name: String,
+    role: uuid::Uuid,
+    version: u64,
+) -> CmdResult<u64> {
     org_admin(&app, "persoană modificată", |s, _| {
         org::update_member(s.ws.store_mut(), &s.device, id, &name, role, version)
     })
@@ -542,7 +556,9 @@ fn org_member_update(app: State<AppState>, id: uuid::Uuid, name: String, role: u
 
 #[tauri::command]
 fn org_member_remove(app: State<AppState>, id: uuid::Uuid, version: u64) -> CmdResult<()> {
-    org_admin(&app, "persoană scoasă", |s, _| org::remove_member(s.ws.store_mut(), &s.device, id, version))
+    org_admin(&app, "persoană scoasă", |s, _| {
+        org::remove_member(s.ws.store_mut(), &s.device, id, version)
+    })
 }
 
 #[tauri::command]
@@ -555,40 +571,54 @@ fn org_role_save(app: State<AppState>, role: org::RoleInput) -> CmdResult<uuid::
 
 #[tauri::command]
 fn org_role_delete(app: State<AppState>, id: uuid::Uuid) -> CmdResult<()> {
-    org_admin(&app, "rol șters", |s, _| org::delete_role(s.ws.store_mut(), &s.device, id))
+    org_admin(&app, "rol șters", |s, _| {
+        org::delete_role(s.ws.store_mut(), &s.device, id)
+    })
 }
 
 // ---------- invitations (Etapa 6, step 6.2, D-058) ----------
 
 #[tauri::command]
 fn invite_create(app: State<AppState>, member: uuid::Uuid, hours: u64) -> CmdResult<invites::NewInvite> {
-    org_admin(&app, "invitație creată", |s, _| invites::create(s.ws.store_mut(), &s.device, member, hours))
+    org_admin(&app, "invitație creată", |s, _| {
+        invites::create(s.ws.store_mut(), &s.device, member, hours)
+    })
 }
 
 #[tauri::command]
 fn invite_cancel(app: State<AppState>, id: uuid::Uuid) -> CmdResult<()> {
-    org_admin(&app, "invitație anulată", |s, _| invites::cancel(s.ws.store_mut(), &s.device, id))
+    org_admin(&app, "invitație anulată", |s, _| {
+        invites::cancel(s.ws.store_mut(), &s.device, id)
+    })
 }
 
 /// On the new PC: checks an invitation and makes the signed request.
 #[tauri::command]
 fn invite_answer(app: State<AppState>, code: String) -> CmdResult<invites::JoinRequest> {
-    with_session(&app, |s| invites::request(&code, &s.device, &device_label()))
+    with_session(&app, |s| {
+        invites::request(s.ws.store_mut(), &code, &s.device, &device_label())
+    })
 }
 
 #[tauri::command]
 fn request_receive(app: State<AppState>, code: String) -> CmdResult<invites::Pending> {
-    org_admin(&app, "cerere de dispozitiv primită", |s, _| invites::receive(s.ws.store_mut(), &s.device, &code))
+    org_admin(&app, "cerere de dispozitiv primită", |s, _| {
+        invites::receive(s.ws.store_mut(), &s.device, &code)
+    })
 }
 
 #[tauri::command]
 fn request_approve(app: State<AppState>, id: uuid::Uuid) -> CmdResult<()> {
-    org_admin(&app, "dispozitiv aprobat", |s, _| invites::approve(s.ws.store_mut(), &s.device, id))
+    org_admin(&app, "dispozitiv aprobat", |s, _| {
+        invites::approve(s.ws.store_mut(), &s.device, id)
+    })
 }
 
 #[tauri::command]
 fn request_refuse(app: State<AppState>, id: uuid::Uuid) -> CmdResult<()> {
-    org_admin(&app, "dispozitiv refuzat", |s, _| invites::refuse(s.ws.store_mut(), &s.device, id))
+    org_admin(&app, "dispozitiv refuzat", |s, _| {
+        invites::refuse(s.ws.store_mut(), &s.device, id)
+    })
 }
 
 #[derive(Serialize)]

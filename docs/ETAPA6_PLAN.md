@@ -47,6 +47,11 @@ D-015 a ales iroh cu condiția ca testul pe două PC-uri reale (S2.3) să se fac
 | D-059 | **Ce se sincronizează:** datele modulelor la care rolul are acces, plus registrul organizației. Setările personale și cheile dispozitivului nu pleacă niciodată de pe PC | Da (§8.6) |
 | D-060 | **Revocare:** dispozitivul revocat e scos din registru și refuzat de toți. Datele deja copiate pe el **nu pot fi șterse de la distanță** în mod garantat; aplicația spune asta clar | Da. Onest: nicio aplicație locală nu poate garanta ștergerea de la distanță |
 
+## Ce s-a aflat pe drum
+- **6.3 — sincronizare parțială:** motorul de stocare din Etapa 0 presupunea că fiecare copie primește *toate* schimbările (fiecare PC își numără schimbările, iar o gaură în numărătoare e o eroare). Ca să respectăm rolurile fără găuri, o schimbare pe care PC-ul nu o poate vedea ajunge ca **marcaj**: aceeași poziție în numărătoare, fără conținut. Marcajele se completează mai târziu, de la orice PC care are datele (de exemplu când rolul e lărgit). Schimbarea e în `crates/kgb-store/src/sync.rs` și are test propriu (`tests/redaction.rs`).
+- **Limită cunoscută (6.3):** o schimbare care ajunge printr-un al treilea PC e verificată după drepturile autorului, dar nu e semnată individual de autor. Un membru rău-intenționat ar putea transmite o schimbare în numele altui membru, în limita modulelor în care acela putea scrie. Semnarea fiecărei schimbări e o îmbunătățire pentru mai târziu; până atunci, firmele mici sincronizează de obicei direct cu PC-ul administratorului.
+- **Ora PC-urilor:** dreptul autorului se verifică la momentul schimbării, după ceasul hibrid al jurnalului. Un ceas foarte greșit pe un PC poate face ca o schimbare să fie refuzată (devine marcaj, nu se pierde) până la corectarea ceasului.
+
 ## Riscuri
 - **iroh netestat între PC-uri reale.** Dacă eșuează la 6.10, se schimbă transportul (D-015 redeschis); pașii 6.1–6.4 rămân valabili.
 - **Mărimea installerului:** iroh aduce ~270 de biblioteci. Se măsoară la 6.5 și se raportează.

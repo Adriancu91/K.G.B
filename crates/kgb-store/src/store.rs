@@ -176,6 +176,7 @@ struct OpMeta {
     rev: Rev,
     deleted: bool,
     origin: Origin,
+    compacted: bool,
     fields: Option<Fields>,
 }
 
@@ -190,6 +191,7 @@ impl OpMeta {
             rev: h.rev,
             deleted: h.deleted,
             origin: h.origin,
+            compacted: h.compacted,
             fields: if want_fields && !h.deleted {
                 Some(v.fields()?)
             } else {
@@ -207,6 +209,9 @@ pub struct Store {
     pub(crate) hlc: Hlc,
     pub(crate) local_seq: u64,
     pub(crate) applied: BTreeMap<DeviceId, u64>,
+    /// Remote changes that arrived after a redaction marker for the same
+    /// (device, seq) was stored: the marker is filled (see `sync`).
+    pub(crate) late: std::collections::BTreeSet<(DeviceId, u64)>,
     pub(crate) keydir: Keydir,
     pub(crate) indexes: Indexes,
     pub(crate) readers: BTreeMap<u32, File>,
@@ -257,6 +262,7 @@ impl Store {
             hlc: Hlc::default(),
             local_seq: 0,
             applied: BTreeMap::new(),
+            late: Default::default(),
             keydir: Keydir::default(),
             indexes: Indexes::default(),
             readers: BTreeMap::new(),
@@ -303,6 +309,7 @@ impl Store {
         self.readers.clear();
         self.active = None;
         self.applied.clear();
+        self.late.clear();
         self.local_seq = 0;
         let mut frames = 0u64;
         let segs = self.manifest.segments.clone();
@@ -417,12 +424,22 @@ impl Store {
             version: m.version,
             deleted: m.deleted,
         };
-        self.track(m.coll, m.id, m.rev, m.origin, loc, fields.as_ref());
+        self.track(m.coll, m.id, m.rev, m.origin, m.compacted, loc, fields.as_ref());
         Ok(())
     }
 
     /// Update keydir, indexes, clocks and version vector for a stored op.
-    fn track(&mut self, coll: String, id: Uuid, rev: Rev, origin: Origin, loc: Loc, fields: Option<&Fields>) {
+    #[allow(clippy::too_many_arguments)]
+    fn track(
+        &mut self,
+        coll: String,
+        id: Uuid,
+        rev: Rev,
+        origin: Origin,
+        compacted: bool,
+        loc: Loc,
+        fields: Option<&Fields>,
+    ) {
         if loc.deleted {
             self.indexes.update(&coll, id, None);
         } else if fields.is_some() {
@@ -436,6 +453,12 @@ impl Store {
                 self.local_seq = self.local_seq.max(seq);
             } else {
                 let e = self.applied.entry(dev).or_default();
+                // A remote change at or below what we already had can only be
+                // the late fill of a redaction marker (apply_remote never
+                // stores those otherwise).
+                if !compacted && seq <= *e && coll != crate::sync::REDACTED {
+                    self.late.insert((dev, seq));
+                }
                 *e = (*e).max(seq);
             }
         }
@@ -811,7 +834,7 @@ impl Store {
             };
             let s = &op.state;
             let fields = if s.deleted { None } else { Some(&s.fields) };
-            self.track(s.coll.clone(), s.id, s.rev, op.origin, loc, fields);
+            self.track(s.coll.clone(), s.id, s.rev, op.origin, op.compacted, loc, fields);
         }
         self.buf = buf;
         Ok(())
