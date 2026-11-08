@@ -674,6 +674,10 @@ struct NetStatus {
     ultima_runda_ms: Option<u64>,
     /// Attached files known here whose content has not arrived yet (6.8).
     fisiere_lipsa: usize,
+    /// Every device of the organization, this PC and revoked ones too (6.9).
+    dispozitive: Vec<kgb_core::peers::DeviceRow>,
+    /// Open synchronisation conflicts this person may see.
+    conflicte: usize,
 }
 
 #[tauri::command]
@@ -692,6 +696,8 @@ fn net_status(app: State<AppState>) -> CmdResult<NetStatus> {
             peers: kgb_core::peers::list(s.ws.store(), &s.device.public_hex())?,
             ultima_runda_ms: last,
             fisiere_lipsa: kgb_core::blobs::missing(s.ws.store())?.len(),
+            dispozitive: kgb_core::peers::all_devices(s.ws.store(), &s.device.public_hex())?,
+            conflicte: conflicts::list(&s.ws, Some(&s.device.fingerprint()))?.len(),
         })
     })
 }

@@ -58,7 +58,7 @@ try {
   await p.fill("input[aria-label='Notă nouă']", "Nota de test");
   await p.click("Adaugă");
   await p.until("[...document.querySelectorAll('.list li')].some(l => l.innerText.includes('Nota de test'))");
-  await p.click("Conflicte", "nav .nav");
+  await p.click("Dispozitive și sincronizare", "nav .nav");
   await p.until("!!document.querySelector('.conflicts-page')");
   check("fără sincronizare: niciun conflict", (await p.eval("document.querySelector('.conflicts-page').innerText")).includes("Niciun conflict"));
   stop(p);
@@ -68,7 +68,7 @@ try {
   check("ajutorul a creat un conflict real (două copii sincronizate)", out.includes("conflicte: 1"), out.trim());
 
   p = await start();
-  await p.click("Conflicte", "nav .nav");
+  await p.click("Dispozitive și sincronizare", "nav .nav");
   await p.until("!!document.querySelector('.conflicts-table tbody tr')", 8000);
   const row = await p.eval("document.querySelector('.conflicts-table tbody tr').innerText");
   check("conflictul apare cu ambele valori", row.includes("Versiunea de pe acest PC") && row.includes("Versiunea de pe celălalt PC") && row.includes("Note"), row);
@@ -84,7 +84,7 @@ try {
   stop(p);
 
   p = await start();
-  await p.click("Conflicte", "nav .nav");
+  await p.click("Dispozitive și sincronizare", "nav .nav");
   await p.until("!!document.querySelector('.conflicts-page')");
   await sleep(300);
   check("după repornire (forțată) conflictul rămâne rezolvat", (await p.eval("document.querySelector('.conflicts-page').innerText")).includes("Niciun conflict"));

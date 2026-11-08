@@ -161,6 +161,19 @@ export interface NetStatus {
   peers: PeerView[];
   ultima_runda_ms: number | null;
   fisiere_lipsa: number;
+  dispozitive: DeviceRow[];
+  conflicte: number;
+}
+
+export interface DeviceRow {
+  fingerprint: string;
+  label: string;
+  member: string;
+  acesta: boolean;
+  revocat: boolean;
+  persoana_scoasa: boolean;
+  ok_ms: number | null;
+  path: string | null;
 }
 
 export interface SyncOutcome {

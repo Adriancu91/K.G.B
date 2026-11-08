@@ -76,6 +76,7 @@ try {
 
   // ---- PC B: answer the invitation.
   p = await start(dataB);
+  await p.click("Dispozitive și sincronizare", "nav .nav");
   await p.until("!!document.querySelector(\"textarea[aria-label='Codul invitației primite']\")");
   await setValue(p, "textarea[aria-label='Codul invitației primite']", invite.slice(0, -6) + "AAAAAA");
   await p.click("Verifică invitația");
@@ -95,6 +96,7 @@ try {
 
   // ---- PC A: receive, compare, approve.
   p = await start(dataA);
+  await p.click("Dispozitive și sincronizare", "nav .nav");
   await p.until("!!document.querySelector(\"textarea[aria-label='Codul cererii']\")");
   await setValue(p, "textarea[aria-label='Codul cererii']", request);
   await p.click("Primește cererea");
@@ -105,8 +107,14 @@ try {
   await p.screenshot(join(shots, "03-cerere.png"));
   await p.click("Aprobă");
   await p.until("!document.querySelector('.pending-table')");
+  await p.until("[...document.querySelectorAll('.devices-table tbody tr')].some(r => r.innerText.includes('Ion Test') && r.innerText.includes('activ'))", 20000);
+  check("după aprobare calculatorul lui Ion apare activ în listă", true);
+  await p.click("Organizație", "nav .nav");
+  await p.until("!!document.querySelector('.members-table')");
   check("după aprobare Ion are un dispozitiv", (await p.eval(`${memberRow("Ion Test")}.cells[2].innerText.trim()`)) === "1");
   check("registrul semnat se potrivește", !(await p.eval("document.body.innerText.includes('Registrul semnat al organizației nu se potrivește')")));
+  await p.click("Dispozitive și sincronizare", "nav .nav");
+  await p.until("!!document.querySelector(\"textarea[aria-label='Codul cererii']\")");
 
   await setValue(p, "textarea[aria-label='Codul cererii']", request);
   await p.click("Primește cererea");

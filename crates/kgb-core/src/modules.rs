@@ -55,18 +55,11 @@ pub struct Planned {
     pub stage: &'static str,
 }
 
-pub const PLANNED: &[Planned] = &[
-    Planned {
-        id: "devices",
-        name: "Dispozitive și sincronizare",
-        stage: "Etapa 6",
-    },
-    Planned {
-        id: "news",
-        name: "Informații și InfoNews",
-        stage: "Etapa 7",
-    },
-];
+pub const PLANNED: &[Planned] = &[Planned {
+    id: "news",
+    name: "Informații și InfoNews",
+    stage: "Etapa 7",
+}];
 
 /// A built-in module. UI and domain logic stay separate: the module answers
 /// commands with JSON; the React side renders it.

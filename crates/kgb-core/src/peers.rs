@@ -182,3 +182,48 @@ pub fn save_network_settings(store: &mut Store, relay: &str, port: u16) -> CoreR
     store.write(vec![Write::put(NETWORK_COLLECTION, network_id(), f).expect(v)])?;
     Ok(())
 }
+
+/// One device of the organization, for the list of all devices (6.9).
+#[derive(Clone, Debug, Serialize)]
+pub struct DeviceRow {
+    pub fingerprint: String,
+    pub label: String,
+    pub member: String,
+    /// This PC.
+    pub acesta: bool,
+    pub revocat: bool,
+    /// Its person was removed from the organization.
+    pub persoana_scoasa: bool,
+    pub ok_ms: Option<u64>,
+    pub path: Option<String>,
+}
+
+/// Every device in the signed registry: this PC, the others, the revoked.
+pub fn all_devices(store: &Store, me: &str) -> CoreResult<Vec<DeviceRow>> {
+    let st = registry::verify(store)?;
+    let mut out: Vec<DeviceRow> = st
+        .devices
+        .iter()
+        .map(|(key, d)| {
+            let f = store
+                .get(PEERS_COLLECTION, id(key))
+                .ok()
+                .flatten()
+                .map(|r| r.fields)
+                .unwrap_or_default();
+            let m = st.members.get(&d.member);
+            DeviceRow {
+                fingerprint: d.fingerprint.clone(),
+                label: d.label.clone(),
+                member: m.map(|m| m.name.clone()).unwrap_or_default(),
+                acesta: key == me,
+                revocat: d.revoked,
+                persoana_scoasa: m.is_some_and(|m| !m.active),
+                ok_ms: f.get("ok_ms").and_then(Value::as_u64),
+                path: Some(s(&f, "path")).filter(|p| !p.is_empty()),
+            }
+        })
+        .collect();
+    out.sort_by(|a, b| (!a.acesta, a.revocat, &a.member, &a.label).cmp(&(!b.acesta, b.revocat, &b.member, &b.label)));
+    Ok(out)
+}

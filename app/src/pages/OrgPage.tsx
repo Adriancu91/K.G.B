@@ -4,8 +4,7 @@
 // invitations (step 6.2).
 import { useCallback, useEffect, useState, type FormEvent } from "react";
 import { ACCESS_LABEL, api, message, type Access, type Member, type OrgReply, type Role } from "../api";
-import { InviteButton, JoinOrg, Requests } from "./Devices";
-import { NetPanel } from "./NetPanel";
+import { InviteButton } from "./Devices";
 
 const ACCESSES: Access[] = ["niciunul", "citire", "scriere"];
 
@@ -39,7 +38,6 @@ export function OrgPage({ onError, onChanged }: { onError: (e: string | null) =>
     return (
       <>
         <CreateOrg org={org} run={run} />
-        <NetPanel onError={onError} onSynced={() => void load()} />
       </>
     );
 
@@ -58,9 +56,8 @@ export function OrgPage({ onError, onChanged }: { onError: (e: string | null) =>
           </ul>
         </div>
       )}
-      <NetPanel onError={onError} onSynced={() => void load()} admin={admin} />
       <Members org={org} admin={admin} run={run} />
-      {admin && <Requests org={org} run={run} />}
+      <p className="muted small">Calculatoarele, rețeaua, cererile noi și conflictele sunt în pagina „Dispozitive și sincronizare”.</p>
       <Roles org={org} admin={admin} run={run} />
     </div>
   );
@@ -92,7 +89,7 @@ function CreateOrg({ org, run }: { org: OrgReply; run: Run }) {
           Creează organizația
         </button>
       </form>
-      <JoinOrg run={run} />
+      <p className="muted small">Ai primit o invitație? Răspunde la ea din pagina „Dispozitive și sincronizare”.</p>
     </div>
   );
 }

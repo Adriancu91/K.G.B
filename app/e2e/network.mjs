@@ -72,14 +72,20 @@ try {
   await p.until("[...document.querySelectorAll('.list li')].some(l => l.innerText.includes('PC-ul A'))");
 
   // Organization: the network starts by itself.
-  await p.click("Organizație", "nav .nav");
+  await p.click("Dispozitive și sincronizare", "nav .nav");
   await p.until("!!document.querySelector('.net-state')");
   check("fără organizație rețeaua e oprită", (await p.eval("document.querySelector('.net-state').innerText")).includes("oprită"));
+  await p.click("Organizație", "nav .nav");
+  await p.until("!!document.querySelector(\"form[aria-label='Creează organizația']\")");
   await setValue(p, "form[aria-label='Creează organizația'] input", "Firma Test SRL");
   await p.click("Creează organizația");
   await p.until("!!document.querySelector('.members-table')");
+  await p.click("Dispozitive și sincronizare", "nav .nav");
   await p.until("document.querySelector('.net-state')?.innerText.includes('pornită')", 15000);
   check("cu organizație rețeaua pornește singură", true);
+  check("pagina arată acest PC în lista tuturor calculatoarelor", (await p.eval("document.querySelector('.devices-table')?.innerText ?? ''")).includes("acest PC"));
+  await p.click("Organizație", "nav .nav");
+  await p.until("!!document.querySelector('.members-table')");
   await setValue(p, "input[aria-label='Numele persoanei']", "Ion Test");
   await p.click("Adaugă persoana");
   await p.until(`!!${memberRow("Ion Test")}`);
@@ -93,6 +99,9 @@ try {
   // PC B answers the invitation.
   const fpB = nodeRun("join", wsB, keyB, join(dataB, "invite.txt"), join(dataB, "request.txt")).trim();
   const request = readFileSync(join(dataB, "request.txt"), "utf8");
+  await p.eval("document.querySelector('.invite-box button.link')?.click()");
+  await p.click("Dispozitive și sincronizare", "nav .nav");
+  await p.until("!!document.querySelector(\"textarea[aria-label='Codul cererii']\")");
   await setValue(p, "textarea[aria-label='Codul cererii']", request);
   await p.click("Primește cererea");
   await p.until("!!document.querySelector('.pending-table tbody tr')");
@@ -121,7 +130,6 @@ try {
   check("fișierul atașat de Ion vine separat, verificat (6.8)", res.includes("1 fișiere primite"), res);
   await p.until("[...document.querySelectorAll('.peers-table tbody tr')].some(r => r.innerText.includes('directă'))", 20000);
   check("starea arată calea directă", true);
-  await p.eval("document.querySelector('.invite-box button.link')?.click()");
   await sleep(200);
   await p.eval("document.querySelectorAll('textarea').forEach(t => { if (t.value.startsWith('KGB-')) t.value = '(codul conține adresele de rețea ale laptopului; ascuns în captură)'; })");
   await p.screenshot(join(shots, "01-retea.png"));
@@ -132,7 +140,7 @@ try {
   // PC B goes away: the app says so, and stays usable meanwhile.
   serving.kill();
   serving = null;
-  await p.click("Organizație", "nav .nav");
+  await p.click("Dispozitive și sincronizare", "nav .nav");
   await p.until("!!document.querySelector('.net-panel button.primary')");
   await p.click("Sincronizează acum");
   await sleep(500);
@@ -146,10 +154,14 @@ try {
   await p.eval("[...document.querySelectorAll('.peers-table button')].find(b => b.innerText === 'revocă').click()");
   await p.until("!document.querySelector('.peers-table')", 5000);
   check("după revocare PC-ul B dispare din listă", (await p.eval("document.querySelector('.net-panel').innerText")).includes("Niciun alt calculator"));
+  await p.until("[...document.querySelectorAll('.devices-table tbody tr')].some(r => r.innerText.includes('revocat'))", 20000);
+  check("în lista tuturor calculatoarelor PC-ul B apare „revocat”", true);
+  await p.screenshot(join(shots, "03-revocat.png"));
+  await p.click("Organizație", "nav .nav");
+  await p.until("!!document.querySelector('.members-table')");
   check("Ion rămâne în organizație, fără dispozitiv", (await p.eval(`${memberRow("Ion Test")}.cells[2].innerText`)).includes("niciunul"));
   const outRev = JSON.parse(nodeRun("pull-all", wsB, keyB));
   check("PC-ul B revocat e refuzat de aplicație", outRev.length === 1 && (outRev[0].error ?? "").includes("nu e aprobat"), JSON.stringify(outRev).slice(0, 200));
-  await p.screenshot(join(shots, "03-revocat.png"));
   p.close();
   execFileSync("taskkill", ["/F", "/T", "/PID", String(proc.pid)], { stdio: "ignore" });
 } catch (e) {
