@@ -11,8 +11,11 @@ export interface Layout {
   sidebar_collapsed: boolean;
 }
 
+/** A start-page panel placed freely (7.4d): `x`, `w` in thousandths of the page width; `y`, `h` in pixels. */
 export interface HomePanel {
   id: string;
+  x: number;
+  y: number;
   w: number;
   h: number;
 }
@@ -24,7 +27,7 @@ export interface Settings {
   profile: string;
   layout: Layout;
   /** Start page panels (Etapa 4, D-047). */
-  home: { panels: HomePanel[] };
+  home: { panels: HomePanel[]; amanate: Record<string, string> };
 }
 
 export interface Profile {
@@ -36,6 +39,8 @@ export interface SettingsReply {
   settings: Settings;
   version: number;
   profiles: Profile[];
+  /** The start page for this person's role (what „Revino la implicit” brings back). */
+  home_implicit: Settings["home"];
 }
 
 export interface Owner {

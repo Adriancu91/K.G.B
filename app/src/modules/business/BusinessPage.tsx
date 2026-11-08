@@ -2,6 +2,7 @@
 // stock. Primary records, not certified accounting (D-052); recorded
 // documents never change, a storno reverses them visibly (D-051).
 import { useCallback, useEffect, useState } from "react";
+import { takeIntent } from "../../intent";
 import { api, message } from "../../api";
 import { InvoicesView } from "./invoices";
 import { PurchasesView } from "./purchases";
@@ -343,7 +344,9 @@ function InventoryForm(props: { stock: StockRow[]; warehouses: Warehouse[]; busy
 }
 
 export function BusinessPage({ onError }: { onError: (e: string | null) => void }) {
-  const [tab, setTab] = useState<"stoc" | "documente" | "receptie" | "iesire" | "transfer" | "inventar" | "produse" | "depozite" | "facturare" | "cheltuieli" | "casa" | "scadentar" | "rapoarte" | "audit">("stoc");
+  type Tab = "stoc" | "documente" | "receptie" | "iesire" | "transfer" | "inventar" | "produse" | "depozite" | "facturare" | "cheltuieli" | "casa" | "scadentar" | "rapoarte" | "audit";
+  // A start-page tile may ask for a tab (7.4d).
+  const [tab, setTab] = useState<Tab>(() => (takeIntent("kgb.business") as Tab | undefined) ?? "stoc");
   const [products, setProducts] = useState<Product[]>([]);
   const [warehouses, setWarehouses] = useState<Warehouse[]>([]);
   const [stock, setStock] = useState<StockRow[]>([]);

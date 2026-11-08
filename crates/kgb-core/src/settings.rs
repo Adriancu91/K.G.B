@@ -17,7 +17,7 @@ use crate::error::{CoreError, CoreResult};
 
 pub const SETTINGS_COLLECTION: &str = "core.settings";
 pub const SETTINGS_ID: Uuid = Uuid::from_u128(1);
-pub const SETTINGS_SCHEMA: u32 = 2;
+pub const SETTINGS_SCHEMA: u32 = 3;
 
 pub const SIDEBAR_MIN: u16 = 160;
 pub const SIDEBAR_MAX: u16 = 480;
@@ -65,40 +65,97 @@ impl Default for Layout {
     }
 }
 
-/// Panels the start page can show (Etapa 4, step 4.10; D-047).
-pub const HOME_PANELS: &[&str] = &["azi", "notificari", "documente", "module", "despre"];
-pub const HOME_COLUMNS: u8 = 3;
-pub const HOME_ROWS_MAX: u8 = 3;
+/// Panels the start page can show (Etapa 4, D-047; the control centre of
+/// step 7.4d added `bani`, `cifre` and `rezolvat`). A page pinned to the
+/// start page is a panel `fix:<page id>`.
+pub const HOME_PANELS: &[&str] = &["azi", "notificari", "documente", "module", "despre", "bani", "cifre", "rezolvat"];
+/// Prefix of a page pinned to the start page.
+pub const PINNED_PREFIX: &str = "fix:";
+/// Horizontal position and width are in thousandths of the page width, so a
+/// panel never leaves a narrower window; vertical ones are in pixels.
+pub const HOME_WIDTH: u16 = 1000;
+pub const PANEL_MIN_W: u16 = 120;
+pub const PANEL_MIN_H: u16 = 80;
+pub const PANEL_MAX_H: u16 = 2000;
+pub const HOME_MAX_Y: u32 = 20_000;
+/// At most this many postponed or hidden items in „De rezolvat”.
+pub const SNOOZE_MAX: usize = 500;
 
-/// One panel of the start page: which one, how many columns (of 3) and rows.
+/// One panel of the start page, placed freely: `x`, `w` in thousandths of
+/// the page width, `y`, `h` in pixels. Later panels are drawn on top.
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 #[serde(deny_unknown_fields)]
 pub struct Panel {
     pub id: String,
-    pub w: u8,
-    pub h: u8,
+    pub x: u16,
+    pub y: u32,
+    pub w: u16,
+    pub h: u16,
 }
 
-/// The start page's arrangement: panels in order (hidden ones are absent).
+/// The start page's arrangement: panels (hidden ones are absent) and the
+/// items of „De rezolvat” postponed until a day (`9999-12-31` = hidden).
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 #[serde(deny_unknown_fields)]
 pub struct Home {
     pub panels: Vec<Panel>,
+    #[serde(default)]
+    pub amanate: std::collections::BTreeMap<String, String>,
+}
+
+fn panel(id: &str, x: u16, y: u32, w: u16, h: u16) -> Panel {
+    Panel { id: id.into(), x, y, w, h }
+}
+
+impl Home {
+    /// The start page for someone who manages the firm (owner, administrator,
+    /// or a single user without an organization): money first.
+    pub fn for_admin() -> Home {
+        Home {
+            panels: vec![
+                panel("bani", 0, 0, 660, 200),
+                panel("cifre", 670, 0, 330, 200),
+                panel("rezolvat", 0, 212, 660, 320),
+                panel("azi", 670, 212, 330, 320),
+                panel("notificari", 0, 544, 495, 240),
+                panel("documente", 505, 544, 495, 240),
+            ],
+            amanate: Default::default(),
+        }
+    }
+
+    /// The start page for the other roles: their day first.
+    pub fn for_staff() -> Home {
+        Home {
+            panels: vec![
+                panel("rezolvat", 0, 0, 600, 340),
+                panel("azi", 610, 0, 390, 340),
+                panel("notificari", 0, 352, 495, 260),
+                panel("documente", 505, 352, 495, 260),
+            ],
+            amanate: Default::default(),
+        }
+    }
+
+    /// The page ids of the pinned panels.
+    pub fn pinned(&self) -> impl Iterator<Item = &str> {
+        self.panels.iter().filter_map(|p| p.id.strip_prefix(PINNED_PREFIX))
+    }
 }
 
 impl Default for Home {
     fn default() -> Self {
-        let p = |id: &str, w, h| Panel { id: id.into(), w, h };
-        Home {
-            panels: vec![
-                p("azi", 2, 1),
-                p("notificari", 1, 1),
-                p("documente", 1, 1),
-                p("module", 1, 1),
-                p("despre", 1, 1),
-            ],
-        }
+        Home::for_admin()
     }
+}
+
+fn valid_day(d: &str) -> bool {
+    let b = d.as_bytes();
+    b.len() == 10 && b[4] == b'-' && b[7] == b'-' && d.chars().enumerate().all(|(i, c)| i == 4 || i == 7 || c.is_ascii_digit())
+}
+
+fn valid_page_id(id: &str) -> bool {
+    !id.is_empty() && id.len() <= 64 && id.chars().all(|c| c.is_ascii_lowercase() || c.is_ascii_digit() || matches!(c, '.' | '-' | '_'))
 }
 
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
@@ -139,28 +196,29 @@ impl Settings {
                 format!("{w} nu este între {SIDEBAR_MIN} și {SIDEBAR_MAX}"),
             ));
         }
+        let bad = |d: String| Err(CoreError::invalid("ecranul de start", d));
         let mut seen = std::collections::BTreeSet::new();
         for p in &self.home.panels {
-            if !HOME_PANELS.contains(&p.id.as_str()) {
-                return Err(CoreError::invalid(
-                    "ecranul de start",
-                    format!("panoul „{}” nu există", p.id),
-                ));
+            let known = HOME_PANELS.contains(&p.id.as_str()) || p.id.strip_prefix(PINNED_PREFIX).is_some_and(valid_page_id);
+            if !known {
+                return bad(format!("panoul „{}” nu există", p.id));
             }
             if !seen.insert(p.id.as_str()) {
-                return Err(CoreError::invalid(
-                    "ecranul de start",
-                    format!("panoul „{}” apare de două ori", p.id),
-                ));
+                return bad(format!("panoul „{}” apare de două ori", p.id));
             }
-            if !(1..=HOME_COLUMNS).contains(&p.w) || !(1..=HOME_ROWS_MAX).contains(&p.h) {
-                return Err(CoreError::invalid(
-                    "ecranul de start",
-                    format!(
-                        "panoul „{}” are mărimea {}×{} (permis: 1–{HOME_COLUMNS} × 1–{HOME_ROWS_MAX})",
-                        p.id, p.w, p.h
-                    ),
-                ));
+            if p.w < PANEL_MIN_W || p.x.checked_add(p.w).is_none_or(|e| e > HOME_WIDTH) {
+                return bad(format!("panoul „{}” iese din pagină pe lățime", p.id));
+            }
+            if !(PANEL_MIN_H..=PANEL_MAX_H).contains(&p.h) || p.y > HOME_MAX_Y {
+                return bad(format!("panoul „{}” are o înălțime sau o poziție nepermisă", p.id));
+            }
+        }
+        if self.home.amanate.len() > SNOOZE_MAX {
+            return bad(format!("prea multe elemente amânate (cel mult {SNOOZE_MAX})"));
+        }
+        for (k, d) in &self.home.amanate {
+            if k.is_empty() || k.len() > 200 || !valid_day(d) {
+                return bad("un element amânat nu are o cheie sau o dată validă".into());
             }
         }
         if !known_profiles.contains(&self.profile.as_str()) {
@@ -187,6 +245,7 @@ pub struct Loaded {
 ///
 /// - schema 0: written by the Etapa 0 S3 prototype — `{"theme": "..."}` only.
 /// - schema 1: no start-page arrangement yet; it gets the default one.
+/// - schema 2: panels on a 3-column grid; placed freely since schema 3 (7.4d).
 fn migrate(mut fields: Fields) -> CoreResult<(Settings, bool)> {
     let schema = fields.get("schema").and_then(Value::as_u64).unwrap_or(0) as u32;
     if schema > SETTINGS_SCHEMA {
@@ -204,8 +263,38 @@ fn migrate(mut fields: Fields) -> CoreResult<(Settings, bool)> {
         return Ok((s, migrated));
     }
     fields.remove("schema");
+    if schema == 2
+        && let Some(home) = fields.get_mut("home")
+    {
+        *home = grid_to_free(home);
+    }
     let s = serde_json::from_value(Value::Object(fields)).map_err(|e| CoreError::invalid("setările", e.to_string()))?;
     Ok((s, migrated))
+}
+
+/// Schema 2 kept panels in order on a 3-column grid (`w` columns, `h` rows
+/// of 200 px); schema 3 places them freely. The old order and sizes are kept.
+fn grid_to_free(home: &Value) -> Value {
+    const COL: u16 = HOME_WIDTH / 3;
+    const ROW: u32 = 212;
+    let mut out = Vec::new();
+    let (mut col, mut row_y, mut row_h) = (0u16, 0u32, 0u32);
+    for p in home["panels"].as_array().into_iter().flatten() {
+        let w = p["w"].as_u64().unwrap_or(1).clamp(1, 3) as u16;
+        let h = p["h"].as_u64().unwrap_or(1).clamp(1, 3) as u32;
+        if col + w > 3 {
+            col = 0;
+            row_y += row_h;
+            row_h = 0;
+        }
+        let width = if col + w == 3 { HOME_WIDTH - col * COL } else { w * COL - 10 };
+        out.push(serde_json::json!({
+            "id": p["id"], "x": col * COL, "y": row_y, "w": width, "h": h * ROW - 12,
+        }));
+        col += w;
+        row_h = row_h.max(h * ROW);
+    }
+    serde_json::json!({"panels": out})
 }
 
 pub fn load(store: &Store) -> CoreResult<Loaded> {

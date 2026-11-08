@@ -8,6 +8,7 @@
   --accent: #1f4fa8;
   --accent-fg: #ffffff;
   --danger: #c62828;
+  --warn-text: #8a5a00;
   --ok: #2e7d32;
   --warn: #b25b00;
   --gap: 8px;
@@ -26,6 +27,7 @@
     --accent: #6f9cf0;
     --accent-fg: #0d1b33;
     --danger: #ef6b6b;
+  --warn-text: #e0b25a;
   }
 }
 :root[data-theme="dark"] {
@@ -1133,4 +1135,164 @@ label > .suggest > input {
 .suggest-list button:hover,
 .suggest-list button:focus {
   background: var(--hover, rgb(0 0 0 / 6%));
+}
+
+/* Etapa 7, step 7.4d: start page as a control centre, free panels */
+.cc {
+  display: grid;
+  gap: 10px;
+}
+.cc-band {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 12px;
+  padding: 10px 14px;
+  border: 1px solid var(--line);
+  background: var(--panel);
+}
+.cc-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+}
+.cc-canvas {
+  position: relative;
+  min-height: 400px;
+}
+.cc-canvas.narrow {
+  display: grid;
+  gap: 10px;
+}
+.cc-canvas:not(.narrow) > .panel.free {
+  position: absolute;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+.panel.free > header {
+  cursor: grab;
+  touch-action: none;
+  user-select: none;
+}
+.panel.free > header:focus-visible {
+  outline: 2px solid var(--accent, currentColor);
+  outline-offset: -2px;
+}
+.panel.free.moving {
+  opacity: 0.92;
+  box-shadow: 0 8px 24px rgb(0 0 0 / 22%);
+  z-index: 5;
+}
+.panel.free.moving > header {
+  cursor: grabbing;
+}
+.panel.free .panel-body {
+  flex: 1;
+  min-height: 0;
+  overflow: auto;
+}
+.res {
+  position: absolute;
+  touch-action: none;
+  z-index: 2;
+}
+.res-e {
+  top: 0;
+  right: 0;
+  width: 8px;
+  height: 100%;
+  cursor: ew-resize;
+}
+.res-s {
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 8px;
+  cursor: ns-resize;
+}
+.res-se {
+  right: 0;
+  bottom: 0;
+  width: 16px;
+  height: 16px;
+  cursor: nwse-resize;
+  background: linear-gradient(135deg, transparent 50%, var(--line) 50%);
+}
+.money-row,
+.tiles-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+  gap: 8px;
+}
+.money,
+.tile-btn {
+  display: grid;
+  gap: 2px;
+  text-align: left;
+  padding: 8px 10px;
+  border: 1px solid var(--line);
+  background: transparent;
+  color: inherit;
+}
+.money .v,
+.tile-btn .v {
+  font-size: 1.35em;
+  font-variant-numeric: tabular-nums;
+}
+.money .k,
+.tile-btn .k {
+  font-weight: 600;
+}
+.money .s,
+.tile-btn .s {
+  font-size: 0.8em;
+  opacity: 0.75;
+}
+.money.bad .v,
+.tile-btn.bad .v {
+  color: var(--danger, #b3261e);
+}
+.money.warn .v,
+.tile-btn.warn .v {
+  color: var(--warn-text, #8a5a00);
+}
+.cc .tag {
+  font-size: 0.75em;
+  padding: 1px 6px;
+  border: 1px solid currentColor;
+  white-space: nowrap;
+}
+.cc .tag.bad {
+  color: var(--danger, #b3261e);
+}
+.cc .tag.warn {
+  color: var(--warn-text, #8a5a00);
+}
+.cc .tag.ok {
+  color: var(--ok, #2e6b34);
+}
+.todo {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 4px;
+}
+.todo li {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 4px 8px;
+  padding: 4px 0;
+  border-bottom: 1px solid var(--line);
+}
+.todo-actions {
+  display: inline-flex;
+  gap: 8px;
+}
+.page-head .pin {
+  margin-left: auto;
 }

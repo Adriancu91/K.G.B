@@ -238,6 +238,23 @@ export function App() {
               doar citire
             </span>
           )}
+          {page !== "home" && (
+            <button
+              className="link small pin"
+              title="Pune un panou cu această pagină pe Acasă"
+              onClick={() => {
+                const id = `fix:${page}`;
+                const panels = s.home.panels;
+                const bottom = Math.max(0, ...panels.map((p) => p.y + p.h + 12));
+                void saveSettings({
+                  ...s,
+                  home: { ...s.home, panels: panels.some((p) => p.id === id) ? panels.filter((p) => p.id !== id) : [...panels, { id, x: 0, y: bottom, w: 330, h: 140 }] },
+                });
+              }}
+            >
+              {s.home.panels.some((p) => p.id === `fix:${page}`) ? "Scoate de pe Acasă" : "Fixează pe Acasă"}
+            </button>
+          )}
           <NotificationBell moduleName={(id) => modules.modules.find((m) => m.id === id)?.name ?? id} onError={setError} />
         </div>
         {error && (
@@ -248,7 +265,18 @@ export function App() {
             </button>
           </p>
         )}
-        {page === "home" && <Home info={info} modules={modules} settings={s} onSave={(next) => void saveSettings(next)} onOpen={setPage} onError={setError} />}
+        {page === "home" && (
+          <Home
+            info={info}
+            modules={modules}
+            settings={s}
+            implicit={settings.home_implicit}
+            pages={nav.filter((n) => n.id !== "home")}
+            onSave={(next) => void saveSettings(next)}
+            onOpen={setPage}
+            onError={setError}
+          />
+        )}
         {page === "catalog" && (
           <Catalog modules={modules} profileName={profileName} onChanged={loadModules} onError={setError} />
         )}

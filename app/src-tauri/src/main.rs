@@ -359,16 +359,34 @@ struct SettingsReply {
     settings: Settings,
     version: u64,
     profiles: Vec<Profile>,
+    /// The start page for this person's role (step 7.4d): the one used until
+    /// they arrange their own, and what „Revino la implicit” brings back.
+    home_implicit: settings::Home,
+}
+
+/// Owner, administrators and a single user get the money-first start page;
+/// the other roles get their day first.
+fn home_for_role(s: &Session) -> Result<settings::Home, CoreError> {
+    let admin = match org::current(s.ws.store(), &s.device.fingerprint())? {
+        Some(c) => c.role.admin,
+        None => true,
+    };
+    Ok(if admin { settings::Home::for_admin() } else { settings::Home::for_staff() })
 }
 
 #[tauri::command]
 fn get_settings(app: State<AppState>) -> CmdResult<SettingsReply> {
     with_session(&app, |s| {
-        let l = settings::load(s.ws.store())?;
+        let mut l = settings::load(s.ws.store())?;
+        let home_implicit = home_for_role(s)?;
+        if l.version == 0 {
+            l.settings.home = home_implicit.clone();
+        }
         Ok(SettingsReply {
             settings: l.settings,
             version: l.version,
             profiles: PROFILES.iter().map(|(id, name)| Profile { id, name }).collect(),
+            home_implicit,
         })
     })
 }

@@ -263,7 +263,7 @@ Deciziile DECIS se schimbă doar cu aprobarea explicită a proprietarului (Maste
 - D-044: notificări desktop Windows doar cât rulează aplicația; fără serviciu de fundal sau email fără acord;
 - D-045: generarea documentelor — DOCX cu completator propriu; **PDF cu Typst** (ales de proprietar pe 8 nov. 2026, „Typst”, în locul WebView2 recomandat: PDF-uri identice peste ani, cu prețul de ~+11,7 MB la installer);
 - D-046: recurență cu reguli simple;
-- D-047: aranjamentul panourilor e salvat în setările spațiului de lucru (aplicat la 4.10: setări schema 2, migrare automată de la schema 1).
+- D-047: aranjamentul panourilor e salvat în setările spațiului de lucru (aplicat la 4.10: setări schema 2, migrare automată de la schema 1). Extins la 7.4d (cerut de proprietar, 9 nov. 2026): panouri așezate liber (poziție și lățime ca parte din lățimea paginii, înălțime în pixeli), setări schema 3, migrare automată de la grila din schema 2; pornirea depinde de rol.
 
 ### D-048 — Poarta Etapei 4
 - **Data:** 8 nov. 2026 · **Statut:** DECIS · **Aprobat de:** proprietar („aprob”), ca răspuns la `docs/ETAPA4_RAPORT.md`.
