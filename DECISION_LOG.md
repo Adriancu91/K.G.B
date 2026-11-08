@@ -291,3 +291,14 @@ Deciziile DECIS se schimbă doar cu aprobarea explicită a proprietarului (Maste
 - D-058: registru de membri semnat de administratori; un dispozitiv acceptă date doar de la dispozitive din registru;
 - D-059: se sincronizează doar datele modulelor permise de rol, plus registrul; setările personale și cheile nu pleacă de pe PC;
 - D-060: revocarea scoate dispozitivul din registru; datele deja copiate pe el nu pot fi șterse garantat de la distanță.
+
+### D-061 — Etapa 7 începe înaintea porții Etapei 6
+- **Data:** 8 nov. 2026 · **Statut:** DECIS · **Cerut de:** proprietar („Ok mergi mai departe adaugă mai multe module”), după raportul intermediar `docs/ETAPA6_RAPORT.md`.
+- **Conținut:** Etapa 6 rămâne deschisă până la testul pe două PC-uri (🔒 6.10, programat luni seara, 9 nov. 2026) și poarta ei (🔒 6.12). Între timp începe Etapa 7 (`docs/ETAPA7_PLAN.md`), plus modulele „Echipă și pontaj” și „Calculator și conversii”, care nu depind de rezultatul testului de rețea.
+
+### D-062 … D-065 — Etapa 7
+- **Data:** 8 nov. 2026 · **Statut:** PROPUS — detalii în `docs/ETAPA7_PLAN.md`, de confirmat la poarta Etapei 7
+- D-062: registru central de surse externe, cu condiții de folosire și dată de verificare; niciun modul nu folosește o sursă din afara lui;
+- D-063: aplicația vine fără surse externe active; proprietarul le adaugă și le aprobă;
+- D-064: pontaj declarativ, fără urmărirea calculatorului, ecranului sau locației;
+- D-065: bani în bani întregi și în modulul de calcul; conversii cu factori exacți.

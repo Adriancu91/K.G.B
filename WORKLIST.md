@@ -123,3 +123,15 @@ Interdicții permanente: fără baze de date (D-005, D-018), fără schimbări d
 - [ ] 🔒 6.10 Test pe două PC-uri, LAN + internet, cu întreruperi (fostul S2.3) — cere al doilea PC
 - [x] 6.11 Raport Etapa 6 (`docs/ETAPA6_RAPORT.md`) — raport intermediar: partea pe un singur PC e gata; poarta așteaptă testul pe două PC-uri (🔒 6.10)
 - [ ] 🔒 6.12 Poarta Etapei 6
+
+## Etapa 7 — pași (plan: `docs/ETAPA7_PLAN.md`; D-061 decis, D-062 … D-065 propuse; începută înaintea porții Etapei 6, la cererea proprietarului)
+
+- [ ] 7.1 Registrul de surse și licențe (nucleu): sursă, link, tip, condiții de folosire, licență, data verificării, aprobare
+- [ ] 7.2 Modulul „Permise și autorizații”: proceduri cu surse oficiale datate, dosare cu checklist, memento-uri
+- [ ] 7.3 Modulul „Echipă și pontaj”: angajați, ture, pontaj, ore suplimentare, concedii, raport lunar
+- [ ] 7.4 Modulul „Calculator și conversii”: calculator, unități, calcule uzuale (TVA, adaos, marjă)
+- [ ] 7.5 InfoNews: RSS/Atom doar din sursele aprobate, cu sursă, oră și link
+- [ ] 7.6 Piață, partea 1: listă de urmărire, cotații manuale/CSV cu sursă și oră, grafic, alerte
+- [ ] 🔒 7.7 Piață, partea 2: cotații automate de la un furnizor ales de proprietar (licență, cost)
+- [ ] 7.8 Raport Etapa 7 (`docs/ETAPA7_RAPORT.md`)
+- [ ] 🔒 7.9 Poarta Etapei 7
