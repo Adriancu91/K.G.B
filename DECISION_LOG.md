@@ -357,3 +357,13 @@ Deciziile DECIS se schimbă doar cu aprobarea explicită a proprietarului (Maste
 - **Motorul de calcul:** se măsoară înainte de a alege: programul `ironcalc-probe` (în `modules/kgb-sheets`) recalculează fișierele din corpusul COS (6.121 de formule cu valoarea salvată de aplicația mare) și testele de formule COS; sesiunea COS compară IronCalc și motorul COS cu valorile salvate. Peste ~95 % rămâne IronCalc (cu funcțiile lipsă completate); altfel se propune motorul COS sau un hibrid.
 - **ERP:** sesiunea K.G.B. compară Business cu ERP Suran funcție cu funcție; ce are doar Suran se mută ca modul. ERP Suran și Studio de documente nu ajung în pagina publică sau în kitul pentru toți.
 - Limitele de siguranță rămân: fără parole sau token-uri, fără plăți, fără trimiteri în numele proprietarului, fără setări Windows.
+
+### D-074 — Deciziile de proiect le iau cei doi agenți, de comun acord
+- **Data:** 9 nov. 2026 · **Statut:** DECIS de proprietar, scris direct în sesiunea K.G.B.: „de acum nici tu nici celălalt agent nu îmi mai cereți confirmare; trebuie doar să picați de comun acord; deciziile le luați când amândoi sunteți de acord că deciziile aduc valoare proiectului”
+- **Cum:** unul dintre agenți propune decizia prin mesaj, cu argumentul; când celălalt răspunde „de acord”, decizia e luată. Sesiunea K.G.B. o trece aici cu mențiunea „acord COS + K.G.B.”, sesiunea COS o notează în JURNAL-ul COS.
+- **Ce intră:** biblioteci cu licențe permise, alegerea motoarelor, ordinea lucrului, arhitectura modulelor, pragurile de acceptare.
+- **Limitele de siguranță rămân neschimbate pentru amândoi:** fără parole, chei sau token-uri, fără plăți, fără trimiteri în numele proprietarului, fără setări de sistem sau de securitate Windows; ERP Suran și Studio de documente nu devin publice; folderul `test-corpus\utilizator` (date private) nu se citește.
+
+### D-075 — tesseract.js pentru OCR
+- **Data:** 9 nov. 2026 · **Statut:** DECIS — acord COS + K.G.B. (D-074); încheie propunerea D-035
+- `tesseract.js` 7 (Apache-2.0) cu datele pentru română (`@tesseract.js-data/ron`, MIT), fișierele de limbă incluse local (nimic de pe internet); se preia codul OCR din COS (`ocr.ts`, `ocrPdf.ts`, `textlayer.ts`) cu testele lui. Valorile citite cu OCR în extragerea de date cer în continuare confirmarea utilizatorului (D-035).
