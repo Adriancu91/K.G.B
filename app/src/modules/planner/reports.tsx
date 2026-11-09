@@ -105,7 +105,7 @@ export function ReportsView({
       const name = format === "xlsx" ? `Raport taskuri ${azi}.xlsx` : `Raport ${table} ${azi}.csv`;
       const dest = await save({
         defaultPath: name,
-        filters: [format === "xlsx" ? { name: "Excel", extensions: ["xlsx"] } : { name: "CSV", extensions: ["csv"] }],
+        filters: [format === "xlsx" ? { name: "Registru .xlsx", extensions: ["xlsx"] } : { name: "CSV", extensions: ["csv"] }],
       });
       if (!dest) return;
       const args: Record<string, unknown> = { azi, filtru, format, dest };

@@ -245,7 +245,7 @@ export function PartnersPage({ onError }: { onError: (e: string | null) => void 
     }
   };
   const saveModel = async () => {
-    const dest = await saveDialog({ defaultPath: "model-import-parteneri.xlsx", filters: [{ name: "Excel", extensions: ["xlsx"] }] });
+    const dest = await saveDialog({ defaultPath: "model-import-parteneri.xlsx", filters: [{ name: "Registru .xlsx", extensions: ["xlsx"] }] });
     if (!dest) return;
     try {
       await invoke("partners_import_model", { dest });
@@ -318,7 +318,7 @@ export function PartnersPage({ onError }: { onError: (e: string | null) => void 
             <button className="primary" onClick={() => setEditing(blank())}>
               Partener nou
             </button>
-            <button onClick={() => void importFile()}>Importă din Excel…</button>
+            <button onClick={() => void importFile()}>Importă din .xlsx…</button>
             <button className="link" onClick={() => void saveModel()}>
               Descarcă modelul de import
             </button>

@@ -488,7 +488,7 @@ function Content(props: {
       return (
         <ul className="plain">
           <li>Datele stau pe PC-urile firmei, fără bază de date și fără cloud; fiecare modul are permisiunile lui.</li>
-          <li>Documente: PDF, foi de calcul, extragere de date, modele Word și formulare.</li>
+          <li>Documente: PDF, foi de calcul, extragere de date, modele .docx și formulare.</li>
           <li>Business, organizare, echipă, permise și calculator, sincronizate între PC-urile firmei.</li>
         </ul>
       );
