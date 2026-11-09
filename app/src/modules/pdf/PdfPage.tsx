@@ -8,6 +8,7 @@ import { api, message } from "../../api";
 import { Confirm } from "../../components/Confirm";
 import { drawPage, fromBase64, openPdf } from "./pdfjs";
 import { RedactPanel } from "./Redact";
+import { ToolsPanel } from "./Tools";
 import { StampsPanel } from "./Stamps";
 
 const ID = "kgb.pdf";
@@ -100,6 +101,8 @@ export function PdfPage({ onError }: { onError: (e: string | null) => void }) {
   const [stampsOpen, setStampsOpen] = useState(false);
   // Hiding data for good (7.4l-1c).
   const [redactOpen, setRedactOpen] = useState(false);
+  // Pages on a sheet, booklet, poster, smaller file (7.4l-1d).
+  const [toolsOpen, setToolsOpen] = useState(false);
 
   const refresh = useCallback(async () => {
     try {
@@ -331,12 +334,18 @@ export function PdfPage({ onError }: { onError: (e: string | null) => void }) {
               <button disabled={!editable || busy || !view} onClick={() => setRedactOpen(!redactOpen)}>
                 Ascunde date…
               </button>
+              <button disabled={info.status !== "intact" || busy} onClick={() => setToolsOpen(!toolsOpen)}>
+                Pagini pe foaie, mărime…
+              </button>
               {selected.length > 0 && (
                 <button className="link" onClick={() => setSelected([])}>
                   Deselectează
                 </button>
               )}
             </div>
+            {toolsOpen && info.status === "intact" && (
+              <ToolsPanel docId={doc.id} version={version ?? info.version} name={info.name} pages={pageCount} selected={selected} busy={busy} ask={ask} onError={onError} />
+            )}
             {redactOpen && editable && view && <RedactPanel key={`${doc.id}-${version}`} view={view} docId={doc.id} version={version} busy={busy} ask={ask} />}
             {stampsOpen && editable && <StampsPanel docId={doc.id} version={version} selected={selected} busy={busy} ask={ask} onError={onError} />}
             {stamp.open && editable && (
@@ -415,7 +424,10 @@ export function PdfPage({ onError }: { onError: (e: string | null) => void }) {
           <div className="dialog wide" role="dialog" aria-modal="true" aria-labelledby="pv-title" onClick={(e) => e.stopPropagation()}>
             <h2 id="pv-title">Previzualizare: {preview.title}</h2>
             <p>
-              {preview.summary}. Rezultatul a fost verificat (se redeschide, paginile și textul lor s-au păstrat).
+              {preview.summary}.{" "}
+              {preview.command === "save_new"
+                ? `Documentul nou are ${pages(preview.pages)} și a fost verificat (se redeschide întreg); originalul rămâne cum e.`
+                : "Rezultatul a fost verificat (se redeschide, paginile și textul lor s-au păstrat)."}
               {preview.command === "merge" && " Semnele de carte și formularele din documentele unite nu se preiau."}
             </p>
             <div className="pdf-preview">
@@ -427,7 +439,7 @@ export function PdfPage({ onError }: { onError: (e: string | null) => void }) {
             <div className="dialog-actions">
               <button onClick={() => setPreview(null)}>Renunță</button>
               <button className="primary" disabled={busy} onClick={() => void apply()}>
-                {preview.command === "extract" || preview.command === "merge" ? "Creează documentul" : "Salvează ca versiune nouă"}
+                {preview.command === "extract" || preview.command === "merge" || preview.command === "save_new" ? "Creează documentul" : "Salvează ca versiune nouă"}
               </button>
             </div>
           </div>

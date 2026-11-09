@@ -258,6 +258,18 @@ try {
   check("„unic” nu mai e în fișier, „Pagina 1 din 50” da", mt.length === 50 && !mt.some((t) => t.includes("unic")) && mt[0].includes("Pagina 1 din 50"), JSON.stringify(mt.slice(0, 2)));
   await p.screenshot(join(shots, "02e-ascuns-text.png"));
   await openDoc(p, "factura.pdf");
+  // 7.4l-1d: the invoice page is an image now: the COS compression makes the file smaller, as a new version.
+  await thumbsLoaded(p, 1);
+  await p.click("Pagini pe foaie, mărime…", ".pdf-doc button");
+  await p.until("!!document.querySelector('.pdf-tools')", 5000);
+  await p.fill("select[aria-label='Cât de tare se comprimă pozele']", "2");
+  await p.click("Comprimă pozele", ".pdf-tools button");
+  await p.until("!!document.querySelector('.dialog.wide canvas')", 30000);
+  const compTitle = await p.eval("document.querySelector('.dialog.wide').innerText");
+  check("comprimarea pozelor (din COS) micșorează fișierul", /1 poză micșorată: [\d,]+ (KB|MB) → [\d,]+ (KB|MB)/.test(compTitle), compTitle.slice(0, 160));
+  await p.click("Salvează ca versiune nouă", ".dialog button");
+  await p.until("document.querySelector('.pdf-doc select')?.selectedOptions[0]?.textContent.startsWith('6 —')", 15000);
+  await p.click("Pagini pe foaie, mărime…", ".pdf-doc button");
 
   // Merge the invoice and the 4-page file.
   await p.eval(`(() => { for (const li of document.querySelectorAll('.pdf-docs li'))
@@ -290,6 +302,20 @@ try {
   const dest = join(data, "export.pdf");
   await invoke(p, "module_call", { id: "kgb.pdf", command: "export", args: { id: merged.id, dest, overwrite: true } });
   check("exportul scrie o copie PDF", existsSync(dest) && readFileSync(dest).subarray(0, 5).toString() === "%PDF-");
+
+  // 7.4l-1d: 4 pages on a sheet (COS nup.ts) → a new document of 13 sheets from the 50 pages.
+  await openDoc(p, "multipagina-50.pdf");
+  await thumbsLoaded(p, 1);
+  await p.click("Pagini pe foaie, mărime…", ".pdf-doc button");
+  await p.until("!!document.querySelector('.pdf-tools')", 5000);
+  await p.fill("select[aria-label='Pagini pe foaie']", "4");
+  await p.eval("[...document.querySelectorAll('.pdf-tools button')].find(b => b.textContent === 'Previzualizează').click()");
+  await p.until("!!document.querySelector('.dialog.wide canvas')", 30000);
+  const nupTitle = await p.eval("document.querySelector('.dialog.wide').innerText");
+  check("4 pe foaie: previzualizarea are 13 foi (50 de pagini)", nupTitle.includes("4 pagini pe foaie") && nupTitle.includes("are 13 pagini"), nupTitle.slice(0, 200));
+  await p.click("Creează documentul", ".dialog button");
+  await p.until("[...document.querySelectorAll('.pdf-docs li .grow')].some(e => e.textContent === 'multipagina-50 - 4 pe foaie.pdf')", 15000);
+  check("documentul nou „4 pe foaie” apare în listă", true);
 
   p.close();
   execFileSync("taskkill", ["/F", "/T", "/PID", String(proc.pid)], { stdio: "ignore" });

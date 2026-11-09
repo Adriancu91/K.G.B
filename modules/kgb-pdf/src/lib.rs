@@ -31,6 +31,8 @@
 //! - `stamp_annot {id, based_on, pages?, text, sub?, culoare?, opacitate?,
 //!   pozitie?, biblioteca?, latime_mm?, autor?, apply}` → a `/Stamp`
 //!   annotation as in Cyber Office Studio (7.4l-1b2)
+//! - `save_new {id, version?, data, name, summary, apply}` → a new document
+//!   made in the window (n-up, booklet, poster…), checked, then created
 //! - `save_edit {id, based_on, data, summary, same_text_pages?, apply}` → a
 //!   result made in the window by a tool copied from COS (pdf-lib, D-072),
 //!   checked like the others, then a preview or a new version
@@ -192,6 +194,23 @@ struct SaveEdit {
     /// Pages whose text must have stayed exactly as it was (1-based).
     #[serde(default)]
     same_text_pages: Vec<u32>,
+    #[serde(default)]
+    apply: bool,
+}
+
+/// A new document made in the window by a tool copied from COS (n-up,
+/// booklet, poster…; pdf-lib, D-072): checked here, then a preview or a new
+/// document (the source stays as it is).
+#[derive(Deserialize)]
+#[serde(deny_unknown_fields)]
+struct SaveNew {
+    /// The source document (its version must exist and be intact).
+    id: Uuid,
+    #[serde(default)]
+    version: Option<u64>,
+    data: String,
+    name: String,
+    summary: String,
     #[serde(default)]
     apply: bool,
 }
@@ -443,6 +462,24 @@ impl Module for Pdf {
                 }
                 let v = ctx.save_document(a.id, num, &out, &summary)?;
                 Ok(json!({"applied": true, "version": v.number, "pages": n, "summary": summary}))
+            }
+            "save_new" => {
+                let a: SaveNew = args(a)?;
+                intact(ctx, a.id, a.version)?;
+                let out = B64.decode(a.data.as_bytes()).map_err(|_| bad("rezultatul nu a ajuns întreg"))?;
+                let summary = a.summary.trim().chars().take(200).collect::<String>();
+                if summary.is_empty() {
+                    return Err(bad("lipsește descrierea schimbării"));
+                }
+                let n = match check::check(&out) {
+                    check::Status::Intact(n) if n > 0 => n,
+                    s => return Err(bad(format!("rezultatul nu trece verificarea: {}", s.reason()))),
+                };
+                if !a.apply {
+                    return Ok(preview(&out, n, summary));
+                }
+                let d = ctx.import_document(&pdf_name(&a.name), &out)?;
+                Ok(json!({"applied": true, "document": d, "pages": n, "summary": summary}))
             }
             "save_edit" => {
                 let a: SaveEdit = args(a)?;

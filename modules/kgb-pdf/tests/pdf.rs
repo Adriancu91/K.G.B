@@ -474,3 +474,19 @@ fn save_edit_checks_window_results() {
     let r = call(&mut ws, &mm, "save_edit", json!({"id": id, "based_on": 1, "data": four, "summary": "ascuns", "apply": true})).unwrap();
     assert_eq!(r["version"], 2);
 }
+
+/// Step 7.4l-1d: a new document made in the window (n-up, booklet, poster)
+/// is checked, previewed, then created; the source stays as it is.
+#[test]
+fn save_new_checks_and_creates() {
+    let (_t, mut ws, mm) = setup();
+    let id = import(&mut ws, &mm, "rotite-si-formate.pdf")["document"]["id"].clone();
+    let other = B64.encode(std::fs::read(testdata("simplu-1-pagina.pdf")).unwrap());
+    let p = call(&mut ws, &mm, "save_new", json!({"id": id, "data": other, "name": "patru pe foaie", "summary": "4 pe foaie"})).unwrap();
+    assert_eq!((p["applied"].as_bool(), p["pages"].as_u64()), (Some(false), Some(1)));
+    let r = call(&mut ws, &mm, "save_new", json!({"id": id, "data": other, "name": "patru pe foaie", "summary": "4 pe foaie", "apply": true})).unwrap();
+    assert_eq!(r["document"]["name"], "patru pe foaie.pdf");
+    assert_eq!(call(&mut ws, &mm, "info", json!({"id": id})).unwrap()["version"], 1, "the source stays");
+    let broken = B64.encode(std::fs::read(testdata("stricat-trunchiat.pdf")).unwrap());
+    assert!(call(&mut ws, &mm, "save_new", json!({"id": id, "data": broken, "name": "x", "summary": "x"})).unwrap_err().to_string().contains("verificarea"));
+}
