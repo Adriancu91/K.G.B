@@ -183,7 +183,8 @@ struct ExportFile {
 const MAX_BOOK_BYTES: usize = 100 * 1024 * 1024;
 
 fn is_ssheet(name: &str) -> bool {
-    name.rsplit_once('.').is_some_and(|(_, e)| e.eq_ignore_ascii_case("ssheet"))
+    name.rsplit_once('.')
+        .is_some_and(|(_, e)| e.eq_ignore_ascii_case("ssheet"))
 }
 
 /// A workbook from the window, before it is saved: an .xlsx must pass the archive check and open with
@@ -197,7 +198,10 @@ pub fn check_book(name: &str, data: &[u8]) -> Result<usize, String> {
         if v["format"] != "suite-sheet" || v["version"] != 1 {
             return Err("registrul .ssheet nu are formatul „suite-sheet”, versiunea 1".into());
         }
-        let sheets = v["sheets"].as_array().filter(|s| !s.is_empty()).ok_or("registrul nu are nicio foaie")?;
+        let sheets = v["sheets"]
+            .as_array()
+            .filter(|s| !s.is_empty())
+            .ok_or("registrul nu are nicio foaie")?;
         if sheets.iter().any(|s| !s["name"].is_string() || !s["cells"].is_object()) {
             return Err("o foaie nu are nume sau celule".into());
         }
@@ -449,8 +453,11 @@ impl Module for Sheets {
                     )));
                 }
                 let summary = summary_of(&a.summary)?;
-                let data = B64.decode(a.data.as_bytes()).map_err(|_| bad("registrul nu a ajuns întreg"))?;
-                let sheets = check_book(&doc.name, &data).map_err(|e| bad(format!("registrul nu trece verificarea: {e}")))?;
+                let data = B64
+                    .decode(a.data.as_bytes())
+                    .map_err(|_| bad("registrul nu a ajuns întreg"))?;
+                let sheets =
+                    check_book(&doc.name, &data).map_err(|e| bad(format!("registrul nu trece verificarea: {e}")))?;
                 let v = ctx.save_document(a.id, a.based_on, &data, &summary)?;
                 Ok(json!({"version": v.number, "sheets": sheets, "summary": summary}))
             }
@@ -461,8 +468,11 @@ impl Module for Sheets {
                     return Err(bad("numele registrului nu este valid"));
                 }
                 let summary = summary_of(&a.summary)?;
-                let data = B64.decode(a.data.as_bytes()).map_err(|_| bad("registrul nu a ajuns întreg"))?;
-                let sheets = check_book(name, &data).map_err(|e| bad(format!("registrul nu trece verificarea: {e}")))?;
+                let data = B64
+                    .decode(a.data.as_bytes())
+                    .map_err(|_| bad("registrul nu a ajuns întreg"))?;
+                let sheets =
+                    check_book(name, &data).map_err(|e| bad(format!("registrul nu trece verificarea: {e}")))?;
                 let d = ctx.import_document(name, &data)?;
                 ctx.log(&format!("registru nou din fereastră ({sheets} foi): {summary}"));
                 Ok(json!({"document": d, "sheets": sheets, "summary": summary}))
@@ -474,7 +484,9 @@ impl Module for Sheets {
             }
             "export_file" => {
                 let a: ExportFile = args(a)?;
-                let data = B64.decode(a.data.as_bytes()).map_err(|_| bad("fișierul nu a ajuns întreg"))?;
+                let data = B64
+                    .decode(a.data.as_bytes())
+                    .map_err(|_| bad("fișierul nu a ajuns întreg"))?;
                 if data.len() > MAX_BOOK_BYTES {
                     return Err(bad("fișierul este prea mare"));
                 }
