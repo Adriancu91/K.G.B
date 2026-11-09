@@ -373,3 +373,12 @@ Deciziile DECIS se schimbă doar cu aprobarea explicită a proprietarului (Maste
 - **Aplicația (platforma) rămâne K.G.B. — Kronos Global Business:** nucleul, ERP-ul, echipa, sincronizarea, telefoanele.
 - **Partea de birou din K.G.B. păstrează numele „Cyber Office Studio”** (ales de proprietar pe 30.10, deja pe kiturile 0.9.5–0.9.6, pe pagina web și în siglă): în meniul K.G.B. apare ca un grup „Cyber Office Studio” cu aplicațiile lui (Documente, Foi de calcul, PDF, Prezentări, Notițe, Imagini, Video).
 - Kitul COS pentru toată lumea și pagina web rămân „Cyber Office Studio” până când K.G.B. îl înlocuiește.
+
+### D-077 — Motorul de calcul al foilor: motorul din Cyber Office Studio
+- **Data:** 9 nov. 2026 · **Statut:** DECIS — după măsurătoarea stabilită în D-073 (acord COS + K.G.B.; pragul de 95 % fixat dinainte)
+- **Măsurătoarea:** 18 registre din corpusul COS (fără `utilizator`), doar celulele cu valoarea salvată de aplicația mare; registrele pe care un motor nu le deschide sau nu le termină se socotesc greșite pentru el. Programul `ironcalc-probe` (K.G.B.) și `masura-motoare.mjs` (COS).
+  - Fără registrul mare: COS 2.037/2.174 = 93,7 %, IronCalc 2.064/2.174 = 94,9 % (la funcțiile obișnuite, egalitate; IronCalc puțin mai bun la cazuri-limită, pe care COS le repară).
+  - `StructuredRefs-lots-with-lookups.xlsx` (5.216 celule): COS le calculează pe toate în câteva secunde; IronCalc nu termină în 25 de minute.
+  - Total: **COS 98,1 %, IronCalc 27,9 %**. IronCalc mai pierde la referințele de tabel (`Tabel[Coloană]`, #NAME?), la referințele 3D între foi (`Sheet1:Sheet3!A1`), la formatul OOXML strict și se oprește singur la un registru (bug62181).
+- **Decizia:** foile de calcul din K.G.B. folosesc motorul COS (`formula.ts`, TypeScript, în fereastră), cu testele lui; nucleul Rust păstrează valorile și versiunile, ca la celelalte module. Greșelile găsite de măsurătoare (134) se repară în COS și vin odată cu mutarea.
+- **IronCalc** rămâne deocamdată doar unde e azi (calculul șabloanelor și verificarea foilor editate în `kgb-sheets`) până când mutarea Sheets îl înlocuiește; nu se mai extinde. Schimbă D-033 (IronCalc, un singur motor): un singur motor rămâne regula, dar motorul e cel din COS.
