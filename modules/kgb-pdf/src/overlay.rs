@@ -11,6 +11,11 @@
 //!   non-corruption check compares it).
 //! - Rotated pages: the overlay follows the page as it is shown.
 //! - The watermark is half transparent, so it does not hide what is under it.
+//! - A stamp (7.4l-1b): a framed text („PLĂTIT”, „APROBAT”, a date…) in red,
+//!   blue or green, slightly tilted, in one of nine places; and an image
+//!   (a scanned signature or the company's stamp, PNG or JPEG) with its width
+//!   in millimetres, in one of the nine places. The image is the only file
+//!   the layout can read; it is checked to be a PNG or JPEG first.
 
 use std::collections::BTreeMap;
 use std::sync::OnceLock;
@@ -33,6 +38,56 @@ pub struct Overlay {
     pub header: String,
     /// May contain `{n}` (page number) and `{total}` (number of pages).
     pub footer: String,
+    pub stamp: Option<Stamp>,
+    pub image: Option<Picture>,
+}
+
+/// A framed text stamp.
+#[derive(Clone, Debug)]
+pub struct Stamp {
+    pub text: String,
+    /// `rosu`, `albastru` or `verde`.
+    pub color: String,
+    pub place: String,
+}
+
+/// An image put on the pages.
+#[derive(Clone, Debug)]
+pub struct Picture {
+    pub data: Vec<u8>,
+    pub width_mm: f64,
+    pub place: String,
+}
+
+/// The nine places: `sus-stanga` … `jos-dreapta`, `centru`.
+pub const PLACES: [&str; 9] = ["sus-stanga", "sus-centru", "sus-dreapta", "mijloc-stanga", "centru", "mijloc-dreapta", "jos-stanga", "jos-centru", "jos-dreapta"];
+pub const MAX_IMAGE: usize = 5 * 1024 * 1024;
+
+/// Typst alignment and the offset that keeps a thing off the page's edge.
+fn place(p: &str) -> Result<(&'static str, i32, i32), String> {
+    let m = 36; // half an inch from the edges
+    Ok(match p {
+        "sus-stanga" => ("top + left", m, m + 14),
+        "sus-centru" => ("top + center", 0, m + 14),
+        "sus-dreapta" => ("top + right", -m, m + 14),
+        "mijloc-stanga" => ("horizon + left", m, 0),
+        "centru" => ("center + horizon", 0, 0),
+        "mijloc-dreapta" => ("horizon + right", -m, 0),
+        "jos-stanga" => ("bottom + left", m, -m - 14),
+        "jos-centru" => ("bottom + center", 0, -m - 14),
+        "jos-dreapta" => ("bottom + right", -m, -m - 14),
+        _ => return Err(format!("„{p}” nu e o poziție (sus/mijloc/jos și stânga/centru/dreapta)")),
+    })
+}
+
+fn image_kind(b: &[u8]) -> Option<&'static str> {
+    if b.starts_with(b"\x89PNG\r\n\x1a\n") {
+        Some("png")
+    } else if b.starts_with(&[0xFF, 0xD8, 0xFF]) {
+        Some("jpg")
+    } else {
+        None
+    }
 }
 
 pub const MAX_TEXT: usize = 120;
@@ -53,6 +108,8 @@ fn fonts() -> &'static (LazyHash<FontBook>, Vec<Font>) {
 struct OverlayWorld {
     library: LazyHash<Library>,
     main: Source,
+    /// The one image the overlay may read (path, bytes).
+    image: Option<(FileId, Bytes)>,
 }
 
 impl World for OverlayWorld {
@@ -68,8 +125,11 @@ impl World for OverlayWorld {
     fn source(&self, id: FileId) -> FileResult<Source> {
         if id == self.main.id() { Ok(self.main.clone()) } else { Err(FileError::AccessDenied) }
     }
-    fn file(&self, _id: FileId) -> FileResult<Bytes> {
-        Err(FileError::AccessDenied)
+    fn file(&self, id: FileId) -> FileResult<Bytes> {
+        match &self.image {
+            Some((img, b)) if *img == id => Ok(b.clone()),
+            _ => Err(FileError::AccessDenied),
+        }
     }
     fn font(&self, index: usize) -> Option<Font> {
         fonts().1.get(index).cloned()
@@ -146,6 +206,13 @@ fn layout(sizes: &[(f64, f64)], numbers: &[usize], total: usize, o: &Overlay) ->
     let mut inputs = Dict::new();
     inputs.insert("w".into(), o.watermark.clone().into_value());
     inputs.insert("h".into(), o.header.clone().into_value());
+    if let Some(st) = &o.stamp {
+        inputs.insert("s".into(), st.text.clone().into_value());
+    }
+    let image_path = match &o.image {
+        Some(pic) => Some(format!("/imagine.{}", image_kind(&pic.data).ok_or("imaginea trebuie să fie PNG sau JPEG")?)),
+        None => None,
+    };
     let mut src = String::from("#let i = sys.inputs\n#set page(margin: 0pt, fill: none)\n#set text(font: \"Libertinus Serif\")\n");
     for (k, ((w, h), n)) in sizes.iter().zip(numbers).enumerate() {
         let footer = o.footer.replace("{n}", &n.to_string()).replace("{total}", &total.to_string());
@@ -165,10 +232,32 @@ fn layout(sizes: &[(f64, f64)], numbers: &[usize], total: usize, o: &Overlay) ->
         if !footer.is_empty() {
             src.push_str(&format!("#place(bottom + center, dy: -16pt, text(size: 9pt, fill: rgb(60, 60, 60))[#i.at(\"f{k}\")])\n"));
         }
+        if let Some(st) = &o.stamp {
+            let (al, dx, dy) = place(&st.place)?;
+            let color = match st.color.as_str() {
+                "albastru" => "rgb(25, 70, 170)",
+                "verde" => "rgb(20, 120, 60)",
+                _ => "rgb(190, 30, 30)",
+            };
+            src.push_str(&format!(
+                "#place({al}, dx: {dx}pt, dy: {dy}pt, rotate(-8deg, reflow: true, box(stroke: 2pt + {color}, inset: (x: 10pt, y: 6pt), radius: 3pt, text(size: 16pt, weight: \"bold\", fill: {color}, tracking: 1pt)[#i.at(\"s\")])))\n"
+            ));
+        }
+        if let (Some(pic), Some(path)) = (&o.image, &image_path) {
+            let (al, dx, dy) = place(&pic.place)?;
+            src.push_str(&format!("#place({al}, dx: {dx}pt, dy: {dy}pt, image(\"{path}\", width: {:.1}mm))\n", pic.width_mm));
+        }
         src.push_str("]\n");
     }
     let id = FileId::new(RootedPath::new(VirtualRoot::Project, VirtualPath::new("/overlay.typ").map_err(|e| format!("{e:?}"))?));
-    let world = OverlayWorld { library: LazyHash::new(Library::builder().with_inputs(inputs).build()), main: Source::new(id, src) };
+    let image = match (&o.image, &image_path) {
+        (Some(pic), Some(path)) => Some((
+            FileId::new(RootedPath::new(VirtualRoot::Project, VirtualPath::new(path).map_err(|e| format!("{e:?}"))?)),
+            Bytes::new(pic.data.clone()),
+        )),
+        _ => None,
+    };
+    let world = OverlayWorld { library: LazyHash::new(Library::builder().with_inputs(inputs).build()), main: Source::new(id, src), image };
     let doc: PagedDocument = typst::compile(&world)
         .output
         .map_err(|errs| errs.iter().map(|e| e.message.to_string()).collect::<Vec<_>>().join("; "))?;
@@ -186,9 +275,41 @@ fn page_content(doc: &Document, page: ObjectId) -> Result<Vec<u8>, String> {
 
 /// Puts the overlay on the chosen pages (1-based; all if empty).
 pub fn apply(src: &[u8], pages: &[u32], o: &Overlay) -> Result<Vec<u8>, String> {
-    let o = Overlay { watermark: clean(&o.watermark, "filigranul")?, header: clean(&o.header, "antetul")?, footer: clean(&o.footer, "subsolul")? };
-    if o.watermark.is_empty() && o.header.is_empty() && o.footer.is_empty() {
-        return Err("scrie filigranul, antetul sau subsolul".into());
+    let stamp = match &o.stamp {
+        Some(st) => {
+            let text = clean(&st.text, "ștampila")?;
+            if text.is_empty() || text.chars().count() > 40 {
+                return Err("textul ștampilei are 1–40 de caractere".into());
+            }
+            if !["rosu", "albastru", "verde"].contains(&st.color.as_str()) {
+                return Err("culoarea ștampilei e roșu, albastru sau verde".into());
+            }
+            place(&st.place)?;
+            Some(Stamp { text, color: st.color.clone(), place: st.place.clone() })
+        }
+        None => None,
+    };
+    if let Some(pic) = &o.image {
+        if pic.data.is_empty() || pic.data.len() > MAX_IMAGE {
+            return Err("imaginea e goală sau mai mare de 5 MB".into());
+        }
+        if image_kind(&pic.data).is_none() {
+            return Err("imaginea trebuie să fie PNG sau JPEG".into());
+        }
+        if !(5.0..=200.0).contains(&pic.width_mm) {
+            return Err("lățimea imaginii e între 5 și 200 mm".into());
+        }
+        place(&pic.place)?;
+    }
+    let o = Overlay {
+        watermark: clean(&o.watermark, "filigranul")?,
+        header: clean(&o.header, "antetul")?,
+        footer: clean(&o.footer, "subsolul")?,
+        stamp,
+        image: o.image.clone(),
+    };
+    if o.watermark.is_empty() && o.header.is_empty() && o.footer.is_empty() && o.stamp.is_none() && o.image.is_none() {
+        return Err("scrie filigranul, antetul, subsolul, o ștampilă sau alege o imagine".into());
     }
     let mut doc = load(src)?;
     ops::flatten_inherited(&mut doc);

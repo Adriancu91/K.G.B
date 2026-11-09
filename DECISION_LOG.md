@@ -336,3 +336,9 @@ Deciziile DECIS se schimbă doar cu aprobarea explicită a proprietarului (Maste
 - **Citește** doar ce îi trebuie persoanei lui: numele și unitățile produselor din Business (pentru fișe și inventar), livrările încărcate / în drum unde e trecută ca șofer, taskurile ei din Planificator cu termen azi sau întârziate, ultimele 30 de mesaje ale echipei.
 - **Scrie** doar în „Primite de pe telefon” (fișe, documente, extrase, inventar, bonuri, pontaj, etape de livrare, „task terminat”), plus un mesaj al echipei, semnat „Nume (telefon)”.
 - **Nu scrie direct în Business, Echipă sau Planificator:** pe PC, cineva cu drepturile lui aplică cu un clic (recepție, inventar, plată, pontaj, etapă de livrare, task gata). Așa un telefon pierdut nu poate modifica evidențele; se scoate din pagina „Telefon”.
+
+### D-071 — Codul din Cyber Office Studio se poate copia direct
+- **Data:** 9 nov. 2026 · **Statut:** DECIS de proprietar („este aplicația mea și am drept să copiez cod direct”)
+- Cyber Office Studio e aplicația proprietarului; codul ei (TypeScript/React: interfețe, algoritmi, teste) se poate prelua direct în K.G.B., cu testele lui, fără rescriere de la zero.
+- Rămân valabile: dosarul `workspace` doar se citește (D-037); o bibliotecă nouă de care ar avea nevoie codul copiat (de ex. pdf-lib, tesseract.js) se cere separat; operațiile pe PDF rămân în Rust/lopdf (D-032), iar calculul din foi pe un singur motor (IronCalc), dacă proprietarul nu hotărăște altfel.
+

@@ -302,7 +302,7 @@ fn stamp_watermark_header_footer() {
     let info = call(&mut ws, &mm, "info", json!({"id": id})).unwrap();
     assert_eq!(info["rotations"], json!([0, 90, 180, 270]), "rotations unchanged");
     // The overlay's own words: diacritics and the page numbers.
-    let o = kgb_pdf::overlay::Overlay { watermark: "CONFIDENȚIAL".into(), header: "Fier Vechi SRL · Iași".into(), footer: "Pagina {n} din {total}".into() };
+    let o = kgb_pdf::overlay::Overlay { watermark: "CONFIDENȚIAL".into(), header: "Fier Vechi SRL · Iași".into(), footer: "Pagina {n} din {total}".into(), ..Default::default() };
     let t = kgb_pdf::overlay::overlay_text(&[(595.0, 842.0), (842.0, 595.0)], &o).unwrap();
     for w in ["CONFIDENȚIAL", "Iași", "Pagina 1 din 2", "Pagina 2 din 2"] {
         assert!(t.contains(w), "{w} in {t}");
@@ -320,8 +320,39 @@ fn stamp_watermark_header_footer() {
     // Only chosen pages; bad input refused.
     let r = call(&mut ws, &mm, "stamp", json!({"id": id, "based_on": 2, "pages": [2], "filigran": "ANULAT", "apply": true})).unwrap();
     assert_eq!(r["summary"], "filigran pe 1 pagină");
-    assert!(call(&mut ws, &mm, "stamp", json!({"id": id, "based_on": 3})).unwrap_err().to_string().contains("filigranul, antetul sau subsolul"));
+    assert!(call(&mut ws, &mm, "stamp", json!({"id": id, "based_on": 3})).unwrap_err().to_string().contains("filigranul, antetul, subsolul"));
     assert!(call(&mut ws, &mm, "stamp", json!({"id": id, "based_on": 3, "pages": [9], "antet": "x"})).unwrap_err().to_string().contains("nu există"));
     assert!(call(&mut ws, &mm, "stamp", json!({"id": id, "based_on": 3, "antet": "a\nb"})).is_err());
     assert!(call(&mut ws, &mm, "stamp", json!({"id": id, "based_on": 3, "antet": "#{panic()}"})).is_ok(), "typed text is data, not Typst code");
+}
+
+/// Step 7.4l-1b: a text stamp and an image (PNG/JPEG) in a chosen place.
+#[test]
+fn stamp_and_image_on_pages() {
+    let (_t, mut ws, mm) = setup();
+    let id = import(&mut ws, &mm, "rotite-si-formate.pdf")["document"]["id"].clone();
+    // A real PNG: the thumbnail of the first page.
+    let png = call(&mut ws, &mm, "thumb", json!({"id": id, "page": 1, "width": 120})).unwrap()["png"].as_str().unwrap().to_string();
+    let before: Vec<String> = serde_json::from_value(call(&mut ws, &mm, "text", json!({"id": id})).unwrap()).unwrap();
+    let r = call(&mut ws, &mm, "stamp", json!({"id": id, "based_on": 1, "pages": [1, 3],
+        "stampila": {"text": "PLĂTIT 09.11.2026", "culoare": "albastru", "pozitie": "sus-dreapta"},
+        "imagine": {"date": png, "latime_mm": 30, "pozitie": "jos-stanga"}, "apply": true})).unwrap();
+    assert_eq!(r["summary"], "ștampilă, imagine pe 2 pagini");
+    let out = bytes(&mut ws, &mm, &id, Some(2));
+    assert!(kgb_pdf::overlay::has_overlay(&out, 1) && kgb_pdf::overlay::has_overlay(&out, 3) && !kgb_pdf::overlay::has_overlay(&out, 2));
+    let after: Vec<String> = serde_json::from_value(call(&mut ws, &mm, "text", json!({"id": id})).unwrap()).unwrap();
+    assert_eq!(after, before);
+    if let Ok(dir) = std::env::var("KGB_STAMP_PREVIEW") {
+        for page in [1, 3] {
+            let png = call(&mut ws, &mm, "thumb", json!({"id": id, "version": 2, "page": page, "width": 300})).unwrap()["png"].as_str().unwrap().to_string();
+            std::fs::write(std::path::Path::new(&dir).join(format!("stampila-{page}.png")), B64.decode(png).unwrap()).unwrap();
+        }
+    }
+    let err = |ws: &mut Workspace, a: Value| call(ws, &mm, "stamp", a).unwrap_err().to_string();
+    let base = |extra: Value| { let mut a = json!({"id": id, "based_on": 2}); for (k, v) in extra.as_object().unwrap() { a[k] = v.clone(); } a };
+    assert!(err(&mut ws, base(json!({"imagine": {"date": B64.encode(b"GIF89a....")}}))).contains("PNG sau JPEG"));
+    assert!(err(&mut ws, base(json!({"imagine": {"date": png, "latime_mm": 500}}))).contains("5 și 200"));
+    assert!(err(&mut ws, base(json!({"stampila": {"text": "OK", "pozitie": "undeva"}}))).contains("poziție"));
+    assert!(err(&mut ws, base(json!({"stampila": {"text": "OK", "culoare": "mov"}}))).contains("culoarea"));
+    assert!(err(&mut ws, base(json!({"stampila": {"text": ""}}))).contains("1–40"));
 }

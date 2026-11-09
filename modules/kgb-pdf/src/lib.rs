@@ -25,8 +25,9 @@
 //! - `delete_pages {id, based_on, pages, apply}` → preview or new version
 //! - `extract {id, version?, pages, name, apply}` → preview or new document
 //! - `merge {ids, name, apply}` → preview or new document
-//! - `stamp {id, based_on, pages?, filigran?, antet?, subsol?, apply}` →
-//!   watermark / header / footer ({n}, {total}) over the pages (7.4l-1a)
+//! - `stamp {id, based_on, pages?, filigran?, antet?, subsol?, stampila?,
+//!   imagine?, apply}` → watermark / header / footer ({n}, {total}), a text
+//!   stamp and an image over the pages (7.4l-1a, 7.4l-1b)
 //! - `restore {id, version}`, `export {id, version?, dest, overwrite}`, `delete {id}`
 
 pub mod check;
@@ -132,8 +133,44 @@ struct Stamp {
     /// May contain {n} and {total}.
     #[serde(default)]
     subsol: String,
+    /// A framed text stamp (7.4l-1b).
+    #[serde(default)]
+    stampila: Option<StampIn>,
+    /// An image: base64 PNG/JPEG, width in mm, place (7.4l-1b).
+    #[serde(default)]
+    imagine: Option<ImageIn>,
     #[serde(default)]
     apply: bool,
+}
+
+#[derive(Deserialize)]
+#[serde(deny_unknown_fields)]
+struct StampIn {
+    text: String,
+    #[serde(default = "red")]
+    culoare: String,
+    #[serde(default = "bottom_right")]
+    pozitie: String,
+}
+
+#[derive(Deserialize)]
+#[serde(deny_unknown_fields)]
+struct ImageIn {
+    date: String,
+    #[serde(default = "default_width")]
+    latime_mm: f64,
+    #[serde(default = "bottom_right")]
+    pozitie: String,
+}
+
+fn red() -> String {
+    "rosu".into()
+}
+fn bottom_right() -> String {
+    "jos-dreapta".into()
+}
+fn default_width() -> f64 {
+    40.0
 }
 
 #[derive(Deserialize)]
@@ -310,7 +347,16 @@ impl Module for Pdf {
                 let a: Stamp = args(a)?;
                 let (num, data) = intact(ctx, a.id, Some(a.based_on))?;
                 let texts = texts_of(&data)?;
-                let o = overlay::Overlay { watermark: a.filigran, header: a.antet, footer: a.subsol };
+                let image = match a.imagine {
+                    Some(im) => Some(overlay::Picture {
+                        data: B64.decode(im.date.as_bytes()).map_err(|_| bad("imaginea nu a ajuns întreagă"))?,
+                        width_mm: im.latime_mm,
+                        place: im.pozitie,
+                    }),
+                    None => None,
+                };
+                let stamp = a.stampila.map(|st| overlay::Stamp { text: st.text, color: st.culoare, place: st.pozitie });
+                let o = overlay::Overlay { watermark: a.filigran, header: a.antet, footer: a.subsol, stamp, image };
                 let out = overlay::apply(&data, &a.pages, &o).map_err(bad)?;
                 // The pages keep their own text exactly; the overlay is checked to be there.
                 let n = ops::verify(&out, &texts, None).map_err(bad)?;
@@ -318,7 +364,13 @@ impl Module for Pdf {
                 if let Some(p) = chosen.iter().find(|p| !overlay::has_overlay(&out, **p)) {
                     return Err(bad(format!("textul nu a ajuns pe pagina {p}")));
                 }
-                let what: Vec<&str> = [(!o.watermark.trim().is_empty(), "filigran"), (!o.header.trim().is_empty(), "antet"), (!o.footer.trim().is_empty(), "subsol")]
+                let what: Vec<&str> = [
+                    (!o.watermark.trim().is_empty(), "filigran"),
+                    (!o.header.trim().is_empty(), "antet"),
+                    (!o.footer.trim().is_empty(), "subsol"),
+                    (o.stamp.is_some(), "ștampilă"),
+                    (o.image.is_some(), "imagine"),
+                ]
                     .into_iter()
                     .filter_map(|(on, w)| on.then_some(w))
                     .collect();
