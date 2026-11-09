@@ -1174,6 +1174,104 @@
         "comanda",
         "etapa"
       ]
+    },
+    {
+      "collection": "vehicule",
+      "description": "parcul auto (7.4k-6): vehicule cu actele care expiră (ITP, RCA, CASCO, rovinietă…) și memento-uri",
+      "schema": {
+        "fields": {
+          "numar": {
+            "type": "string",
+            "required": true,
+            "nullable": false,
+            "max_len": 20
+          },
+          "marca": {
+            "type": "string",
+            "required": false,
+            "nullable": true,
+            "max_len": 60
+          },
+          "model": {
+            "type": "string",
+            "required": false,
+            "nullable": true,
+            "max_len": 60
+          },
+          "an": {
+            "type": "integer",
+            "required": false,
+            "nullable": true,
+            "min": 1950
+          },
+          "sofer": {
+            "type": "string",
+            "required": false,
+            "nullable": true,
+            "max_len": 100
+          },
+          "acte": {
+            "type": "array",
+            "required": true,
+            "nullable": false
+          },
+          "activ": {
+            "type": "bool",
+            "required": true
+          },
+          "creat_ms": {
+            "type": "integer",
+            "required": true,
+            "min": 0
+          }
+        },
+        "additional": false
+      },
+      "indexes": [
+        "numar"
+      ]
+    },
+    {
+      "collection": "soferi",
+      "description": "șoferii (7.4k-6): permis, atestat, card tahograf, avize, cu datele de expirare și memento-uri",
+      "schema": {
+        "fields": {
+          "nume": {
+            "type": "string",
+            "required": true,
+            "nullable": false,
+            "max_len": 100
+          },
+          "telefon": {
+            "type": "string",
+            "required": false,
+            "nullable": true,
+            "max_len": 30
+          },
+          "categorii": {
+            "type": "string",
+            "required": false,
+            "nullable": true,
+            "max_len": 30
+          },
+          "acte": {
+            "type": "array",
+            "required": true,
+            "nullable": false
+          },
+          "activ": {
+            "type": "bool",
+            "required": true
+          },
+          "creat_ms": {
+            "type": "integer",
+            "required": true,
+            "min": 0
+          }
+        },
+        "additional": false
+      },
+      "indexes": []
     }
   ],
   "data_format": 1,

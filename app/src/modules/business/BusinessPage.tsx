@@ -9,6 +9,7 @@ import { OffersView } from "./offers";
 import { OrdersView } from "./orders";
 import { HoldsPanel } from "./holds";
 import { DeliveriesView } from "./deliveries";
+import { FleetView } from "./fleet";
 import { PurchasesView } from "./purchases";
 import { CashView } from "./cash";
 import { AgingView } from "./aging";
@@ -353,7 +354,7 @@ function InventoryForm(props: { stock: StockRow[]; warehouses: Warehouse[]; busy
 }
 
 export function BusinessPage({ onError }: { onError: (e: string | null) => void }) {
-  type Tab = "stoc" | "documente" | "receptie" | "iesire" | "transfer" | "inventar" | "produse" | "depozite" | "oferte" | "comenzi" | "livrari" | "facturare" | "cheltuieli" | "casa" | "scadentar" | "rapoarte" | "audit";
+  type Tab = "stoc" | "documente" | "receptie" | "iesire" | "transfer" | "inventar" | "produse" | "depozite" | "oferte" | "comenzi" | "livrari" | "parc" | "facturare" | "cheltuieli" | "casa" | "scadentar" | "rapoarte" | "audit";
   // A start-page tile may ask for a tab (7.4d).
   const [tab, setTab] = useState<Tab>(() => (takeIntent("kgb.business") as Tab | undefined) ?? "stoc");
   const [products, setProducts] = useState<Product[]>([]);
@@ -422,6 +423,7 @@ export function BusinessPage({ onError }: { onError: (e: string | null) => void 
             ["oferte", "Oferte"],
             ["comenzi", "Comenzi"],
             ["livrari", "Livrări"],
+            ["parc", "Parc auto"],
             ["facturare", "Facturare"],
             ["cheltuieli", "Cheltuieli"],
             ["casa", "Casă și bancă"],
@@ -616,6 +618,7 @@ export function BusinessPage({ onError }: { onError: (e: string | null) => void 
       {tab === "oferte" && <OffersView onError={onError} />}
       {tab === "comenzi" && <OrdersView onError={onError} />}
       {tab === "livrari" && <DeliveriesView onError={onError} />}
+      {tab === "parc" && <FleetView onError={onError} />}
       {tab === "facturare" && <InvoicesView products={products} warehouses={warehouses} onError={onError} onChanged={() => void refresh()} />}
 
       {tab === "produse" && (

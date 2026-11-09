@@ -31,6 +31,7 @@ pub mod audit;
 pub mod cash;
 pub mod deliveries;
 pub mod efactura;
+pub mod fleet;
 pub mod invoices;
 pub mod matching;
 pub mod num;
@@ -938,6 +939,7 @@ impl Module for Business {
 
     fn remind(&self, ctx: &mut ModuleContext<'_>, today: &str) -> CoreResult<()> {
         self.reminders(ctx, today)?;
+        self.fleet_reminders(ctx, today)?;
         self.due_reminders(ctx, today)
     }
 
@@ -1050,6 +1052,11 @@ impl Module for Business {
             "hold_release" => self.hold_release(ctx, args(a)?),
             // Step 7.4k-4: tracked deliveries.
             "deliveries" => self.deliveries(ctx),
+            "vehicles" => self.vehicles(ctx),
+            "vehicle_save" => self.vehicle_save(ctx, args(a)?),
+            "drivers" => self.drivers(ctx),
+            "driver_save" => self.driver_save(ctx, args(a)?),
+            "fleet_expiring" => self.fleet_expiring(ctx, args(a)?),
             "delivery_save" => self.delivery_save(ctx, args(a)?),
             "delivery_step" => self.delivery_step(ctx, args(a)?),
             "offer_pdf" => {
