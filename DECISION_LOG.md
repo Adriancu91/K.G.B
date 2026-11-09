@@ -348,3 +348,12 @@ Deciziile DECIS se schimbă doar cu aprobarea explicită a proprietarului (Maste
 - Schimbă D-032 doar cât trebuie: o unealtă copiată din COS poate lucra pe octeții PDF-ului în fereastră (pdf-lib); rezultatul trece, ca până acum, prin modulul `kgb.pdf`: verificarea strictă, previzualizarea, versiunea nouă (originalul nu se schimbă). Uneltele deja scrise în Rust rămân.
 - Prima folosire: ascunderea datelor care păstrează restul paginii ca text (`redactKeep.ts`).
 
+### D-073 — Combinarea K.G.B. cu Cyber Office Studio: plan comun, conducere pe domenii
+- **Data:** 9 nov. 2026 · **Statut:** DECIS — acord între sesiunea K.G.B. și sesiunea COS, la cererea proprietarului („discută cu el și picați la comun acord care variantă aduce cel mai mare câștig și cine va conduce”)
+- **Produsul final e K.G.B.** (nucleul: sincronizare semnată, roluri, audit, backup, fără baze de date, Rust/Tauri); modulele COS intră în el unul câte unul, cu testele lor neschimbate.
+- **Conducere pe domenii:** sesiunea K.G.B. conduce arhitectura, nucleul, WORKLIST / DECISION_LOG, unirea în `main` și poarta fiecărui modul (testele COS trec neschimbate, datele prin nucleu, build, e2e); sesiunea COS conduce conținutul de birou (ce se mută, în ce ordine, când e „gata ca în COS”).
+- **Cine mută ce:** Sheets și Docs le mută sesiunea COS pe ramurile `kgb/cos-sheets`, apoi `kgb/cos-docs` (fără schimbări în `crates/`); sesiunea K.G.B. revizuiește și unește. PDF, Notițe și ERP rămân la sesiunea K.G.B. COS rămâne viu până îl ajunge K.G.B. din urmă; reparațiile găsite la mutare se fac în COS.
+- **Fără suprapuneri (laptop cu 8 GB):** se lucrează pe rând; cine construiește sau testează pune lacătul comun `C:\Users\krono\Desktop\.agent-lucreaza` (numele, ora) și anunță prin mesaj; un lacăt mai vechi de 2 ore se socotește uitat.
+- **Motorul de calcul:** se măsoară înainte de a alege: programul `ironcalc-probe` (în `modules/kgb-sheets`) recalculează fișierele din corpusul COS (6.121 de formule cu valoarea salvată de aplicația mare) și testele de formule COS; sesiunea COS compară IronCalc și motorul COS cu valorile salvate. Peste ~95 % rămâne IronCalc (cu funcțiile lipsă completate); altfel se propune motorul COS sau un hibrid.
+- **ERP:** sesiunea K.G.B. compară Business cu ERP Suran funcție cu funcție; ce are doar Suran se mută ca modul. ERP Suran și Studio de documente nu ajung în pagina publică sau în kitul pentru toți.
+- Limitele de siguranță rămân: fără parole sau token-uri, fără plăți, fără trimiteri în numele proprietarului, fără setări Windows.
