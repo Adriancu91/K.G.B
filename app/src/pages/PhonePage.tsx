@@ -43,7 +43,7 @@ interface Phone {
 }
 interface Received {
   id: string;
-  tip: "receptie" | "document" | "extras" | "inventar" | "bon" | "pontaj" | "livrare";
+  tip: "receptie" | "document" | "extras" | "inventar" | "bon" | "pontaj" | "livrare" | "task";
   telefon_nume: string;
   membru_nume: string;
   campuri: Record<string, string>;
@@ -86,7 +86,37 @@ const KIND: Record<Received["tip"], string> = {
   bon: "Bon de cheltuială",
   pontaj: "Pontaj",
   livrare: "Etapă de livrare",
+  task: "Task terminat",
 };
+
+/** "I finished this task" from the phone, marked done in the planner (7.4m-6d). */
+function TaskDone({ x, onDone, onError }: { x: Received; onDone: (msg: string) => void; onError: (e: string | null) => void }) {
+  return (
+    <div className="row wrap task-done">
+      <span>
+        „{x.campuri.titlu}” — terminat, spune {x.membru_nume}
+      </span>
+      <button
+        onClick={() =>
+          void (async () => {
+            try {
+              const all = await api.moduleCall<Array<{ id: string; version: number; stare: string }>>("kgb.planner", "tasks", {});
+              const t = all.find((y) => y.id === x.campuri.task);
+              if (!t) throw new Error("Taskul nu mai există în Planificator.");
+              if (t.stare !== "gata") await api.moduleCall("kgb.planner", "task_status", { id: t.id, version: t.version, stare: "gata" });
+              await invoke("phone_done", { id: x.id, gata: true });
+              onDone(`„${x.campuri.titlu}” e marcat gata în Planificator.`);
+            } catch (e) {
+              onError(message(e));
+            }
+          })()
+        }
+      >
+        Marchează gata în Planificator
+      </button>
+    </div>
+  );
+}
 
 const STAGE: Record<string, string> = { in_drum: "în drum", livrat: "livrat" };
 
@@ -657,6 +687,7 @@ export function PhonePage({ modules, onError }: { modules: ModulesReply; onError
               ))}
             </div>
             <ReceptionLines x={x} business={business} onDone={(m) => void load().then(() => setNotice(m))} onError={onError} />
+            {x.tip === "task" && !x.procesat && <TaskDone x={x} onDone={(m) => void load().then(() => setNotice(m))} onError={onError} />}
             {x.tip === "livrare" && !x.procesat && business && <StageToBusiness x={x} onDone={(m) => void load().then(() => setNotice(m))} onError={onError} />}
             {x.tip === "bon" && !x.procesat && business && (
               <ReceiptToBusiness x={x} accounts={allAccounts} onDone={(m) => void load().then(() => setNotice(m))} onError={onError} />

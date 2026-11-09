@@ -330,3 +330,9 @@ Deciziile DECIS se schimbă doar cu aprobarea explicită a proprietarului (Maste
   - pagina de pe telefon întreabă întâi „răspunzi?” și trece la primul PC care răspunde (cereri între PC-uri cu CORS deschis; cheia telefonului e doar în antet, niciodată cookie); după aprobare, în Wi-Fi-ul firmei, trece o dată la `kgb.local`;
   - asocierea se face la adresa PC-ului care a afișat codul (codul nu circulă între PC-uri);
   - o aprobare sau o scoatere ajunge la celelalte PC-uri la următoarea sincronizare (cel mult un minut).
+
+### D-070 — Ce citește și ce scrie telefonul (7.4m-6)
+- **Data:** 9 nov. 2026 · **Statut:** DECIS (în limitele D-068; proprietarul a cerut funcțiile: „Fă-le pe care crezi tu”)
+- **Citește** doar ce îi trebuie persoanei lui: numele și unitățile produselor din Business (pentru fișe și inventar), livrările încărcate / în drum unde e trecută ca șofer, taskurile ei din Planificator cu termen azi sau întârziate, ultimele 30 de mesaje ale echipei.
+- **Scrie** doar în „Primite de pe telefon” (fișe, documente, extrase, inventar, bonuri, pontaj, etape de livrare, „task terminat”), plus un mesaj al echipei, semnat „Nume (telefon)”.
+- **Nu scrie direct în Business, Echipă sau Planificator:** pe PC, cineva cu drepturile lui aplică cu un clic (recepție, inventar, plată, pontaj, etapă de livrare, task gata). Așa un telefon pierdut nu poate modifica evidențele; se scoate din pagina „Telefon”.

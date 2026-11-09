@@ -53,6 +53,8 @@ pub const KINDS: &[(&str, &str)] = &[
     ("pontaj", "pontaj"),
     // 7.4m-6c: the driver's stage of a delivery (applied on the PC).
     ("livrare", "etapă de livrare"),
+    // 7.4m-6d: "I finished this task" (marked done on the PC).
+    ("task", "task terminat"),
 ];
 
 /// The stages a driver reports from the phone, and the field each needs.
@@ -441,6 +443,12 @@ pub fn submit_with_lines(ws: &mut Workspace, from: &Phone, kind: &str, fields: s
         };
         if field(need).is_empty() || field(need).chars().count() > 200 {
             return Err(bad(format!("scrie {label}")));
+        }
+    }
+    if kind == "task" {
+        let field = |k: &str| clean.get(k).and_then(Value::as_str).unwrap_or_default().to_string();
+        if Uuid::parse_str(&field("task")).is_err() || field("titlu").is_empty() {
+            return Err(bad("taskul nu e ales"));
         }
     }
     if kind == "bon" {

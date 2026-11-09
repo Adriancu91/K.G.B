@@ -11,7 +11,9 @@
 //!   minutes, 5 wrong tries end it), then waits for approval on the PC.
 //! - An approved phone only adds to the inbox (reception sheets, driver
 //!   documents, bank statements…); it reads back only the product names
-//!   (for the sheets) and its own person's deliveries on the road (7.4m-6c).
+//!   (for the sheets), its own person's deliveries on the road (7.4m-6c) and
+//!   tasks due (7.4m-6d), and the team's messages; besides the inbox, it
+//!   writes only a team message, in its person's name (7.4m-6d).
 //! - Plain HTTP inside the local network (the firm's Wi-Fi): anyone on that
 //!   network can see the traffic. Fine for an office Wi-Fi with a password;
 //!   not for public Wi-Fi. From outside the office, through a private network
@@ -274,6 +276,18 @@ async fn handle(req: Request<Incoming>, session: Arc<Mutex<Option<Session>>>) ->
     let path = req.uri().path().to_string();
     let method = req.method().clone();
     let token = req.headers().get("x-kgb-token").and_then(|v| v.to_str().ok()).unwrap_or_default().to_string();
+    // ?azi=AAAA-LL-ZZ: the phone's today, for its tasks.
+    let azi: String = req
+        .uri()
+        .query()
+        .unwrap_or_default()
+        .split('&')
+        .find_map(|kv| kv.strip_prefix("azi="))
+        .unwrap_or_default()
+        .chars()
+        .filter(|c| c.is_ascii_digit() || *c == '-')
+        .take(10)
+        .collect();
     if method == Method::GET && (path == "/m" || path == "/m/" || path == "/") {
         return Ok(reply(StatusCode::OK, "text/html; charset=utf-8", PAGE));
     }
@@ -289,7 +303,7 @@ async fn handle(req: Request<Incoming>, session: Arc<Mutex<Option<Session>>>) ->
     if method == Method::GET && path == "/m/api/ping" {
         return Ok(json_reply(StatusCode::OK, json!({"kgb": true})));
     }
-    if method != Method::POST && !(method == Method::GET && (path == "/m/api/eu" || path == "/m/api/produse" || path == "/m/api/livrari")) {
+    if method != Method::POST && !(method == Method::GET && ["/m/api/eu", "/m/api/produse", "/m/api/livrari", "/m/api/taskuri", "/m/api/mesaje"].contains(&path.as_str())) {
         return Ok(err(StatusCode::NOT_FOUND, "nu există"));
     }
     let body: Value = if method == Method::POST {
@@ -387,6 +401,60 @@ async fn handle(req: Request<Incoming>, session: Arc<Mutex<Option<Session>>>) ->
             }
             _ => err(StatusCode::UNAUTHORIZED, "telefonul nu e aprobat"),
         }),
+        // The person's open tasks due today or overdue (7.4m-6d), read only.
+        "/m/api/taskuri" => with(&mut |s| match phones::by_token(&s.ws, &token) {
+            Ok(Some(p)) if p.stare == "aprobat" => {
+                let me = p.membru_nume.trim().to_lowercase();
+                let people = s.mm.call(&mut s.ws, None, "kgb.planner", "persons", json!({})).unwrap_or(json!([]));
+                let ids: Vec<String> = people
+                    .as_array()
+                    .into_iter()
+                    .flatten()
+                    .filter(|x| !me.is_empty() && x["nume"].as_str().is_some_and(|n| n.trim().to_lowercase() == me))
+                    .filter_map(|x| x["id"].as_str().map(String::from))
+                    .collect();
+                let mut items = Vec::new();
+                for id in ids {
+                    let mut f = json!({"responsabil": id});
+                    if azi.len() == 10 {
+                        f["azi"] = json!(azi);
+                        f["pana_la"] = json!(azi);
+                    }
+                    let list = s.mm.call(&mut s.ws, None, "kgb.planner", "tasks", f).unwrap_or(json!([]));
+                    for t in list.as_array().into_iter().flatten().filter(|t| t["stare"] != json!("gata")) {
+                        items.push(json!({"id": t["id"], "titlu": t["titlu"], "termen": t["termen"], "intarziat": t["intarziat"], "stare": t["stare"]}));
+                    }
+                }
+                json_reply(StatusCode::OK, json!({"taskuri": items}))
+            }
+            _ => err(StatusCode::UNAUTHORIZED, "telefonul nu e aprobat"),
+        }),
+        // The team's messages (7.4m-6d): the last 30, and an answer from
+        // the phone's person (written on this PC, marked „(telefon)”).
+        "/m/api/mesaje" => with(&mut |s| match phones::by_token(&s.ws, &token) {
+            Ok(Some(p)) if p.stare == "aprobat" => {
+                let list = kgb_core::chat::list(s.ws.store(), 30).unwrap_or_default();
+                let items: Vec<Value> = list
+                    .iter()
+                    .map(|m| json!({"autor": m.autor, "text": m.text, "voce": m.voce.is_some(), "creat_ms": m.creat_ms}))
+                    .collect();
+                json_reply(StatusCode::OK, json!({"mesaje": items}))
+            }
+            _ => err(StatusCode::UNAUTHORIZED, "telefonul nu e aprobat"),
+        }),
+        "/m/api/mesaj" => {
+            let text = body["text"].as_str().unwrap_or_default().to_string();
+            with(&mut |s| match phones::by_token(&s.ws, &token) {
+                Ok(Some(p)) if p.stare == "aprobat" => {
+                    let fp = s.device.fingerprint();
+                    match kgb_core::chat::send(&mut s.ws, &format!("{} (telefon)", p.membru_nume), &fp, &text) {
+                        Ok(id) => json_reply(StatusCode::OK, json!({"id": id})),
+                        Err(e) => err(StatusCode::BAD_REQUEST, &e.to_string()),
+                    }
+                }
+                _ => err(StatusCode::UNAUTHORIZED, "telefonul nu e aprobat"),
+            })
+        }
         "/m/api/trimite" => {
             let kind = body["tip"].as_str().unwrap_or_default().to_string();
             let mut lines = Some(body["linii"].as_array().cloned().unwrap_or_default());

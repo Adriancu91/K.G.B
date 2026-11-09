@@ -163,3 +163,17 @@ fn driver_delivery_stage() {
     assert!(err(json!({"livrare": liv, "etapa": "confirmat"})).contains("doar"));
     assert!(err(json!({"livrare": "x", "etapa": "in_drum", "aviz": "A"})).contains("aleasă"));
 }
+
+/// Step 7.4m-6d: "I finished this task" (marked done on the PC).
+#[test]
+fn task_done_from_phone() {
+    let t = tempfile::tempdir().unwrap();
+    let mut ws = Workspace::create(&t.path().join("ws"), "T").unwrap();
+    let (id, token) = phones::pair(&mut ws, "Telefon").unwrap();
+    phones::approve(&mut ws, id, "Ion").unwrap();
+    let p = phones::by_token(&ws, &token).unwrap().unwrap();
+    let f = |v: serde_json::Value| v.as_object().unwrap().clone();
+    phones::submit(&mut ws, &p, "task", f(json!({"task": uuid::Uuid::now_v7().to_string(), "titlu": "Sună furnizorul"})), vec![]).unwrap();
+    assert!(phones::submit(&mut ws, &p, "task", f(json!({"task": "x", "titlu": "T"})), vec![]).is_err());
+    assert!(phones::submit(&mut ws, &p, "task", f(json!({"task": uuid::Uuid::now_v7().to_string()})), vec![]).is_err());
+}

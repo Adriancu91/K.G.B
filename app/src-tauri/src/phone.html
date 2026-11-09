@@ -23,6 +23,8 @@
   .error { color: var(--bad); }
   .ok { color: var(--ok); }
   .thumbs { display: flex; flex-wrap: wrap; gap: 6px; }
+  .chat-list { display: grid; gap: 6px; max-height: 50vh; overflow-y: auto; }
+  .chat-list .msg { border: 1px solid var(--line); padding: 6px 8px; }
   .thumbs img { width: 72px; height: 72px; object-fit: cover; border: 1px solid var(--line); }
   .line { border: 1px solid var(--line); padding: 10px; display: grid; gap: 8px; }
   .line .two { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
@@ -62,6 +64,8 @@
     <button data-go="document"><b>Documente de la șofer</b><br><span class="muted">fotografiază avizul, CMR-ul, bonul de cântar</span></button>
     <button data-go="extras"><b>Extras de cont</b><br><span class="muted">PDF-ul sau fișierul CSV din aplicația băncii</span></button>
     <button data-go="inventar"><b>Inventar numărat</b><br><span class="muted">numeri în depozit: produsul și cât ai găsit</span></button>
+    <button id="goTasks"><b>Taskurile mele</b><br><span class="muted">ce am de făcut azi și ce a întârziat</span></button>
+    <button id="goChat"><b>Mesajele echipei</b><br><span class="muted">citești și răspunzi</span></button>
     <button id="goTrips"><b>Livrările mele</b><br><span class="muted">șofer: am plecat, am livrat, poza avizului semnat</span></button>
     <button id="goClock"><b>Pontaj</b><br><span class="muted">am intrat / am ieșit — ora o declari tu, fără locație</span></button>
     <button data-go="bon"><b>Bon de cheltuială</b><br><span class="muted">fotografiază bonul: motorină, piese, consumabile</span></button>
@@ -80,6 +84,23 @@
     <div id="tripList"></div>
     <p id="tripMsg" class="error"></p>
     <button id="tripBack">Înapoi</button>
+  </section>
+
+  <section id="tasks" class="card" hidden>
+    <h2>Taskurile mele</h2>
+    <p class="muted">Din Planificator: cele cu termen azi sau întârziate, pe numele tău. „Am terminat” ajunge pe PC, unde se marchează gata.</p>
+    <div id="taskList"></div>
+    <p id="taskMsg" class="error"></p>
+    <button id="taskBack">Înapoi</button>
+  </section>
+
+  <section id="chat" class="card" hidden>
+    <h2>Mesajele echipei</h2>
+    <div id="chatList" class="chat-list"></div>
+    <label>Mesaj <textarea id="chatText" rows="2" maxlength="2000"></textarea></label>
+    <button class="primary" id="chatSend">Trimite</button>
+    <p id="chatMsg" class="error"></p>
+    <button id="chatBack">Înapoi</button>
   </section>
 
   <section id="clock" class="card" hidden>
@@ -117,7 +138,7 @@
 const KEY = "kgb.phone.token";
 const store = { get() { try { return localStorage.getItem(KEY) || ""; } catch { return ""; } }, set(v) { try { localStorage.setItem(KEY, v); } catch {} }, clear() { try { localStorage.removeItem(KEY); } catch {} } };
 const $ = (id) => document.getElementById(id);
-const show = (id) => { for (const s of ["pair", "wait", "revoked", "menu", "form", "clock", "trips"]) $(s).hidden = s !== id; };
+const show = (id) => { for (const s of ["pair", "wait", "revoked", "menu", "form", "clock", "trips", "tasks", "chat"]) $(s).hidden = s !== id; };
 const FORMS = {
   receptie: { title: "Fișă de recepție", files: "Poze generale (aviz, încărcătura) — opțional", accept: "image/*", lines: true, fields: [["furnizor", "Furnizor"], ["document", "Aviz / factură (număr)"], ["vehicul", "Vehicul"], ["observatii", "Observații", true]] },
   document: { title: "Documente de la șofer", files: "Poze cu documentele", accept: "image/*", fields: [["sofer", "Șofer"], ["vehicul", "Vehicul"], ["nota", "Notă", true]] },
@@ -290,6 +311,69 @@ async function loadTrips() {
   } catch (e) { $("tripList").innerHTML = ""; $("tripMsg").textContent = e.message; }
 }
 $("goTrips").onclick = () => { show("trips"); loadTrips(); };
+
+// Tasks (7.4m-6d): read here; "done" goes to the PC.
+const DONE = "kgb.phone.taskuri";
+const isoToday = () => { const d = new Date(); return `${d.getFullYear()}-${pad2(d.getMonth() + 1)}-${pad2(d.getDate())}`; };
+async function loadTasks() {
+  $("taskMsg").textContent = "";
+  $("taskList").innerHTML = "<p class='muted'>Se încarcă…</p>";
+  try {
+    const r = await api(`/m/api/taskuri?azi=${isoToday()}`);
+    let done = {};
+    try { done = JSON.parse(kv.get(DONE) || "{}"); } catch {}
+    $("taskList").innerHTML = r.taskuri.length ? "" : "<p class='muted'>Nimic pentru azi.</p>";
+    for (const t of r.taskuri) {
+      const box = document.createElement("div");
+      box.className = "line task";
+      box.innerHTML = `<div class="head"><b>${esc(t.titlu)}</b><span class="${t.intarziat ? "error" : "muted"}">${t.termen ? esc(t.termen.split("-").reverse().join(".")) : ""}${t.intarziat ? " · întârziat" : ""}</span></div>
+        ${done[t.id] ? "<p class='ok'>Trimis la PC: terminat.</p>" : "<button data-done>Am terminat</button>"}`;
+      const b = box.querySelector("[data-done]");
+      if (b) b.onclick = async () => {
+        b.disabled = true;
+        try {
+          await api("/m/api/trimite", { tip: "task", campuri: { task: t.id, titlu: t.titlu }, fisiere: [] });
+          const m = (() => { try { return JSON.parse(kv.get(DONE) || "{}"); } catch { return {}; } })();
+          m[t.id] = 1; kv.set(DONE, JSON.stringify(m));
+          loadTasks();
+        } catch (e) { $("taskMsg").textContent = e.message; b.disabled = false; }
+      };
+      $("taskList").appendChild(box);
+    }
+  } catch (e) { $("taskList").innerHTML = ""; $("taskMsg").textContent = e.message; }
+}
+$("goTasks").onclick = () => { show("tasks"); loadTasks(); };
+$("taskBack").onclick = () => show("menu");
+
+// Team messages (7.4m-6d).
+async function loadChat() {
+  $("chatMsg").textContent = "";
+  try {
+    const r = await api("/m/api/mesaje");
+    $("chatList").innerHTML = r.mesaje.length ? "" : "<p class='muted'>Niciun mesaj.</p>";
+    for (const m of r.mesaje) {
+      const d = new Date(m.creat_ms);
+      const el = document.createElement("div");
+      el.className = "msg";
+      el.innerHTML = `<b>${esc(m.autor)}</b> <span class="muted">${pad2(d.getDate())}.${pad2(d.getMonth() + 1)} ${pad2(d.getHours())}:${pad2(d.getMinutes())}</span><br>${m.voce ? "<i>mesaj vocal (se ascultă pe PC)</i>" : esc(m.text)}`;
+      $("chatList").appendChild(el);
+    }
+    $("chatList").scrollTop = $("chatList").scrollHeight;
+  } catch (e) { $("chatMsg").textContent = e.message; }
+}
+$("goChat").onclick = () => { show("chat"); loadChat(); };
+$("chatBack").onclick = () => show("menu");
+$("chatSend").onclick = async () => {
+  const text = $("chatText").value.trim();
+  if (!text) return;
+  $("chatSend").disabled = true;
+  try {
+    await api("/m/api/mesaj", { text });
+    $("chatText").value = "";
+    await loadChat();
+  } catch (e) { $("chatMsg").textContent = e.message; }
+  finally { $("chatSend").disabled = false; }
+};
 $("tripBack").onclick = () => show("menu");
 function open(k) {
   kind = k; chosen = [];

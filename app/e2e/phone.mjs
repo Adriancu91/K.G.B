@@ -205,6 +205,39 @@ try {
   check("în Business livrarea e „livrat”, cu avizul și cine a primit", dl?.etapa === "livrat" && dl?.campuri?.aviz === "AV-901" && dl?.campuri?.primit_de === "Ion Client", JSON.stringify(dl?.campuri));
   check("o livrare predată nu mai apare pe telefon", ((await phone("/m/api/livrari")).json?.livrari ?? []).length === 0);
 
+  // 7.4m-6d: my tasks for today, and the team's messages.
+  await p.click("Catalog module", "nav .nav");
+  const planCard = "[...document.querySelectorAll('.card')].find(c => c.querySelector('h3')?.innerText === 'Planificator')";
+  await p.until(`!!${planCard}`, 5000);
+  await p.eval(`${planCard}.querySelector('button').click()`);
+  await sleep(200);
+  await p.click("Acordă și activează");
+  await p.until("[...document.querySelectorAll('nav .nav')].some(e => e.textContent.includes('Planificator'))", 5000);
+  const plan = (command, args = {}) => invoke(p, "module_call", { id: "kgb.planner", command, args });
+  const me3 = await plan("person_save", { nume: "Proprietar" });
+  const other3 = await plan("person_save", { nume: "Altcineva" });
+  const pid3 = me3.id ?? me3;
+  const t1 = await plan("task_save", { titlu: "Sună furnizorul de cupru", responsabil: pid3, termen: "2026-11-09" });
+  await plan("task_save", { titlu: "Inventar lunar", responsabil: pid3, termen: "2026-11-30" });
+  await plan("task_save", { titlu: "Taskul altcuiva", responsabil: other3.id ?? other3, termen: "2026-11-09" });
+  const tasks = (await phone("/m/api/taskuri?azi=2026-11-09")).json?.taskuri ?? [];
+  check("telefonul vede doar taskurile persoanei lui, cu termen azi", tasks.length === 1 && tasks[0].titlu === "Sună furnizorul de cupru", JSON.stringify(tasks));
+  const td = await phone("/m/api/trimite", { tip: "task", campuri: { task: tasks[0]?.id, titlu: tasks[0]?.titlu }, fisiere: [] });
+  check("„Am terminat” ajunge pe PC", td.status === 200);
+  await p.click("Telefon", "nav .nav");
+  await p.until("[...document.querySelectorAll('.task-done button')].length === 1", 8000);
+  await p.click("Marchează gata în Planificator", ".task-done button");
+  await p.until("document.querySelector('.phone-page').innerText.includes('e marcat gata în Planificator')", 8000);
+  const after = await plan("tasks", {});
+  check("în Planificator taskul e gata", after.find((t) => t.id === (t1.id ?? t1))?.stare === "gata");
+  const sentMsg = await phone("/m/api/mesaj", { text: "Am ajuns la client, descarc." });
+  check("telefonul trimite un mesaj echipei", sentMsg.status === 200);
+  const msgs = (await phone("/m/api/mesaje")).json?.mesaje ?? [];
+  check("și citește mesajele echipei", msgs.some((m) => m.autor === "Proprietar (telefon)" && m.text === "Am ajuns la client, descarc."), JSON.stringify(msgs));
+  const pcChat = await invoke(p, "chat_list", {});
+  check("mesajul apare și pe PC, în Mesaje", JSON.stringify(pcChat).includes("Am ajuns la client, descarc."));
+  check("un mesaj gol e refuzat", (await phone("/m/api/mesaj", { text: "  " })).status === 400);
+
   // 7.4m-6b: entry and exit from the phone, into the team timesheet.
   const clockIn = await phone("/m/api/trimite", { tip: "pontaj", campuri: { miscare: "intrare", ora: "07:58", data: "2026-11-09" }, fisiere: [] });
   const clockOut = await phone("/m/api/trimite", { tip: "pontaj", campuri: { miscare: "iesire", ora: "16:30", data: "2026-11-09" }, fisiere: [] });
