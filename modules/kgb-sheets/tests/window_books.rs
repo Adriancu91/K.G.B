@@ -129,6 +129,12 @@ fn the_windows_own_format_is_kept_and_checked() {
         list.as_array().unwrap().iter().any(|x| x["name"] == "Buget.ssheet"),
         "{list}"
     );
+    // The page shows it in the list: its sheets, its versions, and that it opens in the window.
+    let info = call(&mut ws, &mm, "info", json!({"id": id})).unwrap();
+    assert_eq!(info["format"], "ssheet");
+    assert_eq!(info["editable"], false);
+    assert_eq!(info["sheets"][0]["name"], "Foaia 1");
+    assert_eq!(info["versions"].as_array().unwrap().len(), 1);
     let r = call(&mut ws, &mm, "read", json!({"id": id})).unwrap();
     assert_eq!(B64.decode(r["data"].as_str().unwrap()).unwrap(), SSHEET.as_bytes());
 

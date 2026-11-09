@@ -333,6 +333,33 @@ impl Module for Sheets {
             }
             "info" => {
                 let a: Which = args(a)?;
+                // A workbook of the spreadsheet window: its sheets are read from the JSON; it opens only there.
+                if let Some(doc) = ctx
+                    .list_documents()?
+                    .into_iter()
+                    .find(|d| d.id == a.id && is_ssheet(&d.name))
+                {
+                    let (v, data) = ctx.read_document(a.id, a.version)?;
+                    let book: Value =
+                        serde_json::from_slice(&data).map_err(|_| bad("registrul .ssheet nu este JSON valid"))?;
+                    let sheets: Vec<Value> = book["sheets"]
+                        .as_array()
+                        .map(|s| {
+                            s.iter()
+                                .map(|s| json!({"name": s["name"], "rows": 0, "cols": 0}))
+                                .collect()
+                        })
+                        .unwrap_or_default();
+                    return Ok(json!({
+                        "name": doc.name,
+                        "format": "ssheet",
+                        "editable": false,
+                        "reason": "Registrul se deschide și se modifică în foaia de calcul.",
+                        "version": v.number,
+                        "versions": ctx.document_versions(a.id)?,
+                        "sheets": sheets,
+                    }));
+                }
                 let (number, name, b) = self.book(ctx, a.id, a.version)?;
                 let format = format_of(&name)?;
                 let versions = ctx.document_versions(a.id)?;

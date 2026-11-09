@@ -5,6 +5,7 @@
 import { StrictMode, Suspense, lazy, useEffect, useState } from "react";
 import { createRoot } from "react-dom/client";
 import type { OpenedFile } from "../../cos/src/api";
+import { setCurrentModule } from "../../cos/src/active";
 import { installCosBridge, openDocument, type KgbHost } from "../modules/sheets/cosBridge";
 import "../../cos/src/styles.css";
 import "../../cos/src/theme.css";
@@ -42,6 +43,9 @@ if (!host) {
   root.render(<p className="frame-error">Foaia de calcul se deschide doar din aplicația K.G.B.</p>);
 } else {
   installCosBridge(host);
+  // The window's shortcuts (Ctrl+S, Ctrl+O, Ctrl+Z…) work only in the application "in front" (COS active.ts);
+  // in this frame the spreadsheet is always in front.
+  setCurrentModule("sheets");
   root.render(
     <StrictMode>
       <Frame />

@@ -399,6 +399,7 @@ export function SheetsPage({ onError }: { onError: (e: string | null) => void })
             {info.reason && <p className="warn">{info.reason}</p>}
             {!isCurrent && <p className="muted">Vezi o versiune mai veche: modificările se fac doar pe versiunea curentă.</p>}
 
+            {info.format !== "ssheet" && (<>
             <div className="sheet-tabs" role="tablist">
               {info.sheets.map((s) => (
                 <button key={s.name} role="tab" aria-selected={s.name === sheet} className={s.name === sheet ? "active" : ""} onClick={() => setSheet(s.name)}>
@@ -470,6 +471,7 @@ export function SheetsPage({ onError }: { onError: (e: string | null) => void })
                 ))}
               </div>
             </div>
+            </>)}
           </div>
         )}
       </div>
