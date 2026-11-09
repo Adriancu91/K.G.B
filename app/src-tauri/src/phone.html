@@ -24,6 +24,12 @@
   .ok { color: var(--ok); }
   .thumbs { display: flex; flex-wrap: wrap; gap: 6px; }
   .thumbs img { width: 72px; height: 72px; object-fit: cover; border: 1px solid var(--line); }
+  .line { border: 1px solid var(--line); padding: 10px; display: grid; gap: 8px; }
+  .line .two { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+  .line .net { font-weight: 600; }
+  .line img { width: 96px; height: 96px; object-fit: cover; border: 1px solid var(--line); }
+  .line .head { display: flex; justify-content: space-between; align-items: center; }
+  .line .head button { padding: 6px 10px; }
   [hidden] { display: none !important; }
 </style>
 </head>
@@ -54,13 +60,19 @@
   <section id="menu" class="actions" hidden>
     <button data-go="receptie"><b>Fișă de recepție</b><br><span class="muted">marfă primită: furnizor, aviz, observații, poze</span></button>
     <button data-go="document"><b>Documente de la șofer</b><br><span class="muted">fotografiază avizul, CMR-ul, bonul de cântar</span></button>
-    <button data-go="extras"><b>Extras de cont</b><br><span class="muted">fișierul CSV descărcat din aplicația băncii</span></button>
+    <button data-go="extras"><b>Extras de cont</b><br><span class="muted">PDF-ul sau fișierul CSV din aplicația băncii</span></button>
     <p id="sent" class="ok"></p>
   </section>
 
   <section id="form" class="card" hidden>
     <h2 id="formTitle"></h2>
     <div id="fields"></div>
+    <div id="linesBox" hidden>
+      <h3>Ce s-a primit</h3>
+      <datalist id="products"></datalist>
+      <div id="lines"></div>
+      <button id="addLine">+ linie</button>
+    </div>
     <label id="fileLabel">Poze <input id="files" type="file" accept="image/*" capture="environment" multiple></label>
     <div id="thumbs" class="thumbs"></div>
     <button class="primary" id="send">Trimite la PC</button>
@@ -75,9 +87,9 @@ const store = { get() { try { return localStorage.getItem(KEY) || ""; } catch { 
 const $ = (id) => document.getElementById(id);
 const show = (id) => { for (const s of ["pair", "wait", "revoked", "menu", "form"]) $(s).hidden = s !== id; };
 const FORMS = {
-  receptie: { title: "Fișă de recepție", files: "Poze (marfă, aviz) — opțional", accept: "image/*", fields: [["furnizor", "Furnizor"], ["document", "Aviz / factură (număr)"], ["vehicul", "Vehicul"], ["observatii", "Ce s-a primit, observații", true]] },
+  receptie: { title: "Fișă de recepție", files: "Poze generale (aviz, încărcătura) — opțional", accept: "image/*", lines: true, fields: [["furnizor", "Furnizor"], ["document", "Aviz / factură (număr)"], ["vehicul", "Vehicul"], ["observatii", "Observații", true]] },
   document: { title: "Documente de la șofer", files: "Poze cu documentele", accept: "image/*", fields: [["sofer", "Șofer"], ["vehicul", "Vehicul"], ["nota", "Notă", true]] },
-  extras: { title: "Extras de cont", files: "Fișierul extrasului (CSV)", accept: ".csv,text/csv,text/plain", capture: false, fields: [["banca", "Banca / contul"], ["nota", "Notă", true]] },
+  extras: { title: "Extras de cont", files: "Fișierul extrasului (PDF, CSV sau Excel)", accept: ".pdf,.csv,.xlsx,.xls,application/pdf,text/csv,text/plain,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel", capture: false, fields: [["banca", "Banca / contul"], ["nota", "Notă", true]] },
 };
 let kind = "", chosen = [];
 
@@ -128,6 +140,10 @@ function open(k) {
   $("files").accept = f.accept;
   if (f.capture === false) $("files").removeAttribute("capture"); else $("files").setAttribute("capture", "environment");
   $("files").value = ""; $("thumbs").innerHTML = ""; $("formMsg").textContent = ""; $("sent").textContent = "";
+  lines = [];
+  $("lines").innerHTML = "";
+  $("linesBox").hidden = !f.lines;
+  if (f.lines) { loadProducts(); addLine(); }
   show("form");
 }
 $("back").onclick = () => show("menu");
@@ -169,12 +185,100 @@ $("send").onclick = async () => {
     for (const el of $("fields").querySelectorAll("input,textarea")) campuri[el.name] = el.value;
     const fisiere = [];
     for (const f of chosen) fisiere.push({ nume: f.name, mime: f.type || "application/octet-stream", date: await b64(f) });
-    await api("/m/api/trimite", { tip: kind, campuri, fisiere });
+    const linii = [];
+    for (const l of lines) {
+      const v = l.read();
+      if (!v.categorie && !v.cantitate && !v.brut && !l.photo) continue;
+      if (l.photo) { v.foto = fisiere.length; fisiere.push({ nume: l.photo.name, mime: l.photo.type, date: await b64(l.photo) }); }
+      linii.push(v);
+    }
+    if (FORMS[kind].lines && linii.length === 0) throw new Error("Adaugă cel puțin o linie: ce s-a primit și cât.");
+    await api("/m/api/trimite", { tip: kind, campuri, fisiere, linii });
     show("menu");
     $("sent").textContent = `Trimis la PC (${FORMS[kind].title.toLowerCase()}).`;
   } catch (e) { $("formMsg").textContent = e.message; }
   finally { $("send").disabled = false; }
 };
+// Reception lines (7.4m-5): category or product, unit, quantity or gross/tare, a photo.
+let lines = [];
+let productUnits = {};
+async function loadProducts() {
+  try {
+    const r = await api("/m/api/produse");
+    productUnits = {};
+    $("products").innerHTML = "";
+    for (const p of r.produse) {
+      productUnits[p.nume] = { id: p.id, um: p.um };
+      const o = document.createElement("option");
+      o.value = p.nume;
+      $("products").appendChild(o);
+    }
+  } catch { /* no Business: categories are typed */ }
+}
+const UNITS = ["kg", "t", "buc", "mc", "l", "m", "mp", "sac", "pal"];
+const num = (t) => {
+  t = String(t || "").trim().replace(/\s/g, "");
+  if (!t) return NaN;
+  if (t.includes(",")) t = t.replace(/\./g, "").replace(",", ".");
+  else if (/^\d{1,3}(\.\d{3})+$/.test(t)) t = t.replace(/\./g, "");
+  return Number(t);
+};
+const show3 = (n) => n.toLocaleString("ro-RO", { maximumFractionDigits: 3 });
+function addLine() {
+  const n = lines.length + 1;
+  const box = document.createElement("div");
+  box.className = "line";
+  box.innerHTML = `
+    <div class="head"><b>Linia ${n}</b><button type="button" data-x>scoate</button></div>
+    <label>Categorie / produs <input data-cat list="products" maxlength="100" placeholder="de ex. Fier vechi"></label>
+    <div class="two">
+      <label>Unitate <select data-um>${UNITS.map((u) => `<option>${u}</option>`).join("")}</select></label>
+      <label><span>Cântărit</span> <select data-mode><option value="q">nu, doar cantitatea</option><option value="w">da: brut și tară</option></select></label>
+    </div>
+    <label data-qbox>Cantitate <input data-q inputmode="decimal" placeholder="0"></label>
+    <div class="two" data-wbox hidden>
+      <label>Brut <input data-b inputmode="decimal" placeholder="0"></label>
+      <label>Tară <input data-t inputmode="decimal" placeholder="0"></label>
+    </div>
+    <div class="net" data-net></div>
+    <label>Poză <input data-f type="file" accept="image/*" capture="environment"></label>
+    <div data-thumb></div>`;
+  const q = (sel) => box.querySelector(sel);
+  const line = { box, photo: null };
+  const update = () => {
+    const w = q("[data-mode]").value === "w";
+    q("[data-qbox]").hidden = w;
+    q("[data-wbox]").hidden = !w;
+    if (w) {
+      const b = num(q("[data-b]").value), t = num(q("[data-t]").value);
+      q("[data-net]").textContent = isNaN(b) || isNaN(t) ? "" : b > t ? `Net: ${show3(b - t)} ${q("[data-um]").value}` : "Tara trebuie să fie mai mică decât brutul";
+    } else q("[data-net]").textContent = "";
+  };
+  q("[data-cat]").onchange = () => { const p = productUnits[q("[data-cat]").value]; if (p && UNITS.includes(p.um)) q("[data-um]").value = p.um; };
+  for (const sel of ["[data-mode]", "[data-b]", "[data-t]", "[data-um]"]) q(sel).oninput = update;
+  q("[data-mode]").onchange = update;
+  q("[data-f]").onchange = async () => {
+    const f = q("[data-f]").files[0];
+    if (!f) return;
+    line.photo = await shrink(f);
+    q("[data-thumb]").innerHTML = "";
+    const img = document.createElement("img");
+    img.src = URL.createObjectURL(line.photo);
+    q("[data-thumb]").appendChild(img);
+  };
+  q("[data-x]").onclick = () => { box.remove(); lines = lines.filter((x) => x !== line); };
+  line.read = () => {
+    const cat = q("[data-cat]").value.trim();
+    const v = { categorie: cat, um: q("[data-um]").value };
+    if (productUnits[cat]) v.produs = productUnits[cat].id;
+    if (q("[data-mode]").value === "w") { v.brut = q("[data-b]").value; v.tara = q("[data-t]").value; }
+    else v.cantitate = q("[data-q]").value;
+    return v;
+  };
+  lines.push(line);
+  $("lines").appendChild(box);
+}
+$("addLine").onclick = (e) => { e.preventDefault(); addLine(); };
 refresh();
 </script>
 </body>

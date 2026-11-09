@@ -179,7 +179,7 @@ async fn handle(req: Request<Incoming>, session: Arc<Mutex<Option<Session>>>) ->
     if method == Method::GET && (path == "/m" || path == "/m/" || path == "/") {
         return Ok(reply(StatusCode::OK, "text/html; charset=utf-8", PAGE));
     }
-    if method != Method::POST && !(method == Method::GET && path == "/m/api/eu") {
+    if method != Method::POST && !(method == Method::GET && (path == "/m/api/eu" || path == "/m/api/produse")) {
         return Ok(err(StatusCode::NOT_FOUND, "nu există"));
     }
     let body: Value = if method == Method::POST {
@@ -220,12 +220,28 @@ async fn handle(req: Request<Incoming>, session: Arc<Mutex<Option<Session>>>) ->
             }
             _ => err(StatusCode::UNAUTHORIZED, "telefonul nu e asociat"),
         }),
+        // The products of Business, for the reception sheet (7.4m-5); names and units only.
+        "/m/api/produse" => with(&mut |s| match phones::by_token(&s.ws, &token) {
+            Ok(Some(p)) if p.stare == "aprobat" => {
+                let list = s.mm.call(&mut s.ws, None, "kgb.business", "products", json!({})).unwrap_or(json!([]));
+                let items: Vec<Value> = list
+                    .as_array()
+                    .into_iter()
+                    .flatten()
+                    .filter(|x| x["activ"] != json!(false))
+                    .map(|x| json!({"id": x["id"], "nume": x["nume"], "um": x["um"], "cod": x["cod"]}))
+                    .collect();
+                json_reply(StatusCode::OK, json!({"produse": items}))
+            }
+            _ => err(StatusCode::UNAUTHORIZED, "telefonul nu e aprobat"),
+        }),
         "/m/api/trimite" => {
             let kind = body["tip"].as_str().unwrap_or_default().to_string();
+            let mut lines = Some(body["linii"].as_array().cloned().unwrap_or_default());
             let fields = body["campuri"].as_object().cloned().unwrap_or_default();
             let mut uploads = Vec::new();
             let mut bad_file = None;
-            for f in body["fisiere"].as_array().into_iter().flatten().take(phones::MAX_FILES + 1) {
+            for f in body["fisiere"].as_array().into_iter().flatten().take(phones::MAX_FILES + phones::MAX_LINES + 1) {
                 match base64::engine::general_purpose::STANDARD.decode(f["date"].as_str().unwrap_or_default()) {
                     Ok(data) => uploads.push(phones::Upload {
                         name: f["nume"].as_str().unwrap_or("fisier").chars().take(100).collect(),
@@ -242,7 +258,7 @@ async fn handle(req: Request<Incoming>, session: Arc<Mutex<Option<Session>>>) ->
                 let fields = Some(fields);
                 let mut fields = fields;
                 with(&mut |s| match phones::by_token(&s.ws, &token) {
-                    Ok(Some(p)) => match phones::submit(&mut s.ws, &p, &kind, fields.take().unwrap_or_default(), uploads.take().unwrap_or_default()) {
+                    Ok(Some(p)) => match phones::submit_with_lines(&mut s.ws, &p, &kind, fields.take().unwrap_or_default(), lines.take().unwrap_or_default(), uploads.take().unwrap_or_default()) {
                         Ok(id) => json_reply(StatusCode::OK, json!({"id": id})),
                         Err(e) => err(StatusCode::BAD_REQUEST, &e.to_string()),
                     },

@@ -1685,3 +1685,16 @@ label > .suggest > input {
   max-height: 260px;
   border: 1px solid var(--line);
 }
+
+/* Etapa 7, step 7.4m-5: reception lines from the phone */
+.reception-lines {
+  max-width: 700px;
+}
+.reception-to-business {
+  display: grid;
+  gap: 8px;
+}
+.reception-to-business label {
+  display: grid;
+  gap: 4px;
+}

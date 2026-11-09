@@ -103,6 +103,38 @@ try {
   check("extrasul de pe telefon se importă în Business", true);
   await p.screenshot(join(shots, "02-pc-primite.png"));
 
+  // 7.4m-5: a reception sheet with lines, turned into a Business reception.
+  const biz = (command, args = {}) => invoke(p, "module_call", { id: "kgb.business", command, args });
+  const prod = await biz("product_save", { cod: "FE", nume: "Fier vechi", um: "kg" });
+  const cu = await biz("product_save", { cod: "CU", nume: "Cupru", um: "kg" });
+  await biz("warehouse_save", { nume: "Curte" });
+  const plist = (await phone("/m/api/produse")).json?.produse ?? [];
+  check("telefonul primește lista de produse din Business", plist.some((x) => x.nume === "Fier vechi" && x.um === "kg"), JSON.stringify(plist));
+  const rec = await phone("/m/api/trimite", {
+    tip: "receptie",
+    campuri: { furnizor: "Fier Vechi SRL", document: "AV-77", vehicul: "IS-02-XYZ" },
+    fisiere: [{ nume: "linia1.png", mime: "image/png", date: PNG }],
+    linii: [
+      { categorie: "Fier vechi", produs: prod.id, um: "kg", brut: "12.450", tara: "8.200", foto: 0 },
+      { categorie: "cupru curat", um: "kg", cantitate: "125,5" },
+    ],
+  });
+  check("telefonul trimite o fișă de recepție pe linii (cântărire, poză pe linie)", rec.status === 200, JSON.stringify(rec.json));
+  await p.until("!!document.querySelector('.reception-lines')", 8000);
+  const lt = await p.eval("document.querySelector('.reception-lines').innerText");
+  check("pe PC: liniile, cu netul calculat (12.450 − 8.200 = 4.250 kg)", lt.includes("4.250 kg") && lt.includes("125,5 kg") && lt.includes("brut 12.450"), lt.replace(/\n/g, " | "));
+  await p.click("Fă recepția în Business", ".phone-inbox button");
+  await p.until("!!document.querySelector(\"select[aria-label='Produsul liniei 2']\")", 5000);
+  await p.fill("select[aria-label='Produsul liniei 2']", cu.id);
+  await p.fill("input[aria-label='Prețul liniei 1']", "1,20");
+  await p.fill("input[aria-label='Prețul liniei 2']", "35");
+  await p.click("Înregistrează recepția", ".reception-to-business button");
+  await p.until("document.querySelector('.phone-page').innerText.includes('Recepția a fost înregistrată în Business')", 8000);
+  const stock = await biz("stock", {});
+  const q = (name) => stock.find((r) => r.nume === name)?.cantitate_text;
+  check("recepția e în stocul din Business: 4.250 kg fier, 125,5 kg cupru", q("Fier vechi") === "4.250" && q("Cupru") === "125,5", `${q("Fier vechi")} / ${q("Cupru")}`);
+  await p.screenshot(join(shots, "03-receptie-linii.png"));
+
   await p.eval("[...document.querySelectorAll('.phone-page button')].find(b => b.innerText === 'scoate').click()");
   await p.until("!document.querySelector('.phone-page').innerText.includes('Telefoane asociate')", 5000);
   check("scos de pe PC, telefonul nu mai poate trimite", (await phone("/m/api/trimite", { tip: "document", campuri: { nota: "y" }, fisiere: [] })).status !== 200 && (await phone("/m/api/eu")).json?.stare === "revocat");

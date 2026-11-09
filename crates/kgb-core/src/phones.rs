@@ -140,16 +140,119 @@ pub struct Upload {
     pub data: Vec<u8>,
 }
 
+/// At most this many lines on a reception sheet (7.4m-5), each with its photo.
+pub const MAX_LINES: usize = 40;
+
+/// "1.234,5" or "1234.5" → thousandths (1 234 500); None if not a number ≥ 0.
+pub fn qty_thousandths(t: &str) -> Option<i64> {
+    let t = t.trim().replace(' ', "");
+    if t.is_empty() {
+        return None;
+    }
+    // Romanian style: a comma is the decimal mark and dots group thousands;
+    // without a comma, dots followed by exactly three digits group thousands
+    // too ("12.450" = 12450), any other dot is a decimal mark ("1234.5").
+    let groups_only = !t.contains(',') && t.contains('.') && t.split('.').skip(1).all(|g| g.len() == 3);
+    let norm = if t.contains(',') {
+        t.replace('.', "").replace(',', ".")
+    } else if groups_only {
+        t.replace('.', "")
+    } else {
+        t
+    };
+    let (w, f) = norm.split_once('.').unwrap_or((&norm, ""));
+    if w.is_empty() || !w.bytes().all(|b| b.is_ascii_digit()) || f.len() > 3 || !f.bytes().all(|b| b.is_ascii_digit()) || w.len() > 12 {
+        return None;
+    }
+    let mut frac = f.to_string();
+    while frac.len() < 3 {
+        frac.push('0');
+    }
+    Some(w.parse::<i64>().ok()? * 1000 + frac.parse::<i64>().ok()?)
+}
+
+/// 1 234 500 → "1.234,5".
+pub fn fmt_thousandths(v: i64) -> String {
+    let w = v / 1000;
+    let f = v % 1000;
+    let ws = w.to_string();
+    let mut grouped = String::new();
+    for (i, c) in ws.chars().enumerate() {
+        if i > 0 && (ws.len() - i).is_multiple_of(3) {
+            grouped.push('.');
+        }
+        grouped.push(c);
+    }
+    if f == 0 {
+        grouped
+    } else {
+        format!("{grouped},{}", format!("{f:03}").trim_end_matches('0'))
+    }
+}
+
 /// What an approved phone sends: a kind, text fields, files.
 pub fn submit(ws: &mut Workspace, from: &Phone, kind: &str, fields: serde_json::Map<String, Value>, uploads: Vec<Upload>) -> CoreResult<Uuid> {
+    submit_with_lines(ws, from, kind, fields, Vec::new(), uploads)
+}
+
+/// Like [`submit`], with the lines of a reception sheet (7.4m-5): each
+/// `{categorie, produs?, cantitate, um?, brut?, tara?, foto?}` where `foto` is
+/// the index of its photo among `uploads`; with gross and tare the quantity
+/// must be gross − tare.
+pub fn submit_with_lines(ws: &mut Workspace, from: &Phone, kind: &str, fields: serde_json::Map<String, Value>, lines: Vec<Value>, uploads: Vec<Upload>) -> CoreResult<Uuid> {
     if from.stare != "aprobat" {
         return Err(bad("nu e aprobat pe PC"));
     }
     if !KINDS.iter().any(|(k, _)| *k == kind) {
         return Err(bad("tip necunoscut"));
     }
-    if uploads.len() > MAX_FILES {
-        return Err(bad(format!("cel mult {MAX_FILES} fișiere")));
+    if !lines.is_empty() && kind != "receptie" {
+        return Err(bad("liniile sunt doar pentru fișa de recepție"));
+    }
+    if lines.len() > MAX_LINES {
+        return Err(bad(format!("cel mult {MAX_LINES} linii")));
+    }
+    if uploads.len() > MAX_FILES + lines.len() {
+        return Err(bad(format!("cel mult {MAX_FILES} fișiere, plus câte o poză pe linie")));
+    }
+    // The lines, checked before anything is written.
+    let mut clean_lines = Vec::with_capacity(lines.len());
+    for (n, l) in lines.iter().enumerate() {
+        let label = format!("linia {}", n + 1);
+        let txt = |k: &str, max: usize| -> CoreResult<String> {
+            let t = l[k].as_str().unwrap_or_default().trim().to_string();
+            if t.chars().count() > max {
+                return Err(bad(format!("{label}: „{k}” e prea lung")));
+            }
+            Ok(t)
+        };
+        let categorie = txt("categorie", 100)?;
+        if categorie.is_empty() {
+            return Err(bad(format!("{label}: scrie categoria sau produsul")));
+        }
+        let produs = txt("produs", 36)?;
+        let um = txt("um", 10)?;
+        let (brut, tara) = (txt("brut", 20)?, txt("tara", 20)?);
+        let q = match (brut.is_empty(), tara.is_empty()) {
+            (true, true) => qty_thousandths(&txt("cantitate", 20)?).filter(|q| *q > 0).ok_or_else(|| bad(format!("{label}: cantitatea nu e un număr pozitiv")))?,
+            (false, false) => {
+                let b = qty_thousandths(&brut).ok_or_else(|| bad(format!("{label}: brutul nu e un număr")))?;
+                let t = qty_thousandths(&tara).ok_or_else(|| bad(format!("{label}: tara nu e un număr")))?;
+                if t >= b {
+                    return Err(bad(format!("{label}: tara trebuie să fie mai mică decât brutul")));
+                }
+                b - t
+            }
+            _ => return Err(bad(format!("{label}: scrie și brutul, și tara (sau doar cantitatea)"))),
+        };
+        let foto = match &l["foto"] {
+            Value::Number(x) => {
+                let i = x.as_u64().filter(|i| (*i as usize) < uploads.len()).ok_or_else(|| bad(format!("{label}: poza nu există")))?;
+                Some(i as usize)
+            }
+            _ => None,
+        };
+        clean_lines.push((categorie, produs, um, brut, tara, q, foto));
     }
     // Text fields: short strings only.
     let mut clean = serde_json::Map::new();
@@ -162,7 +265,7 @@ pub fn submit(ws: &mut Workspace, from: &Phone, kind: &str, fields: serde_json::
             clean.insert(k, json!(t));
         }
     }
-    if clean.is_empty() && uploads.is_empty() {
+    if clean.is_empty() && uploads.is_empty() && clean_lines.is_empty() {
         return Err(bad("nimic de trimis"));
     }
     if kind == "extras" && uploads.is_empty() {
@@ -173,15 +276,38 @@ pub fn submit(ws: &mut Workspace, from: &Phone, kind: &str, fields: serde_json::
         if u.data.is_empty() || u.data.len() > MAX_FILE_BYTES {
             return Err(bad(format!("„{}”: gol sau mai mare de 8 MB", u.name)));
         }
-        let allowed = u.mime.starts_with("image/") || ["text/csv", "application/vnd.ms-excel", "application/pdf", "text/plain", "application/octet-stream"].contains(&u.mime.as_str());
+        let allowed = u.mime.starts_with("image/")
+            || [
+                "text/csv",
+                "application/vnd.ms-excel",
+                "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+                "application/pdf",
+                "text/plain",
+                "application/octet-stream",
+            ]
+            .contains(&u.mime.as_str());
         if !allowed {
             return Err(bad(format!("„{}”: tipul {} nu e acceptat", u.name, u.mime)));
         }
         let fr = files::put(ws, PHONE_MODULE, &u.name, &u.data)?;
         files_out.push(json!({"id": fr.id.to_string(), "nume": fr.name, "mime": u.mime, "octeti": u.data.len()}));
     }
+    let lines_out: Vec<Value> = clean_lines
+        .into_iter()
+        .map(|(categorie, produs, um, brut, tara, q, foto)| {
+            json!({
+                "categorie": categorie, "produs": if produs.is_empty() { Value::Null } else { json!(produs) },
+                "um": if um.is_empty() { json!("buc") } else { json!(um) },
+                "cantitate": q, "cantitate_text": fmt_thousandths(q),
+                "brut": if brut.is_empty() { Value::Null } else { json!(brut) },
+                "tara": if tara.is_empty() { Value::Null } else { json!(tara) },
+                "foto": foto.and_then(|i| files_out.get(i)).map(|f| f["id"].clone()).unwrap_or(Value::Null),
+            })
+        })
+        .collect();
     let mut f = Fields::new();
     f.insert("tip".into(), json!(kind));
+    f.insert("linii".into(), json!(lines_out));
     f.insert("telefon".into(), json!(from.id.to_string()));
     f.insert("telefon_nume".into(), json!(from.nume));
     f.insert("membru_nume".into(), json!(from.membru_nume));

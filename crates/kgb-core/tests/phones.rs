@@ -46,3 +46,44 @@ fn pair_approve_submit_revoke() {
     let p = phones::by_token(&ws, &token).unwrap().unwrap();
     assert!(phones::submit(&mut ws, &p, "document", fields(json!({"nota": "y"})), vec![]).is_err(), "revoked");
 }
+
+/// Step 7.4m-5: a reception sheet with lines — category or product,
+/// quantity (or gross − tare), unit and a photo per line.
+#[test]
+fn reception_sheet_with_lines() {
+    let t = tempfile::tempdir().unwrap();
+    let mut ws = Workspace::create(&t.path().join("ws"), "T").unwrap();
+    let (id, token) = phones::pair(&mut ws, "Telefon cântar").unwrap();
+    phones::approve(&mut ws, id, "Ion").unwrap();
+    let p = phones::by_token(&ws, &token).unwrap().unwrap();
+    let photo = |n: u8| Upload { name: format!("linia{n}.jpg"), mime: "image/jpeg".into(), data: vec![0xFF, 0xD8, n] };
+    let head = json!({"furnizor": "Fier Vechi SRL", "vehicul": "IS-02-XYZ"}).as_object().unwrap().clone();
+    let lines = vec![
+        json!({"categorie": "Fier vechi", "um": "kg", "brut": "12.450", "tara": "8.200", "foto": 0}),
+        json!({"categorie": "Cupru", "um": "kg", "cantitate": "125,5", "foto": 1}),
+        json!({"categorie": "Aluminiu", "cantitate": "40"}),
+    ];
+    let sid = phones::submit_with_lines(&mut ws, &p, "receptie", head.clone(), lines, vec![photo(1), photo(2)]).unwrap();
+    let inbox = phones::inbox(&ws).unwrap();
+    let rec = inbox.iter().find(|x| x["id"] == json!(sid)).unwrap();
+    let l = rec["linii"].as_array().unwrap();
+    assert_eq!(l.len(), 3);
+    // 12.450 − 8.200 = 4.250 kg (Romanian thousands).
+    assert_eq!((l[0]["cantitate"].as_i64(), l[0]["cantitate_text"].as_str()), (Some(4_250_000), Some("4.250")));
+    assert_eq!((l[1]["cantitate"].as_i64(), l[1]["cantitate_text"].as_str()), (Some(125_500), Some("125,5")));
+    assert_eq!((l[2]["um"].as_str(), l[2]["foto"].is_null()), (Some("buc"), true));
+    let f0: uuid::Uuid = l[0]["foto"].as_str().unwrap().parse().unwrap();
+    assert_eq!(phones::file(&ws, f0).unwrap().1, vec![0xFF, 0xD8, 1], "each line keeps its own photo");
+
+    let mut bad = |ls: Vec<serde_json::Value>| phones::submit_with_lines(&mut ws, &p, "receptie", head.clone(), ls, vec![]).unwrap_err().to_string();
+    assert!(bad(vec![json!({"categorie": "", "cantitate": "1"})]).contains("categoria"));
+    assert!(bad(vec![json!({"categorie": "x", "cantitate": "0"})]).contains("pozitiv"));
+    assert!(bad(vec![json!({"categorie": "x", "brut": "10", "tara": "12"})]).contains("tara"));
+    assert!(bad(vec![json!({"categorie": "x", "brut": "10"})]).contains("și tara"));
+    assert!(bad(vec![json!({"categorie": "x", "cantitate": "1", "foto": 3})]).contains("poza"));
+    drop(bad);
+    assert!(phones::submit_with_lines(&mut ws, &p, "document", head.clone(), vec![json!({"categorie": "x", "cantitate": "1"})], vec![]).is_err());
+    assert_eq!(phones::qty_thousandths("1.234,5"), Some(1_234_500));
+    assert_eq!(phones::qty_thousandths("1234.5"), Some(1_234_500));
+    assert_eq!(phones::fmt_thousandths(1_234_500), "1.234,5");
+}

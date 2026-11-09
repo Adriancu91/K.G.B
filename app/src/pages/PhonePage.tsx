@@ -21,6 +21,7 @@ interface Received {
   fisiere: { id: string; nume: string; mime: string; octeti: number }[];
   procesat: boolean;
   creat_ms: number;
+  linii?: Line[];
 }
 interface Reply {
   pornit: boolean;
@@ -57,8 +58,153 @@ function FileView({ f }: { f: Received["fisiere"][number] }) {
   if (url) return <a href={url} download={f.nume}>{f.nume}</a>;
   return (
     <button className="link" onClick={() => void load()}>
-      {f.mime.startsWith("image/") ? "arată poza" : "deschide"} {f.nume} ({Math.round(f.octeti / 1024)} KB)
+      {f.mime.startsWith("image/") ? "arată poza" : "deschide"} {f.nume}
+      {f.octeti ? ` (${Math.round(f.octeti / 1024)} KB)` : ""}
     </button>
+  );
+}
+
+interface Line {
+  categorie: string;
+  produs: string | null;
+  um: string;
+  cantitate: number;
+  cantitate_text: string;
+  brut: string | null;
+  tara: string | null;
+  foto: string | null;
+}
+interface BizProduct {
+  id: string;
+  nume: string;
+  um: string;
+}
+interface Warehouse {
+  id: string;
+  nume: string;
+}
+
+/** Thousandths → "125,5" (no grouping: what Business reads back exactly). */
+const plain = (t: number) => {
+  const w = Math.trunc(t / 1000);
+  const f = String(t % 1000).padStart(3, "0").replace(/0+$/, "");
+  return f ? `${w},${f}` : String(w);
+};
+
+/** The lines of a reception sheet, and turning it into a Business reception (7.4m-5). */
+function ReceptionLines({ x, business, onDone, onError }: { x: Received; business: boolean; onDone: (msg: string) => void; onError: (e: string | null) => void }) {
+  const lines = x.linii ?? [];
+  const [open, setOpen] = useState(false);
+  const [products, setProducts] = useState<BizProduct[]>([]);
+  const [warehouses, setWarehouses] = useState<Warehouse[]>([]);
+  const [wh, setWh] = useState("");
+  const [pick, setPick] = useState<string[]>(lines.map((l) => l.produs ?? ""));
+  const [price, setPrice] = useState<string[]>(lines.map(() => ""));
+  useEffect(() => {
+    if (!open) return;
+    void Promise.all([api.moduleCall<BizProduct[]>("kgb.business", "products"), api.moduleCall<Warehouse[]>("kgb.business", "warehouses")]).then(
+      ([p, w]) => {
+        setProducts(p);
+        setWarehouses(w);
+        setWh((cur) => cur || w[0]?.id || "");
+      },
+      (e: unknown) => onError(message(e)),
+    );
+  }, [open, onError]);
+  if (lines.length === 0) return null;
+  const ready = wh && pick.every((p) => p) && price.every((p) => p.trim());
+  return (
+    <>
+      <table className="audit reception-lines">
+        <thead>
+          <tr>
+            <th>Categorie / produs</th>
+            <th className="num">Cantitate</th>
+            <th>Cântărire</th>
+            <th>Poză</th>
+          </tr>
+        </thead>
+        <tbody>
+          {lines.map((l, n) => (
+            <tr key={n}>
+              <td>{l.categorie}</td>
+              <td className="num">
+                {l.cantitate_text} {l.um}
+              </td>
+              <td className="small muted">{l.brut ? `brut ${l.brut} − tară ${l.tara}` : ""}</td>
+              <td>{l.foto ? <FileView f={{ id: l.foto, nume: `linia ${n + 1}.jpg`, mime: "image/jpeg", octeti: 0 }} /> : ""}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+      {business && !x.procesat && !open && (
+        <button className="primary" onClick={() => setOpen(true)}>
+          Fă recepția în Business…
+        </button>
+      )}
+      {open && (
+        <div className="card reception-to-business">
+          <label>
+            Depozitul
+            <select aria-label="Depozitul recepției" value={wh} onChange={(e) => setWh(e.target.value)}>
+              {warehouses.length === 0 && <option value="">niciun depozit în Business</option>}
+              {warehouses.map((w) => (
+                <option key={w.id} value={w.id}>
+                  {w.nume}
+                </option>
+              ))}
+            </select>
+          </label>
+          {lines.map((l, n) => (
+            <div className="row wrap" key={n}>
+              <span className="grow">
+                {l.categorie}: {l.cantitate_text} {l.um}
+              </span>
+              <select aria-label={`Produsul liniei ${n + 1}`} value={pick[n]} onChange={(e) => setPick(pick.map((p, j) => (j === n ? e.target.value : p)))}>
+                <option value="">alege produsul…</option>
+                {products.map((p) => (
+                  <option key={p.id} value={p.id}>
+                    {p.nume} ({p.um})
+                  </option>
+                ))}
+              </select>
+              <input aria-label={`Prețul liniei ${n + 1}`} placeholder="Preț unitar (lei)" size={12} value={price[n]} onChange={(e) => setPrice(price.map((p, j) => (j === n ? e.target.value : p)))} />
+            </div>
+          ))}
+          <div className="row">
+            <button
+              className="primary"
+              disabled={!ready}
+              onClick={() =>
+                void (async () => {
+                  try {
+                    const d = new Date();
+                    const iso = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
+                    await api.moduleCall("kgb.business", "receive", {
+                      depozit: wh,
+                      numar: x.campuri.document || `Telefon ${new Date(x.creat_ms).toLocaleDateString("ro-RO")}`,
+                      data: iso,
+                      ...(x.campuri.furnizor ? { partener: x.campuri.furnizor } : {}),
+                      nota: `De pe telefon (${x.membru_nume})${x.campuri.observatii ? `: ${x.campuri.observatii}` : ""}`,
+                      linii: lines.map((l, n) => ({ produs: pick[n], cantitate: plain(l.cantitate), pret_unitar: price[n] })),
+                    });
+                    await invoke("phone_done", { id: x.id, gata: true });
+                    setOpen(false);
+                    onDone(`Recepția a fost înregistrată în Business (${lines.length} linii); fișa de pe telefon e marcată rezolvată.`);
+                  } catch (e) {
+                    onError(message(e));
+                  }
+                })()
+              }
+            >
+              Înregistrează recepția
+            </button>
+            <button onClick={() => setOpen(false)}>Renunță</button>
+          </div>
+          <p className="muted small">Produsul se alege din Business pentru fiecare linie (cel recunoscut pe telefon e deja ales); prețurile se scriu aici, nu pe telefon.</p>
+        </div>
+      )}
+    </>
   );
 }
 
@@ -201,7 +347,11 @@ export function PhonePage({ modules, onError }: { modules: ModulesReply; onError
                 <FileView key={f.id} f={f} />
               ))}
             </div>
-            {x.tip === "extras" && !x.procesat && x.fisiere[0] && business && (
+            <ReceptionLines x={x} business={business} onDone={(m) => void load().then(() => setNotice(m))} onError={onError} />
+            {x.tip === "extras" && !x.procesat && x.fisiere[0] && !/\.csv$/i.test(x.fisiere[0].nume) && (
+              <p className="muted small">Extrasul e un {x.fisiere[0].nume.split(".").pop()?.toUpperCase()}: îl deschizi și îl citești de aici. În Business se importă doar extrase CSV (din internet banking: „Export CSV”).</p>
+            )}
+            {x.tip === "extras" && !x.procesat && x.fisiere[0] && /\.csv$/i.test(x.fisiere[0].nume) && business && (
               <div className="row wrap">
                 <select aria-label="Contul bancar" value={acc[x.id] ?? accounts[0]?.id ?? ""} onChange={(e) => setAcc({ ...acc, [x.id]: e.target.value })}>
                   {accounts.length === 0 && <option value="">niciun cont bancar în Business</option>}
