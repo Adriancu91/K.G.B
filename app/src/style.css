@@ -1592,3 +1592,28 @@ label > .suggest > input {
 .warn-text {
   color: var(--warn-text);
 }
+
+/* Etapa 7, step 7.4k-3: reserved and blocked stock */
+.holds {
+  display: grid;
+  gap: 8px;
+  margin-top: 16px;
+}
+.hold-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 6px;
+}
+.holds .tag {
+  font-size: 0.8em;
+  padding: 1px 6px;
+  border: 1px solid currentColor;
+}
+.holds .tag.warn {
+  color: var(--warn-text);
+}
+.holds .tag.bad {
+  color: var(--danger);
+}

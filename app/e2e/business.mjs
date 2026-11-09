@@ -26,7 +26,8 @@ const check = (name, ok, detail = "") => {
   console.log(`${ok ? "PASS" : "FAIL"}  ${name}${detail ? ` — ${detail}` : ""}`);
 };
 const stockRows = (p) =>
-  p.eval("[...document.querySelectorAll('.stock-table tbody tr')].map(r => [...r.cells].map(c => c.innerText.trim()).join('|'))");
+  // Without the reserved / blocked / free columns of step 7.4k-3 (cells 4–6).
+  p.eval("[...document.querySelectorAll('.stock-table tbody tr')].map(r => [...r.cells].filter((_, i) => i < 4 || i > 6).map(c => c.innerText.trim()).join('|'))");
 const iso = (d) => `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
 const selectByText = (p, sel, text) =>
   p.eval(`(() => { const s = document.querySelector(${JSON.stringify(sel)});
@@ -108,7 +109,7 @@ try {
   await p.click("Înregistrează ieșirea", ".stock-doc button");
   await p.until("!!document.querySelector('.stock-doc [role=alert]')", 8000);
   const err = await p.eval("document.querySelector('.stock-doc [role=alert]').innerText");
-  check("ieșirea peste stoc e refuzată și spune cât e", err.includes("în depozit sunt 25, se cer 30"), err);
+  check("ieșirea peste stoc e refuzată și spune cât e", err.includes("în depozit sunt libere 25 (fără cele rezervate sau blocate), se cer 30"), err);
   await p.fill("input[aria-label='Cantitatea 1']", "18");
   await p.click("Înregistrează ieșirea", ".stock-doc button");
   await p.until("!!document.querySelector('.stock-table')", 8000);
@@ -127,7 +128,7 @@ try {
   // Step 5.2: value at weighted average cost, a transfer and an inventory.
   await tab(p, "Stoc");
   await p.until("!!document.querySelector('.stock-table tbody tr')", 8000);
-  const v1 = await p.eval("[...document.querySelectorAll('.stock-table tbody tr')].map(r => r.cells[5].innerText + '|' + r.cells[6].innerText)");
+  const v1 = await p.eval("[...document.querySelectorAll('.stock-table tbody tr')].map(r => r.cells[8].innerText + '|' + r.cells[9].innerText)");
   check("costul mediu și valoarea", JSON.stringify(v1) === JSON.stringify(["32,50|812,50", "18,00|45,00"]), JSON.stringify(v1));
   await tab(p, "Transfer");
   await p.until("!!document.querySelector('.stock-doc')");

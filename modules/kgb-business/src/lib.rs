@@ -35,6 +35,7 @@ pub mod matching;
 pub mod num;
 pub mod offers;
 pub mod orders;
+pub mod holds;
 pub mod package;
 pub mod purchases;
 pub mod reports;
@@ -321,7 +322,16 @@ fn amount(a: &Amount, parse: fn(&str) -> Option<i64>, what: &str) -> CoreResult<
 
 impl Business {
     /// Stock per (product, warehouse), from the movements.
-    fn balances(&self, ctx: &mut ModuleContext<'_>) -> CoreResult<BTreeMap<(String, String), Qty>> {
+    /// Stock that may leave: the balance minus what is reserved or blocked (7.4k-3).
+    pub(crate) fn free_stock(&self, ctx: &mut ModuleContext<'_>) -> CoreResult<BTreeMap<(String, String), Qty>> {
+        let mut out = self.balances(ctx)?;
+        for (k, h) in self.held(ctx)? {
+            *out.entry(k).or_default() -= h.total();
+        }
+        Ok(out)
+    }
+
+    pub(crate) fn balances(&self, ctx: &mut ModuleContext<'_>) -> CoreResult<BTreeMap<(String, String), Qty>> {
         let mut out: BTreeMap<(String, String), Qty> = BTreeMap::new();
         for m in ctx.scan(MOVES, |_| true)? {
             *out.entry((s(&m, "produs"), s(&m, "depozit"))).or_default() += i(&m, "cantitate");
@@ -420,7 +430,8 @@ impl Business {
             lines.push((p, q, price));
         }
         if kind == "iesire" {
-            let stock = self.balances(ctx)?;
+            // Reserved and blocked stock does not leave (7.4k-3).
+            let stock = self.free_stock(ctx)?;
             for (pid, q) in &need {
                 let have = stock.get(&(pid.clone(), a.depozit.to_string())).copied().unwrap_or(0);
                 if *q > have {
@@ -430,7 +441,7 @@ impl Business {
                         .map(|(p, _, _)| s(p, "nume"))
                         .unwrap_or_default();
                     errs.push(format!(
-                        "„{name}”: în depozit sunt {}, se cer {}",
+                        "„{name}”: în depozit sunt libere {} (fără cele rezervate sau blocate), se cer {}",
                         num::fmt_qty(have),
                         num::fmt_qty(*q)
                     ));
@@ -579,7 +590,7 @@ impl Business {
         lines: &[(RecordState, Qty)],
     ) -> CoreResult<(Uuid, Vec<Write>)> {
         let wh = self.active_warehouse(ctx, depozit)?;
-        let stock = self.balances(ctx)?;
+        let stock = self.free_stock(ctx)?;
         let mut need: BTreeMap<Uuid, Qty> = BTreeMap::new();
         for (p, q) in lines {
             *need.entry(p.id).or_default() += q;
@@ -693,7 +704,7 @@ impl Business {
             return Err(bad("documentul", format!("are nevoie de 1–{MAX_LINES} linii")));
         }
         let numar = text(Some(a.numar), "numărul documentului", 40, true)?;
-        let stock = self.balances(ctx)?;
+        let stock = self.free_stock(ctx)?;
         let mut need: BTreeMap<Uuid, Qty> = BTreeMap::new();
         let mut lines = Vec::new();
         let mut errs = Vec::new();
@@ -835,6 +846,7 @@ impl Business {
 
     fn stock(&self, ctx: &mut ModuleContext<'_>, f: StockFilter) -> CoreResult<Value> {
         let balances = self.balances(ctx)?;
+        let held = self.held(ctx)?;
         let values = valuation::replay(&ctx.scan(MOVES, |_| true)?).positions;
         let products = ctx.scan(PRODUCTS, |_| true)?;
         let warehouses: BTreeMap<String, String> = ctx
@@ -857,7 +869,10 @@ impl Business {
                 // Only where the product has had movements: a minimum is not
                 // a reason to list (or remind about) every empty warehouse.
                 let Some(q) = q else { continue };
+                let h = held.get(&(pid.clone(), wid.clone())).copied().unwrap_or_default();
                 rows.push(json!({
+                    "rezervat": h.reserved, "blocat": h.blocked, "liber": q - h.total(),
+                    "rezervat_text": num::fmt_qty(h.reserved), "blocat_text": num::fmt_qty(h.blocked), "liber_text": num::fmt_qty(q - h.total()),
                     "produs": p.id, "cod": s(p, "cod"), "nume": s(p, "nume"), "um": s(p, "um"),
                     "depozit": wid, "depozit_nume": wname,
                     "cantitate": q, "cantitate_text": num::fmt_qty(q),
@@ -1028,6 +1043,10 @@ impl Module for Business {
             "orders" => self.orders(ctx),
             "order_save" => self.order_save(ctx, args(a)?),
             "order_move" => self.order_move(ctx, args(a)?),
+            // Step 7.4k-3: reserved and blocked stock.
+            "holds" => self.holds(ctx),
+            "hold_save" => self.hold_save(ctx, args(a)?),
+            "hold_release" => self.hold_release(ctx, args(a)?),
             "offer_pdf" => {
                 let a: InvoicePdf = args(a)?;
                 let pdf = self.offer_pdf(ctx, a.id)?;

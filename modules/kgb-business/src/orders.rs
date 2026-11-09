@@ -188,7 +188,17 @@ impl Business {
         let mut f = o.fields.clone();
         f.insert("stare".into(), json!(a.stare));
         f.insert("istoric".into(), json!(hist));
-        ctx.write(vec![Write::put(ORDERS, o.id, f).expect(o.version)])?;
+        let mut batch = vec![Write::put(ORDERS, o.id, f).expect(o.version)];
+        // Its reservations end when it goes into delivery, is finished or cancelled (7.4k-3).
+        if ["livrare", "gata", "anulata"].contains(&a.stare.as_str()) {
+            let why = match a.stare.as_str() {
+                "livrare" => "comanda a intrat în livrare",
+                "gata" => "comanda e gata",
+                _ => "comanda a fost anulată",
+            };
+            batch.extend(self.order_release_writes(ctx, o.id, why)?);
+        }
+        ctx.write(batch)?;
         ctx.log("comandă: stare schimbată");
         Ok(json!({"id": o.id, "stare": a.stare}))
     }

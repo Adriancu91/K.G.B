@@ -7,6 +7,7 @@ import { api, message } from "../../api";
 import { InvoicesView } from "./invoices";
 import { OffersView } from "./offers";
 import { OrdersView } from "./orders";
+import { HoldsPanel } from "./holds";
 import { PurchasesView } from "./purchases";
 import { CashView } from "./cash";
 import { AgingView } from "./aging";
@@ -40,6 +41,11 @@ interface StockRow {
   depozit: string;
   depozit_nume: string;
   cantitate_text: string;
+  rezervat: number;
+  blocat: number;
+  rezervat_text: string;
+  blocat_text: string;
+  liber_text: string;
   sub_minim: boolean;
   valoare: number;
   valoare_text: string;
@@ -451,6 +457,9 @@ export function BusinessPage({ onError }: { onError: (e: string | null) => void 
               <th>Produs</th>
               <th>Depozit</th>
               <th>Cantitate</th>
+              <th>Rezervat</th>
+              <th>Blocat</th>
+              <th>Liber</th>
               <th>UM</th>
               <th>Cost mediu</th>
               <th>Valoare (lei)</th>
@@ -459,7 +468,7 @@ export function BusinessPage({ onError }: { onError: (e: string | null) => void 
           <tbody>
             {stock.length === 0 && (
               <tr>
-                <td colSpan={7} className="muted">
+                <td colSpan={10} className="muted">
                   Niciun produs în stoc. Înregistrează o recepție.
                 </td>
               </tr>
@@ -473,6 +482,9 @@ export function BusinessPage({ onError }: { onError: (e: string | null) => void 
                 </td>
                 <td>{s.depozit_nume}</td>
                 <td className="num">{s.cantitate_text}</td>
+                <td className="num">{s.rezervat ? s.rezervat_text : ""}</td>
+                <td className="num">{s.blocat ? s.blocat_text : ""}</td>
+                <td className="num">{s.liber_text}</td>
                 <td>{s.um}</td>
                 <td className="num">{s.cost_mediu_text ?? ""}</td>
                 <td className="num">{s.valoare_text}</td>
@@ -482,13 +494,14 @@ export function BusinessPage({ onError }: { onError: (e: string | null) => void 
           {stock.length > 0 && (
             <tfoot>
               <tr>
-                <th colSpan={6}>Valoarea stocului, la cost mediu ponderat</th>
+                <th colSpan={9}>Valoarea stocului, la cost mediu ponderat</th>
                 <th className="num">{lei(stock.reduce((a, r) => a + r.valoare, 0))}</th>
               </tr>
             </tfoot>
           )}
         </table>
       )}
+      {tab === "stoc" && <HoldsPanel stock={stock} onChanged={() => void refresh()} onError={onError} />}
 
       {tab === "documente" && (
         <table className="audit stock-docs">

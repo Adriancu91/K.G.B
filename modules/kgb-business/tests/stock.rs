@@ -88,7 +88,7 @@ fn receive_issue_storno_and_reopen() {
     )
     .unwrap_err()
     .to_string();
-    assert!(err.contains("în depozit sunt 25, se cer 26"), "{err}");
+    assert!(err.contains("în depozit sunt libere 25 (fără cele rezervate sau blocate), se cer 26"), "{err}");
     assert_eq!(stock_of(&mut ws, &mm, &p, &a), 25_000);
     // Other warehouse: nothing there.
     assert!(call(&mut ws, &mm, "issue", json!({"depozit": b["id"], "numar": "BC 2", "data": "02.11.2026", "linii": [{"produs": p["id"], "cantitate": "1"}]})).is_err());

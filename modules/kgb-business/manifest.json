@@ -1029,6 +1029,72 @@
         "stare",
         "oferta"
       ]
+    },
+    {
+      "collection": "rezervari",
+      "description": "stoc rezervat pentru o comandă sau blocat cu motiv (7.4k-3); nu iese din depozit cât e activ; istoric pe fiecare",
+      "schema": {
+        "fields": {
+          "tip": {
+            "type": "string",
+            "required": true,
+            "nullable": false,
+            "enum": [
+              "rezervare",
+              "blocare"
+            ]
+          },
+          "produs": {
+            "type": "string",
+            "required": true,
+            "nullable": false,
+            "max_len": 36
+          },
+          "depozit": {
+            "type": "string",
+            "required": true,
+            "nullable": false,
+            "max_len": 36
+          },
+          "cantitate": {
+            "type": "integer",
+            "required": true,
+            "min": 1
+          },
+          "comanda": {
+            "type": "string",
+            "required": false,
+            "nullable": true,
+            "max_len": 36
+          },
+          "motiv": {
+            "type": "string",
+            "required": false,
+            "nullable": true,
+            "max_len": 300
+          },
+          "activa": {
+            "type": "bool",
+            "required": true
+          },
+          "istoric": {
+            "type": "array",
+            "required": true,
+            "nullable": false
+          },
+          "creat_ms": {
+            "type": "integer",
+            "required": true,
+            "min": 0
+          }
+        },
+        "additional": false
+      },
+      "indexes": [
+        "produs",
+        "comanda",
+        "activa"
+      ]
     }
   ],
   "data_format": 1,
