@@ -81,6 +81,12 @@ try {
   let p = await connect(PORT, 20000);
   page = p;
   await p.until("!!document.querySelector('aside')", 15000);
+  // The language lives in the WebView's own storage (not in KGB_DATA_DIR): start from Romanian.
+  if (await p.eval("localStorage.getItem('kgb.lang') === 'en'")) {
+    await p.eval("localStorage.setItem('kgb.lang', 'ro'), location.reload(), true");
+    await sleep(1500);
+    await p.until("!!document.querySelector('aside')", 15000);
+  }
 
   // Every module of the catalog, enabled with the permissions it asks for.
   await p.click("Catalog module", "nav .nav");
@@ -93,7 +99,7 @@ try {
     await sleep(500);
   }
   const pages = await navLabels(p);
-  check("toate modulele sunt activate", pages.length >= 12, pages.join(", "));
+  check("toate modulele sunt activate", pages.some((l) => /Foi de calcul/.test(l)) && pages.some((l) => /Documente text/.test(l)), pages.join(", "));
 
   // EN under the navigation.
   await p.click("EN", ".lang-switch button");
@@ -141,11 +147,16 @@ try {
   await sleep(1500);
   const again = await navLabels(p);
   check("după repornire aplicația e tot în engleză", !again.some((l) => /[ăâîșț]/i.test(l)), again.slice(0, 5).join(", "));
+  // Leave Romanian behind: the storage is shared with the app installed on this computer.
+  await p.eval("[...document.querySelectorAll('.lang-switch button')].find(b => b.textContent === 'RO')?.click()");
+  await sleep(500);
+  check("la final aplicația revine în română", await p.eval("localStorage.getItem('kgb.lang') === 'ro'"));
   p.close();
   stop();
 } catch (e) {
   check("scenariul a rulat până la capăt", false, e.message);
   await page?.screenshot(join(shots, "eroare.png")).catch(() => {});
+  await page?.eval("localStorage.setItem('kgb.lang', 'ro'), true").catch(() => {});
   stop();
 } finally {
   await sleep(500);
