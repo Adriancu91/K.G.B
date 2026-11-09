@@ -121,6 +121,7 @@ Verificat automat de `cargo-deny` în CI pe workspace-ul rădăcină (`Cargo.tom
 | `windows` 0.62.2 (doar `Media_Control`, `Foundation`) | MIT OR Apache-2.0 | „Ce se aude acum” pe Acasă: comenzile media ale Windows (fără cont Spotify); era deja în aplicație prin Tauri | 7.4e |
 | `hyper` 1.12 (`server`, `http1`), `hyper-util` 0.1.21, `http-body-util` 0.1.5, `bytes` 1.12, `tokio` 1 | MIT | serverul paginii de telefon din rețeaua firmei (D-068); erau deja în aplicație prin iroh/reqwest | 7.4m |
 | `socket2` 0.6.5 | MIT OR Apache-2.0 | numele `kgb.local` în rețeaua biroului (mDNS pe portul 5353, împărțit cu Windows); era deja în aplicație prin tokio/iroh | 7.4m-4 |
+| `tauri` funcția `tray-icon` (+ `tray-icon` 0.25.1, `muda` 0.20.0) | MIT OR Apache-2.0 | iconița K.G.B. de lângă ceas (7.4m-3); codul venea deja cu Tauri la această versiune | 7.4m-3 |
 | npm `pdfjs-dist` 6.4.299 | Apache-2.0 | afișarea paginilor PDF în fereastră (D-032); la `npm install` aduce opțional `@napi-rs/canvas` (MIT), folosit doar de Node, nu intră în aplicație | 3.5 |
 
 Restul dependențelor (Tauri, React, Vite, serde, uuid, blake3) sunt cele din S1 și S3, deja în acest registru.

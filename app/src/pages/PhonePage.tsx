@@ -2,8 +2,37 @@
 // stop it, the address and pairing code for phones, the phones (approve,
 // remove) and what they sent (photos, reception sheets, bank statements).
 import { invoke } from "@tauri-apps/api/core";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { api, message, type ModulesReply } from "../api";
+import { drawPage, openPdf } from "../modules/pdf/pdfjs";
+
+/** A PDF received from a phone (e.g. a bank statement), shown page by page (7.4m-3). */
+function PdfInline({ data }: { data: Uint8Array }) {
+  const box = useRef<HTMLDivElement>(null);
+  const [err, setErr] = useState<string | null>(null);
+  useEffect(() => {
+    let gone = false;
+    void (async () => {
+      try {
+        const doc = await openPdf(data.slice());
+        const n = Math.min(doc.numPages, 10);
+        for (let i = 1; i <= n && !gone; i++) {
+          const c = document.createElement("canvas");
+          c.setAttribute("aria-label", `Pagina ${i}`);
+          box.current?.appendChild(c);
+          await drawPage(doc, i, c, 760);
+        }
+        if (doc.numPages > n && box.current) box.current.append(`… încă ${doc.numPages - n} pagini`);
+      } catch (e) {
+        setErr(message(e));
+      }
+    })();
+    return () => {
+      gone = true;
+    };
+  }, [data]);
+  return err ? <p className="error">PDF-ul nu se poate afișa: {err}</p> : <div className="phone-pdf" ref={box} />;
+}
 
 interface Phone {
   id: string;
@@ -59,17 +88,21 @@ const when = (ms: number) => {
 
 function FileView({ f }: { f: Received["fisiere"][number] }) {
   const [url, setUrl] = useState<string | null>(null);
+  const [pdf, setPdf] = useState<Uint8Array | null>(null);
   useEffect(() => () => void (url && URL.revokeObjectURL(url)), [url]);
+  const isPdf = f.mime === "application/pdf" || f.nume.toLowerCase().endsWith(".pdf");
   const load = () =>
     invoke<{ nume: string; data: string }>("phone_file", { id: f.id }).then((r) => {
       const bin = Uint8Array.from(atob(r.data), (c) => c.charCodeAt(0));
+      if (isPdf) setPdf(bin);
       setUrl(URL.createObjectURL(new Blob([bin], { type: f.mime })));
     });
   if (url && f.mime.startsWith("image/")) return <img className="phone-photo" src={url} alt={f.nume} />;
+  if (pdf) return <PdfInline data={pdf} />;
   if (url) return <a href={url} download={f.nume}>{f.nume}</a>;
   return (
     <button className="link" onClick={() => void load()}>
-      {f.mime.startsWith("image/") ? "arată poza" : "deschide"} {f.nume}
+      {f.mime.startsWith("image/") ? "arată poza" : isPdf ? "arată PDF-ul" : "deschide"} {f.nume}
       {f.octeti ? ` (${Math.round(f.octeti / 1024)} KB)` : ""}
     </button>
   );

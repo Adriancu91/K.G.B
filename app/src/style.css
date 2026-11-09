@@ -1680,6 +1680,12 @@ label > .suggest > input {
   display: grid;
   gap: 4px;
 }
+.phone-pdf canvas {
+  display: block;
+  max-width: 100%;
+  margin: 6px 0;
+  border: 1px solid var(--line);
+}
 .phone-photo {
   max-width: 260px;
   max-height: 260px;

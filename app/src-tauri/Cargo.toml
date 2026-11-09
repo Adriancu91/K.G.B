@@ -24,7 +24,9 @@ kgb-permits.workspace = true
 kgb-team.workspace = true
 kgb-calc.workspace = true
 tracing.workspace = true
-tauri = { version = "2.12", features = [] }
+# tray-icon: K.G.B. stays next to the clock (7.4m-3); the tray code was
+# already downloaded with Tauri at this version.
+tauri = { version = "2.12", features = ["tray-icon"] }
 # System file dialogs (open/save) for importing and exporting documents (Etapa 3).
 tauri-plugin-dialog = "=2.8.4"
 # Windows desktop notifications for reminders, only while the app runs (Etapa 4, D-044).
@@ -48,7 +50,7 @@ serde_json.workspace = true
 uuid.workspace = true
 
 [target.'cfg(windows)'.dependencies]
-windows-sys = { workspace = true, features = ["Win32_System_ProcessStatus", "Win32_System_Threading"] }
+windows-sys = { workspace = true, features = ["Win32_System_ProcessStatus", "Win32_System_Threading", "Win32_System_Registry", "Win32_Foundation", "Win32_Security"] }
 # "Ce se aude acum" on the start page (7.4e): the Windows media controls.
 # Already used by Tauri at this version, so nothing new is downloaded.
 windows = { version = "0.62.2", features = ["Media_Control", "Foundation"] }

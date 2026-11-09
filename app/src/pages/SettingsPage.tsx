@@ -1,4 +1,5 @@
 // Workspace settings. Every change is validated and saved by the core.
+import { invoke } from "@tauri-apps/api/core";
 import { useEffect, useState, type FormEvent } from "react";
 import { api, message, type AppInfo, type Density, type Settings, type SettingsReply, type Theme } from "../api";
 
@@ -8,6 +9,44 @@ export const SHORTCUTS: Array<[string, string]> = [
   ["Ctrl + 1 … 9", "deschide elementul 1 … 9 din panoul lateral"],
   ["Esc", "închide o fereastră de confirmare"],
 ];
+
+interface Desktop {
+  cu_windows: boolean;
+  langa_ceas: boolean;
+  comanda: string | null;
+}
+
+/** This PC: next to the clock, start with Windows (7.4m-3). */
+function ThisPc({ onError }: { onError: (e: string | null) => void }) {
+  const [d, setD] = useState<Desktop | null>(null);
+  useEffect(() => {
+    invoke<Desktop>("desktop_get").then(setD, (e: unknown) => onError(message(e)));
+  }, [onError]);
+  if (!d) return null;
+  const set = (next: Partial<Desktop>) =>
+    void invoke<Desktop>("desktop_set", { cuWindows: next.cu_windows ?? d.cu_windows, langaCeas: next.langa_ceas ?? d.langa_ceas }).then(
+      (r) => {
+        setD(r);
+        onError(null);
+      },
+      (e: unknown) => onError(message(e)),
+    );
+  return (
+    <div className="this-pc">
+      <label className="row">
+        <input type="checkbox" aria-label="Rămâne lângă ceas" checked={d.langa_ceas} onChange={(e) => set({ langa_ceas: e.target.checked })} />
+        La închiderea ferestrei, K.G.B. rămâne pornit lângă ceas (telefoanele și sincronizarea merg mai departe); „Ieșire” din meniul iconiței îl oprește.
+      </label>
+      <label className="row">
+        <input type="checkbox" aria-label="Pornește cu Windows" checked={d.cu_windows} onChange={(e) => set({ cu_windows: e.target.checked })} />
+        Pornește odată cu Windows, direct lângă ceas (pentru PC-ul care servește telefoanele).
+      </label>
+      <small className="muted">
+        Se aplică doar acestui PC și utilizatorului Windows curent; se poate opri oricând de aici sau din Setările Windows (Aplicații → Pornire).
+      </small>
+    </div>
+  );
+}
 
 export function SettingsPage(props: {
   reply: SettingsReply;
@@ -112,6 +151,9 @@ export function SettingsPage(props: {
           altor PC-uri (Etapa 6).
         </small>
       </div>
+
+      <h2>Pe acest PC</h2>
+      <ThisPc onError={props.onError} />
 
       <h2>Comenzi rapide</h2>
       <dl className="facts">

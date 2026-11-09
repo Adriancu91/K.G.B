@@ -7,6 +7,7 @@ use std::path::{Path, PathBuf};
 use std::sync::{Arc, Mutex};
 
 mod external;
+mod desktop;
 mod mdns;
 mod media;
 mod net;
@@ -1312,6 +1313,66 @@ fn phone_import_statement(app: State<AppState>, id: uuid::Uuid, fisier: uuid::Uu
     })
 }
 
+// ---------- next to the clock, start with Windows (step 7.4m-3) ----------
+
+#[derive(Serialize)]
+struct DesktopReply {
+    cu_windows: bool,
+    langa_ceas: bool,
+    /// What Windows runs at sign-in (shown in Settings).
+    comanda: Option<String>,
+}
+
+#[tauri::command]
+fn desktop_get(app: State<AppState>) -> CmdResult<DesktopReply> {
+    Ok(DesktopReply { cu_windows: desktop::autostart(), langa_ceas: desktop::load(&app.root).langa_ceas, comanda: desktop::autostart_command() })
+}
+
+/// Preferences of this PC (not of the workspace): any person using it may
+/// change them for themself.
+#[tauri::command]
+fn desktop_set(app: State<AppState>, cu_windows: bool, langa_ceas: bool) -> CmdResult<DesktopReply> {
+    desktop::set_autostart(cu_windows).map_err(|e| format!("Pornirea cu Windows nu s-a putut schimba: {e}"))?;
+    desktop::save(&app.root, &desktop::Prefs { langa_ceas }).map_err(|e| format!("Preferințele acestui PC nu s-au salvat: {e}"))?;
+    tracing::info!(cu_windows, langa_ceas, "desktop preferences saved");
+    desktop_get(app)
+}
+
+fn show_main(app: &tauri::AppHandle) {
+    if let Some(w) = app.get_webview_window("main") {
+        let _ = w.show();
+        let _ = w.unminimize();
+        let _ = w.set_focus();
+    }
+}
+
+/// The icon next to the clock, with its menu.
+fn tray(app: &tauri::App) -> tauri::Result<()> {
+    use tauri::menu::{Menu, MenuItem};
+    use tauri::tray::{MouseButton, MouseButtonState, TrayIconBuilder, TrayIconEvent};
+    let open = MenuItem::with_id(app, "deschide", "Deschide K.G.B.", true, None::<&str>)?;
+    let quit = MenuItem::with_id(app, "iesire", "Ieșire", true, None::<&str>)?;
+    let menu = Menu::with_items(app, &[&open, &quit])?;
+    let mut b = TrayIconBuilder::with_id("kgb").tooltip("K.G.B.").menu(&menu).show_menu_on_left_click(false);
+    if let Some(icon) = app.default_window_icon() {
+        b = b.icon(icon.clone());
+    }
+    b.on_menu_event(|app, e| match e.id().as_ref() {
+        "deschide" => show_main(app),
+        "iesire" => app.exit(0),
+        _ => {}
+    })
+    .on_tray_icon_event(|t, e| {
+        if let TrayIconEvent::Click { button: MouseButton::Left, button_state: MouseButtonState::Up, .. } = e {
+            show_main(t.app_handle());
+        }
+    })
+    .build(app)?;
+    Ok(())
+}
+
+static TOLD_TRAY: std::sync::atomic::AtomicBool = std::sync::atomic::AtomicBool::new(false);
+
 // ---------- team messages (Etapa 7, step 7.4f) ----------
 
 /// The name messages from this PC are signed with: the member's name in an
@@ -1575,6 +1636,11 @@ fn main() {
                 Some(d) => PathBuf::from(d),
                 None => app.path().app_local_data_dir()?,
             };
+            // One K.G.B. per data folder: a second start shows the first one.
+            let handle = app.handle().clone();
+            if !desktop::single_instance(&root, move || show_main(&handle)) {
+                std::process::exit(0);
+            }
             let log = log::init(&root.join("logs"), LogConfig::default()).ok();
             tracing::info!(version = APP_VERSION, "K.G.B. starting");
             let (session, startup_error) = match open_session(&root) {
@@ -1588,6 +1654,13 @@ fn main() {
             let slot = Arc::new(net::NetSlot::default());
             net::background(slot.clone(), session.clone());
             phone::supervise(session.clone());
+            if let Err(e) = tray(app) {
+                tracing::warn!("tray icon: {e}");
+            }
+            // Started by Windows: next to the clock, window closed.
+            if !desktop::started_hidden() {
+                show_main(app.handle());
+            }
             app.manage(AppState {
                 session,
                 net: slot,
@@ -1597,6 +1670,25 @@ fn main() {
                 ready_ms: t0.elapsed().as_millis(),
             });
             Ok(())
+        })
+        .on_window_event(|w, e| {
+            if let tauri::WindowEvent::CloseRequested { api, .. } = e {
+                let state = w.app_handle().state::<AppState>();
+                if desktop::load(&state.root).langa_ceas {
+                    api.prevent_close();
+                    let _ = w.hide();
+                    if !TOLD_TRAY.swap(true, std::sync::atomic::Ordering::Relaxed) {
+                        use tauri_plugin_notification::NotificationExt as _;
+                        let _ = w
+                            .app_handle()
+                            .notification()
+                            .builder()
+                            .title("K.G.B. rămâne pornit lângă ceas")
+                            .body("Telefoanele și sincronizarea merg mai departe. Ieșire: clic dreapta pe iconița K.G.B. de lângă ceas → Ieșire.")
+                            .show();
+                    }
+                }
+            }
         })
         .invoke_handler(tauri::generate_handler![
             app_info,
@@ -1630,6 +1722,8 @@ fn main() {
             phone_done,
             phone_file,
             phone_import_statement,
+            desktop_get,
+            desktop_set,
             team_overview,
             team_set_mine,
             chat_list,

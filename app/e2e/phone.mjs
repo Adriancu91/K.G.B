@@ -144,6 +144,25 @@ try {
   check("recepția e în stocul din Business: 4.250 kg fier, 125,5 kg cupru", q("Fier vechi") === "4.250" && q("Cupru") === "125,5", `${q("Fier vechi")} / ${q("Cupru")}`);
   await p.screenshot(join(shots, "03-receptie-linii.png"));
 
+  // 7.4m-3: a PDF statement from the phone is shown on the PC.
+  const pdf = [
+    "%PDF-1.4",
+    "1 0 obj<</Type/Catalog/Pages 2 0 R>>endobj",
+    "2 0 obj<</Type/Pages/Kids[3 0 R]/Count 1>>endobj",
+    "3 0 obj<</Type/Page/Parent 2 0 R/MediaBox[0 0 300 200]/Contents 4 0 R/Resources<<>>>>endobj",
+    "4 0 obj<</Length 40>>stream",
+    "0 0 1 rg 20 20 260 160 re f",
+    "endstream endobj",
+    "trailer<</Root 1 0 R>>",
+    "%%EOF",
+  ].join(String.fromCharCode(10));
+  const sentPdf = await phone("/m/api/trimite", { tip: "extras", campuri: { banca: "ING" }, fisiere: [{ nume: "extras-ing.pdf", mime: "application/pdf", date: Buffer.from(pdf).toString("base64") }] });
+  check("telefonul trimite un extras PDF", sentPdf.status === 200, JSON.stringify(sentPdf.json));
+  await p.until("[...document.querySelectorAll('.phone-inbox button')].some(b => b.innerText.startsWith('arată PDF-ul'))", 8000);
+  await p.eval("[...document.querySelectorAll('.phone-inbox button')].find(b => b.innerText.startsWith('arată PDF-ul')).click()");
+  await p.until("!!document.querySelector('.phone-pdf canvas')", 8000);
+  check("pe PC, extrasul PDF se vede pagină cu pagină", await p.eval("document.querySelector('.phone-pdf canvas').width > 100"));
+
   // 7.4m-4: every PC serves the page.
   const pre = await fetch(BASE + "/m/api/eu", { method: "OPTIONS", headers: { Origin: "http://192.168.1.50:8737", "Access-Control-Request-Method": "GET", "Access-Control-Request-Headers": "x-kgb-token" } });
   check(
