@@ -337,7 +337,7 @@ export function PdfPage({ onError }: { onError: (e: string | null) => void }) {
                 </button>
               )}
             </div>
-            {redactOpen && editable && view && <RedactPanel view={view} docId={doc.id} version={version} busy={busy} ask={ask} />}
+            {redactOpen && editable && view && <RedactPanel key={`${doc.id}-${version}`} view={view} docId={doc.id} version={version} busy={busy} ask={ask} />}
             {stampsOpen && editable && <StampsPanel docId={doc.id} version={version} selected={selected} busy={busy} ask={ask} onError={onError} />}
             {stamp.open && editable && (
               <div className="card pdf-stamp">

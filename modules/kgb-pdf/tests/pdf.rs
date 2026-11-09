@@ -454,3 +454,23 @@ fn stamped_redacted_merges() {
     let m = call(&mut ws, &mm, "merge", json!({"ids": [id, other], "name": "unit"}));
     assert!(m.is_ok(), "{m:?}");
 }
+
+/// Step 7.4l-1c2: a result made in the window (pdf-lib tools from COS) is
+/// checked here like every other one: strict check, same pages, the pages
+/// said to be untouched keep their text; then a preview or a new version.
+#[test]
+fn save_edit_checks_window_results() {
+    let (_t, mut ws, mm) = setup();
+    let id = import(&mut ws, &mm, "rotite-si-formate.pdf")["document"]["id"].clone();
+    let same = B64.encode(bytes(&mut ws, &mm, &id, Some(1)));
+    let p = call(&mut ws, &mm, "save_edit", json!({"id": id, "based_on": 1, "data": same, "summary": "test", "same_text_pages": [1, 2, 3, 4]})).unwrap();
+    assert_eq!((p["applied"].as_bool(), p["pages"].as_u64()), (Some(false), Some(4)));
+    let other = B64.encode(std::fs::read(testdata("simplu-1-pagina.pdf")).unwrap());
+    assert!(call(&mut ws, &mm, "save_edit", json!({"id": id, "based_on": 1, "data": other, "summary": "x"})).unwrap_err().to_string().contains("pagini în loc de"));
+    let broken = B64.encode(std::fs::read(testdata("stricat-trunchiat.pdf")).unwrap());
+    assert!(call(&mut ws, &mm, "save_edit", json!({"id": id, "based_on": 1, "data": broken, "summary": "x"})).unwrap_err().to_string().contains("verificarea"));
+    let four = B64.encode(bytes(&mut ws, &mm, &id, Some(1)));
+    assert!(call(&mut ws, &mm, "save_edit", json!({"id": id, "based_on": 1, "data": four, "summary": " "})).is_err(), "a summary is needed");
+    let r = call(&mut ws, &mm, "save_edit", json!({"id": id, "based_on": 1, "data": four, "summary": "ascuns", "apply": true})).unwrap();
+    assert_eq!(r["version"], 2);
+}

@@ -234,7 +234,30 @@ try {
   await p.until("document.querySelector('.pdf-doc select')?.selectedOptions[0]?.textContent.startsWith('5 —')", 15000);
   const fact = (await invoke(p, "module_call", { id: "kgb.pdf", command: "list", args: {} })).find((d) => d.name === "factura.pdf");
   const texts = await invoke(p, "module_call", { id: "kgb.pdf", command: "text", args: { id: fact.id } });
-  check("după ascundere, pagina nu mai are text în fișier", texts.length === 1 && texts[0] === "", JSON.stringify(texts).slice(0, 80));
+  const plainTxt = (texts[0] ?? "").normalize("NFD").replace(/\p{M}/gu, "").toLowerCase();
+  const kept = plainTxt.includes("fct-0042");
+  check(`după ascundere, cuvântul nu mai e în fișier (${kept ? "restul paginii a rămas text" : "pagina a devenit imagine"})`, texts.length === 1 && !plainTxt.includes("fiscala"), JSON.stringify(texts).slice(0, 120));
+  // The finer way (COS redactKeep): on a plain page only the letters under the zones go, the rest stays text.
+  await openDoc(p, "multipagina-50.pdf");
+  await thumbsLoaded(p, 1);
+  // The panel stays open from the invoice (the button opens and closes it).
+  if (!(await p.eval("!!document.querySelector('.pdf-redact')"))) await p.click("Ascunde date…", ".pdf-doc button");
+  await p.until("!!document.querySelector('.pdf-redact canvas')", 5000);
+  await p.eval("document.querySelector(\"input[aria-label='Caută CNP']\").checked && document.querySelector(\"input[aria-label='Caută CNP']\").click()");
+  await p.fill("input[aria-label='Cuvinte de ascuns']", "unic");
+  await p.click("Caută", ".pdf-redact button");
+  await p.until("(document.querySelector('.pdf-redact')?.innerText ?? '').includes('Găsite:')", 20000);
+  await p.eval("[...document.querySelectorAll('.pdf-redact button.primary')].find(b => b.textContent.startsWith('Previzualizează ascunderea')).click()");
+  await p.until("!!document.querySelector('.dialog.wide canvas')", 30000);
+  const keepTitle = await p.eval("document.querySelector('.dialog.wide').innerText");
+  check("calea fină: restul paginilor rămâne text", keepTitle.includes("50 zone ascunse pe 50 pagini (restul paginii rămâne text)"), keepTitle.slice(0, 160));
+  await p.click("Salvează ca versiune nouă", ".dialog button");
+  await p.until("!document.querySelector('.dialog.wide')", 20000);
+  const multi = (await invoke(p, "module_call", { id: "kgb.pdf", command: "list", args: {} })).find((d) => d.name === "multipagina-50.pdf");
+  const mt = await invoke(p, "module_call", { id: "kgb.pdf", command: "text", args: { id: multi.id } });
+  check("„unic” nu mai e în fișier, „Pagina 1 din 50” da", mt.length === 50 && !mt.some((t) => t.includes("unic")) && mt[0].includes("Pagina 1 din 50"), JSON.stringify(mt.slice(0, 2)));
+  await p.screenshot(join(shots, "02e-ascuns-text.png"));
+  await openDoc(p, "factura.pdf");
 
   // Merge the invoice and the 4-page file.
   await p.eval(`(() => { for (const li of document.querySelectorAll('.pdf-docs li'))

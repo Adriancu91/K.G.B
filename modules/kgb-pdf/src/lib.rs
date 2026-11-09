@@ -31,6 +31,9 @@
 //! - `stamp_annot {id, based_on, pages?, text, sub?, culoare?, opacitate?,
 //!   pozitie?, biblioteca?, latime_mm?, autor?, apply}` → a `/Stamp`
 //!   annotation as in Cyber Office Studio (7.4l-1b2)
+//! - `save_edit {id, based_on, data, summary, same_text_pages?, apply}` → a
+//!   result made in the window by a tool copied from COS (pdf-lib, D-072),
+//!   checked like the others, then a preview or a new version
 //! - `redact {id, based_on, zone: [{page, x, y, w, h}], apply}` → the zones
 //!   hidden for good: those pages become images with black zones (7.4l-1c)
 //! - `stampile`, `stampila_save {nume, date}`, `stampila_delete {id}` →
@@ -173,6 +176,25 @@ struct LibSave {
 /// „Ștampilele mele” are files of the module with this name prefix.
 const LIB_PREFIX: &str = "Ștampilă - ";
 const LIB_MAX: usize = 12;
+
+/// A result made in the window by a tool copied from Cyber Office Studio
+/// (pdf-lib, D-072): checked here like every other result, then a preview
+/// or a new version.
+#[derive(Deserialize)]
+#[serde(deny_unknown_fields)]
+struct SaveEdit {
+    id: Uuid,
+    based_on: u64,
+    /// The new PDF, base64.
+    data: String,
+    /// What was done (the version's note).
+    summary: String,
+    /// Pages whose text must have stayed exactly as it was (1-based).
+    #[serde(default)]
+    same_text_pages: Vec<u32>,
+    #[serde(default)]
+    apply: bool,
+}
 
 /// Hiding data for good (7.4l-1c).
 #[derive(Deserialize)]
@@ -416,6 +438,36 @@ impl Module for Pdf {
                     "{} cu {angle}°",
                     plural(a.pages.len(), "pagină rotită", "pagini rotite")
                 );
+                if !a.apply {
+                    return Ok(preview(&out, n, summary));
+                }
+                let v = ctx.save_document(a.id, num, &out, &summary)?;
+                Ok(json!({"applied": true, "version": v.number, "pages": n, "summary": summary}))
+            }
+            "save_edit" => {
+                let a: SaveEdit = args(a)?;
+                let (num, data) = intact(ctx, a.id, Some(a.based_on))?;
+                let before = texts_of(&data)?;
+                let out = B64.decode(a.data.as_bytes()).map_err(|_| bad("rezultatul nu a ajuns întreg"))?;
+                let summary = a.summary.trim().chars().take(200).collect::<String>();
+                if summary.is_empty() {
+                    return Err(bad("lipsește descrierea schimbării"));
+                }
+                // Strict check, same number of pages, the untouched pages keep their text exactly.
+                let after = match check::check(&out) {
+                    check::Status::Intact(_) => ops::page_texts(&ops::load(&out).map_err(bad)?),
+                    s => return Err(bad(format!("rezultatul nu trece verificarea: {}", s.reason()))),
+                };
+                if after.len() != before.len() {
+                    return Err(bad(format!("rezultatul are {} pagini în loc de {}", after.len(), before.len())));
+                }
+                if let Some(p) = a.same_text_pages.iter().find(|p| {
+                    let i = (**p as usize).wrapping_sub(1);
+                    i >= before.len() || before[i] != after[i]
+                }) {
+                    return Err(bad(format!("textul paginii {p} nu s-a păstrat")));
+                }
+                let n = after.len();
                 if !a.apply {
                     return Ok(preview(&out, n, summary));
                 }

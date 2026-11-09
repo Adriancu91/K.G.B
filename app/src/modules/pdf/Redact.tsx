@@ -4,8 +4,68 @@
 // images with black over them, in a new version, after a preview.
 import { useEffect, useRef, useState } from "react";
 import type { PDFDocumentProxy } from "pdfjs-dist";
-import { drawPage } from "./pdfjs";
+import { PDFDocument, rgb } from "pdf-lib";
+import { api } from "../../api";
+import { drawPage, fromBase64, openPdf } from "./pdfjs";
+import { dropAnnotsIn, dropUnreachable, redactKeepText } from "./redactKeep";
 import { findBoxes, REDACT_KINDS, type RedactKind, viewportOf } from "./redactFind";
+
+type Box = [number, number, number, number];
+
+const toB64 = (b: Uint8Array) => {
+  let s = "";
+  for (let i = 0; i < b.length; i += 0x8000) s += String.fromCharCode(...b.subarray(i, i + 0x8000));
+  return btoa(s);
+};
+
+/**
+ * The finer way of Cyber Office Studio (redactKeep.ts, D-071/D-072): only the letters under the zones leave the page,
+ * the rest stays text; black is drawn over the zones; then pdf.js checks nothing can be read under them any more.
+ * null when that is not sure (an image, a drawing or a shared field under a zone, a turned page): then the page
+ * becomes an image instead (the safe way).
+ */
+async function keepText(view: PDFDocumentProxy, docId: string, version: number, zones: Zone[]): Promise<Uint8Array | null> {
+  const r = await api.moduleCall<{ data: string }>("kgb.pdf", "read", { id: docId, version });
+  const doc = await PDFDocument.load(fromBase64(r.data));
+  const byPage = new Map<number, Box[]>();
+  for (const z of zones) {
+    const vp = (await view.getPage(z.page)).getViewport({ scale: 1 });
+    if (vp.rotation % 360 !== 0) return null;
+    const [ax, ay] = vp.convertToPdfPoint(z.x, z.y) as [number, number];
+    const [bx, by] = vp.convertToPdfPoint(z.x + z.w, z.y + z.h) as [number, number];
+    const list = byPage.get(z.page) ?? [];
+    list.push([Math.min(ax, bx), Math.min(ay, by), Math.max(ax, bx), Math.max(ay, by)]);
+    byPage.set(z.page, list);
+  }
+  for (const [n, boxes] of byPage) {
+    if (dropAnnotsIn(doc, n - 1, boxes) === null) return null;
+    if (redactKeepText(doc, n - 1, boxes) === null) return null;
+    const page = doc.getPage(n - 1);
+    for (const b of boxes) page.drawRectangle({ x: b[0], y: b[1], width: b[2] - b[0], height: b[3] - b[1], color: rgb(0, 0, 0) });
+  }
+  dropUnreachable(doc);
+  const out = await doc.save();
+  // The check: no readable text left under a zone.
+  const check = await openPdf(out.slice());
+  for (const [n, boxes] of byPage) {
+    const items = (await (await check.getPage(n)).getTextContent()).items;
+    for (const it of items) {
+      if (!("str" in it) || !it.str.trim()) continue;
+      const [a, , c, d, e, f] = it.transform as number[];
+      const h = Math.hypot(c ?? 0, d ?? 0) || 10;
+      const per = (it.width || 0) / Math.max(1, it.str.length);
+      const dir = Math.sign(a ?? 1) || 1;
+      // Letter by letter (spaces left out): a letter whose middle is still under a zone means the safe way instead.
+      for (let k = 0; k < it.str.length; k++) {
+        if (!it.str[k]?.trim()) continue;
+        const cx = (e ?? 0) + dir * per * (k + 0.5);
+        const cy = (f ?? 0) + h * 0.3;
+        if (boxes.some((z) => cx > z[0] && cx < z[2] && cy > z[1] && cy < z[3])) return null;
+      }
+    }
+  }
+  return out;
+}
 
 const WIDTH = 560;
 
@@ -32,6 +92,7 @@ export function RedactPanel(props: {
   const [kinds, setKinds] = useState<RedactKind[]>(["cnp"]);
   const [words, setWords] = useState("");
   const [found, setFound] = useState<string | null>(null);
+  const [way, setWay] = useState<"text" | "image" | null>(null);
   const canvas = useRef<HTMLCanvasElement>(null);
 
   useEffect(() => {
@@ -67,8 +128,9 @@ export function RedactPanel(props: {
   return (
     <div className="card pdf-redact">
       <p className="muted small">
-        Trage cu mouse-ul dreptunghiuri peste ce vrei ascuns, sau caută. Paginile cu zone devin imagini cu negru peste zone: textul lor iese de tot din fișier
-        (nu doar acoperit), celelalte pagini rămân cum sunt. Comentariile și câmpurile de formular de peste zone se scot și ele.
+        Trage cu mouse-ul dreptunghiuri peste ce vrei ascuns, sau caută. Literele de sub zone ies de tot din fișier (nu doar acoperite), iar restul paginii
+        rămâne text; când asta nu e sigur (o imagine sau un desen sub zonă), pagina devine imagine cu negru peste zone. Comentariile și câmpurile de
+        formular de peste zone se scot și ele.
       </p>
       <div className="row wrap">
         {REDACT_KINDS.map(([k, label]) => (
@@ -139,11 +201,41 @@ export function RedactPanel(props: {
         <button
           className="primary"
           disabled={props.busy || zones.length === 0}
-          onClick={() => void props.ask("Ascunde datele", "redact", { id: props.docId, based_on: props.version, zone: zones.map((z) => ({ page: z.page, x: z.x, y: z.y, w: z.w, h: z.h })) })}
+          onClick={() =>
+            void (async () => {
+              const zonePages = [...new Set(zones.map((z) => z.page))];
+              let kept: Uint8Array | null = null;
+              try {
+                kept = await keepText(props.view, props.docId, props.version, zones);
+              } catch {
+                kept = null;
+              }
+              if (kept) {
+                const same = Array.from({ length: pages }, (_, i) => i + 1).filter((p) => !zonePages.includes(p));
+                setWay("text");
+                await props.ask("Ascunde datele (restul paginii rămâne text)", "save_edit", {
+                  id: props.docId,
+                  based_on: props.version,
+                  data: toB64(kept),
+                  summary: `${zones.length === 1 ? "1 zonă ascunsă" : `${zones.length} zone ascunse`} pe ${zonePages.length === 1 ? "1 pagină" : `${zonePages.length} pagini`} (restul paginii rămâne text)`,
+                  same_text_pages: same,
+                });
+              } else {
+                setWay("image");
+                await props.ask("Ascunde datele (pagina devine imagine)", "redact", { id: props.docId, based_on: props.version, zone: zones.map((z) => ({ page: z.page, x: z.x, y: z.y, w: z.w, h: z.h })) });
+              }
+            })()
+          }
         >
           Previzualizează ascunderea ({zones.length} zone)
         </button>
       </div>
+      {way === "image" && (
+        <p className="muted small">
+          Pe paginile acestea nu e sigur că doar literele de sub zone se pot scoate (o imagine, un desen sau un câmp sub zonă, ori o pagină rotită): pagina
+          devine imagine, ca nimic să nu rămână.
+        </p>
+      )}
     </div>
   );
 }
