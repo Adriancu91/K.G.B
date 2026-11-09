@@ -367,3 +367,9 @@ Deciziile DECIS se schimbă doar cu aprobarea explicită a proprietarului (Maste
 ### D-075 — tesseract.js pentru OCR
 - **Data:** 9 nov. 2026 · **Statut:** DECIS — acord COS + K.G.B. (D-074); încheie propunerea D-035
 - `tesseract.js` 7 (Apache-2.0) cu datele pentru română (`@tesseract.js-data/ron`, MIT), fișierele de limbă incluse local (nimic de pe internet); se preia codul OCR din COS (`ocr.ts`, `ocrPdf.ts`, `textlayer.ts`) cu testele lui. Valorile citite cu OCR în extragerea de date cer în continuare confirmarea utilizatorului (D-035).
+
+### D-076 — Numele după combinare
+- **Data:** 9 nov. 2026 · **Statut:** DECIS — acord COS + K.G.B. (D-074), la întrebarea proprietarului
+- **Aplicația (platforma) rămâne K.G.B. — Kronos Global Business:** nucleul, ERP-ul, echipa, sincronizarea, telefoanele.
+- **Partea de birou din K.G.B. păstrează numele „Cyber Office Studio”** (ales de proprietar pe 30.10, deja pe kiturile 0.9.5–0.9.6, pe pagina web și în siglă): în meniul K.G.B. apare ca un grup „Cyber Office Studio” cu aplicațiile lui (Documente, Foi de calcul, PDF, Prezentări, Notițe, Imagini, Video).
+- Kitul COS pentru toată lumea și pagina web rămân „Cyber Office Studio” până când K.G.B. îl înlocuiește.
