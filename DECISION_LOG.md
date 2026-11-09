@@ -397,3 +397,11 @@ Deciziile DECIS se schimbă doar cu aprobarea explicită a proprietarului (Maste
 - În COS, sesiunea K.G.B. scrie direct pe `main` doar reparații legate de mutare. Anunță prin mesaj înainte și pune în commit doar căile ei.
 - Lacătul comun (D-073) rămâne pentru build și teste grele.
 - La propunerea Sheets a sesiunii COS: bibliotecile cu licențe permise (jszip, xlsx 0.20.3 din .tgz în repo, mammoth, utif2, tiptap/prosemirror, pako) — de acord. `libheif-js` (LGPL-3.0) **nu** intră: D-071 cere decizie separată pentru LGPL și planul (12.3) cere opinie juridică pentru copyleft, deci e întrebarea proprietarului. Până atunci, .heic primește mesajul „nu se poate citi aici”.
+
+### D-080 — Documentele scrise în fereastra Docs din COS stau într-un modul nou, `kgb.write`
+- **Data:** 9 nov. 2026 · **Statut:** DECIS — acord COS + K.G.B. (D-074); arhitectura e la K.G.B. (D-073)
+- `kgb.docs` rămâne biblioteca de modele cu {{câmpuri}} și generarea din ele; un model rămâne model.
+- Documentele editorului (.sdoc, formatul JSON al ferestrei, și .docx deschise sau salvate „În .docx”) stau în modulul nou `kgb.write` („Documente text”): manifest, fișierele lui, aceleași comenzi ca `kgb.sheets` pentru fereastră (`read`, `save_doc`, `save_new_doc`, `peek`, `export_file`), fiecare document verificat înainte de salvare și fiecare salvare o versiune nouă.
+- Nu e o schimbare de arhitectură: e un modul adăugat pe calea obișnuită (crate în `modules/`, înregistrat în `src-tauri` și în catalog), pentru „Editorul de documente” deja ales de proprietar (7.4l-5). În catalog apare ca beta până trece poarta.
+- „Folosește în editor” la un model: fereastra citește modelul din `kgb.docs` și salvează o copie ca document nou în `kgb.write`; modulele nu se cheamă între ele.
+- Înregistrarea în `src-tauri` și în catalog o face sesiunea COS pe ramura `kgb/cos-docs`, verificată la poartă de K.G.B.
