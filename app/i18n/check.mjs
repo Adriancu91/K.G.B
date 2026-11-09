@@ -74,6 +74,36 @@ for (const file of files) {
   };
   visit(program, null);
 }
+// The core's messages (0f-2): the Romanian strings of the Rust code (errors, summaries, template names,
+// sources, module manifests). They stay Romanian in the core and in saved data and are translated only on
+// screen; format! slots ({}, {name}, {:.2}) become {0}, {1}… so they are checked as templates.
+const RO_RS = /[ăâîșțĂÂÎȘȚ„”]|\b(nu|este|si|sau|pentru|fisierul|documentul|lipseste|exista)\b/;
+const QUOTED = /"((?:[^"\\]|\\.)*)"/g;
+const unesc = (s) => s.replace(/\\n/g, "\n").replace(/\\t/g, "\t").replace(/\\"/g, '"').replace(/\\\\/g, "\\");
+(function rust(d) {
+  for (const e of fs.readdirSync(d, { withFileTypes: true })) {
+    const p = path.join(d, e.name);
+    if (e.isDirectory()) {
+      if (!["target", "tests", "node_modules", "spikes", "bin", "examples"].includes(e.name)) rust(p);
+      continue;
+    }
+    if (!p.endsWith(".rs") && !p.endsWith("manifest.json")) continue;
+    const rel = path.relative(path.resolve(".."), p).split(path.sep).join("/");
+    const src = fs.readFileSync(p, "utf8").split("\n").filter((l) => !l.trim().startsWith("//")).join("\n");
+    for (const m of src.matchAll(QUOTED)) {
+      if (m[1].length <= 2 || !RO_RS.test(m[1])) continue;
+      let n = 0;
+      const s = unesc(m[1])
+        .replace(/\{\{/g, "\u0001")
+        .replace(/\}\}/g, "\u0002")
+        .replace(/\{[^{}]*\}/g, () => `{${n++}}`)
+        .replace(/\u0001/g, "{")
+        .replace(/\u0002/g, "}");
+      if (s.replace(/\{\d+\}/g, "").replace(/[^\p{L}]/gu, "").length < 3) continue;
+      add(s, n ? 1 : 0, rel);
+    }
+  }
+})(path.resolve(".."));
 const list = [...out.values()];
 
 // The translator of COS, with the app's dictionary, in Node (a minimal window).
