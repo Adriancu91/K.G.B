@@ -1,10 +1,11 @@
 // Stand-in for esbuild's `build` in the copied tests: the "bundle" is a file that re-exports the entry
 // (Node loads the TypeScript itself, through hooks.mjs).
-import { writeFileSync } from "node:fs";
-import { isAbsolute, resolve } from "node:path";
+import { mkdirSync, writeFileSync } from "node:fs";
+import { dirname, isAbsolute, resolve } from "node:path";
 import { pathToFileURL } from "node:url";
 
 export async function build(opts) {
+  mkdirSync(dirname(opts.outfile), { recursive: true });
   if (opts.stdin) {
     // Source given inline: its relative imports are relative to resolveDir.
     const dir = opts.stdin.resolveDir ?? process.cwd();

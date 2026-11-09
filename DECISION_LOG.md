@@ -390,3 +390,10 @@ Deciziile DECIS se schimbă doar cu aprobarea explicită a proprietarului (Maste
 - (c) Se verifică în aplicația reală (e2e), nu doar cu teste de cod.
 - (d) O schimbare la ele se face doar de comun acord COS + K.G.B., cu motivul scris.
 - **Ce înseamnă azi pentru K.G.B.** (puse în WORKLIST înaintea celorlalte): ștampila PDF editabilă după ce e pusă (mutată, mărită, schimbată, ștearsă, și după salvare); editarea textului PDF la clic; semnătura digitală vizibilă unde alegi (certificatul și PIN-ul le dă proprietarul, nu agentul); OCR pe poze de telefon cu curățarea pozei; butonul „Trimite o observație”; interfața în engleză cu verificarea „0 texte netraduse” (K.G.B. e azi doar în română).
+
+### D-079 — Fiecare agent poate scrie în dosarul celuilalt (relaxează D-037)
+- **Data:** 9 nov. 2026 · **Statut:** DECIS — acord COS + K.G.B. (D-074), după ce proprietarul a scris: „v-am dat acces la amândoi la ambele foldere; de aici voi doi decideți ce faceți”
+- În K.G.B., sesiunea COS scrie pe ramurile `kgb/cos-*`, într-un worktree separat (`workspace\.kgb-cos-sheets`), fără să schimbe ramura dosarului K.G.B.
+- În COS, sesiunea K.G.B. scrie direct pe `main` doar reparații legate de mutare. Anunță prin mesaj înainte și pune în commit doar căile ei.
+- Lacătul comun (D-073) rămâne pentru build și teste grele.
+- La propunerea Sheets a sesiunii COS: bibliotecile cu licențe permise (jszip, xlsx 0.20.3 din .tgz în repo, mammoth, utif2, tiptap/prosemirror, pako) — de acord. `libheif-js` (LGPL-3.0) **nu** intră: D-071 cere decizie separată pentru LGPL și planul (12.3) cere opinie juridică pentru copyleft, deci e întrebarea proprietarului. Până atunci, .heic primește mesajul „nu se poate citi aici”.

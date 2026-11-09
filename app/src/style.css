@@ -1730,3 +1730,16 @@ label > .suggest > input {
 .redact-page canvas { display: block; }
 .redact-zone { background: rgba(0, 0, 0, 0.75); outline: 1px solid #c62828; pointer-events: none; }
 .redact-zone.drawing { background: rgba(0, 0, 0, 0.35); }
+/* Editable stamps on the big PDF page (7.4l-0a; the mark layer's own rules are in cos/src/pdf/marks.css). */
+.pdf-stamp-scroll {
+  overflow: auto;
+  max-width: 100%;
+  padding: 32px 12px 12px;
+}
+.pdf-big .pdf-page-box canvas {
+  max-width: none;
+  border: 0;
+}
+.pdf-stamp-bar {
+  margin: 6px 0;
+}

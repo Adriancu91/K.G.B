@@ -52,6 +52,7 @@ const ink = (p, selector) =>
     return n / (d.length / 4); })()`);
 /** Opens a panel whose button opens and closes it (does nothing if it is open already). */
 async function openPanel(p, button, selector) {
+  await p.until(`[...document.querySelectorAll('.pdf-doc button')].some(b => b.textContent.includes(${JSON.stringify(button)}) && !b.disabled)`, 10000);
   if (!(await p.eval(`!!document.querySelector(${JSON.stringify(selector)})`))) await p.click(button, ".pdf-doc button");
   await p.until(`!!document.querySelector(${JSON.stringify(selector)})`, 5000);
 }
@@ -167,29 +168,122 @@ try {
   const inkAfter = await p.eval("(() => { const i = document.querySelector('.pdf-pages img'); return i ? i.src.length : 0; })()");
   check("miniatura paginii s-a schimbat", inkBefore > 0 && inkAfter > 0 && inkAfter !== inkBefore, `${inkBefore} → ${inkAfter}`);
 
-  // 7.4l-1b2: a stamp as in Cyber Office Studio, then one of „Ștampilele mele”.
-  await p.click("Ștampilă…", ".pdf-doc button");
-  await p.until("!!document.querySelector('.pdf-stamps')", 3000);
+  // 7.4l-0a (D-078): the stamp as in Cyber Office Studio, put with a click and editable on the page — moved,
+  // resized, changed on double-click, deleted — and still editable after saving (cdp-pdf-stamp-edit in COS).
+  // Clicks, drags and keys are real input events (Input.dispatchMouseEvent / dispatchKeyEvent).
+  const mouse = (type, x, y, extra = {}) => p.send("Input.dispatchMouseEvent", { type, x, y, button: "left", ...extra });
+  const clickAt = async (x, y, count = 1) => {
+    await mouse("mouseMoved", x, y, { button: "none" });
+    for (let c = 1; c <= count; c++) {
+      await mouse("mousePressed", x, y, { clickCount: c, buttons: 1 });
+      await mouse("mouseReleased", x, y, { clickCount: c });
+    }
+    await sleep(250);
+  };
+  const dragBy = async (x, y, dx, dy) => {
+    await mouse("mouseMoved", x, y, { button: "none" });
+    await mouse("mousePressed", x, y, { clickCount: 1, buttons: 1 });
+    for (let i = 1; i <= 6; i++) await mouse("mouseMoved", x + (dx * i) / 6, y + (dy * i) / 6, { buttons: 1 });
+    await mouse("mouseReleased", x + dx, y + dy, { clickCount: 1 });
+    await sleep(250);
+  };
+  const key = async (k, code, vk, modifiers = 0) => {
+    await p.send("Input.dispatchKeyEvent", { type: "rawKeyDown", key: k, code, windowsVirtualKeyCode: vk, modifiers });
+    await p.send("Input.dispatchKeyEvent", { type: "keyUp", key: k, code, windowsVirtualKeyCode: vk, modifiers });
+    await sleep(250);
+  };
+  /** [left, top, width, height] of the n-th element matching `sel`, scrolled into view. */
+  const rectOf = (sel, n = 0) =>
+    p.eval(`(() => { const e = document.querySelectorAll(${JSON.stringify(sel)})[${n}]; if (!e) return null;
+      e.scrollIntoView({ block: 'center', inline: 'center' }); const r = e.getBoundingClientRect(); return [r.left, r.top, r.width, r.height]; })()`);
+  const styleOf = (n = 0) => p.eval(`(() => { const e = document.querySelectorAll('.pdf-mark[data-mark=stamp]')[${n}]; const b = document.querySelector('.pdf-big .pdf-page-box');
+    return e ? [e.offsetLeft, e.offsetTop, e.offsetWidth, e.offsetHeight, b.offsetWidth, e.style.cssText] : null; })()`);
+  const stamps = () => p.eval("document.querySelectorAll('.pdf-mark[data-mark=stamp]').length");
+  /** Pixels of a colour in the n-th stamp's own drawing. */
+  const stampPixels = (test, n = 0) =>
+    p.eval(`(() => { const c = document.querySelectorAll('.pdf-mark[data-mark=stamp] canvas')[${n}]; if (!c || !c.width) return 0;
+      const d = c.getContext('2d').getImageData(0, 0, c.width, c.height).data; let k = 0;
+      for (let i = 0; i < d.length; i += 4) { const r = d[i], g = d[i+1], b = d[i+2], a = d[i+3]; if (a > 100 && (${test})) k++; } return k; })()`);
+  const BLUE = "b > 90 && r < 80 && g < 80";
+  const GREEN = "g > 90 && r < 80 && b < 90";
+  const RED = "r > 150 && g < 80 && b < 80";
+
+  await openPanel(p, "Ștampilă…", ".pdf-stamps");
   await p.click("APROBAT", ".pdf-stamps button");
   await p.eval("document.querySelector(\"input[aria-label='Numele sub ștampilă']\").click()");
   await p.until("!!document.querySelector(\"input[aria-label='Numele de pe ștampilă']\")", 2000);
   await p.fill("input[aria-label='Numele de pe ștampilă']", "Ion Pop");
   await p.eval("document.querySelector(\"button[aria-label='Culoarea albastru']\").click()");
-  await p.fill("select[aria-label='Locul ștampilei']", "sus-dreapta");
   const line = await p.eval("document.querySelector('.pdf-stamps').innerText");
   check("rândul de sub ștampilă: numele și data de azi", /Ion Pop · \d{2}\.\d{2}\.\d{4}/.test(line), line.match(/sub ștampilă: .*/)?.[0] ?? "");
-  await p.eval("[...document.querySelectorAll('.pdf-stamps button.primary')].find(b => b.textContent.startsWith('Previzualizează')).click()");
+  await p.click("Pune cu clic pe pagină", ".pdf-stamps button");
+  await p.until("!!document.querySelector('.pdf-big .pdf-mark-catch')", 10000);
+  await sleep(800);
+  const box = await rectOf(".pdf-big .pdf-page-box");
+  await clickAt(box[0] + box[2] * 0.35, box[1] + box[3] * 0.3);
+  check("clic pe pagină: ștampila e pusă (și unealta se oprește)", (await stamps()) === 1 && !(await p.eval("!!document.querySelector('.pdf-mark-catch')")), `${await stamps()} ștampile`);
+  check("ștampila e albastră", (await stampPixels(BLUE)) > 50, `${await stampPixels(BLUE)} pixeli`);
+
+  const r0 = await rectOf(".pdf-mark[data-mark=stamp]");
+  const s0 = await styleOf();
+  await dragBy(r0[0] + r0[2] / 2, r0[1] + r0[3] / 2, 90, 50);
+  const s1 = await styleOf();
+  const r1 = await rectOf(".pdf-mark[data-mark=stamp]");
+  check("ștampila se mută trăgând de ea", Math.abs(s1[0] - s0[0] - 90) < 6 && Math.abs(s1[1] - s0[1] - 50) < 6, `${s1[0] - s0[0]}, ${s1[1] - s0[1]}`);
+  const se = await rectOf(".pdf-mark[data-mark=stamp] .pdf-mark-corner.se");
+  await dragBy(se[0] + se[2] / 2, se[1] + se[3] / 2, 60, 0);
+  const r2 = await rectOf(".pdf-mark[data-mark=stamp]");
+  check("ștampila se mărește din colț (cu proporții)", r2[2] > r1[2] + 40 && r2[3] > r1[3] + 10, `${Math.round(r1[2])}×${Math.round(r1[3])} → ${Math.round(r2[2])}×${Math.round(r2[3])}`);
+
+  await clickAt(r2[0] + r2[2] / 2, r2[1] + r2[3] / 2, 2);
+  await p.until("!!document.querySelector('[data-testid=pdf-stamp-props]')", 3000);
+  await p.fill("input[aria-label='Textul ștampilei puse']", "VERIFICAT ȘI APROBAT");
+  await p.eval("document.querySelector('[data-testid=pdf-stamp-props] button[aria-label=Verde]').click()");
+  await sleep(300);
+  await p.click("Gata", "[data-testid=pdf-stamp-props] button");
+  const edited = await styleOf();
+  check("dublu-clic schimbă textul și culoarea (verde)", (await stampPixels(GREEN)) > 50 && (await stampPixels(BLUE)) < 10, `${await stampPixels(GREEN)} verzi`);
+
+  // A second one with „Pune pe toate paginile”, then chosen with a click and deleted with the Delete key.
+  await p.click("COPIE", ".pdf-stamps button");
+  await p.fill("select[aria-label='Locul ștampilei']", "jos-stanga");
+  await p.click("Pune pe toate paginile", ".pdf-stamps button");
+  await p.until("document.querySelectorAll('.pdf-mark[data-mark=stamp]').length === 2", 5000);
+  check("„Pune pe toate paginile” pune ștampila la locul ales", true);
+  const r3 = await rectOf(".pdf-mark[data-mark=stamp]", 1);
+  await clickAt(r3[0] + r3[2] / 2, r3[1] + r3[3] / 2);
+  await key("Delete", "Delete", 46);
+  check("Delete șterge ștampila aleasă", (await stamps()) === 1, `${await stamps()} rămase`);
+  await p.screenshot(join(shots, "02c-stampila.png"));
+
+  await key("s", "KeyS", 83, 2);
   await p.until("!!document.querySelector('.dialog.wide canvas')", 15000);
   await sleep(800);
-  const blue = await p.eval(`(() => { const c = document.querySelector('.dialog.wide canvas'); const d = c.getContext('2d').getImageData(0, 0, c.width, c.height).data; let n = 0;
-    for (let i = 0; i < d.length; i += 4) if (d[i+2] > 90 && d[i] < 80 && d[i+1] < 80) n++; return n; })()`);
+  const green = await p.eval(`(() => { const c = document.querySelector('.dialog.wide canvas'); const d = c.getContext('2d').getImageData(0, 0, c.width, c.height).data; let n = 0;
+    for (let i = 0; i < d.length; i += 4) if (d[i+1] > 90 && d[i] < 80 && d[i+2] < 90) n++; return n; })()`);
   const stTitle = await p.eval("document.querySelector('.dialog.wide').innerText");
-  check("previzualizarea arată ștampila albastră (adnotare desenată de pdf.js)", stTitle.includes("ștampila „APROBAT” pe 1 pagină") && blue > 20, `${blue} pixeli albaștri`);
-  await p.screenshot(join(shots, "02c-stampila.png"));
+  check("Ctrl+S: previzualizarea arată ștampila verde, textul paginii păstrat", stTitle.includes("1 ștampilă pe pagini") && stTitle.includes("textul lor s-au păstrat") && green > 10, `${green} pixeli verzi`);
   await p.click("Salvează ca versiune nouă", ".dialog button");
   await p.until("document.querySelector('.pdf-doc select')?.selectedOptions[0]?.textContent.startsWith('3 —')", 10000);
-  check("ștampila a creat versiunea 3", (await versionLabel(p)).includes("ștampila „APROBAT”"), await versionLabel(p));
-  // „Ștampilele mele”: a red ring drawn as PNG (what StampDialog saves), chosen and put on the page.
+  check("ștampila a creat versiunea 3", (await versionLabel(p)).includes("1 ștampilă"), await versionLabel(p));
+
+  // Reopened: the saved stamp is editable again, with its text, and the page under it has no second copy.
+  await thumbsLoaded(p, 1);
+  await p.eval("document.querySelector('.pdf-pages .thumb').click()");
+  await p.until("document.querySelectorAll('.pdf-mark[data-mark=stamp]').length === 1", 10000);
+  await sleep(800);
+  const r4 = await rectOf(".pdf-mark[data-mark=stamp]");
+  const reopened = await styleOf();
+  await clickAt(r4[0] + r4[2] / 2, r4[1] + r4[3] / 2, 2);
+  await p.until("!!document.querySelector('[data-testid=pdf-stamp-props]')", 3000);
+  const again = await p.eval("document.querySelector(\"input[aria-label='Textul ștampilei puse']\").value");
+  check("după salvare ștampila se deschide iar pentru schimbare", again === "VERIFICAT ȘI APROBAT" && reopened.slice(0, 4).every((v, i) => Math.abs(v - edited[i]) <= 2), `„${again}”, ${JSON.stringify(reopened.slice(0, 4))} față de ${JSON.stringify(edited.slice(0, 4))}`);
+  await key("Escape", "Escape", 27);
+  const under = await p.eval(`(() => { const c = document.querySelector('.pdf-big .pdf-page-box > canvas'); const d = c.getContext('2d').getImageData(0, 0, c.width, c.height).data; let n = 0;
+    for (let i = 0; i < d.length; i += 4) if (d[i+1] > 90 && d[i] < 80 && d[i+2] < 90) n++; return n; })()`);
+  check("pagina de sub ea nu mai are o a doua ștampilă", under < 10, `${under} pixeli verzi pe pagină`);
+
+  // „Ștampilele mele”: a red ring drawn as PNG (what StampDialog saves), chosen and put with a click.
   const { deflateSync, crc32 } = await import("node:zlib");
   const chunk = (ty, d) => { const b = Buffer.alloc(12 + d.length); b.writeUInt32BE(d.length, 0); b.write(ty, 4, "latin1"); d.copy(b, 8); b.writeUInt32BE(crc32(Buffer.concat([Buffer.from(ty, "latin1"), d])), 8 + d.length); return b; };
   const S = 64, raw = Buffer.alloc((S * 4 + 1) * S);
@@ -198,23 +292,25 @@ try {
   const ring = Buffer.concat([Buffer.from([137, 80, 78, 71, 13, 10, 26, 10]), chunk("IHDR", ih), chunk("IDAT", deflateSync(raw)), chunk("IEND", Buffer.alloc(0))]).toString("base64");
   await invoke(p, "module_call", { id: "kgb.pdf", command: "stampila_save", args: { nume: "Ștampila firmei", date: ring } });
   await p.click("Ștampilă…", ".pdf-doc button");
-  await p.click("Ștampilă…", ".pdf-doc button");
+  await openPanel(p, "Ștampilă…", ".pdf-stamps");
   await p.until("!!document.querySelector(\".pdf-mystamps [data-mystamp='Ștampila firmei']\")", 5000);
   check("„Ștampilele mele” arată ștampila salvată", true);
   await p.eval("document.querySelector(\".pdf-mystamps [data-mystamp='Ștampila firmei'] button.link\").click()");
   await p.fill("input[aria-label='Lățimea ștampilei mele']", "30");
-  await p.eval("[...document.querySelectorAll('.pdf-stamps button.primary')].find(b => b.textContent.startsWith('Previzualizează')).click()");
+  await p.click("Pune cu clic pe pagină", ".pdf-stamps button");
+  await p.until("!!document.querySelector('.pdf-big .pdf-mark-catch')", 5000);
+  const box2 = await rectOf(".pdf-big .pdf-page-box");
+  await clickAt(box2[0] + box2[2] * 0.7, box2[1] + box2[3] * 0.7);
+  check("ștampila mea apare pe pagină (inelul roșu)", (await stamps()) === 2 && (await stampPixels(RED, 1)) > 10, `${await stampPixels(RED, 1)} pixeli roșii`);
+  await p.click("Salvează ștampilele", ".pdf-stamp-bar button");
   await p.until("!!document.querySelector('.dialog.wide canvas')", 15000);
-  await sleep(800);
-  const red = await p.eval(`(() => { const c = document.querySelector('.dialog.wide canvas'); const d = c.getContext('2d').getImageData(0, 0, c.width, c.height).data; let n = 0;
-    for (let i = 0; i < d.length; i += 4) if (d[i] > 150 && d[i+1] < 80 && d[i+2] < 80) n++; return n; })()`);
-  check("ștampila mea apare pe pagină (inelul roșu)", red > 10, `${red} pixeli roșii`);
   await p.click("Salvează ca versiune nouă", ".dialog button");
   await p.until("document.querySelector('.pdf-doc select')?.selectedOptions[0]?.textContent.startsWith('4 —')", 10000);
+  check("ambele ștampile salvate în versiunea 4", (await versionLabel(p)).includes("2 ștampile"), await versionLabel(p));
 
   // 7.4l-1c: hiding data for good — a word found by „Caută”, a zone drawn with the mouse.
-  await p.click("Ascunde date…", ".pdf-doc button");
-  await p.until("!!document.querySelector('.pdf-redact canvas')", 5000);
+  await openPanel(p, "Ascunde date…", ".pdf-redact");
+  await p.until("!!document.querySelector('.pdf-redact canvas')", 10000);
   await p.fill("input[aria-label='Cuvinte de ascuns']", "fiscala");
   await p.click("Caută", ".pdf-redact button");
   await p.until("(document.querySelector('.pdf-redact')?.innerText ?? '').includes('Găsite:')", 10000);
