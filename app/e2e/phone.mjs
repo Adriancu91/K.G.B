@@ -6,6 +6,10 @@
 // - it sends driver documents with a photo, and a bank statement;
 // - on the PC both appear; the photo opens; the statement is imported into
 //   Business; a removed phone can no longer send.
+// - 7.4m-4: the page answers other PCs' pages (CORS), tells the phone the
+//   addresses of the PCs that serve it and the common name; this PC answers
+//   to kgb.local; the switch is remembered: after a restart the page is back
+//   by itself and the phone still works.
 //
 // Usage: node app/e2e/phone.mjs <path-to-kgb-app.exe> <screenshot-dir>
 // Uses a throw-away data folder (KGB_DATA_DIR), never the user's real data.
@@ -40,13 +44,18 @@ const phone = async (path, body) => {
 // A 1×1 PNG.
 const PNG = "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8z8BQDwAEhQGAhKmMIQAAAABJRU5ErkJggg==";
 
-try {
+const launch = async () => {
   proc = spawn(exe, [], {
     env: { ...process.env, COMPUTERNAME: "PC-TEST", KGB_DATA_DIR: data, WEBVIEW2_ADDITIONAL_BROWSER_ARGUMENTS: `--remote-debugging-port=${PORT}` },
     stdio: "ignore",
   });
   const p = await connect(PORT, 20000);
   page = p;
+  return p;
+};
+
+try {
+  let p = await launch();
   await p.until("!!document.querySelector('aside')", 15000);
   // Business with a bank account, for the statement.
   await p.click("Catalog module", "nav .nav");
@@ -134,6 +143,47 @@ try {
   const q = (name) => stock.find((r) => r.nume === name)?.cantitate_text;
   check("recepția e în stocul din Business: 4.250 kg fier, 125,5 kg cupru", q("Fier vechi") === "4.250" && q("Cupru") === "125,5", `${q("Fier vechi")} / ${q("Cupru")}`);
   await p.screenshot(join(shots, "03-receptie-linii.png"));
+
+  // 7.4m-4: every PC serves the page.
+  const pre = await fetch(BASE + "/m/api/eu", { method: "OPTIONS", headers: { Origin: "http://192.168.1.50:8737", "Access-Control-Request-Method": "GET", "Access-Control-Request-Headers": "x-kgb-token" } });
+  check(
+    "pagina altui PC poate întreba acest PC (CORS, cheia doar în antet)",
+    pre.status === 204 && pre.headers.get("access-control-allow-origin") === "*" && (pre.headers.get("access-control-allow-headers") ?? "").includes("x-kgb-token"),
+  );
+  const ping = await fetch(BASE + "/m/api/ping");
+  check("verificarea „răspunzi?” (fără cheie)", ping.status === 200 && (await ping.json()).kgb === true);
+  await p.until("!!document.querySelector('.phone-hosts')", 12000);
+  const hostsText = await p.eval("document.querySelector('.phone-hosts').innerText");
+  check("PC-ul își publică adresele și apare ca „servește pagina”", hostsText.includes("PC-TEST") && hostsText.includes(":8737/m") && hostsText.includes("servește pagina"), hostsText.replace(/\n/g, " | "));
+  const me2 = (await phone("/m/api/eu")).json;
+  check("telefonul află adresa comună și adresele PC-urilor", me2?.comun === "http://kgb.local:8737/m" && Array.isArray(me2?.adrese) && me2.adrese.some((a) => a.endsWith(":8737/m")), JSON.stringify(me2));
+  const resolved = (() => {
+    try {
+      return execFileSync("powershell", ["-NoProfile", "-Command", "[System.Net.Dns]::GetHostAddresses('kgb.local') | ForEach-Object { $_.IPAddressToString }"], { encoding: "utf8", timeout: 20000 }).trim();
+    } catch {
+      return "";
+    }
+  })();
+  const lanIp = addr.replace("http://", "").split(":")[0];
+  check("în rețea, numele kgb.local duce la acest PC", resolved.split(/\s+/).includes(lanIp), `${resolved || "nerezolvat"} (aștept ${lanIp})`);
+  await p.screenshot(join(shots, "04-toate-pc-urile.png"));
+
+  // Restart: the switch is remembered, the page comes back by itself.
+  p.close();
+  execFileSync("taskkill", ["/F", "/T", "/PID", String(proc.pid)], { stdio: "ignore" });
+  await sleep(1500);
+  check("K.G.B. închis: pagina nu mai răspunde", (await fetch(BASE + "/m").then(() => "răspunde", () => "închis")) === "închis");
+  p = await launch();
+  await p.until("!!document.querySelector('aside')", 15000);
+  let back = false;
+  for (let i = 0; i < 30 && !back; i++) {
+    back = await fetch(BASE + "/m/api/ping").then((r) => r.ok, () => false);
+    if (!back) await sleep(500);
+  }
+  check("repornit: pagina de telefon pornește singură", back);
+  check("și telefonul aprobat merge mai departe", (await phone("/m/api/eu")).json?.stare === "aprobat");
+  await p.click("Telefon", "nav .nav");
+  await p.until("(document.querySelector('.phone-page')?.innerText ?? '').includes('Telefoane asociate')", 8000);
 
   await p.eval("[...document.querySelectorAll('.phone-page button')].find(b => b.innerText === 'scoate').click()");
   await p.until("!document.querySelector('.phone-page').innerText.includes('Telefoane asociate')", 5000);

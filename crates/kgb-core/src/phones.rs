@@ -8,8 +8,17 @@
 //!   chooses whose phone it is. It can be revoked at any time.
 //! - The phone gets a random token; only its BLAKE3 hash is stored.
 //! - A phone only adds to the inbox: it cannot read or change anything else.
-//! - Phones, the inbox and its photos stay on this PC (they are not
-//!   synchronised to the organization's other PCs).
+//! - Every PC of the organization serves the page (7.4m-4, D-069): approved
+//!   phones travel to every member's PC (only the hash of their key), so a
+//!   phone paired once works on any of them; what phones send travels to the
+//!   administrators (and stays on the PC that received it). Approving and
+//!   removing a phone stay with administrators (checked by `replication`).
+//! - Whether the page is on is one switch for the whole organization
+//!   (`core.phone_service`, written by administrators); each PC publishes the
+//!   addresses where it answers (`core.phone_hosts`, its own card only), so the
+//!   page can move to another PC when one is switched off.
+//! - When a phone was last seen stays local (`core.phone_seen`): one write
+//!   per phone and PC, not a synchronised change every minute.
 
 use kgb_store::{Fields, RecordState, Write};
 use serde::Serialize;
@@ -22,8 +31,17 @@ use crate::workspace::{Workspace, now_ms};
 
 pub const PHONES_COLLECTION: &str = "core.phones";
 pub const INBOX_COLLECTION: &str = "core.phone_inbox";
-/// Owner of the inbox's files; never synchronised (see `replication`).
+/// Owner of the inbox's files (they travel like the inbox, see `replication`).
 pub const PHONE_MODULE: &str = "core.phone";
+/// The organization-wide switch (one record, written by administrators).
+pub const SERVICE_COLLECTION: &str = "core.phone_service";
+/// Where each PC answers phones (one card per device, written by itself).
+pub const HOSTS_COLLECTION: &str = "core.phone_hosts";
+/// When a phone was last seen by this PC (local only).
+pub const SEEN_COLLECTION: &str = "core.phone_seen";
+/// The name every PC answers to on the office network (mDNS).
+pub const COMMON_NAME: &str = "kgb.local";
+const SERVICE_ID: Uuid = Uuid::from_u128(0x6b67_6270_686f_6e65_7365_7276_6963_6501);
 pub const KINDS: &[(&str, &str)] = &[
     ("receptie", "fișă de recepție"),
     ("document", "documente de la șofer"),
@@ -60,6 +78,11 @@ fn phone(r: &RecordState) -> Phone {
 
 pub fn list(ws: &Workspace) -> CoreResult<Vec<Phone>> {
     let mut v: Vec<Phone> = ws.store().scan(PHONES_COLLECTION, |_| true)?.iter().map(phone).collect();
+    for p in &mut v {
+        if let Some(r) = ws.store().get(SEEN_COLLECTION, p.id)? {
+            p.vazut_ms = p.vazut_ms.max(r.fields.get("vazut_ms").and_then(Value::as_u64).unwrap_or(0));
+        }
+    }
     v.sort_by_key(|p| std::cmp::Reverse(p.creat_ms));
     Ok(v)
 }
@@ -120,17 +143,99 @@ pub fn by_token(ws: &Workspace, token: &str) -> CoreResult<Option<Phone>> {
     Ok(ws.store().scan(PHONES_COLLECTION, |r| r.fields.get("token") == Some(&h))?.first().map(phone))
 }
 
-/// Marks a phone as seen now (at most once a minute).
+/// Marks a phone as seen now by this PC (at most once a minute; local).
 pub fn seen(ws: &mut Workspace, id: Uuid) -> CoreResult<()> {
-    if let Some(r) = ws.store().get(PHONES_COLLECTION, id)? {
-        if now_ms().saturating_sub(r.fields.get("vazut_ms").and_then(Value::as_u64).unwrap_or(0)) < 60_000 {
-            return Ok(());
-        }
-        let mut f = r.fields.clone();
-        f.insert("vazut_ms".into(), json!(now_ms()));
-        ws.store_mut().write(vec![Write::put(PHONES_COLLECTION, r.id, f).expect(r.version)])?;
+    let r = ws.store().get(SEEN_COLLECTION, id)?;
+    let last = r.as_ref().and_then(|r| r.fields.get("vazut_ms")).and_then(Value::as_u64).unwrap_or(0);
+    if now_ms().saturating_sub(last) < 60_000 {
+        return Ok(());
     }
+    let mut f = Fields::new();
+    f.insert("vazut_ms".into(), json!(now_ms()));
+    ws.store_mut().write(vec![Write::put(SEEN_COLLECTION, id, f).expect(r.map_or(0, |r| r.version))])?;
     Ok(())
+}
+
+/// Whether the phone page is switched on (for the whole organization).
+pub fn service_on(ws: &Workspace) -> CoreResult<bool> {
+    Ok(ws.store().get(SERVICE_COLLECTION, SERVICE_ID)?.is_some_and(|r| r.fields.get("pornit") == Some(&json!(true))))
+}
+
+/// Switches the phone page on or off on every PC (the caller checks that an
+/// administrator asks; other PCs accept it only from an administrator).
+pub fn set_service(ws: &mut Workspace, on: bool) -> CoreResult<()> {
+    let r = ws.store().get(SERVICE_COLLECTION, SERVICE_ID)?;
+    if r.as_ref().is_some_and(|r| r.fields.get("pornit") == Some(&json!(on))) {
+        return Ok(());
+    }
+    let mut f = Fields::new();
+    f.insert("pornit".into(), json!(on));
+    f.insert("schimbat_ms".into(), json!(now_ms()));
+    ws.store_mut().write(vec![Write::put(SERVICE_COLLECTION, SERVICE_ID, f).expect(r.map_or(0, |r| r.version))])?;
+    Ok(())
+}
+
+/// A PC that serves the phone page, and where it answers.
+#[derive(Clone, Debug, PartialEq, Eq, Serialize)]
+pub struct Host {
+    pub dispozitiv: String,
+    pub nume: String,
+    /// Full addresses of the page (`http://<ip>:<port>/m`).
+    pub adrese: Vec<String>,
+    pub pornit: bool,
+    pub ts_ms: u64,
+}
+
+fn host_id(fingerprint: &str) -> Uuid {
+    Uuid::new_v5(&Uuid::NAMESPACE_OID, format!("kgb-phone-host:{fingerprint}").as_bytes())
+}
+
+/// Checks a received host card against its author (used by replication):
+/// a device writes only its own card.
+pub fn host_written_by_itself(fields: &Fields, author_fingerprint: &str) -> bool {
+    fields.get("dispozitiv").and_then(Value::as_str) == Some(author_fingerprint)
+}
+
+/// Publishes this PC's card; written only when something changed, so it
+/// does not make a change every time the page is checked.
+pub fn publish_host(ws: &mut Workspace, fingerprint: &str, name: &str, addresses: &[String], on: bool) -> CoreResult<bool> {
+    let id = host_id(fingerprint);
+    let r = ws.store().get(HOSTS_COLLECTION, id)?;
+    let mut f = Fields::new();
+    f.insert("dispozitiv".into(), json!(fingerprint));
+    f.insert("nume".into(), json!(name.chars().take(60).collect::<String>()));
+    f.insert("adrese".into(), json!(addresses.iter().take(4).collect::<Vec<_>>()));
+    f.insert("pornit".into(), json!(on));
+    if let Some(r) = &r {
+        let same = ["dispozitiv", "nume", "adrese", "pornit"].iter().all(|k| r.fields.get(*k) == f.get(*k));
+        if same {
+            return Ok(false);
+        }
+    }
+    f.insert("ts_ms".into(), json!(now_ms()));
+    ws.store_mut().write(vec![Write::put(HOSTS_COLLECTION, id, f).expect(r.map_or(0, |r| r.version))])?;
+    Ok(true)
+}
+
+/// The PCs that serve (or served) the phone page, this one first if listed.
+pub fn hosts(ws: &Workspace, me: Option<&str>) -> CoreResult<Vec<Host>> {
+    let mut v: Vec<Host> = ws
+        .store()
+        .scan(HOSTS_COLLECTION, |_| true)?
+        .iter()
+        .map(|r| {
+            let s = |k: &str| r.fields.get(k).and_then(Value::as_str).unwrap_or_default().to_string();
+            Host {
+                dispozitiv: s("dispozitiv"),
+                nume: s("nume"),
+                adrese: r.fields.get("adrese").and_then(Value::as_array).into_iter().flatten().filter_map(Value::as_str).map(String::from).collect(),
+                pornit: r.fields.get("pornit") == Some(&json!(true)),
+                ts_ms: r.fields.get("ts_ms").and_then(Value::as_u64).unwrap_or(0),
+            }
+        })
+        .collect();
+    v.sort_by_key(|h| (Some(h.dispozitiv.as_str()) != me, h.nume.clone()));
+    Ok(v)
 }
 
 /// One file sent by a phone.

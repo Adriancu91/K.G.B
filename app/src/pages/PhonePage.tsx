@@ -23,9 +23,20 @@ interface Received {
   creat_ms: number;
   linii?: Line[];
 }
+interface Host {
+  dispozitiv: string;
+  nume: string;
+  adrese: string[];
+  pornit: boolean;
+  ts_ms: number;
+}
 interface Reply {
   pornit: boolean;
+  pornit_org: boolean;
   adresa: string | null;
+  comun: string;
+  pc_uri: Host[];
+  problema: string | null;
   cod: [string, number] | null;
   telefoane: Phone[];
   primite: Received[];
@@ -255,12 +266,17 @@ export function PhonePage({ modules, onError }: { modules: ModulesReply; onError
         </p>
       )}
       <div className="card phone-server">
-        {r.pornit ? (
+        {r.pornit_org ? (
           <>
             <p>
-              Pagina de telefon e <strong>pornită</strong>. Pe telefon, conectat la Wi-Fi-ul firmei, deschide în browser:
+              Pagina de telefon e <strong>pornită</strong> pe toate PC-urile firmei cu K.G.B. deschis. Pentru asocierea unui telefon nou, conectat la Wi-Fi-ul
+              firmei, deschide în browser adresa acestui PC:
             </p>
-            <p className="phone-address">{r.adresa}</p>
+            {r.pornit ? <p className="phone-address">{r.adresa}</p> : <p className="error">Pe acest PC pagina nu a pornit{r.problema ? `: ${r.problema}` : "."}</p>}
+            <p className="muted small phone-common">
+              După aprobare, în Wi-Fi-ul firmei telefonul trece singur la adresa comună <strong>{r.comun}</strong>, la care răspunde oricare PC pornit; dacă un PC
+              se stinge, pagina merge mai departe prin altul.
+            </p>
             {r.cod ? (
               <p>
                 Codul de asociere: <span className="phone-code">{r.cod[0]}</span> <span className="muted small">(încă {Math.ceil(r.cod[1] / 60)} min, o singură dată)</span>
@@ -277,13 +293,36 @@ export function PhonePage({ modules, onError }: { modules: ModulesReply; onError
               </div>
             )}
             <p className="muted small">
-              Merge doar în rețeaua firmei. Pe un Wi-Fi public nu o folosi: legătura nu e criptată. Prima dată, Windows poate întreba dacă K.G.B. poate primi
-              conexiuni; răspunde „Permite” doar pentru rețele private.
+              Merge doar în rețeaua firmei (sau prin Tailscale, criptat). Pe un Wi-Fi public nu o folosi: legătura nu e criptată. Prima dată, pe fiecare PC,
+              Windows poate întreba dacă K.G.B. poate primi conexiuni; răspunde „Permite” doar pentru rețele private.
             </p>
+            {r.pc_uri.length > 0 && (
+              <table className="audit phone-hosts">
+                <thead>
+                  <tr>
+                    <th>PC</th>
+                    <th>Adrese</th>
+                    <th>Stare</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {r.pc_uri.map((h) => (
+                    <tr key={h.dispozitiv}>
+                      <td>{h.nume}</td>
+                      <td className="small">{h.adrese.join(" · ") || "—"}</td>
+                      <td>{h.pornit ? "servește pagina" : "oprit"}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            )}
           </>
         ) : (
           <>
-            <p>Pagina de telefon e oprită. Pornită, telefoanele firmei trimit aici fișe de recepție, poze cu documentele de la șoferi și extrase de cont.</p>
+            <p>
+              Pagina de telefon e oprită. Pornită, o servesc toate PC-urile firmei cu K.G.B. deschis, iar telefoanele trimit fișe de recepție, poze cu documentele de
+              la șoferi și extrase de cont.
+            </p>
             {r.admin ? (
               <button className="primary" onClick={() => void act(() => invoke("phone_start"))}>
                 Pornește pagina de telefon

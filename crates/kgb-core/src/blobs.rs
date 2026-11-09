@@ -84,9 +84,15 @@ pub fn may_serve(store: &Store, peer: &str, hash: &str) -> CoreResult<PathBuf> {
     }
     let allowed = records(store)?
         .into_iter()
-        // Voice messages belong to every member (step 7.4f).
+        // Voice messages belong to every member (step 7.4f); what phones
+        // send goes to administrators (7.4m-4).
         .any(|(h, _, _, module)| {
-            h == hash && module != crate::phones::PHONE_MODULE && (module == crate::chat::CHAT_MODULE || st.access(peer, &module) != Access::Niciunul)
+            h == hash
+                && if module == crate::phones::PHONE_MODULE {
+                    st.is_admin(peer)
+                } else {
+                    module == crate::chat::CHAT_MODULE || st.access(peer, &module) != Access::Niciunul
+                }
         });
     if !allowed {
         return Err(CoreError::invalid(

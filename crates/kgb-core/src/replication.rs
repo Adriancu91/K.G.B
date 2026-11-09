@@ -46,7 +46,7 @@ use crate::workspace::now_ms;
 const DOMAIN: &[u8] = b"KGB-SYNC1\n";
 
 /// Organization tables: accepted only from administrators.
-const ORG_TABLES: &[&str] = &["core.org", "core.roles", "core.members", "core.sources"];
+const ORG_TABLES: &[&str] = &["core.org", "core.roles", "core.members", "core.sources", crate::phones::SERVICE_COLLECTION];
 
 fn bad(detail: impl Into<String>) -> CoreError {
     CoreError::invalid("sincronizarea", detail)
@@ -121,7 +121,7 @@ const FILE_TABLES: &[&str] = &["core.files", "core.documents", "core.document_ve
 fn module_for(op: &Op) -> Option<String> {
     let coll = op.state.coll.as_str();
     if FILE_TABLES.contains(&coll) {
-        // The phone inbox's photos stay on the PC that received them (7.4m).
+        // The phone inbox's photos travel like the inbox (see `inbox_op`).
         return op
             .state
             .fields
@@ -153,6 +153,26 @@ fn presence_op(op: &Op) -> bool {
     base(op.state.coll.as_str()) == crate::presence::PRESENCE_COLLECTION
 }
 
+/// The phones of the organization (7.4m-4, D-069): every member's PC needs
+/// them to answer a phone; approving and removing stay with administrators.
+fn phones_op(op: &Op) -> bool {
+    base(op.state.coll.as_str()) == crate::phones::PHONES_COLLECTION
+}
+
+/// The PCs that serve the phone page (each one writes its own card).
+fn phone_host_op(op: &Op) -> bool {
+    base(op.state.coll.as_str()) == crate::phones::HOSTS_COLLECTION
+}
+
+/// What phones send, and its photos: to administrators (and it stays on
+/// the PC that received it).
+fn inbox_op(op: &Op) -> bool {
+    let coll = op.state.coll.as_str();
+    base(coll) == crate::phones::INBOX_COLLECTION
+        || (FILE_TABLES.contains(&coll)
+            && op.state.fields.get("module").and_then(Value::as_str) == Some(crate::phones::PHONE_MODULE))
+}
+
 /// The fingerprint of a device key (hex).
 fn fingerprint_of(key: &str) -> Option<String> {
     registry::parse_key(key).map(|k| crate::identity::fingerprint(&k))
@@ -161,7 +181,14 @@ fn fingerprint_of(key: &str) -> Option<String> {
 /// Changes that travel between devices; everything else is local.
 fn shared(op: &Op) -> bool {
     let coll = op.state.coll.as_str();
-    coll == registry::REGISTRY_COLLECTION || org_table(coll) || member_op(op) || presence_op(op) || module_for(op).is_some()
+    coll == registry::REGISTRY_COLLECTION
+        || org_table(coll)
+        || member_op(op)
+        || presence_op(op)
+        || phones_op(op)
+        || phone_host_op(op)
+        || inbox_op(op)
+        || module_for(op).is_some()
 }
 
 /// Whether the device with key `key` may receive `op`.
@@ -173,7 +200,10 @@ fn readable(st: &RegState, key: &str, op: &Op) -> bool {
             && (st.is_admin(key)
                 || fingerprint_of(key).is_some_and(|f| crate::presence::written_by_itself(&op.state.fields, &f)));
     }
-    if coll == registry::REGISTRY_COLLECTION || org_table(coll) || member_op(op) {
+    if inbox_op(op) {
+        return st.member_of(key).is_some() && (st.is_admin(key) || st.key_of_store(op.origin.0) == Some(key));
+    }
+    if coll == registry::REGISTRY_COLLECTION || org_table(coll) || member_op(op) || phones_op(op) || phone_host_op(op) {
         return st.member_of(key).is_some();
     }
     match module_for(op) {
@@ -360,6 +390,18 @@ pub fn apply(store: &mut Store, dev: &DeviceIdentity, resp: &Value) -> CoreResul
             // A device writes only its own card.
             then.member_of(author).is_some()
                 && fingerprint_of(author).is_some_and(|f| crate::presence::written_by_itself(&op.state.fields, &f))
+        } else if phone_host_op(op) {
+            then.member_of(author).is_some()
+                && fingerprint_of(author).is_some_and(|f| crate::phones::host_written_by_itself(&op.state.fields, &f))
+        } else if phones_op(op) {
+            // Any PC registers a phone that asks to pair; only an
+            // administrator approves or removes it.
+            then.is_admin(author)
+                || (then.member_of(author).is_some()
+                    && op.state.fields.get("stare").and_then(Value::as_str) == Some("asteapta")
+                    && op.state.fields.get("membru_nume").and_then(Value::as_str).unwrap_or_default().is_empty())
+        } else if inbox_op(op) {
+            then.member_of(author).is_some()
         } else if org_table(coll) {
             then.is_admin(author)
         } else if member_op(op) {

@@ -62,6 +62,12 @@
     <button data-go="document"><b>Documente de la șofer</b><br><span class="muted">fotografiază avizul, CMR-ul, bonul de cântar</span></button>
     <button data-go="extras"><b>Extras de cont</b><br><span class="muted">PDF-ul sau fișierul CSV din aplicația băncii</span></button>
     <p id="sent" class="ok"></p>
+    <p id="where" class="muted"></p>
+    <details id="spare" hidden>
+      <summary>Adresele celorlalte PC-uri</summary>
+      <p class="muted">Pagina trece singură pe un PC pornit. Dacă la deschidere nu se încarcă (PC-ul ei e stins), deschide una dintre adresele de mai jos; salvează-le ca semn de carte.</p>
+      <div id="spareList"></div>
+    </details>
   </section>
 
   <section id="form" class="card" hidden>
@@ -93,8 +99,36 @@ const FORMS = {
 };
 let kind = "", chosen = [];
 
+// Every PC of the firm serves this page (7.4m-4): the addresses of the
+// others are kept here, and a request goes to the first PC that answers.
+const PCS = "kgb.phone.pcs";
+const kv = { get(k) { try { return localStorage.getItem(k) || ""; } catch { return ""; } }, set(k, v) { try { localStorage.setItem(k, v); } catch {} } };
+(function takeKey() {
+  const m = /^#k=([0-9a-f]{64})$/.exec(location.hash);
+  if (m) { store.set(m[1]); try { history.replaceState(null, "", location.pathname); } catch {} }
+})();
+const originOf = (u) => { try { return new URL(u).origin; } catch { return ""; } };
+let base = "";
+function known() { try { return JSON.parse(kv.get(PCS) || "[]").filter((o) => typeof o === "string" && o.startsWith("http://")); } catch { return []; } }
+async function ping(o, ms) {
+  const c = new AbortController();
+  const t = setTimeout(() => c.abort(), ms || 4000);
+  try { return (await fetch(o + "/m/api/ping", { signal: c.signal, cache: "no-store" })).ok; } catch { return false; } finally { clearTimeout(t); }
+}
+function showWhere() {
+  $("where").textContent = base ? `PC-ul paginii nu răspunde; lucrezi acum prin ${new URL(base).hostname}.` : "";
+}
+async function pick() {
+  const here = location.origin;
+  const list = [base || here, here, ...known()].filter((v, i, a) => v && a.indexOf(v) === i);
+  for (const o of list) {
+    if (await ping(o)) { base = o === here ? "" : o; showWhere(); return true; }
+  }
+  return false;
+}
 async function api(path, body) {
-  const r = await fetch(path, { method: body ? "POST" : "GET", headers: { "Content-Type": "application/json", "X-KGB-Token": store.get() }, body: body ? JSON.stringify(body) : undefined });
+  if (!(await pick())) throw Object.assign(new Error("Niciun PC cu K.G.B. nu răspunde. Ești în Wi-Fi-ul firmei (sau conectat prin Tailscale) și e pornit măcar un PC?"), { status: 0 });
+  const r = await fetch(base + path, { method: body ? "POST" : "GET", headers: { "Content-Type": "application/json", "X-KGB-Token": store.get() }, body: body ? JSON.stringify(body) : undefined });
   const j = await r.json().catch(() => ({ eroare: "răspuns necunoscut" }));
   if (!r.ok) throw Object.assign(new Error(j.eroare || "eroare"), { status: r.status });
   return j;
@@ -106,6 +140,8 @@ async function refresh() {
     const me = await api("/m/api/eu");
     $("who").textContent = me.membru ? `${me.membru} · ${me.firma}` : me.nume;
     show(me.stare === "aprobat" ? "menu" : me.stare === "asteapta" ? "wait" : "revoked");
+    remember(me);
+    if (me.stare === "aprobat") moveToCommon(me.comun);
   } catch (e) {
     if (e.status === 401) { store.clear(); show("pair"); } else { $("pairMsg").textContent = "PC-ul nu răspunde. Ești în rețeaua Wi-Fi a firmei și pagina e pornită pe PC?"; show("pair"); }
   }
@@ -119,6 +155,29 @@ $("pairBtn").onclick = async () => {
     refresh();
   } catch (e) { $("pairMsg").textContent = e.message; }
 };
+// The other PCs' addresses, kept for when this one does not answer.
+function remember(me) {
+  const list = [originOf(me.comun), ...(me.adrese || []).map(originOf)].filter((v, i, a) => v && a.indexOf(v) === i);
+  kv.set(PCS, JSON.stringify(list));
+  const links = list.filter((o) => o !== location.origin && o !== originOf(me.comun));
+  $("spare").hidden = links.length === 0;
+  $("spareList").innerHTML = "";
+  for (const o of links) {
+    const a = document.createElement("a");
+    a.href = `${o}/m#k=${store.get()}`;
+    a.textContent = new URL(o).host;
+    a.style.display = "block";
+    a.style.padding = "6px 0";
+    $("spareList").appendChild(a);
+  }
+}
+// In the office Wi-Fi, the page moves once to the common name, to which
+// every PC that is on answers: the saved link then works whichever PC is on.
+async function moveToCommon(common) {
+  const o = originOf(common);
+  if (!o || location.origin === o || !/^(10|192\.168|172\.(1[6-9]|2\d|3[01]))\./.test(location.hostname)) return;
+  if (await ping(o, 2500)) location.replace(`${o}/m#k=${store.get()}`);
+}
 $("recheck").onclick = refresh;
 $("again").onclick = () => { store.clear(); show("pair"); };
 

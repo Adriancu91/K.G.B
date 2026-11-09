@@ -318,6 +318,15 @@ Deciziile DECIS se schimbă doar cu aprobarea explicită a proprietarului (Maste
 - **De știut:** Windows poate cere permisiunea firewall-ului la prima pornire; aplicația nu îl configurează singură. Camera telefonului se folosește din browser, cu permisiunea telefonului.
 
 ### D-069 — Pagina de telefon servită de toate PC-urile, cu preluare automată
-- **Data:** 9 nov. 2026 · **Statut:** CERUT de proprietar („nu face aplicația de telefon dependentă de un singur laptop… dacă un laptop se stinge rămâne pe alt laptop”); în lucru la 7.4m-4
+- **Data:** 9 nov. 2026 · **Statut:** CERUT de proprietar („nu face aplicația de telefon dependentă de un singur laptop… dacă un laptop se stinge rămâne pe alt laptop”); FĂCUT la 7.4m-4 (9 nov. 2026)
 - **Ce se schimbă față de 7.4m-1:** telefoanele aprobate și ce trimit nu mai rămân doar pe un PC: circulă prin sincronizarea organizației (ca mesajele echipei), iar orice PC pornit le primește; aprobarea și scoaterea unui telefon rămân la administratori.
 - **Cum se găsește un PC pornit:** în rețeaua biroului, un nume comun (`kgb.local`) la care răspunde fiecare PC pornit, fără server central (D-004); pe 4G prin Tailscale, pagina ține lista adreselor PC-urilor și o încearcă pe următoarea dacă una nu răspunde. Limită: pe 4G, linkul salvat pe telefon arată spre un PC; dacă acela e stins când deschizi pagina, deschizi adresa altui PC (sau, mai târziu, relay-ul propriu D-017 dă o adresă fixă).
+- **Cum s-a făcut (7.4m-4):**
+  - comutatorul paginii e unul singur pentru toată organizația (`core.phone_service`, tabel al organizației: acceptat doar de la administratori) și e ținut minte: după repornire pagina revine singură;
+  - telefoanele (`core.phones`, doar amprenta cheii) ajung la toți membrii; un PC al unui membru poate înregistra doar un telefon „care așteaptă”, aprobarea și scoaterea sunt acceptate numai de la administratori;
+  - ce trimit telefoanele și pozele ajung la administratori (și rămân pe PC-ul care le-a primit), nu la ceilalți membri;
+  - fiecare PC își scrie doar propria fișă cu adresele (`core.phone_hosts`: rețeaua biroului și, dacă există, Tailscale); „văzut ultima dată” rămâne local;
+  - `kgb.local`: un răspuns mDNS minimal (doar acest nume, doar întrebări A/ANY, TTL 30 s, fără „cache-flush”, ca mai multe PC-uri să răspundă împreună), pe portul 5353 împărțit cu Windows;
+  - pagina de pe telefon întreabă întâi „răspunzi?” și trece la primul PC care răspunde (cereri între PC-uri cu CORS deschis; cheia telefonului e doar în antet, niciodată cookie); după aprobare, în Wi-Fi-ul firmei, trece o dată la `kgb.local`;
+  - asocierea se face la adresa PC-ului care a afișat codul (codul nu circulă între PC-uri);
+  - o aprobare sau o scoatere ajunge la celelalte PC-uri la următoarea sincronizare (cel mult un minut).

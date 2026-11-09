@@ -38,6 +38,10 @@ hyper-util = { version = "0.1.21", features = ["tokio"] }
 http-body-util = "0.1.5"
 bytes = "1.12.1"
 tokio = { version = "1", features = ["net", "sync", "time", "rt", "macros"] }
+# kgb.local on the office network (7.4m-4): sharing UDP port 5353 with
+# Windows' own mDNS needs address reuse. Already used by tokio/iroh at this
+# version: nothing new downloaded.
+socket2 = "0.6.5"
 getrandom.workspace = true
 serde.workspace = true
 serde_json.workspace = true

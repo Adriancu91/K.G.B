@@ -1,14 +1,23 @@
 //! The phone page (Etapa 7, step 7.4m; D-068): a small web page served by
 //! K.G.B. on the firm's network while it is switched on from the PC.
 //!
-//! - Off by default; started and stopped from the „Telefon” page.
+//! - Off by default; switched on and off from the „Telefon” page, for the
+//!   whole organization (7.4m-4, D-069): every PC with K.G.B. open then
+//!   serves the page, answers to `kgb.local` on the office network (see
+//!   `mdns`) and publishes its addresses, so a phone moves to another PC
+//!   when one is switched off. The switch is remembered: the page comes back
+//!   when K.G.B. starts again.
 //! - Pairing: the phone types the 8-digit code shown on the PC (valid 10
 //!   minutes, 5 wrong tries end it), then waits for approval on the PC.
 //! - An approved phone only adds to the inbox (reception sheets, driver
 //!   documents, bank statements); it reads nothing back.
 //! - Plain HTTP inside the local network (the firm's Wi-Fi): anyone on that
 //!   network can see the traffic. Fine for an office Wi-Fi with a password;
-//!   not for public Wi-Fi. Access from outside comes later, through the relay.
+//!   not for public Wi-Fi. From outside the office, through a private network
+//!   such as Tailscale (encrypted), or later through the relay.
+//! - The page may call another PC of the firm (CORS open to any page): the
+//!   API needs the phone's key in a header, never a cookie, so another web
+//!   page cannot use a phone's access.
 //! - Windows may ask once whether K.G.B. may accept connections (firewall);
 //!   the app does not change that setting by itself.
 
@@ -58,6 +67,93 @@ pub fn lan_ip() -> IpAddr {
         })
         .map(|a| a.ip())
         .unwrap_or(IpAddr::V4(Ipv4Addr::LOCALHOST))
+}
+
+/// The addresses where phones reach this PC: the office network and, if
+/// present, a private network such as Tailscale (no packet is sent).
+pub fn addresses() -> Vec<String> {
+    let mut ips = vec![lan_ip()];
+    // Tailscale's own address: the route to its DNS server goes through it.
+    if let Ok(ip) = UdpSocket::bind("0.0.0.0:0").and_then(|s| {
+        s.connect("100.100.100.100:53")?;
+        s.local_addr()
+    }) {
+        ips.push(ip.ip());
+    }
+    let mut out: Vec<String> = Vec::new();
+    for ip in ips {
+        let u = format!("http://{ip}:{PORT}/m");
+        if !ip.is_loopback() && !ip.is_unspecified() && !out.contains(&u) {
+            out.push(u);
+        }
+    }
+    out
+}
+
+/// The common address on the office network.
+pub fn common_address() -> String {
+    format!("http://{}:{PORT}/m", phones::COMMON_NAME)
+}
+
+/// Keeps this PC in step with the organization's switch: serves the page
+/// and answers to `kgb.local` while it is on, and publishes where it
+/// answers. Checked every few seconds (a change made on another PC arrives
+/// with the next synchronisation).
+pub fn supervise(session: Arc<Mutex<Option<Session>>>) {
+    std::thread::Builder::new()
+        .name("kgb-phone".into())
+        .spawn(move || {
+            let mut last_error = String::new();
+            loop {
+                let on = session.lock().ok().and_then(|g| g.as_ref().map(|s| phones::service_on(&s.ws).unwrap_or(false)));
+                let on = on.unwrap_or(false);
+                let mut problem = String::new();
+                if on {
+                    if address().is_none()
+                        && let Err(e) = start(session.clone())
+                    {
+                        problem = e;
+                    }
+                    if let Err(e) = crate::mdns::start(phones::COMMON_NAME) {
+                        problem = e;
+                    }
+                } else {
+                    stop();
+                    crate::mdns::stop();
+                }
+                if problem != last_error {
+                    if !problem.is_empty() {
+                        tracing::warn!("phone page: {problem}");
+                    }
+                    last_error = problem;
+                }
+                let serving = address().is_some();
+                let here = if serving { addresses() } else { Vec::new() };
+                if let Ok(mut g) = session.lock()
+                    && let Some(s) = g.as_mut()
+                {
+                    let fp = s.device.fingerprint();
+                    let name = std::env::var("COMPUTERNAME").unwrap_or_else(|_| "PC".into());
+                    let known = phones::hosts(&s.ws, None).map(|h| h.iter().any(|h| h.dispozitiv == fp)).unwrap_or(false);
+                    // A PC that never served writes nothing.
+                    if serving || known {
+                        let _ = phones::publish_host(&mut s.ws, &fp, &name, &here, serving);
+                    }
+                }
+                if let Ok(mut e) = PROBLEM.lock() {
+                    e.clone_from(&last_error);
+                }
+                std::thread::sleep(Duration::from_secs(5));
+            }
+        })
+        .expect("phone thread");
+}
+
+static PROBLEM: Mutex<String> = Mutex::new(String::new());
+
+/// Why the page could not start here, if it could not.
+pub fn problem() -> Option<String> {
+    PROBLEM.lock().ok().map(|p| p.clone()).filter(|p| !p.is_empty())
 }
 
 /// A new 8-digit pairing code (the old one stops working).
@@ -159,7 +255,8 @@ fn reply(status: StatusCode, ctype: &str, body: impl Into<Bytes>) -> Response<Fu
         .header("Cache-Control", "no-store")
         .header("X-Content-Type-Options", "nosniff")
         .header("Referrer-Policy", "no-referrer")
-        .header("Content-Security-Policy", "default-src 'self'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; img-src 'self' data: blob:; connect-src 'self'; form-action 'none'; frame-ancestors 'none'")
+        .header("Access-Control-Allow-Origin", "*")
+        .header("Content-Security-Policy", "default-src 'self'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; img-src 'self' data: blob:; connect-src 'self' http:; form-action 'none'; frame-ancestors 'none'")
         .body(Full::new(body.into()))
         .expect("valid response")
 }
@@ -178,6 +275,18 @@ async fn handle(req: Request<Incoming>, session: Arc<Mutex<Option<Session>>>) ->
     let token = req.headers().get("x-kgb-token").and_then(|v| v.to_str().ok()).unwrap_or_default().to_string();
     if method == Method::GET && (path == "/m" || path == "/m/" || path == "/") {
         return Ok(reply(StatusCode::OK, "text/html; charset=utf-8", PAGE));
+    }
+    // The page on one PC may call another PC of the firm (7.4m-4).
+    if method == Method::OPTIONS && path.starts_with("/m/api/") {
+        let mut r = reply(StatusCode::NO_CONTENT, "text/plain", Bytes::new());
+        let h = r.headers_mut();
+        h.insert("Access-Control-Allow-Methods", hyper::header::HeaderValue::from_static("GET, POST"));
+        h.insert("Access-Control-Allow-Headers", hyper::header::HeaderValue::from_static("content-type, x-kgb-token"));
+        h.insert("Access-Control-Max-Age", hyper::header::HeaderValue::from_static("600"));
+        return Ok(r);
+    }
+    if method == Method::GET && path == "/m/api/ping" {
+        return Ok(json_reply(StatusCode::OK, json!({"kgb": true})));
     }
     if method != Method::POST && !(method == Method::GET && (path == "/m/api/eu" || path == "/m/api/produse")) {
         return Ok(err(StatusCode::NOT_FOUND, "nu există"));
@@ -216,7 +325,20 @@ async fn handle(req: Request<Incoming>, session: Arc<Mutex<Option<Session>>>) ->
         "/m/api/eu" => with(&mut |s| match phones::by_token(&s.ws, &token) {
             Ok(Some(p)) => {
                 let _ = phones::seen(&mut s.ws, p.id);
-                json_reply(StatusCode::OK, json!({"stare": p.stare, "nume": p.nume, "membru": p.membru_nume, "firma": s.ws.manifest().name}))
+                // Where else the page answers: the other PCs that serve it.
+                let fp = s.device.fingerprint();
+                let mut adrese: Vec<String> = Vec::new();
+                for h in phones::hosts(&s.ws, Some(&fp)).unwrap_or_default().into_iter().filter(|h| h.pornit) {
+                    for a in h.adrese {
+                        if !adrese.contains(&a) {
+                            adrese.push(a);
+                        }
+                    }
+                }
+                json_reply(
+                    StatusCode::OK,
+                    json!({"stare": p.stare, "nume": p.nume, "membru": p.membru_nume, "firma": s.ws.manifest().name, "adrese": adrese, "comun": common_address()}),
+                )
             }
             _ => err(StatusCode::UNAUTHORIZED, "telefonul nu e asociat"),
         }),

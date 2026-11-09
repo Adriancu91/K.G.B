@@ -7,6 +7,7 @@ use std::path::{Path, PathBuf};
 use std::sync::{Arc, Mutex};
 
 mod external;
+mod mdns;
 mod media;
 mod net;
 mod phone;
@@ -1174,7 +1175,15 @@ fn team_set_mine(app: State<AppState>, lucrez: String, culoare: String) -> CmdRe
 #[derive(Serialize)]
 struct PhoneReply {
     pornit: bool,
+    /// The organization's switch (7.4m-4): on for every PC.
+    pornit_org: bool,
     adresa: Option<String>,
+    /// The common name on the office network.
+    comun: String,
+    /// The PCs that serve the page.
+    pc_uri: Vec<kgb_core::phones::Host>,
+    /// Why this PC could not start the page, if it could not.
+    problema: Option<String>,
     /// The pairing code and the seconds it is still valid.
     cod: Option<(String, u64)>,
     telefoane: Vec<kgb_core::phones::Phone>,
@@ -1199,7 +1208,11 @@ fn phone_status(app: State<AppState>) -> CmdResult<PhoneReply> {
         };
         Ok(PhoneReply {
             pornit: phone::address().is_some(),
+            pornit_org: kgb_core::phones::service_on(&s.ws)?,
             adresa: phone::address(),
+            comun: phone::common_address(),
+            pc_uri: kgb_core::phones::hosts(&s.ws, Some(&s.device.fingerprint()))?,
+            problema: phone::problem(),
             cod: phone::current_code(),
             telefoane: kgb_core::phones::list(&s.ws)?,
             primite: kgb_core::phones::inbox(&s.ws)?,
@@ -1213,9 +1226,11 @@ fn phone_status(app: State<AppState>) -> CmdResult<PhoneReply> {
 fn phone_start(app: State<AppState>) -> CmdResult<String> {
     with_session(&app, |s| {
         phone_admin(s)?;
+        kgb_core::phones::set_service(&mut s.ws, true)?;
         modules::audit(&mut s.ws, "core.phones", "pagina de telefon pornită", "ok", "")
     })?;
     let a = phone::start(app.session.clone())?;
+    let _ = mdns::start(kgb_core::phones::COMMON_NAME);
     phone::new_code();
     Ok(a)
 }
@@ -1224,9 +1239,11 @@ fn phone_start(app: State<AppState>) -> CmdResult<String> {
 fn phone_stop(app: State<AppState>) -> CmdResult<()> {
     with_session(&app, |s| {
         phone_admin(s)?;
+        kgb_core::phones::set_service(&mut s.ws, false)?;
         modules::audit(&mut s.ws, "core.phones", "pagina de telefon oprită", "ok", "")
     })?;
     phone::stop();
+    mdns::stop();
     Ok(())
 }
 
@@ -1570,6 +1587,7 @@ fn main() {
             let session = Arc::new(Mutex::new(session));
             let slot = Arc::new(net::NetSlot::default());
             net::background(slot.clone(), session.clone());
+            phone::supervise(session.clone());
             app.manage(AppState {
                 session,
                 net: slot,
