@@ -14,6 +14,9 @@ kgb-docs.workspace = true
 # CSV reading (and its checks) of the spreadsheet module, for importing the Extract register.
 kgb-sheets.workspace = true
 base64 = "0.22.1"
+# e-Factura (UBL XML and the SPV ZIP), step 7.4j; the same versions kgb-docs uses.
+quick-xml = "0.42.0"
+zip = { version = "9.4.1", default-features = false, features = ["deflate"] }
 serde.workspace = true
 serde_json.workspace = true
 uuid.workspace = true

@@ -204,3 +204,34 @@ fn forms_are_remembered_without_overwriting() {
     assert!(partners::remember(ws.store_mut(), card(" ", ""), "business", "2026-11-08").is_err());
     assert_eq!(partners::list(ws.store(), true).unwrap().len(), 2);
 }
+
+/// Step 7.4j: import from a table — headers matched without diacritics,
+/// unknown columns kept as extra fields, bad rows reported by number and
+/// skipped, existing cards only completed.
+#[test]
+fn import_from_a_table() {
+    let t = tempfile::tempdir().unwrap();
+    let mut ws = Workspace::create(&t.path().join("ws"), "T").unwrap();
+    partners::save(ws.store_mut(), card("Beta Servicii SRL", "")).unwrap();
+    let r = |v: &[&str]| v.iter().map(|s| s.to_string()).collect::<Vec<String>>();
+    let rows = vec![
+        r(&["Denumire", "Tip", "CUI", "Localitate", "Judet", "Telefon", "Cod client intern"]),
+        r(&["Alfa Construct SA", "client", "", "Cluj-Napoca", "Cluj", "0264 000 000", "C-001"]),
+        r(&["Beta Servicii SRL", "furnizor", "", "Iași", "", "", ""]),
+        r(&["", "client", "", "", "", "", ""]),
+        r(&["Gama SRL", "client", "14399841", "", "", "", ""]),
+        r(&["", "", "", "", "", "", ""]),
+        r(&["Delta SRL", "Furnizor", "RO14399840", "", "", "", ""]),
+    ];
+    let rep = partners::import_rows(ws.store_mut(), &rows, "2026-11-09").unwrap();
+    assert_eq!((rep.adaugate, rep.completate, rep.neschimbate), (2, 1, 0), "{rep:?}");
+    assert_eq!(rep.erori.iter().map(|e| e.0).collect::<Vec<_>>(), [4, 5], "{rep:?}");
+    let all = partners::list(ws.store(), true).unwrap();
+    let alfa = all.iter().find(|p| p.denumire == "Alfa Construct SA").unwrap();
+    assert_eq!((alfa.tip.as_str(), alfa.judet.as_str()), ("client", "Cluj"));
+    assert_eq!(alfa.campuri[0].nume, "Cod client intern");
+    assert_eq!(all.iter().find(|p| p.denumire == "Beta Servicii SRL").unwrap().localitate, "Iași");
+    assert_eq!(all.iter().find(|p| p.denumire == "Delta SRL").unwrap().tip, "furnizor");
+    // Without the name column the whole table is refused.
+    assert!(partners::import_rows(ws.store_mut(), &[r(&["CUI"]), r(&["123"])], "2026-11-09").is_err());
+}

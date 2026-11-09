@@ -2,8 +2,10 @@
 // supplier, shared by every module. Base data, work points, documents with
 // dates (reminders before they expire) and extra fields added by hand.
 import { invoke } from "@tauri-apps/api/core";
+import { open, save as saveDialog } from "@tauri-apps/plugin-dialog";
 import { useCallback, useEffect, useState } from "react";
 import { message } from "../api";
+import { takeIntent } from "../intent";
 import { AnafLookup, type AnafCompany } from "../components/AnafLookup";
 
 interface WorkPoint {
@@ -229,6 +231,29 @@ export function PartnersPage({ onError }: { onError: (e: string | null) => void 
   const [canEdit, setCanEdit] = useState(false);
   const [exp, setExp] = useState<Expiring[]>([]);
   const [editing, setEditing] = useState<Partner | null>(null);
+  const [report, setReport] = useState<{ adaugate: number; completate: number; neschimbate: number; erori: [number, string][] } | null>(null);
+
+  const importFile = async () => {
+    const path = await open({ multiple: false, filters: [{ name: "Tabele", extensions: ["xlsx", "xls", "ods", "csv"] }] });
+    if (typeof path !== "string") return;
+    try {
+      setReport(await invoke("partners_import", { path, azi: today() }));
+      onError(null);
+      await load();
+    } catch (e) {
+      onError(message(e));
+    }
+  };
+  const saveModel = async () => {
+    const dest = await saveDialog({ defaultPath: "model-import-parteneri.xlsx", filters: [{ name: "Excel", extensions: ["xlsx"] }] });
+    if (!dest) return;
+    try {
+      await invoke("partners_import_model", { dest });
+      onError(null);
+    } catch (e) {
+      onError(message(e));
+    }
+  };
 
   const load = useCallback(async () => {
     try {
@@ -243,6 +268,16 @@ export function PartnersPage({ onError }: { onError: (e: string | null) => void 
   useEffect(() => {
     void load();
   }, [load]);
+  // Ctrl+K may ask for a new card or a given one (7.4j).
+  useEffect(() => {
+    const want = takeIntent("partners");
+    if (want === "nou") setEditing(blank());
+    else if (want?.startsWith("fisa:"))
+      void invoke<{ items: Partner[] }>("partners_list", { cauta: "", inactivi: true, azi: today() }).then((r) => {
+        const p = r.items.find((x) => x.id === want.slice(5));
+        if (p) setEditing(p);
+      });
+  }, []);
 
   const save = async (p: Partner): Promise<string | null> => {
     try {
@@ -279,11 +314,37 @@ export function PartnersPage({ onError }: { onError: (e: string | null) => void 
       <div className="row wrap">
         <input placeholder="Caută după nume, CUI, oraș, telefon…" value={q} onChange={(e) => setQ(e.target.value)} aria-label="Caută partener" />
         {canEdit && (
-          <button className="primary" onClick={() => setEditing(blank())}>
-            Partener nou
-          </button>
+          <>
+            <button className="primary" onClick={() => setEditing(blank())}>
+              Partener nou
+            </button>
+            <button onClick={() => void importFile()}>Importă din Excel…</button>
+            <button className="link" onClick={() => void saveModel()}>
+              Descarcă modelul de import
+            </button>
+          </>
         )}
       </div>
+      {report && (
+        <div className="import-report" role="status">
+          <strong>Import terminat:</strong> {report.adaugate} parteneri noi, {report.completate} fișe completate, {report.neschimbate} neschimbate
+          {report.erori.length > 0 ? `, ${report.erori.length} rânduri sărite:` : "."}
+          {report.erori.length > 0 && (
+            <ul>
+              {report.erori.slice(0, 30).map(([row, why]) => (
+                <li key={row}>
+                  rândul {row}: {why}
+                </li>
+              ))}
+              {report.erori.length > 30 && <li>și încă {report.erori.length - 30}</li>}
+            </ul>
+          )}
+          <p className="muted small">Fișele care existau deja au primit doar câmpurile goale; ce aveau rămâne neschimbat.</p>
+          <button className="link" onClick={() => setReport(null)}>
+            închide
+          </button>
+        </div>
+      )}
       {items && items.length === 0 && <p role="status">{q ? "Nimic găsit." : "Niciun partener încă."}</p>}
       {items && items.length > 0 && (
         <table className="audit partners-table">

@@ -1462,3 +1462,88 @@ label > .suggest > input {
   display: grid;
   gap: 4px;
 }
+
+/* Etapa 7, step 7.4j: Ctrl+K quick search */
+.quick-search {
+  width: min(640px, 92vw);
+  display: grid;
+  gap: 8px;
+  align-self: start;
+  margin-top: 12vh;
+}
+.quick-search input {
+  width: 100%;
+  font-size: 1.1em;
+  padding: 8px 10px;
+}
+.qs-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  max-height: 50vh;
+  overflow: auto;
+}
+.qs-list button {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  width: 100%;
+  text-align: left;
+  padding: 6px 10px;
+  border: 0;
+  background: transparent;
+  color: inherit;
+}
+.qs-list button.sel {
+  background: var(--accent);
+  color: var(--accent-fg);
+}
+.qs-list button.sel .muted {
+  color: inherit;
+  opacity: 0.85;
+}
+.import-report {
+  padding: 8px 12px;
+  border: 1px solid var(--line);
+  background: var(--panel);
+}
+
+/* Etapa 7, step 7.4j: payment matching */
+.match-panel {
+  display: grid;
+  gap: 8px;
+  padding: 10px 12px;
+  margin-bottom: 12px;
+  border: 1px solid var(--line);
+  background: var(--panel);
+}
+.match-panel h3 {
+  margin: 0;
+}
+.match-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 8px;
+}
+.match-list li {
+  display: grid;
+  gap: 4px;
+  padding: 6px 0;
+  border-bottom: 1px solid var(--line);
+}
+.match-cand {
+  display: flex;
+  gap: 8px;
+  align-items: baseline;
+}
+.match-panel .tag {
+  margin-left: 6px;
+  font-size: 0.75em;
+  padding: 1px 6px;
+  border: 1px solid currentColor;
+}
+.match-panel .tag.ok {
+  color: var(--ok);
+}

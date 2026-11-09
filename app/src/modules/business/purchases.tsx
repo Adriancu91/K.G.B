@@ -86,6 +86,25 @@ export function PurchasesView({ onError }: { onError: (e: string | null) => void
         >
           Preia din „Extragere date” (CSV)…
         </button>
+        <button
+          disabled={busy}
+          title="Factura XML primită de la furnizor sau arhiva ZIP descărcată din SPV; nimic nu se trimite la ANAF"
+          onClick={() =>
+            void run(async () => {
+              const path = await open({ multiple: false, filters: [{ name: "e-Factura (XML sau arhiva din SPV)", extensions: ["xml", "zip"] }] });
+              if (typeof path !== "string") return;
+              const r = await api.importFileWith<{ ok: boolean; numar?: string; furnizor?: string; total_text?: string; motiv?: string }[]>(ID, path, "efactura_import", {});
+              const ok = r.filter((x) => x.ok);
+              const bad = r.filter((x) => !x.ok);
+              setNotice(
+                `Din e-Factura: ${ok.length} facturi înregistrate ca cheltuieli${ok.length ? ` (${ok.map((x) => `${x.numar} de la ${x.furnizor}, ${x.total_text} lei`).join("; ")})` : ""}.` +
+                  (bad.length ? ` Sărite: ${bad.map((x) => `${x.numar ?? "fișier"}: ${x.motiv}`).join("; ")}.` : ""),
+              );
+            })
+          }
+        >
+          Importă din e-Factura (XML/ZIP)…
+        </button>
         <span className="muted small">În „Extragere date”: Registru → Exportă CSV, apoi alege fișierul aici.</span>
       </div>
       {notice && (

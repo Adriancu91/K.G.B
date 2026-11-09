@@ -10,6 +10,7 @@ const REASON: Record<BackupReason, string> = {
   manual: "manual",
   before_migration: "automat, înainte de o migrare",
   before_format_upgrade: "automat, înainte de conversia formatului",
+  daily: "automat, zilnic (se păstrează ultimele 14)",
 };
 
 type Pending = { kind: "restore"; b: BackupView } | { kind: "purge" } | { kind: "open"; id: string; name: string };

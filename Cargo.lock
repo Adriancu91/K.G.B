@@ -3765,10 +3765,12 @@ dependencies = [
  "kgb-docs",
  "kgb-sheets",
  "kgb-store",
+ "quick-xml 0.42.0",
  "serde",
  "serde_json",
  "tempfile",
  "uuid",
+ "zip",
 ]
 
 [[package]]

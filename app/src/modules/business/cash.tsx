@@ -47,6 +47,106 @@ const today = () => {
   return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
 };
 
+interface Suggestion {
+  plata: { id: string; data: string; suma_text: string; sens: string; explicatie: string };
+  sigur: boolean;
+  candidati: { scor: number; motive: string[]; document: { tip: string; id: string }; eticheta: string; rest_text: string }[];
+}
+
+/** Bank payments matched to invoices with a score and reasons (7.4j); nothing is linked without a click. */
+function MatchPanel({ payments, onDone, onError }: { payments: number; onDone: () => Promise<void>; onError: (e: string | null) => void }) {
+  const [list, setList] = useState<Suggestion[] | null>(null);
+  // payment id → index of the chosen candidate
+  const [pick, setPick] = useState<Record<string, number>>({});
+  const [note, setNote] = useState<string | null>(null);
+  const load = useCallback(async () => {
+    try {
+      const l = await api.moduleCall<Suggestion[]>(ID, "match_suggest");
+      setList(l);
+      setPick({});
+    } catch (e) {
+      onError(message(e));
+    }
+  }, [onError]);
+  useEffect(() => {
+    void load();
+  }, [load, payments]);
+  if (!list || list.length === 0)
+    return note ? (
+      <p className="muted" role="status">
+        {note}
+      </p>
+    ) : null;
+  const chosen = Object.entries(pick);
+  const confirm = async () => {
+    try {
+      const perechi = chosen.map(([plata, n]) => ({ plata, document: list.find((x) => x.plata.id === plata)!.candidati[n]!.document }));
+      const r = await api.moduleCall<{ legate: number }>(ID, "match_confirm", { perechi });
+      onError(null);
+      await load();
+      await onDone();
+      setPick({});
+      setNote(`${r.legate} plăți legate de documente.`);
+    } catch (e) {
+      onError(message(e));
+    }
+  };
+  return (
+    <section className="match-panel">
+      <h3>Potrivire automată: plăți ↔ facturi</h3>
+      <p className="muted small">Pentru fiecare plată nelegată, documentele potrivite, cu scorul și motivele. Nimic nu se leagă fără confirmarea ta.</p>
+      {note && (
+        <p className="muted" role="status">
+          {note}
+        </p>
+      )}
+      <div className="row">
+        <button onClick={() => setPick(Object.fromEntries(list.filter((x) => x.sigur).map((x) => [x.plata.id, 0])))} disabled={!list.some((x) => x.sigur)}>
+          Selectează potrivirile sigure ({list.filter((x) => x.sigur).length})
+        </button>
+        <button className="primary" disabled={chosen.length === 0} onClick={() => void confirm()}>
+          Confirmă selectatele ({chosen.length})
+        </button>
+      </div>
+      <ul className="match-list">
+        {list.map((x) => (
+          <li key={x.plata.id} className={x.sigur ? "sure" : ""}>
+            <div>
+              <strong>
+                {x.plata.sens === "incasare" ? "Încasare" : "Plată"} {x.plata.suma_text} lei
+              </strong>{" "}
+              <span className="muted small">
+                {x.plata.data.split("-").reverse().join(".")} · {x.plata.explicatie || "fără detalii"}
+              </span>
+              {x.sigur && <span className="tag ok">sigură</span>}
+            </div>
+            {x.candidati.map((c, n) => (
+              <label key={c.document.id} className="match-cand">
+                <input
+                  type="radio"
+                  name={`m-${x.plata.id}`}
+                  checked={pick[x.plata.id] === n}
+                  onChange={() => setPick({ ...pick, [x.plata.id]: n })}
+                  aria-label={`Leagă de ${c.eticheta}`}
+                />
+                <span>
+                  {c.eticheta} (rest {c.rest_text} lei) · <strong>scor {c.scor}</strong>
+                  <span className="muted small"> — {c.motive.join("; ")}</span>
+                </span>
+              </label>
+            ))}
+            {pick[x.plata.id] !== undefined && (
+              <button className="link small" onClick={() => setPick(Object.fromEntries(Object.entries(pick).filter(([k]) => k !== x.plata.id)))}>
+                nu lega
+              </button>
+            )}
+          </li>
+        ))}
+      </ul>
+    </section>
+  );
+}
+
 export function CashView({ onError }: { onError: (e: string | null) => void }) {
   const [accounts, setAccounts] = useState<Account[]>([]);
   const [payments, setPayments] = useState<Payment[]>([]);
@@ -103,6 +203,7 @@ export function CashView({ onError }: { onError: (e: string | null) => void }) {
 
   return (
     <div className="cash">
+      <MatchPanel payments={payments.length} onDone={refresh} onError={onError} />
       {notice && (
         <p className="muted" role="status">
           {notice}

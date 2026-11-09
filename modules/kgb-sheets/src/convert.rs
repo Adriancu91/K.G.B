@@ -230,3 +230,42 @@ pub fn table(name: &str, rows: &[Vec<Cell>]) -> Sheet {
         formulas: calamine::Range::empty(),
     }
 }
+
+/// A plain table as XLSX: first row bold, every cell written as text (so a
+/// CUI, a phone number or an IBAN keeps its leading zeros). Used for import
+/// models (step 7.4j).
+pub fn text_table_xlsx(sheet: &str, rows: &[Vec<String>]) -> Result<Vec<u8>, String> {
+    use rust_xlsxwriter::{Format, Workbook};
+    let mut wb = Workbook::new();
+    let ws = wb.add_worksheet();
+    ws.set_name(sheet).map_err(|e| e.to_string())?;
+    let head = Format::new().set_bold().set_background_color("#DDE6F2");
+    let text = Format::new().set_num_format("@");
+    for (r, row) in rows.iter().enumerate() {
+        for (c, v) in row.iter().enumerate() {
+            let f = if r == 0 { &head } else { &text };
+            ws.write_string_with_format(r as u32, c as u16, v, f).map_err(|e| e.to_string())?;
+        }
+    }
+    for c in 0..rows.first().map_or(0, Vec::len) {
+        ws.set_column_width(c as u16, 18).map_err(|e| e.to_string())?;
+    }
+    wb.save_to_buffer().map_err(|e| e.to_string())
+}
+
+/// The cells of the first sheet of a workbook or CSV, as text, row by row.
+pub fn first_sheet_rows(data: &[u8], file_name: &str) -> Result<Vec<Vec<String>>, String> {
+    let format = crate::book::Format::from_name(file_name).ok_or("formatul fișierului nu e cunoscut (XLSX, XLS, ODS sau CSV)")?;
+    let book = crate::book::read(data, format)?;
+    let sheet = book.sheets.first().ok_or("registrul nu are nicio foaie")?;
+    let (rows, cols) = sheet.size();
+    let mut out = Vec::with_capacity(rows as usize);
+    for r in 0..rows {
+        let mut row = Vec::with_capacity(cols as usize);
+        for c in 0..cols {
+            row.push(sheet.values.get_value((r, c)).and_then(crate::book::show).map(|x| x.0).unwrap_or_default());
+        }
+        out.push(row);
+    }
+    Ok(out)
+}

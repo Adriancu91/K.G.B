@@ -781,6 +781,45 @@ fn partner_remember(
     })
 }
 
+/// The partner import model (step 7.4j): an XLSX with the columns and one example row.
+#[tauri::command]
+fn partners_import_model(dest: String) -> CmdResult<()> {
+    let head: Vec<String> = kgb_core::partners::IMPORT_COLUMNS.iter().map(|c| c.to_string()).collect();
+    let mut example = vec![String::new(); head.len()];
+    for (i, v) in ["Exemplu Client SRL", "client", "RO14399840", "J12/345/2001", "Str. Exemplu 1", "Cluj-Napoca", "Cluj", "România", "0264 000 000", "office@exemplu.ro"]
+        .iter()
+        .enumerate()
+    {
+        example[i] = v.to_string();
+    }
+    let mut extra = head.clone();
+    extra.push("Licență transport".into());
+    let mut ex2 = example.clone();
+    ex2.push("LT-1234".into());
+    let bytes = kgb_sheets::convert::text_table_xlsx("Parteneri", &[extra, ex2]).map_err(|e| format!("modelul nu s-a putut face: {e}"))?;
+    std::fs::write(&dest, bytes).map_err(|e| format!("nu s-a putut salva: {e}"))?;
+    Ok(())
+}
+
+/// Imports partners from an XLSX/XLS/ODS/CSV file (step 7.4j).
+#[tauri::command]
+fn partners_import(app: State<AppState>, path: String, azi: String) -> CmdResult<kgb_core::partners::ImportReport> {
+    let data = std::fs::read(&path).map_err(|e| format!("fișierul nu se poate citi: {e}"))?;
+    if data.len() > 20 * 1024 * 1024 {
+        return Err("fișierul e prea mare (cel mult 20 MB)".into());
+    }
+    let name = std::path::Path::new(&path).file_name().map(|n| n.to_string_lossy().into_owned()).unwrap_or_default();
+    let rows = kgb_sheets::convert::first_sheet_rows(&data, &name)?;
+    with_session(&app, |s| {
+        if !partners_writable(s.ws.store(), &s.device.fingerprint())? {
+            return Err(CoreError::invalid("agenda de parteneri", "rolul tău nu poate modifica agenda"));
+        }
+        let r = kgb_core::partners::import_rows(s.ws.store_mut(), &rows, &azi)?;
+        modules::audit(&mut s.ws, "core.partners", "import parteneri", "ok", &format!("{} noi, {} completați, {} erori", r.adaugate, r.completate, r.erori.len()))?;
+        Ok(r)
+    })
+}
+
 #[tauri::command]
 fn partner_set_active(app: State<AppState>, id: uuid::Uuid, active: bool) -> CmdResult<()> {
     with_session(&app, |s| {
@@ -1057,7 +1096,12 @@ fn notifications_list(app: State<AppState>) -> CmdResult<NotificationsReply> {
 /// assist / „Nu deranja”) still decide whether they pop up.
 #[tauri::command]
 fn reminders_tick(app: State<AppState>, handle: tauri::AppHandle, azi: String) -> CmdResult<usize> {
+    let root = app.root.clone();
     let new = with_session(&app, |s| {
+        // The daily backup (step 7.4j): once a day while K.G.B. runs; the last 14 are kept.
+        if let Err(e) = backup::daily_if_due(&mut s.ws, &root, &azi) {
+            tracing::warn!("daily backup failed: {e}");
+        }
         let fp = s.device.fingerprint();
         let before: std::collections::BTreeSet<uuid::Uuid> =
             notifications::list(&s.ws, false, usize::MAX)?.into_iter().map(|n| n.id).collect();
@@ -1450,6 +1494,8 @@ fn main() {
             partner_save,
             partner_set_active,
             partner_remember,
+            partners_import_model,
+            partners_import,
             conflicts_list,
             net_status,
             net_set_relay,

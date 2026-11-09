@@ -100,8 +100,29 @@ export function BusinessReports({ onError }: { onError: (e: string | null) => vo
     }
   };
 
+  // The monthly package for the accountant (7.4j): last month by default.
+  const prev = new Date(now.getFullYear(), now.getMonth() - 1, 1);
+  const [month, setMonth] = useState(`${prev.getFullYear()}-${String(prev.getMonth() + 1).padStart(2, "0")}`);
+  const pack = async () => {
+    try {
+      const dest = await save({ defaultPath: `Pachet contabil ${month}.zip`, filters: [{ name: "Arhivă ZIP", extensions: ["zip"] }] });
+      if (!dest) return;
+      const p = await api.moduleCall<{ facturi: number; cheltuieli: number; plati: number }>(ID, "accountant_package", { luna: month, dest });
+      setNotice(`Pachetul pentru ${month} e salvat în ${dest}: ${p.facturi} facturi emise (PDF), ${p.cheltuieli} cheltuieli, ${p.plati} încasări și plăți, scadențarul și raportul lunii.`);
+      onError(null);
+    } catch (e) {
+      onError(message(e));
+    }
+  };
+
   return (
     <div className="business-reports">
+      <div className="row wrap package-row">
+        <strong>Pachetul lunar pentru contabil</strong>
+        <input aria-label="Luna pachetului" type="month" value={month} onChange={(e) => setMonth(e.target.value)} />
+        <button onClick={() => void pack()}>Creează pachetul (ZIP)…</button>
+        <span className="muted small">Facturile emise în PDF, jurnalele de vânzări și cumpărări, încasările și plățile, scadențarul și raportul lunii.</span>
+      </div>
       <div className="row wrap">
         <label>
           De la

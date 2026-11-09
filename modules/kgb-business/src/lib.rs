@@ -29,8 +29,11 @@
 pub mod aging;
 pub mod audit;
 pub mod cash;
+pub mod efactura;
 pub mod invoices;
+pub mod matching;
 pub mod num;
+pub mod package;
 pub mod purchases;
 pub mod reports;
 pub mod valuation;
@@ -1010,6 +1013,11 @@ impl Module for Business {
                 Ok(json!({"octeti": bytes.len()}))
             }
             // Step 5.6: due dates and partner statements.
+            // Step 7.4j: payments matched to invoices, with a score and reasons.
+            "match_suggest" => self.match_suggest(ctx),
+            "efactura_import" => self.efactura_import(ctx, args(a)?),
+            "accountant_package" => self.accountant_package(ctx, args(a)?),
+            "match_confirm" => self.match_confirm(ctx, args(a)?),
             "aging" => {
                 let a: Today = args(a)?;
                 self.aging(ctx, &a.azi)

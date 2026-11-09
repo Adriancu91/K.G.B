@@ -24,6 +24,7 @@ import { SourcesPage } from "./pages/SourcesPage";
 import { PartnersPage } from "./pages/PartnersPage";
 import { ChatPage } from "./pages/ChatPage";
 import { TeamOverviewPage } from "./pages/TeamOverviewPage";
+import { QuickSearch } from "./components/QuickSearch";
 
 /// Interfaces of the built-in modules, by module id.
 const MODULE_PAGES: Record<string, ComponentType<{ onError: (e: string | null) => void }>> = {
@@ -298,6 +299,7 @@ export function App() {
           <p className="muted">Acest modul nu are încă interfață.</p>
         )}
       </main>
+      <QuickSearch pages={nav.filter((n) => n.id !== "home")} onOpen={setPage} />
       <footer className="status">
         <span>{info.workspace?.name}</span>
         <span title={info.workspace?.dir}>

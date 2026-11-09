@@ -29,6 +29,8 @@ use crate::workspace::{MANIFEST_FILE, Registry, Workspace, WorkspaceManifest, no
 
 pub const BACKUP_META: &str = "KGB_BACKUP.json";
 pub const KEEP_AUTOMATIC: usize = 5;
+/// Daily backups kept (step 7.4j): the last 14 days.
+pub const KEEP_DAILY: usize = 14;
 
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
 #[serde(rename_all = "snake_case")]
@@ -39,6 +41,8 @@ pub enum Reason {
     BeforeMigration,
     /// Before the journal moves to a newer format.
     BeforeFormatUpgrade,
+    /// Once a day while K.G.B. runs (step 7.4j); `detail` is the day.
+    Daily,
 }
 
 impl Reason {
@@ -47,6 +51,7 @@ impl Reason {
             Reason::Manual => "manual",
             Reason::BeforeMigration => "inainte-de-migrare",
             Reason::BeforeFormatUpgrade => "inainte-de-conversie",
+            Reason::Daily => "zilnic",
         }
     }
     pub fn automatic(self) -> bool {
@@ -114,7 +119,7 @@ pub fn create(ws: &mut Workspace, root: &Path, reason: Reason, detail: &str) -> 
     fs::rename(&tmp, &dir)?;
     tracing::info!(reason = reason.slug(), records = info.records as u64, "backup created");
     if reason.automatic() {
-        prune_automatic(&base)?;
+        prune(&base, reason == Reason::Daily)?;
     }
     Ok(BackupEntry { dir, meta })
 }
@@ -156,21 +161,36 @@ pub fn list(root: &Path, workspace: Uuid) -> CoreResult<Vec<BackupEntry>> {
     Ok(out)
 }
 
-fn prune_automatic(base: &Path) -> CoreResult<()> {
+/// Keeps the last [`KEEP_DAILY`] daily backups, or the last
+/// [`KEEP_AUTOMATIC`] other automatic ones; manual backups are never removed.
+fn prune(base: &Path, daily: bool) -> CoreResult<()> {
     let mut autos: Vec<(u64, PathBuf)> = Vec::new();
     for e in fs::read_dir(base)? {
         let p = e?.path();
         if let Ok(m) = read_meta(&p)
             && m.reason.automatic()
+            && (m.reason == Reason::Daily) == daily
         {
             autos.push((m.created_ms, p));
         }
     }
     autos.sort_by_key(|(t, _)| std::cmp::Reverse(*t));
-    for (_, p) in autos.into_iter().skip(KEEP_AUTOMATIC) {
+    for (_, p) in autos.into_iter().skip(if daily { KEEP_DAILY } else { KEEP_AUTOMATIC }) {
         fs::remove_dir_all(p)?;
     }
     Ok(())
+}
+
+/// The daily backup (step 7.4j): made once for `day` (AAAA-LL-ZZ, the PC's
+/// local day); `None` when today's already exists.
+pub fn daily_if_due(ws: &mut Workspace, root: &Path, day: &str) -> CoreResult<Option<BackupEntry>> {
+    let done = list(root, ws.manifest().id)?
+        .iter()
+        .any(|b| b.meta.reason == Reason::Daily && b.meta.detail == day);
+    if done {
+        return Ok(None);
+    }
+    create(ws, root, Reason::Daily, day).map(Some)
 }
 
 /// Restores a backup as a **new** workspace under `<root>/workspaces/<new id>`

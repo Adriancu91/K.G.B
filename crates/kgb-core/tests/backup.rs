@@ -195,3 +195,26 @@ fn leftovers_are_counted_and_purged_only_on_request() {
     assert_eq!(ws.store().leftover_bytes().unwrap(), 0);
     assert_eq!(ws.store().count("t"), 30, "live data untouched");
 }
+
+/// Step 7.4j: one daily backup per day, the last 14 kept; manual backups
+/// and the ones made before migrations are never removed by them.
+#[test]
+fn daily_backups_once_a_day_last_14_kept() {
+    let (_t, root, mut ws) = setup();
+    let manual = backup::create(&mut ws, &root, Reason::Manual, "").unwrap();
+    let before = backup::create(&mut ws, &root, Reason::BeforeMigration, "m").unwrap();
+    assert!(backup::daily_if_due(&mut ws, &root, "2026-11-01").unwrap().is_some());
+    assert!(backup::daily_if_due(&mut ws, &root, "2026-11-01").unwrap().is_none(), "once a day");
+    for d in 2..=20 {
+        backup::daily_if_due(&mut ws, &root, &format!("2026-11-{d:02}")).unwrap().unwrap();
+    }
+    let all = backup::list(&root, ws.manifest().id).unwrap();
+    let days: Vec<&str> = all.iter().filter(|b| b.meta.reason == Reason::Daily).map(|b| b.meta.detail.as_str()).collect();
+    assert_eq!(days.len(), backup::KEEP_DAILY);
+    assert_eq!(days.first(), Some(&"2026-11-20"));
+    assert_eq!(days.last(), Some(&"2026-11-07"));
+    assert!(manual.dir.exists() && before.dir.exists());
+    // Each one is a full, checked backup.
+    backup::verify(&all[0].dir).unwrap();
+    const { assert!(KEEP_AUTOMATIC < backup::KEEP_DAILY) };
+}

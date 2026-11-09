@@ -53,8 +53,8 @@ pub(crate) struct AccountSave {
 #[serde(deny_unknown_fields)]
 pub(crate) struct DocRef {
     /// `factura` (issued invoice), `cheltuiala` (expense) or `avans`.
-    tip: String,
-    id: Uuid,
+    pub(crate) tip: String,
+    pub(crate) id: Uuid,
 }
 
 #[derive(Deserialize)]
@@ -180,7 +180,7 @@ impl Business {
     }
 
     /// What a document is worth, and which direction pays it.
-    fn doc_amount(&self, ctx: &mut ModuleContext<'_>, d: &DocRef) -> CoreResult<(Money, &'static str, String)> {
+    pub(crate) fn doc_amount(&self, ctx: &mut ModuleContext<'_>, d: &DocRef) -> CoreResult<(Money, &'static str, String)> {
         match d.tip.as_str() {
             "factura" => {
                 let f = live(ctx, INVOICES, d.id, "factura")?;
@@ -211,7 +211,7 @@ impl Business {
         }
     }
 
-    fn link_write(
+    pub(crate) fn link_write(
         &self,
         ctx: &mut ModuleContext<'_>,
         payment: Uuid,

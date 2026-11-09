@@ -256,7 +256,7 @@ export interface Diagnostics {
   memory_mb: number;
 }
 
-export type BackupReason = "manual" | "before_migration" | "before_format_upgrade";
+export type BackupReason = "manual" | "before_migration" | "before_format_upgrade" | "daily";
 
 export interface BackupView {
   id: string;

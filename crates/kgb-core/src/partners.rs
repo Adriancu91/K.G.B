@@ -538,3 +538,98 @@ pub fn remind(ws: &mut Workspace, today: &str) -> CoreResult<usize> {
     }
     Ok(sent)
 }
+
+/// Columns of the partner import model (step 7.4j), in order.
+pub const IMPORT_COLUMNS: &[&str] = &[
+    "Denumire", "Tip", "CUI", "Nr. Reg. Com.", "Sediu", "Localitate", "Județ", "Țara",
+    "Telefon", "E-mail", "IBAN", "Banca", "Reprezentant", "Funcția reprezentantului", "Note",
+];
+
+/// What an import did.
+#[derive(Clone, Debug, Default, PartialEq, Eq, Serialize)]
+pub struct ImportReport {
+    pub adaugate: usize,
+    pub completate: usize,
+    pub neschimbate: usize,
+    /// (row number as in the file, why it was skipped).
+    pub erori: Vec<(usize, String)>,
+}
+
+/// Imports partners from a table (first row = headers, matched by name
+/// without diacritics; unknown columns become extra fields). Each row goes
+/// through [`remember`]: new cards are made, existing ones only get their
+/// empty fields filled; a bad row is reported and skipped, the others go in.
+pub fn import_rows(store: &mut Store, rows: &[Vec<String>], azi: &str) -> CoreResult<ImportReport> {
+    let mut rep = ImportReport::default();
+    let Some(head) = rows.first() else {
+        return Err(bad("tabelul e gol"));
+    };
+    if rows.len() > 5001 {
+        return Err(bad("cel mult 5000 de rânduri într-un import"));
+    }
+    let key = |h: &str| fold(h).replace(['.', ' ', '-'], "");
+    let known: Vec<String> = IMPORT_COLUMNS.iter().map(|c| key(c)).collect();
+    let cols: Vec<Option<usize>> = head.iter().map(|h| known.iter().position(|k| *k == key(h))).collect();
+    if !cols.contains(&Some(0)) {
+        return Err(bad("lipsește coloana „Denumire” (descarcă modelul de import)"));
+    }
+    for (i, row) in rows.iter().enumerate().skip(1) {
+        let line = i + 1;
+        if row.iter().all(|c| c.trim().is_empty()) {
+            continue;
+        }
+        let mut p = Partner { tip: "ambele".into(), activ: Some(true), ..Partner::default() };
+        for (c, cell) in row.iter().enumerate() {
+            let v = cell.trim().to_string();
+            if v.is_empty() {
+                continue;
+            }
+            match cols.get(c).copied().flatten() {
+                Some(0) => p.denumire = v,
+                Some(1) => {
+                    let t = fold(&v);
+                    p.tip = if t.starts_with("client") && !t.contains("furn") {
+                        "client".into()
+                    } else if t.starts_with("furn") {
+                        "furnizor".into()
+                    } else {
+                        "ambele".into()
+                    };
+                }
+                Some(2) => p.cui = v,
+                Some(3) => p.nr_reg_com = v,
+                Some(4) => p.sediu = v,
+                Some(5) => p.localitate = v,
+                Some(6) => p.judet = v,
+                Some(7) => p.tara = v,
+                Some(8) => p.telefon = v,
+                Some(9) => p.email = v,
+                Some(10) => p.iban = v,
+                Some(11) => p.banca = v,
+                Some(12) => p.reprezentant = v,
+                Some(13) => p.functie_reprezentant = v,
+                Some(14) => p.note = v,
+                _ => {
+                    if let Some(name) = head.get(c).map(|h| h.trim()).filter(|h| !h.is_empty()) {
+                        p.campuri.push(ExtraField { nume: name.to_string(), valoare: v });
+                    }
+                }
+            }
+        }
+        if p.denumire.is_empty() {
+            rep.erori.push((line, "lipsește denumirea".into()));
+            continue;
+        }
+        if !p.cui.is_empty() && !cui_valid(&p.cui) {
+            rep.erori.push((line, format!("CUI-ul „{}” nu e valid", p.cui)));
+            continue;
+        }
+        match remember(store, p, "import", azi) {
+            Ok(r) if r.noua => rep.adaugate += 1,
+            Ok(r) if !r.completate.is_empty() => rep.completate += 1,
+            Ok(_) => rep.neschimbate += 1,
+            Err(e) => rep.erori.push((line, e.to_string())),
+        }
+    }
+    Ok(rep)
+}
