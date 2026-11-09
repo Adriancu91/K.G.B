@@ -3749,6 +3749,7 @@ dependencies = [
  "kgb-sheets",
  "kgb-store",
  "kgb-team",
+ "kgb-write",
  "serde",
  "serde_json",
  "socket2",
@@ -3968,6 +3969,19 @@ dependencies = [
  "serde_json",
  "tempfile",
  "uuid",
+]
+
+[[package]]
+name = "kgb-write"
+version = "0.1.0"
+dependencies = [
+ "base64 0.22.1",
+ "kgb-core",
+ "serde",
+ "serde_json",
+ "tempfile",
+ "uuid",
+ "zip",
 ]
 
 [[package]]

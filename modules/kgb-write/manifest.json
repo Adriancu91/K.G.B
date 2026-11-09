@@ -1,0 +1,24 @@
+{
+  "manifest_format": 1,
+  "id": "kgb.write",
+  "name": "Documente text",
+  "description": "Scrie și editează documente în fereastra de documente (cu .docx dus-întors). Fiecare salvare devine o versiune nouă; versiunile vechi rămân.",
+  "version": "0.1.0",
+  "core": ">=0.1.0, <0.2.0",
+  "status": "beta",
+  "permissions": [
+    "files.own"
+  ],
+  "services": [
+    "files",
+    "log"
+  ],
+  "data_types": [],
+  "events": {
+    "emits": [],
+    "listens": []
+  },
+  "data_format": 1,
+  "migrations": [],
+  "on_disable": "Documentele și toate versiunile lor rămân în spațiul de lucru și reapar când modulul este activat din nou."
+}

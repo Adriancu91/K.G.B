@@ -16,6 +16,7 @@ kgb-store.workspace = true
 kgb-notes.workspace = true
 kgb-pdf.workspace = true
 kgb-sheets.workspace = true
+kgb-write.workspace = true
 kgb-extract.workspace = true
 kgb-planner.workspace = true
 kgb-docs.workspace = true
