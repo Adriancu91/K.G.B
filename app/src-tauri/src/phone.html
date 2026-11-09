@@ -62,6 +62,7 @@
     <button data-go="document"><b>Documente de la șofer</b><br><span class="muted">fotografiază avizul, CMR-ul, bonul de cântar</span></button>
     <button data-go="extras"><b>Extras de cont</b><br><span class="muted">PDF-ul sau fișierul CSV din aplicația băncii</span></button>
     <button data-go="inventar"><b>Inventar numărat</b><br><span class="muted">numeri în depozit: produsul și cât ai găsit</span></button>
+    <button id="goClock"><b>Pontaj</b><br><span class="muted">am intrat / am ieșit — ora o declari tu, fără locație</span></button>
     <button data-go="bon"><b>Bon de cheltuială</b><br><span class="muted">fotografiază bonul: motorină, piese, consumabile</span></button>
     <p id="sent" class="ok"></p>
     <p id="where" class="muted"></p>
@@ -70,6 +71,20 @@
       <p class="muted">Pagina trece singură pe un PC pornit. Dacă la deschidere nu se încarcă (PC-ul ei e stins), deschide una dintre adresele de mai jos; salvează-le ca semn de carte.</p>
       <div id="spareList"></div>
     </details>
+  </section>
+
+  <section id="clock" class="card" hidden>
+    <h2>Pontaj</h2>
+    <p class="muted">Declari ora la care ai intrat sau ai ieșit. K.G.B. nu îți urmărește locația sau telefonul.</p>
+    <label>Data <input id="clockDay" type="date"></label>
+    <label>Ora <input id="clockTime" type="time"></label>
+    <div class="actions">
+      <button class="primary" id="clockIn">Am intrat</button>
+      <button id="clockOut">Am ieșit</button>
+    </div>
+    <p id="clockLast" class="muted"></p>
+    <p id="clockMsg" class="error"></p>
+    <button id="clockBack">Înapoi</button>
   </section>
 
   <section id="form" class="card" hidden>
@@ -93,7 +108,7 @@
 const KEY = "kgb.phone.token";
 const store = { get() { try { return localStorage.getItem(KEY) || ""; } catch { return ""; } }, set(v) { try { localStorage.setItem(KEY, v); } catch {} }, clear() { try { localStorage.removeItem(KEY); } catch {} } };
 const $ = (id) => document.getElementById(id);
-const show = (id) => { for (const s of ["pair", "wait", "revoked", "menu", "form"]) $(s).hidden = s !== id; };
+const show = (id) => { for (const s of ["pair", "wait", "revoked", "menu", "form", "clock"]) $(s).hidden = s !== id; };
 const FORMS = {
   receptie: { title: "Fișă de recepție", files: "Poze generale (aviz, încărcătura) — opțional", accept: "image/*", lines: true, fields: [["furnizor", "Furnizor"], ["document", "Aviz / factură (număr)"], ["vehicul", "Vehicul"], ["observatii", "Observații", true]] },
   document: { title: "Documente de la șofer", files: "Poze cu documentele", accept: "image/*", fields: [["sofer", "Șofer"], ["vehicul", "Vehicul"], ["nota", "Notă", true]] },
@@ -186,6 +201,37 @@ $("recheck").onclick = refresh;
 $("again").onclick = () => { store.clear(); show("pair"); };
 
 for (const b of document.querySelectorAll("[data-go]")) b.onclick = () => open(b.dataset.go);
+
+// Pontaj (7.4m-6b): entry / exit with the time the person declares.
+const LAST = "kgb.phone.pontaj";
+const pad2 = (n) => String(n).padStart(2, "0");
+function showLast() {
+  const l = kv.get(LAST);
+  $("clockLast").textContent = l ? `Ultimul trimis: ${l}` : "";
+}
+$("goClock").onclick = () => {
+  const d = new Date();
+  $("clockDay").value = `${d.getFullYear()}-${pad2(d.getMonth() + 1)}-${pad2(d.getDate())}`;
+  $("clockTime").value = `${pad2(d.getHours())}:${pad2(d.getMinutes())}`;
+  $("clockMsg").textContent = "";
+  showLast();
+  show("clock");
+};
+async function clock(miscare) {
+  $("clockMsg").textContent = "";
+  for (const b of [$("clockIn"), $("clockOut")]) b.disabled = true;
+  try {
+    const ora = $("clockTime").value.slice(0, 5), data = $("clockDay").value;
+    await api("/m/api/trimite", { tip: "pontaj", campuri: { miscare, ora, data }, fisiere: [] });
+    kv.set(LAST, `${miscare === "intrare" ? "intrare" : "ieșire"} ${ora}, ${data.split("-").reverse().join(".")}`);
+    $("sent").textContent = `Pontaj trimis: ${miscare === "intrare" ? "intrare" : "ieșire"} la ${ora}.`;
+    show("menu");
+  } catch (e) { $("clockMsg").textContent = e.message; }
+  finally { for (const b of [$("clockIn"), $("clockOut")]) b.disabled = false; }
+}
+$("clockIn").onclick = () => clock("intrare");
+$("clockOut").onclick = () => clock("iesire");
+$("clockBack").onclick = () => show("menu");
 function open(k) {
   kind = k; chosen = [];
   const f = FORMS[k];

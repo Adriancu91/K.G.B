@@ -43,7 +43,7 @@ interface Phone {
 }
 interface Received {
   id: string;
-  tip: "receptie" | "document" | "extras" | "inventar" | "bon";
+  tip: "receptie" | "document" | "extras" | "inventar" | "bon" | "pontaj";
   telefon_nume: string;
   membru_nume: string;
   campuri: Record<string, string>;
@@ -84,7 +84,125 @@ const KIND: Record<Received["tip"], string> = {
   extras: "Extras de cont",
   inventar: "Inventar numărat",
   bon: "Bon de cheltuială",
+  pontaj: "Pontaj",
 };
+
+interface Employee {
+  id: string;
+  nume: string;
+  activ: boolean;
+}
+
+/** One person's day from the phone: the first entry and the last exit. */
+interface PhoneDay {
+  key: string;
+  persoana: string;
+  data: string;
+  intrare: string | null;
+  iesire: string | null;
+  ids: string[];
+}
+
+function phoneDays(items: Received[]): PhoneDay[] {
+  const by = new Map<string, PhoneDay>();
+  for (const x of items) {
+    if (x.tip !== "pontaj" || x.procesat) continue;
+    const data = x.campuri.data ?? "";
+    const ora = x.campuri.ora ?? "";
+    const key = `${x.membru_nume}|${data}`;
+    const d = by.get(key) ?? { key, persoana: x.membru_nume, data, intrare: null, iesire: null, ids: [] };
+    if (x.campuri.miscare === "intrare" && (!d.intrare || ora < d.intrare)) d.intrare = ora;
+    if (x.campuri.miscare === "iesire" && (!d.iesire || ora > d.iesire)) d.iesire = ora;
+    d.ids.push(x.id);
+    by.set(key, d);
+  }
+  return [...by.values()].sort((a, b) => (a.data === b.data ? a.persoana.localeCompare(b.persoana) : b.data.localeCompare(a.data)));
+}
+
+/** Entries and exits from phones, recorded in the team timesheet (7.4m-6b). */
+function PhoneTimesheet({ items, onDone, onError }: { items: Received[]; onDone: (msg: string) => void; onError: (e: string | null) => void }) {
+  const days = phoneDays(items);
+  const [emps, setEmps] = useState<Employee[] | null>(null);
+  const [pick, setPick] = useState<Record<string, string>>({});
+  const [pause, setPause] = useState<Record<string, string>>({});
+  useEffect(() => {
+    if (days.length === 0) return;
+    api.moduleCall<Employee[]>("kgb.team", "angajati").then(
+      (e) => setEmps(e.filter((x) => x.activ !== false)),
+      () => setEmps([]),
+    );
+  }, [days.length]);
+  if (days.length === 0) return null;
+  const empOf = (d: PhoneDay) => pick[d.key] ?? emps?.find((e) => e.nume.trim().toLowerCase() === d.persoana.trim().toLowerCase())?.id ?? "";
+  return (
+    <div className="card phone-timesheet">
+      <h3>Pontaj de pe telefon</h3>
+      {emps !== null && emps.length === 0 && <p className="muted">Pentru a-l trece în pontaj, activează modulul Echipă și adaugă angajații.</p>}
+      <table className="audit">
+        <thead>
+          <tr>
+            <th>Persoana</th>
+            <th>Data</th>
+            <th>Intrare</th>
+            <th>Ieșire</th>
+            <th>Angajatul</th>
+            <th>Pauză (min)</th>
+            <th />
+          </tr>
+        </thead>
+        <tbody>
+          {days.map((d) => (
+            <tr key={d.key} data-day={d.key}>
+              <td>{d.persoana}</td>
+              <td>{d.data.split("-").reverse().join(".")}</td>
+              <td>{d.intrare ?? "—"}</td>
+              <td>{d.iesire ?? "încă nu"}</td>
+              <td>
+                <select aria-label={`Angajatul pentru ${d.persoana}`} value={empOf(d)} onChange={(e) => setPick({ ...pick, [d.key]: e.target.value })}>
+                  <option value="">alege…</option>
+                  {(emps ?? []).map((e) => (
+                    <option key={e.id} value={e.id}>
+                      {e.nume}
+                    </option>
+                  ))}
+                </select>
+              </td>
+              <td>
+                <input aria-label={`Pauza pentru ${d.persoana}`} size={4} value={pause[d.key] ?? "0"} onChange={(e) => setPause({ ...pause, [d.key]: e.target.value })} />
+              </td>
+              <td>
+                <button
+                  disabled={!d.intrare || !d.iesire || !empOf(d)}
+                  onClick={() =>
+                    void (async () => {
+                      try {
+                        await api.moduleCall("kgb.team", "pontaj_save", {
+                          angajat: empOf(d),
+                          data: d.data,
+                          intrare: d.intrare,
+                          iesire: d.iesire,
+                          pauza_min: Number.parseInt(pause[d.key] ?? "0", 10) || 0,
+                          nota: "declarat de pe telefon",
+                        });
+                        for (const id of d.ids) await invoke("phone_done", { id, gata: true });
+                        onDone(`Pontajul lui ${d.persoana} din ${d.data.split("-").reverse().join(".")} (${d.intrare}–${d.iesire}) a fost trecut în Echipă.`);
+                      } catch (e) {
+                        onError(message(e));
+                      }
+                    })()
+                  }
+                >
+                  Trece în pontaj
+                </button>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+      <p className="muted small">Orele sunt cele declarate pe telefon (prima intrare și ultima ieșire din zi); nu se urmărește locația (D-064).</p>
+    </div>
+  );
+}
 
 const todayIso = () => {
   const d = new Date();
@@ -474,6 +592,8 @@ export function PhonePage({ modules, onError }: { modules: ModulesReply; onError
           ))}
         </div>
       )}
+
+      <PhoneTimesheet items={r.primite} onDone={(m) => void load().then(() => setNotice(m))} onError={onError} />
 
       <h3>Primite de pe telefon</h3>
       <label className="small">

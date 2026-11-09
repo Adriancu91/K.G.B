@@ -66,6 +66,15 @@ try {
   await p.click("Acordă și activează");
   await p.until("[...document.querySelectorAll('nav .nav')].some(e => e.textContent.includes('Business'))", 5000);
   await invoke(p, "module_call", { id: "kgb.business", command: "account_save", args: { tip: "banca", nume: "Banca X" } });
+  // Team, for the timesheet from the phone (7.4m-6b).
+  await p.click("Catalog module", "nav .nav");
+  const teamCard = "[...document.querySelectorAll('.card')].find(c => c.querySelector('h3')?.innerText === 'Echipă și pontaj')";
+  await p.until(`!!${teamCard}`, 5000);
+  await p.eval(`${teamCard}.querySelector('button').click()`);
+  await sleep(200);
+  await p.click("Acordă și activează");
+  await p.until("[...document.querySelectorAll('nav .nav')].some(e => e.textContent.includes('Echipă'))", 5000);
+  await invoke(p, "module_call", { id: "kgb.team", command: "angajat_save", args: { nume: "Proprietar" } });
 
   await p.click("Telefon", "nav .nav");
   await p.until("!!document.querySelector('.phone-page')", 5000);
@@ -174,6 +183,23 @@ try {
   await p.until("document.querySelector('.phone-page').innerText.includes('Plata de 250,40 lei a fost înregistrată în Business')", 8000);
   const pays = await biz("payments", {});
   check("bonul devine o plată în Business, cu explicația", JSON.stringify(pays).includes("Benzinăria X") && JSON.stringify(pays).includes("motorină"), JSON.stringify(pays).slice(0, 300));
+
+  // 7.4m-6b: entry and exit from the phone, into the team timesheet.
+  const clockIn = await phone("/m/api/trimite", { tip: "pontaj", campuri: { miscare: "intrare", ora: "07:58", data: "2026-11-09" }, fisiere: [] });
+  const clockOut = await phone("/m/api/trimite", { tip: "pontaj", campuri: { miscare: "iesire", ora: "16:30", data: "2026-11-09" }, fisiere: [] });
+  check("telefonul trimite intrarea și ieșirea (ora declarată)", clockIn.status === 200 && clockOut.status === 200);
+  check("o oră greșită e refuzată", (await phone("/m/api/trimite", { tip: "pontaj", campuri: { miscare: "intrare", ora: "25:00", data: "2026-11-09" }, fisiere: [] })).status === 400);
+  await p.until("!!document.querySelector('.phone-timesheet tbody tr')", 8000);
+  const row = await p.eval("document.querySelector('.phone-timesheet tbody tr').innerText");
+  check("pe PC: ziua cu prima intrare și ultima ieșire", row.includes("09.11.2026") && row.includes("07:58") && row.includes("16:30"), row.replace(/\s+/g, " "));
+  await p.until("[...document.querySelectorAll('.phone-timesheet button')].some(b => b.innerText === 'Trece în pontaj' && !b.disabled)", 5000);
+  await p.fill("input[aria-label='Pauza pentru Proprietar']", "30");
+  await p.click("Trece în pontaj", ".phone-timesheet button");
+  await p.until("document.querySelector('.phone-page').innerText.includes('a fost trecut în Echipă')", 8000);
+  const days = await invoke(p, "module_call", { id: "kgb.team", command: "pontaj", args: { luna: "2026-11" } }).catch((e) => String(e));
+  const dayText = JSON.stringify(days);
+  check("pontajul e în Echipă: 07:58–16:30, 30 min pauză (8 h 2 min lucrate)", dayText.includes("07:58") && dayText.includes("16:30") && dayText.includes('"lucrat_min":482'), dayText.slice(0, 300));
+  check("și dispare din „Pontaj de pe telefon”", await p.eval("!document.querySelector('.phone-timesheet')"));
 
   // 7.4m-3: a PDF statement from the phone is shown on the PC.
   const pdf = [

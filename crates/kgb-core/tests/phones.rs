@@ -120,3 +120,26 @@ fn inventory_and_expense_receipt() {
     assert!(err(phones::submit(&mut ws, &p, "bon", head(json!({"suma": "zece"})), vec![bon2()])).contains("suma"));
     assert!(err(phones::submit(&mut ws, &p, "bon", head(json!({"ce": "x"})), vec![bon2()])).contains("suma"));
 }
+
+/// Step 7.4m-6b: entry and exit declared from the phone (no location).
+#[test]
+fn timesheet_from_phone() {
+    let t = tempfile::tempdir().unwrap();
+    let mut ws = Workspace::create(&t.path().join("ws"), "T").unwrap();
+    let (id, token) = phones::pair(&mut ws, "Telefon Ion").unwrap();
+    phones::approve(&mut ws, id, "Ion").unwrap();
+    let p = phones::by_token(&ws, &token).unwrap().unwrap();
+    let f = |v: serde_json::Value| v.as_object().unwrap().clone();
+    phones::submit(&mut ws, &p, "pontaj", f(json!({"miscare": "intrare", "ora": "07:58", "data": "2026-11-09"})), vec![]).unwrap();
+    phones::submit(&mut ws, &p, "pontaj", f(json!({"miscare": "iesire", "ora": "16:30", "data": "2026-11-09"})), vec![]).unwrap();
+    assert_eq!(phones::inbox(&ws).unwrap().iter().filter(|x| x["tip"] == "pontaj").count(), 2);
+    let mut err = |v: serde_json::Value| phones::submit(&mut ws, &p, "pontaj", f(v), vec![]).unwrap_err().to_string();
+    assert!(err(json!({"miscare": "pauza", "ora": "10:00", "data": "2026-11-09"})).contains("intrare"));
+    assert!(err(json!({"miscare": "intrare", "ora": "24:00", "data": "2026-11-09"})).contains("HH:MM"));
+    assert!(err(json!({"miscare": "intrare", "ora": "8:00", "data": "2026-11-09"})).contains("HH:MM"));
+    assert!(err(json!({"miscare": "intrare", "ora": "08:00", "data": "09.11.2026"})).contains("AAAA-LL-ZZ"));
+    assert!(err(json!({"miscare": "intrare", "ora": "08:00", "data": "2026-13-01"})).contains("AAAA-LL-ZZ"));
+    drop(err);
+    let photo = Upload { name: "x.jpg".into(), mime: "image/jpeg".into(), data: vec![1] };
+    assert!(phones::submit(&mut ws, &p, "pontaj", f(json!({"miscare": "intrare", "ora": "08:00", "data": "2026-11-09"})), vec![photo]).is_err());
+}

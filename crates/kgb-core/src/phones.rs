@@ -49,7 +49,30 @@ pub const KINDS: &[(&str, &str)] = &[
     // 7.4m-6: an inventory counted in the warehouse, a photo of an expense receipt.
     ("inventar", "inventar numărat"),
     ("bon", "bon de cheltuială"),
+    // 7.4m-6b: entry or exit, declared by the person (D-064: no location).
+    ("pontaj", "pontaj"),
 ];
+
+/// A time of day "HH:MM" (00:00–23:59).
+fn clock(t: &str) -> bool {
+    let b = t.as_bytes();
+    b.len() == 5
+        && b[2] == b':'
+        && t[..2].parse::<u8>().is_ok_and(|h| h < 24)
+        && t[3..].parse::<u8>().is_ok_and(|m| m < 60)
+        && b.iter().enumerate().all(|(i, c)| i == 2 || c.is_ascii_digit())
+}
+
+/// A date "AAAA-LL-ZZ" (shape and ranges; enough for a declared day).
+fn iso_day(t: &str) -> bool {
+    let b = t.as_bytes();
+    b.len() == 10
+        && b[4] == b'-'
+        && b[7] == b'-'
+        && b.iter().enumerate().all(|(i, c)| i == 4 || i == 7 || c.is_ascii_digit())
+        && t[5..7].parse::<u8>().is_ok_and(|m| (1..=12).contains(&m))
+        && t[8..].parse::<u8>().is_ok_and(|d| (1..=31).contains(&d))
+}
 pub const MAX_FILES: usize = 6;
 pub const MAX_FILE_BYTES: usize = 8 * 1024 * 1024;
 
@@ -387,6 +410,21 @@ pub fn submit_with_lines(ws: &mut Workspace, from: &Phone, kind: &str, fields: s
     }
     if kind == "extras" && uploads.is_empty() {
         return Err(bad("alege fișierul extrasului"));
+    }
+    if kind == "pontaj" {
+        let field = |k: &str| clean.get(k).and_then(Value::as_str).unwrap_or_default().to_string();
+        if !["intrare", "iesire"].contains(&field("miscare").as_str()) {
+            return Err(bad("pontajul e „intrare” sau „iesire”"));
+        }
+        if !clock(&field("ora")) {
+            return Err(bad("ora pontajului e de forma HH:MM"));
+        }
+        if !iso_day(&field("data")) {
+            return Err(bad("data pontajului e de forma AAAA-LL-ZZ"));
+        }
+        if !uploads.is_empty() {
+            return Err(bad("pontajul nu are fișiere"));
+        }
     }
     if kind == "bon" {
         if !uploads.iter().any(|u| u.mime.starts_with("image/")) {
