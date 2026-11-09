@@ -54,7 +54,7 @@ check('CNP: începe după „CNP: ” (nu acoperă eticheta)', b0 && b0.x > 70 &
 check('CNP: acoperă rândul (sus = 300 - 250 - 12)', b0 && b0.y < 300 - 250 - 10 && b0.y + b0.h > 300 - 250 + 1, J(b0));
 const b1 = boxes.find((b) => b.kind === 'email');
 check('e-mail pe rândul de jos', b1 && b1.y > b0.y + 40 && b1.x > 90, J(b1));
-await doc.cleanup?.(); // pdf.js 6: destroy() e pe încărcare, nu pe document
+await doc.loadingTask.destroy(); // ca în COS c329e119: merge pe pdf.js 4 și 6
 
 console.log(fail ? `${fail} GREȘITE` : 'TOATE TREC');
 process.exit(fail ? 1 : 0);

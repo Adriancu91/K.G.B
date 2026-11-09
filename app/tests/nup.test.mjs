@@ -40,7 +40,7 @@ const sheets = async (bytes) => {
     items.sort((a, b) => (Math.abs(a.y - b.y) > 40 ? a.y - b.y : a.x - b.x));
     res.push({ w: Math.round(vp.width), h: Math.round(vp.height), list: items.map((t) => t.s), upright: items.every((t) => t.upright), pos: Object.fromEntries(items.map((t) => [t.s, [Math.round(t.x), Math.round(t.y)]])) });
   }
-  await doc.cleanup?.(); // pdf.js 6: fără destroy() pe document
+  await doc.loadingTask.destroy(); // ca în COS c329e119: merge pe pdf.js 4 și 6
   return res;
 };
 
