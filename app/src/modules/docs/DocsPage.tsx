@@ -217,7 +217,7 @@ export function DocsPage({ onError }: { onError: (e: string | null) => void }) {
 
   const importModel = () =>
     run(async () => {
-      const path = await open({ multiple: false, filters: [{ name: "Word", extensions: ["docx"] }] });
+      const path = await open({ multiple: false, filters: [{ name: "Document .docx", extensions: ["docx"] }] });
       if (typeof path !== "string") return;
       const m = await api.importFile<Model>(ID, path);
       setNotice(`Modelul „${m.nume}” a fost adăugat la „Altele”, cu ${m.campuri.length} câmpuri. Îi poți schimba categoria mai jos.`);
@@ -232,7 +232,7 @@ export function DocsPage({ onError }: { onError: (e: string | null) => void }) {
   return (
     <section className="docs">
       <p className="muted">
-        Modul beta. Modelele sunt fișiere Word cu câmpuri între acolade duble, de exemplu {"{{client}}"}. Modelul original nu se
+        Modul beta. Modelele sunt fișiere .docx cu câmpuri între acolade duble, de exemplu {"{{client}}"}. Modelul original nu se
         schimbă; fiecare document generat se păstrează separat.
       </p>
       <div className="sheet-tabs" role="tablist">
@@ -252,7 +252,7 @@ export function DocsPage({ onError }: { onError: (e: string | null) => void }) {
         <>
           <div className="row">
             <button disabled={busy} onClick={() => void importModel()}>
-              Importă un model Word…
+              Importă un model .docx…
             </button>
           </div>
           {Object.entries(CATEGORY).map(([cat, label]) => {
@@ -267,7 +267,7 @@ export function DocsPage({ onError }: { onError: (e: string | null) => void }) {
                       <header>
                         <h3>{m.nume}</h3>
                         <span className="row">
-                          <span className="badge">{m.format === "pdf" ? "PDF" : "Word"}</span>
+                          <span className="badge">{m.format === "pdf" ? "PDF" : ".docx"}</span>
                           <span className={`badge ${m.sursa === "inclus" ? "stable" : "beta"}`}>{m.sursa === "inclus" ? "inclus" : "importat"}</span>
                         </span>
                       </header>
@@ -344,7 +344,7 @@ export function DocsPage({ onError }: { onError: (e: string | null) => void }) {
                           const pdf = g.format === "pdf";
                           const dest = await save({
                             defaultPath: `${g.nume}.${pdf ? "pdf" : "docx"}`,
-                            filters: [pdf ? { name: "PDF", extensions: ["pdf"] } : { name: "Word", extensions: ["docx"] }],
+                            filters: [pdf ? { name: "PDF", extensions: ["pdf"] } : { name: "Document .docx", extensions: ["docx"] }],
                           });
                           if (!dest) return;
                           await api.moduleCall(ID, "export", { id: g.id, dest });

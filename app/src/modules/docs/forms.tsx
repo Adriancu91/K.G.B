@@ -390,7 +390,7 @@ export function FormsView({
         defaultPath: `${current.nume}.${format}`,
         filters: [
           format === "xlsx"
-            ? { name: "Excel", extensions: ["xlsx"] }
+            ? { name: "Registru .xlsx", extensions: ["xlsx"] }
             : { name: "CSV", extensions: ["csv"] },
         ],
       });

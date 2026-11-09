@@ -89,7 +89,7 @@ export function BusinessReports({ onError }: { onError: (e: string | null) => vo
     try {
       const dest = await save({
         defaultPath: format === "xlsx" ? `Raport business ${from} – ${to}.xlsx` : `${csvTable} ${from} – ${to}.csv`,
-        filters: [format === "xlsx" ? { name: "Excel", extensions: ["xlsx"] } : { name: "CSV", extensions: ["csv"] }],
+        filters: [format === "xlsx" ? { name: "Registru .xlsx", extensions: ["xlsx"] } : { name: "CSV", extensions: ["csv"] }],
       });
       if (!dest) return;
       await api.moduleCall(ID, "report_export", { de_la: from, pana_la: to, format, ...(format === "csv" ? { tabel: csvTable } : {}), dest });

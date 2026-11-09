@@ -316,7 +316,7 @@ export function TeamPage({ onError }: { onError: (e: string | null) => void }) {
           <button
             onClick={() =>
               void run(async () => {
-                const dest = await save({ defaultPath: `pontaj-${luna}.xlsx`, filters: [{ name: "Excel", extensions: ["xlsx"] }] });
+                const dest = await save({ defaultPath: `pontaj-${luna}.xlsx`, filters: [{ name: "Registru .xlsx", extensions: ["xlsx"] }] });
                 if (!dest) return;
                 await api.moduleCall(ID, "raport_export", { luna, dest, overwrite: true });
                 setNotice(`Salvat: ${dest}`);
