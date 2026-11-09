@@ -1,0 +1,25 @@
+{
+  "dict": {
+    "🖌↺ Artistică": "🖌↺ Art history",
+    "🖌↺ Pensulă artistică a istoricului": "🖌↺ Art history brush",
+    "↺ Pensulă istoric": "↺ History brush",
+    "Uneltele istoricului": "History tools",
+    "Pensulă artistică a istoricului: pictează din poza de dinainte cu trăsături stilizate, ca o pictură (alege stilul, zona și fidelitatea culorii)": "Art history brush: paints from the earlier picture with stylised strokes, like a painting (choose the style, area and colour fidelity)",
+    "Felul trăsăturilor: scurte sau lungi, drepte sau curbate, tamponări ori bucle": "Kind of strokes: short or long, straight or curved, dabs or curls",
+    "Stil": "Style",
+    "Zonă": "Area",
+    "Cât de departe de pensulă cad trăsăturile, în pixeli (mai mare = acoperă mai mult deodată)": "How far from the brush the strokes fall, in pixels (larger = covers more at once)",
+    "Fidelitate": "Fidelity",
+    "Cât de exactă e culoarea trăsăturilor față de poza veche (mai mică = culori mai variate)": "How exact the stroke colour is compared to the earlier picture (lower = more varied colours)",
+    "Strâns scurt": "Tight short",
+    "Strâns mediu": "Tight medium",
+    "Strâns lung": "Tight long",
+    "Larg mediu": "Loose medium",
+    "Larg lung": "Loose long",
+    "Tamponare": "Dab",
+    "Buclă strânsă": "Tight curl",
+    "Buclă largă": "Loose curl"
+  },
+  "templates": {},
+  "skip": []
+}

@@ -1,0 +1,10 @@
+{
+  "dict": {
+    "Buton de acțiune: Acasă": "Action Button: Go Home",
+    "Buton de acțiune: Informații": "Action Button: Get Information",
+    "Buton de acțiune: Document": "Action Button: Document",
+    "Buton de acțiune: Sunet": "Action Button: Sound"
+  },
+  "templates": {},
+  "skip": []
+}

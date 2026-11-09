@@ -1,0 +1,24 @@
+{
+  "dict": {
+    "Cizmărie și chei": "Shoe repair and keys",
+    "Pantof": "Shoe",
+    "Calapod": "Shoe last",
+    "Ciocan de cizmar": "Cobbler hammer",
+    "Sulă": "Awl",
+    "Pantof cu toc": "High-heeled shoe",
+    "Cremă de ghete": "Shoe polish",
+    "Mașină de copiat chei": "Key cutting machine",
+    "Cheie cu dinți": "Cut key"
+  },
+  "templates": {},
+  "skip": [
+    "pantof gheată încălțăminte cizmărie reparat shoe",
+    "calapod formă de lemn lărgit pantofi shoe last",
+    "ciocan de cizmar bătut tălpi ținte cobbler hammer",
+    "sulă străpuns piele cusut încălțăminte awl",
+    "pantof cu toc înalt damă toc schimbat high heel",
+    "cremă de ghete cutie lustruit pantofi shoe polish",
+    "mașină de copiat chei duplicat cheie key cutting machine",
+    "cheie cu dinți copie nouă yală butuc key copy"
+  ]
+}

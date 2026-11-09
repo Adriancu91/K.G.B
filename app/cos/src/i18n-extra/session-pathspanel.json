@@ -1,0 +1,20 @@
+{
+  "dict": {
+    "＋ Traseu nou": "＋ New path",
+    "Comenzile traseului": "Path commands",
+    "Conturează traseul deschis cu culoarea și grosimea traseului": "Stroke the open path with the path color and width",
+    "Deschide traseul (îl poți schimba, umple, contura sau face selecție). Dublu-click: redenumește": "Open the path (you can edit, fill, stroke it or make a selection). Double-click: rename",
+    "Masca stratului ales din traseul deschis": "Mask of the selected layer from the open path",
+    "Niciun traseu încă. Desenează unul cu ⬚ Marcaj → ✒ Traseu (P) sau cu ＋ Traseu nou.": "No paths yet. Draw one with ⬚ Marquee → ✒ Path (P) or with ＋ New path.",
+    "Pornește ✒ Traseu pentru un traseu nou (cel de lucru nesalvat se pierde)": "Start ✒ Path for a new path (the unsaved work path is discarded)",
+    "Salvează traseul de lucru": "Save the work path",
+    "Salvează traseul de lucru în listă": "Save the work path to the list",
+    "Trasee: traseul de lucru și traseele salvate, cu miniaturi; clic deschide unul, iar butoanele de jos îl umplu, îl conturează sau fac selecție din el": "Paths: the work path and saved paths, with thumbnails; click opens one, and the buttons below fill it, stroke it or make a selection from it",
+    "Traseul de lucru": "Work path",
+    "Traseul de lucru: cel desenat acum, încă nesalvat": "Work path: the one drawn now, not saved yet",
+    "Traseul deschis devine selecție (Ctrl+Enter)": "The open path becomes a selection (Ctrl+Enter)",
+    "Umple traseul deschis cu culoarea traseului": "Fill the open path with the path color"
+  },
+  "templates": {},
+  "skip": []
+}

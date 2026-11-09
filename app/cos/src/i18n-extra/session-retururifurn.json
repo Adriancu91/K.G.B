@@ -1,0 +1,43 @@
+{
+ "dict": {
+  "Așteaptă nota de credit": "Awaiting credit note",
+  "Cantitatea returnată": "Quantity returned",
+  "Data returului": "Return date",
+  "Deteriorat la transport": "Damaged in transit",
+  "Documentul de intrare (NIR / factură)": "Receipt document (GRN / invoice)",
+  "Expirat sau cu termen scurt": "Expired or short shelf life",
+  "Greșit livrat": "Wrong item delivered",
+  "În așteptare": "Pending",
+  "Livrat în plus": "Over-delivered",
+  "Marfa dată înapoi furnizorilor (neconformă, deteriorată, livrată în plus sau greșit): valoarea cu TVA, motivul, răspunsul furnizorului și nota de credit primită; ies restul de recuperat și starea: recuperat (în verde), parțial sau în așteptarea notei de credit (în galben), refuzat sau nerezolvat de peste 30 de zile (în roșu).": "Goods sent back to suppliers (nonconforming, damaged, over-delivered or wrong): the value with VAT, the reason, the supplier's answer and the credit note received; you get the amount still to recover and the status: recovered (green), partly recovered or awaiting the credit note (yellow), refused or unresolved for more than 30 days (red).",
+  "Marfa returnată pleacă cu aviz de însoțire sau cu factură de retur; furnizorul trimite apoi nota de credit (factura cu minus), trecută aici cu numărul și suma.": "Returned goods leave with a delivery note or a return invoice; the supplier then sends the credit note (the negative invoice), entered here with its number and amount.",
+  "Neconform calitativ": "Quality nonconformity",
+  "Neconformitățile se anunță prin Docs → Notificare de neconformitate la livrare; cantitățile primite se văd în Sheets → Notă de recepție.": "Nonconformities are reported with Docs → Delivery nonconformity notice; the quantities received are in Sheets → Goods receipt note.",
+  "Nerezolvate de peste 30 de zile": "Unresolved for more than 30 days",
+  "Nota de credit (nr.)": "Credit note (no.)",
+  "Răspunsul furnizorului": "Supplier's answer",
+  "Recuperat": "Recovered",
+  "Recuperat (note de credit)": "Recovered (credit notes)",
+  "Recuperat parțial": "Partly recovered",
+  "Refuzat": "Refused",
+  "Refuzate de furnizor (valoarea)": "Refused by the supplier (value)",
+  "Rest de recuperat": "Still to recover",
+  "Retururi către furnizori": "Returns to suppliers",
+  "Retururi în listă": "Returns in the list",
+  "Retururile refuzate și cele nerezolvate de peste 30 de zile contează la Sheets → Evaluarea furnizorilor.": "Refused returns and those unresolved for more than 30 days count in Sheets → Supplier evaluation.",
+  "Suma creditată": "Amount credited",
+  "Valoarea cu TVA": "Value with VAT",
+  "Valoarea returnată (cu TVA)": "Value returned (with VAT)",
+  "Zile de la retur": "Days since return",
+  "Proces-verbal de retur al mărfii către furnizor": "Report on goods returned to the supplier",
+  "Marfa dată înapoi furnizorului: documentul cu care a intrat, produsele returnate cu cantitatea, valoarea și motivul, cine o predă și cine o primește, cu cererea notei de credit (factura cu minus) în termenul stabilit": "Goods given back to the supplier: the document they came in with, the returned products with quantity, value and reason, who hands them over and who receives them, with the request for the credit note (the negative invoice) within the agreed term",
+  "Furnizorul:\nFactura și nota de recepție:\nCe se returnează și de ce:\n\nÎnainte de retur:\n☐ neconformitatea anunțată furnizorului în scris (Docs → Notificare de neconformitate la livrare)\n☐ răspunsul furnizorului: acceptă returul, cu termenul și felul transportului\n☐ marfa pusă deoparte, numărată și fotografiată, separat de stocul bun\n\nPredarea:\n☐ procesul-verbal completat și semnat de ambele părți (Docs → Proces-verbal de retur al mărfii către furnizor)\n☐ avizul de însoțire sau factura de retur emisă, ieșirea trecută în gestiune (Sheets → Fișa de magazie)\n☐ returul trecut în evidență, cu valoarea și motivul (Sheets → Retururi către furnizori)\n\nDupă retur:\n☐ nota de credit primită și verificată față de procesul-verbal\n☐ suma scăzută din factura de plătit sau primită în cont (Sheets → Facturi de la furnizori)\n☐ returul notat pentru evaluarea furnizorului (Sheets → Evaluarea furnizorilor)\n\nNota de credit:\n• numărul și data:\n• suma:\n\nObservații:\n• ": "Supplier:\nInvoice and goods receipt note:\nWhat is returned and why:\n\nBefore the return:\n☐ nonconformity reported to the supplier in writing (Docs → Delivery nonconformity notice)\n☐ supplier's answer: accepts the return, with the term and the way of transport\n☐ goods set aside, counted and photographed, apart from the good stock\n\nHanding over:\n☐ report filled in and signed by both parties (Docs → Report on goods returned to the supplier)\n☐ delivery note or return invoice issued, the outgoing goods entered in the stock records (Sheets → Stock card)\n☐ return entered in the register, with value and reason (Sheets → Returns to suppliers)\n\nAfter the return:\n☐ credit note received and checked against the report\n☐ amount deducted from the invoice to pay or received in the account (Sheets → Supplier invoices)\n☐ return noted for the supplier evaluation (Sheets → Supplier evaluation)\n\nCredit note:\n• number and date:\n• amount:\n\nNotes:\n• ",
+  "↩ Returul mărfii la furnizor": "↩ Returning goods to the supplier"
+ },
+ "templates": {
+  "Retur la furnizor {0}": "Return to supplier {0}"
+ },
+ "skip": [
+  "=IF(J{0}=\"\";\"\";IF(L{1}=\"Refuzat\";\"Refuzat\";IF(O{2}<=0;\"Recuperat\";IF(N(N{3})>0;\"Recuperat parțial\";IF(L{4}=\"Acceptat\";\"Așteaptă nota de credit\";\"Fără răspuns\")))))"
+ ]
+}

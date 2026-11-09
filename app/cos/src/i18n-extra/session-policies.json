@@ -1,0 +1,16 @@
+{
+  "dict": {
+    "(alege)": "(choose)",
+    "de exemplu Contracte": "for example Contracts",
+    "Politică salvată:": "Saved policy:",
+    "Salvează ca politică:": "Save as policy:",
+    "Scrie un nume pentru politică.": "Type a name for the policy.",
+    "Șterge politica aleasă din listă": "Delete the chosen policy from the list",
+    "Ține minte felul protecției și restricțiile sub un nume, ca să le pui din nou pe alt PDF. Parola nu se ține minte.": "Remembers the kind of protection and the restrictions under a name, so you can apply them again to another PDF. The password is not remembered."
+  },
+  "templates": {
+    "Politica „{0}” a fost ștearsă.": "The policy “{0}” was deleted.",
+    "Politica „{0}” e salvată (fără parolă).": "The policy “{0}” is saved (without the password)."
+  },
+  "skip": []
+}

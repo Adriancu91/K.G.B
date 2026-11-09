@@ -1,0 +1,24 @@
+{
+  "dict": {
+    "Medicamentele din casă: câte pastile iei pe zi și câte mai ai; ies zilele rămase, când se termină, ce e de cumpărat (în galben) și ce a expirat (în roșu).": "The medicines at home: how many pills you take a day and how many you have left; you get the days left, when they run out, what to buy (in yellow) and what has expired (in red).",
+    "Medicamente": "Medicines"
+  },
+  "templates": {},
+  "skip": [
+    "=COUNTIF(I2:I{0};\"De cumpărat\")",
+    "=IF(A{0}=\"\";\"\";IF(AND(H{1}<>\"\";H{2}<TODAY());\"Expirat\";IF(AND(F{3}<>\"\";F{4}<=7);\"De cumpărat\";\"OK\")))",
+    "Cel mai repede se termină pe",
+    "De cumpărat",
+    "De cumpărat (ajung cel mult 7 zile)",
+    "Doza și când",
+    "Expirate (de aruncat la farmacie)",
+    "Expiră pe",
+    "Medicamentul",
+    "Pastile pe zi",
+    "Pastile rămase",
+    "Pentru ce / cine",
+    "Scrie în fiecare săptămână câte pastile mai ai; restul se calculează singur.",
+    "Se termină pe",
+    "Tabelul nu înlocuiește sfatul medicului sau al farmacistului."
+  ]
+}

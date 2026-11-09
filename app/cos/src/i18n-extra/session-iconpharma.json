@@ -1,0 +1,24 @@
+{
+  "dict": {
+    "Farmacie": "Pharmacy",
+    "Mojar cu pistil": "Mortar and pestle",
+    "Flacon de medicamente": "Medicine bottle",
+    "Folie de comprimate": "Blister pack",
+    "Seringă": "Syringe",
+    "Cruce de farmacie": "Pharmacy cross",
+    "Pipetă cu picături": "Dropper",
+    "Plasture": "Bandage",
+    "Rețetă medicală": "Prescription"
+  },
+  "templates": {},
+  "skip": [
+    "mojar pistil preparate magistrale farmacist mortar pestle pharmacist compounding",
+    "flacon sticluță sirop medicamente farmacie medicine bottle syrup",
+    "folie blister comprimate tablete cutie de medicamente blister pack tablets",
+    "seringă injecție vaccin vaccinare syringe injection vaccine",
+    "cruce verde farmacie semn luminos deschis non-stop pharmacy cross sign",
+    "pipetă picături de ochi de nas tinctură dozare dropper drops",
+    "plasture bandaj rană zgârietură prim ajutor bandage plaster band-aid",
+    "rețetă medicală prescripție compensată medic de familie prescription rx"
+  ]
+}

@@ -1,0 +1,10 @@
+{
+  "dict": {
+    "🔧 Vizita instalatorului": "🔧 Plumber visit",
+    "Instalatorul (nume, telefon):\nData și ora:\nCe nu merge (o țeavă care curge, scurgerea înfundată, boilerul, apometrul):\n\nÎnainte să vină:\n☐ apa oprită de la robinetul general, dacă e o scurgere\n☐ poze cu locul și cu plăcuța boilerului sau a aparatului\n☐ locul golit (sub chiuvetă, lângă boiler, la apometru)\n☐ întrebat cât costă deplasarea și ora de lucru\n\nCând lucrează:\n☐ cerut prețul piesei înainte de montaj\n☐ întrebat dacă lucrarea are garanție și cât\n☐ verificat împreună că nu mai curge nimic, cu apa pornită\n\nDupă:\n☐ indexul apometrului notat, dacă a fost schimbat sau mutat\n☐ chitanța sau factura păstrată\n\nCe s-a reparat, piesele și cât am plătit:\n•\n\nCe trebuie urmărit de acum (îmbinări, presiunea, curățarea sifonului):\n• ": "Plumber (name, phone):\nDate and time:\nWhat is wrong (a leaking pipe, a blocked drain, the water heater, the water meter):\n\nBefore the plumber comes:\n☐ water shut off at the main valve, if something is leaking\n☐ photos of the spot and of the label on the water heater or appliance\n☐ the area cleared (under the sink, next to the water heater, at the water meter)\n☐ asked how much the call-out and an hour of work cost\n\nWhile the work is done:\n☐ asked the price of the part before it is fitted\n☐ asked whether the work has a warranty and for how long\n☐ checked together, with the water on, that nothing leaks anymore\n\nAfter:\n☐ water meter reading written down, if it was replaced or moved\n☐ receipt or invoice kept\n\nWhat was repaired, the parts and how much I paid:\n•\n\nWhat to keep an eye on from now on (joints, the pressure, cleaning the trap):\n• "
+  },
+  "templates": {
+    "Vizita instalatorului {0}": "Plumber visit {0}"
+  },
+  "skip": []
+}

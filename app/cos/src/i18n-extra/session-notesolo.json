@@ -1,0 +1,19 @@
+{
+  "dict": {
+    "🗗 Fereastră separată": "🗗 Separate window",
+    "Fereastră separată: notița aleasă se deschide singură într-o fereastră mică, de ținut lângă alt program sau pe alt monitor; ce scrii acolo se salvează în caiet": "Separate window: the selected note opens on its own in a small window, to keep next to another program or on another monitor; what you type there is saved in the notebook",
+    "Notița e deschisă și într-o fereastră separată; ce scrii acolo se salvează aici, în caiet.": "The note is also open in a separate window; what you type there is saved here, in the notebook.",
+    "Notițele blocate cu parolă nu se deschid într-o fereastră separată": "Password-locked notes cannot open in a separate window",
+    "Mereu deasupra: fereastra notiței rămâne peste celelalte programe": "Always on top: the note window stays above other programs",
+    "Notița a fost ștearsă din caiet. Textul rămâne aici până închizi fereastra.": "The note was deleted from the notebook. The text stays here until you close the window.",
+    "Notița nu mai e în caiet; schimbările nu s-au salvat.": "The note is no longer in the notebook; the changes were not saved.",
+    "Notița nu mai poate fi deschisă aici. Închide fereastra și deschide-o din nou din Notițe.": "The note can no longer be opened here. Close the window and open it again from Notes.",
+    "Nu s-a putut salva notița!": "The note could not be saved!",
+    "Pozele, desenele și formatarea se văd în Notițe; aici scrii textul. Ctrl+W închide fereastra.": "Pictures, drawings and formatting are shown in Notes; here you write the text. Ctrl+W closes the window.",
+    "Scrie notița…": "Write the note…",
+    "Textul notiței": "Note text",
+    "Titlul notiței": "Note title"
+  },
+  "templates": {},
+  "skip": []
+}

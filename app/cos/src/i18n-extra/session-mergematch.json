@@ -1,0 +1,20 @@
+{
+  "dict": {
+    ". Alege mai jos coloana potrivită (altfel rămân neschimbate).": ". Choose the matching column below (otherwise they stay unchanged).",
+    "Potrivește câmpurile: toate au coloana lor.": "Match fields: every field has its column.",
+    "(nepotrivit)": "(not matched)",
+    "» e gol la": "» is empty for",
+    "(rămân neschimbate în toate exemplarele).": "(they stay unchanged in every copy).",
+    "✓ Nicio eroare: toate cele": "✓ No errors: all",
+    "🔍 Verifică erorile": "🔍 Check for errors",
+    "Arată destinatarul în previzualizare": "Show the recipient in the preview",
+    "Câmpuri fără coloană în tabel:": "Fields with no column in the table:",
+    "exemplare au toate câmpurile completate.": "copies have every field filled in.",
+    "Verifică toți destinatarii aleși: câmpurile fără coloană în tabel și câmpurile goale, cu rândurile lor": "Check all chosen recipients: fields with no column in the table and empty fields, with their rows"
+  },
+  "templates": {
+    "Coloana din tabel care completează «{0}»": "The table column that fills in «{0}»",
+    "Coloana pentru «{0}»": "Column for «{0}»"
+  },
+  "skip": []
+}

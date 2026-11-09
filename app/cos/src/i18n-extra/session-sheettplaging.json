@@ -1,0 +1,21 @@
+{
+  "dict": {
+    "Creanțe": "Receivables",
+    "Din total": "Share of total",
+    "Facturile emise și cât s-a încasat din fiecare: restul de încasat se împarte singur după întârziere (nescadent, 1–30, 31–60, 61–90 și peste 90 de zile), cu sumele vechi în galben și roșu; în dreapta totalul pe fiecare grupă, procentul din total și întârzierea cea mai mare.": "The invoices issued and how much has been collected on each: the balance still to collect is split automatically by how late it is (not yet due, 1–30, 31–60, 61–90 and over 90 days), with the old amounts in yellow and red; on the right the total for each group, its share of the total and the longest delay.",
+    "Facturile încasate complet nu mai apar în coloanele de vechime.": "Invoices collected in full no longer appear in the ageing columns.",
+    "Întârziat 1–30 de zile": "Overdue 1–30 days",
+    "Întârziat 31–60 de zile": "Overdue 31–60 days",
+    "Întârziat 61–90 de zile": "Overdue 61–90 days",
+    "Întârziat peste 90 de zile": "Overdue more than 90 days",
+    "Întârzierea cea mai mare (zile)": "Longest delay (days)",
+    "Nescadent": "Not yet due",
+    "Pentru întârzierile mari trimite o notificare (Docs → Notificare de plată) sau propune o eșalonare.": "For long delays send a notice (Docs → Payment notice) or offer a payment plan.",
+    "Scrie fiecare factură emisă și cât s-a încasat din ea: restul se pune singur în coloana după vechime.": "Enter each invoice issued and how much has been collected on it: the balance goes into the right ageing column by itself.",
+    "Total factură": "Invoice total",
+    "Vechimea creanțelor": "Receivables ageing",
+    "Zile de întârziere": "Days overdue"
+  },
+  "templates": {},
+  "skip": []
+}

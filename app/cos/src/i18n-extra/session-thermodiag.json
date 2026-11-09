@@ -1,0 +1,10 @@
+{
+  "dict": {
+    "Termometru (nivelurile pe scara unui termometru, de jos în sus, coloana plină până la ultimul)": "Thermometer (the levels on a thermometer scale, from bottom to top, the column filled up to the last one)",
+    "Termometru": "Thermometer",
+    "termometru": "thermometer",
+    "Nivelurile pe scara unui termometru, de jos în sus (cât de aproape suntem de țintă, de la rece la fierbinte)": "The levels on a thermometer scale, from bottom to top (how close we are to the goal, from cold to hot)"
+  },
+  "templates": {},
+  "skip": []
+}

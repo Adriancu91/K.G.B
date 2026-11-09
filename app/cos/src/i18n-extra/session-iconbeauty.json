@@ -1,0 +1,24 @@
+{
+  "dict": {
+    "Frumusețe și îngrijire": "Beauty and grooming",
+    "Foarfecă": "Scissors",
+    "Pieptene": "Comb",
+    "Oglindă": "Hand mirror",
+    "Ruj": "Lipstick",
+    "Lac de unghii": "Nail polish",
+    "Uscător de păr": "Hair dryer",
+    "Parfum": "Perfume",
+    "Aparat de ras": "Razor"
+  },
+  "templates": {},
+  "skip": [
+    "foarfecă tăiat tuns frizerie croitorie scissors cut haircut barber",
+    "pieptene pieptănat păr coafor comb hair",
+    "oglindă de mână machiaj reflexie hand mirror makeup",
+    "ruj buze machiaj cosmetice lipstick lips makeup cosmetics",
+    "lac de unghii manichiură pedichiură ojă nail polish manicure pedicure",
+    "uscător de păr föhn foehn coafat coafor salon hair dryer blow dryer",
+    "parfum sticlă miros parfumerie perfume fragrance",
+    "aparat de ras brici bărbierit barbă razor shave beard"
+  ]
+}

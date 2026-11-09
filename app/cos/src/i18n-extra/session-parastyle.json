@@ -1,0 +1,11 @@
+{
+  "dict": {
+    "Sursă (citare)": "Citation",
+    "Citat": "Quote",
+    "Cod": "Code"
+  },
+  "templates": {},
+  "skip": [
+    "{font Consolas:"
+  ]
+}

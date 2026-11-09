@@ -1,0 +1,10 @@
+{
+  "dict": {
+    "Strângere spre marginea din stânga": "Pinch to the left edge",
+    "Strângere spre marginea din dreapta": "Pinch to the right edge",
+    "Strângere spre marginea de sus": "Pinch to the top edge",
+    "Strângere spre marginea de jos": "Pinch to the bottom edge"
+  },
+  "templates": {},
+  "skip": []
+}

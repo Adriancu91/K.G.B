@@ -1,0 +1,34 @@
+{
+  "dict": {
+    "Compararea locuințelor": "Home comparison",
+    "Locuințe": "Homes",
+    "Locuința / anunțul": "Home / listing",
+    "Prețul (€)": "Price (€)",
+    "Suprafața utilă (mp)": "Usable area (sq m)",
+    "Preț pe mp (€)": "Price per sq m (€)",
+    "Camere": "Rooms",
+    "Etaj": "Floor",
+    "Minute până la serviciu": "Minutes to work",
+    "Nota mea (1–10)": "My rating (1–10)",
+    "Scorul": "Score",
+    "Am vizitat-o": "Visited",
+    "Cea mai bună": "Best",
+    "Peste buget": "Over budget",
+    "De vizitat": "To visit",
+    "Vizitată": "Visited",
+    "Locuințe trecute": "Homes listed",
+    "Prețul mediu pe mp (€)": "Average price per sq m (€)",
+    "Cel mai mic preț pe mp (€)": "Lowest price per sq m (€)",
+    "Cea mai ieftină pe mp": "Cheapest per sq m",
+    "Cea mai bună după scor": "Best by score",
+    "În buget": "Within budget",
+    "Un rând pe fiecare anunț: prețul, suprafața utilă și, dacă vrei, cheltuielile lunare (întreținerea, căldura) și drumul.": "One row per listing: the price, the usable area and, if you like, the monthly costs (building fees, heating) and the commute.",
+    "Nota ta (1–10) e părerea ta după poze sau vizionare; scorul o pune lângă prețul pe mp și drumul până la serviciu.": "Your rating (1–10) is your opinion after the photos or the viewing; the score weighs it together with the price per sq m and the commute.",
+    "Cu bugetul scris sus, anunțurile mai scumpe apar „Peste buget” (în roșu). La chirie scrii chiria lunară la Prețul.": "With your budget filled in above, more expensive listings show \"Over budget\" (in red). For rentals, enter the monthly rent as the Price.",
+    "Pentru cine cumpără sau închiriază o locuință: fiecare anunț cu prețul, suprafața, camerele, etajul, cheltuielile lunare și drumul până la serviciu; ies prețul pe mp, un scor din nota ta, prețul pe mp și drum, și starea: cea mai bună (în verde), peste buget (în roșu), de vizitat (în galben) sau vizitată; în dreapta prețul mediu și cea mai ieftină pe mp.": "For anyone buying or renting a home: each listing with the price, area, rooms, floor, monthly costs and commute; you get the price per sq m, a score from your rating, the price per sq m and the commute, and the status: best (in green), over budget (in red), to visit (in yellow) or visited; on the right the average price and the cheapest per sq m."
+  },
+  "templates": {},
+  "skip": [
+    "=IF(F{0}=\"\";\"\";IF(AND(N($R$2)>0;D{1}>N($R$2));\"Peste buget\";IF(M{2}=MAX($M$2:$M{3});\"Cea mai bună\";IF(N{4}=\"Da\";\"Vizitată\";\"De vizitat\"))))"
+  ]
+}

@@ -1,0 +1,12 @@
+{
+  "dict": {
+    "Clic pe o celulă: scrii în ea direct pe pagină. Dublu clic pe margine: înapoi la Normal": "Click a cell to type in it right on the page. Double-click the margin to go back to Normal",
+    "Enter scrie și coboară, Tab trece la dreapta, Esc renunță; dublu clic = alegi celula în foaie": "Enter saves and moves down, Tab moves right, Esc cancels; double-click selects the cell in the sheet",
+    "A doua parte a foii: se derulează separat și arată imediat ce scrii în stânga; clic pe o celulă = scrii în ea aici, dublu clic = o alegi în stânga": "Second part of the sheet: scrolls separately and shows right away what you type on the left; click a cell to type in it here, double-click to select it on the left",
+    "A doua parte a foii: se derulează separat și arată imediat ce scrii sus; clic pe o celulă = scrii în ea aici, dublu clic = o alegi sus": "Second part of the sheet: scrolls separately and shows right away what you type above; click a cell to type in it here, double-click to select it above"
+  },
+  "templates": {
+    "Celula {0} are reguli de validare: am ales-o în foaie, scrie în ea aici.": "Cell {0} has validation rules: it is selected in the sheet, type in it here."
+  },
+  "skip": []
+}

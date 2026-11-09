@@ -1,0 +1,36 @@
+{
+  "dict": {
+    "după salvare": "after saving",
+    "după tipărire": "after printing",
+    "înainte de închidere": "before closing",
+    "înainte de salvare": "before saving",
+    "înainte de tipărire": "before printing",
+    "la apăsare": "on mouse down",
+    "La deschiderea documentului": "When the document opens",
+    "la ieșire": "on blur",
+    "la închiderea paginii": "when the page closes",
+    "— doar de citit (se schimbă din locul lui: câmpul, pagina, legătura).": "— read only (changed where it lives: the field, the page, the link).",
+    "＋ Script nou al documentului": "＋ New document script",
+    "💾 Salvează în PDF": "💾 Save in PDF",
+    "Acțiunile documentului": "Document actions",
+    "Codul JavaScript din PDF: al documentului, de la deschidere, al paginilor, al câmpurilor și al legăturilor. Cyber Office Studio nu rulează scripturile (pot face orice); le vezi aici, iar pe cele ale documentului le poți scrie, schimba sau șterge. Ca să le scoți pe toate: Protejare PDF → Elimină informațiile ascunse….": "The JavaScript code in the PDF: the document's, at opening, the pages', the fields' and the links'. Cyber Office Studio does not run scripts (they can do anything); you see them here, and you can write, change or delete the document's own. To remove them all: Protect PDF → Remove hidden information….",
+    "Codul scriptului": "Script code",
+    "de exemplu Calcule": "for example Calculations",
+    "La deschidere": "At opening",
+    "Legăturile": "Links",
+    "PDF-ul nu are niciun script.": "The PDF has no scripts.",
+    "Scrie un nume pentru script.": "Type a name for the script.",
+    "Scripturile din PDF": "Scripts in the PDF",
+    "Scripturile documentului": "Document scripts",
+    "Scripturile JavaScript din PDF (ale documentului, de la deschidere, ale paginilor, câmpurilor și legăturilor): le vezi, iar pe cele ale documentului le scrii, schimbi sau ștergi; programul nu le rulează": "The JavaScript scripts in the PDF (the document's, at opening, the pages', fields' and links'): you see them, and you write, change or delete the document's own; the program does not run them"
+  },
+  "templates": {
+    "Câmpul „{0}” · {1}": "Field “{0}” · {1}",
+    "Câmpul „{0}” · la clic": "Field “{0}” · on click",
+    "Pagina {0} · legătură": "Page {0} · link",
+    "Există deja un script „{0}”. Alege alt nume.": "A script “{0}” already exists. Choose another name.",
+    "Scriptul „{0}” a fost salvat în PDF.": "The script “{0}” was saved in the PDF.",
+    "Scriptul „{0}” a fost șters.": "The script “{0}” was deleted."
+  },
+  "skip": ["Bl", "Fo"]
+}

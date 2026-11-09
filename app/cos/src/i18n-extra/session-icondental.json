@@ -1,0 +1,24 @@
+{
+  "dict": {
+    "Stomatologie": "Dentistry",
+    "Periuță de dinți": "Toothbrush",
+    "Pastă de dinți": "Toothpaste",
+    "Ață dentară": "Dental floss",
+    "Scaun stomatologic": "Dental chair",
+    "Oglindă dentară": "Dental mirror",
+    "Aparat dentar": "Braces",
+    "Implant dentar": "Dental implant",
+    "Freză dentară": "Dental drill"
+  },
+  "templates": {},
+  "skip": [
+    "periuță de dinți spălat pe dinți igienă orală toothbrush",
+    "pastă de dinți tub fluor igienă orală toothpaste",
+    "ață dentară fir igienă orală dental floss",
+    "scaun stomatologic cabinet stomatolog lampă dental chair",
+    "oglindă dentară oglinjoară control stomatolog dental mirror",
+    "aparat dentar ortodont dantură strâmbă braces orthodontics",
+    "implant dentar coroană șurub stomatolog dental implant",
+    "freză dentară turbină stomatolog plombă carie dental drill"
+  ]
+}

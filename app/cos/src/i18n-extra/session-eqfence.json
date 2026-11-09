@@ -1,0 +1,13 @@
+{
+  "dict": {
+    "Combinări": "Combinations",
+    "Normă": "Norm",
+    "Parte întreagă": "Floor (integer part)",
+    "Reuniune": "Union"
+  },
+  "templates": {},
+  "skip": [
+    "Vmatrix",
+    "Equation"
+  ]
+}

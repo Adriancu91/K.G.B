@@ -1,0 +1,10 @@
+{
+  "dict": {
+    "◇ Schimbă schema": "◇ Change diagram",
+    "Schimbă schema": "Change diagram",
+    "Redeschide schema: schimbi felul, textele, nivelurile sau culoarea, iar poza se desenează din nou": "Reopen the diagram: change its type, texts, levels or color, and the picture is redrawn",
+    "Schimbă schema (felul, textele, culoarea)": "Change the diagram (type, texts, color)"
+  },
+  "templates": {},
+  "skip": []
+}

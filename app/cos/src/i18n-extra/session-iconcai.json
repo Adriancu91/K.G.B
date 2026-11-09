@@ -1,0 +1,24 @@
+{
+  "dict": {
+    "Echitație": "Horse riding",
+    "Cap de cal": "Horse head",
+    "Șa": "Saddle",
+    "Cască de călărie": "Riding helmet",
+    "Obstacol de sărituri": "Show jump",
+    "Rozetă de concurs": "Prize rosette",
+    "Cizmă de călărie": "Riding boot",
+    "Perie de țesălat": "Grooming brush",
+    "Remorcă pentru cai": "Horse trailer"
+  },
+  "templates": {},
+  "skip": [
+    "cap de cal armăsar iapă herghelie horse head",
+    "șa de călărie harnașament scară saddle stirrup",
+    "cască de călărie protecție călăreț riding helmet",
+    "obstacol de sărituri bare concurs hipic show jump fence",
+    "rozetă de concurs premiu panglică locul întâi prize rosette ribbon",
+    "cizmă de călărie înaltă pinten riding boot spur",
+    "perie de țesălat îngrijirea calului grooming brush",
+    "remorcă pentru cai transport cai horse trailer"
+  ]
+}

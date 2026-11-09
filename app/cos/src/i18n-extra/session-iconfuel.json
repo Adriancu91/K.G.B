@@ -1,0 +1,24 @@
+{
+  "dict": {
+    "Benzinărie": "Petrol station",
+    "Stație de carburant": "Fuel station",
+    "Panou de prețuri": "Fuel price sign",
+    "Pistol de alimentare": "Fuel nozzle",
+    "Canistră": "Jerry can",
+    "Stație de încărcare": "EV charging station",
+    "Aer pentru roți": "Tyre inflator",
+    "Aspirator auto": "Car vacuum",
+    "Rovinietă": "Road toll vignette"
+  },
+  "templates": {},
+  "skip": [
+    "stație de carburant benzinărie peco copertină pompă fuel station petrol station canopy",
+    "panou de prețuri prețul carburantului totem benzinărie fuel price sign pylon",
+    "pistol de alimentare furtun alimentare plin rezervor fuel nozzle pump gun refuel",
+    "canistră canistra bidon de benzină rezervă motorină jerry can fuel can",
+    "stație de încărcare mașină electrică priză încărcător ev charger electric car charging station",
+    "rovinietă rovinieta vinietă taxă de drum autostradă parbriz vignette road toll sticker",
+    "aer pentru roți umflat presiune pneuri compresor tire inflator air pump",
+    "aspirator auto aspirare mașină interior curățenie car vacuum cleaner"
+  ]
+}

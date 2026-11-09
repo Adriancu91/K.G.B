@@ -1,0 +1,18 @@
+{
+  "dict": {
+    "O legătură nu a răspuns": "One link did not answer",
+    "Previzualizare: aduce titlul și descrierea fiecărei pagini (o singură dată, doar citită) și le arată ca fișe sub notiță": "Preview: fetches the title and description of each page (once, read only) and shows them as cards under the note",
+    "Previzualizarea legăturii e gata.": "The link preview is ready.",
+    "Scoate fișa": "Remove card",
+    "Scoate fișa (legătura rămâne în text)": "Remove the card (the link stays in the text)",
+    "Se aduc previzualizările legăturilor…": "Fetching link previews…",
+    "▶ Video · ": "▶ Video · "
+  },
+  "templates": {
+    "{0} (verifică adresa și legătura la internet).": "{0} (check the address and the internet connection).",
+    "{0} legături nu au răspuns": "{0} links did not answer",
+    "Previzualizările celor {0} legături sunt gata.": "The previews of the {0} links are ready.",
+    "Pornește clipul în browser: {0}": "Play the clip in the browser: {0}"
+  },
+  "skip": []
+}

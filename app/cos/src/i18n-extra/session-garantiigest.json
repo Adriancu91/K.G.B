@@ -1,0 +1,32 @@
+{
+ "dict": {
+  "Garanțiile gestionarilor": "Stock keeper guarantees",
+  "Garanția materială a fiecărui gestionar: suma stabilită la numire, ce a depus la început și reținerea lunară din salariu; ies constituitul până acum, ce mai e de constituit, în câte luni și starea: constituită (în verde), în curs (în galben) sau neîncepută (în roșu), cu totalurile în dreapta.": "Each stock keeper's material guarantee: the amount set at appointment, the initial deposit and the monthly salary deduction; you get the amount built up so far, what is left to build up, in how many months and the status: complete (green), in progress (yellow) or not started (red), with the totals on the right.",
+  "Constituit până acum": "Built up so far",
+  "Constituită": "Complete",
+  "Data numirii": "Appointment date",
+  "Depus la început": "Initial deposit",
+  "Garanția stabilită": "Guarantee set",
+  "Garanția stabilită e cea din decizia de numire (Docs → Decizie de numire a gestionarului).": "The guarantee set is the one in the appointment decision (Docs → Storekeeper appointment decision).",
+  "Garanții constituite": "Guarantees complete",
+  "Garanțiile stabilite": "Guarantees set",
+  "Gestionari": "Stock keepers",
+  "În curs": "In progress",
+  "În curs (prin rețineri)": "In progress (by deductions)",
+  "La „Luni reținute” scrii câte rețineri s-au făcut din salariu; constituitul și lunile rămase ies singure.": "Under “Months deducted” enter how many salary deductions have been made; the amount built up and the months left are calculated automatically.",
+  "Luni rămase": "Months left",
+  "Luni reținute": "Months deducted",
+  "Neîncepută": "Not started",
+  "Neîncepute": "Not started",
+  "Rămas de constituit": "Left to build up",
+  "Reținere lunară": "Monthly deduction",
+  "Suma, reținerile și contul se stabilesc după lege și contractul de garanție: verifică-le cu contabilul.": "The amount, the deductions and the account are set by law and the guarantee contract: check them with the accountant."
+ },
+ "templates": {},
+ "skip": [
+  "=COUNTIF(M2:M{0};\"Constituită\")",
+  "=COUNTIF(M2:M{0};\"În curs\")",
+  "=COUNTIF(M2:M{0};\"Neîncepută\")",
+  "=IF(J{0}=\"\";\"\";IF(J{1}=0;\"Constituită\";IF(I{2}>0;\"În curs\";\"Neîncepută\")))"
+ ]
+}

@@ -1,0 +1,247 @@
+/* Copiat neschimbat din Cyber Office Studio (D-071); vezi app/cos/README.md. */
+/* Tema Suite „Aurora”: bară laterală închisă la culoare, conținut luminos sau întunecat, accent violet-magenta.
+   Se încarcă după styles.css și îi suprascrie culorile. Fără animații și fără blur, ca să rămână ușoară pe placa integrată. */
+:root {
+  --bg: #f3f3f8;
+  --panel: #ffffff;
+  --text: #1a1a2e;
+  --muted: #676784;
+  --border: #e1e1ec;
+  --accent: #7c3aed;
+  --accent-2: #db2777;
+  --accent-soft: #efe8fd;
+  --hover: #ececf5;
+  --card-shadow: 0 1px 2px rgba(20, 20, 50, 0.06), 0 4px 14px rgba(20, 20, 50, 0.05);
+  --card-shadow-hover: 0 2px 4px rgba(20, 20, 50, 0.08), 0 12px 28px rgba(80, 40, 160, 0.14);
+  --glow: radial-gradient(900px 420px at 100% -10%, rgba(219, 39, 119, 0.10), transparent 60%),
+    radial-gradient(800px 500px at 20% -20%, rgba(124, 58, 237, 0.12), transparent 60%);
+  /* Bara laterală e închisă la culoare în ambele teme, ca în aplicațiile profesionale. */
+  --sidebar: #12122a;
+  --side-text: #d9d8ee;
+  --side-muted: #8a89aa;
+  --side-hover: #1d1d3d;
+  --side-active: #2a2155;
+  --side-border: #1f1f3f;
+  font-family: 'Segoe UI Variable Text', 'Segoe UI', system-ui, sans-serif;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) {
+    --bg: #0e0e1f;
+    --panel: #17172f;
+    --text: #ecebf7;
+    --muted: #9998b8;
+    --border: #2a2a4a;
+    --accent: #a78bfa;
+    --accent-2: #f472b6;
+    --accent-soft: rgba(167, 139, 250, 0.18);
+    --hover: #212142;
+    --card-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+    --card-shadow-hover: 0 12px 30px rgba(0, 0, 0, 0.45), 0 0 0 1px rgba(167, 139, 250, 0.35);
+    --glow: radial-gradient(900px 460px at 100% -10%, rgba(219, 39, 119, 0.20), transparent 60%),
+      radial-gradient(900px 560px at 15% -25%, rgba(124, 58, 237, 0.28), transparent 60%);
+    --sidebar: #0a0a18;
+    --side-hover: #17173a;
+    --side-active: #251d4f;
+    --side-border: #1a1a36;
+  }
+}
+
+:root[data-theme='dark'] {
+  --bg: #0e0e1f;
+  --panel: #17172f;
+  --text: #ecebf7;
+  --muted: #9998b8;
+  --border: #2a2a4a;
+  --accent: #a78bfa;
+  --accent-2: #f472b6;
+  --accent-soft: rgba(167, 139, 250, 0.18);
+  --hover: #212142;
+  --card-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+  --card-shadow-hover: 0 12px 30px rgba(0, 0, 0, 0.45), 0 0 0 1px rgba(167, 139, 250, 0.35);
+  --glow: radial-gradient(900px 460px at 100% -10%, rgba(219, 39, 119, 0.20), transparent 60%),
+    radial-gradient(900px 560px at 15% -25%, rgba(124, 58, 237, 0.28), transparent 60%);
+  --sidebar: #0a0a18;
+  --side-hover: #17173a;
+  --side-active: #251d4f;
+  --side-border: #1a1a36;
+}
+
+::selection { background: rgba(124, 58, 237, 0.25); }
+
+/* ---------- Bara laterală ---------- */
+.sidebar {
+  width: 224px; padding: 16px 12px; gap: 2px; color: var(--side-text);
+  background: var(--sidebar); border-right: 1px solid var(--side-border);
+}
+.brand { display: flex; align-items: center; gap: 8px; padding: 2px 8px 18px; font-size: 18px; font-weight: 700; letter-spacing: 0.2px; }
+.brand-mark { display: grid; place-items: center; flex: none; }
+.brand-name { font-size: 15px; line-height: 1.15; white-space: nowrap; }
+.nav-label {
+  padding: 14px 10px 6px; font-size: 11px; font-weight: 600; letter-spacing: 0.8px;
+  text-transform: uppercase; color: var(--side-muted);
+}
+.nav-item { position: relative; gap: 12px; padding: 9px 10px; border-radius: 8px; color: var(--side-text); }
+.nav-item:hover { background: var(--side-hover); }
+.nav-item.active { background: var(--side-active); color: #fff; font-weight: 600; }
+.nav-item.active::before {
+  content: ''; position: absolute; left: -12px; top: 8px; bottom: 8px; width: 3px; border-radius: 0 3px 3px 0;
+  background: linear-gradient(#a78bfa, #f472b6);
+}
+.nav-item.active .nav-icon { color: #c4b5fd; }
+.nav-item.not-ready { color: var(--side-muted); }
+.nav-icon { width: 20px; display: inline-flex; justify-content: center; }
+.theme-switch {
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px; padding: 3px; margin: 8px 2px 0;
+  border-radius: 10px; background: var(--side-hover); border: 1px solid var(--side-border);
+}
+.theme-switch button {
+  display: grid; place-items: center; height: 30px; border: 0; border-radius: 7px;
+  background: transparent; color: var(--side-muted);
+}
+.theme-switch button:hover { color: var(--side-text); }
+.theme-switch button.on { background: var(--side-active); color: #fff; }
+
+/* ---------- Iconițele colorate ale aplicațiilor ---------- */
+.app-tile {
+  flex-shrink: 0; display: inline-grid; place-items: center; border-radius: 28%; color: #fff;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.25), 0 3px 10px rgba(0, 0, 0, 0.15);
+}
+
+/* ---------- Pagina Acasă ---------- */
+.content { background: var(--bg); }
+.content:has(.home) { background: var(--glow), var(--bg); }
+.home { max-width: 1120px; padding: 36px 40px 56px; }
+.home-head { display: flex; align-items: flex-end; justify-content: space-between; gap: 24px; flex-wrap: wrap; margin-bottom: 28px; }
+.home-date { margin: 0 0 6px; color: var(--muted); font-size: 13px; }
+.home h1 { margin: 0; font-size: 30px; font-weight: 700; letter-spacing: -0.4px; }
+.grad-text { background: linear-gradient(90deg, var(--accent), var(--accent-2)); -webkit-background-clip: text; background-clip: text; color: transparent; }
+.search {
+  display: flex; align-items: center; gap: 10px; width: min(380px, 100%); height: 44px; padding: 0 12px 0 14px;
+  border-radius: 12px; background: var(--panel); border: 1px solid var(--border); color: var(--muted);
+  box-shadow: var(--card-shadow);
+}
+.search:focus-within { border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-soft); }
+.search input { flex: 1; min-width: 0; border: 0; outline: none; background: transparent; font: inherit; font-size: 14px; color: var(--text); }
+.search kbd {
+  font: inherit; font-size: 11px; color: var(--muted); padding: 2px 6px;
+  border: 1px solid var(--border); border-radius: 5px; background: var(--bg);
+}
+
+.eyebrow { display: block; font-size: 11px; font-weight: 600; letter-spacing: 0.8px; text-transform: uppercase; color: var(--muted); }
+.hero { display: grid; grid-template-columns: 1.6fr 1fr; gap: 16px; margin-bottom: 8px; }
+.hero-main, .hero-last {
+  padding: 20px 22px; border-radius: 16px; background: var(--panel); border: 1px solid var(--border);
+  box-shadow: var(--card-shadow); text-align: left;
+}
+.hero-main { background: linear-gradient(135deg, rgba(124, 58, 237, 0.08), rgba(219, 39, 119, 0.06)), var(--panel); }
+.home .hero h2 { margin: 6px 0 14px; font-size: 18px; color: var(--text); }
+.quick { display: flex; flex-wrap: wrap; gap: 10px; }
+.quick-btn {
+  display: flex; align-items: center; gap: 10px; padding: 7px 12px 7px 7px; border-radius: 12px;
+  border: 1px solid var(--border); background: var(--panel); font-weight: 600;
+  transition: transform 0.12s, box-shadow 0.12s, border-color 0.12s;
+}
+.quick-btn svg { color: var(--muted); }
+.quick-btn:hover { border-color: var(--accent); box-shadow: var(--card-shadow-hover); transform: translateY(-1px); }
+.hero-note { display: flex; align-items: center; gap: 6px; margin: 16px 0 0; font-size: 12px; color: var(--muted); }
+.hero-last { display: flex; flex-direction: column; justify-content: space-between; gap: 14px; transition: box-shadow 0.12s, border-color 0.12s; }
+button.hero-last:hover { border-color: var(--accent); box-shadow: var(--card-shadow-hover); }
+.empty-last { justify-content: flex-start; font-size: 13px; }
+.last-row { display: flex; align-items: center; gap: 14px; color: var(--muted); }
+.last-text { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 3px; }
+.last-name { font-size: 16px; font-weight: 600; color: var(--text); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.last-meta { font-size: 12px; }
+
+.section-head { display: flex; align-items: baseline; gap: 10px; margin: 32px 0 14px; }
+.home .section-head h2 { margin: 0; font-size: 16px; font-weight: 700; color: var(--text); }
+.section-head .muted { font-size: 12px; }
+
+.app-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 16px; }
+.app-card {
+  position: relative; display: flex; flex-direction: column; align-items: flex-start; gap: 4px; padding: 20px;
+  border-radius: 16px; background: var(--panel); border: 1px solid var(--border); text-align: left;
+  box-shadow: var(--card-shadow); transition: transform 0.12s, box-shadow 0.12s, border-color 0.12s;
+}
+.app-card:hover { transform: translateY(-2px); border-color: var(--accent); box-shadow: var(--card-shadow-hover); }
+.app-card .app-tile { margin-bottom: 12px; }
+.app-card-name { font-size: 17px; font-weight: 700; }
+.app-card-desc { color: var(--text); opacity: 0.85; }
+.app-card-meta { margin-top: 8px; font-size: 12px; color: var(--muted); }
+.app-card-go {
+  position: absolute; top: 20px; right: 18px; width: 30px; height: 30px; display: grid; place-items: center;
+  border-radius: 50%; color: var(--muted); background: var(--bg); transition: background 0.12s, color 0.12s;
+}
+.app-card:hover .app-card-go { background: var(--accent); color: #fff; }
+
+.soon-row { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-top: 16px; }
+.soon-label { font-size: 12px; font-weight: 600; color: var(--muted); margin-right: 4px; }
+.soon-chip {
+  display: inline-flex; align-items: center; gap: 8px; padding: 5px 12px 5px 5px; border-radius: 999px;
+  border: 1px dashed var(--border); background: transparent; color: var(--muted); font-size: 13px;
+}
+.soon-chip .app-tile { opacity: 0.75; box-shadow: none; }
+.soon-chip:hover { border-style: solid; border-color: var(--accent); color: var(--text); }
+
+.recent { border-radius: 14px; background: var(--panel); box-shadow: var(--card-shadow); }
+.recent button {
+  display: flex; align-items: center; gap: 14px; padding: 10px 16px; background: transparent;
+}
+.recent button:hover { background: var(--hover); }
+.recent-text { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px; }
+.recent-name { font-weight: 600; }
+.recent-kind {
+  font-size: 11px; font-weight: 600; padding: 3px 8px; border-radius: 999px; color: var(--muted); background: var(--bg);
+}
+.recent-date { width: 110px; text-align: right; font-size: 12px; color: var(--muted); }
+.empty-recent { padding: 18px; border: 1px dashed var(--border); border-radius: 14px; text-align: center; }
+
+/* ---------- Pagina „în curând” și barele editoarelor ---------- */
+.empty { gap: 6px; }
+.empty .app-tile { margin-bottom: 10px; border-radius: 24px; }
+.toolbar button { border-radius: 8px; background: var(--panel); }
+.toolbar button:hover { background: var(--hover); }
+.statusbar { background: var(--panel); }
+
+@media (max-width: 900px) {
+  .hero { grid-template-columns: 1fr; }
+  .home { padding: 24px 20px 40px; }
+}
+
+/* Tipărire și export PDF: hârtie albă, indiferent de temă. */
+@media print {
+  :root, :root[data-theme='dark'], :root:not([data-theme='light']) {
+    --panel: #fff; --bg: #fff; --text: #000; --muted: #555; --border: #bbb; color-scheme: light;
+  }
+}
+
+/* Acasă: notițele fixate (📌), ca bilețele. */
+.home-notes { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 12px; }
+.home-note {
+  display: flex; flex-direction: column; gap: 6px; min-height: 84px; padding: 12px 14px; text-align: left; cursor: pointer;
+  border: 1px solid var(--border); border-radius: 12px; background: var(--panel); color: var(--text); font: inherit; box-shadow: var(--card-shadow);
+}
+.home-note:hover { border-color: var(--accent); }
+.home-note-title { font-weight: 600; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.home-note-text { font-size: 13px; color: var(--muted); white-space: pre-line; display: -webkit-box; -webkit-line-clamp: 4; -webkit-box-orient: vertical; overflow: hidden; }
+
+/* ---------- Bara laterală strânsă (doar pictogramele) ---------- */
+.nav-toggle {
+  margin-left: auto; width: 24px; height: 24px; display: grid; place-items: center; padding: 0;
+  border: 0; border-radius: 6px; background: transparent; color: var(--side-muted); font-size: 15px; font-weight: 600;
+}
+.nav-toggle:hover { background: var(--side-hover); color: var(--side-text); }
+.app.nav-small .sidebar { width: 60px; padding: 16px 8px; }
+.app.nav-small .brand { flex-direction: column; gap: 8px; padding: 2px 0 14px; }
+.app.nav-small .nav-toggle { margin-left: 0; }
+.app.nav-small .brand > span:not(.brand-mark),
+.app.nav-small .nav-item > span:not(.nav-icon),
+.app.nav-small .nav-label { display: none; }
+.app.nav-small .nav-item { justify-content: center; padding: 9px 0; }
+.app.nav-small .nav-item.active::before { left: -8px; }
+.app.nav-small .theme-switch { grid-template-columns: 1fr; margin: 8px 0 0; }
+/* Limba interfeței (RO / EN), deasupra temei. */
+.theme-switch.lang-switch { grid-template-columns: repeat(2, 1fr); }
+.theme-switch.lang-switch button { height: 22px; font-size: 11px; font-weight: 600; letter-spacing: 0.04em; }
+.app.nav-small .theme-switch.lang-switch { grid-template-columns: 1fr 1fr; }
+.app.nav-small .theme-switch.lang-switch button { font-size: 9px; letter-spacing: 0; }

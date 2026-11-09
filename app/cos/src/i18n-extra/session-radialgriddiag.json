@@ -1,0 +1,14 @@
+{
+  "dict": {
+    "Radial cu blocuri (primul într-un bloc în mijloc, restul în blocuri în jur, legate de el)": "Radial cluster (the first in a block in the middle, the rest in blocks around it, linked to it)",
+    "Grilă cu axe (ideile câte două pe rând, despărțite de o axă verticală și de axe orizontale)": "Grid with axes (the ideas two per row, separated by a vertical axis and horizontal axes)",
+    "Radial cu blocuri": "Radial cluster",
+    "radial cu blocuri": "radial cluster",
+    "Grilă cu axe": "Grid with axes",
+    "grilă cu axe": "grid with axes",
+    "O idee într-un bloc în mijloc, legată de blocurile din jurul ei (primul rând e mijlocul; un subiect și temele lui)": "An idea in a block in the middle, linked to the blocks around it (the first line is the middle; a subject and its themes)",
+    "Idei câte două pe rând, despărțite de o axă verticală și de axe orizontale (de comparat pe două criterii)": "Ideas two per row, separated by a vertical axis and horizontal axes (to compare on two criteria)"
+  },
+  "templates": {},
+  "skip": []
+}

@@ -1,0 +1,12 @@
+{
+  "dict": {
+    "🧊 Rotește modelul": "🧊 Rotate model",
+    "Rotește din nou modelul 3D, schimbă-i culoarea sau unghiul": "Rotate the 3D model again, change its color or angle"
+  },
+  "templates": {
+    "Modelul 3D „{0}” e pe slide, ca poză (fișierul e prea mare ca să fie ținut în prezentare, deci nu se mai poate roti)": "The 3D model “{0}” is on the slide as a picture (the file is too large to keep in the presentation, so it can no longer be rotated)",
+    "Modelul 3D „{0}” e pe slide, ca poză; mută-l sau mărește-l ca pe orice poză, iar 🧊 Rotește modelul îl întoarce din nou": "The 3D model “{0}” is on the slide as a picture; move or resize it like any picture, and 🧊 Rotate model turns it again",
+    "Modelul 3D „{0}” e rotit din nou": "The 3D model “{0}” has been rotated again"
+  },
+  "skip": []
+}

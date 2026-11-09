@@ -1,5 +1,5 @@
+// Copiat neschimbat din Cyber Office Studio (aplicația proprietarului, D-071); vezi app/cos/README.md.
 // @ts-nocheck
-// Din Cyber Office Studio (src/qr.ts, D-071), neschimbat.
 // Coduri QR (standardul ISO/IEC 18004), scrise de noi: text în mod „octeți” (UTF-8), versiunile 1–10 (până la ~270 de octeți),
 // nivelurile de corecție L / M / Q / H, masca aleasă după penalizările din standard. Folosit de PDF (câmp cod de bare),
 // Docs și Slides (pune un cod QR). Testat în tests/qr.test.mjs.

@@ -1,0 +1,24 @@
+{
+  "dict": {
+    "Zugrăveli și finisaje": "Painting and finishing",
+    "Cutie de vopsea": "Paint can",
+    "Pensulă lată": "Wall brush",
+    "Șpaclu": "Putty knife",
+    "Rolă de tapet": "Wallpaper roll",
+    "Gresie și faianță": "Tiles",
+    "Scară de zugrav": "Stepladder",
+    "Drișcă": "Plastering float",
+    "Pistol de silicon": "Caulking gun"
+  },
+  "templates": {},
+  "skip": [
+    "cutie de vopsea lavabilă găleată zugrăveală var paint can",
+    "pensulă lată bidinea vopsit zugrav wall brush",
+    "șpaclu spaclu glet chit răzuit putty knife",
+    "rolă de tapet tapetat perete model wallpaper roll",
+    "gresie faianță plăci ceramice rosturi baie tiles",
+    "scară de zugrav scăriță trepte stepladder",
+    "drișcă gletuit tencuială netezit plastering float trowel",
+    "pistol de silicon siliconat etanșare chit rosturi caulking gun"
+  ]
+}

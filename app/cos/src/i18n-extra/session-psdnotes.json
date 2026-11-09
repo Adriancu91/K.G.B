@@ -1,0 +1,11 @@
+{
+ "dict": {
+  "1 notă · se păstrează doar în .psd": "1 note · kept only in .psd"
+ },
+ "templates": {
+  "{0} note · se păstrează doar în .psd": "{0} notes · kept only in .psd"
+ },
+ "skip": [
+  "Anno"
+ ]
+}

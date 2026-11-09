@@ -1,0 +1,33 @@
+{
+ "dict": {
+  "[Comanda la furnizori: suma] · [reducerea pentru marfa veche] · întrebări: [nume] · [telefon]": "[Supplier order: amount] · [discount for old stock] · questions: [name] · [phone]",
+  "[produsul]: fără ieșiri de [luni] luni": "[product]: no issues for [months] months",
+  "Cifrele vin din Sheets → Fișa de magazie (Stocul la zi și Valoarea stocului) și din bonurile de consum și de transfer.": "The figures come from Sheets → Stock card (Current stock and Stock value) and from the materials requisitions and transfer slips.",
+  "Dacă nu sunt diferențe, spune asta: e o veste bună.": "If there are no differences, say so: it is good news.",
+  "De comandat și de vândut": "To reorder and to sell",
+  "Diferențe și probleme": "Differences and issues",
+  "Explicațiile: Docs → Notă explicativă a gestionarului": "The explanations: Docs → Stock keeper explanatory note",
+  "Față de luna trecută: [+ / − suma] lei": "Compared with last month: [+ / − amount] lei",
+  "Fișe cu stoc negativ: [câte] → lipsește un document de intrare": "Cards with negative stock: [how many] → a receipt document is missing",
+  "Gestiuni: [câte]": "Stores: [how many]",
+  "În luna aceasta:": "This month:",
+  "Intrări: [suma] lei · ieșiri: [suma] lei": "Receipts: [amount] lei · issues: [amount] lei",
+  "La început de lună": "At start of month",
+  "La sfârșit de lună": "At end of month",
+  "Lipsuri găsite la sondaj: [produsul, cantitatea, valoarea]": "Shortages found in the spot check: [product, quantity, value]",
+  "Lista de comandat se face din fișele cu starea „De comandat”.": "The reorder list is made from the cards with the status “To reorder”.",
+  "Pentru administrator, la sfârșitul lunii: cât valorează stocul din fiecare gestiune, ce a intrat și ce a ieșit, într-un tabel și într-un grafic, produsele sub stocul minim, marfa care stă de mult pe raft, diferențele găsite și ce comandăm.": "For the manager, at month end: the stock value in each store, what came in and what went out, in a table and a chart, the products below the minimum stock, goods that have been on the shelf for a long time, the differences found and what we order.",
+  "Produse sub stocul minim: [câte]": "Products below minimum stock: [how many]",
+  "Propunere: [reducere / retur la furnizor / transfer]": "Proposal: [discount / return to supplier / transfer]",
+  "Situația stocurilor": "Stock report",
+  "Situația stocurilor · [luna] [anul]": "Stock report · [month] [year]",
+  "Spune de la început cât valorează stocul azi și dacă a crescut sau a scăzut față de luna trecută.": "Say at the start what the stock is worth today and whether it went up or down compared with last month.",
+  "Stau de mult pe raft:": "On the shelf for a long time:",
+  "Stoc la sfârșit de lună (mii lei)": "Stock at month end (thousand lei)",
+  "Stocul pe gestiuni": "Stock by store",
+  "Transferuri primite cu diferențe: [câte] (Sheets → Bon de transfer)": "Transfers received with differences: [how many] (Sheets → Transfer slip)",
+  "Valoarea stocului pe gestiuni": "Stock value by store"
+ },
+ "templates": {},
+ "skip": []
+}

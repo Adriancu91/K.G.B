@@ -1,0 +1,10 @@
+{
+  "dict": {
+    "📦 Inventarierea anuală": "📦 Year-end stocktaking"
+  },
+  "templates": {},
+  "skip": [
+    "Anul: \nComisia de inventariere (decizia nr. / data): \nData inventarierii: \n\nÎnainte:\n☐ decizia de numire a comisiei semnată de administrator\n☐ lista mijloacelor fixe tipărită (Sheets → Registrul mijloacelor fixe)\n☐ stocul scriptic tipărit (Sheets → Inventar / stoc)\n☐ gestionarii anunțați; documentele de intrare și ieșire închise la zi\n\nNumărarea:\n☐ fiecare mijloc fix găsit la locul lui, cu numărul de inventar pe el\n☐ echipamentele aflate la angajați confirmate (Sheets → Echipamente date angajaților)\n☐ stocul numărat pe raft și trecut în listele de inventariere\n☐ numerarul din casă numărat și comparat cu registrul de casă (Sheets → Registru de casă)\n☐ soldurile cu clienții și furnizorii confirmate (Sheets → Facturi de la furnizori)\n\nDupă:\n☐ diferențele (plusuri și lipsuri) trecute într-un proces-verbal, cu explicațiile gestionarilor\n☐ bunurile uzate sau stricate propuse pentru casare (Docs → Proces-verbal de casare)\n☐ listele și procesul-verbal semnate de comisie și predate contabilului\n☐ registrul mijloacelor fixe și stocul actualizate\n\nDiferențe găsite:\n• ",
+    "Inventarierea anuală {0}"
+  ]
+}

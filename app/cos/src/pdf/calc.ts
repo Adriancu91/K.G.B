@@ -1,5 +1,5 @@
+// Copiat neschimbat din Cyber Office Studio (aplicația proprietarului, D-071); vezi app/cos/README.md.
 // @ts-nocheck
-// Din Cyber Office Studio (src/pdf/calc.ts, D-071, D-078), neschimbat.
 // Câmpurile care calculează din formularele PDF (totaluri, medii, produse), fără motor de scripturi:
 // citim doar formele standard pe care le scriu programele de PDF în acțiunea „Calculate” a câmpului:
 //  - AFSimple_Calculate("SUM", new Array("A", "B")) — sumă, medie, produs, minim, maxim dintre câmpuri;

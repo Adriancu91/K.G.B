@@ -1,0 +1,24 @@
+{
+  "dict": {
+    "Turism și cazare": "Travel and lodging",
+    "Clopoțel de recepție": "Service bell",
+    "Card de cameră": "Room key card",
+    "Nu deranjați": "Do not disturb",
+    "Umbrelă de plajă": "Beach umbrella",
+    "Piscină": "Swimming pool",
+    "Rucsac": "Backpack",
+    "Clasificare cu stele": "Star rating",
+    "Cort": "Tent"
+  },
+  "templates": {},
+  "skip": [
+    "clopoțel de recepție hotel serviciu sunați service bell reception hotel",
+    "card de cameră hotel acces ușă key card room access",
+    "nu deranjați agățătoare ușă cameră liniște do not disturb door hanger",
+    "umbrelă de plajă mare vacanță vară soare beach umbrella sea holiday",
+    "piscină bazin scară valuri pool ladder",
+    "rucsac excursie drumeție bagaj backpack hiking trip",
+    "clasificare stele hotel pensiune categorie rating stars classification",
+    "cort camping tabără munte tent camping camp"
+  ]
+}

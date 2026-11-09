@@ -1,0 +1,24 @@
+{
+  "dict": {
+    "Securitate": "Security",
+    "Cameră de supraveghere": "Security camera",
+    "Amprentă": "Fingerprint",
+    "Ecuson": "ID badge",
+    "Sirenă": "Siren",
+    "Lacăt deschis": "Open padlock",
+    "Parolă": "Password",
+    "Tastatură de alarmă": "Alarm keypad",
+    "Acces interzis": "No entry"
+  },
+  "templates": {},
+  "skip": [
+    "cameră de supraveghere video pază securitate cctv surveillance camera security",
+    "amprentă deget pontaj biometric acces fingerprint biometric access",
+    "ecuson legitimație card angajat vizitator badge id card employee visitor",
+    "sirenă alarmă girofar urgență siren alarm emergency",
+    "lacăt deschis deblocat acces permis unlock unlocked open padlock",
+    "parolă cod pin autentificare cont password pin login",
+    "tastatură de alarmă cod centrală armare keypad alarm panel code",
+    "acces interzis intrarea oprită no entry forbidden prohibited"
+  ]
+}

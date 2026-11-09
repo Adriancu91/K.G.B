@@ -1,0 +1,20 @@
+{
+ "dict": {
+  "Culoarea stilului de tabel: a temei sau alta": "Table style color: the theme's or another one",
+  "Culoarea stilului": "Style color",
+  "Culoarea temei": "Theme color",
+  "Turcoaz": "Turquoise",
+  "Auriu": "Gold",
+  "Mov": "Purple",
+  "Portocaliu": "Orange",
+  "Albastru": "Blue",
+  "Verde": "Green",
+  "Roșu": "Red",
+  "Gri": "Gray",
+  "Gri întunecat": "Dark gray",
+  "Auriu întunecat": "Dark gold",
+  "Turcoaz întunecat": "Dark turquoise"
+ },
+ "templates": {},
+ "skip": []
+}

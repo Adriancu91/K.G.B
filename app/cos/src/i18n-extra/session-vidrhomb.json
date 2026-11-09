@@ -1,0 +1,23 @@
+{
+  "dict": {
+    "Pătrățele în romb": "Diamond tiles",
+    "Pătrățele în romb de la margini": "Diamond tiles from edges",
+    "Pătrățele în cerc": "Circle tiles",
+    "Pătrățele în cerc de la margini": "Circle tiles from edges",
+    "Pătrățele în cruce": "Cross tiles",
+    "Pătrățele în cruce de la colțuri": "Cross tiles from corners",
+    "Panou de avertizare (galben, cu dungi negre pe margine)": "Warning sign (yellow, black stripes around the edge)",
+    "Curcubeu (alb, cu dungi colorate sus și jos)": "Rainbow (white, colored stripes at the top and bottom)",
+    "Față de masă (carouri roșii, etichetă albă)": "Tablecloth (red gingham, white label)",
+    "Tablă albă (ramă gri, cu suport de markere)": "Whiteboard (gray frame, with marker tray)",
+    "Pătrățele în X": "X tiles",
+    "Pătrățele în X de la margini": "X tiles from the edges",
+    "Pătrățele la întâmplare": "Random tiles",
+    "Pătrățele în val": "Wave tiles",
+    "Pagină de ziar (gri deschis, linii duble sus și jos)": "Newspaper page (light gray, double rules at top and bottom)",
+    "Hârtie milimetrică (albă, cu caroiaj verde)": "Graph paper (white, with a green grid)",
+    "Etichetă de preț (portocalie, cu gaură și sfoară)": "Price tag (orange, with a hole and string)"
+  },
+  "templates": {},
+  "skip": []
+}

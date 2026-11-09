@@ -1,0 +1,10 @@
+{
+  "dict": {
+    "📣 Reclamația unui client": "📣 Customer complaint"
+  },
+  "templates": {},
+  "skip": [
+    "Clientul și telefonul:\nFactura / comanda:\nCe reclamă:\n\nLa primire:\n☐ reclamația scrisă, cu data și ora (registrul de reclamații)\n☐ pozele sau produsul primite de la client\n☐ clientului i s-a spus în cât timp primește răspuns\n\nVerificarea:\n☐ produsul și factura verificate\n☐ dacă e vina transportului: Docs → Proces-verbal de constatare a pagubei\n☐ dacă e vina furnizorului: Docs → Notificare de neconformitate la livrare\n\nRezolvarea:\n☐ ce primește clientul: reparare, înlocuire, banii înapoi sau reducere\n☐ răspunsul trimis clientului în scris\n☐ factura de stornare sau produsul nou trimis\n☐ reclamația închisă în registru\n\nCe schimbăm ca să nu se repete:\n• ",
+    "Reclamație {0}"
+  ]
+}

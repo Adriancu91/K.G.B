@@ -7,6 +7,18 @@ import { useCallback, useEffect, useRef, useState, type KeyboardEvent } from "re
 import { open, save } from "@tauri-apps/plugin-dialog";
 import { api, message } from "../../api";
 import { Confirm } from "../../components/Confirm";
+import type { KgbHost } from "./cosBridge";
+
+// The spreadsheet window of Cyber Office Studio (D-073, D-077) runs in its own frame and reaches the core
+// through this host, which the app lends it on its own window.
+const host: KgbHost = {
+  moduleCall: (id, command, args) => api.moduleCall(id, command, args),
+  importFile: (id, path) => api.importFile(id, path),
+  importFileWith: (id, path, command, args) => api.importFileWith(id, path, command, args),
+  open: (o) => open(o),
+  save: (o) => save(o),
+};
+(window as Window & { kgbHost?: KgbHost }).kgbHost = host;
 
 const ID = "kgb.sheets";
 const ROW_H = 26;
@@ -83,6 +95,8 @@ export function SheetsPage({ onError }: { onError: (e: string | null) => void })
   const [library, setLibrary] = useState<{ templates: Template[]; note: string } | null>(null);
   const [csvStyle, setCsvStyle] = useState<"ro" | "standard">("ro");
   const loading = useRef(new Set<number>());
+  // The workbook shown in the spreadsheet window: "doc=<id>" or "new"; null = the window is closed.
+  const [frame, setFrame] = useState<string | null>(null);
 
   const refresh = useCallback(async () => {
     try {
@@ -302,6 +316,9 @@ export function SheetsPage({ onError }: { onError: (e: string | null) => void })
         <button onClick={() => void onTemplates()} disabled={busy}>
           Șabloane de calcul…
         </button>
+        <button onClick={() => setFrame("new")} disabled={busy}>
+          Registru nou în foaia de calcul
+        </button>
         {notice && <span className="muted grow">{notice}</span>}
       </div>
 
@@ -328,6 +345,11 @@ export function SheetsPage({ onError }: { onError: (e: string | null) => void })
           <div className="pdf-doc grow">
             <header className="row wrap">
               <h2 className="grow">{info.name}</h2>
+              {(info.format === "xlsx" || /.ssheet$/i.test(info.name)) && isCurrent && (
+                <button className="primary" disabled={busy || pending > 0} onClick={() => setFrame(`doc=${doc.id}`)}>
+                  Deschide în foaia de calcul
+                </button>
+              )}
               <label>
                 Versiunea{" "}
                 <select value={info.version} disabled={pending > 0} onChange={(e) => void load(doc.id, Number(e.target.value), sheet)}>
@@ -377,6 +399,7 @@ export function SheetsPage({ onError }: { onError: (e: string | null) => void })
             {info.reason && <p className="warn">{info.reason}</p>}
             {!isCurrent && <p className="muted">Vezi o versiune mai veche: modificările se fac doar pe versiunea curentă.</p>}
 
+            {info.format !== "ssheet" && (<>
             <div className="sheet-tabs" role="tablist">
               {info.sheets.map((s) => (
                 <button key={s.name} role="tab" aria-selected={s.name === sheet} className={s.name === sheet ? "active" : ""} onClick={() => setSheet(s.name)}>
@@ -448,6 +471,7 @@ export function SheetsPage({ onError }: { onError: (e: string | null) => void })
                 ))}
               </div>
             </div>
+            </>)}
           </div>
         )}
       </div>
@@ -537,6 +561,25 @@ export function SheetsPage({ onError }: { onError: (e: string | null) => void })
           „{toDelete.name}” și toate cele {toDelete.current} versiuni dispar din listă. Conținutul rămâne pe disc până la
           colectarea fișierelor din „Date și backup” (și în backupurile făcute până acum).
         </Confirm>
+      )}
+      {frame && (
+        <div className="cos-frame" role="dialog" aria-label="Foaie de calcul">
+          <div className="row cos-frame-bar">
+            <span className="grow muted">
+              Foaia de calcul: fiecare salvare devine o versiune nouă a registrului. Salvează înainte de a închide.
+            </span>
+            <button
+              onClick={() => {
+                setFrame(null);
+                void refresh();
+                if (current) void load(current, null, sheet);
+              }}
+            >
+              Închide foaia de calcul
+            </button>
+          </div>
+          <iframe title="Foaie de calcul" src={`cos-sheets.html#${frame}`} />
+        </div>
       )}
     </section>
   );

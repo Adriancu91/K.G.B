@@ -1,5 +1,5 @@
+// Copiat neschimbat din Cyber Office Studio (aplicația proprietarului, D-071); vezi app/cos/README.md.
 // @ts-nocheck
-// Din Cyber Office Studio (src/pdf/sign.ts, D-071, D-078), neschimbat.
 // „Completează și semnează” (Fill & Sign): text, dată, bifă și semnătură puse oriunde pe pagină.
 // Cât lucrezi, sunt elemente HTML peste pagină; la salvare fiecare devine o imagine PNG desenată în PDF cu pdf-lib.
 // Imaginea păstrează diacriticele (ș, ț) fără să includem un font în PDF.

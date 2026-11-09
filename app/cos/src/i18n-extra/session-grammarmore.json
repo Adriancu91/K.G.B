@@ -1,0 +1,35 @@
+{
+ "dict": {
+  "„Perfect” nu are grade de comparație.": "“Perfect” has no degrees of comparison.",
+  "„Superior”, „inferior” și „preferabil” arată deja comparația; fără „mai”.": "“Superior”, “inferior” and “preferable” already express the comparison; drop “more”.",
+  "După „etc.” nu se pun puncte de suspensie.": "No ellipsis after “etc.”.",
+  "Înainte de „etc.” nu se pune „și” (înseamnă deja „și celelalte”).": "No “and” before “etc.” (it already means “and the rest”).",
+  "Pleonasm: „a avansa” înseamnă deja „a merge înainte”.": "Pleonasm: “to advance” already means “to move forward”.",
+  "Pleonasm: „a colabora” înseamnă deja „a lucra împreună”.": "Pleonasm: “to collaborate” already means “to work together”.",
+  "Pleonasm: „a prevedea” înseamnă deja „a vedea dinainte”.": "Pleonasm: “to foresee” already means “to see in advance”.",
+  "Pleonasm: „aproximativ” și „în jur de” spun același lucru.": "Pleonasm: “approximately” and “around” say the same thing.",
+  "Pleonasm: o persoană este deja o ființă umană.": "Pleonasm: a person is already a human being.",
+  "Pleonasm: protagonistul este deja personajul principal.": "Pleonasm: the protagonist is already the main character.",
+  "Se scrie legat: „vreun”, „vreo”, „niciun”, „nicio”.": "Written as one word: “vreun”, “vreo”, “niciun”, “nicio”."
+ },
+ "templates": {},
+ "skip": [
+  "(?:aproximativ|circa) (în jur de)",
+  "(?:cel mai|foarte) (perfect",
+  "(prevăz",
+  "(vre|nici)-(un|o)",
+  "*) împreună",
+  "*) înainte(?!§s+de)",
+  "*|prevăd",
+  "completă",
+  "completăm",
+  "completată",
+  "completați",
+  "completează",
+  "mai ((?:superio|inferio|preferabil)",
+  "proprietară",
+  "proprietăți",
+  "și (etc)",
+  "și așa"
+ ]
+}

@@ -1,0 +1,41 @@
+{
+  "dict": {
+    "🗒 Coordonator notițe": "🗒 Notes Master",
+    "▤ Coordonator documente": "▤ Handout Master",
+    "Coordonator documente": "Handout Master",
+    "Coordonator notițe": "Notes Master",
+    "Antet (stânga sus)": "Header (top left)",
+    "Subsol (stânga jos)": "Footer (bottom left)",
+    "Data de azi (dreapta sus)": "Today's date (top right)",
+    "Numărul paginii (dreapta jos)": "Page number (bottom right)",
+    "Număr pagină": "Page number",
+    "Imaginea diapozitivului": "Slide image",
+    "Corp": "Body",
+    "Corpul (notițele vorbitorului)": "Body (speaker notes)",
+    "Închide coordonatorul": "Close Master View",
+    "Previzualizare pagină": "Page preview",
+    "Slide-uri pe pagină": "Slides per page",
+    "Substituenți": "Placeholders",
+    "Coordonator documente: cum arată paginile de pliante (câte slide-uri pe pagină, antet, subsol, dată, număr de pagină)": "Handout Master: how handout pages look (slides per page, header, footer, date, page number)",
+    "Coordonator notițe: cum arată paginile de notițe (antet, subsol, dată, număr de pagină, poza slide-ului și notițele)": "Notes Master: how notes pages look (header, footer, date, page number, slide image and notes)",
+    "⇐ Promovare": "⇐ Promote",
+    "⇒ Retrogradare": "⇒ Demote",
+    "Promovare: la ierarhie, căsuța aleasă (cu cele de sub ea) urcă un nivel": "Promote: in a hierarchy, the selected shape (with the ones below it) moves up one level",
+    "Retrogradare: la ierarhie, căsuța aleasă (cu cele de sub ea) coboară un nivel, sub căsuța de dinaintea ei": "Demote: in a hierarchy, the selected shape (with the ones below it) moves down one level, under the shape before it",
+    "Proces ascendent": "Ascending process",
+    "Matrice": "Matrix",
+    "Venn": "Venn",
+    "Trepte tot mai înalte, de la stânga la dreapta (creștere, progres)": "Ever higher steps, from left to right (growth, progress)",
+    "Căsuțe în grilă, de exemplu 2 × 2 (puncte tari / slabe, priorități)": "Boxes in a grid, for example 2 × 2 (strengths / weaknesses, priorities)",
+    "Cercuri care se suprapun parțial (ce au în comun mai multe idei)": "Partly overlapping circles (what several ideas have in common)",
+    "Diagrame simple: proces, etape, listă, ierarhie, piramidă, ciclu, trepte, matrice, Venn (din forme pe care le poți modifica)": "Simple diagrams: process, stages, list, hierarchy, pyramid, cycle, steps, matrix, Venn (made of shapes you can change)",
+    "Matrice (grilă)": "Matrix (grid)",
+    "Proces ascendent (trepte)": "Ascending process (steps)",
+    "Venn (cercuri suprapuse)": "Venn (overlapping circles)",
+    "; primul stă sus; un rând început cu două spații stă sub cel de deasupra lui": "; the first one goes on top; a line starting with two spaces goes under the one above it"
+  },
+  "templates": {},
+  "skip": [
+    "Ideea {0}"
+  ]
+}

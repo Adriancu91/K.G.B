@@ -1,0 +1,35 @@
+{
+ "dict": {
+  "Foaia nu a putut fi pregătită.": "The sheet could not be prepared.",
+  "Foaie de contact": "Contact sheet",
+  "▤ Foaie de contact…": "▤ Contact sheet…",
+  "Foaie culcată": "Landscape sheet",
+  "Multe poze mici, cu numele lor, pe foi A4 într-un PDF": "Many small pictures, with their names, on A4 sheets in a PDF",
+  "Nu am putut face foaia de contact.": "Could not make the contact sheet.",
+  "Numele fișierului sub poză": "File name under the picture",
+  "Pregătesc foile…": "Preparing the sheets…",
+  "Titlul foii": "Sheet title",
+  "nu se poate deschide": "cannot be opened",
+  "Acum (în acesta)": "Now (in this one)",
+  "Adăugat": "Added",
+  "Comparat cu": "Compared with",
+  "Înainte (în celălalt PDF)": "Before (in the other PDF)",
+  "Înlocuit": "Replaced",
+  "Raport de comparare": "Comparison report",
+  "Șters": "Deleted",
+  "Textul e la fel în cele două PDF-uri.": "The text is the same in the two PDFs.",
+  "Raportul diferențelor ca PDF separat: fiecare modificare, cu pagina, textul de dinainte și cel de acum": "The report of the differences as a separate PDF: each change, with the page, the text before and the text now",
+  "Raportul nu a putut fi făcut.": "The report could not be made.",
+  "Fel": "Kind",
+  "Autorul notei": "Note author"
+ },
+ "templates": {
+  "Foaia {0} din {1}…": "Sheet {0} of {1}…",
+  "Foaia de contact ({0} poze) e salvată în {1}.": "The contact sheet ({0} pictures) is saved in {1}.",
+  "Pagina {0} din {1}": "Page {0} of {1}"
+ },
+ "skip": [
+  "<style>body{font-family:Calibri,Carlito,Arial,sans-serif;font-size:10pt;color:#000;margin:0}h1{font-size:16pt;margin:0 0 6pt}",
+  "p{margin:0 0 4pt}table{border-collapse:collapse;width:100%;margin-top:8pt}th,td{border:1px solid #999;padding:3pt 5pt;vertical-align:top;text-align:left}"
+ ]
+}

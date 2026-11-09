@@ -1,0 +1,19 @@
+{
+ "dict": {
+  "📚 Carte citită": "📚 Book I read",
+  "🩺 Programare la medic": "🩺 Doctor appointment",
+  "🚦 Sarcini pe priorități": "🚦 Tasks by priority",
+  "Notiță nouă dintr-un șablon: ședință, cumpărături, plan săptămânal, jurnal, rețetă, proiect, curs, bagaj, apel telefonic, priorități, carte citită, medic": "New note from a template: meeting, shopping, weekly plan, journal, recipe, project, course, packing, phone call, priorities, book I read, doctor"
+ },
+ "templates": {},
+ "skip": [
+  "🔴 Urgent și important (fac acum):\n☐ \n\n🟡 Important, dar nu urgent (programez):\n☐ \n\n🟠 Urgent, dar nu important (las altcuiva):\n☐ \n\n⚪ Nici urgent, nici important (renunț):\n☐ \n",
+  "Apel {0}",
+  "Autor: \nTerminată: {0}\nNota mea: ☆☆☆☆☆\n\nDespre ce e (pe scurt):\n\nIdei de ținut minte:\n• \n\nCitate preferate (pagina):\n💬 \n\nCe aplic de aici:\n☐ \n",
+  "Carte citită",
+  "Cu cine: \nTelefon: \nData: {0}\n\nDespre ce:\n\nCe am stabilit:\n• \n\nDe făcut după apel:\n☐ \n\nSun din nou pe: \n",
+  "Medic {0}",
+  "Medicul / clinica: \nData și ora: \n\nCe simt și de când:\n• \n\nÎntrebări pentru medic:\n❓ \n\nCe mi-a spus:\n\nTratament (ce, cât, cât timp):\n• \n\nDe făcut:\n☐ analize\n☐ control din nou pe \n",
+  "Priorități {0}"
+ ]
+}

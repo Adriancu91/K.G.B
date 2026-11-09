@@ -1,0 +1,10 @@
+{
+  "dict": {
+    "🍕 Comandă de mâncare la birou": "🍕 Office food order",
+    "Comanda (de la ce local, telefon sau aplicație):\nCine strânge banii:\nOra până la care se adună comenzile:\n\nÎnainte de comandă:\n☐ întrebați toți colegii, și cei plecați pe teren\n☐ notate alergiile și cine nu mănâncă de post sau fără carne\n☐ verificat dacă localul livrează până la birou și cât costă livrarea\n☐ ales cum se plătește: la livrare, cu cardul sau cu tichete de masă\n\nCine ce vrea (nume, ce, sosuri, băutură, preț):\n•\n•\n•\n\nLa livrare:\n☐ comanda verificată cu lista, înainte să plece curierul\n☐ bonul fiscal păstrat (pentru decont, dacă plătește firma)\n☐ fiecare și-a dat banii\n\nTotal comandă:\nCe n-a mers de data asta (lipsuri, întârziere, alt local data viitoare):\n• ": "Order (from which place, phone or app):\nWho collects the money:\nTime by which orders are gathered:\n\nBefore ordering:\n☐ asked all colleagues, including those out in the field\n☐ noted allergies and who eats only fasting or meat-free food\n☐ checked whether the place delivers to the office and what delivery costs\n☐ chosen how to pay: cash on delivery, by card or with meal vouchers\n\nWho wants what (name, what, sauces, drink, price):\n•\n•\n•\n\nOn delivery:\n☐ order checked against the list before the courier leaves\n☐ receipt kept (for reimbursement, if the company pays)\n☐ everyone has paid\n\nOrder total:\nWhat went wrong this time (missing items, delay, another place next time):\n• "
+  },
+  "templates": {
+    "Comandă de mâncare la birou {0}": "Office food order {0}"
+  },
+  "skip": []
+}

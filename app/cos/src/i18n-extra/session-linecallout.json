@@ -1,0 +1,18 @@
+{
+  "dict": {
+    "Explicație cu linie": "Callout: Line",
+    "Explicație cu linie frântă": "Callout: Bent Line",
+    "Explicație cu linie frântă de două ori": "Callout: Double Bent Line",
+    "Explicație cu linie și bară": "Callout: Line with Accent Bar",
+    "Explicație cu linie frântă și bară": "Callout: Bent Line with Accent Bar",
+    "Explicație cu linie frântă de două ori și bară": "Callout: Double Bent Line with Accent Bar",
+    "Explicație cu linie și chenar": "Callout: Line with Border",
+    "Explicație cu linie frântă și chenar": "Callout: Bent Line with Border",
+    "Explicație cu linie frântă de două ori și chenar": "Callout: Double Bent Line with Border",
+    "Explicație cu linie, bară și chenar": "Callout: Line with Border and Accent Bar",
+    "Explicație cu linie frântă, bară și chenar": "Callout: Bent Line with Border and Accent Bar",
+    "Explicație cu linie frântă de două ori, bară și chenar": "Callout: Double Bent Line with Border and Accent Bar"
+  },
+  "templates": {},
+  "skip": []
+}

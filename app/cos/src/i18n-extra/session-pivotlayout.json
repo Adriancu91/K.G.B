@@ -1,0 +1,18 @@
+{
+  "dict": {
+    "Tabelar": "Tabular",
+    "Al doilea câmp pe rânduri": "Second row field",
+    "Al doilea câmp pe rânduri: fiecare grup al primului câmp se împarte după valorile acestei coloane, cu subtotalul grupului": "Second row field: each group of the first field is split by the values of this column, with the group subtotal",
+    "Aspectul raportului": "Report layout",
+    "Compact: ambele câmpuri în prima coloană, al doilea retras; Schiță: câte o coloană pe câmp, subtotalul pe rândul grupului; Tabelar: câte o coloană pe câmp, subtotalul pe un rând Total sub grup": "Compact: both fields in the first column, the second indented; Outline: one column per field, the subtotal on the group row; Tabular: one column per field, the subtotal on a Total row under the group",
+    "Încă un câmp pe rânduri (sub primul)": "Another row field (under the first)",
+    "Subtotaluri": "Subtotals",
+    "Subtotaluri pe grupuri": "Group subtotals"
+  },
+  "templates": {},
+  "skip": [
+    "{0} din „{1}” pe „{2}”{3}{4}{5}",
+    "{0} Total",
+    "Rezumat pe „{0}”{1}: {2}{3}"
+  ]
+}

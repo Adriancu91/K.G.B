@@ -1,0 +1,10 @@
+{
+  "dict": {
+    "🌾 Grâul dus la moară": "🌾 Taking grain to the mill",
+    "Moara (numele, satul, telefonul morarului):\nZiua și ora la rând:\nCine duce sacii și cu ce mașină:\n\nCe ducem:\n• grâu de măcinat (câți saci, cât cântăresc):\n• porumb de măcinat (câți saci, cât cântăresc):\n• ce vrem să iasă (făină albă, făină neagră, mălai, tărâțe):\n• cum plătim (bani sau uium, cât se oprește la sută):\n\nÎnainte de plecare:\n☐ boabele bine uscate și vânturate, fără pietre și pleavă\n☐ sacii întregi, curați și legați bine\n☐ sacii cântăriți acasă și greutatea notată\n☐ saci goi în plus pentru tărâțe\n\nLa moară:\n☐ sacii cântăriți la moară, greutatea scrisă pe bon\n☐ uiumul sau prețul măcinatului înțeles dinainte\n☐ făina și mălaiul cântărite la ieșire și puse în saci etichetați\n☐ sacii puși acasă la loc uscat și răcoros, feriți de șoareci\n\nCe am primit (făină, mălai, tărâțe) și ce reținem pentru data viitoare:\n• ": "Mill (name, village, miller's phone):\nDay and time in line:\nWho takes the sacks and in which vehicle:\n\nWhat we take:\n• wheat to grind (how many sacks, how much they weigh):\n• corn to grind (how many sacks, how much they weigh):\n• what we want out of it (white flour, wholemeal flour, cornmeal, bran):\n• how we pay (cash or a share of the grain, how much per hundred):\n\nBefore leaving:\n☐ grain well dried and winnowed, no stones or chaff\n☐ sacks whole, clean and tied well\n☐ sacks weighed at home and the weight written down\n☐ extra empty sacks for the bran\n\nAt the mill:\n☐ sacks weighed at the mill, weight written on the receipt\n☐ the miller's share or the grinding price agreed beforehand\n☐ flour and cornmeal weighed when they come out and put in labeled sacks\n☐ sacks stored at home in a dry, cool place, safe from mice\n\nWhat we got (flour, cornmeal, bran) and what to remember next time:\n• "
+  },
+  "templates": {
+    "Grâul dus la moară {0}": "Taking grain to the mill {0}"
+  },
+  "skip": []
+}

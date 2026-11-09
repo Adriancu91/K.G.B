@@ -1,0 +1,13 @@
+{
+  "dict": {
+    "Filtru de raport": "Report filter",
+    "Filtru de raport: deasupra rezumatului apare o listă cu valorile coloanei alese; alegi una și cifrele se refac doar pentru ea": "Report filter: a list with the values of the chosen column appears above the summary; pick one and the figures are recalculated only for it",
+    "Filtru deasupra rezumatului": "Filter above the summary",
+    "Fulger": "Lightning Bolt",
+    "Semilună": "Moon"
+  },
+  "templates": {},
+  "skip": [
+    "(Toate)"
+  ]
+}

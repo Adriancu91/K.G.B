@@ -1,0 +1,14 @@
+{
+  "dict": {
+    "Corecția": "Correction",
+    "Îndreaptă pozele făcute cu obiectiv ochi de pește sau cu unghi foarte larg: liniile curbate devin drepte, iar oamenii de la margini nu mai par întinși (Adaptive Wide Angle)": "Straightens photos taken with a fisheye or very wide lens: curved lines become straight, and people near the edges no longer look stretched (Adaptive Wide Angle)",
+    "Ochi de pește": "Fisheye",
+    "Panoramă cilindrică": "Cylindrical panorama",
+    "Perspectivă (margini mai puțin întinse)": "Perspective (less stretched edges)",
+    "Unghi larg adaptiv": "Adaptive Wide Angle"
+  },
+  "templates": {
+    "Focala din fotografie: {0} mm (echivalent 35 mm).": "Focal length from the photo: {0} mm (35 mm equivalent)."
+  },
+  "skip": []
+}

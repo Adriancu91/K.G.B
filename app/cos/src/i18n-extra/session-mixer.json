@@ -1,0 +1,17 @@
+{
+  "dict": {
+    "🖌 Pensulă de amestec": "🖌 Mixer brush",
+    "Cât de tare pune pensula vopseaua": "How strongly the brush lays down paint",
+    "Cât din culoarea de pe poză intră în vopseaua pensulei (0 = doar culoarea pensulei, 100 = doar culoarea pozei)": "How much of the image colour goes into the brush paint (0 = only the brush colour, 100 = only the image colour)",
+    "Cât ia pensula din culorile de pe poză cât tragi (0 = deloc, 100 = mult, ca vopseaua udă)": "How much the brush picks up from the image colours as you drag (0 = none, 100 = a lot, like wet paint)",
+    "Câtă vopsea are pensula: puțină se termină repede pe trăsătură, 100 = nu se termină": "How much paint the brush holds: a little runs out quickly along the stroke, 100 = never runs out",
+    "Debit": "Flow",
+    "Încărcare": "Load",
+    "Pensulă de amestec: culoarea pensulei se amestecă cu culorile de pe poză, ca vopseaua udă (bun ca să faci o poză să arate pictată)": "Mixer brush: the brush colour blends with the colours in the image, like wet paint (good for making a photo look painted)",
+    "Umed": "Wet",
+    "Proporție": "Mix",
+    "🖌 Amestecă": "🖌 Mixer"
+  },
+  "templates": {},
+  "skip": []
+}

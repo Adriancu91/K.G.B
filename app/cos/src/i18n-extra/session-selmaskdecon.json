@@ -1,0 +1,20 @@
+{
+  "dict": {
+    "Cât de tare se înlocuiește culoarea de pe margine": "How strongly the edge color is replaced",
+    "Decontaminare culori": "Decontaminate colors",
+    "Face marginea moale a selecției mai tăioasă (la 100 % nu mai rămâne nimic pe jumătate selectat)": "Makes the soft edge of the selection crisper (at 100 % nothing stays half selected)",
+    "Scoate tenta fundalului de pe marginea moale a selecției (de exemplu verdele ierbii din părul decupat): culoarea marginii se ia de la cel mai apropiat loc selectat de tot. Merge cu Estompare sau o selecție cu margine moale; rezultatul e un strat nou cu mască, stratul ales rămâne neschimbat.": "Removes the background tint from the soft edge of the selection (for example the green of the grass in cut-out hair): the edge color is taken from the nearest fully selected spot. Works with Feather or a soft-edged selection; the result is a new layer with a mask, the chosen layer stays unchanged.",
+    "Strat nou cu mască": "New layer with mask",
+    "↶ Ultima trăsătură": "↶ Last stroke",
+    "✕ Golește zona": "✕ Clear area",
+    "🖌 Rafinează marginea": "🖌 Refine edge",
+    "Mărime pensulă": "Brush size",
+    "Pictează peste marginile greu de prins (păr, blană, frunze): acolo selecția se calculează din culori, cu margine moale. Alt + tragere scoate din zonă.": "Paint over edges that are hard to catch (hair, fur, leaves): there the selection is computed from colors, with a soft edge. Alt + drag removes from the area.",
+    "Rafinează marginea": "Refine edge",
+    "Raza pensulei de rafinare, în pixelii pozei": "Radius of the refine brush, in image pixels",
+    "Scoate toată zona pictată": "Remove the whole painted area",
+    "Scoate ultima trăsătură a pensulei": "Remove the last brush stroke"
+  },
+  "templates": {},
+  "skip": []
+}

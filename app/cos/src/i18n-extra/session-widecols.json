@@ -1,0 +1,7 @@
+{
+ "dict": {},
+ "templates": {
+  "Tabelul are {0} de coloane (până la {1}) și {2} de rânduri": "The table has {0} columns (up to {1}) and {2} rows"
+ },
+ "skip": []
+}

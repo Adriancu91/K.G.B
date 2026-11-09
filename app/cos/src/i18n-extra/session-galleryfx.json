@@ -1,0 +1,24 @@
+{
+  "dict": {
+    "Crom": "Chrome",
+    "Detaliul tușei": "Stroke detail",
+    "Echilibrul direcțiilor": "Direction balance",
+    "Frescă": "Fresco",
+    "Ipsos": "Plaster",
+    "Lățimea tușei": "Stroke width",
+    "Linii subțiri de cerneală, toate în aceeași direcție, mai dese unde poza e mai închisă (Graphic Pen)": "Thin ink lines, all in the same direction, denser where the picture is darker",
+    "Luminile pictate cu tușe într-o diagonală, umbrele în cealaltă (Angled Strokes)": "Highlights painted with strokes in one diagonal, shadows in the other",
+    "Lungimea tușei": "Stroke length",
+    "Pete scurte și plate, contrast mare și margini închise, ca pictura pe tencuială udă (Fresco)": "Short flat patches, high contrast and dark edges, like painting on wet plaster",
+    "Pix grafic": "Graphic Pen",
+    "Poza devine metal lustruit, cu dungi luminoase și întunecate (Chrome)": "The picture becomes polished metal, with light and dark bands",
+    "Poza în două culori, umflată și luminată ca o formă turnată în ipsos (Plaster)": "The picture in two colors, raised and lit like a shape cast in plaster",
+    "Tușe late cu tuș negru pe hârtie de orez: umbre foarte închise, contururi moi (Sumi-e)": "Broad strokes of black ink on rice paper: very dark shadows, soft outlines",
+    "Tușe lungi și oblice de cretă colorată, pe hârtie cu granulație (Rough Pastels)": "Long diagonal strokes of colored chalk on grainy paper",
+    "Tușe oblice": "Angled Strokes",
+    "Diagonală spre dreapta": "Right diagonal",
+    "Diagonală spre stânga": "Left diagonal"
+  },
+  "templates": {},
+  "skip": []
+}

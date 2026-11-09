@@ -1,0 +1,11 @@
+{
+  "dict": {
+    "📈 Ședința lunară pe obiective": "📈 Monthly goals meeting"
+  },
+  "templates": {},
+  "skip": [
+    "Anul arhivat: \nCine răspunde de arhivă: \nLocul arhivei (dulap / cameră): \n\nAdunarea:\n☐ facturile emise și primite, pe luni, cu extrasele de cont alături\n☐ registrul de casă și chitanțele închise la 31 decembrie (Sheets → Registru de casă)\n☐ contractele încheiate sau expirate în anul acesta (Sheets → Evidența contractelor)\n☐ corespondența intrată și ieșită, după registru (Sheets → Registru de intrări-ieșiri)\n☐ statele de plată, pontajele și dosarele de concediu\n\nArhivarea:\n☐ fiecare dosar cu eticheta lui: anul, felul documentelor, perioada\n☐ lista dosarelor (nomenclatorul) scrisă și pusă în primul bibliorafit (Docs → Proces-verbal de predare-primire)\n☐ copiile digitale salvate în dosarul anului și într-o copie de siguranță\n\nCât se păstrează:\n☐ termenele de păstrare notate pe fiecare dosar (documentele contabile 5 ani, statele de plată 50 de ani)\n☐ dosarele cu termenul trecut propuse pentru eliminare, cu proces-verbal (Sheets → Evidența arhivei, Docs → Proces-verbal de eliminare din arhivă)\n\nDosare lipsă sau incomplete:\n• ",
+    "Luna:\nCine participă:\n\nÎnainte de ședință:\n☐ fiecare responsabil a scris „Realizat acum” în Sheets → Urmărirea obiectivelor\n☐ obiectivele în urmă (în galben) și cele întârziate (în roșu) notate mai jos\n☐ cifrele lunii trecute pregătite (vânzări, costuri, clienți)\n\nÎn ședință:\n☐ progresul mediu și câte obiective sunt pe drum, în urmă, întârziate\n☐ pentru fiecare obiectiv în urmă: de ce, ce facem și până când\n☐ ce ajutor cere fiecare responsabil (oameni, bani, decizii)\n☐ obiectivele care nu mai au sens: schimbate sau scoase, cu motivul\n\nDupă ședință:\n☐ minuta trimisă participanților (Docs → Minută de ședință)\n☐ termenele și țintele schimbate trecute în Urmărirea obiectivelor\n☐ data ședinței următoare stabilită\n\nObiective în urmă și ce facem:\n• ",
+    "Obiectivele lunii {0}"
+  ]
+}

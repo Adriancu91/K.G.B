@@ -1,0 +1,14 @@
+{
+  "dict": {
+    "Răsucire": "Flip",
+    "Răsucire verticală": "Vertical flip",
+    "Întindere": "Stretch",
+    "Întindere verticală": "Vertical stretch",
+    "Strângere": "Squeeze",
+    "Strângere verticală": "Vertical squeeze",
+    "Strângere spre dreapta": "Squeeze right",
+    "Strângere în jos": "Squeeze down"
+  },
+  "templates": {},
+  "skip": []
+}

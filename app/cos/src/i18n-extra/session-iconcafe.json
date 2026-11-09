@@ -1,0 +1,24 @@
+{
+  "dict": {
+    "Cafenea": "Coffee shop",
+    "Espressor": "Espresso machine",
+    "Boabe de cafea": "Coffee beans",
+    "Râșniță de cafea": "Coffee grinder",
+    "Ibric de cafea": "Turkish coffee pot",
+    "Cafea la pachet": "Takeaway coffee",
+    "Ceainic": "Teapot",
+    "Ceașcă cu farfurioară": "Cup and saucer",
+    "Meniu de cafenea": "Café menu board"
+  },
+  "templates": {},
+  "skip": [
+    "espressor aparat de cafea barista espresso machine",
+    "boabe de cafea prăjite coffee beans roasted",
+    "râșniță de cafea rasnita măcinat coffee grinder mill",
+    "ibric de cafea cezvea cafea turcească fiartă turkish coffee pot",
+    "cafea la pachet pahar de carton to go takeaway coffee cup",
+    "ceainic ceai infuzie teapot tea",
+    "ceașcă cu farfurioară espresso cappuccino cup saucer",
+    "meniu de cafenea tablă cu meniu prețuri chalkboard menu board"
+  ]
+}

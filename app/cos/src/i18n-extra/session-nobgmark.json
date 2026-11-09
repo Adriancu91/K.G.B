@@ -1,0 +1,16 @@
+{
+  "dict": {
+    "Marchează zonele de păstrat / de eliminat…": "Mark areas to keep / to remove…",
+    "＋ Marchează ce păstrezi": "＋ Mark what to keep",
+    "− Marchează ce elimini": "− Mark what to remove",
+    "Cât de apropiate sunt culorile fundalului": "How close the background colors are",
+    "Ce e acoperit cu mov dispare. Trage cu ＋ peste ce vrei să rămână și cu − peste ce vrei să dispară (Shift schimbă pensula pe loc).": "What is covered in purple disappears. Drag with ＋ over what should stay and with − over what should go (Shift switches the brush on the spot).",
+    "Elimină fundalul: marchează zonele": "Remove background: mark areas",
+    "Nu am găsit singur fundalul. Marchează-l tu cu −.": "I couldn't find the background on my own. Mark it yourself with −.",
+    "Păstrează modificările": "Keep changes",
+    "Pensula roșie: zona peste care tragi și culoarea ei legată de ea dispar": "Red brush: the area you drag over and its connected color disappear",
+    "Pensula verde: zona peste care tragi rămâne în poză": "Green brush: the area you drag over stays in the picture"
+  },
+  "templates": {},
+  "skip": []
+}

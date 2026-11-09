@@ -1,0 +1,24 @@
+{
+  "dict": {
+    "Dans": "Dance",
+    "Poante": "Pointe shoes",
+    "Fustă de balet": "Tutu",
+    "Glob disco": "Disco ball",
+    "Bară de balet": "Ballet barre",
+    "Pantof de step": "Tap shoe",
+    "Panglică de gimnastică": "Gymnastics ribbon",
+    "Evantai": "Hand fan",
+    "Ring de dans": "Dance floor"
+  },
+  "templates": {},
+  "skip": [
+    "poante poantă balet balerină ballet pointe shoes",
+    "fustă de balet tutu costum balerină ballet tutu",
+    "glob disco oglinzi petrecere club disco ball mirror ball",
+    "bară de balet oglindă sală de dans repetiție ballet barre studio",
+    "pantof de step dans cu plăcuțe tap shoe",
+    "panglică de gimnastică ritmică dans cu panglica rhythmic gymnastics ribbon",
+    "evantai flamenco dans spaniol hand fan",
+    "ring de dans pistă de dans luminată dance floor"
+  ]
+}

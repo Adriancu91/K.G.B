@@ -1,0 +1,46 @@
+{
+  "dict": {
+    "” se deschide doar cu ID-ul digital (certificatul cu cheia lui) al unuia dintre destinatari.": "” opens only with the digital ID (the certificate with its key) of one of the recipients.",
+    "＋ Adaugă certificat (.cer)…": "＋ Add certificate (.cer)…",
+    "🔐 Criptează cu certificat": "🔐 Encrypt with certificate",
+    "🔐 PDF criptat cu certificat": "🔐 Certificate-encrypted PDF",
+    "Adaugă cel puțin un destinatar.": "Add at least one recipient.",
+    "Alege fișierul .pfx / .p12.": "Choose the .pfx / .p12 file.",
+    "Ce nu au voie destinatarii": "What recipients are not allowed to do",
+    "Certificatul e deja în listă.": "The certificate is already in the list.",
+    "Criptează cu certificat": "Encrypt with certificate",
+    "Criptează și salvează…": "Encrypt and save…",
+    "Destinatari": "Recipients",
+    "Din fișier .pfx / .p12": "From a .pfx / .p12 file",
+    "Fără ID-ul tău digital în listă, nici tu nu vei mai putea deschide PDF-ul criptat (păstrează originalul). ID-ul digital se face din Semnează… → 🔏 Semnează digital.": "Without your own digital ID in the list, you won't be able to open the encrypted PDF either (keep the original). You can create a digital ID from Sign… → 🔏 Sign digitally.",
+    "Niciun destinatar încă.": "No recipients yet.",
+    "Oprește pentru destinatari:": "Block for recipients:",
+    "Parola fișierului:": "File password:",
+    "PDF criptat cu certificat": "Certificate-encrypted PDF",
+    "PDF-ul se va deschide doar pe calculatorul celor din listă, cu ID-ul lor digital (certificatul cu cheia lui), fără o parolă comună. Pentru fiecare persoană îți trebuie certificatul ei public (.cer), pe care ți-l poate trimite.": "The PDF will open only on the computers of the people in the list, with their digital ID (the certificate with its key), without a shared password. For each person you need their public certificate (.cer), which they can send you.",
+    "Certificatul are o cheie EC: PDF-ul se poate cripta doar pentru certificate cu cheie RSA.": "The certificate has an EC key: the PDF can only be encrypted for certificates with an RSA key.",
+    "Cheia ID-ului digital e EC: PDF-urile criptate cu certificat cer o cheie RSA.": "The digital ID's key is EC: certificate-encrypted PDFs need an RSA key.",
+    "Fișierul nu pare un certificat (.cer).": "The file doesn't look like a certificate (.cer).",
+    "Plicul PDF-ului e criptat cu un algoritm vechi (3DES / RC2), pe care Cyber Office Studio nu îl citește.": "The PDF's envelope is encrypted with an old algorithm (3DES / RC2), which Cyber Office Studio can't read.",
+    "PDF-ul nu are destinatari în criptare.": "The PDF's encryption has no recipients.",
+    "PDF-ul nu e criptat cu certificat.": "The PDF is not encrypted with a certificate.",
+    "PDF-ul nu e criptat pentru acest ID digital: alege certificatul unuia dintre destinatari.": "The PDF is not encrypted for this digital ID: choose the certificate of one of the recipients.",
+    "🔐 Criptează cu certificat…": "🔐 Encrypt with certificate…",
+    "PDF-ul se va deschide doar cu ID-ul digital al persoanelor alese (certificatele lor), fără parolă comună (AES-256)": "The PDF will open only with the digital ID of the chosen people (their certificates), without a shared password (AES-256)",
+    "＋ De pe calculator / token…": "＋ From this computer / token…",
+    "Certificatul de pe acest calculator (sau de pe token / card)": "The certificate on this computer (or on a token / card)",
+    "Niciun certificat de pe acest calculator nu e printre destinatarii PDF-ului. Dacă certificatul e pe un token, pune-l în calculator și încearcă din nou.": "No certificate on this computer is among the PDF recipients. If the certificate is on a token, plug it in and try again.",
+    "Nu am găsit pe acest calculator niciun certificat RSA cu cheie.": "No RSA certificate with a key was found on this computer.",
+    "Se deschide… Dacă certificatul e pe token sau card, sistemul îți cere PIN-ul în fereastra lui.": "Opening… If the certificate is on a token or card, the system asks for the PIN in its own window.",
+    "de exemplu Contabilitate": "for example Accounting",
+    "Scrie un nume pentru politică (de exemplu Contabilitate).": "Type a name for the policy (for example Accounting).",
+    "Ține minte destinatarii și restricțiile sub un nume, ca să le pui din nou pe alt PDF. Se țin minte doar certificatele publice.": "Remembers the recipients and restrictions under a name, so you can apply them to another PDF. Only the public certificates are kept."
+  },
+  "templates": {
+    "{0} (de pe calculator)": "{0} (from this computer)",
+    "Politica „{0}” a fost salvată: destinatarii și restricțiile (fără chei private).": "Policy “{0}” was saved: the recipients and restrictions (no private keys)."
+  },
+  "skip": [
+    "Recipients"
+  ]
+}

@@ -1,5 +1,5 @@
+// Copiat neschimbat din Cyber Office Studio (aplicația proprietarului, D-071); vezi app/cos/README.md.
 // @ts-nocheck
-// Din Cyber Office Studio (src/pdf/stampAnnot.ts, D-071, D-078), neschimbat.
 // Ștampilele puse de noi ajung în PDF ca adnotări /Stamp adevărate, cu aspectul desenat (/AP), ca orice program de PDF
 // să le arate (și să le poată muta sau șterge). Lângă ele ținem și datele ștampilei (textul, rândul de sub el, culoarea,
 // imaginea), într-un flux separat, ca la redeschiderea în Suite ștampila să fie din nou un element pe care îl muți,

@@ -1,0 +1,28 @@
+{
+ "dict": {
+  "☰ Ordinea de citire (numerele pe pagini)": "☰ Reading order (numbers on the pages)",
+  "Cap de tabel": "Table header",
+  "Element de listă": "List item",
+  "Notă laterală": "Side note",
+  "Rând de tabel": "Table row",
+  "Rând din cuprins": "Table of contents entry",
+  "în ordinea în care le citește cititorul de ecran (numerele de pe pagină).": "in the order the screen reader reads them (the numbers on the page).",
+  "nu are etichete: cititorul de ecran citește textul în ordinea în care e scris în fișier, care poate fi alta decât cea de pe ecran.": "has no tags: the screen reader reads the text in the order it is written in the file, which may differ from the one on screen.",
+  "o bucată": "one piece",
+  "O bucată urcă": "One piece goes up",
+  "pe pagină față de cea de dinainte, în aceeași coloană: verifică dacă ordinea e firească.": "on the page compared with the one before, in the same column: check that the order is natural.",
+  "Nu am găsit eticheta în structura fișierului.": "I could not find the tag in the file structure.",
+  "Schimbă tipul etichetei (de exemplu un paragraf care e de fapt titlu)": "Change the tag type (for example a paragraph that is really a heading)"
+ },
+ "templates": {
+  "(text alternativ: „{0}”)": "(alternative text: “{0}”)",
+  "{0} bucăți": "{0} pieces",
+  "{0} bucăți urcă": "{0} pieces go up",
+  "Eticheta e acum „{0}” (era „{1}”).": "The tag is now “{0}” (it was “{1}”)."
+ },
+ "skip": [
+  "Code",
+  "Lbl",
+  "Span"
+ ]
+}

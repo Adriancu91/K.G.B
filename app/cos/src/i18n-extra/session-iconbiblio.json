@@ -1,0 +1,24 @@
+{
+  "dict": {
+    "Bibliotecă și lectură": "Library and reading",
+    "Teanc de cărți": "Stack of books",
+    "Carte deschisă": "Open book",
+    "Semn de carte": "Bookmark",
+    "Permis de bibliotecă": "Library card",
+    "Lampă de citit": "Reading lamp",
+    "Cutie de returnare a cărților": "Book return box",
+    "Carte audio": "Audiobook",
+    "Cititor de cărți electronice": "E-reader"
+  },
+  "templates": {},
+  "skip": [
+    "teanc de cărți volume lectură împrumut stack of books pile",
+    "carte deschisă pagini citit roman poezie open book reading pages",
+    "semn de carte pagină marcată semnet panglică bookmark ribbon",
+    "permis de bibliotecă cititor abonat fișă împrumut library card member",
+    "lampă de citit veioză birou sală de lectură reading lamp desk light",
+    "cutie de returnare a cărților predare înapoiere fantă book return drop box",
+    "carte audio căști ascultat narator lectură audiobook listening headphones",
+    "cititor de cărți electronice tabletă ebook e-book ereader digital"
+  ]
+}

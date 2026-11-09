@@ -1,0 +1,25 @@
+{
+  "dict": {
+    "↻ Actualizează foile legate": "↻ Update linked sheets",
+    "Actualizează foile legate: tabelele puse din fișiere .xlsx, .ods sau .csv se citesc din nou din fișier, cu valorile de acum (bordurile și alinierea alese în document rămân)": "Update linked sheets: tables inserted from .xlsx, .ods or .csv files are read again from the file, with the current values (the borders and alignment chosen in the document are kept)",
+    "Documentul nu are tabele legate de fișiere. Pune unul cu Inserare → ▦ Foaie de calcul….": "The document has no tables linked to files. Add one with Insert → ▦ Spreadsheet….",
+    "un tabel cu alt tabel în el rămâne cum e": "one table with another table inside it is left as it is",
+    "un tabel e adus la zi din fișier": "one table was updated from its file",
+    "un tabel era deja la zi": "one table was already up to date",
+    "Actualizează foile legate: tabelele puse din fișiere .xlsx, .ods sau .csv se citesc din nou din fișier, cu valorile de acum (stilul, locul și mărimea tabelului rămân)": "Update linked sheets: tables inserted from .xlsx, .ods or .csv files are read again from the file, with the current values (the style, position and size of the table are kept)",
+    "Prezentarea nu are tabele legate de fișiere. Pune unul cu Inserare → ▦ Foaie de calcul….": "The presentation has no tables linked to files. Add one with Insert → ▦ Spreadsheet….",
+    "Deschis. Un tabel legat s-a schimbat în fișierul lui: Inserare → ↻ Actualizează foile legate îl aduce la zi.": "Opened. One linked table has changed in its file: Insert → ↻ Update linked sheets brings it up to date."
+  },
+  "templates": {
+    "Foile legate nu au putut fi citite: {0}": "The linked sheets could not be read: {0}",
+    "{0} tabele cu alte tabele în ele rămân cum sunt": "{0} tables with other tables inside them are left as they are",
+    "{0} tabele sunt aduse la zi din fișiere": "{0} tables were updated from their files",
+    "Foile legate: {0}.": "Linked sheets: {0}.",
+    "Foile legate: {0}; {1}.": "Linked sheets: {0}; {1}.",
+    "Foile legate: {0}; {1}; {2}.": "Linked sheets: {0}; {1}; {2}.",
+    "Foile legate: {0}; {1}; {2}; {3}.": "Linked sheets: {0}; {1}; {2}; {3}.",
+    "{0} tabele erau deja la zi": "{0} tables were already up to date",
+    "Deschis. {0} tabele legate s-au schimbat în fișierele lor: Inserare → ↻ Actualizează foile legate le aduce la zi.": "Opened. {0} linked tables have changed in their files: Insert → ↻ Update linked sheets brings them up to date."
+  },
+  "skip": []
+}

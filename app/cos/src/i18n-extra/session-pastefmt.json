@@ -1,0 +1,7 @@
+{
+  "dict": {},
+  "templates": {},
+  "skip": [
+    "b, strong, i, em, u, ins, s, strike, del, mark, h1, h2, h3, [style*=\"font-weight\"], [style*=\"italic\"], [style*=\"color\"], [style*=\"underline\"], [style*=\"line-through\"], [style*=\"background\"]"
+  ]
+}

@@ -1,0 +1,30 @@
+{
+  "dict": {
+    "Cât de opacă e ștampila (mai puțin = se vede textul de sub ea)": "How opaque the stamp is (less = the text underneath shows through)",
+    "Opacitatea ștampilei": "Stamp opacity",
+    "Rândul de sub ștampilă": "Line under the stamp",
+    "Rândul mic de sub text (data, ora, numele); poate rămâne gol": "The small line under the text (date, time, name); it can stay empty",
+    "Textul mare al ștampilei (de exemplu PLĂTIT)": "The large text of the stamp (for example PAID)",
+    "Textul ștampilei puse": "Text of the placed stamp",
+    "Trage ca să mărești sau să micșorezi (cu Shift, fără proporții)": "Drag to enlarge or shrink (with Shift, without keeping proportions)",
+    "Trage ca să muți; dublu-clic ca să schimbi ștampila": "Drag to move; double-click to change the stamp",
+    "✎ Editează ștampila…": "✎ Edit stamp…",
+    "Ce se vede prin carouri e transparent": "Whatever shows the checkerboard is transparent",
+    "Fotografiază sau scanează ștampila (ori semnătura) pe o foaie albă. Hârtia devine transparentă, cerneala își păstrează culoarea, iar imaginea se taie pe desen. Ștampila rămâne în „Ștampilele mele”, pe acest calculator.": "Photograph or scan the stamp (or signature) on a white sheet. The paper becomes transparent, the ink keeps its color, and the picture is cropped to the drawing. The stamp is kept in “My stamps” on this computer.",
+    "Mai mult: scoate și umbrele sau hârtia mai închisă; mai puțin: păstrează și cerneala foarte deschisă": "More: also removes shadows or darker paper; less: also keeps very light ink",
+    "Numele ștampilei": "Stamp name",
+    "Previzualizarea ștampilei": "Stamp preview",
+    "Salvează ștampila": "Save stamp",
+    "Scoate fundalul (hârtia)": "Remove the background (paper)",
+    "Se pregătește imaginea…": "Preparing the picture…",
+    "Toleranța fundalului": "Background tolerance"
+  },
+  "templates": {
+    "Culoarea ștampilei: {0}": "Stamp color: {0}"
+  },
+  "skip": [
+    "Approved",
+    "Confidential",
+    "Draft"
+  ]
+}

@@ -1,0 +1,24 @@
+{
+  "dict": {
+    "Grădinărit": "Gardening",
+    "Lopată": "Shovel",
+    "Greblă": "Rake",
+    "Foarfecă de grădină": "Pruning shears",
+    "Furtun": "Garden hose",
+    "Mașină de tuns iarba": "Lawn mower",
+    "Sapă": "Hoe",
+    "Răsad": "Seedling",
+    "Aspersor": "Sprinkler"
+  },
+  "templates": {},
+  "skip": [
+    "lopată săpat pământ grădină shovel spade dig",
+    "greblă frunze strâns grădină rake leaves",
+    "foarfecă de grădină tăiat crengi altoit pruning shears pruner",
+    "furtun udat apă grădină garden hose watering",
+    "mașină de tuns iarba gazon peluză cosit lawn mower grass",
+    "sapă prășit buruieni hoe weeding",
+    "răsad plantă tânără încolțit seedling sprout",
+    "aspersor stropire irigare gazon sprinkler irrigation lawn"
+  ]
+}

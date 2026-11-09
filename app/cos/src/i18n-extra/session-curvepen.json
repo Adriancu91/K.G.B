@@ -1,0 +1,9 @@
+{
+  "dict": {
+    "◠ Curbură": "◠ Curvature",
+    "Curbură: fiecare click pune un punct, iar traseul trece singur lin prin toate, fără mânere de tras (Alt+click: colț); click pe primul punct îl închide, Enter îl lasă deschis, Backspace scoate ultimul punct": "Curvature: each click places a point and the path passes smoothly through all of them by itself, with no handles to drag (Alt+click: corner); click the first point to close it, Enter leaves it open, Backspace removes the last point",
+    "Click pune un punct; traseul trece lin prin toate (Alt+click: colț).": "Click places a point; the path passes smoothly through all of them (Alt+click: corner)."
+  },
+  "templates": {},
+  "skip": []
+}

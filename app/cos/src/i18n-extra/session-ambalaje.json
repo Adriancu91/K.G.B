@@ -1,0 +1,40 @@
+{
+ "dict": {
+  "Ambalaje returnabile": "Returnable packaging",
+  "Ambalajele circulă cu avizul de însoțire; garanția se facturează sau se scade la returnare, după înțelegerea cu partenerul.": "Packaging travels with the delivery note; the deposit is invoiced or deducted on return, as agreed with the partner.",
+  "Ambalajele cu marfă primită se trec și în Sheets → Notă de recepție; cele date clienților, pe avizul de livrare.": "Packaging that comes with received goods also goes in Sheets → Goods receipt note; packaging given to customers, on the delivery note.",
+  "Ambalajul": "Packaging",
+  "Butelie": "Gas cylinder",
+  "Cutie returnabilă": "Returnable box",
+  "Date partenerului": "Given to the partner",
+  "De dat înapoi": "To give back",
+  "De primit înapoi": "To get back",
+  "Documentul (aviz / factură)": "Document (delivery note / invoice)",
+  "Garanția (lei)": "Deposit (lei)",
+  "Garanția pe bucată (lei)": "Deposit per piece (lei)",
+  "Ladă": "Crate",
+  "Navetă": "Plastic crate",
+  "Palet industrial": "Industrial pallet",
+  "Paleții, navetele, lăzile și buteliile primite de la parteneri sau date lor, cu avizul și garanția pe bucată: soldul fiecărui partener pe fiecare ambalaj se calculează singur (de dat înapoi în galben, de primit înapoi în roșu, închis în verde), iar în dreapta ies soldurile pe fel de ambalaj, garanția în lei și soldul unui partener ales.": "Pallets, plastic crates, crates and cylinders received from partners or given to them, with the delivery note and the deposit per piece: each partner's balance on each kind of packaging is calculated automatically (to give back in yellow, to get back in red, closed in green), and on the right you get the balances by kind of packaging, the deposit in lei and the balance of a chosen partner.",
+  "Pe fel de ambalaj": "By kind of packaging",
+  "Primite de la partener": "Received from the partner",
+  "Sold (bucăți, toate ambalajele)": "Balance (pieces, all packaging)",
+  "Sold (bucăți)": "Balance (pieces)",
+  "Soldul partenerului pe ambalaj": "Partner balance on this packaging",
+  "Soldul pozitiv înseamnă ambalaje ale partenerului aflate la noi (de dat înapoi); cel negativ, ambalaje ale noastre aflate la el (de primit înapoi).": "A positive balance means the partner's packaging is with us (to give back); a negative one, our packaging is with them (to get back).",
+  "Soldul unui partener": "Balance of one partner",
+  "Valoarea mișcării": "Value of the movement",
+  "Confirmarea soldului de ambalaje returnabile": "Returnable packaging balance confirmation",
+  "Către un client sau un furnizor: câți paleți, navete sau lăzi ale fiecăruia sunt la celălalt la o dată, cu garanția lor, și cererea de confirmare sau de obiecții într-un termen, apoi cum se face returul sau decontarea": "To a customer or a supplier: how many pallets, plastic crates or crates of each are with the other at a date, with their deposit, and the request to confirm or object within a term, then how the return or settlement is made",
+  "Luna:\nCine verifică:\nDepozitul:\n\nEvidența:\n☐ toate avizele lunii cu ambalaje trecute în tabel (Sheets → Ambalaje returnabile)\n☐ paleții, navetele și lăzile numărate în depozit și comparate cu soldurile pe fel de ambalaj\n☐ ambalajele stricate puse deoparte și notate, cu cine le-a stricat\n\nPartenerii:\n☐ soldul trimis partenerilor cu multe ambalaje de dat sau de primit (Docs → Confirmarea soldului de ambalaje returnabile)\n☐ răspunsurile primite și diferențele lămurite cu avizele\n☐ returul programat pentru ambalajele altora aflate la noi de mult timp\n\nDecontarea:\n☐ ambalajele nereturnate în termen facturate la garanție (Sheets → Factură (e-Factura))\n☐ garanțiile primite sau plătite trecute la facturi (Sheets → Facturi de la furnizori)\n☐ ambalajele noi cumpărate sau scoase din uz trecute în gestiune (Sheets → Fișa de magazie)\n\nDe urmărit luna viitoare:\n•\n\nObservații:\n• ": "Month:\nChecked by:\nWarehouse:\n\nThe records:\n☐ all delivery notes of the month with packaging entered in the table (Sheets → Returnable packaging)\n☐ pallets, plastic crates and crates counted in the warehouse and compared with the balances by kind of packaging\n☐ broken packaging set aside and noted, with who broke it\n\nThe partners:\n☐ balance sent to partners with a lot of packaging to give or to get back (Docs → Returnable packaging balance confirmation)\n☐ answers received and differences cleared up with the delivery notes\n☐ return scheduled for other partners' packaging kept with us for a long time\n\nSettlement:\n☐ packaging not returned in time invoiced at the deposit (Sheets → Invoice (e-Factura))\n☐ deposits received or paid entered with the invoices (Sheets → Supplier invoices)\n☐ new packaging bought or taken out of use entered in the stock records (Sheets → Stock card)\n\nTo follow next month:\n• \n\nNotes:\n• ",
+  "🧺 Ambalajele la sfârșit de lună": "🧺 Packaging at the end of the month"
+ },
+ "templates": {
+  "Ambalaje returnabile {0}": "Returnable packaging {0}"
+ },
+ "skip": [
+  "=IF(J{0}=\"\";\"\";IF(J{1}>0;\"De dat înapoi\";IF(J{2}<0;\"De primit înapoi\";\"Închis\")))",
+  "M{0}:O{1}",
+  "M1:O{0}"
+ ]
+}

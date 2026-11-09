@@ -1,0 +1,10 @@
+{
+  "dict": {
+    "🌱 Grădină și plante": "🌱 Garden and plants"
+  },
+  "templates": {},
+  "skip": [
+    "Locul: (balcon / grădină / casă)\n\nCe am plantat (planta / data / unde):\n• \n• \n• \n\nUdat:\n☐ luni\n☐ miercuri\n☐ vineri\n☐ sâmbătă (cele din ghiveci)\n\nDe făcut în sezon:\n☐ îngrășământ\n☐ tăiat / ciupit vârfurile\n☐ tratament contra dăunătorilor\n\nRecoltat (ce / cât / data):\n• \n",
+    "Grădină {0}"
+  ]
+}

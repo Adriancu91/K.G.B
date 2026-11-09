@@ -1,0 +1,23 @@
+{
+  "dict": {
+    "Ametist": "Amethyst",
+    "Argint": "Silver",
+    "Aur": "Gold",
+    "Foc": "Fire",
+    "A Gradient din fișier": "A Gradient from File",
+    "A Umplere cu culoare": "A Solid Fill",
+    "Umplerea literelor din casetă: culoarea textului sau un gradient de sus în jos": "Text fill of the box: the text color or a top-to-bottom gradient",
+    "Umplerea textului": "Text Fill",
+    "Stilul pozei: chenar, ramă albă, umbră, colțuri rotunjite, oval, strălucire, margini estompate, reflexie, chenar întrerupt, relief, perspectivă (Ctrl+Z îl scoate)": "Picture style: border, white frame, shadow, rounded corners, oval, glow, soft edges, reflection, dashed border, bevel, perspective (Ctrl+Z removes it)",
+    "Chenar întrerupt": "Dashed Border",
+    "Perspectivă dreapta": "Perspective Right",
+    "Perspectivă stânga": "Perspective Left",
+    "Gri închis": "Dark Gray",
+    "Galeria de stiluri rapide": "Quick Styles gallery",
+    "Stiluri rapide: umplere, contur și efect dintr-un clic, în culoarea temei sau în alte 5 culori": "Quick Styles: fill, outline and effect in one click, in the theme color or in 5 other colors"
+  },
+  "templates": {
+    "A Gradient: {0}": "A Gradient: {0}"
+  },
+  "skip": []
+}

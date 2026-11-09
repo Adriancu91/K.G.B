@@ -1,0 +1,11 @@
+{
+  "dict": {
+    "Plicul PDF-ului e criptat cu RC2 cu o lungime de cheie necunoscută.": "The PDF's envelope is encrypted with RC2 using an unknown key length.",
+    "Plicul PDF-ului e criptat cu un algoritm pe care Cyber Office Studio nu îl cunoaște.": "The PDF's envelope is encrypted with an algorithm Cyber Office Studio does not know.",
+    "Certificatul are o cheie EC pe o curbă necunoscută: PDF-ul se poate cripta pentru curbele P-256, P-384 și P-521.": "The certificate has an EC key on an unknown curve: the PDF can be encrypted for the P-256, P-384 and P-521 curves.",
+    "Certificatul nu are o cheie RSA.": "The certificate does not have an RSA key.",
+    "Plicul PDF-ului folosește pentru cheia EC o schemă pe care Cyber Office Studio nu o cunoaște.": "The PDF's envelope uses a scheme for the EC key that Cyber Office Studio does not know."
+  },
+  "templates": {},
+  "skip": []
+}

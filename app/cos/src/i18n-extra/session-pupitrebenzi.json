@@ -1,0 +1,14 @@
+{
+  "dict": {
+    "Listă cu pupitre (numărul pe o plăcuță cu marginea de sus înclinată, textul într-o bandă alături)": "Desk list (the number on a plate with a slanted top edge, the text in a band beside it)",
+    "Listă cu benzi oblice (numărul pe o bandă oblică, textul într-o bandă alături)": "Diagonal stripe list (the number on a diagonal stripe, the text in a band beside it)",
+    "Listă cu pupitre": "Desk list",
+    "Listă cu benzi oblice": "Diagonal stripe list",
+    "listă cu pupitre": "desk list",
+    "listă cu benzi oblice": "diagonal stripe list",
+    "Puncte una sub alta: numărul pe o plăcuță cu marginea de sus înclinată, iar alături textul": "Points one below the other: the number on a plate with a slanted top edge, with the text beside it",
+    "Puncte una sub alta: numărul pe o bandă oblică, iar alături textul": "Points one below the other: the number on a diagonal stripe, with the text beside it"
+  },
+  "templates": {},
+  "skip": []
+}

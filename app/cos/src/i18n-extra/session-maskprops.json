@@ -1,0 +1,10 @@
+{
+  "dict": {
+    "Cât de tare ascunde negrul din mască: la 50%, ce e ascuns se vede pe jumătate. Masca rămâne aceeași": "How strongly the black in the mask hides: at 50%, what is hidden shows at half. The mask stays the same",
+    "Densitatea măștii": "Mask density",
+    "Estomparea măștii": "Mask feather",
+    "Marginile măștii se văd mai moi, fără să schimbi masca. Dublu-click: 0": "The mask edges look softer, without changing the mask. Double-click: 0"
+  },
+  "templates": {},
+  "skip": []
+}

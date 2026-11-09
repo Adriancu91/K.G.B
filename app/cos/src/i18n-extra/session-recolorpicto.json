@@ -1,0 +1,14 @@
+{
+ "dict": {
+  "Culoarea pictogramei (se desenează din nou, la fel de clară)": "Icon color (redrawn, just as sharp)",
+  "Grosimea liniei pictogramei": "Icon line thickness",
+  "Pictogramă": "Icon",
+  "Pictograme: desene simple (telefon, e-mail, oameni, săgeți, semne), în culoarea aleasă; intră în notiță ca poze": "Icons: simple drawings (phone, e-mail, people, arrows, signs) in the chosen color; they go into the note as pictures",
+  "un slide nou": "one new slide"
+ },
+ "templates": {
+  "Macrocomanda „{0}” a rulat și a pus {1} după slide-ul {2} (Ctrl+Z o anulează).": "Macro “{0}” ran and added {1} after slide {2} (Ctrl+Z undoes it).",
+  "{0} slide-uri noi": "{0} new slides"
+ },
+ "skip": []
+}

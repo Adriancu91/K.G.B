@@ -1,0 +1,11 @@
+{
+  "dict": {
+    "⧉ În tab nou": "⧉ In new tab",
+    "Deschide fișierul atașat într-un tab nou, în aplicația lui (documentul în Docs, tabelul în Sheets, poza în Imagini…); PDF-ul de acum rămâne deschis": "Open the attached file in a new tab, in its own app (the document in Docs, the table in Sheets, the picture in Images…); the current PDF stays open"
+  },
+  "templates": {
+    "„{0}” nu se poate deschide direct; salvează-l întâi pe calculator.": "“{0}” can't be opened directly; save it to the computer first.",
+    "Deschis într-un tab nou: {0}": "Opened in a new tab: {0}"
+  },
+  "skip": []
+}

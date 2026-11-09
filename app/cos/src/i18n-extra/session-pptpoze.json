@@ -1,0 +1,10 @@
+{
+ "dict": {
+  "Fișierul nu pare o prezentare .ppt validă sau e deteriorat.": "The file does not look like a valid .ppt presentation or it is damaged.",
+  "Prezentarea nu are slide-uri cu text sau poze pe care să le pot citi. Deschide-o în programul în care a fost făcută și salvează-o ca .pptx.": "The presentation has no slides with text or pictures that can be read. Open it in the program it was made in and save it as .pptx."
+ },
+ "templates": {},
+ "skip": [
+  "Pictures"
+ ]
+}

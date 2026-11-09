@@ -1,0 +1,24 @@
+{
+  "dict": {
+    "Cantitatea din factură": "Quantity on invoice",
+    "Cantitatea recepționată": "Quantity received",
+    "Cu lipsuri": "With shortages",
+    "Cu plusuri": "With surpluses",
+    "Data recepției": "Receipt date",
+    "Diferența față de factură (cu TVA)": "Difference from invoice (incl. VAT)",
+    "Marfa primită de la furnizor, produs cu produs: cantitatea din factură față de cea numărată la primire; ies diferențele în cantitate și în lei, lipsurile (în roșu), plusurile (în galben), totalul recepționat cu TVA și diferența față de factură.": "Goods received from a supplier, item by item: the invoiced quantity versus the quantity counted on arrival; you get the differences in quantity and in lei, shortages (in red), surpluses (in yellow), the total received incl. VAT and the difference from the invoice.",
+    "Notă de recepție": "Goods receipt note",
+    "Pentru diferențe faci proces-verbal cu furnizorul (Docs → Proces-verbal de recepție) și ceri factură de corecție.": "For differences, draw up a report with the supplier (Docs → Goods receipt report) and ask for a corrective invoice.",
+    "Produse recepționate": "Items received",
+    "Recepție": "Receipt",
+    "Scrie cantitatea din factură și pe cea numărată la primire: lipsurile ies în roșu, plusurile în galben.": "Enter the invoiced quantity and the quantity counted on arrival: shortages show in red, surpluses in yellow.",
+    "Total recepționat cu TVA": "Total received incl. VAT",
+    "Total recepționat fără TVA": "Total received excl. VAT",
+    "Valoarea diferenței": "Value of difference",
+    "Valoarea din factură": "Invoiced value",
+    "Valoarea lipsurilor (fără TVA)": "Value of shortages (excl. VAT)",
+    "Valoarea recepționată": "Value received"
+  },
+  "templates": {},
+  "skip": []
+}

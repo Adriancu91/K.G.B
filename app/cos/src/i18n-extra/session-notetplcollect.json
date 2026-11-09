@@ -1,0 +1,10 @@
+{
+  "dict": {
+    "💰 Încasarea facturilor restante": "💰 Collecting overdue invoices"
+  },
+  "templates": {},
+  "skip": [
+    "Clientul:\nPersoana de contact:\nSuma restantă:\nCea mai veche factură:\n\nVerificări:\n☐ restul de încasat și vechimea din Sheets → Vechimea creanțelor\n☐ plățile din extrasul de cont căutate (să nu fie deja plătite)\n☐ soldul confirmat cu clientul (Docs → Confirmare de sold)\n\nPași de încasare:\n☐ telefon sau e-mail prietenos, la câteva zile după scadență\n☐ notificare scrisă la peste 30 de zile (Docs → Notificare de plată)\n☐ eșalonare propusă, dacă clientul cere (Docs → Cerere de eșalonare a plății)\n☐ livrările noi oprite până la plată, la peste 60 de zile\n☐ penalitățile sau dobânda legală calculate (Sheets → Penalități de întârziere)\n☐ somația de plată trimisă recomandat, cu confirmare de primire (Docs → Somație de plată)\n☐ după 15 zile de la primirea somației fără plată: ordonanța de plată, cu avocatul\n\nDupă încasare:\n☐ plata trecută în Sheets → Evidență facturi emise\n☐ soldul clientului verificat din nou\n\nCe s-a vorbit și când:\n• ",
+    "Facturi restante {0}"
+  ]
+}

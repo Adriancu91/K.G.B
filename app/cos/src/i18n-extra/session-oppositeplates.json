@@ -1,0 +1,14 @@
+{
+  "dict": {
+    "Listă cu plăcuțe cu colțuri opuse tăiate (numărul pe o plăcuță cu colțul din dreapta sus și cel din stânga jos tăiate, textul într-o bandă alături)": "Diagonal snipped plate list (the number on a plate with the top right and bottom left corners cut off, the text in a band beside it)",
+    "Listă cu plăcuțe cu colțuri opuse rotunjite (numărul pe o plăcuță cu colțul din stânga sus și cel din dreapta jos rotunjite, textul într-o bandă alături)": "Diagonal rounded plate list (the number on a plate with the top left and bottom right corners rounded, the text in a band beside it)",
+    "Listă cu plăcuțe cu colțuri opuse tăiate": "Diagonal snipped plate list",
+    "Listă cu plăcuțe cu colțuri opuse rotunjite": "Diagonal rounded plate list",
+    "listă cu plăcuțe cu colțuri opuse tăiate": "diagonal snipped plate list",
+    "listă cu plăcuțe cu colțuri opuse rotunjite": "diagonal rounded plate list",
+    "Puncte una sub alta: numărul pe o plăcuță cu colțul din dreapta sus și cel din stânga jos tăiate, iar alături textul": "Points one below the other: the number on a plate with the top right and bottom left corners cut off, with the text beside it",
+    "Puncte una sub alta: numărul pe o plăcuță cu colțul din stânga sus și cel din dreapta jos rotunjite, iar alături textul": "Points one below the other: the number on a plate with the top left and bottom right corners rounded, with the text beside it"
+  },
+  "templates": {},
+  "skip": []
+}

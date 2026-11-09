@@ -1,0 +1,24 @@
+{
+  "dict": {
+    "Construcții": "Construction",
+    "Macara": "Crane",
+    "Cărămizi": "Bricks",
+    "Betonieră": "Concrete mixer",
+    "Roabă": "Wheelbarrow",
+    "Con de semnalizare": "Traffic cone",
+    "Nivelă": "Spirit level",
+    "Mistrie": "Trowel",
+    "Excavator": "Excavator"
+  },
+  "templates": {},
+  "skip": [
+    "macara șantier ridicat construcții crane lifting construction site",
+    "cărămizi cărămidă zid zidărie bricks brick wall masonry",
+    "betonieră beton mortar șantier concrete mixer cement",
+    "roabă transport pământ moloz grădină wheelbarrow barrow",
+    "con de semnalizare jalon lucrări drum traffic cone roadwork",
+    "nivelă cu bulă boloboc orizontal drept spirit level bubble",
+    "mistrie tencuială zidar mortar trowel plaster mason",
+    "excavator buldoexcavator săpat utilaj escavator digger excavator"
+  ]
+}

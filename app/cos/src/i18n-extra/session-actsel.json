@@ -1,0 +1,19 @@
+{
+  "dict": {
+    "Selecție cu lasoul": "Lasso selection",
+    "Selecție cu lasoul (inversată)": "Lasso selection (inverted)",
+    "Fă transparent (pixelii din selecție)": "Make transparent (the pixels in the selection)"
+  },
+  "templates": {
+    "Selecție eliptică {0} × {1}, la {2} / {3}": "Elliptical selection {0} × {1}, at {2} / {3}",
+    "Selecție eliptică {0} × {1}, la {2} / {3} (inversată)": "Elliptical selection {0} × {1}, at {2} / {3} (inverted)",
+    "Selecție dreptunghiulară {0} × {1}, la {2} / {3}": "Rectangular selection {0} × {1}, at {2} / {3}",
+    "Selecție dreptunghiulară {0} × {1}, la {2} / {3} (inversată)": "Rectangular selection {0} × {1}, at {2} / {3} (inverted)",
+    "Umplere cu culoarea {0}": "Fill with color {0}",
+    "Contur de {0} px, {1}, în interior": "Stroke of {0} px, {1}, inside",
+    "Contur de {0} px, {1}, în exterior": "Stroke of {0} px, {1}, outside",
+    "Contur de {0} px, {1}, pe margine": "Stroke of {0} px, {1}, centered",
+    "Decupare: {0}% × {1}% din poză, de la {2}% / {3}%": "Crop: {0}% × {1}% of the picture, from {2}% / {3}%"
+  },
+  "skip": []
+}

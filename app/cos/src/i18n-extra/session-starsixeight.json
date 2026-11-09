@@ -1,0 +1,14 @@
+{
+  "dict": {
+    "Listă cu stele în șase colțuri (numărul pe o stea cu șase colțuri, textul într-o bandă alături)": "Six-pointed star list (the number on a six-pointed star, the text in a band beside it)",
+    "Listă cu rozete (numărul pe o rozetă, o stea cu opt colțuri, textul într-o bandă alături)": "Rosette list (the number on a rosette, an eight-pointed star, the text in a band beside it)",
+    "Listă cu stele în șase colțuri": "Six-pointed star list",
+    "listă cu stele în șase colțuri": "six-pointed star list",
+    "Listă cu rozete": "Rosette list",
+    "listă cu rozete": "rosette list",
+    "Puncte una sub alta: numărul pe o stea cu șase colțuri, iar alături textul": "Points one below the other: the number on a six-pointed star, with the text beside it",
+    "Puncte una sub alta: numărul pe o rozetă (o stea cu opt colțuri), iar alături textul": "Points one below the other: the number on a rosette (an eight-pointed star), with the text beside it"
+  },
+  "templates": {},
+  "skip": []
+}

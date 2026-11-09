@@ -1,0 +1,39 @@
+{
+  "dict": {
+    "Bugetul nunții": "Wedding budget",
+    "Toate cheltuielile nunții, cu furnizorul, estimarea, contractul și avansul: ies restul de plată, ce e plătit (în verde) sau neplătit (în galben), cât ați depășit și darul estimat de la invitați.": "All the wedding expenses, with the supplier, the estimate, the contract and the deposit: you get what is left to pay, what is paid (in green) or unpaid (in yellow), how much you went over and the estimated gifts from the guests."
+  },
+  "templates": {},
+  "skip": [
+    "=IF(D{0}=\"\";\"\";IF(F{1}<=0;\"Plătit\";IF(N(E{2})>0;\"Avans\";\"Neplătit\")))",
+    "Aranjamente florale",
+    "Biserica și cununia civilă",
+    "Cadoul pentru nași",
+    "Cheltuiala",
+    "Coafura și machiajul",
+    "Costumul mirelui",
+    "Câți invitați vin aflați din Șabloane → Listă de invitați.",
+    "Darul estimat de persoană (lei)",
+    "Darul estimat în total",
+    "Diferența (dar − contracte)",
+    "Formația / DJ",
+    "Fotograf și video",
+    "Furnizorul",
+    "Invitați (adulți)",
+    "Invitațiile și mărturiile",
+    "Luna de miere",
+    "Mașina mirilor",
+    "Peste estimare",
+    "Plătit (lei)",
+    "Plătit până acum",
+    "Rest de plată (lei)",
+    "Restaurant (meniu × invitați)",
+    "Rochia de mireasă",
+    "Termen de plată",
+    "Tortul",
+    "Total din contracte",
+    "Total estimat",
+    "Verighetele",
+    "„Peste estimare” compară doar cheltuielile care au deja contract."
+  ]
+}

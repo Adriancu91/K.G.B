@@ -1,0 +1,24 @@
+{
+  "dict": {
+    "Colectare deșeuri": "Waste collection",
+    "Container de deșeuri": "Waste skip",
+    "Pubele de sortare": "Sorting bins",
+    "Clopot pentru sticlă": "Bottle bank",
+    "Presă de balotat": "Baler",
+    "Balot de carton": "Cardboard bale",
+    "Electronice uzate": "E-waste",
+    "Cutie pentru baterii": "Battery collection box",
+    "Autogunoieră": "Garbage truck"
+  },
+  "templates": {},
+  "skip": [
+    "container de deșeuri benă moloz gunoi voluminos închiriere waste skip dumpster",
+    "pubele de sortare colectare selectivă hârtie plastic sticlă sorting bins separate collection",
+    "clopot pentru sticlă container sticle borcane igloo bottle bank glass recycling",
+    "presă de balotat presa balotare compactare deșeuri hidraulică baler press compactor",
+    "balot de carton cutii presate legate maculatură cardboard bale paper",
+    "electronice uzate deee aparate stricate monitor mobil vechi e-waste electronic scrap",
+    "cutie pentru baterii uzate colectare acumulatori pile battery collection box",
+    "autogunoieră autogunoiera mașină de gunoi ridicare salubritate garbage truck refuse collection"
+  ]
+}

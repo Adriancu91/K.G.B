@@ -1,0 +1,46 @@
+{
+ "dict": {
+  "Bilet la ordin": "Promissory note",
+  "Bilete la ordin și cecuri": "Promissory notes and cheques",
+  "Bilete și cecuri": "Notes and cheques",
+  "Bilete și cecuri trecute": "Notes and cheques entered",
+  "Biletele la ordin și cecurile primite de la clienți sau date furnizorilor: suma, scadența și ce s-a încasat sau plătit; ies restul, zilele până la scadență și starea: încasat sau plătit (în verde), în portofoliu sau de plătit (în albastru), scadent în 7 zile (în galben), scadență depășită sau refuzat la plată (în roșu), cu restul pe un partener ales.": "Promissory notes and cheques received from customers or given to suppliers: the amount, the due date and what has been collected or paid; you get the balance, the days until the due date and the status: collected or paid (green), in portfolio or to pay (blue), due within 7 days (yellow), overdue or refused for payment (red), with the balance for a chosen partner.",
+  "Biletul la ordin se prezintă la plată în ziua scadenței sau în următoarele 2 zile lucrătoare; depus mai târziu, îți pierzi o parte din drepturi față de giranți.": "A promissory note is presented for payment on the due date or within the next 2 working days; presented later, you lose part of your rights against the endorsers.",
+  "Cec": "Cheque",
+  "Cecul se prezintă la bancă în cel mult 8 zile de la data emiterii: la cecuri, scrie la „Scadența” data emiterii plus 8 zile.": "A cheque is presented to the bank within 8 days of its issue date: for cheques, enter the issue date plus 8 days under “Due date”.",
+  "Cu scadența depășită": "Overdue",
+  "De încasat de la clienți": "To collect from customers",
+  "De plătit furnizorilor": "To pay suppliers",
+  "Depus la bancă": "Deposited at bank",
+  "Emis către furnizor": "Issued to supplier",
+  "În portofoliu": "In portfolio",
+  "Încasarea trece și în Sheets → Evidență facturi emise (sau Facturi de la furnizori, la plată), la factura pentru care s-a dat biletul.": "The collection is also entered in Sheets → Issued invoices (or Supplier invoices, for payments), on the invoice the note was given for.",
+  "Încasat sau plătit": "Collected or paid",
+  "Primit de la client": "Received from customer",
+  "Refuzat la plată": "Refused for payment",
+  "Refuzate la plată": "Refused for payment",
+  "Rest pe bilete și cecuri": "Balance on notes and cheques",
+  "Scadent în 7 zile": "Due within 7 days",
+  "Scadență depășită": "Overdue",
+  "Scadente în 7 zile": "Due within 7 days",
+  "Sensul": "Direction",
+  "Suma refuzată": "Amount refused",
+  "Un bilet la ordin sau un cec refuzat din lipsă de disponibil e titlu executoriu: banii se pot cere prin executorul judecătoresc, fără proces; păstrează originalul și refuzul băncii.": "A promissory note or cheque refused for lack of funds is an enforceable title: the money can be claimed through a bailiff, without a lawsuit; keep the original and the bank's refusal.",
+  "Un partener ales": "A chosen partner",
+  "🖋 Primirea unui bilet la ordin": "🖋 Receiving a promissory note",
+  "Clientul:\nBiletul la ordin sau cecul (seria și numărul):\nSuma: lei\nScadența:\nPentru factura:\n\nCând îl primești, verifici că are:\n☐ scris „bilet la ordin” (sau „cec”) în text și suma, în cifre și în litere, la fel\n☐ scadența, locul plății și numele firmei tale ca beneficiar\n☐ data și locul emiterii, semnătura și ștampila clientului (la cec și banca lui)\n☐ nicio ștersătură sau corectură; altfel ceri altul\n☐ trecut în tabel (Sheets → Bilete la ordin și cecuri), cu factura pentru care l-ai primit; primirea, într-un proces-verbal (Docs → Proces-verbal de predare-primire a biletelor la ordin)\n\nLa scadență:\n☐ depus la bancă la timp (biletul la ordin în ziua scadenței sau în următoarele 2 zile lucrătoare, cecul în 8 zile de la emitere)\n☐ încasarea trecută în tabel și la factură (Sheets → Evidență facturi emise): starea „Încasat”\n☐ dacă a fost refuzat: originalul și refuzul băncii păstrate, „Da” la „Refuzat la plată” și clientul anunțat (Docs → Somație de plată)\n\nObservații:\n• ": "Customer:\nPromissory note or cheque (series and number):\nAmount: lei\nDue date:\nFor invoice:\n\nWhen you receive it, check that it has:\n☐ “promissory note” (or “cheque”) written in the text and the amount, in figures and in words, the same\n☐ the due date, the place of payment and your company’s name as payee\n☐ the date and place of issue, the customer’s signature and stamp (for a cheque, also their bank)\n☐ no erasures or corrections; otherwise ask for another one\n☐ entered in the table (Sheets → Promissory notes and cheques), with the invoice it was received for; the handover, in a report (Docs → Promissory note handover report)\n\nOn the due date:\n☐ deposited at the bank on time (a promissory note on the due date or within the next 2 working days, a cheque within 8 days of issue)\n☐ the collection entered in the table and on the invoice (Sheets → Issued invoices register): status “Collected”\n☐ if refused: the original and the bank’s refusal kept, “Yes” under “Refused for payment” and the customer notified (Docs → Formal payment demand)\n\nNotes:\n• ",
+  "Proces-verbal de predare-primire a biletelor la ordin": "Promissory note handover report",
+  "Când un client dă bilete la ordin sau cecuri pentru facturile lui: fiecare bilet cu seria, banca, data emiterii, scadența, suma și factura pentru care se dă, totalul, starea în care s-au predat și semnăturile celor două părți": "When a customer hands over promissory notes or cheques for their invoices: each note with its series, bank, issue date, due date, amount and the invoice it is given for, the total, the condition they were handed over in and the signatures of both parties"
+ },
+ "templates": {
+  "Bilet la ordin {0}": "Promissory note {0}"
+ },
+ "skip": [
+  "=COUNTIF(O2:O{0};\"Refuzat la plată\")",
+  "=COUNTIF(O2:O{0};\"Scadent în 7 zile\")",
+  "=COUNTIF(O2:O{0};\"Scadență depășită\")",
+  "=IF(OR(D{0}=\"\";H{1}=\"\");\"\";IF(L{2}=\"Da\";\"Refuzat la plată\";IF(M{3}=0;IF(C{4}=\"Emis către furnizor\";\"Plătit\";\"Încasat\");IF(AND(G{5}<>\"\";TODAY()>G{6});\"Scadență depășită\";IF(AND(G{7}<>\"\";G{8}-TODAY()<=7);\"Scadent în 7 zile\";IF(C{9}=\"Emis către furnizor\";\"De plătit\";\"În portofoliu\"))))))",
+  "=ROUND(M{0}-SUMIF(C2:C{1};\"Emis către furnizor\";M2:M{2});2)",
+  "=SUMIF(C2:C{0};\"Emis către furnizor\";M2:M{1})"
+ ]
+}

@@ -1,0 +1,12 @@
+{
+  "dict": {
+    "Hartă mentală (primul element e subiectul, în mijloc; celelalte, ramurile, în dreapta și în stânga lui, legate prin linii curbe)": "Mind map (the first item is the topic, in the middle; the others, the branches, to its right and left, joined by curved lines)",
+    "Hartă mentală": "Mind map",
+    "hartă mentală": "mind map",
+    "Subiectul într-un oval în mijloc, ramurile în dreapta și în stânga lui, legate de el prin linii (ideile pornite dintr-un singur gând)": "The topic in an oval in the middle, the branches to its right and left, joined to it by lines (ideas growing from a single thought)"
+  },
+  "templates": {
+    "Ramura {0}": "Branch {0}"
+  },
+  "skip": []
+}

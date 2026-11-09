@@ -1,0 +1,24 @@
+{
+  "dict": {
+    "Muzeu și galerie": "Museum and gallery",
+    "Tablou înrămat": "Framed painting",
+    "Bust de sculptură": "Sculpted bust",
+    "Coloană antică": "Ancient column",
+    "Amforă": "Amphora",
+    "Șevalet": "Easel",
+    "Cordon de protecție": "Rope barrier",
+    "Ghid audio": "Audio guide",
+    "Vitrină de expoziție": "Display case"
+  },
+  "templates": {},
+  "skip": [
+    "tablou înrămat pictură ramă expoziție artă framed painting artwork",
+    "bust sculptură statuie marmură soclu sculpture statue",
+    "coloană antică templu grecesc roman antichitate ancient column pillar",
+    "amforă vas antic ceramică arheologie amphora ancient vase pottery",
+    "șevalet pânză pictor atelier de pictură easel canvas",
+    "cordon de protecție stâlpișori nu atingeți acces oprit rope barrier stanchion",
+    "ghid audio turul expoziției vizită ghidată audio guide",
+    "vitrină de expoziție exponat obiect de muzeu display case exhibit"
+  ]
+}

@@ -1,0 +1,22 @@
+{
+  "dict": {
+    "Contracte": "Contracts",
+    "Contracte în vigoare": "Contracts in force",
+    "Contractele firmei (clienți, furnizori, chirie, asigurări, abonamente): partenerul, perioada, valoarea, prelungirea automată și preavizul; zilele rămase ies singure, cele expirate în roșu, cele de reînnoit în galben.": "The company's contracts (customers, suppliers, rent, insurance, subscriptions): the partner, the period, the value, automatic renewal and the notice period; the days left fill in by themselves, expired ones turn red, those due for renewal yellow.",
+    "De reînnoit": "Due for renewal",
+    "Evidența contractelor": "Contract register",
+    "La Prelungire automată = Da, după sfârșit contractul nu iese Expirat; scrie noua dată de sfârșit când îl verifici.": "With Automatic renewal = Yes, the contract does not show as Expired after its end; write the new end date when you check it.",
+    "Lasă Sfârșit gol la contractele pe perioadă nedeterminată.": "Leave End empty for open-ended contracts.",
+    "Nr. și data contractului": "Contract no. and date",
+    "Obiectul contractului": "Subject of the contract",
+    "Prelungire automată": "Automatic renewal",
+    "Prelungite automat": "Renewed automatically"
+  },
+  "templates": {},
+  "skip": [
+    "=COUNTIF(K2:K{0};\"Activ\")+COUNTIF(K2:K{1};\"De reînnoit\")+COUNTIF(K2:K{2};\"Nedeterminat\")+COUNTIF(K2:K{3};\"Prelungit automat\")",
+    "=COUNTIF(K2:K{0};\"De reînnoit\")",
+    "=IF(B{0}=\"\";\"\";IF(F{1}=\"\";\"Nedeterminat\";IF(F{2}<TODAY();IF(H{3}=\"Da\";\"Prelungit automat\";\"Expirat\");IF(F{4}-TODAY()<=IF(I{5}=\"\";30;I{6});\"De reînnoit\";\"Activ\"))))",
+    "=SUMIF(K2:K{0};\"Activ\";G2:G{1})+SUMIF(K2:K{2};\"De reînnoit\";G2:G{3})+SUMIF(K2:K{4};\"Nedeterminat\";G2:G{5})+SUMIF(K2:K{6};\"Prelungit automat\";G2:G{7})"
+  ]
+}

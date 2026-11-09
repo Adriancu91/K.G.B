@@ -1,0 +1,36 @@
+{
+  "dict": {
+    "Somație de plată": "Formal payment demand",
+    "Pasul obligatoriu înainte de ordonanța de plată: facturile neplătite (sume certe, lichide și exigibile), contractul din care vin, penalitățile sau dobânda legală, cele 40 de euro pe factură pentru recuperare, termenul de 15 zile și cum se trimite (executor sau scrisoare recomandată cu confirmare de primire)": "The mandatory step before a court payment order: the unpaid invoices (certain, liquid and due amounts), the contract they come from, the penalties or statutory interest, the 40 euros per invoice for recovery costs, the 15-day deadline and how to send it (bailiff or registered letter with acknowledgement of receipt)",
+    "Penalități de întârziere": "Late payment penalties",
+    "Facturile plătite târziu sau încă neplătite, cu scadența: din zilele de întârziere ies penalitățile din contract (procentul pe zi, cel mult cât suma) sau, fără clauză, dobânda legală (dobânda BNR plus 8 puncte între firme), cei 40 € pe factură pentru recuperare și totalul de cerut în somație.": "Invoices paid late or still unpaid, with their due date: from the days of delay come the contract penalties (the daily rate, at most the amount owed) or, without such a clause, the statutory interest (the central bank rate plus 8 points between companies), the 40 € per invoice for recovery costs and the total to claim in the payment demand.",
+    "Penalități": "Penalties",
+    "Suma plătită târziu / neplătită": "Amount paid late / unpaid",
+    "Data plății (gol = neplătită)": "Payment date (empty = unpaid)",
+    "Penalități din contract": "Contract penalties",
+    "Dobânda legală": "Statutory interest",
+    "Recuperare (40 €)": "Recovery (40 €)",
+    "De cerut": "To claim",
+    "Total cu suma datorată": "Total with the amount owed",
+    "Reglaje": "Settings",
+    "Penalitatea din contract, pe zi (0 = fără clauză)": "Contract penalty per day (0 = no clause)",
+    "Penalitățile nu trec de suma datorată": "Penalties do not exceed the amount owed",
+    "Dobânda de referință BNR, pe an": "Central bank reference rate, per year",
+    "Puncte peste ea (8% între firme, 4% în rest)": "Points above it (8% between companies, 4% otherwise)",
+    "Cursul euro (lei), pentru cei 40 €": "Euro exchange rate (lei), for the 40 €",
+    "Calculez până la (gol = azi)": "Calculate up to (empty = today)",
+    "Ce se cere": "What is claimed",
+    "Penalitățile din contract": "The contract penalties",
+    "Încă neplătit": "Still unpaid",
+    "Penalități sau dobândă": "Penalties or interest",
+    "Recuperare (40 € pe factură)": "Recovery (40 € per invoice)",
+    "Total de cerut în somație": "Total to claim in the payment demand",
+    "Penalitățile se cer doar dacă sunt scrise în contract; altfel se cere dobânda legală (scrie la O4 dobânda de referință de pe site-ul BNR).": "Penalties can be claimed only if the contract provides for them; otherwise claim the statutory interest (enter in O4 the reference rate from the central bank website).",
+    "Cei 40 € pe factură se cer doar de la firme sau instituții, pentru facturile plătite după termen.": "The 40 € per invoice can be claimed only from companies or public institutions, for invoices paid after the due date.",
+    "Facturile plătite târziu intră cu data plății: rămân de cerut doar penalitățile. Somația: Docs → Șabloane → Somație de plată.": "Invoices paid late are entered with their payment date: only the penalties remain to be claimed. The payment demand: Docs → Templates → Formal payment demand."
+  },
+  "templates": {},
+  "skip": [
+    "=IF(O2>0;\"Penalitățile din contract\";\"Dobânda legală\")"
+  ]
+}

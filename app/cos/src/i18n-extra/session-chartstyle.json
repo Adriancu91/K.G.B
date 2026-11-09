@@ -1,0 +1,20 @@
+{
+  "dict": {
+    "Stiluri rapide": "Quick Styles",
+    "Stiluri rapide: umbre, degrade, fundal și grilă puse dintr-un clic (se păstrează și în .xlsx)": "Quick Styles: shadows, gradients, background and gridlines in one click (kept in .xlsx too)",
+    "Stil 1: simplu": "Style 1: plain",
+    "Stil 2: cu umbre": "Style 2: with shadows",
+    "Stil 3: degrade": "Style 3: gradient",
+    "Stil 4: fără grilă, cu valori": "Style 4: no gridlines, with values",
+    "Stil 5: fundal gri, cu contur": "Style 5: gray background, with outline",
+    "Stil 6: umbre pe albastru deschis": "Style 6: shadows on light blue",
+    "Stil 7: degrade cu valori": "Style 7: gradient with values",
+    "Stil 8: fundal închis": "Style 8: dark background",
+    "Serii": "Series",
+    "Seriile graficului: debifează o serie ca să n-o mai arate graficul (datele rămân în tabel)": "Chart series: uncheck a series to hide it from the chart (the data stays in the table)",
+    "Comutare rând/coloană": "Switch Row/Column",
+    "Comutare rând/coloană: seriile devin rândurile tabelului, iar etichetele de pe axă vin din capul de tabel": "Switch Row/Column: the series become the table rows, and the axis labels come from the header row"
+  },
+  "templates": {},
+  "skip": []
+}

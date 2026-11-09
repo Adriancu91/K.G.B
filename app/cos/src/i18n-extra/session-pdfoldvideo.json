@@ -1,0 +1,10 @@
+{
+  "dict": {
+    "Transform filmul în .mp4…": "Converting the video to .mp4…"
+  },
+  "templates": {
+    "Clipul „{0}” nu se poate reda aici: e într-un format vechi sau rar. Pune-l din nou pe pagină cu 🎬 Sunet / video…: dacă pe calculator e instalat FFmpeg, se transformă singur în .mp4 (H.264).": "The clip “{0}” cannot be played here: it is in an old or rare format. Place it on the page again with 🎬 Sound / video…: if FFmpeg is installed on this computer, it is converted to .mp4 (H.264) automatically.",
+    "Filmul „{0}” e într-un format vechi sau rar și nu va porni în fereastră. Pentru transformarea automată în .mp4 e nevoie de FFmpeg instalat pe calculator. Îl pun totuși pe pagină?": "The video “{0}” is in an old or rare format and will not play in the window. Automatic conversion to .mp4 needs FFmpeg installed on this computer. Place it on the page anyway?"
+  },
+  "skip": []
+}

@@ -1,0 +1,10 @@
+{
+  "dict": {
+    "🦷 Vizita la stomatolog": "🦷 Dental visit",
+    "Cabinetul și medicul:\nData și ora programării:\nDe ce merg (control, detartraj, o durere, o plombă căzută):\n\nÎnainte de programare:\n☐ programarea confirmată cu o zi înainte\n☐ lista cu medicamentele pe care le iau și cu alergiile\n☐ radiografiile vechi sau fișa de la alt cabinet, dacă le am\n☐ întrebat dacă tratamentul se decontează prin casa de asigurări\n\nLa cabinet:\n☐ spus medicului de sarcină, tensiune, boli de inimă sau medicamente care subțiază sângele\n☐ cerut planul de tratament în scris, cu prețul fiecărei etape\n☐ întrebat câte ședințe sunt și cât durează fiecare\n\nDupă:\n☐ fără mâncare și băutură fierbinte cât a spus medicul\n☐ următoarea programare trecută în calendar\n\nCe s-a făcut și cât am plătit:\n•\n\nSfaturile medicului (periaj, ață dentară, ce evit):\n• ": "Clinic and dentist:\nDate and time of the appointment:\nWhy I am going (checkup, cleaning, a toothache, a lost filling):\n\nBefore the appointment:\n☐ appointment confirmed the day before\n☐ list of the medicines I take and of my allergies\n☐ old X-rays or the record from another clinic, if I have them\n☐ asked whether the treatment is covered by health insurance\n\nAt the clinic:\n☐ told the dentist about pregnancy, blood pressure, heart conditions or blood thinners\n☐ asked for the treatment plan in writing, with the price of each stage\n☐ asked how many sessions there are and how long each one takes\n\nAfter:\n☐ no food or hot drinks for as long as the dentist said\n☐ next appointment written in the calendar\n\nWhat was done and how much I paid:\n•\n\nThe dentist's advice (brushing, floss, what to avoid):\n• "
+  },
+  "templates": {
+    "Vizita la stomatolog {0}": "Dental visit {0}"
+  },
+  "skip": []
+}

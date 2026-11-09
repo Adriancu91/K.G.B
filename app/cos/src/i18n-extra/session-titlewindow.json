@@ -1,0 +1,15 @@
+{
+  "dict": {
+    "Fereastră de aplicație (albă, cu bară de titlu și trei buline)": "App window (white, with a title bar and three dots)",
+    "Cutie de carton (maro, cu bandă adezivă)": "Cardboard box (brown, with packing tape)",
+    "Carte de vizită (albă, cu dungă albastră în stânga)": "Business card (white, with a blue stripe on the left)",
+    "Planșetă cu clemă (foaie albă pe o placă maro)": "Clipboard board (a white sheet on a brown board, with a clip)",
+    "Pagină de carte (crem, cu umbra cotorului în stânga)": "Book page (cream, with the spine shadow on the left)",
+    "Televizor de demult (ecran închis, ramă de lemn, butoane)": "Old TV set (dark screen, wooden frame, knobs)",
+    "Ecran de telefon (carcasă neagră, colțuri rotunjite, cameră)": "Phone screen (black case, rounded corners, camera)",
+    "Carte de îmbarcare (albă, bandă albastră sus, cotor punctat)": "Boarding pass (white, blue band on top, dotted stub)",
+    "Mesaj de chat (bulă verde deschis, cu ora și două bife)": "Chat message (light green bubble, with the time and two ticks)"
+  },
+  "templates": {},
+  "skip": []
+}

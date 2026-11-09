@@ -1,0 +1,5 @@
+{
+  "dict": {},
+  "templates": {},
+  "skip": ["Patt", "Bl  ", "Brgh", "Cntr", "Cyn ", "Grn ", "Mgnt", "Strt", "Yllw"]
+}

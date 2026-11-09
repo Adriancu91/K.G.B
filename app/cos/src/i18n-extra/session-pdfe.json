@@ -1,0 +1,13 @@
+{
+  "dict": {
+    "📐 Fă-l PDF/E (desene tehnice)": "📐 Make it PDF/E (technical drawings)",
+    "PDF/E-1, standardul pentru desene tehnice (planuri, proiecte): metadate, profil de culoare, fără scripturi și programe pornite; modelele 3D, sunetul și video rămân. Apoi apasă Salvează (sau Salvează ca…).": "PDF/E-1, the standard for technical drawings (plans, projects): metadata, color profile, no scripts or launched programs; 3D models, sound and video stay. Then press Save (or Save As…).",
+    "Fără acțiuni care pornesc programe": "No actions that launch programs",
+    "Metadatele nu spun că fișierul e PDF/E (lipsește pdfe:ISO_PDFEVersion).": "The metadata doesn't say the file is PDF/E (pdfe:ISO_PDFEVersion is missing).",
+    "Nivelul PDF/E în metadate": "PDF/E level in metadata"
+  },
+  "templates": {
+    "Gata: PDF/E-1 (pentru desene tehnice), cu metadate și profil de culoare; modelele 3D, sunetul și video rămân{0}.": "Done: PDF/E-1 (for technical drawings), with metadata and a color profile; 3D models, sound and video stay{0}."
+  },
+  "skip": []
+}

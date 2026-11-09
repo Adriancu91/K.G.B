@@ -1,0 +1,33 @@
+{
+  "dict": {
+    "↺ Zona automată": "↺ Automatic area",
+    "↻ Altă variantă": "↻ Another variant",
+    "＋ Adaugă la eșantionare": "＋ Add to sampling",
+    "− Scoate din eșantionare": "− Remove from sampling",
+    "▦ Toată poza": "▦ Whole picture",
+    "Anulează ultimul tras de pensulă (Ctrl+Z)": "Undo the last brush stroke (Ctrl+Z)",
+    "Bucățile se pot lua din toată poza (mai încet la pozele mari)": "Pieces can be taken from the whole picture (slower on large pictures)",
+    "Calculează din nou, cu alte bucăți alese": "Calculate again, with other pieces chosen",
+    "Pensula care șterge verdele: din zona peste care tragi nu se mai iau bucăți": "The brush that erases the green: no pieces are taken from the area you drag over",
+    "Pensula verde: zona peste care tragi devine sursă pentru umplere": "Green brush: the area you drag over becomes a source for the fill",
+    "Roșu: zona care se umple. Verde: de unde se iau bucățile. Trage cu ＋ peste ce se potrivește și cu − peste ce nu vrei să apară (Shift schimbă pensula pe loc). În dreapta vezi rezultatul.": "Red: the area that gets filled. Green: where the pieces are taken from. Drag with ＋ over what fits and with − over what you don't want to appear (Shift switches the brush on the spot). The result is shown on the right.",
+    "Se calculează…": "Calculating…",
+    "Zona de eșantionare": "Sampling area",
+    "Zona verde de la început: chenarul din jurul zonei roșii": "The initial green area: the frame around the red area",
+    "Zona verde e prea mică: pictează cu ＋ peste o parte a pozei care seamănă cu ce trebuie să apară în locul roșu.": "The green area is too small: paint with ＋ over a part of the picture that looks like what should appear in place of the red.",
+    "Umplere după conținut într-o fereastră: alegi cu pensula de unde se iau bucățile și vezi rezultatul înainte să-l aplici": "Content-aware fill in a window: choose with the brush where the pieces are taken from and see the result before applying it",
+    "Pe stratul ales": "On the selected layer",
+    "Pe un strat nou": "On a new layer",
+    "Unde se pune rezultatul": "Where the result goes",
+    "Adaptarea culorilor": "Color adaptation",
+    "Bucățile luate din altă parte primesc lumina și culoarea locului unde ajung (bine când textura potrivită e mai întunecată, mai luminoasă sau altfel colorată)": "Pieces taken from elsewhere get the brightness and color of the place where they land (good when the matching texture is darker, brighter or differently colored)",
+    "Oglindirea": "Mirroring",
+    "Bucățile se pot lua și întoarse stânga-dreapta (bine la lucruri simetrice: o față, o clădire, o frunză)": "Pieces can also be taken flipped left-to-right (good for symmetric things: a face, a building, a leaf)",
+    "Rotirea": "Rotation",
+    "Bucățile se pot lua și rotite cu 90, 180 sau 270 de grade (bine la modele care își schimbă direcția: o curbă, un cerc, dungi întoarse)": "Pieces can also be taken rotated by 90, 180 or 270 degrees (good for patterns that change direction: a curve, a circle, turned stripes)",
+    "Scalarea": "Scale",
+    "Bucățile se pot lua și mai mici sau mai mari (bine când același model apare mai aproape și mai departe: o pardoseală, un gard, iarbă în perspectivă)": "Pieces can also be taken smaller or larger (good when the same pattern appears nearer and farther: a floor, a fence, grass in perspective)"
+  },
+  "templates": {},
+  "skip": []
+}

@@ -1,0 +1,15 @@
+{
+  "dict": {
+    "🖌 Definește pensulă": "🖌 Define Brush",
+    "Făcută de tine cu ⬚ Marcaj → 🖌 Definește pensulă": "Made by you with ⬚ Marquee → 🖌 Define Brush",
+    "Reglată de tine": "Adjusted by you",
+    "Șterge pensula proprie aleasă din listă": "Delete the selected custom brush from the list",
+    "Zona aleasă devine o pensulă proprie (partea închisă la culoare pictează): o găsești în 🖌 Pensulă → Pensule gata": "The selected area becomes a custom brush (the dark part paints): you will find it in 🖌 Brush → Brush presets",
+    "Zona aleasă e goală: alege o parte a pozei cu un desen, un semn sau un logo.": "The selected area is empty: choose a part of the picture with a drawing, a mark or a logo."
+  },
+  "templates": {
+    "Pensulă proprie {0}": "Custom brush {0}",
+    "Am făcut „{0}”: o găsești în 🖌 Pensulă → lista Pensule gata.": "Made “{0}”: you will find it in 🖌 Brush → the Brush presets list."
+  },
+  "skip": []
+}

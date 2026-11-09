@@ -1,0 +1,10 @@
+{
+  "dict": {
+    "🎯 Obiective pentru anul nou": "🎯 New year goals"
+  },
+  "templates": {},
+  "skip": [
+    "Ce a mers bine anul acesta:\n• \n\nCe vreau să schimb:\n• \n\nObiectivele mele (☐ = atins):\n☐ sănătate: \n☐ bani și economii: \n☐ muncă și carieră: \n☐ familie și prieteni: \n☐ ceva nou de învățat: \n\nPrimul pas pentru fiecare, în ianuarie:\n• \n\nVerific cum stau:\n☐ la sfârșitul lui martie\n☐ la sfârșitul lui iunie\n☐ la sfârșitul lui septembrie\n☐ în decembrie\n",
+    "Obiective {0}"
+  ]
+}

@@ -1,0 +1,9 @@
+{
+  "dict": {
+    " Linia de semnătură e completată cu numele și data.": " The signature line is filled in with the name and date."
+  },
+  "templates": {
+    "Document .docx semnat digital salvat: {0}.{1} Nu-l mai modifica: orice schimbare strică semnătura.": "Digitally signed .docx document saved: {0}.{1} Do not modify it: any change breaks the signature."
+  },
+  "skip": []
+}

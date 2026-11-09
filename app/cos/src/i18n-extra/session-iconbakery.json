@@ -1,0 +1,24 @@
+{
+  "dict": {
+    "Brutărie și cofetărie": "Bakery and pastry",
+    "Pâine": "Bread",
+    "Corn": "Croissant",
+    "Covrig": "Pretzel",
+    "Brioșă": "Cupcake",
+    "Baghetă": "Baguette",
+    "Sac de făină": "Bag of flour",
+    "Gogoașă": "Doughnut",
+    "Tort cu etaje": "Tiered cake"
+  },
+  "templates": {},
+  "skip": [
+    "pâine franzelă brutărie coaptă bread loaf bakery",
+    "corn croissant patiserie mic dejun cornulețe croissant pastry breakfast",
+    "covrig covrigi cu mac cu susan simit pretzel bagel sesame",
+    "brioșă negresă cupcake muffin cofetărie fursec cupcake muffin",
+    "baghetă franțuzească pâine lungă baguette french bread",
+    "sac de făină făinoase morărit ingrediente flour bag sack",
+    "gogoașă gogoși glazurate dulciuri donut doughnut",
+    "tort cu etaje tort de nuntă aniversare cofetărie comandă wedding cake tiered"
+  ]
+}

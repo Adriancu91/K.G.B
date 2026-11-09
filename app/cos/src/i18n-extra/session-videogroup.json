@@ -1,0 +1,14 @@
+{
+  "dict": {
+    " (în grup: se aleg și se mută împreună; Ctrl+Shift+G desface grupul)": " (in a group: they are selected and moved together; Ctrl+Shift+G ungroups)",
+    "⛓ Degrupează": "⛓ Ungroup",
+    "Alege întâi cel puțin două poze / clipuri (Ctrl+clic sau Shift+clic), apoi Ctrl+G.": "First select at least two pictures / clips (Ctrl+click or Shift+click), then Ctrl+G.",
+    "Am desfăcut grupul.": "The group has been ungrouped.",
+    "Poza / clipul ales nu e într-un grup.": "The selected picture / clip is not in a group.",
+    "Pozele / clipurile alese (Ctrl+clic) rămân legate: se aleg, se mută, se copiază și se scot împreună (Ctrl+G)": "The selected pictures / clips (Ctrl+click) stay linked: they are selected, moved, copied and removed together (Ctrl+G)"
+  },
+  "templates": {
+    "Am grupat {0} poze / clipuri: un clic pe una le alege pe toate (Ctrl+Shift+G desface grupul).": "Grouped {0} pictures / clips: clicking one selects them all (Ctrl+Shift+G ungroups)."
+  },
+  "skip": []
+}

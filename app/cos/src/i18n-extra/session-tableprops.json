@@ -1,0 +1,38 @@
+{
+  "dict": {
+    "Proprietăți tabel: așezarea și lățimea tabelului, înălțimea rândului, rândul care nu se rupe între pagini, lățimea coloanei, alinierea în celulă": "Table properties: table position and width, row height, rows that don't break across pages, column width, cell alignment",
+    "Înălțimea: scrie un număr de centimetri între 0,1 și 50 (gol = automată)": "Height: type a number of centimeters between 0.1 and 50 (empty = automatic)",
+    "Lățimea: scrie un număr de centimetri între 0,1 și 50 (gol = automată)": "Width: type a number of centimeters between 0.1 and 50 (empty = automatic)",
+    "Alinierea textului pe înălțime": "Vertical text alignment",
+    "Alinierea verticală în dialog": "Vertical alignment in the dialog",
+    "Așezare pe pagină": "Position on the page",
+    "Așezarea tabelului": "Table position",
+    "Cât textul din el": "As wide as its text",
+    "Celulă": "Cell",
+    "Înălțime (cel puțin)": "Height (at least)",
+    "Înălțimea rândului în dialog": "Row height in the dialog",
+    "Lățimea tabelului": "Table width",
+    "Nu rupe rândul între pagini": "Don't break the row across pages",
+    "Proprietăți tabel": "Table properties",
+    "Rândul nu se rupe între pagini": "Row doesn't break across pages",
+    "Repetă ca rând de antet": "Repeat as header row",
+    "Se repetă ca antet pe fiecare pagină (de sus până la rândul acesta)": "Repeats as a header on every page (from the top down to this row)",
+    "Cât de departe de marginea din stânga a paginii începe tabelul (doar pentru tabelul așezat la stânga)": "How far from the left page margin the table starts (only for a left-aligned table)",
+    "Indentare de la stânga": "Indent from left",
+    "Indentarea tabelului": "Table indent",
+    "Indentarea: scrie un număr de centimetri între 0 și 10": "Indent: type a number of centimeters between 0 and 10",
+    "Marginile celulelor: scrie un număr de centimetri între 0 și 10 (gol = obișnuite)": "Cell margins: type a number of centimeters between 0 and 10 (empty = default)",
+    "Spațiul dintre marginea celulei și text, pe toate laturile, în toate celulele tabelului (gol = obișnuit)": "The space between the cell edge and the text, on all sides, in every cell of the table (empty = default)",
+    "Ce conține tabelul, pentru cei care folosesc un cititor de ecran.": "What the table contains, for people who use a screen reader.",
+    "Descrierea tabelului": "Table description",
+    "Titlul tabelului": "Table title",
+    "Încadrarea textului": "Text wrapping",
+    "Încadrarea textului în jurul tabelului": "Text wrapping around the table",
+    "Fără (textul sub tabel)": "None (text below the table)",
+    "În jurul tabelului": "Around the table"
+  },
+  "templates": {},
+  "skip": [
+    "<table:table table:name=\"Tabel{0}\"{1}>{2}<table:table-column table:number-columns-repeated=\"{3}\"/>{4}</table:table>"
+  ]
+}

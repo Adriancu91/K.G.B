@@ -1,0 +1,18 @@
+{
+  "dict": {
+    "⤓ Picătură: pozele trase aici pornesc singure": "⤓ Droplet: pictures dropped here start on their own",
+    "Alege dosarul (pasul 2): data viitoare pozele trase aici pornesc singure.": "Choose the folder (step 2): next time, pictures dropped here start on their own.",
+    "Ca o picătură: tragi poze peste această fereastră și se prelucrează imediat, cu setările de mai sus, în dosarul ales, fără alt clic. Cu o acțiune salvată (care ține minte și dosarul), alegi acțiunea și tragi pozele.": "Like a droplet: drag pictures onto this window and they are processed right away, with the settings above, into the chosen folder, with no other click. With a saved action (which also remembers the folder), choose the action and drag the pictures.",
+    "fișier care nu e poză": "file that is not a picture",
+    "fișiere care nu sunt poze": "files that are not pictures",
+    "Fișierele trase aici nu sunt poze.": "The files dropped here are not pictures.",
+    "poză trasă aici": "picture dropped here",
+    "poze trase aici": "pictures dropped here",
+    "sau trage pozele aici": "or drag the pictures here"
+  },
+  "templates": {
+    "Am lăsat deoparte {0} {1}.": "Left out {0} {1}.",
+    "Am luat {0} {1}.": "Took {0} {1}."
+  },
+  "skip": []
+}

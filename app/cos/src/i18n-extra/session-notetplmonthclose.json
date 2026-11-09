@@ -1,0 +1,10 @@
+{
+  "dict": {
+    "🧾 Închiderea lunii": "🧾 Month-end closing"
+  },
+  "templates": {},
+  "skip": [
+    "Închiderea lunii {0}",
+    "Luna: \nContabilul: \nTermenul de predare a actelor: \n\nActele lunii:\n☐ toate facturile emise, cu numerele la rând (Sheets → Evidență facturi emise)\n☐ facturile primite de la furnizori (Sheets → Facturi de la furnizori)\n☐ extrasele de cont de la bancă\n☐ registrul de casă și chitanțele (Sheets → Registru de casă)\n☐ bonurile de carburant și deconturile de deplasare\n☐ pontajul și cererile de concediu, pentru salarii\n\nVerificări:\n☐ TVA-ul lunii trecut în tabel (Sheets → Evidența TVA pe luni)\n☐ soldul real din cont comparat cu cel estimat (Sheets → Flux de numerar pe 12 luni)\n☐ facturile neîncasate de la clienți: notificări trimise (Docs → Notificare de plată)\n\nPredare:\n☐ actele trimise contabilului\n☐ declarațiile primite de la contabil verificate și depuse\n☐ taxele plătite până pe 25\n\nDe întrebat la contabil:\n• "
+  ]
+}

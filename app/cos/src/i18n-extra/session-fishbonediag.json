@@ -1,0 +1,12 @@
+{
+  "dict": {
+    "Os de pește (primul element e problema, în capul peștelui; celelalte, cauzele, pe oase sus și jos)": "Fishbone (the first item is the problem, in the fish's head; the others, the causes, on bones above and below)",
+    "Os de pește": "Fishbone",
+    "os de pește": "fishbone",
+    "Problema în capul din dreapta, cauzele pe oase sus și jos, legate de șira spinării (cauze și efect)": "The problem in the head on the right, the causes on bones above and below, joined to the spine (cause and effect)"
+  },
+  "templates": {
+    "Cauza {0}": "Cause {0}"
+  },
+  "skip": []
+}

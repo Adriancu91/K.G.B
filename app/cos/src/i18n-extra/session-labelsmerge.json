@@ -1,0 +1,19 @@
+{
+  "dict": {
+    "Același text pe o foaie de etichete autocolante (adrese, nume, coduri), sau câte o etichetă pentru fiecare rând dintr-un tabel. Se deschide un document nou, gata de tipărit pe A4.": "The same text on a sheet of self-adhesive labels (addresses, names, codes), or one label for each row of a table. A new document opens, ready to print on A4.",
+    "Câmpurile tabelului": "Table fields",
+    "Doar primele": "Only the first",
+    "etichetă": "label",
+    "Numele și adresa din coloanele tabelului, pe rânduri": "The name and address from the table columns, on separate lines",
+    "O etichetă pentru fiecare rând dintr-un tabel": "One label for each row of a table",
+    "Pune în text:": "Insert into the text:",
+    "rânduri.": "rows.",
+    "Din tabel": "From a table",
+    "Document nou cu plicurile": "New document with the envelopes",
+    "Un plic pentru fiecare rând dintr-un tabel": "One envelope for each row of a table",
+    "plic": "envelope",
+    "plicuri": "envelopes"
+  },
+  "templates": {},
+  "skip": []
+}

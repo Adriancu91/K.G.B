@@ -1,0 +1,14 @@
+{
+  "dict": {
+    "În celulă": "Place in Cell",
+    "În celulă: poza aleasă (sau una nouă) intră în celulă, ia mărimea ei și se mută odată cu ea": "Place in Cell: the selected picture (or a new one) goes into the cell, takes its size and moves with it",
+    "Peste celule": "Place over Cells",
+    "Peste celule: poza aleasă iese din celulă și se poate muta și mări liber": "Place over Cells: the selected picture leaves the cell and can be moved and resized freely",
+    "Poza e acum peste celule: se mută și se mărește cu mouse-ul": "The picture is now over the cells: move and resize it with the mouse"
+  },
+  "templates": {
+    "Poza e în celula {0}{1}: mărește coloana sau rândul ca s-o vezi mai mare; Delete o șterge": "The picture is in cell {0}{1}: widen the column or row to see it larger; Delete removes it",
+    "Poza e în celula {0}{1}: se mută odată cu celula și ia mărimea ei": "The picture is in cell {0}{1}: it moves with the cell and takes its size"
+  },
+  "skip": []
+}

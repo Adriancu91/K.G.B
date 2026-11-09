@@ -1,0 +1,24 @@
+{
+ "dict": {
+  "Cantitatea primită": "Quantity received",
+  "Cantitatea trimisă": "Quantity sent",
+  "Cine predă scrie cantitatea trimisă; cine primește scrie ce a numărat la sosire: diferențele ies singure.": "The sender enters the quantity sent; the receiver enters what was counted on arrival: the differences are calculated automatically.",
+  "Din gestiunea": "From store",
+  "În fișa de magazie (Sheets → Fișa de magazie) e ieșire la gestiunea care predă și intrare la cea care primește.": "On the stock card (Sheets → Stock card) it is an issue for the sending store and a receipt for the receiving one.",
+  "În gestiunea": "To store",
+  "Marfa mutată dintr-un depozit sau magazin în altul: cantitatea trimisă față de cea numărată la primire, cu prețul; ies diferențele în cantitate și în lei, lipsurile (în roșu), plusurile (în galben), valoarea trimisă și starea transferului: primit complet, neprimit încă sau primit cu diferențe.": "Goods moved from one warehouse or shop to another: quantity sent versus quantity counted on receipt, with the price; you get the differences in quantity and in lei, shortages (red), surpluses (yellow), the value sent and the transfer status: fully received, not received yet or received with differences.",
+  "Neprimit încă": "Not received yet",
+  "Pentru lipsuri se face proces-verbal și se cere nota explicativă (Docs → Notă explicativă a gestionarului).": "For shortages, draw up a report and ask for the explanatory note (Docs → Stock keeper explanatory note).",
+  "Primit complet": "Fully received",
+  "Primit cu diferențe": "Received with differences",
+  "Primite cu lipsuri": "Received with shortages",
+  "Primite cu plusuri": "Received with surpluses",
+  "Produse pe bon": "Products on the slip",
+  "Valoarea trimisă": "Value sent",
+  "Valoarea trimisă (fără TVA)": "Value sent (excl. VAT)"
+ },
+ "templates": {},
+ "skip": [
+  "=IF(N11=0;\"\";IF(COUNT(F2:F{0})<N11;\"Neprimit încă\";IF(AND(N12=0;N13=0);\"Primit complet\";\"Primit cu diferențe\")))"
+ ]
+}

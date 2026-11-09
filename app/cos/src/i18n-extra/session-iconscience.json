@@ -1,0 +1,24 @@
+{
+  "dict": {
+    "Știință": "Science",
+    "Microscop": "Microscope",
+    "Eprubete în suport": "Test tube rack",
+    "Magnet": "Magnet",
+    "ADN": "DNA",
+    "Telescop": "Telescope",
+    "Vas Petri": "Petri dish",
+    "Rachetă": "Rocket",
+    "Satelit": "Satellite"
+  },
+  "templates": {},
+  "skip": [
+    "microscop laborator biologie analize microscope lab biology",
+    "eprubete suport probe analize chimie test tubes rack samples chemistry",
+    "magnet magnetism fizică atracție magnetism physics",
+    "adn genetică genă biologie dna genetics gene biology",
+    "telescop astronomie stele observator telescope astronomy stars",
+    "vas petri cultură bacterii laborator petri dish culture bacteria",
+    "rachetă spațiu cosmos lansare start-up rocket space launch startup",
+    "satelit orbită spațiu gps semnal satellite orbit space signal"
+  ]
+}

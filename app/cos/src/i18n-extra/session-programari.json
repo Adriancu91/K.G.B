@@ -1,0 +1,39 @@
+{
+  "dict": {
+    "Anulate sau neveniți": "Cancelled or no-shows",
+    "Avansuri luate": "Deposits taken",
+    "Azi (fără cele anulate)": "Today (not counting cancelled)",
+    "Ca să vezi doar o zi: Date → Filtru pe coloana Data; ca să le ai în ordine: Date → Sortare după Data, apoi Ora.": "To see a single day: Data → Filter on the Date column; to put them in order: Data → Sort by Date, then Time.",
+    "Confirmată": "Confirmed",
+    "De acum încolo (fără cele anulate)": "From now on (not counting cancelled)",
+    "Încasat din cele realizate": "Collected from completed ones",
+    "Nu a venit": "No-show",
+    "Pentru saloane, cabinete și service-uri: data, ora, clientul, serviciul, durata și prețul fiecărei programări; ies ora de sfârșit, restul de plată după avans și dacă e azi (în galben), a trecut sau urmează; în dreapta câte programări sunt azi și de acum încolo, câte s-au anulat și cât s-a încasat.": "For salons, practices and repair shops: the date, time, client, service, duration and price of each appointment; you get the end time, the balance due after the deposit and whether it is today (in yellow), past or upcoming; on the right, how many appointments there are today and from now on, how many were cancelled and how much was collected.",
+    "Prețul (lei)": "Price (lei)",
+    "Programări": "Appointments",
+    "Programări clienți": "Client appointments",
+    "Programări trecute în tabel": "Appointments in the table",
+    "Programările de azi ies în galben; după ce clientul a plecat, alegi „Realizată” la Starea.": "Today’s appointments show in yellow; after the client has left, choose “Completed” under Status.",
+    "Programată": "Scheduled",
+    "Realizată": "Completed",
+    "Realizate": "Completed",
+    "Rest de încasat (programate și confirmate)": "Balance to collect (scheduled and confirmed)",
+    "Se termină la": "Ends at",
+    "Serviciul": "Service",
+    "Un rând pe fiecare programare: data, ora (de exemplu 14:30), clientul, serviciul, cât durează în minute și prețul.": "One row per appointment: the date, the time (for example 14:30), the client, the service, how long it takes in minutes and the price.",
+    "💇 Fișa unui client": "💇 Client record"
+  },
+  "templates": {},
+  "skip": [
+    "=COUNTIF(L2:L{0};\"Anulată\")+COUNTIF(L2:L{1};\"Nu a venit\")",
+    "=COUNTIF(L2:L{0};\"Realizată\")",
+    "=COUNTIFS(M2:M{0};\"Azi\";L2:L{1};\"<>Anulată\")",
+    "=COUNTIFS(M2:M{0};\"Urmează\";L2:L{1};\"<>Anulată\")",
+    "=IF(B{0}=\"\";\"\";IF(B{1}=TODAY();\"Azi\";IF(B{2}<TODAY();\"A trecut\";\"Urmează\")))",
+    "=IF(OR(I{0}=\"\";L{1}=\"Anulată\";L{2}=\"Nu a venit\");\"\";MAX(0;I{3}-J{4}))",
+    "=SUMIF(L2:L{0};\"Programată\";K2:K{1})+SUMIF(L2:L{2};\"Confirmată\";K2:K{3})",
+    "=SUMIF(L2:L{0};\"Realizată\";I2:I{1})",
+    "Fișa clientului {0}",
+    "Numele:\nTelefonul:\nDe când vine:\nCum preferă să fie anunțat (telefon, mesaj):\n\nBine de știut:\n• alergii sau sensibilități:\n• ce îi place / ce nu îi place:\n• produsele folosite ultima dată:\n\nLa fiecare vizită:\n☐ programarea trecută în Sheets → Programări clienți (data, ora, serviciul, prețul)\n☐ programarea confirmată cu o zi înainte\n☐ alergiile și preferințele de mai sus recitite înainte de începere\n☐ serviciul făcut și produsele folosite notate mai jos\n☐ plata încasată și „Realizată” aleasă la Starea, în Programări clienți\n☐ următoarea programare propusă înainte să plece\n\nIstoricul vizitelor (data, serviciul, produsele, prețul):\n•\n\nObservații:\n• "
+  ]
+}

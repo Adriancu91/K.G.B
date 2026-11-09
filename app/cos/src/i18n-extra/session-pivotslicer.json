@@ -1,0 +1,26 @@
+{
+  "dict": {
+    " (Ctrl+clic: alegi mai multe)": " (Ctrl+click: pick several)",
+    "Arată toate valorile în rezumat": "Show all values in the summary",
+    "Butoane de filtrare ale rezumatului": "summary filter buttons",
+    "Butoane de filtrare pentru rezumat: clic = doar valoarea aceea, Ctrl+clic = mai multe, ⊘ = toate": "summary filter buttons: click = only that value, Ctrl+click = several, ⊘ = all",
+    "Închide butoanele rezumatului": "Close the summary filter buttons",
+    "Nu mai găsesc tabelul sursă al rezumatului": "Can't find the summary's source table anymore",
+    "Rezumatul arată toate valorile": "The summary shows all values",
+    "Rezumatul nu are câmp de filtru: alege-l la Inserare → Tabel Pivot → Filtru deasupra rezumatului, apoi apasă din nou": "The summary has no filter field: pick one in Insert → Pivot Table → Filter above the summary, then press again",
+    "Toate valorile din rezumat": "All values in the summary",
+    " (Shift+clic: până la ea)": " (Shift+click: up to it)",
+    "Arată toate perioadele în rezumat": "Show all periods in the summary",
+    "Câmpul de filtru al rezumatului nu are date calendaristice: cronologia merge doar pe o coloană cu date": "The summary filter field has no calendar dates: the timeline only works on a column with dates",
+    "Cronologia rezumatului": "Summary timeline",
+    "Cronologie pentru rezumat: clic pe o perioadă = doar zilele din ea, Shift+clic = până la ea, ⊘ = toate": "Summary timeline: click a period = only its days, Shift+click = up to it, ⊘ = all",
+    "Închide cronologia rezumatului": "Close the summary timeline",
+    "Nicio dată în perioada aleasă": "No dates in the chosen period",
+    "Nivelul cronologiei rezumatului": "Summary timeline level",
+    "Toate perioadele din rezumat": "All periods in the summary"
+  },
+  "templates": {
+    "Rezumatul arată doar: {0}": "The summary shows only: {0}"
+  },
+  "skip": []
+}

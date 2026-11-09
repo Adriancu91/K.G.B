@@ -1,0 +1,36 @@
+{
+ "dict": {
+  "Perisabilități": "Allowable losses",
+  "La inventarierea unei gestiuni: pentru fiecare produs, ieșirile din perioadă și cota admisă din normă dau lipsa admisă; lipsa constatată se împarte singură în partea din limita normei (trece pe cheltuieli) și partea peste normă (în roșu), de imputat gestionarului, cu valorile în lei și starea inventarului.": "When taking stock of a store: for each product, the issues in the period and the allowed rate from the norm give the allowable shortage; the shortage found is split automatically into the part within the norm (booked as an expense) and the part above the norm (in red), to be charged to the stock keeper, with the values in lei and the stocktaking status.",
+  "Alimente": "Food",
+  "Băuturi": "Drinks",
+  "Legume și fructe": "Fruit and vegetables",
+  "Carne și pește": "Meat and fish",
+  "Materiale de construcții": "Building materials",
+  "Combustibili": "Fuels",
+  "Chimicale": "Chemicals",
+  "Ieșirile din perioadă": "Issues in the period",
+  "Cota admisă (%)": "Allowed rate (%)",
+  "Lipsa admisă": "Allowable shortage",
+  "Lipsa constatată": "Shortage found",
+  "Lipsa peste normă": "Shortage above norm",
+  "În limita normei (lei)": "Within the norm (lei)",
+  "De imputat (lei)": "To be charged (lei)",
+  "Inventarul": "Stocktaking",
+  "Perioada de la": "Period from",
+  "Până la (data inventarului)": "To (stocktaking date)",
+  "Produse cu lipsuri": "Products with shortages",
+  "Peste normă": "Above the norm",
+  "Lipsuri în limita normei (pe cheltuieli)": "Shortages within the norm (expensed)",
+  "De imputat gestionarului": "To be charged to the stock keeper",
+  "În limita normei": "Within the norm",
+  "De imputat": "To be charged",
+  "Ieșirile din perioadă se iau din fișa de magazie (Sheets → Fișa de magazie), de la ultimul inventar până azi.": "The issues in the period come from the stock card (Sheets → Stock card), from the last stocktaking until today.",
+  "Lipsa constatată vine din lista de inventariere (Sheets → Listă de inventariere); cotele sunt cele din normele firmei, verificate cu contabilul.": "The shortage found comes from the stocktaking list (Sheets → Stocktaking list); the rates are those in the company's norms, checked with the accountant.",
+  "Ce trece peste normă (în roșu) se trece în procesul-verbal de inventariere, cu nota explicativă a gestionarului (Docs).": "Anything above the norm (in red) goes into the stocktaking report, with the stock keeper's explanatory note (Docs)."
+ },
+ "templates": {},
+ "skip": [
+  "=IF(P9=0;\"\";IF(P10=0;\"În limita normei\";\"De imputat\"))"
+ ]
+}

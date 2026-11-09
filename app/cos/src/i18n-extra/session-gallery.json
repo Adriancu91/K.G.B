@@ -1,0 +1,22 @@
+{
+  "dict": {
+    "＋ Efect nou": "＋ New effect",
+    "Galerie de filtre": "Filter gallery",
+    "Încă un efect peste cele de acum (pornește cu o copie a celui ales)": "Another effect on top of the current ones (starts as a copy of the selected one)",
+    "Scoate efectul ales din listă": "Remove the selected effect from the list",
+    "Vizibil: debifat, efectul nu se aplică": "Visible: unchecked, the effect is not applied",
+    "🖼 Galerie de filtre…": "🖼 Filter gallery…",
+    "Galerie de filtre: miniaturi cu filtrele artistice pe poza ta și mai multe efecte puse unul peste altul": "Filter gallery: thumbnails of the artistic filters on your photo and several effects stacked on top of each other",
+    "Lungimea mișcării": "Motion length",
+    "Reducerea tremuratului": "Shake reduction",
+    "Reface pozele mișcate când ai fotografiat cu mâna tremurândă: alegi unghiul și lungimea mișcării (sau lași unghiul ghicit din poză), iar urma se strânge la loc (Shake Reduction)": "Fixes photos blurred by a shaky hand: choose the angle and length of the motion (or let the angle be guessed from the photo) and the trail is pulled back together (Shake Reduction)",
+    "Unghiul ghicit din poză": "Angle guessed from the photo",
+    "Liniile automate nu se pot scoate: ele arată unde se termină hârtia (micșorează din Aspect pagină → Potrivire)": "Automatic lines cannot be removed: they show where the paper ends (shrink it from Page Layout → Scale to Fit)",
+    "Sfârșitul de pagină a fost scos (tras în afara zonei tipărite)": "The page break was removed (dragged outside the print area)"
+  },
+  "templates": {
+    "Acum {0} începe o pagină nouă": "{0} now starts a new page",
+    "Acum {0} începe o pagină nouă; pagina de dinainte nu încape pe hârtie, deci linia automată rămâne (micșorează din Aspect pagină → Potrivire)": "{0} now starts a new page; the page before it does not fit on the paper, so the automatic line stays (shrink it from Page Layout → Scale to Fit)"
+  },
+  "skip": []
+}

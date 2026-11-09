@@ -1,0 +1,13 @@
+{
+  "dict": {
+    "Editare puncte": "Edit Points",
+    "✎ Editare puncte": "✎ Edit Points",
+    "Gata puncte": "Done with points",
+    "✎ Gata puncte": "✎ Done with points",
+    "Editare puncte: trage de punctele negre ca să schimbi forma, dublu-clic pe un punct îl șterge; Esc sau clic din nou = gata": "Edit Points: drag the black points to change the shape, double-click a point to delete it; Esc or click again = done",
+    "Trage ca să muți punctul; dublu-clic îl șterge": "Drag to move the point; double-click deletes it",
+    "Trage de contur ca să adaugi un punct nou": "Drag the outline to add a new point"
+  },
+  "templates": {},
+  "skip": []
+}

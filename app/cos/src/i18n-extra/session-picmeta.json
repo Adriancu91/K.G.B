@@ -1,0 +1,15 @@
+{
+  "dict": {
+    "Ce se vede în poză": "What the picture shows",
+    "Cine a făcut poza": "Who took the picture",
+    "Datele de la aparat sau telefon (aparatul, data, locul) nu se mai scriu la salvare (bine pentru intimitate).": "The camera or phone data (camera, date, location) is not written when you save (good for privacy).",
+    "De exemplu © 2026 Numele firmei": "For example © 2026 Company name",
+    "Cuvinte cheie": "Keywords",
+    "Despărțite prin ; (de exemplu mare; vară; familie)": "Separated by ; (for example sea; summer; family)",
+    "Autorul, drepturile, descrierea și cuvintele cheie se scriu în fișier la salvare ca .jpg, .png sau .webp (le arată și calculatorul: clic dreapta pe fișier → Proprietăți → Detalii).": "The author, copyright, description and keywords are written into the file when you save as .jpg, .png or .webp (your computer shows them too: right-click the file → Properties → Details)."
+  },
+  "templates": {},
+  "skip": [
+    "Copyright"
+  ]
+}

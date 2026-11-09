@@ -1,0 +1,23 @@
+{
+  "dict": {
+    "Jocuri": "Games",
+    "Zar": "Die",
+    "Turn de șah": "Chess rook",
+    "Tablă de șah": "Chessboard",
+    "Carte de joc": "Playing card",
+    "Domino": "Domino",
+    "Popic": "Bowling pin",
+    "Jeton": "Poker chip"
+  },
+  "templates": {},
+  "skip": [
+    "zar zaruri joc noroc table dice game luck",
+    "turn de șah piesă tură chess rook piece",
+    "tablă de șah dame strategie chessboard checkers strategy",
+    "carte de joc cărți inimă pachet playing card cards heart deck",
+    "domino piesă joc de societate domino tile board game",
+    "popic popice bowling distracție bowling pin skittle",
+    "jeton fisă cazinou poker tombolă chip token casino",
+    "clepsidră timp nisip rundă joc hourglass sand timer round"
+  ]
+}

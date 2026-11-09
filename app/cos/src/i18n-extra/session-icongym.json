@@ -1,0 +1,24 @@
+{
+  "dict": {
+    "Sală de fitness": "Gym",
+    "Kettlebell": "Kettlebell",
+    "Saltea de yoga": "Yoga mat",
+    "Coardă de sărit": "Jump rope",
+    "Bandă de alergare": "Treadmill",
+    "Bicicletă de fitness": "Exercise bike",
+    "Cântar corporal": "Bathroom scale",
+    "Shaker de proteine": "Protein shaker",
+    "Halteră": "Barbell"
+  },
+  "templates": {},
+  "skip": [
+    "kettlebell greutate cu mâner antrenament funcțional weight",
+    "saltea de yoga pilates stretching yoga mat",
+    "coardă de sărit sărituri cardio jump rope skipping",
+    "bandă de alergare covor rulant cardio treadmill",
+    "bicicletă de fitness spinning bicicletă staționară exercise bike",
+    "cântar corporal kilograme dietă bathroom scale body weight",
+    "shaker de proteine proteină suplimente protein shaker",
+    "halteră bară cu discuri ridicare greutăți barbell weightlifting"
+  ]
+}

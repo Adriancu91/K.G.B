@@ -1,0 +1,24 @@
+{
+  "dict": {
+    "Ciclism și trotinete": "Cycling and scooters",
+    "Cască de ciclist": "Bike helmet",
+    "Pompă de bicicletă": "Bike pump",
+    "Lacăt de bicicletă": "Bike lock",
+    "Trotinetă": "Kick scooter",
+    "Pistă de biciclete": "Bike lane",
+    "Lanț de bicicletă": "Bike chain",
+    "Sonerie de bicicletă": "Bike bell",
+    "Rastel de biciclete": "Bike rack"
+  },
+  "templates": {},
+  "skip": [
+    "cască de ciclist bicicletă protecție cap bike helmet cycling",
+    "pompă de bicicletă umflat roată presiune aer bike pump",
+    "lacăt de bicicletă furt parcare bike lock u-lock",
+    "trotinetă trotinetă electrică deplasare oraș kick scooter e-scooter",
+    "pistă de biciclete indicator traseu ciclism bike lane cycle path sign",
+    "lanț de bicicletă transmisie ungere service bike chain",
+    "sonerie de bicicletă clopoțel semnal ghidon bike bell",
+    "rastel de biciclete parcare biciclete suport bike rack parking"
+  ]
+}

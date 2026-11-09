@@ -1,0 +1,10 @@
+{
+  "dict": {
+    "🎂 Ziua unui coleg": "🎂 A colleague's birthday"
+  },
+  "templates": {},
+  "skip": [
+    "Ziua unui coleg {0}",
+    "Sărbătoritul: \nZiua: \nCâți ani împlinește: \n\nCu o săptămână înainte:\n☐ ziua văzută în tabel (Sheets → Zilele de naștere ale colegilor)\n☐ colegii anunțați, fără ca sărbătoritul să afle\n☐ suma pe om stabilită și strânsă\n☐ cadoul ales (Notițe → Idei de cadouri)\n\nCu o zi înainte:\n☐ tortul sau prăjiturile comandate\n☐ felicitarea semnată de toți\n☐ filmulețul de felicitare gata (Video → Carton → stilul Aniversare)\n\nÎn ziua cea mare:\n☐ masa pregătită, lumânările și farfuriile\n☐ cadoul și felicitarea date\n☐ „Felicitat” trecut pe Da în tabel\n\nBanii strânși:\n• "
+  ]
+}

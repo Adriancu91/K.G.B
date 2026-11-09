@@ -1,0 +1,9 @@
+{
+  "dict": {
+    "Media: Redare": "Media: Play",
+    "Media: Pauză": "Media: Pause",
+    "Media: Oprire": "Media: Stop"
+  },
+  "templates": {},
+  "skip": []
+}

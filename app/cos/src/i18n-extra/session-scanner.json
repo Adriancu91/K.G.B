@@ -1,0 +1,15 @@
+{
+  "dict": {
+    "📠 Din scanner…": "📠 From scanner…",
+    "Scanează direct de la scanner (sau de la multifuncțională), cu fereastra de scanare a Windows-ului: alegi color / gri / alb-negru și rezoluția": "Scan directly from the scanner (or multifunction printer) with the Windows scan window: choose color / grayscale / black and white and the resolution",
+    "Scannerul nu a putut scana.": "The scanner could not scan.",
+    "Scanează de la scanner, curăță scanările și recunoaște textul din ele": "Scan from the scanner, clean up scans and recognize their text",
+    "Scanează o pagină direct de la scanner (sau de la multifuncțională), cu fereastra de scanare a Windows-ului: pagina se adaugă la PDF-ul deschis sau face unul nou; pentru mai multe pagini apasă din nou": "Scan a page directly from the scanner (or multifunction printer) with the Windows scan window: the page is added to the open PDF or makes a new one; press again for more pages",
+    "Nu am găsit niciun scanner conectat. Verifică dacă e pornit și legat la calculator (prin cablu sau în aceeași rețea), apoi încearcă din nou.": "No connected scanner was found. Check that it is turned on and connected to the computer (by cable or on the same network), then try again.",
+    "Scanarea directă merge doar pe Windows.": "Direct scanning works only on Windows."
+  },
+  "templates": {
+    "Scannerul nu a putut scana: {0}": "The scanner could not scan: {0}"
+  },
+  "skip": []
+}

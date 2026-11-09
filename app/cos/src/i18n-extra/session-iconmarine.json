@@ -1,0 +1,24 @@
+{
+  "dict": {
+    "Marină și navigație": "Marine and navigation",
+    "Ancoră": "Anchor",
+    "Far": "Lighthouse",
+    "Colac de salvare": "Lifebuoy",
+    "Velier": "Sailboat",
+    "Cârma navei": "Ship wheel",
+    "Geamandură": "Buoy",
+    "Vestă de salvare": "Life jacket",
+    "Hublou": "Porthole"
+  },
+  "templates": {},
+  "skip": [
+    "ancoră ancora port marinar ancorare anchor sailor harbor",
+    "far de coastă far luminos coastă semnal maritim lighthouse beacon coast",
+    "colac de salvare salvamar plajă înot siguranță lifebuoy life ring rescue",
+    "velier barcă cu pânze iaht regată sailboat yacht sailing regatta",
+    "cârma navei timonă roata cârmei căpitan ship wheel helm captain",
+    "geamandură balizaj semnalizare pe apă canal navigabil buoy marker",
+    "vestă de salvare caiac rafting barcă life jacket vest",
+    "hublou fereastră de navă cabină porthole ship window cabin"
+  ]
+}

@@ -1,0 +1,10 @@
+{
+  "dict": {
+    "Cerere de ordonanță de plată": "Application for a court payment order",
+    "Cererea către judecătorie după ce somația de plată a rămas fără răspuns 15 zile: creditorul și debitorul, suma (debitul, penalitățile, dobânda), de unde vine datoria, somația și dovada primirii, înscrisurile anexate, taxa de timbru și câte exemplare se depun": "The application to the court after the payment demand has gone unanswered for 15 days: the creditor and the debtor, the amount (principal, penalties, interest), where the debt comes from, the payment demand and proof of receipt, the attached documents, the court fee and how many copies to file",
+    "după 15 zile: Docs → Cerere de ordonanță de plată": "after 15 days: Docs → Application for a court payment order",
+    "somație de plată (Docs → Somație de plată), cu penalitățile din Sheets → Penalități de întârziere": "formal payment demand (Docs → Formal payment demand), with the penalties from Sheets → Late payment penalties"
+  },
+  "templates": {},
+  "skip": []
+}

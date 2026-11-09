@@ -1,0 +1,12 @@
+{
+  "dict": {
+    "Caseta de dinainte (←)": "Previous box (←)",
+    "Caseta următoare, unde continuă textul (→ sau Spațiu)": "Next box, where the text continues (→ or Space)",
+    "Clic: caseta următoare": "Click: next box",
+    "Citește articolul pe ecran întreg, casetă cu casetă (→ sau Spațiu înainte, ← înapoi, Esc iese)": "Read the article full screen, box by box (→ or Space forward, ← back, Esc exits)"
+  },
+  "templates": {
+    "Caseta {0} din {1} · pagina {2}": "Box {0} of {1} · page {2}"
+  },
+  "skip": []
+}

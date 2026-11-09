@@ -1,0 +1,24 @@
+{
+  "dict": {
+    "Juridic": "Legal",
+    "Ciocănel de judecător": "Judge's gavel",
+    "Semnul paragrafului": "Section sign",
+    "Codul de legi": "Law code book",
+    "Citație": "Summons",
+    "Dosar de instanță": "Court case file",
+    "Sigiliu": "Seal",
+    "Testament": "Will",
+    "Cătușe": "Handcuffs"
+  },
+  "templates": {},
+  "skip": [
+    "ciocănel de judecător instanță proces sentință licitație gavel court judge auction",
+    "paragraf semnul paragrafului articol lege alineat juridic paragraph section law",
+    "codul de legi cod civil penal muncii carte lege legislație law book code statute",
+    "citație instanță termen proces hârtie oficială summons subpoena court notice",
+    "dosar de instanță număr dosar proces avocat șnur court file case folder",
+    "sigiliu notar notarial autentificat oficial seal notary certified",
+    "testament moștenire succesiune pergament sul will testament inheritance scroll",
+    "cătușe arest poliție infracțiune penal handcuffs arrest police"
+  ]
+}

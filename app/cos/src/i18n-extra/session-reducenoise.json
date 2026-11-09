@@ -1,0 +1,13 @@
+{
+  "dict": {
+    "Zgomot de culoare (pete colorate)": "Colour noise (coloured specks)",
+    "Scoate pătrățelele de la JPEG": "Remove JPEG blocks",
+    "Clarifică detaliile": "Sharpen details",
+    "Încă pe canalul albastru": "Extra on blue channel",
+    "Încă pe canalul roșu": "Extra on red channel",
+    "Încă pe canalul verde": "Extra on green channel",
+    "Scoate granulația pozelor făcute seara, cu detaliile păstrate; zgomotul unui singur canal (de obicei albastrul) se scoate separat, iar detaliile se pot clarifica la final (Reduce Noise)": "Removes the grain from night photos while keeping details; noise in a single channel (usually blue) is removed separately, and details can be sharpened at the end"
+  },
+  "templates": {},
+  "skip": []
+}

@@ -1,0 +1,10 @@
+{
+  "dict": {
+    "🚚 Mutare": "🚚 Moving house"
+  },
+  "templates": {},
+  "skip": [
+    "Data mutării: \nAdresa nouă: \n\nÎnainte:\n☐ anunț proprietarul / vecinii\n☐ firma de mutări sau mașina\n☐ cutii, bandă adezivă, etichete\n\nContoare (la plecare / la sosire):\n• curent: \n• gaz: \n• apă: \n\nSchimb adresa la:\n☐ buletin\n☐ bancă\n☐ furnizori (curent, gaz, internet)\n☐ medicul de familie\n\nLucruri de găsit primele (cutia „întâi”):\n• \n",
+    "Mutare {0}"
+  ]
+}

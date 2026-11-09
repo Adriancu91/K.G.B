@@ -1,0 +1,175 @@
+// The bridge between the spreadsheet window copied from Cyber Office Studio (app/cos/src/sheets, D-073,
+// D-077) and the K.G.B. core. The copied code talks to the outside only through its `api` object
+// (app/cos/src/api.ts); here its file functions are replaced with calls to the `kgb.sheets` module, so
+// the code stays unchanged and every workbook is a versioned document of the core (D-067). Files the
+// user picks or saves outside the workspace go through the system dialog and the module (`peek`,
+// `export_file`); the window never touches the disk itself.
+//
+// The window runs in its own frame (cos-sheets.html), so its styles stay apart from the app's; it reaches
+// the core through the host the app puts on its own window (`window.kgbHost`, see SheetsPage).
+//
+// Paths seen by the window: `kgb:<document id>/<name>` for workbooks kept in the core (the name keeps
+// the extension, which the window reads to know the format), the plain name for a file only read once.
+import { api as cos } from "../../../cos/src/api";
+import type { ExportFormat, FileKind, OpenedFile, Settings } from "../../../cos/src/api";
+import { FORMATS } from "../../../cos/src/web/disk";
+
+export const ID = "kgb.sheets";
+
+type DialogFilter = { name: string; extensions: string[] };
+/** What the app lends the frame: module calls and the system dialogs. */
+export interface KgbHost {
+  moduleCall<T>(id: string, command: string, args?: Record<string, unknown>): Promise<T>;
+  importFile<T>(id: string, path: string): Promise<T>;
+  importFileWith<T>(id: string, path: string, command: string, args: Record<string, unknown>): Promise<T>;
+  open(o: { multiple: false; filters: DialogFilter[] }): Promise<string | string[] | null>;
+  save(o: { defaultPath: string; filters: DialogFilter[] }): Promise<string | null>;
+}
+let kgb: KgbHost;
+const open: KgbHost["open"] = (o) => kgb.open(o);
+const save: KgbHost["save"] = (o) => kgb.save(o);
+const PREFIX = "kgb:";
+const SETTINGS_KEY = "kgb.cos.settings";
+
+/** The version each open workbook was read at: a save is refused if someone saved in between. */
+const versions = new Map<string, number>();
+
+const b64 = (bytes: Uint8Array): string => {
+  let s = "";
+  for (let i = 0; i < bytes.length; i += 0x8000) s += String.fromCharCode(...bytes.subarray(i, i + 0x8000));
+  return btoa(s);
+};
+const unb64 = (s: string): Uint8Array => Uint8Array.from(atob(s), (c) => c.charCodeAt(0));
+const utf8 = new TextEncoder();
+
+export const pathOf = (id: string, name: string) => `${PREFIX}${id}/${name}`;
+const idOf = (path: string): string | null => (path.startsWith(PREFIX) ? path.slice(PREFIX.length).split("/")[0] ?? null : null);
+const nameOf = (path: string) => path.split(/[\\/]/).pop() ?? path;
+const isSheetFile = (name: string) => /\.ssheet$/i.test(name);
+
+interface Read {
+  version: number;
+  name: string;
+  data: string;
+}
+
+/** A workbook of the core as the window opens it: .ssheet as text, everything else as bytes to import. */
+export async function openDocument(id: string, version?: number): Promise<OpenedFile> {
+  const r = await kgb.moduleCall<Read>(ID, "read", { id, version });
+  const path = pathOf(id, r.name);
+  versions.set(id, r.version);
+  const data = unb64(r.data);
+  return isSheetFile(r.name) ? { path, content: new TextDecoder().decode(data) } : { path, content: "", imported: data };
+}
+
+async function saveBook(path: string, data: Uint8Array, summary: string): Promise<{ path: string }> {
+  const id = idOf(path);
+  if (!id) throw new Error("registrul nu este în spațiul de lucru");
+  const based_on = versions.get(id);
+  if (based_on === undefined) throw new Error("registrul nu a fost deschis din spațiul de lucru");
+  const r = await kgb.moduleCall<{ version: number }>(ID, "save_book", { id, based_on, data: b64(data), summary });
+  versions.set(id, r.version);
+  return { path };
+}
+
+async function saveNew(name: string, data: Uint8Array, summary: string): Promise<{ path: string }> {
+  const r = await kgb.moduleCall<{ document: { id: string; current?: number } }>(ID, "save_new_book", { name, data: b64(data), summary });
+  versions.set(r.document.id, r.document.current ?? 1);
+  return { path: pathOf(r.document.id, name) };
+}
+
+/** The extensions of an import / export format, as the window names them (same list as the web page). */
+const extOf = (format: ExportFormat): string[] => FORMATS[format]?.ext ?? [];
+const filtersOf = (format: ExportFormat) => {
+  const f = FORMATS[format];
+  return f && f.ext.length ? [{ name: f.name, extensions: f.ext }] : [];
+};
+
+function loadSettings(): Partial<Settings> {
+  try {
+    return JSON.parse(localStorage.getItem(SETTINGS_KEY) ?? "{}") as Partial<Settings>;
+  } catch {
+    return {};
+  }
+}
+
+const unsupported = (what: string) => async (): Promise<never> => {
+  throw new Error(`${what} nu este încă disponibil în K.G.B.`);
+};
+
+let installed = false;
+
+/** Puts the K.G.B. file functions over the copied window's `api`, once, before the window is shown. */
+export function installCosBridge(host: KgbHost): void {
+  if (installed) return;
+  installed = true;
+  kgb = host;
+  const base = { ...cos };
+  Object.assign(cos, {
+    // Small preferences of the window (zoom, last choices); the workbooks themselves are in the core.
+    getSettings: async () => ({ ...(await base.getSettings()), ...loadSettings() }),
+    setSettings: async (patch: Partial<Settings>) => {
+      const next = { ...loadSettings(), ...patch };
+      try {
+        localStorage.setItem(SETTINGS_KEY, JSON.stringify(next));
+      } catch {
+        // Preferences only: without storage they last until the window closes.
+      }
+      return { ...(await base.getSettings()), ...next };
+    },
+    // Opening: a workbook from the computer becomes a document of the core, then opens from there.
+    openFile: async (kind: FileKind): Promise<OpenedFile | null> => {
+      if (kind !== "sheets") return null;
+      const picked = await open({
+        multiple: false,
+        filters: [{ name: "Registre", extensions: ["ssheet", "xlsx"] }],
+      });
+      if (!picked || Array.isArray(picked)) return null;
+      const name = nameOf(picked);
+      const r = isSheetFile(name)
+        ? await kgb.importFileWith<{ document: { id: string } }>(ID, picked, "save_new_book", { summary: "Deschis de pe calculator" })
+        : await kgb.importFile<{ document: { id: string } }>(ID, picked);
+      return openDocument(r.document.id);
+    },
+    readFile: async (path: string): Promise<OpenedFile> => {
+      const id = idOf(path);
+      if (!id) throw new Error("fișierul nu este în spațiul de lucru");
+      return openDocument(id);
+    },
+    saveFile: async (req: { path: string | null; content: string; kind: FileKind; suggestedName?: string }) => {
+      const data = utf8.encode(req.content);
+      if (req.path && idOf(req.path) && isSheetFile(req.path)) return saveBook(req.path, data, "Salvat din foaia de calcul");
+      const stem = (req.suggestedName ?? "").replace(/\.[^.]+$/, "").replace(/[.\s]+$/, "") || "Fără titlu";
+      return saveNew(`${stem}.ssheet`, data, "Registru nou din foaia de calcul");
+    },
+    // „În .xlsx”: the workbook opened from an .xlsx gets a new version in the same format.
+    overwriteFile: async (req: { path: string; format: ExportFormat; data: Uint8Array }) => {
+      if (!idOf(req.path)) throw new Error("fișierul nu este în spațiul de lucru");
+      return saveBook(req.path, req.data, `Salvat în .${req.format}`);
+    },
+    // A file read once (Import CSV / from text, tables from a document): nothing is kept.
+    importFile: async (format: ExportFormat) => {
+      const picked = await open({ multiple: false, filters: filtersOf(format) });
+      if (!picked || Array.isArray(picked)) return null;
+      const r = await kgb.importFileWith<{ name: string; data: string }>(ID, picked, "peek", {});
+      const data = unb64(r.data);
+      return { path: r.name, data, size: data.length };
+    },
+    exportFile: async (req: { format: ExportFormat; suggestedName: string; data: Uint8Array }) => {
+      const ext = extOf(req.format)[0];
+      const name = ext && !req.suggestedName.toLowerCase().endsWith(`.${ext}`) ? `${req.suggestedName}.${ext}` : req.suggestedName;
+      const dest = await save({ defaultPath: name, filters: filtersOf(req.format) });
+      if (!dest) return null;
+      await kgb.moduleCall(ID, "export_file", { dest, data: b64(req.data) });
+      return { path: dest };
+    },
+    print: async () => {
+      window.print();
+      return true;
+    },
+    webGet: unsupported("Aducerea de date de pe internet"),
+    pickFolder: async () => null,
+    listTables: async () => [],
+    writeToFolder: unsupported("Scrierea într-un dosar"),
+  });
+}

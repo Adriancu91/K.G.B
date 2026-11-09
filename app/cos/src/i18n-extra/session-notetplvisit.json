@@ -1,0 +1,10 @@
+{
+  "dict": {
+    "🚗 Vizită la un client": "🚗 Customer visit"
+  },
+  "templates": {},
+  "skip": [
+    "Clientul:\nPersoana de contact și telefonul:\nAdresa și ora:\n\nÎnainte de vizită:\n☐ ce a cumpărat clientul până acum și cât de des\n☐ facturile lui neîncasate (Sheets → Vechimea creanțelor)\n☐ oferta sau lista de prețuri de dus (Docs → Ofertă de preț)\n☐ mostrele, cataloagele și cărțile de vizită\n\nLa client:\n☐ ce îi trebuie acum și ce nu i-a plăcut data trecută\n☐ restanțele: când plătește\n☐ comanda sau termenul pentru răspuns la ofertă\n\nDupă vizită:\n☐ comanda trimisă la livrări sau oferta trimisă pe e-mail\n☐ vânzarea trecută în Sheets → Comisioanele agenților\n☐ vizita scrisă în Docs → Raportul lunar al agentului de vânzări\n\nCe s-a stabilit:\n• ",
+    "Vizită la client {0}"
+  ]
+}

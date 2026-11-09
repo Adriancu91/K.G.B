@@ -1,0 +1,10 @@
+{
+  "dict": {
+    "🖨 Comandă la tipografie": "🖨 Ordering from a print shop",
+    "Ce se tipărește (cărți de vizită, pliante, afișe, roll-up, broșuri) și câte bucăți:\nTipografia (nume, telefon) și prețul cerut:\nAvans dat / rest de plată:\nGata până la:\n\nÎnainte de trimis:\n☐ textul citit de două ori (nume, telefoane, adrese, prețuri)\n☐ formatul și hârtia alese (dimensiunea, grosimea, lucioasă sau mată)\n☐ fișierul salvat în PDF, cu fonturile incluse și margine de tăiere\n☐ culorile în CMYK și pozele la cel puțin 300 dpi\n☐ sigla și culorile firmei ca pe celelalte materiale\n\nÎnainte de tipar:\n☐ proba (bun de tipar) primită și verificată pe hârtie sau pe ecran\n☐ confirmat în scris „bun de tipar”\n\nLa ridicare:\n☐ numărat bucățile și verificat câteva din fiecare pachet\n☐ factura primită\n\nCe a costat în total (tipar, finisare, transport):\nFișierele finale păstrate în:\nCe schimbăm la următoarea comandă:\n• ": "What is being printed (business cards, flyers, posters, roll-up, brochures) and how many copies:\nPrint shop (name, phone) and the price asked:\nDeposit paid / balance due:\nReady by:\n\nBefore sending:\n☐ text read twice (names, phone numbers, addresses, prices)\n☐ format and paper chosen (size, weight, gloss or matt)\n☐ file saved as PDF, with fonts embedded and a bleed margin\n☐ colours in CMYK and photos at 300 dpi or more\n☐ logo and company colours matching the other materials\n\nBefore printing:\n☐ proof received and checked on paper or on screen\n☐ \"ready to print\" confirmed in writing\n\nAt pickup:\n☐ copies counted and a few from each pack checked\n☐ invoice received\n\nTotal cost (printing, finishing, transport):\nFinal files kept in:\nWhat we change next time:\n• "
+  },
+  "templates": {
+    "Comandă la tipografie {0}": "Ordering from a print shop {0}"
+  },
+  "skip": []
+}

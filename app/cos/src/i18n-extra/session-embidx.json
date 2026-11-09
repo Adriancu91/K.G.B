@@ -1,0 +1,14 @@
+{
+  "dict": {
+    "Textul paginilor nu se potrivește cu PDF-ul.": "The page text doesn't match the PDF.",
+    "🗂 Încorporează index": "🗂 Embed Index",
+    "🗂 Scoate indexul": "🗂 Remove Index",
+    "Index încorporat: textul paginilor se pune în PDF, iar 🔎 Căutare în dosar caută în el fără să mai citească paginile (mult mai repede la PDF-urile mari, și pe alt calculator)": "Embedded index: the page text is stored in the PDF, and 🔎 Folder Search searches it without reading the pages again (much faster for large PDFs, and on another computer too)",
+    "Indexul încorporat a fost scos. Salvează PDF-ul.": "The embedded index was removed. Save the PDF.",
+    "Scoate textul paginilor pus în PDF pentru căutare (PDF-ul se micșorează puțin)": "Removes the page text stored in the PDF for searching (the PDF gets a little smaller)"
+  },
+  "templates": {
+    "Index încorporat: textul celor {0} pagini e acum în PDF. Salvează PDF-ul.": "Embedded index: the text of all {0} pages is now in the PDF. Save the PDF."
+  },
+  "skip": ["Private"]
+}

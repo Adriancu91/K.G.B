@@ -1,0 +1,28 @@
+{
+  "dict": {
+    "Pagina următoare": "Next page",
+    "Continuu": "Continuous",
+    "Pagină pară": "Even page",
+    "Pagină impară": "Odd page",
+    "Secțiune: Pagina următoare": "Section: Next page",
+    "Secțiune: Continuu": "Section: Continuous",
+    "Secțiune: Pagină pară": "Section: Even page",
+    "Secțiune: Pagină impară": "Section: Odd page",
+    "Întrerupere de secțiune (Pagina următoare)": "Section break (Next page)",
+    "Întrerupere de secțiune (Continuu)": "Section break (Continuous)",
+    "Întrerupere de secțiune (Pagină pară)": "Section break (Even page)",
+    "Întrerupere de secțiune (Pagină impară)": "Section break (Odd page)",
+    "Secțiune nouă, care începe pe pagina următoare": "New section, starting on the next page",
+    "Secțiune nouă, care începe pe aceeași pagină, imediat sub text": "New section, starting on the same page, right below the text",
+    "Secțiune nouă, care începe pe următoarea pagină pară": "New section, starting on the next even page",
+    "Secțiune nouă, care începe pe următoarea pagină impară": "New section, starting on the next odd page",
+    "📝 Document marcat": "📝 Marked-up document",
+    "Un document nou, în tab nou: ce e doar în fișier apare tăiat (șters), ce e doar aici apare subliniat (inserat), ca modificări de acceptat sau respins una câte una": "A new document, in a new tab: what is only in the file is struck through (deleted), what is only here is underlined (inserted), as changes to accept or reject one by one",
+    "Un document nou, în tab nou: documentul de acum cu modificările din fișier puse peste el, pe numele celui care le-a făcut, de acceptat sau respins una câte una": "A new document in a new tab: the current document with the changes from the file applied on top, under the name of whoever made them, to accept or reject one by one",
+    "Doar secțiunea aceasta: Verticală": "This section only: Portrait",
+    "Doar secțiunea aceasta: Orizontală (peisaj)": "This section only: Landscape",
+    "Doar secțiunea în care e cursorul; dacă e prima, pune aici o întrerupere de secțiune (Pagina următoare) și schimbă de aici înainte": "Only the section where the cursor is; in the first section, inserts a section break (Next page) here and changes from this point forward"
+  },
+  "templates": {},
+  "skip": []
+}

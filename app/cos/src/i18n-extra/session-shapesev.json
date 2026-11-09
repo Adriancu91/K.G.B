@@ -1,0 +1,14 @@
+{
+  "dict": {
+    "Arc gros": "Block Arc",
+    "Dreptunghi cu colțuri opuse rotunjite": "Round Diagonal Corner Rectangle",
+    "Dreptunghi cu un colț tăiat și unul rotunjit": "Snip and Round Single Corner Rectangle",
+    "Săgeată îndoită": "Bent Arrow",
+    "Schemă: Conector": "Flowchart: Connector",
+    "Schemă: Disc magnetic": "Flowchart: Magnetic Disk",
+    "Schemă: Proces alternativ": "Flowchart: Alternate Process",
+    "Sfert de cerc": "Partial Circle"
+  },
+  "templates": {},
+  "skip": []
+}

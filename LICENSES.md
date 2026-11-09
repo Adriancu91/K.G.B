@@ -124,5 +124,12 @@ Verificat automat de `cargo-deny` în CI pe workspace-ul rădăcină (`Cargo.tom
 | `tauri` funcția `tray-icon` (+ `tray-icon` 0.25.1, `muda` 0.20.0) | MIT OR Apache-2.0 | iconița K.G.B. de lângă ceas (7.4m-3); codul venea deja cu Tauri la această versiune | 7.4m-3 |
 | npm `pdf-lib` 1.17.1, `@pdf-lib/fontkit` 1.1.1 (+ `pako`, `tslib`) | MIT; `pako` MIT AND Zlib; `tslib` 0BSD | uneltele PDF preluate din Cyber Office Studio, în fereastră (D-072, aprobat de proprietar) | 7.4l-1c |
 | npm `pdfjs-dist` 6.4.299 | Apache-2.0 | afișarea paginilor PDF în fereastră (D-032); la `npm install` aduce opțional `@napi-rs/canvas` (MIT), folosit doar de Node, nu intră în aplicație | 3.5 |
+| npm `jszip` 3.10.2 | MIT (licență dublă MIT / GPL-3.0; folosim MIT) | fereastra Sheets din Cyber Office Studio: .xlsx, .docx, .pptx, .ods citite și scrise în fereastră (D-077, acord COS + K.G.B.) | 7.5-1 |
+| npm `xlsx` 0.20.3 (din `app/vendor/xlsx-0.20.3.tgz`, pachetul oficial păstrat în repo; nimic de pe internet la rulare) | Apache-2.0 | fereastra Sheets: .xls, .xlsb vechi (D-077, acord COS + K.G.B.) | 7.5-1 |
+| npm `mammoth` 1.8.0 | BSD-2-Clause | fereastra Sheets: tabelele din .docx aduse în foi (D-077, acord COS + K.G.B.) | 7.5-1 |
+| npm `utif2` 4.1.0 | MIT | fereastra Sheets: poze .tiff (Din imagine) (D-077, acord COS + K.G.B.) | 7.5-1 |
+| npm `@tiptap/core`, `@tiptap/react`, `@tiptap/pm`, `@tiptap/extension-underline` 2.27.3 (+ `prosemirror-*`) | MIT | fereastra Sheets: tabelele legate de Docs (D-077, acord COS + K.G.B.) | 7.5-1 |
+| npm `tesseract.js` 7.0.0 | Apache-2.0 | fereastra Sheets: Din imagine (OCR), D-075 | 7.5-1 |
+| `libheif-js` (LGPL-3.0) | — | **neinclus**: LGPL cere decizie separată (D-071); vite îl înlocuiește cu `src/cosframe/noHeic.ts`, iar pozele .heic sunt refuzate cu mesaj | 7.5-1 |
 
 Restul dependențelor (Tauri, React, Vite, serde, uuid, blake3) sunt cele din S1 și S3, deja în acest registru.

@@ -1,0 +1,10 @@
+{
+  "dict": {
+    "💚 Acțiune de voluntariat": "💚 Volunteering action"
+  },
+  "templates": {},
+  "skip": [
+    "Acțiune de voluntariat {0}",
+    "Acțiunea: \nData și ora: \nLocul: \nCoordonatorul: \nCâți voluntari ne trebuie: \n\nÎnainte:\n☐ voluntarii anunțați și confirmați\n☐ contractele de voluntariat semnate (Docs → Contract de voluntariat)\n☐ instruirea de protecția muncii făcută\n☐ materialele și echipamentul pregătite\n☐ transportul organizat\n☐ apă și gustări\n\nÎn ziua acțiunii:\n☐ lista de prezență semnată\n☐ pozele făcute (cu acordul celor din ele)\n\nDupă:\n☐ orele trecute în evidență (Sheets → Evidența orelor de voluntariat)\n☐ cheltuielile decontate, cu bonurile\n☐ mulțumiri trimise voluntarilor și partenerilor\n\nCe a mers bine / ce schimbăm data viitoare:\n• \n"
+  ]
+}

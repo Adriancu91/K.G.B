@@ -1,0 +1,31 @@
+{
+  "dict": {
+    "Asociat": "Shareholder",
+    "Asociați": "Shareholders",
+    "Asociați acum": "Current shareholders",
+    "Asociații firmei cu datele lor, data și felul intrării (la înființare, majorare, cesiune, moștenire), aportul și părțile sociale: ies procentul din capital și starea; cei ieșiți rămân în registru, iar în dreapta capitalul din tabel față de cel din actul constitutiv (diferența în roșu) și valoarea unei părți sociale.": "The company's shareholders with their details, the date and way they joined (at incorporation, capital increase, share transfer, inheritance), the contribution and the shares: you get the share of capital and the status; those who left stay in the register, and on the right the capital in the table compared with the one in the articles of association (the difference in red) and the value of one share.",
+    "Capitalul din actul constitutiv": "Capital in the articles of association",
+    "Capitalul din tabel": "Capital in the table",
+    "Cesiune de părți sociale": "Share transfer",
+    "Cum a intrat": "How they joined",
+    "Data ieșirii": "Exit date",
+    "Diferența (trebuie 0)": "Difference (must be 0)",
+    "Din capital": "Share of capital",
+    "Din capital, la asociații de acum": "Share of capital, current shareholders",
+    "Ieșit": "Left",
+    "Ieșiți din firmă": "Left the company",
+    "La înființare": "At incorporation",
+    "Majorare de capital": "Capital increase",
+    "Moștenire": "Inheritance",
+    "Părți sociale ale asociaților de acum": "Shares of the current shareholders",
+    "Rândurile asociaților ieșiți rămân în registru, dar nu mai intră la procent și la capital.": "Rows of shareholders who left stay in the register but no longer count towards the percentage and the capital.",
+    "Registrul asociaților": "Register of shareholders",
+    "Scrie capitalul din actul constitutiv: dacă nu se potrivește cu tabelul, diferența iese în roșu. Dividendele: Sheets → Repartizarea profitului și dividendele.": "Enter the capital from the articles of association: if it does not match the table, the difference shows in red. Dividends: Sheets → Profit distribution and dividends.",
+    "Un rând pe asociat; la o cesiune scrii data ieșirii la cel care vinde și un rând nou pentru cel care cumpără.": "One row per shareholder; for a share transfer, enter the exit date for the seller and a new row for the buyer."
+  },
+  "templates": {},
+  "skip": [
+    "=COUNTIF(K2:K{0};\"Ieșit\")",
+    "=IF(B{0}=\"\";\"\";IF(J{1}<>\"\";\"Ieșit\";\"Asociat\"))"
+  ]
+}

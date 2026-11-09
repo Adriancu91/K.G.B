@@ -1,0 +1,11 @@
+{
+  "dict": {
+    "Caseta e prea mică: trage un dreptunghi mai mare peste text.": "The box is too small: drag a larger rectangle over the text.",
+    "▭ Desenez caseta pe pagină": "▭ Draw the box on the page",
+    "Ce parte din pagina deschisă ia caseta nouă (la „+ Articol nou” și la ＋); cu „Desenez caseta pe pagină” tragi apoi un dreptunghi peste text, pe orice pagină": "Which part of the open page the new box takes (for “+ New article” and ＋); with “Draw the box on the page” you then drag a rectangle over the text, on any page",
+    "Articol: trage un dreptunghi peste textul care intră în articol, pe orice pagină (Esc renunță).": "Article: drag a rectangle over the text that goes into the article, on any page (Esc cancels).",
+    "Caseta e prea mică. Apasă din nou ＋ și trage un dreptunghi mai mare peste text.": "The box is too small. Press ＋ again and drag a larger rectangle over the text."
+  },
+  "templates": {},
+  "skip": []
+}

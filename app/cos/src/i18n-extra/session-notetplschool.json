@@ -1,0 +1,10 @@
+{
+  "dict": {
+    "🎒 Început de an școlar": "🎒 Start of the school year"
+  },
+  "templates": {},
+  "skip": [
+    "An școlar {0}",
+    "Clasa: \nȘcoala / dirigintele: \nPrima zi: \n\nRechizite:\n☐ caiete și coperți\n☐ pixuri, creioane, radieră\n☐ trusa de geometrie și calculatorul\n☐ ghiozdanul\n\nHaine:\n☐ uniforma / ținuta pentru școală\n☐ echipamentul și încălțămintea de sport\n\nActe și plăți:\n☐ adeverința medicală\n☐ fondul clasei / al școlii\n☐ abonamentul de transport\n\nOrarul:\n• luni: \n• marți: \n• miercuri: \n• joi: \n• vineri: \n\nȘedința cu părinții: \n"
+  ]
+}

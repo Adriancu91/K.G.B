@@ -1,0 +1,13 @@
+{
+  "dict": {
+    "⚡ Index pentru dosar (căutările următoare sunt imediate)": "⚡ Folder index (later searches are instant)",
+    "Indexul dosarului s-a șters; la căutarea următoare PDF-urile se citesc din nou.": "The folder index was deleted; the next search reads the PDFs again.",
+    "Indexul e prea mare pentru dosarul acesta; căutarea merge, dar fără index.": "The index is too large for this folder; search works, but without an index.",
+    "Șterge textul ținut minte pentru dosarul acesta": "Delete the text remembered for this folder",
+    "Textul PDF-urilor din dosar se ține minte (în dosarul de setări al aplicației, nu lângă fișiere); la căutarea următoare se citesc doar PDF-urile noi sau schimbate": "The text of the PDFs in the folder is remembered (in the app settings folder, not next to the files); the next search reads only new or changed PDFs"
+  },
+  "templates": {
+    " Din index: {0}, citite acum: {1}.": " From the index: {0}, read now: {1}."
+  },
+  "skip": []
+}

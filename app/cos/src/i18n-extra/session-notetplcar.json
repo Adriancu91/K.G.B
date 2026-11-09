@@ -1,0 +1,10 @@
+{
+  "dict": {
+    "🚙 Mașina: acte și revizii": "🚙 Car: papers and servicing"
+  },
+  "templates": {},
+  "skip": [
+    "Mașina {0}",
+    "Mașina: \nNumărul: \n\nActe și termene:\n☐ RCA valabil până la: \n☐ ITP valabil până la: \n☐ rovinieta valabilă până la: \n☐ CASCO (dacă ai) până la: \n\nRevizie:\n☐ uleiul și filtrele (la km: )\n☐ plăcuțele de frână\n☐ lichidul de parbriz\n\nIarna:\n☐ anvelopele de iarnă puse\n☐ trusa medicală și extinctorul în termen\n\nKilometrajul acum: \n"
+  ]
+}

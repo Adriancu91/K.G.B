@@ -1,0 +1,24 @@
+{
+  "dict": {
+    "Comerț": "Retail",
+    "Casă de marcat": "Cash register",
+    "Sacoșă": "Shopping bag",
+    "Megafon": "Megaphone",
+    "Reducere": "Discount",
+    "Tarabă": "Market stall",
+    "Terminal de plată": "Payment terminal",
+    "Coș de mână": "Shopping basket",
+    "Raft": "Shelf"
+  },
+  "templates": {},
+  "skip": [
+    "casă de marcat bon fiscal încasare vânzare cash register till",
+    "sacoșă pungă cumpărături shopping bag",
+    "megafon anunț reclamă promoție megaphone announcement advertising",
+    "reducere discount ofertă lichidare sale tag",
+    "tarabă piață chioșc târg market stall kiosk fair",
+    "terminal de plată pos card contactless payment terminal",
+    "coș de mână coș cumpărături supermarket basket shopping",
+    "raft rafturi marfă expunere shelf shelves goods"
+  ]
+}

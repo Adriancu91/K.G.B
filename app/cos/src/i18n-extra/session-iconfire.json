@@ -1,0 +1,24 @@
+{
+  "dict": {
+    "Pompieri și urgențe": "Fire and emergency",
+    "Mașină de pompieri": "Fire truck",
+    "Cască de pompier": "Firefighter helmet",
+    "Hidrant": "Hydrant",
+    "Ambulanță": "Ambulance",
+    "Targă": "Stretcher",
+    "Topor de pompier": "Fire axe",
+    "Furtun de incendiu": "Fire hose reel",
+    "Punct de adunare": "Assembly point"
+  },
+  "templates": {},
+  "skip": [
+    "mașină de pompieri autospecială incendiu scară isu fire truck engine ladder",
+    "cască de pompier echipament intervenție salvator fire helmet firefighter",
+    "hidrant apă incendiu stradă racord pompieri fire hydrant water",
+    "ambulanță salvare smurd urgență spital ambulance emergency",
+    "targă brancardă transport rănit prim ajutor stretcher injured",
+    "topor de pompier spargere intervenție salvare fire axe",
+    "furtun de incendiu tambur rolă țeavă refulare stingere fire hose reel",
+    "punct de adunare evacuare loc de întâlnire exercițiu psi assembly point evacuation"
+  ]
+}

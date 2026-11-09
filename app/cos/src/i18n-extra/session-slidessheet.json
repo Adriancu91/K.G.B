@@ -1,0 +1,25 @@
+{
+ "dict": {
+  "; pe slide intră cel mult 30 de rânduri și 12 coloane": "; at most 30 rows and 12 columns fit on a slide",
+  "Foaie de calcul: o foaie dintr-un fișier .xlsx, .ods sau .csv intră pe slide ca tabel, cu valorile formulelor calculate (sume, date, procente) și celulele îmbinate": "Spreadsheet: a sheet from an .xlsx, .ods or .csv file goes on the slide as a table, with the formula results calculated (amounts, dates, percentages) and the merged cells",
+  "foi. Care intră pe slide?": "sheets. Which one goes on the slide?",
+  "Celula fără umplere proprie (înapoi la stilul tabelului)": "Cell without its own fill (back to the table style)",
+  "Umplere celulă: fundalul celulei în care ai scris ultima dată (peste stilul tabelului)": "Cell fill: the background of the cell you last typed in (over the table style)",
+  "Culoarea textului din celulă": "Cell text color",
+  "Aldin în celula curentă (sau în celulele alese cu Shift+clic)": "Bold in the current cell (or in the cells chosen with Shift+click)",
+  "Cursiv în celula curentă (sau în celulele alese cu Shift+clic)": "Italic in the current cell (or in the cells chosen with Shift+click)",
+  "Subliniat în celula curentă (sau în celulele alese cu Shift+clic)": "Underline in the current cell (or in the cells chosen with Shift+click)",
+  "Culoarea textului din celula curentă (sau din celulele alese cu Shift+clic)": "Text color of the current cell (or of the cells chosen with Shift+click)",
+  "Celula curentă (sau celulele alese cu Shift+clic) înapoi la stilul tabelului (fără umplere, culoare, aldin, cursiv, subliniat sau aliniere proprie)": "Current cell (or the cells chosen with Shift+click) back to the table style (no own fill, color, bold, italic, underline or alignment)",
+  "Umplere celulă: fundalul celulei curente sau al celulelor alese cu Shift+clic (peste stilul tabelului)": "Cell fill: background of the current cell or of the cells chosen with Shift+click (over the table style)"
+ },
+ "templates": {
+  "Foaia „{0}” e goală.": "The sheet “{0}” is empty."
+ },
+ "skip": [
+  "Top",
+  "Right",
+  "Bottom",
+  "Left"
+ ]
+}

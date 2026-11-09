@@ -1,0 +1,32 @@
+{
+  "dict": {
+    "[a crescut / a scăzut cu … lei]": "[up / down by … lei]",
+    "[Clientul 1]: [suma] lei · cea mai veche factură din [data]": "[Customer 1]: [amount] lei · oldest invoice from [date]",
+    "[încasările mari din lună]": "[the large collections of the month]",
+    "[Oprirea livrărilor către …] · [termenul de plată pentru clienții noi] · întrebări: [nume] · [telefon]": "[Stopping deliveries to …] · [payment terms for new customers] · questions: [name] · [phone]",
+    "Banii de încasat (lei)": "Money to collect (lei)",
+    "Banii de încasat pe vechime": "Money to collect by age",
+    "Cât de vechi sunt restanțele": "How old the overdue amounts are",
+    "Cifrele vin din Sheets → Vechimea creanțelor, din tabelul Pe scurt.": "The figures come from Sheets → Receivables ageing, from the summary table on the right.",
+    "Clienții cu cele mai mari restanțe": "Customers with the largest overdue amounts",
+    "De încasat în total: [suma] lei": "Total to collect: [amount] lei",
+    "Decizii cerute": "Decisions requested",
+    "Din care întârziat: [suma] lei ([procent]%)": "Of which overdue: [amount] lei ([percent]%)",
+    "eșalonare, dacă clientul cere": "a payment plan, if the customer asks",
+    "Față de luna trecută:": "Compared with last month:",
+    "La 30 de zile:": "At 30 days:",
+    "La peste 60 – 90 de zile:": "At over 60 – 90 days:",
+    "livrările noi oprite până la plată": "new deliveries stopped until payment",
+    "notificare scrisă (Docs → Notificare de plată)": "a written notice (Docs → Payment notice)",
+    "Nu citi toată lista: spune doar ce s-a schimbat de luna trecută.": "Do not read the whole list: just say what has changed since last month.",
+    "Pentru administrator sau asociați, o dată pe lună sau la închiderea anului: cât au de plătit clienții, banii de încasat pe vechime într-un tabel și într-un grafic, clienții cu cele mai mari restanțe, ce facem pentru fiecare și deciziile cerute.": "For the managing director or the partners, once a month or at year end: how much customers owe, the money to collect by age in a table and a chart, the customers with the largest overdue amounts, what we do about each and the decisions requested.",
+    "Peste 90 de zile": "Over 90 days",
+    "Peste 90 de zile: [suma] lei": "Over 90 days: [amount] lei",
+    "Situația încasărilor": "Collections status",
+    "Soldurile confirmate prin Docs → Confirmare de sold: [câte]": "Balances confirmed through Docs → Balance confirmation: [how many]",
+    "Spune de la început cât e de încasat în total și cât din asta e întârziat de peste 90 de zile.": "Say at the start how much there is to collect in total and how much of it is over 90 days overdue.",
+    "Vechimea": "Age"
+  },
+  "templates": {},
+  "skip": []
+}

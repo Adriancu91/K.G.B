@@ -1,0 +1,27 @@
+{
+  "dict": {
+    "Listă de inventariere": "Stocktaking list",
+    "Stocul din evidență față de cel numărat pe raft, pentru fiecare articol: ies valoarea scriptică și faptică, diferențele în cantitate și în lei, plusurile (în verde) și lipsurile (în roșu), cu totalurile pentru procesul-verbal de inventariere.": "Book stock versus the stock counted on the shelf, for each item: you get the book and physical value, the differences in quantity and in lei, the surpluses (in green) and the shortages (in red), with the totals for the stocktaking report."
+  },
+  "templates": {},
+  "skip": [
+    "=COUNTIF(L2:L{0};\"Plus\")+COUNTIF(L2:L{1};\"Lipsă\")",
+    "=IF(J{0}=\"\";\"\";IF(J{1}>0;\"Plus\";IF(J{2}<0;\"Lipsă\";\"Concordă\")))",
+    "Articole cu diferențe",
+    "Articole numărate",
+    "Data inventarierii",
+    "Diferența totală",
+    "Diferență cantitate",
+    "Diferență valoare",
+    "Gestiunea",
+    "Inventariere",
+    "Lipsuri",
+    "Pentru lista de pași: Notițe → Din șablon → Inventarierea anuală.",
+    "Plusuri",
+    "Scrie stocul din evidență (scriptic) și ce ai numărat pe raft (faptic); diferențele se calculează singure.",
+    "Stoc faptic",
+    "Stoc scriptic",
+    "Valoare faptică",
+    "Valoare scriptică"
+  ]
+}

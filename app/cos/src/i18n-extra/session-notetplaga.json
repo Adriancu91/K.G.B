@@ -1,0 +1,10 @@
+{
+  "dict": {
+    "🏛 Adunarea asociaților": "🏛 Shareholders' meeting"
+  },
+  "templates": {},
+  "skip": [
+    "Data, ora și locul:\nAsociații și părțile lor sociale:\n\nÎnainte de adunare:\n☐ situațiile financiare ale anului, primite de la contabil\n☐ ordinea de zi scrisă și trimisă asociaților (convocarea)\n☐ împuternicirile pentru asociații care nu vin personal\n☐ propunerea pentru profit: dividende, rezerve, profit nerepartizat\n\nLa adunare:\n☐ prezența și procentul din capital, ca adunarea să poată hotărî\n☐ votul pe fiecare punct din ordinea de zi\n☐ hotărârea scrisă și semnată (Docs → Hotărârea adunării generale a asociaților; la un singur asociat, Docs → Decizia asociatului unic)\n\nDupă adunare:\n☐ hotărârea trecută în registrul hotărârilor\n☐ depunerea la Registrul Comerțului, dacă s-a schimbat administratorul, sediul sau activitatea\n☐ dividendele plătite și impozitul pe dividende declarat și plătit la termen\n\nCe rămâne de făcut și cine se ocupă:\n• ",
+    "Adunarea asociaților {0}"
+  ]
+}

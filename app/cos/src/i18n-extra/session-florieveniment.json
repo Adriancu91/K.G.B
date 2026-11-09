@@ -1,0 +1,10 @@
+{
+  "dict": {
+    "💐 Flori pentru un eveniment": "💐 Flowers for an event",
+    "Clientul și telefonul:\nEvenimentul (nuntă, botez, aniversare, comemorare, firmă):\nData, ora și locul:\nBugetul:\n\nStabilit cu clientul:\n☐ culorile și florile preferate (și cele de evitat, de exemplu alergii)\n☐ ce se face: buchete, aranjamente de masă, decor pentru sală, coroane sau jerbe\n☐ câte bucăți din fiecare și mărimea lor\n☐ textul de pe panglici sau felicitări, scris corect\n☐ avansul primit și restul de plată\n\nÎnainte de eveniment:\n☐ florile comandate la furnizor, cu 3–5 zile înainte\n☐ vazele, suporturile, buretele floral și panglicile pregătite\n☐ ora livrării confirmată cu clientul sau cu sala\n☐ poze cu aranjamentele gata, înainte de livrare\n\nCe s-a comandat:\n•\n\nObservații:\n• ": "Client and phone:\nEvent (wedding, christening, birthday, memorial, company):\nDate, time and venue:\nBudget:\n\nAgreed with the client:\n☐ preferred colours and flowers (and those to avoid, for example allergies)\n☐ what is made: bouquets, table arrangements, venue decor, wreaths or funeral sprays\n☐ how many of each and their size\n☐ the text on ribbons or cards, spelled correctly\n☐ deposit received and balance due\n\nBefore the event:\n☐ flowers ordered from the supplier, 3–5 days in advance\n☐ vases, stands, floral foam and ribbons ready\n☐ delivery time confirmed with the client or the venue\n☐ photos of the finished arrangements, before delivery\n\nWhat was ordered:\n•\n\nNotes:\n• "
+  },
+  "templates": {
+    "Flori pentru eveniment {0}": "Event flowers {0}"
+  },
+  "skip": []
+}

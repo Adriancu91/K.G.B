@@ -1,0 +1,15 @@
+{
+  "dict": {
+    "Felia": "Slice",
+    "Lângă felii se salvează și o pagină web care le pune la loc, cu legăturile alese mai jos": "Next to the slices, a web page that puts them back together is saved too, with the links chosen below",
+    "Legătură (opțional), de exemplu https://exemplu.ro": "Link (optional), for example https://example.com",
+    "Legăturile se pot pune pe cel mult 64 de felii; pagina se salvează fără legături.": "Links can be set on at most 64 slices; the page is saved without links.",
+    "Și o pagină web (.html) cu feliile puse la loc": "Also a web page (.html) with the slices put back together",
+    "Trage pe previzualizare ca să desenezi o felie (cu Shift și peste alta); trage o felie ca s-o muți, sau de colțul ei din dreapta jos ca s-o micșorezi / mărești; clic pe o felie o șterge.": "Drag on the preview to draw a slice (with Shift also over another one); drag a slice to move it, or drag its bottom-right corner to make it smaller / larger; click a slice to delete it."
+  },
+  "templates": {
+    "Am salvat {0} felii și pagina {1} în dosarul {2}.": "Saved {0} slices and the page {1} in the folder {2}.",
+    "Legătura feliei {0}": "Link of slice {0}"
+  },
+  "skip": []
+}

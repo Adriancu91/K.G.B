@@ -1,0 +1,24 @@
+{
+  "dict": {
+    "Instalații sanitare": "Plumbing",
+    "Chiuvetă": "Sink",
+    "Duș": "Shower",
+    "Vas de toaletă": "Toilet",
+    "Țeavă cu cot": "Pipe elbow",
+    "Cheie de țevi": "Pipe wrench",
+    "Pompă de desfundat": "Plunger",
+    "Boiler": "Water heater",
+    "Apometru": "Water meter"
+  },
+  "templates": {},
+  "skip": [
+    "chiuvetă lavoar baie bucătărie spălat pe mâini sink washbasin",
+    "duș cabină de duș baie apă caldă shower head",
+    "vas de toaletă wc closet grup sanitar baie toilet",
+    "țeavă cu cot conductă racord fiting instalator pipe elbow fitting",
+    "cheie de țevi cheie reglabilă instalator strângere pipe wrench",
+    "pompă de desfundat ventuză scurgere înfundată chiuvetă plunger",
+    "boiler încălzitor de apă apă caldă rezervor water heater boiler",
+    "apometru contor de apă citire consum index water meter"
+  ]
+}

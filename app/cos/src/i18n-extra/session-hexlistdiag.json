@@ -1,0 +1,24 @@
+{
+  "dict": {
+    "Listă cu hexagoane (numărul într-un hexagon, textul într-o bandă alături)": "Hexagon list (the number in a hexagon, the text in a band beside it)",
+    "Listă cu hexagoane": "Hexagon list",
+    "Puncte una sub alta: numărul într-un hexagon, iar alături textul (pași, reguli, avantaje numerotate)": "Points one below another: the number in a hexagon, the text beside it (numbered steps, rules, benefits)",
+    "Listă cu cercuri (numărul într-un cerc, textul într-o bandă alături)": "Circle list (the number in a circle, the text in a band beside it)",
+    "Listă cu cercuri": "Circle list",
+    "Puncte una sub alta: numărul într-un cerc, iar alături textul (pași, sfaturi, întrebări numerotate)": "Points one below another: the number in a circle, the text beside it (numbered steps, tips, questions)",
+    "Listă cu romburi (numărul într-un romb, textul într-o bandă alături)": "Diamond list (the number in a diamond, the text in a band beside it)",
+    "Listă cu romburi": "Diamond list",
+    "Puncte una sub alta: numărul într-un romb, iar alături textul (criterii, decizii, verificări numerotate)": "Points one below another: the number in a diamond, the text beside it (numbered criteria, decisions, checks)",
+    "Listă cu stele (numărul într-o stea, textul într-o bandă alături)": "Star list (the number in a star, the text in a band beside it)",
+    "Listă cu stele": "Star list",
+    "Puncte una sub alta: numărul într-o stea, iar alături textul (puncte forte, realizări, recomandări)": "Points one below another: the number in a star, the text beside it (numbered strengths, achievements, recommendations)",
+    "Listă cu pentagoane (numărul într-un pentagon, textul într-o bandă alături)": "Pentagon list (the number in a pentagon, the text in a band beside it)",
+    "Listă cu pentagoane": "Pentagon list",
+    "Puncte una sub alta: numărul într-un pentagon, iar alături textul (obiective, priorități, etape numerotate)": "Points one below another: the number in a pentagon, the text beside it (numbered goals, priorities, stages)",
+    "Listă cu octogoane (numărul într-un octogon, textul într-o bandă alături)": "Octagon list (the number in an octagon, the text in a band beside it)",
+    "Listă cu octogoane": "Octagon list",
+    "Puncte una sub alta: numărul într-un octogon, iar alături textul (reguli, opriri, verificări numerotate)": "Points one below another: the number in an octagon, the text beside it (numbered rules, stops, checks)"
+  },
+  "templates": {},
+  "skip": []
+}

@@ -1,0 +1,10 @@
+{
+  "dict": {
+    "🎨 Renovarea unei camere": "🎨 Redecorating a room",
+    "Camera (care, suprafața pereților și a tavanului):\nCine lucrează (echipa, telefon) și prețul cerut:\nÎnceput / gata până la:\n\nÎnainte să înceapă:\n☐ mobila scoasă sau strânsă la mijloc și acoperită cu folie\n☐ prizele și întrerupătoarele protejate cu bandă, curentul oprit unde se lucrează\n☐ culoarea aleasă și încercată pe o bucată de perete\n☐ calculat câtă vopsea, glet și grund trebuie (cu 10% în plus)\n\nMateriale cumpărate (ce, cât, preț, de unde):\n•\n•\n•\n\nPe parcurs:\n☐ fisurile reparate, gletuite și apoi șlefuite\n☐ grundul dat înainte de vopsea\n☐ al doilea strat dat după ce s-a uscat primul\n\nLa final:\n☐ pereții verificați în lumină (pete, urme de trafalet, colțuri)\n☐ curățenia făcută și resturile duse la container\n\nCât a costat în total (manoperă și materiale):\nCe culoare și ce cod de vopsea am folosit (pentru retușuri):\n• ": "Room (which one, wall and ceiling area):\nWho does the work (team, phone) and the price asked:\nStart / finished by:\n\nBefore work starts:\n☐ furniture moved out or gathered in the middle and covered with plastic sheeting\n☐ sockets and switches taped over, power off where work is done\n☐ colour chosen and tried on a patch of wall\n☐ worked out how much paint, filler and primer is needed (plus 10%)\n\nMaterials bought (what, how much, price, where from):\n•\n•\n•\n\nDuring the work:\n☐ cracks repaired, filled and then sanded\n☐ primer applied before the paint\n☐ second coat applied after the first one dried\n\nAt the end:\n☐ walls checked in the light (stains, roller marks, corners)\n☐ cleaning done and debris taken to the skip\n\nTotal cost (labour and materials):\nColour and paint code used (for touch-ups):\n• "
+  },
+  "templates": {
+    "Renovarea unei camere {0}": "Redecorating a room {0}"
+  },
+  "skip": []
+}

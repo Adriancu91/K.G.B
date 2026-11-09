@@ -1,0 +1,10 @@
+{
+  "dict": {
+    "🔩 Comandă de poartă metalică": "🔩 Ordering a metal gate",
+    "Ce se face (poartă, gard, balustradă, grilaj) și unde:\nAtelierul (nume, telefon) și prețul cerut:\nAvans dat / rest de plată:\nGata până la:\n\nÎnainte de comandă:\n☐ măsurat golul (lățimea, înălțimea, denivelarea terenului)\n☐ ales modelul (desen sau poză) și grosimea profilelor\n☐ hotărât cum se deschide (batantă, culisantă) și pe ce parte\n☐ stabilit vopseaua (grund anticoroziv, culoarea, câte straturi)\n☐ cerut oferta scrisă, cu montajul și transportul incluse\n\nLa montaj:\n☐ stâlpii fixați drept și turnați în beton\n☐ poarta se închide ușor, fără să se frece\n☐ sudurile curățate și vopsite, fără rugină la colțuri\n☐ broasca și cheile primite (câte chei)\n\nCe a costat în total (material, manoperă, montaj):\nGaranția (cât timp, ce acoperă):\nCe trebuie retușat sau uns peste un an:\n• ": "What is being made (gate, fence, railing, window grille) and where:\nWorkshop (name, phone) and the price asked:\nDeposit paid / balance due:\nReady by:\n\nBefore ordering:\n☐ opening measured (width, height, slope of the ground)\n☐ design chosen (drawing or photo) and the thickness of the profiles\n☐ decided how it opens (swing, sliding) and on which side\n☐ paint agreed (anti-rust primer, colour, how many coats)\n☐ written quote requested, with fitting and transport included\n\nAt fitting:\n☐ posts set straight and concreted in\n☐ the gate closes easily, without rubbing\n☐ welds cleaned and painted, no rust at the corners\n☐ lock and keys handed over (how many keys)\n\nTotal cost (material, labour, fitting):\nWarranty (how long, what it covers):\nWhat needs touching up or oiling in a year:\n• "
+  },
+  "templates": {
+    "Comandă de poartă metalică {0}": "Ordering a metal gate {0}"
+  },
+  "skip": []
+}

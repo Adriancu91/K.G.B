@@ -1,0 +1,14 @@
+{
+  "dict": {
+    "↻ Reîmprospătează foile": "↻ Refresh sheets",
+    "Foile de calcul: ": "Spreadsheets: ",
+    "Reîmprospătează foile: tabelele puse din fișiere .xlsx / .ods / .csv se citesc din nou din fișier, cu valorile de acum (tabelele schimbate de mână rămân cum sunt)": "Refresh sheets: tables inserted from .xlsx / .ods / .csv files are read again from the file, with the current values (tables edited by hand stay as they are)",
+    "un fișier nu s-a putut citi (mutat, șters sau cu foaia redenumită)": "one file could not be read (moved, deleted or with the sheet renamed)",
+    "un tabel schimbat de mână rămâne cum e": "one table edited by hand stays as it is"
+  },
+  "templates": {
+    "{0} fișiere nu s-au putut citi (mutate, șterse sau cu foi redenumite)": "{0} files could not be read (moved, deleted or with sheets renamed)",
+    "{0} tabele schimbate de mână rămân cum sunt": "{0} tables edited by hand stay as they are"
+  },
+  "skip": []
+}

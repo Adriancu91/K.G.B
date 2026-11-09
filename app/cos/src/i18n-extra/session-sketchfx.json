@@ -1,0 +1,29 @@
+{
+  "dict": {
+    "Apăsare": "Pressure",
+    "Basorelief": "Bas Relief",
+    "Ca o copie la copiator: rămân doar contururile și umbrele, restul se albește (Photocopy)": "Like a photocopy: only the outlines and shadows remain, the rest turns white",
+    "Cărbune": "Charcoal",
+    "Cretă și cărbune": "Chalk & Charcoal",
+    "Culorile (cerneală / hârtie)": "Colors (ink / paper)",
+    "Echilibrul lumină / întuneric": "Light / dark balance",
+    "Fotocopie": "Photocopy",
+    "Lumina din": "Light from",
+    "Margini rupte": "Torn Edges",
+    "Model de semiton": "Halftone Pattern",
+    "Poza în două culori, cu marginile zdrențuite ca hârtia ruptă (Torn Edges)": "The picture in two colors, with ragged edges like torn paper",
+    "Poza în două culori, netedă, ca o ștampilă de cauciuc (Stamp)": "The picture in two smooth colors, like a rubber stamp",
+    "Poza pare sculptată în piatră, luminată dintr-o parte (Bas Relief)": "The picture looks carved in stone, lit from one side",
+    "Puncte, cercuri sau linii, mai groase unde poza e mai închisă, ca la tipar (Halftone Pattern)": "Dots, circles or lines, thicker where the picture is darker, like in print",
+    "Umbrele cu tușe de cărbune, luminile cu tușe de cretă, pe hârtie gri (Chalk & Charcoal)": "Shadows in charcoal strokes, highlights in chalk strokes, on gray paper",
+    "Alb pe negru": "White on black",
+    "Albastru pe alb": "Blue on white",
+    "Cercuri": "Circles",
+    "Linii": "Lines",
+    "Negru pe alb": "Black on white",
+    "Roșu pe alb": "Red on white",
+    "Sepia pe crem": "Sepia on cream"
+  },
+  "templates": {},
+  "skip": []
+}

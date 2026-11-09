@@ -1,0 +1,26 @@
+{
+  "dict": {
+    "Dublu clic oriunde aici pune o casetă de text.": "Double-click anywhere here to add a text box.",
+    "Pânză liberă": "Free canvas",
+    "Textul casetei": "Text box content",
+    "Trage ca să schimbi lățimea": "Drag to change the width",
+    "▣ Casetă liberă": "▣ Free text box",
+    "Casetă liberă: o casetă de text pe pânza de sub notiță, pe care o muți oriunde trăgând de bara ei (dublu clic pe pânză pune încă una)": "Free text box: a text box on the canvas below the note that you can move anywhere by dragging its bar (double-click the canvas to add another)",
+    "Dublu clic oriunde aici pune o casetă de text; pozele trase aici rămân unde le lași.": "Double-click anywhere here to add a text box; pictures dragged here stay where you drop them.",
+    "Poză pe pânză": "Picture on the canvas",
+    "Descriere…": "Description…",
+    "✎ Desen pe pânză": "✎ Drawing on canvas",
+    "Desen pe pânză: un desen de mână pus pe pânza de sub notiță, pe care îl muți oriunde și îl redeschizi cu ✎": "Drawing on canvas: a hand drawing placed on the canvas below the note, which you can move anywhere and reopen with ✎",
+    "Pânză liberă: dublu clic pe un loc gol pune o casetă de text; o muți trăgând de bara ei (sau cu Alt + săgeți), o lățești trăgând de marginea din dreapta": "Free canvas: double-click an empty spot to add a text box; drag its bar to move it (or use Alt + arrow keys), drag its right edge to make it wider",
+    "Casetele alese": "Selected boxes",
+    "Desparte grupul": "Ungroup",
+    "Desparte grupul (casetele se mută din nou fiecare singură)": "Ungroup (the boxes move on their own again)",
+    "Leagă casetele alese: se mută apoi împreună": "Link the selected boxes: they then move together",
+    "Nu mai alege nicio casetă": "Clear the box selection",
+    "Trage ca să muți caseta (Shift + clic o alege, pentru grup)": "Drag to move the box (Shift + click selects it, for a group)",
+    "alese": "selected",
+    "⧉ Grupează": "⧉ Group"
+  },
+  "templates": {},
+  "skip": []
+}

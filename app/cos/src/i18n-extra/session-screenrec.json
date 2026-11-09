@@ -1,0 +1,18 @@
+{
+ "dict": {
+  "🖵 Înregistrare ecran": "🖵 Screen Recording",
+  "Înregistrare ecran": "Screen Recording",
+  "Înregistrarea ecranului nu a putut fi pusă pe slide.": "The screen recording could not be placed on the slide.",
+  "Înregistrarea s-a oprit singură (s-a terminat partajarea sau clipul a ajuns la limita de mărime). ": "The recording stopped by itself (sharing ended or the clip reached the size limit). ",
+  "Oprește înregistrarea ecranului și pune clipul pe slide": "Stop the screen recording and place the clip on the slide",
+  "Pregătesc clipul…": "Preparing the clip…"
+ },
+ "templates": {
+  "{0}Clipul cu ecranul ({1}) e pe slide; în prezentare pornește cu clic pe el.": "{0}The screen clip ({1}) is on the slide; in the slide show it starts when clicked.",
+  "⏹ Oprește ecranul ({0})": "⏹ Stop screen ({0})",
+  "Înregistrează ecranul, cu sunetul calculatorului și vocea de la microfon, și pune clipul pe slide (cel mult {0} minute)": "Record the screen, with computer sound and your voice from the microphone, and place the clip on the slide (up to {0} minutes)"
+ },
+ "skip": [
+  "Înregistrare ecran {0}.{1}.{2} {3}.{4} ({5}).webm"
+ ]
+}

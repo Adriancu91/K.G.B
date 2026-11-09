@@ -1,0 +1,10 @@
+{
+  "dict": {
+    "🤝 Interviu de angajare": "🤝 Job interview"
+  },
+  "templates": {},
+  "skip": [
+    "Firma: \nPostul: \nData și ora: \nUnde: (adresa / legătura video)\nCu cine: \n\nDespre firmă (ce fac, de ce vreau acolo):\n• \n• \n\nCe aduc eu (exemple concrete):\n• \n• \n\nÎntrebări pe care le pun eu:\n❓ \n❓ \n\nDe pregătit:\n☐ CV-ul tipărit\n☐ actele / diplomele\n☐ drumul (cât fac până acolo)\n☐ hainele\n\nDupă interviu (ce s-a discutat, salariul, pașii următori):\n• \n\n☐ mulțumire trimisă\n",
+    "Interviu {0}"
+  ]
+}

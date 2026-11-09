@@ -1,0 +1,22 @@
+{
+  "dict": {
+    "📁 Adaugă un dosar": "📁 Add a folder",
+    "Ce dosar pun în PDF?": "Which folder should go into the PDF?",
+    "Dosarul nu se poate citi.": "The folder can't be read.",
+    "În dosarul ales nu e niciun fișier care se poate pune în PDF.": "The chosen folder has no files that can go into a PDF.",
+    "Toate fișierele din dosar și din subdosarele lui care se pot pune în PDF (PDF-uri, poze, documente, tabele, prezentări, e-mailuri .eml), în ordinea numelor": "All files in the folder and its subfolders that can go into a PDF (PDFs, pictures, documents, spreadsheets, presentations, .eml e-mails), in name order",
+    "Ce dosar prelucrez?": "Which folder should I process?",
+    "În dosarul ales nu e niciun PDF sau document.": "The chosen folder has no PDFs or documents.",
+    "PDF-urile și documentele din dosar și din subdosarele lui, în ordinea numelor": "The PDFs and documents in the folder and its subfolders, in name order",
+    "Fișierele (PDF-uri, poze, documente .docx / .odt / .rtf / .txt, tabele .xlsx / .ods / .csv, prezentări .pptx / .odp / .ppt, e-mailuri .eml / .msg, pagini web .mht) intră în ordinea de mai jos (schimb-o cu ▲ ▼ sau trăgând un rând). La un PDF poți scrie doar paginile care intră, de exemplu „1-3, 5”; gol = toate.": "The files (PDFs, pictures, .docx / .odt / .rtf / .txt documents, .xlsx / .ods / .csv spreadsheets, .pptx / .odp / .ppt presentations, .eml / .msg e-mails, .mht web pages) go in in the order below (change it with ▲ ▼ or by dragging a row). For a PDF you can type only the pages that go in, for example “1-3, 5”; empty = all.",
+    "Fișierul .msg nu se poate citi.": "The .msg file can't be read.",
+    "Fișierul nu pare un mesaj .msg.": "The file doesn't look like a .msg message."
+  },
+  "templates": {
+    "Din dosar am luat primele {0} fișiere (cel mult 200 și 400 MB deodată).": "Took the first {0} files from the folder (at most 200 and 400 MB at once)."
+  },
+  "skip": [
+    "Content-Type: text/html; charset={0}",
+    "Content-Type: text/plain; charset=utf-8"
+  ]
+}

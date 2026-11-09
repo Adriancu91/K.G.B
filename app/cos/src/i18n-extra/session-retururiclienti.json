@@ -1,0 +1,37 @@
+{
+ "dict": {
+  "Ce facem cu marfa": "What we do with the goods",
+  "De casat": "To scrap",
+  "De emis storno": "Credit invoice to issue",
+  "De reparat": "To repair",
+  "De restituit banii": "Money to refund",
+  "Deteriorat": "Damaged",
+  "Factura inițială": "Original invoice",
+  "Facturi storno de emis": "Credit invoices to issue",
+  "La cumpărăturile online, clientul are 14 zile să se răzgândească, iar banii i se dau înapoi în cel mult 14 zile de la anunțul lui.": "For online purchases, the customer has 14 days to change their mind, and the money is refunded within 14 days of their notice.",
+  "Marfă de casat (valoarea)": "Goods to scrap (value)",
+  "Marfa primită înapoi de la clienți: factura inițială, valoarea cu TVA, motivul (și retragerea în 14 zile la cumpărăturile online) și ce se face cu marfa; după factura storno și suma dată înapoi ies restul de restituit și starea: de emis storno sau de restituit banii (în galben), închis (în verde), iar cele nerezolvate de peste 14 zile în roșu.": "Goods received back from customers: the original invoice, the value with VAT, the reason (including the 14-day withdrawal for online purchases) and what is done with the goods; from the credit invoice and the amount refunded you get the amount still to refund and the status: credit invoice to issue or money to refund (yellow), closed (green), and those unresolved for more than 14 days in red.",
+  "Marfa repusă în vânzare intră înapoi în Sheets → Fișa de magazie; cea defectă de la furnizor merge în Sheets → Retururi către furnizori.": "Goods put back on sale go back into Sheets → Stock card; goods defective from the supplier go to Sheets → Returns to suppliers.",
+  "Neconform": "Nonconforming",
+  "Nerezolvate de peste 14 zile": "Unresolved for more than 14 days",
+  "Pentru fiecare retur se emite factura storno (cu minus) către client; banii se dau înapoi pe același drum pe care au venit (cont, card, numerar).": "For each return a credit invoice (with minus) is issued to the customer; the money is refunded the same way it came in (account, card, cash).",
+  "Repusă în vânzare": "Back on sale",
+  "Rest de restituit": "Still to refund",
+  "Restituit clienților": "Refunded to customers",
+  "Retragere în 14 zile (online)": "14-day withdrawal (online)",
+  "Returnată la furnizor": "Returned to the supplier",
+  "Retururi de la clienți": "Customer returns",
+  "Suma restituită": "Amount refunded",
+  "Clientul:\nFactura inițială:\nCe aduce înapoi și de ce:\n\nPrimirea:\n☐ marfa verificată la primire: cantitatea, starea, ambalajul, accesoriile\n☐ returul trecut în evidență, cu motivul (Sheets → Retururi de la clienți)\n☐ la cumpărăturile online: anunțul de retragere primit în 14 zile (Docs → Notificare de retragere (retur online))\n\nBanii:\n☐ factura storno emisă către client\n☐ banii dați înapoi pe același drum (cont, card, numerar), în cel mult 14 zile la cele online\n☐ suma restituită trecută în tabel, starea „Închis”\n\nMarfa:\n☐ repusă în vânzare și trecută înapoi în gestiune (Sheets → Fișa de magazie)\n☐ cea defectă de la furnizor dată înapoi (Sheets → Retururi către furnizori)\n☐ cea stricată de tot pusă deoparte pentru casare (Docs → Proces-verbal de casare)\n\nRăspunsul către client:\n•\n\nObservații:\n• ": "Customer:\nOriginal invoice:\nWhat they bring back and why:\n\nReceiving:\n☐ goods checked on arrival: quantity, condition, packaging, accessories\n☐ return entered in the register, with the reason (Sheets → Customer returns)\n☐ for online purchases: withdrawal notice received within 14 days (Docs → Withdrawal notice (online return))\n\nThe money:\n☐ credit invoice issued to the customer\n☐ money refunded the same way (account, card, cash), within 14 days for online purchases\n☐ amount refunded entered in the table, status „Closed”\n\nThe goods:\n☐ put back on sale and back into the stock records (Sheets → Stock card)\n☐ goods defective from the supplier given back (Sheets → Returns to suppliers)\n☐ goods broken beyond repair set aside for scrapping (Docs → Asset write-off report)\n\nAnswer to the customer:\n• \n\nNotes:\n• ",
+  "🔄 Retur de la un client": "🔄 Return from a customer"
+ },
+ "templates": {
+  "Retur de la client {0}": "Customer return {0}"
+ },
+ "skip": [
+  "=COUNTIF(P2:P{0};\"De emis storno\")",
+  "=IF(I{0}=\"\";\"\";IF(L{1}=\"\";\"De emis storno\";IF(N{2}<=0;\"Închis\";\"De restituit banii\")))",
+  "=IF(OR(I{0}=\"\";B{1}=\"\";P{2}=\"Închis\");\"\";TODAY()-B{3})",
+  "=SUMIF(K2:K{0};\"De casat\";I2:I{1})"
+ ]
+}

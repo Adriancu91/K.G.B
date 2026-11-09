@@ -1,0 +1,11 @@
+{
+  "dict": {
+    "Foaie de caiet (linii albastre, margine roșie)": "Notebook page (blue lines, red margin)",
+    "Panou cu becuri (ca la spectacole)": "Marquee sign with light bulbs"
+  },
+  "templates": {
+    "{0}: „{1}” (trage ca să o muți în altă parte a benzii)": "{0}: “{1}” (drag to move it elsewhere on the timeline)",
+    "{0}: „{1}” (în grup: se aleg și se mută împreună; Ctrl+Shift+G desface grupul)": "{0}: “{1}” (in a group: they are selected and moved together; Ctrl+Shift+G ungroups)"
+  },
+  "skip": []
+}

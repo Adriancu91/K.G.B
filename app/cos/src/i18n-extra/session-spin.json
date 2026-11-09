@@ -1,0 +1,25 @@
+{
+  "dict": {
+    "Bară de defilare": "Scroll Bar",
+    "Bară de defilare (trasă cu mouse-ul)": "Scroll bar (dragged with the mouse)",
+    "Butoanele rotative au fost scoase (numerele rămân)": "Spin buttons removed (the numbers stay)",
+    "Buton rotativ": "Spin Button",
+    "Buton rotativ sau bară de defilare în celulele alese: săgețile ▲ ▼ (sau bara trasă) schimbă numărul din celulă între un minim și un maxim, ca să încerci repede valori în formule": "Spin button or scroll bar in the selected cells: the ▲ ▼ arrows (or dragging the bar) change the number in the cell between a minimum and a maximum, to quickly try values in formulas",
+    "Celula arată rezultatul unei formule; butonul rotativ schimbă doar numere scrise": "The cell shows a formula result; the spin button only changes typed numbers",
+    "clic pe ▲ / ▼": "click ▲ / ▼",
+    "Crește": "Increase",
+    "Crește cu un pas": "Increase by one step",
+    "Minimul trebuie să fie mai mic decât maximul.": "The minimum must be less than the maximum.",
+    "Numărul din celulele alese crește sau scade cu pasul ales, fără să-l scrii de mână; formulele care îl folosesc se schimbă pe loc.": "The number in the selected cells goes up or down by the chosen step without typing it; formulas that use it update right away.",
+    "Pasul trebuie să fie pozitiv și cel mult cât diferența dintre maxim și minim.": "The step must be positive and at most the difference between maximum and minimum.",
+    "Pune": "Apply",
+    "Săgeți ▲ ▼ (buton rotativ)": "Arrows ▲ ▼ (spin button)",
+    "Scade cu un pas": "Decrease by one step",
+    "Scrie minimul, maximul și pasul ca numere.": "Enter the minimum, maximum and step as numbers.",
+    "Zona e prea mare (cel mult 20.000 de celule)": "The range is too large (at most 20,000 cells)"
+  },
+  "templates": {
+    "{0} pus: {1} (sau Alt+↑ / Alt+↓) schimbă numărul între {2} și {3}, cu pasul {4}": "{0} added: {1} (or Alt+↑ / Alt+↓) changes the number between {2} and {3}, in steps of {4}"
+  },
+  "skip": []
+}

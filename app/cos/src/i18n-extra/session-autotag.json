@@ -1,0 +1,32 @@
+{
+ "dict": {
+  "Nu am găsit text sau imagini de etichetat. Dacă paginile sunt scanate, întâi Recunoaște textul (OCR).": "I found no text or images to tag. If the pages are scanned, first run Recognize text (OCR).",
+  "🏷 Etichetează automat": "🏷 Autotag",
+  "Fișierul are deja etichete.": "The file already has tags.",
+  "Am mutat bucata mai devreme în ordinea de citire.": "I moved the piece earlier in the reading order.",
+  "Am mutat bucata mai târziu în ordinea de citire.": "I moved the piece later in the reading order.",
+  "Bucata e deja prima în ordinea de citire.": "The piece is already first in the reading order.",
+  "Bucata e deja ultima în ordinea de citire.": "The piece is already last in the reading order.",
+  "Mută bucata mai devreme în ordinea de citire": "Move the piece earlier in the reading order",
+  "Mută bucata mai târziu în ordinea de citire": "Move the piece later in the reading order",
+  "Decor (nu se citește)": "Decoration (not read)",
+  "Pune etichete paragrafelor, titlurilor (după mărimea literelor și aldin), listelor, tabelelor și imaginilor, ca fișierul să poată fi citit de un cititor de ecran": "Tags the paragraphs, headings (by letter size and bold), lists, tables and images, so the file can be read by a screen reader",
+  "Ordinea de citire": "Reading order",
+  "Bucățile se citesc de sus în jos, pe coloane (primele 30 de pagini verificate).": "The pieces are read from top to bottom, by columns (first 30 pages checked).",
+  "Bucățile se citesc de sus în jos, pe coloane.": "The pieces are read from top to bottom, by columns."
+ },
+ "templates": {
+  "Mută bucata {0} mai devreme": "Move piece {0} earlier",
+  "Mută bucata {0} mai târziu": "Move piece {0} later",
+  "Bucata e acum decor: cititorul de ecran n-o mai citește (era „{0}”).": "The piece is now decoration: the screen reader no longer reads it (it was “{0}”).",
+  "Am etichetat automat (pagini: {0}, titluri: {1}, paragrafe: {2}, liste: {3}, tabele: {4}, imagini: {5}). Verifică tipurile și ordinea în ☰ Ordinea de citire, apoi pune text alternativ la imagini.": "Autotagged (pages: {0}, headings: {1}, paragraphs: {2}, lists: {3}, tables: {4}, images: {5}). Check the types and the order in ☰ Reading order, then add alternative text to the images.",
+  "Pe unele pagini o bucată urcă față de cea de dinainte, în aceeași coloană (pagini: {0}). Verifică în ☰ Ordinea de citire și mută bucățile cu ▲ ▼.": "On some pages a piece goes up compared with the one before it, in the same column (pages: {0}). Check in ☰ Reading order and move the pieces with ▲ ▼."
+ },
+ "skip": [
+  "Artifact",
+  "Footer",
+  "Header",
+  "jos:",
+  "sus:"
+ ]
+}

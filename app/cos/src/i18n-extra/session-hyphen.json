@@ -1,0 +1,8 @@
+{
+  "dict": {
+    "a-b Silabe": "a-b Hyphenate",
+    "Despărțire în silabe: în caseta de paragraf, cuvântul care nu mai încape pe rând se desparte cu cratimă (după regulile românești), ca rândurile să fie mai pline": "Hyphenation: in the paragraph box, a word that no longer fits on the line is split with a hyphen (by Romanian rules), so the lines are fuller"
+  },
+  "templates": {},
+  "skip": []
+}

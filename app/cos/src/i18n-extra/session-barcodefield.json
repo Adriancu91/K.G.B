@@ -1,0 +1,13 @@
+{
+  "dict": {
+    "▣ Cod de bare (datele formularului)": "▣ Barcode (form data)",
+    "Câmpurile din cod": "Fields in the code",
+    "Câmpurile din cod, cu virgulă (gol = toate)": "Fields in the code, comma-separated (empty = all)",
+    "Numele câmpurilor puse în codul QR, despărțite prin virgulă; gol = toate câmpurile. Codul se reface cu ce s-a completat la fiecare salvare": "Names of the fields put in the QR code, separated by commas; empty = all fields. The code is rebuilt from the filled-in data on every save",
+    "Cod de bare": "Barcode"
+  },
+  "templates": {
+    "Datele formularului sunt prea lungi pentru codul de bare ({0}); a rămas codul de dinainte. Alege mai puține câmpuri în el.": "The form data is too long for the barcode ({0}); the previous code was kept. Choose fewer fields for it."
+  },
+  "skip": ["Cod de bare cu datele formularului{0}"]
+}

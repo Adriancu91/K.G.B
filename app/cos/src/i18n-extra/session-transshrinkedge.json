@@ -1,0 +1,10 @@
+{
+  "dict": {
+    "Micșorare spre stânga": "Shrink to left",
+    "Micșorare spre dreapta": "Shrink to right",
+    "Micșorare în sus": "Shrink to top",
+    "Micșorare în jos": "Shrink to bottom"
+  },
+  "templates": {},
+  "skip": []
+}

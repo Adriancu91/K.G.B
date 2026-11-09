@@ -1,0 +1,19 @@
+{
+  "dict": {
+    "Forma diafragmei": "Iris shape",
+    "Heptagon": "Heptagon",
+    "Lamele rotunjite": "Blade curvature",
+    "Rotația lamelelor": "Blade rotation",
+    "Ca un obiectiv foto deschis larg: luminile devin discuri sau poligoane, după forma diafragmei (numărul de lamele, rotația și rotunjirea lor); cu o hartă de adâncime, doar ce e departe de distanța clară se estompează, iar zgomotul pune înapoi granulația (Lens Blur)": "Like a wide-open camera lens: highlights turn into discs or polygons, following the iris shape (number of blades, their rotation and roundness); with a depth map, only what is far from the focal distance gets blurred, and noise puts the grain back",
+    "Distanța clară": "Focal distance",
+    "Fără (totul la fel)": "None (all the same)",
+    "Harta de adâncime": "Depth map",
+    "Întunecat = departe": "Dark = far",
+    "Jos departe, sus aproape": "Bottom far, top near",
+    "Sus departe, jos aproape": "Top far, bottom near",
+    "Zgomot monocromatic": "Monochromatic noise",
+    "Luminos = departe": "Bright = far"
+  },
+  "templates": {},
+  "skip": []
+}

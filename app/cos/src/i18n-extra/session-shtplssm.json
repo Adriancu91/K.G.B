@@ -1,0 +1,37 @@
+{
+  "dict": {
+    "Evidența instruirilor SSM": "Safety training records",
+    "Instruirile de securitate a muncii și PSI ale fiecărui salariat: data, cât de des se repetă și următoarea dată; ies instruirile restante (în roșu), cele de făcut în 30 de zile (în galben) și cele nesemnate în fișă.": "The occupational safety and fire safety trainings of each employee: the date, how often it repeats and the next date; you get the overdue trainings (in red), those due within 30 days (in yellow) and those not signed in the record."
+  },
+  "templates": {},
+  "skip": [
+    "Curând",
+    "Data instruirii",
+    "De făcut în 30 de zile",
+    "Felul instruirii",
+    "Funcția / locul de muncă",
+    "Instruiri",
+    "Instruiri SSM",
+    "Instruiri în listă",
+    "Introductiv-generală",
+    "La locul de muncă",
+    "La zi",
+    "Nesemnate în fișă",
+    "Nr.",
+    "Numele și prenumele",
+    "PSI (situații de urgență)",
+    "Pe scurt",
+    "Periodica se face de obicei la 6 luni (la 12 luni pentru personalul de birou), după tematica firmei.",
+    "Periodică",
+    "Prim ajutor",
+    "Restante",
+    "Restantă",
+    "Scrie data instruirii și la câte luni se repetă; următoarea dată și starea se calculează singure.",
+    "Se repetă la (luni)",
+    "Semnat în fișă",
+    "Starea",
+    "Suplimentară",
+    "Următoarea instruire",
+    "Zile rămase"
+  ]
+}

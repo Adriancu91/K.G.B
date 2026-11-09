@@ -1,0 +1,37 @@
+{
+  "dict": {
+    "Apă caldă (mc)": "Hot water (m³)",
+    "Apă rece (mc)": "Cold water (m³)",
+    "Apartamente cu restanțe": "Flats with arrears",
+    "Apartamentul": "Flat",
+    "Cheltuielile lunii": "This month's expenses",
+    "Cota-parte indiviză (%)": "Ownership share (%)",
+    "Cote-părți adunate (%)": "Ownership shares added up (%)",
+    "Cotele-părți sunt cele din actele apartamentelor; adunate ar trebui să dea 100%.": "Ownership shares are the ones in the flats' deeds; added up they should come to 100%.",
+    "De încasat de la toți": "To collect from everyone",
+    "Fond de reparații (lei)": "Repair fund (lei)",
+    "Fondul de reparații pe apartament (lei)": "Repair fund per flat (lei)",
+    "Întreținerea": "Maintenance",
+    "La sfârșitul lunii, restul de plată al fiecărui apartament se trece la Restanțe în lista lunii următoare.": "At the end of the month, each flat's remaining balance goes under Arrears in next month's list.",
+    "Lei pe persoană": "Lei per person",
+    "Lista de plată a întreținerii": "Building maintenance fees",
+    "Pe cota-parte (lei)": "By ownership share (lei)",
+    "Pe cota-parte: curățenie, administrator, reparații (lei)": "By ownership share: cleaning, administrator, repairs (lei)",
+    "Pe persoane (lei)": "By persons (lei)",
+    "Pe persoane: lift, salubritate, iluminat (lei)": "By persons: lift, waste collection, lighting (lei)",
+    "Pentru asociațiile de proprietari: apartamentele cu persoanele, cota-parte indiviză și apa consumată; cheltuielile lunii se trec o dată și se împart singure pe persoane și pe cota-parte, apoi ies totalul lunii, restanțele, restul de plată și starea fiecărui apartament.": "For homeowners' associations: the flats with their persons, ownership share and water used; enter the month's expenses once and they are split automatically by persons and by ownership share, giving each flat's monthly total, arrears, remaining balance and status.",
+    "Persoane în bloc": "Persons in the building",
+    "Prețul apei calde (lei / mc)": "Hot water price (lei / m³)",
+    "Prețul apei reci (lei / mc)": "Cold water price (lei / m³)",
+    "Proprietarul": "Owner",
+    "Restanță": "In arrears",
+    "Restanțe (lei)": "Arrears (lei)",
+    "Total de plată (lei)": "Total to pay (lei)",
+    "Treci cheltuielile o dată pe lună în căsuțele galbene; ele se împart singure pe apartamente.": "Enter the expenses once a month in the yellow cells; they are split across the flats automatically."
+  },
+  "templates": {},
+  "skip": [
+    "=COUNTIF(Q2:Q{0};\"Restanță\")",
+    "=IF(B{0}=\"\";\"\";IF(P{1}<=0;\"Plătit\";IF(N(M{2})>0;\"Restanță\";\"De plată\")))"
+  ]
+}

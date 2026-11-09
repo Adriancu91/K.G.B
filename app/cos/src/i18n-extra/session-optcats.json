@@ -1,0 +1,11 @@
+{
+  "dict": {
+    "Ce face 🧹 Optimizează structura": "What 🧹 Optimize structure does",
+    "Comprimă ce a rămas necomprimat": "Compress what is left uncompressed",
+    "Obiectele la care nu mai duce nimic se scot mereu. La alegere:": "Objects nothing points to are always removed. Optional:",
+    "Scoate miniaturile vechi ale paginilor și datele private ale programelor": "Remove old page thumbnails and private application data",
+    "Unește copiile identice (aceeași siglă, același font, aceeași poză)": "Merge identical copies (same logo, same font, same image)"
+  },
+  "templates": {},
+  "skip": []
+}

@@ -1,0 +1,24 @@
+{
+  "dict": {
+    "Măcelărie": "Butcher shop",
+    "Pulpă de pui": "Chicken drumstick",
+    "Friptură": "Steak",
+    "Cârnați": "Sausages",
+    "Șuncă": "Ham",
+    "Satâr": "Cleaver",
+    "Mașină de tocat": "Meat grinder",
+    "Cârlig de carne": "Meat hook",
+    "Butuc de tranșat": "Butcher block"
+  },
+  "templates": {},
+  "skip": [
+    "pulpă de pui pasăre carne de pui grill chicken drumstick",
+    "friptură antricot cotlet carne de vită steak",
+    "cârnați carnati de casă afumați mezeluri sausages",
+    "șuncă jambon carne de porc afumată mezeluri ham",
+    "satâr satar cuțit de măcelar tranșat oase cleaver",
+    "mașină de tocat carne tocată mici chiftele meat grinder mincer",
+    "cârlig de carne cârlig de măcelărie agățat carcasă meat hook",
+    "butuc de tranșat masă de lemn porționat carne butcher block"
+  ]
+}

@@ -1,0 +1,14 @@
+{
+  "dict": {
+    "Listă cu triunghiuri întoarse (numărul pe un triunghi cu vârful în jos, textul într-o bandă alături)": "Inverted triangle list (the number on a triangle pointing down, the text in a band beside it)",
+    "Listă cu colțare (numărul în colțul unui L, textul într-o bandă alături)": "Corner list (the number in the corner of an L shape, the text in a band beside it)",
+    "Listă cu triunghiuri întoarse": "Inverted triangle list",
+    "Listă cu colțare": "Corner list",
+    "listă cu triunghiuri întoarse": "inverted triangle list",
+    "listă cu colțare": "corner list",
+    "Puncte una sub alta: numărul pe un triunghi cu vârful în jos, iar alături textul": "Points one below the other: the number on a triangle pointing down, with the text beside it",
+    "Puncte una sub alta: numărul pe un colțar în formă de L, iar alături textul": "Points one below the other: the number on an L-shaped corner, with the text beside it"
+  },
+  "templates": {},
+  "skip": []
+}

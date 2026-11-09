@@ -1,0 +1,10 @@
+{
+  "dict": {
+    "👞 Pantofi duși la reparat": "👞 Shoes taken for repair",
+    "Atelierul (cizmăria):\nTelefonul și programul:\nNumărul bonului de primire:\n\nCe am lăsat:\n• perechea (pantofi, ghete, cizme, sandale) și culoarea:\n• ce trebuie făcut (talpă, tocuri, cusătură, fermoar, lărgit, vopsit):\n• prețul spus la primire:\n• avansul dat:\n\nLa predare:\n☐ bonul de primire luat, cu ce s-a lăsat și prețul scris pe el\n☐ ce trebuie reparat spus clar și arătat pe pantof\n☐ urmele vechi (zgârieturi, pete) arătate și trecute pe bon\n☐ data la care sunt gata stabilită\n☐ întrebat dacă se poate și lustruit sau schimbat șiretul\n\nLa ridicare:\n☐ reparația verificată pe loc: talpa lipită bine, tocurile drepte, cusătura curată\n☐ pantofii încercați în picioare înainte de plată\n☐ bonul sau chitanța primită pentru restul de plată\n☐ întrebat cât ține garanția reparației\n\nCe s-a făcut și cât am plătit în total:\n• ": "Workshop (shoe repair):\nPhone and opening hours:\nDrop-off ticket number:\n\nWhat we left:\n• the pair (shoes, ankle boots, boots, sandals) and colour:\n• what needs doing (sole, heels, stitching, zip, stretching, dyeing):\n• price quoted at drop-off:\n• deposit paid:\n\nAt drop-off:\n☐ drop-off ticket taken, with what was left and the price written on it\n☐ what needs repairing said clearly and shown on the shoe\n☐ existing marks (scratches, stains) pointed out and noted on the ticket\n☐ ready date agreed\n☐ asked whether they can also polish them or replace the laces\n\nAt pick-up:\n☐ repair checked on the spot: sole glued well, heels straight, stitching neat\n☐ shoes tried on before paying\n☐ receipt received for the remaining payment\n☐ asked how long the repair is guaranteed\n\nWhat was done and what we paid in total:\n• "
+  },
+  "templates": {
+    "Pantofi la reparat {0}": "Shoes for repair {0}"
+  },
+  "skip": []
+}

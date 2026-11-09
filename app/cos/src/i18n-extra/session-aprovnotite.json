@@ -1,0 +1,10 @@
+{
+ "dict": {
+  "🚚 Aprovizionarea săptămânală": "🚚 Weekly purchasing",
+  "Gestiunea:\nCine comandă:\nBugetul săptămânii:\n\nCe lipsește:\n☐ stocul la zi verificat pe fișele de magazie (Sheets → Fișa de magazie)\n☐ consumul mediu și ce e deja pe drum completate (Sheets → Necesar de aprovizionare)\n☐ produsele „De comandat” și „Lipsă din stoc” trecute pe lista de mai jos\n\nComenzile:\n☐ prețuri cerute de la cel puțin doi furnizori, pentru produsele mari (Docs → Cerere de ofertă)\n☐ ofertele comparate (Sheets → Compararea ofertelor)\n☐ comanda trimisă furnizorului ales, cu termenul de livrare (Docs → Comandă către furnizor)\n☐ confirmarea furnizorului primită și termenul notat mai jos\n\nLa primire:\n☐ marfa numărată și comparată cu factura (Sheets → Notă de recepție)\n☐ diferențele anunțate furnizorului în scris (Docs → Notificare de neconformitate la livrare)\n☐ intrările trecute pe fișele de magazie\n\nDe comandat:\n• \n\nLivrări așteptate:\n• \n\nObservații:\n• ": "Stock location:\nOrdered by:\nBudget for the week:\n\nWhat is missing:\n☐ current stock checked on the stock cards (Sheets → Stock card)\n☐ average usage and what is already on the way filled in (Sheets → Purchasing needs)\n☐ products marked “To order” and “Out of stock” added to the list below\n\nOrders:\n☐ prices asked from at least two suppliers for the large items (Docs → Request for quotation)\n☐ offers compared (Sheets → Offer comparison)\n☐ order sent to the chosen supplier, with the delivery date (Docs → Purchase order)\n☐ supplier confirmation received and the date noted below\n\nOn receipt:\n☐ goods counted and compared with the invoice (Sheets → Goods receipt note)\n☐ differences reported to the supplier in writing (Docs → Delivery nonconformity notice)\n☐ receipts entered on the stock cards\n\nTo order:\n• \n\nExpected deliveries:\n• \n\nNotes:\n• "
+ },
+ "templates": {
+  "Aprovizionare {0}": "Purchasing {0}"
+ },
+ "skip": []
+}

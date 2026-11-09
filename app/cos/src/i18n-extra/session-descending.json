@@ -1,0 +1,9 @@
+{
+  "dict": {
+    "Blocuri descrescătoare": "Descending blocks",
+    "Blocuri descrescătoare (coloane tot mai scunde, de la stânga la dreapta)": "Descending blocks (ever shorter columns, from left to right)",
+    "Coloane una lângă alta, tot mai scunde spre dreapta (de la cel mai mare la cel mai mic)": "Columns side by side, ever shorter to the right (from largest to smallest)"
+  },
+  "templates": {},
+  "skip": []
+}

@@ -1,0 +1,24 @@
+{
+  "dict": {
+    "Podgorie și cramă": "Vineyard and winery",
+    "Sticlă de vin": "Wine bottle",
+    "Tirbușon": "Corkscrew",
+    "Butoi de vin": "Wine cask",
+    "Frunză de viță": "Vine leaf",
+    "Teasc": "Wine press",
+    "Carafă de vin": "Wine decanter",
+    "Degustare de vin": "Wine tasting",
+    "Ladă cu struguri": "Grape harvest crate"
+  },
+  "templates": {},
+  "skip": [
+    "sticlă de vin roșu alb rose podgorie wine bottle",
+    "tirbușon desfăcut sticla dop de plută corkscrew opener",
+    "butoi de stejar învechire pivniță wine cask oak barrel",
+    "frunză de viță de vie sarmale vița podgorie vine leaf",
+    "teasc presă de struguri must tescuire wine press",
+    "carafă decantor decantare servire decanter carafe",
+    "degustare de vin pahare noroc ciocnire wine tasting cheers",
+    "ladă cu struguri cules vendanje recoltă grape harvest crate"
+  ]
+}

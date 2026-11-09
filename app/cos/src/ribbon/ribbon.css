@@ -1,0 +1,391 @@
+/* Copiat neschimbat din Cyber Office Studio (D-071); vezi app/cos/README.md. */
+/* Panglica comună: rândul de file (~30 px) și un singur rând de grupuri (~40 px), fără animații grele. */
+.ribbon { position: relative; background: var(--panel); border-bottom: 1px solid var(--border); flex-shrink: 0; min-width: 0; }
+.ribbon-tabs { display: flex; align-items: center; gap: 2px; height: 30px; padding: 0 8px; min-width: 0; overflow: hidden; }
+.ribbon-quick { display: flex; align-items: center; gap: 1px; padding-right: 6px; margin-right: 4px; border-right: 1px solid var(--border); }
+.ribbon-quick button { min-width: 26px; height: 24px; padding: 0 4px; border: 1px solid transparent; border-radius: 5px; background: transparent; }
+.ribbon-quick button:hover { background: var(--hover); }
+.ribbon-tab, .ribbon-file-btn {
+  height: 26px; padding: 0 10px; border: 0; border-bottom: 2px solid transparent; background: transparent;
+  color: var(--text); white-space: nowrap; border-radius: 4px 4px 0 0; flex-shrink: 0;
+}
+.ribbon-tab:hover, .ribbon-file-btn:hover { background: var(--hover); }
+.ribbon-tab.on { border-bottom-color: var(--accent); color: var(--accent); font-weight: 600; }
+.ribbon-file-btn { background: var(--accent); color: #fff; border-radius: 5px; height: 24px; margin-right: 4px; }
+.ribbon-file-btn:hover, .ribbon-file-btn.on { background: var(--accent); filter: brightness(1.1); }
+.ribbon-tab.ctx { color: var(--accent-2); border-top: 2px solid var(--accent-2); }
+.ribbon-tab.ctx.on { border-bottom-color: var(--accent-2); color: var(--accent-2); }
+.ribbon-fill { flex: 1; min-width: 4px; }
+.ribbon-search {
+  height: 24px; padding: 0 8px; border: 1px solid var(--border); border-radius: 6px; background: var(--bg);
+  color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; min-width: 32px; flex-shrink: 1;
+}
+.ribbon-search kbd { font: inherit; font-size: 11px; opacity: 0.8; margin-left: 4px; }
+.ribbon-search:hover { border-color: var(--accent); color: var(--text); }
+.ribbon-tabs > .toolbar-file { margin: 0 6px; font-size: 12px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 220px; flex-shrink: 2; }
+.ribbon-min-btn { width: 24px; height: 24px; border: 0; background: transparent; border-radius: 5px; flex-shrink: 0; }
+.ribbon-min-btn:hover { background: var(--hover); }
+
+.ribbon-body { border-top: 1px solid var(--border); padding: 2px 8px 0; }
+.ribbon-body.peek { position: absolute; left: 0; right: 0; top: 30px; z-index: 40; background: var(--panel); box-shadow: 0 6px 16px rgba(0, 0, 0, 0.18); }
+.ribbon-panel { display: flex; align-items: stretch; flex-wrap: nowrap; min-width: 0; }
+.ribbon-panel[hidden] { display: none; }
+
+.ribbon-group { position: relative; display: flex; flex-direction: column; align-items: flex-start; padding: 0 4px; border-right: 1px solid var(--border); flex-shrink: 0; }
+.ribbon-group:last-child { border-right: 0; }
+.ribbon-group-body { display: flex; align-items: center; gap: 1px; height: 28px; flex-wrap: nowrap; white-space: nowrap; }
+.ribbon-group-label { font-size: 10px; line-height: 11px; color: var(--muted); align-self: center; padding-bottom: 1px; white-space: nowrap; }
+.ribbon-group-toggle { display: none; }
+.ribbon-group .fmt { height: 26px; min-width: 26px; padding: 0 5px; }
+.ribbon-group select { font: inherit; color: var(--text); background: var(--bg); border: 1px solid var(--border); border-radius: 6px; padding: 2px 4px; height: 24px; max-width: 160px; }
+.ribbon-group button:not(.fmt):not(.ribbon-group-toggle) {
+  height: 26px; padding: 0 8px; border: 1px solid transparent; border-radius: 5px; background: transparent; white-space: nowrap;
+}
+.ribbon-group button:not(.fmt):not(.ribbon-group-toggle):hover { background: var(--hover); }
+.ribbon-group button.active { background: var(--accent-soft); color: var(--accent); border-color: var(--accent); }
+
+/* Grup strâns: un singur buton „Paragraf ▾”, iar comenzile lui apar într-o listă dedesubt. */
+.ribbon-group.collapsed .ribbon-group-toggle {
+  display: block; height: 26px; padding: 0 8px; border: 1px solid transparent; border-radius: 5px; background: transparent; white-space: nowrap; margin: 1px 0;
+}
+.ribbon-group.collapsed .ribbon-group-toggle:hover { background: var(--hover); }
+.ribbon-group.collapsed .ribbon-group-body { display: none; }
+.ribbon-group.collapsed.open .ribbon-group-body,
+.ribbon-more.open > .ribbon-more-pop {
+  display: flex; flex-wrap: wrap; height: auto; max-width: min(460px, 90vw); position: absolute; top: 100%; z-index: 45;
+  padding: 6px; gap: 3px; background: var(--panel); border: 1px solid var(--border); border-radius: 8px; box-shadow: 0 8px 22px rgba(0, 0, 0, 0.2);
+}
+.ribbon-group.collapsed.open .ribbon-group-body { left: 0; }
+.ribbon-group.collapsed:nth-last-child(-n+2).open .ribbon-group-body { left: auto; right: 0; }
+.ribbon-group.collapsed .ribbon-group-label { visibility: hidden; }
+
+.ribbon-more { position: relative; display: inline-flex; }
+.ribbon-more-pop { display: none; }
+.ribbon-more.open > .ribbon-more-pop { left: 0; flex-direction: column; align-items: stretch; width: max-content; }
+/* Listele lungi (de exemplu funcțiile unei categorii) se derulează în loc să iasă din fereastră. */
+.ribbon-menu.open > .ribbon-more-pop { max-height: 70vh; overflow-y: auto; }
+.ribbon-more-pop > * { flex-shrink: 0; }
+.ribbon-menu .ribbon-more-pop { gap: 0; padding: 4px; }
+.ribbon-group .ribbon-menu-item, .ribbon-group button.ribbon-menu-item:not(.fmt) { text-align: left; height: 26px; padding: 0 10px 0 4px; }
+.ribbon-menu-item.on { font-weight: 600; }
+.ribbon-menu-item.sep { border-top: 1px solid var(--border) !important; border-radius: 0 !important; margin-top: 3px; }
+.ribbon-menu-check { display: inline-block; width: 18px; text-align: center; color: var(--accent); }
+.ribbon-group.collapsed.open .ribbon-more.open > .ribbon-more-pop { position: static; box-shadow: none; border: 0; padding: 0; }
+
+/* Pagina Fișier: o listă mare peste modul (Esc sau ← Înapoi o închide). */
+.ribbon-backstage { position: absolute; left: 0; right: 0; top: 30px; z-index: 50; display: flex; height: calc(100vh - 120px); max-height: 640px; }
+.ribbon-backstage[hidden] { display: none; }
+.ribbon-backstage-list {
+  display: flex; flex-direction: column; gap: 2px; width: 300px; max-width: 80vw; padding: 10px; overflow-y: auto;
+  background: var(--panel); border-right: 1px solid var(--border); box-shadow: 6px 0 18px rgba(0, 0, 0, 0.15);
+}
+.ribbon-backstage-list > button, .ribbon-backstage-list > select {
+  text-align: left; padding: 7px 12px; border: 0; border-radius: 6px; background: transparent; color: var(--text); font: inherit; white-space: nowrap;
+}
+.ribbon-backstage-list > select { border: 1px solid var(--border); background: var(--bg); }
+.ribbon-backstage-list > button:hover { background: var(--hover); }
+.ribbon-backstage-list > button.active { background: var(--accent-soft); color: var(--accent); }
+.ribbon-backstage-list > .ribbon-back { font-weight: 600; color: var(--accent); margin-bottom: 4px; }
+.ribbon-backstage-list > hr { width: 100%; border: 0; border-top: 1px solid var(--border); margin: 4px 0; }
+.ribbon-backstage-list > .ribbon-head { font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.04em; padding: 6px 12px 2px; }
+.ribbon-backstage-rest { flex: 1; background: rgba(0, 0, 0, 0.18); padding: 10px; overflow: hidden; }
+.ribbon-recent { display: flex; flex-direction: column; gap: 1px; width: min(460px, 100%); max-height: 100%; overflow-y: auto; padding: 8px; background: var(--panel); border: 1px solid var(--border); border-radius: 8px; box-shadow: 0 6px 18px rgba(0, 0, 0, 0.15); }
+.ribbon-recent .ribbon-head { font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.04em; padding: 2px 8px 6px; }
+.ribbon-recent-item { display: flex; flex-direction: column; align-items: flex-start; text-align: left; padding: 5px 8px; border: 0; border-radius: 6px; background: transparent; color: var(--text); font: inherit; cursor: pointer; }
+.ribbon-recent-item:hover { background: var(--hover); }
+.ribbon-recent-item small { color: var(--muted); font-size: 11px; max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.ribbon-recent .muted { padding: 4px 8px; margin: 0; }
+
+/* Barele vechi mutate în panglică (Docs): bara de tabel și numerotarea listei stau în grupuri. */
+.ribbon .ribbon-group.table-tools { display: flex; flex-direction: column; flex-wrap: nowrap; flex-basis: auto; border-top: 0; padding-top: 0; row-gap: 0; gap: 0; align-items: flex-start; }
+.ribbon-group-body .table-tools { display: contents; }
+.ribbon .size-select { width: 76px; }
+.ribbon .fmt-mini { width: 22px; padding: 3px 0; text-align: center; }
+.ribbon-locked { align-self: center; padding: 6px 4px; font-size: 12px; }
+.ribbon .table-tools label { display: inline-flex; align-items: center; gap: 2px; white-space: nowrap; font-size: 12px; }
+/* Docs → Proiectare tabel: bifele stilului pe trei rânduri, în coloane (nu un rând lung care strângea grupurile vecine). */
+.ribbon .table-style-opts { display: grid; grid-template-rows: repeat(3, auto); grid-auto-flow: column; column-gap: 10px; row-gap: 1px; align-self: center; }
+.ribbon-dropdown .table-style-opts { display: flex; flex-direction: column; }
+
+/* Filele: pe ecran îngust se derulează (fără bară), restul rândului rămâne la locul lui. */
+.ribbon-tablist { display: flex; align-items: center; gap: 2px; min-width: 0; flex-shrink: 1; overflow-x: auto; scrollbar-width: none; }
+.ribbon-tablist::-webkit-scrollbar { display: none; }
+.ribbon .font-select { width: 112px; }
+.ribbon .font-size { width: 54px; }
+@media (max-width: 1100px) { .ribbon-tab { padding: 0 6px; } .ribbon-search kbd { display: none; } }
+@media (max-width: 900px) { .ribbon-search { width: 32px; padding: 0; } .ribbon-tabs > .toolbar-file { display: none; } }
+
+/* Butonul Fișier: culoarea lui nu se pierde sub regulile vechi ale barelor. */
+.ribbon .ribbon-tabs .ribbon-file-btn { background: var(--accent); color: #fff; border: 0; }
+.ribbon .ribbon-tabs .ribbon-file-btn:hover, .ribbon .ribbon-tabs .ribbon-file-btn.on { filter: brightness(1.1); }
+
+/* Mini-bara de formatare: lângă textul ales, peste document. */
+.minibar {
+  position: fixed; z-index: 60; display: flex; align-items: center; gap: 2px; padding: 3px 5px; white-space: nowrap;
+  background: var(--panel); color: var(--text); border: 1px solid var(--border); border-radius: 8px; box-shadow: 0 6px 18px rgba(0, 0, 0, 0.18); font-size: 13px;
+}
+.minibar select { height: 24px; max-width: 120px; }
+.minibar .size-select { max-width: 64px; }
+.minibar .sep { width: 1px; height: 18px; margin: 0 3px; background: var(--border); }
+.minibar .color-pick { min-width: 24px; height: 24px; border-radius: 4px; }
+.minibar .color-pick:hover { background: var(--hover, rgba(0, 0, 0, 0.06)); }
+.minibar .mb-rows { display: flex; flex-direction: column; gap: 2px; }
+.minibar .mb-row { display: flex; align-items: center; gap: 2px; }
+.minibar button.active { background: color-mix(in srgb, var(--accent) 18%, transparent); }
+
+/* Fila Aspect › Paragraf (Docs): două coloane mici, retrageri și spații, pe înălțimea unui rând de panglică. */
+.para-quick { display: inline-flex; gap: 10px; align-items: center; }
+.para-quick-col { display: flex; flex-direction: column; gap: 1px; font-size: 12px; }
+.para-quick-col label { display: flex; align-items: center; gap: 3px; white-space: nowrap; }
+.para-quick input { width: 44px; height: 18px; padding: 0 3px; font: inherit; }
+.para-quick select { height: 18px; font: inherit; padding: 0 2px; }
+
+/* Dock: panourile din dreapta ca file andocate */
+.rb-dock { position: relative; flex: none; display: flex; flex-direction: column; min-height: 0; border-left: 1px solid var(--border); background: var(--panel); }
+.rb-dock-grip { position: absolute; left: -3px; top: 0; bottom: 0; width: 6px; cursor: ew-resize; z-index: 2; }
+.rb-dock-grip:hover { background: var(--accent-soft); }
+.rb-dock-tabs { display: flex; flex-wrap: wrap; align-items: stretch; gap: 1px; padding: 3px 3px 0; border-bottom: 1px solid var(--border); flex: none; }
+.rb-dock-tab { display: inline-flex; align-items: center; border: 1px solid transparent; border-bottom: 0; border-radius: 5px 5px 0 0; }
+.rb-dock-tab.on { background: var(--bg); border-color: var(--border); margin-bottom: -1px; }
+.rb-dock-tab button { background: none; border: 0; color: inherit; font: inherit; font-size: 12px; padding: 3px 5px; cursor: pointer; white-space: nowrap; }
+.rb-dock-tab.on > button:first-child { font-weight: 600; color: var(--accent); }
+.rb-dock-tab .rb-dock-x { padding: 3px 4px 3px 0; color: var(--muted); }
+.rb-dock-tab .rb-dock-x:hover { color: var(--text); }
+.rb-dock-toggle { margin-left: auto; background: none; border: 0; color: var(--muted); cursor: pointer; font-size: 14px; padding: 2px 6px; }
+.rb-dock-toggle:hover { color: var(--text); }
+.rb-dock-pane { flex: 1; min-height: 0; display: flex; flex-direction: column; }
+.rb-dock-pane[hidden] { display: none; }
+.rb-dock-pane > * { width: auto !important; flex: 1; min-height: 0; border-left: 0 !important; }
+/* Panoul lipit se derulează în el (un .pic-adjust cu flex: none creștea cât conținutul și derula toată fereastra: meniul și poza ieșeau din vedere). */
+.rb-dock .rb-dock-pane > * { flex: 1 1 0; min-height: 0; max-height: 100%; }
+.rb-dock.min { width: 34px; align-items: center; padding: 3px 0; gap: 2px; }
+.rb-dock.min > button { background: none; border: 1px solid transparent; border-radius: 5px; width: 28px; height: 28px; cursor: pointer; color: inherit; font-size: 15px; padding: 0; }
+.rb-dock.min > button.on { border-color: var(--accent); background: var(--accent-soft); }
+.rb-dock.min .rb-dock-toggle { margin: 0; }
+/* Tastele de acces (Alt): literele de pe file și butoane. */
+.keytips-layer { position: fixed; inset: 0; pointer-events: none; z-index: 2000; }
+.keytip { position: fixed; transform: translate(-50%, 0); min-width: 14px; padding: 0 4px; border-radius: 3px; text-align: center;
+  font: 600 11px/16px system-ui, sans-serif; background: var(--text, #222); color: var(--bg, #fff); box-shadow: 0 1px 3px rgba(0, 0, 0, 0.35); }
+/* Butoanele mari (pictogramă sus, nume jos), ca în programele cunoscute; dacă panglica are măcar unul, grupurile cresc
+   la două rânduri, pe toate filele, ca înălțimea să nu sară la schimbarea filei. */
+.ribbon:has(.rb-big) .ribbon-group-body { height: 58px; }
+.ribbon-group .rb-big {
+  display: inline-flex; flex-direction: column; align-items: center; justify-content: center; gap: 1px;
+  height: 44px !important; min-width: 44px; padding: 0 6px !important; border: 1px solid transparent; border-radius: 5px 5px 0 0 !important; background: transparent;
+}
+.ribbon-group .rb-big .rb-ico { font-size: 20px; line-height: 22px; }
+.ribbon-group .rb-big .rb-txt { font-size: 11px; line-height: 13px; }
+.rb-split { flex-direction: column; align-items: stretch; align-self: center; }
+.ribbon-group .rb-split > .rb-drop { height: 13px !important; padding: 0 !important; font-size: 9px; line-height: 11px; border-radius: 0 0 5px 5px !important; }
+.ribbon-group .rb-split > .rb-big:hover, .ribbon-group .rb-split > .rb-drop:hover { background: var(--hover); }
+.ribbon-group .rb-split.open > .rb-drop { background: var(--accent-soft); }
+.rb-split.open > .ribbon-more-pop { top: 100%; }
+.rb-stack { display: flex; flex-direction: column; justify-content: center; gap: 0; align-self: stretch; }
+.ribbon-group .rb-stack > button, .ribbon-group .rb-stack > .ribbon-more > button { height: 19px !important; padding: 0 5px !important; font-size: 12px; text-align: left; justify-content: flex-start; display: inline-flex; align-items: center; gap: 4px; min-width: 0; }
+.rb-stack .rb-ico { width: 14px; text-align: center; }
+.rb-check { display: flex; align-items: center; gap: 4px; height: 19px; font-size: 12px; white-space: nowrap; cursor: pointer; }
+.rb-check input { margin: 0; }
+.ribbon-group > .ribbon-launcher {
+  position: absolute; right: 1px; bottom: 0; width: 13px; height: 12px !important; padding: 0 !important; border: 0; background: transparent;
+  font-size: 9px; line-height: 12px; color: var(--muted); border-radius: 2px;
+}
+.ribbon-group > .ribbon-launcher:hover { background: var(--hover); color: var(--text); }
+.ribbon-group.collapsed .ribbon-launcher { display: none; }
+.rb-stack [data-txt]::after { content: attr(data-txt); margin-left: 4px; }
+/* Treapta „compactă”: butoanele mici din Clipboard rămân doar cu pictograma (numele e în titlu). */
+.ribbon-panel.compact .rb-stack .rb-opt { display: none; }
+.ribbon-panel.compact .rb-stack [data-txt]::after { content: none; }
+/* Grupurile pe două rânduri (Font, Aliniere), ca în programele cunoscute. */
+.rb-rows { display: flex; flex-direction: column; justify-content: center; gap: 3px; align-self: center; }
+.rb-row { display: flex; align-items: center; gap: 1px; }
+/* În lista unui grup strâns rândurile se rup pe mai multe linii, ca lista să nu iasă din fereastră. */
+.ribbon-group.collapsed.open .rb-rows { max-width: 100%; }
+.ribbon-group.collapsed.open .rb-row { flex-wrap: wrap; }
+.ribbon-more-pop .rb-pop-field { display: flex; align-items: center; gap: 6px; padding: 3px 8px; font-size: 12px; white-space: nowrap; }
+.ribbon-panel.compact .rb-opt { display: none; }
+.rb-stack > .rb-row > button, .rb-stack > .rb-row > .ribbon-more > button { height: 19px !important; padding: 0 5px !important; font-size: 12px; display: inline-flex; align-items: center; gap: 4px; }
+/* Trei rânduri stivuite încap în înălțimea grupului (58 px) doar fără spațiu între ele și cu listele / căsuțele cât butoanele;
+   altfel ultimul rând cădea peste numele grupului (fila de tabel Aspect din Docs). */
+.rb-rows.rb-stack { gap: 0; }
+.rb-stack > .rb-row > select, .rb-stack > .rb-row > input, .rb-stack > .rb-row > label > input { height: 19px; padding-top: 0; padding-bottom: 0; font-size: 12px; }
+.rb-stack > .ribbon-more > button { width: 100%; }
+/* Rândurile mici (rb-stack) au toate aceeași înălțime: listele, câmpurile și butoanele din componente (Copertă, Forme, Câmp…)
+   erau mai înalte și împingeau al treilea rând peste numele grupului. Ferestrele deschise din rând (.print-overlay) nu se ating. */
+.ribbon-group .rb-stack > .rb-row { min-height: 0; }
+.ribbon-group .rb-stack > .rb-row > :is(select, label, input), .ribbon-group .rb-stack > .rb-row > :is(div, span):not(.print-overlay) > :is(button, select) { height: 20px !important; min-height: 0; font-size: 12px; padding-top: 0 !important; padding-bottom: 0 !important; }
+.ribbon-group .rb-stack > .rb-row > label input { height: 18px; padding-top: 0; padding-bottom: 0; }
+
+/* Sheets → Aspect pagină: Scalare (etichetă + listă pe rând) și Opțiuni foaie (tabel mic cu bife). */
+.sh-scale .rb-row { gap: 4px; font-size: 12px; }
+.sh-scale select, .sh-scale input { font-size: 12px; height: 22px; }
+.sh-sheetopts { display: grid; grid-template-columns: auto auto auto; gap: 2px 10px; align-items: center; justify-items: center; font-size: 12px; padding: 0 4px; }
+.sh-sheetopts > span:not(:empty) { justify-self: start; }
+.sh-sheetopts b { font-weight: 600; }
+/* Ultima treaptă la ferestre înguste: butoanele mari rămân doar cu pictograma (numele apare la trecerea cu mouse-ul). */
+.ribbon-panel.tight .ribbon-group:not(.collapsed) .rb-big .rb-txt { display: none; }
+.ribbon-panel.tight .ribbon-group:not(.collapsed) .rb-big { min-width: 32px; padding: 0 3px !important; }
+/* Cu butoane mari, grupul strâns e un buton înalt cu numele pe două rânduri (încap mai multe pe ecranele înguste);
+   în treapta „tight” numele grupului nu mai lățește grupul (se taie cu „…”). */
+.ribbon:has(.rb-big) .ribbon-group.collapsed .ribbon-group-toggle { white-space: normal; height: 44px; max-width: 66px; padding: 0 4px; font-size: 11px; line-height: 13px; }
+.ribbon-panel.tight .ribbon-group-label { width: 0; min-width: 100%; overflow: hidden; text-overflow: ellipsis; text-align: center; }
+
+/* Modul „tools” (PDF, ca programul de PDF cunoscut): bara globală subțire și panoul de unelte din stânga, lângă document.
+   Fereastra modulului are position: relative; --tools-w (lățimea panoului) mută documentul la dreapta. */
+.ribbon-tools { position: static; }
+.ribbon-globalbar { height: 36px; border-bottom: 1px solid var(--border); }
+.ribbon-globals { display: flex; align-items: center; gap: 2px; margin-left: 6px; min-width: 0; }
+.ribbon-global { height: 28px; padding: 0 12px; border: 0; border-radius: 6px; background: transparent; color: var(--text); font: inherit; font-weight: 600; white-space: nowrap; cursor: pointer; }
+.ribbon-global:hover { background: var(--hover); }
+.ribbon-global.on { background: color-mix(in srgb, var(--accent) 14%, transparent); color: var(--accent); }
+.ribbon-global.ctx { color: var(--accent-2); }
+.ribbon-global:disabled { opacity: 0.45; cursor: default; }
+.ribbon-side { position: absolute; left: 0; bottom: 0; width: 264px; box-sizing: border-box; z-index: 20; display: flex; flex-direction: column;
+  padding: 0; border-top: 0; border-right: 1px solid var(--border); background: var(--panel); overflow: hidden; }
+.ribbon-side[hidden] { display: none; }
+.ribbon-side-head { display: flex; align-items: center; gap: 6px; padding: 8px 8px 6px 12px; border-bottom: 1px solid var(--border); flex: none; }
+.ribbon-side-head b { flex: 1; font-size: 14px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.ribbon-side-head button { border: 0; background: transparent; color: var(--text); width: 26px; height: 26px; border-radius: 6px; cursor: pointer; font-size: 15px; }
+.ribbon-side-head button:hover { background: var(--hover); }
+.ribbon-side > .ribbon-panel { flex: 1; min-height: 0; overflow-y: auto; flex-direction: column; align-items: stretch; padding: 6px 8px 12px; }
+.ribbon-side > .ribbon-panel[hidden] { display: none; }
+.ribbon-side .ribbon-group { border-right: 0; border-bottom: 1px solid var(--border); padding: 6px 2px 8px; flex-direction: column-reverse; justify-content: flex-end; }
+.ribbon-side .ribbon-group:last-child { border-bottom: 0; }
+.ribbon-side .ribbon-group-label { align-self: flex-start; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.03em; padding: 0 2px 4px; }
+.ribbon-side .ribbon-group-body { height: auto; flex-wrap: wrap; white-space: normal; gap: 4px; }
+.ribbon-side .ribbon-group-body > button, .ribbon-side .ribbon-group-body > select { max-width: 100%; }
+.ribbon-side .ribbon-launcher { display: none; }
+.ribbon-toollist .ribbon-tool { display: flex; align-items: center; gap: 10px; width: 100%; padding: 7px 8px; border: 0; border-radius: 6px; background: transparent;
+  color: var(--text); font: inherit; text-align: left; cursor: pointer; }
+.ribbon-toollist .ribbon-tool:hover { background: var(--hover); }
+.ribbon-tool-ico { width: 24px; text-align: center; font-size: 16px; flex: none; }
+.ribbon-tablist[hidden] { display: none !important; }
+/* O filă cu `bar` (de exemplu Adăugare comentarii în PDF): bară orizontală sub bara globală, cu „✕ Închide” la capăt. */
+.ribbon-toolbar > .ribbon-panel { position: relative; }
+.ribbon-toolbar-close { position: absolute; right: 8px; top: 50%; transform: translateY(-50%); height: 28px; padding: 0 10px; border: 1px solid var(--border);
+  border-radius: 6px; background: var(--panel); color: var(--text); font: inherit; cursor: pointer; white-space: nowrap; }
+.ribbon-toolbar-close:hover { background: var(--hover); }
+
+/* Modul „menus” (Imagini, ca editorul foto cunoscut): un rând de meniuri; fila aleasă se deschide ca listă sub numele ei,
+   cu grupurile una sub alta (numele grupului mărunt, deasupra) și scurtătura fiecărei comenzi în dreapta. */
+.ribbon-menus .menubar { gap: 0; }
+.ribbon-menus .menubar-item { height: 26px; padding: 0 9px; border: 0; border-radius: 4px; font-weight: 400; }
+.ribbon-menus .menubar-item.on { background: var(--accent-soft); color: var(--accent); font-weight: 400; border-bottom-color: transparent; }
+.ribbon.ribbon-menus .ribbon-tabs .ribbon-file-btn { background: transparent; color: var(--text); border-radius: 4px; height: 26px; padding: 0 9px; margin-right: 0; }
+.ribbon.ribbon-menus .ribbon-tabs .ribbon-file-btn:hover { background: var(--hover); filter: none; }
+.ribbon.ribbon-menus .ribbon-tabs .ribbon-file-btn.on { background: var(--accent-soft); color: var(--accent); filter: none; }
+.ribbon-menus .ribbon-quick { border-right: 0; border-left: 1px solid var(--border); margin: 0 0 0 6px; padding: 0 0 0 6px; }
+.ribbon-dropdown { position: absolute; top: 29px; z-index: 46; min-width: 260px; max-width: min(420px, 96vw); padding: 4px 0; border: 1px solid var(--border);
+  border-radius: 6px; background: var(--panel); box-shadow: 0 8px 22px rgba(0, 0, 0, 0.22); }
+.ribbon-dropdown[hidden] { display: none; }
+.ribbon-dropdown > .ribbon-panel { flex-direction: column; align-items: stretch; }
+.ribbon-dropdown > .ribbon-panel + .ribbon-panel:not([hidden]) { border-top: 1px solid var(--border); }
+.ribbon-dropdown .ribbon-group { flex-direction: column; align-items: stretch; padding: 2px 0; border-right: 0; border-bottom: 1px solid var(--border); }
+.ribbon-dropdown .ribbon-group:last-child { border-bottom: 0; }
+.ribbon-dropdown .ribbon-group-label { order: -1; align-self: flex-start; padding: 3px 12px 1px; font-size: 10px; text-transform: uppercase; letter-spacing: 0.04em; }
+.ribbon-dropdown .ribbon-group-body { flex-direction: column; align-items: stretch; height: auto !important; gap: 0; white-space: normal; }
+.ribbon-dropdown .ribbon-group-body > * { width: 100%; }
+.ribbon-dropdown .ribbon-group button:not(.ribbon-group-toggle):not(.ribbon-launcher) { display: flex; align-items: center; width: 100%; height: 26px;
+  padding: 0 12px; border: 0; border-radius: 0; text-align: left; }
+.ribbon-dropdown .ribbon-group button[data-kbd]::after { content: attr(data-kbd); margin-left: auto; padding-left: 28px; color: var(--muted); font-size: 11px; }
+.ribbon-dropdown .ribbon-group button.on { background: var(--accent-soft); color: var(--accent); }
+.ribbon-dropdown .ribbon-group select { margin: 2px 12px; width: calc(100% - 24px); max-width: none; }
+.ribbon-dropdown .ribbon-launcher { display: none; }
+/* Listele ▾ din meniu se deschid în dreapta, ca un submeniu. */
+.ribbon-dropdown .ribbon-more { display: flex; width: 100%; }
+.ribbon-dropdown .ribbon-more.open > .ribbon-more-pop { left: 100%; top: -4px; }
+/* Meniurile clasice (profilul „Meniuri clasice” din Sheets / Docs / Slides): rândurile și stivele panglicii se desfac într-o listă,
+   butoanele mari devin rânduri, iar cele cu doar o pictogramă își scriu și numele (data-mlabel) între pictogramă și scurtătură. */
+.ribbon-dropdown .rb-rows, .ribbon-dropdown .rb-row, .ribbon-dropdown .rb-stack { display: contents; }
+.ribbon-dropdown .ribbon-group button[data-mlabel]::before, .ribbon-dropdown .ribbon-group label.color-pick[data-mlabel]::before {
+  content: attr(data-mlabel); order: 1; margin-left: 8px; }
+.ribbon-dropdown .ribbon-group button[data-kbd]::after { order: 2; }
+.ribbon-dropdown .ribbon-group label.color-pick { display: flex; align-items: center; width: 100%; height: 26px; padding: 0 12px; box-sizing: border-box; }
+.ribbon-dropdown .rb-big { flex-direction: row !important; height: 26px !important; gap: 8px; justify-content: flex-start; }
+.ribbon-dropdown .rb-big .rb-ico { font-size: inherit; line-height: inherit; }
+.ribbon-dropdown .rb-split { display: flex; flex-direction: row !important; flex-wrap: nowrap; align-items: stretch; }
+.ribbon-dropdown .rb-big, .ribbon-dropdown .rb-big .rb-txt, .ribbon-dropdown .rb-small { font-size: 13px !important; white-space: nowrap !important; max-width: none !important; }
+.ribbon-dropdown .ribbon-group .rb-split > button.rb-big { flex: 1; width: auto; }
+.ribbon-dropdown .ribbon-group .rb-split > button.rb-drop { width: 30px; flex: none; justify-content: center; padding: 0; }
+/* Butoanele de culoare cu paletă (Docs, Slides): culoarea ca rând, ▾ paleta îngust în dreapta. */
+.ribbon-dropdown .clr-wrap { display: flex; flex-direction: row; align-items: stretch; width: 100%; }
+.ribbon-dropdown .ribbon-group .clr-wrap > button.clr-main { flex: 1; width: auto; }
+.ribbon-dropdown .ribbon-group .clr-wrap > button.clr-drop { width: 30px; flex: none; justify-content: center; padding: 0; }
+/* Galeria de stiluri (Docs): stilurile unul sub altul, cu exemplul lângă nume. */
+.ribbon-dropdown .doc-style-gallery { display: flex; flex-direction: column; width: 100%; height: auto; border: 0; }
+.ribbon-dropdown .doc-style-strip { display: flex; flex-direction: column; width: 100%; max-width: none; height: auto; overflow: visible; }
+.ribbon .ribbon-dropdown .ribbon-group .doc-style-gallery button.doc-style-tile { display: flex !important; flex: none; flex-direction: row; justify-content: flex-start; align-items: baseline;
+  gap: 10px; height: auto; min-height: 26px; width: 100%; max-width: none; padding: 2px 12px; }
+.ribbon .ribbon-dropdown .ribbon-group .doc-style-gallery button.doc-style-more { flex: none; width: 100%; height: 26px; padding: 0 12px; justify-content: flex-start; }
+/* Lista prea înaltă: grupurile pe 2–4 coloane (data-cols, pus de Ribbon când nu încape în fereastră). */
+.ribbon-dropdown[data-cols] { max-width: 96vw; }
+.ribbon-dropdown[data-cols="2"] { width: min(560px, 96vw); }
+.ribbon-dropdown[data-cols="3"] { width: min(820px, 96vw); }
+.ribbon-dropdown[data-cols="4"] { width: min(1080px, 96vw); }
+.ribbon-dropdown[data-cols] > .ribbon-panel:not([hidden]) { display: block; column-gap: 0; column-rule: 1px solid var(--border); }
+.ribbon-dropdown[data-cols="2"] > .ribbon-panel { column-count: 2; }
+.ribbon-dropdown[data-cols="3"] > .ribbon-panel { column-count: 3; }
+.ribbon-dropdown[data-cols="4"] > .ribbon-panel { column-count: 4; }
+.ribbon-dropdown[data-cols] .ribbon-group { display: flex; break-inside: avoid; }
+/* Fișier: lista de comenzi sub numele lui, fără restul paginii. */
+.ribbon-filemenu { right: auto; top: 29px; height: auto; max-height: none; }
+.ribbon-filemenu .ribbon-backstage-rest, .ribbon-filemenu .ribbon-back { display: none; }
+.ribbon-filemenu .ribbon-backstage-list { border: 1px solid var(--border); border-radius: 6px; box-shadow: 0 8px 22px rgba(0, 0, 0, 0.22); min-width: 260px; }
+/* Meniurile de sus: litera comenzii subliniata sub numele ei (ca in meniurile clasice). */
+.keytip-u { position: fixed; height: 1.5px; background: currentColor; color: var(--text, #222); }
+/* Treapta „wrap” (înainte să se strângă grupurile): numele butoanelor mari pe cel mult două rânduri. */
+.ribbon-panel.wrap .ribbon-group .rb-big { height: 46px !important; gap: 0; }
+.ribbon-panel.wrap .ribbon-group .rb-big .rb-ico { line-height: 20px; }
+.ribbon-panel.wrap .ribbon-group .rb-big .rb-txt { white-space: normal; max-width: 70px; line-height: 12px; text-align: center; }
+.ribbon-panel.wrap .ribbon-group .rb-split > .rb-drop { height: 11px !important; line-height: 9px; }
+/* Grupul strâns, cu butoane mari pe panglică: pictogramă sus, numele grupului jos (ca butoanele mari). */
+.ribbon:has(.rb-big) .ribbon-group.collapsed .ribbon-group-toggle[data-ico]:not([data-ico=""])::before { content: attr(data-ico); display: block; font-size: 18px; line-height: 20px; margin-bottom: 1px; }
+/* În treapta „wrap” butoanele mari și listele (font, format număr) se îngustează puțin, ca să încapă mai multe grupuri întregi. */
+.ribbon-panel.wrap .ribbon-group .rb-big { padding: 0 3px !important; }
+.ribbon-panel.wrap .ribbon-group select { max-width: 96px; }
+.ribbon-panel.wrap .ribbon-group { padding: 0 1px; }
+/* Sheets: și butoanele mici ale treptei „wrap” mai înguste (de la paleta de culori, Font are două ▾ în plus), ca la 1440 px
+   să încapă întregi toate grupurile din Pornire, și Editare. ▾ de lângă culori rămâne cât era. */
+.sh-ribbon .ribbon-panel.wrap .ribbon-group .fmt:not(.clr-drop) { min-width: 24px; padding: 0 3px; }
+/* Coloana de sarcini (taskRail): butoanele globale una sub alta, în stânga, cu pictograma deasupra numelui; panoul de unelte se deschide lângă ea. */
+.ribbon-taskrail { position: absolute; left: 0; bottom: 0; width: 76px; box-sizing: border-box; z-index: 21; display: flex; flex-direction: column; align-items: stretch; gap: 2px;
+  padding: 6px 4px; margin: 0; border-right: 1px solid var(--border); background: var(--panel); overflow-y: auto; }
+.ribbon-taskrail .ribbon-global { display: flex; flex-direction: column; align-items: center; gap: 2px; height: auto; min-height: 50px; padding: 5px 2px; margin: 0;
+  border-radius: 8px; font-size: 11px; line-height: 1.15; white-space: normal; text-align: center; }
+.ribbon-taskrail .ribbon-global.on { box-shadow: inset 3px 0 0 var(--accent); }
+.ribbon-task-ico { font-size: 18px; line-height: 1; }
+.ribbon-task-txt { max-width: 100%; overflow-wrap: break-word; }
+.ribbon-menu-empty { display: block; padding: 6px 10px; color: var(--muted, #888); font-size: 12px; white-space: nowrap; }
+
+/* Profilul „Aerisit” (Sheets / Docs / Slides / Notițe): sub meniuri, fila Pornire ca o singură bară subțire, fără numele grupurilor;
+   rândurile și stivele panglicii se desfac pe un rând, butoanele mari rămân doar cu pictograma (numele e în titlu). */
+.ribbon-airybar { border-top: 1px solid var(--border); padding: 2px 8px; }
+.ribbon-airybar[hidden] { display: none; }
+.ribbon-airybar .ribbon-group { flex-direction: row; align-items: center; padding: 0 5px; }
+.ribbon-airybar .ribbon-group-label { display: none; }
+.ribbon.ribbon-airy .ribbon-airybar .ribbon-group-body { height: 28px; gap: 2px; }
+.ribbon-airybar .rb-rows, .ribbon-airybar .rb-row, .ribbon-airybar .rb-stack { display: contents; }
+.ribbon-airybar .rb-split { flex-direction: row; align-items: center; }
+.ribbon-airybar .ribbon-group .rb-big { flex-direction: row; height: 26px !important; min-width: 28px; padding: 0 4px !important; border-radius: 5px !important; }
+.ribbon-airybar .ribbon-group .rb-big .rb-ico { font-size: 15px; line-height: 18px; }
+.ribbon-airybar .ribbon-group .rb-big .rb-txt { display: none; }
+.ribbon-airybar .ribbon-group .rb-split > .rb-drop { height: 26px !important; width: 14px; border-radius: 5px !important; }
+.ribbon-airybar .ribbon-group .rb-stack > button, .ribbon-airybar .ribbon-group .rb-stack > .ribbon-more > button,
+.ribbon-airybar .rb-stack > .rb-row > button { height: 26px !important; }
+.ribbon-airybar .rb-opt, .ribbon-airybar .rb-check { display: none; }
+.ribbon-airybar .rb-stack [data-txt]::after { content: none; }
+.ribbon-airybar .ribbon-launcher { display: none; }
+.ribbon.ribbon-airy .ribbon-airybar .ribbon-group.collapsed .ribbon-group-toggle { height: 26px; max-width: none; white-space: nowrap; font-size: 12px; }
+.ribbon.ribbon-airy .ribbon-airybar .ribbon-group.collapsed .ribbon-group-toggle::before { display: none !important; }
+.ribbon-airybar .ribbon-group.collapsed.open .rb-rows, .ribbon-airybar .ribbon-group.collapsed.open .rb-row, .ribbon-airybar .ribbon-group.collapsed.open .rb-stack { display: flex; }
+.ribbon-airybar .ribbon-group button:not(.fmt):not(.ribbon-group-toggle):not(.rb-big) { padding: 0 4px; }
+.ribbon-airybar .ribbon-group .fmt { min-width: 24px; padding: 0 3px; }
+.ribbon-airybar .ribbon-group { padding: 0 3px; }
+.ribbon-airybar .doc-narrow { width: 46px; }
+.ribbon-airybar .ribbon-group select.size-select:not(.font-size) { max-width: 52px; }
+.ribbon-airybar .ribbon-group select { padding: 2px 1px; }
+/* Profilul „Simplu”: modurile de lucru ca butoane rotunjite; fila aleasă se vede ca bară subțire (aceleași reguli ca la Aerisit). */
+.ribbon-simple .ribbon-tab.ribbon-mode { border: 1px solid transparent; border-radius: 14px; padding: 0 12px; margin: 0 1px; }
+.ribbon-simple .ribbon-tab.ribbon-mode.on { background: var(--accent-soft); color: var(--accent); border-color: var(--accent); }
+.ribbon-simple .ribbon-tablist { display: flex; align-items: center; }
+.ribbon-simple .ribbon-tablist .ribbon-menu > button { border-color: transparent; background: transparent; }
+.ribbon-simple .ribbon-tablist .ribbon-menu > button:hover { background: var(--hover); }

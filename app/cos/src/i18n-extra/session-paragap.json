@@ -1,0 +1,8 @@
+{
+  "dict": {
+    "Spațierea după paragraf, în puncte (cu cursorul într-un paragraf: doar pe el; altfel pe toată caseta)": "Spacing after the paragraph, in points (with the cursor in a paragraph: only that one; otherwise the whole box)",
+    "Spațierea înainte de paragraf, în puncte (cu cursorul într-un paragraf: doar pe el; altfel pe toată caseta)": "Spacing before the paragraph, in points (with the cursor in a paragraph: only that one; otherwise the whole box)"
+  },
+  "templates": {},
+  "skip": []
+}

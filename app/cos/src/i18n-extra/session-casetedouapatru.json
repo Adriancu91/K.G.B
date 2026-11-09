@@ -1,0 +1,14 @@
+{
+  "dict": {
+    "Listă cu casete cu săgeți în ambele părți (numărul într-o casetă cu săgeți spre stânga și spre dreapta, textul într-o bandă alături)": "Left-right arrow callout list (the number in a box with arrows to the left and to the right, the text in a band beside it)",
+    "Listă cu casete cu săgeți în patru părți (numărul într-o casetă cu săgeți în toate cele patru părți, textul într-o bandă alături)": "Quad arrow callout list (the number in a box with arrows on all four sides, the text in a band beside it)",
+    "Listă cu casete cu săgeți în ambele părți": "Left-right arrow callout list",
+    "Listă cu casete cu săgeți în patru părți": "Quad arrow callout list",
+    "listă cu casete cu săgeți în ambele părți": "left-right arrow callout list",
+    "listă cu casete cu săgeți în patru părți": "quad arrow callout list",
+    "Puncte una sub alta: numărul într-o casetă cu săgeți spre stânga și spre dreapta, iar alături textul": "Points one below the other: the number in a box with arrows to the left and to the right, with the text beside it",
+    "Puncte una sub alta: numărul într-o casetă cu săgeți în toate cele patru părți, iar alături textul": "Points one below the other: the number in a box with arrows on all four sides, with the text beside it"
+  },
+  "templates": {},
+  "skip": []
+}

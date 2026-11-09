@@ -1,0 +1,12 @@
+{
+  "dict": {
+    "Radial divergent": "Diverging Radial",
+    "O idee în mijloc, cu săgeți spre ideile din jurul ei (primul rând e mijlocul)": "One idea in the middle, with arrows to the ideas around it (the first line is the middle)",
+    "Radial divergent (primul în mijloc, cu săgeți spre restul)": "Diverging radial (the first in the middle, with arrows to the rest)",
+    "Venn stivuit": "Stacked Venn",
+    "Cercuri unul în altul, așezate pe aceeași bază (de la întreg la partea cea mai mică)": "Circles one inside another, sitting on the same base (from the whole to the smallest part)",
+    "Venn stivuit (cercuri unul în altul, pe aceeași bază)": "Stacked Venn (circles one inside another, on the same base)"
+  },
+  "templates": {},
+  "skip": []
+}

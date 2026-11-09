@@ -1,0 +1,10 @@
+{
+  "dict": {
+    "🏢 Mutarea biroului": "🏢 Office move"
+  },
+  "templates": {},
+  "skip": [
+    "Mutarea biroului {0}",
+    "Data mutării: \nAdresa nouă: \nCine coordonează: \n\nÎnainte:\n☐ contractul pentru noul sediu semnat\n☐ firma de mutări programată\n☐ echipa anunțată (Slides → Mutarea biroului)\n☐ cutii și etichete pentru fiecare coleg\n☐ clienții și furnizorii anunțați (Docs → Anunț de schimbare a sediului)\n☐ schimbarea sediului la Registrul Comerțului\n☐ internetul și telefoanele mutate\n\nÎn ziua mutării:\n☐ calculatoarele mutate de IT, dosarele în cutii sigilate\n☐ cheile și ecusoanele noi împărțite\n\nDupă:\n☐ adresa nouă pe facturi, avize și site\n☐ sediul vechi predat (contoarele, cheile)\n\nNote: "
+  ]
+}

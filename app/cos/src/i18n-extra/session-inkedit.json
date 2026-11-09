@@ -1,0 +1,31 @@
+{
+  "dict": {
+    "✎ Editează desenul": "✎ Edit drawing",
+    "Deschide pânza de desen cu stiloul ales; desenul se pune în notiță și rămâne editabil (✎ pe el)": "Opens the drawing canvas with the chosen pen; the drawing goes into the note and stays editable (✎ on it)",
+    "Editează desenul": "Edit drawing",
+    "Editează desenul (liniile se pot muta, șterge sau completa)": "Edit the drawing (strokes can be moved, erased or added to)",
+    "Redeschide desenul cu liniile lui: le poți muta, șterge sau completa": "Reopens the drawing with its strokes: you can move, erase or add to them",
+    "Fundal roșu": "Red highlight",
+    "Fundal portocaliu": "Orange highlight",
+    "Fundal galben": "Yellow highlight",
+    "Fundal verde": "Green highlight",
+    "Fundal albastru": "Blue highlight",
+    "Fundal mov": "Purple highlight",
+    "Fundal roz": "Pink highlight",
+    "Fundal gri": "Gray highlight",
+    "Uriaș": "Huge",
+    "Reluare: desenul se redesenează linie cu linie, în ordinea în care l-ai făcut": "Replay: the drawing is redrawn stroke by stroke, in the order you made it",
+    "Notița ca pagină web într-un singur fișier (.mht), cu pozele în el: se deschide în browser și în programele de birou care citesc .mht": "The note as a single-file web page (.mht), with the pictures inside: opens in a browser and in office programs that read .mht"
+  },
+  "templates": {
+    "{0} (deschide pânza de desen)": "{0} (opens the drawing canvas)",
+    "{0} (Ctrl+{1}): pune semnul la începutul rândului; din nou îl scoate": "{0} (Ctrl+{1}): puts the mark at the start of the line; again removes it",
+    "{0}: pune semnele în jurul textului selectat; în Lectură și la export se vede formatat. Din nou: le scoate.": "{0}: puts the marks around the selected text; in Reading view and on export it shows formatted. Again: removes them.",
+    "Culoarea stiloului: {0}": "Pen color: {0}"
+  },
+  "skip": [
+    "Content-Type: multipart/related; type=\"text/html\"; boundary=\"{0}\"",
+    "Content-Type: text/html; charset=\"utf-8\"",
+    "poza{0}.{1}@suite"
+  ]
+}

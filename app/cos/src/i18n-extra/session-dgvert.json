@@ -1,0 +1,26 @@
+{
+ "dict": {
+  "Proces vertical": "Vertical process",
+  "Pași unul sub altul, cu săgeți în jos": "Steps one below the other, with arrows pointing down",
+  "Ecuație": "Equation",
+  "Ecuație (A + B = rezultat; ultimul e rezultatul)": "Equation (A + B = result; the last one is the result)",
+  "Idei adunate (+) care dau un rezultat (=), ultima căsuță": "Ideas added up (+) that give a result (=), the last box",
+  "Rezultat": "Result",
+  "Ierarhie orizontală": "Horizontal hierarchy",
+  "Ierarhie orizontală (primul în stânga, restul în dreapta)": "Horizontal hierarchy (the first on the left, the rest on the right)",
+  "O căsuță în stânga și altele în dreapta ei, legate printr-o acoladă": "One box on the left and others to its right, joined by a bracket",
+  "Cer": "Sky",
+  "Cafea": "Coffee",
+  "Smarald": "Emerald",
+  "Zmeură": "Raspberry",
+  "Ștampilă roșie, înclinată": "Red stamp, tilted",
+  "Mașină de scris pe hârtie crem": "Typewriter on cream paper",
+  "Bilețel galben lipit": "Yellow sticky note",
+  "Vară": "Summer",
+  "Iarnă": "Winter",
+  "Fotografie veche": "Old photo",
+  "Ceață": "Fog"
+ },
+ "templates": {},
+ "skip": []
+}

@@ -1,0 +1,38 @@
+{
+ "dict": {
+  "(restul acțiunii nu se mai redă)": "(the rest of the action will not play)",
+  "Oprește aici": "Stop here",
+  "Oprire în acțiune": "Stop in action",
+  "Redă pașii de după oprire": "Play the steps after the stop",
+  "Restul pașilor nu se mai redă": "The remaining steps will not play",
+  "⏸ Adaugă o oprire": "⏸ Insert Stop",
+  "La redare, acțiunea se oprește aici și arată mesajul (de exemplu ce să faci de mână); pasul se pune la sfârșit și îl muți cu ↑": "During playback the action stops here and shows the message (for example what to do by hand); the step is added at the end and you move it with ↑",
+  "Mesajul opririi": "Stop message",
+  " (se poate continua)": " (can continue)",
+  "se poate continua": "allow continue",
+  "Fișierul e făcut de o versiune mai nouă a aplicației.": "The file was made by a newer version of the app.",
+  "Fișierul nu e un fișier de acțiuni.": "The file is not an actions file.",
+  "⇧ Încarcă din fișier…": "⇧ Load from File…",
+  "⇩ Salvează în fișier…": "⇩ Save to File…",
+  "Adaugă acțiunile dintr-un fișier .sactions la cele de acum": "Add the actions from a .sactions file to the current ones",
+  "Fișierul nu are acțiuni.": "The file has no actions.",
+  "Toate acțiunile într-un fișier .sactions, de dus pe alt calculator sau de păstrat ca rezervă": "All actions in a .sactions file, to take to another computer or keep as a backup",
+  "Una a primit alt nume, fiindcă numele era deja folosit.": "One was renamed because its name was already in use.",
+  "Acțiunile cu același set stau împreună în listă și se pot salva separat (gol = fără set)": "Actions in the same set are grouped together in the list and can be saved separately (empty = no set)",
+  "Doar acțiunile acestui set, într-un fișier .sactions": "Only the actions of this set, in a .sactions file",
+  "Fără set": "No set",
+  "Setul acțiunii noi": "Set of the new action"
+ },
+ "templates": {
+  "⏸ Oprire: „{0}”{1}": "⏸ Stop: “{0}”{1}",
+  "{0} acțiuni adăugate din {1}.": "{0} actions added from {1}.",
+  "{0} acțiuni salvate în {1}.": "{0} actions saved to {1}.",
+  "{0} au primit alt nume, fiindcă numele erau deja folosite.": "{0} were renamed because their names were already in use.",
+  "Lista e plină (cel mult {0} acțiuni).": "The list is full (at most {0} actions).",
+  "O acțiune adăugată din {0}.": "One action added from {0}.",
+  "O acțiune salvată în {0}.": "One action saved to {0}.",
+  "Salvează setul {0} în fișier": "Save set {0} to file",
+  "Setul acțiunii {0}": "Set of action {0}"
+ },
+ "skip": []
+}

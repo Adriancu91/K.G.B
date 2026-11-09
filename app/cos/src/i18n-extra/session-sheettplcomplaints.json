@@ -1,0 +1,39 @@
+{
+  "dict": {
+    "Banii înapoi": "Money back",
+    "Când scrii data închiderii, reclamația trece singură la Închisă (pașii, în Notițe → Reclamația unui client).": "When you enter the closing date, the complaint becomes Closed by itself (the steps are in Notes → Customer complaint).",
+    "Cauza": "Cause",
+    "Ce reclamă": "Complaint",
+    "Cu termenul trecut": "Past the deadline",
+    "Data închiderii": "Closing date",
+    "Data primirii": "Date received",
+    "Deschise": "Open",
+    "Din vina noastră sau a produsului": "Our fault or the product's",
+    "Fiecare reclamație primită de la clienți: data, clientul, factura, ce reclamă, cauza și rezolvarea din listă; termenul de răspuns de 30 de zile se pune singur, cele cu termenul trecut ies în roșu, iar în dreapta câte sunt deschise și în câte zile se rezolvă, în medie.": "Every complaint received from customers: the date, the customer, the invoice, the complaint, the cause and the resolution from a list; the 30-day reply deadline is filled in by itself, those past the deadline show in red, and on the right how many are open and how many days they take to resolve, on average.",
+    "Greșeala noastră": "Our mistake",
+    "Închisă": "Closed",
+    "Închise": "Closed",
+    "Nejustificată": "Unfounded",
+    "Nejustificate": "Unfounded",
+    "Produs defect": "Defective product",
+    "Reclamații": "Complaints",
+    "Reclamații trecute în tabel": "Complaints entered",
+    "Reducere de preț": "Price reduction",
+    "Registrul reclamațiilor": "Complaints register",
+    "Reparare": "Repair",
+    "Respinsă": "Rejected",
+    "Rezolvarea": "Resolution",
+    "Termenul de răspuns e la 30 de zile; cele cu termenul trecut ies în roșu, cele cu cel mult 5 zile rămase în galben.": "The reply deadline is 30 days; those past the deadline show in red, those with at most 5 days left in yellow.",
+    "Un rând pe reclamație: data primirii, clientul, ce reclamă; cauza și rezolvarea din listă.": "One row per complaint: the date received, the customer, the complaint; the cause and the resolution from a list.",
+    "Zile de rezolvare": "Days to resolve",
+    "Zile de rezolvare, în medie": "Days to resolve, on average"
+  },
+  "templates": {},
+  "skip": [
+    "=COUNTIF(G2:G{0};\"Nejustificată\")",
+    "=COUNTIF(M2:M{0};\"Deschisă\")",
+    "=COUNTIF(M2:M{0};\"Închisă\")",
+    "=IF(C{0}=\"\";\"\";IF(J{1}<>\"\";\"Închisă\";\"Deschisă\"))",
+    "=IF(P2=0;\"\";(COUNTIF(G2:G{0};\"Greșeala noastră\")+COUNTIF(G2:G{1};\"Produs defect\"))/P2)"
+  ]
+}

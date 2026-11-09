@@ -1,0 +1,24 @@
+{
+  "dict": {
+    "Plante medicinale și ceaiuri": "Medicinal herbs and teas",
+    "Floare de mușețel": "Chamomile flower",
+    "Frunze de mentă": "Mint leaves",
+    "Plic de ceai": "Tea bag",
+    "Borcan cu ierburi": "Herb jar",
+    "Mănunchi de ierburi": "Dried herb bundle",
+    "Ceașcă de ceai de plante": "Herbal tea cup",
+    "Fir de lavandă": "Lavender sprig",
+    "Coș cu plante": "Herb basket"
+  },
+  "templates": {},
+  "skip": [
+    "floare de mușețel plantă medicinală chamomile flower",
+    "frunze de mentă izmă plantă aromatică mint leaves",
+    "plic de ceai pliculeț ață etichetă tea bag",
+    "borcan cu ierburi uscate ceai vrac herb jar",
+    "mănunchi de ierburi uscate legate atârnate dried herb bundle",
+    "ceașcă de ceai de plante infuzie frunză herbal tea cup",
+    "fir de lavandă levănțică flori mov lavender sprig",
+    "coș cu plante culese de pe câmp cules herb basket"
+  ]
+}

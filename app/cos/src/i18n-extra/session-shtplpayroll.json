@@ -1,0 +1,19 @@
+{
+  "dict": {
+    "Stat de plată": "Payroll",
+    "Salariile tuturor angajaților pe o lună: din brut ies CAS, CASS, impozitul, netul și restul de plată după avans, contribuția angajatorului și costul total; jos totalurile, în dreapta cât plătești angajaților și cât la stat.": "All employees' salaries for one month: from the gross pay you get the pension and health contributions, the income tax, the net pay and what is left to pay after the advance, the employer's contribution and the total cost; the totals at the bottom, and on the right how much you pay the employees and how much to the state."
+  },
+  "templates": {},
+  "skip": [
+    "A1:O{0}",
+    "Angajați",
+    "Avans",
+    "CAM (contribuția angajatorului)",
+    "Contribuții și impozit la stat",
+    "Contribuțiile și impozitul se plătesc până pe 25 ale lunii următoare. Pentru un singur salariu: șablonul Salariu net.",
+    "Costul total al salariilor",
+    "De plătit angajaților (rest)",
+    "Deducere personală",
+    "Procentele sunt cele uzuale; verifică-le dacă se schimbă legea. Deducerea personală (în galben) o scrii pentru fiecare angajat."
+  ]
+}

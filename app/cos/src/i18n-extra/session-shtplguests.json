@@ -1,0 +1,32 @@
+{
+  "dict": {
+    "Listă de invitați": "Guest list",
+    "Nuntă, botez sau aniversare: cine a confirmat, câți adulți și copii vin, la ce masă stau și cât costă mesele; cei fără răspuns ies în galben.": "Wedding, christening or birthday: who confirmed, how many adults and children are coming, which table they sit at and what the meals cost; those without an answer show in yellow."
+  },
+  "templates": {},
+  "skip": [
+    "=SUMIF(E2:E{0};\"Poate\";H2:H{1})+SUMIF(E2:E{2};\"Fără răspuns\";H2:H{3})",
+    "Adulți",
+    "Au refuzat",
+    "Colegi",
+    "Copii",
+    "Cost mese (confirmați)",
+    "Din partea",
+    "Familie",
+    "Fără răspuns",
+    "Invitați",
+    "Invitați pe listă",
+    "Invitație trimisă",
+    "Invitații netrimise",
+    "La „Adulți” scrie câte persoane mari vin (gol = 1). Cei cu „Nu” la răspuns nu se mai numără.",
+    "Masa",
+    "Persoane",
+    "Persoane confirmate",
+    "Poate",
+    "Poate / fără răspuns (persoane)",
+    "Preț meniu adult (îl scrii aici)",
+    "Preț meniu copil",
+    "Prieteni",
+    "Vecini"
+  ]
+}

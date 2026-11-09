@@ -1,0 +1,14 @@
+{
+  "dict": {
+    "Listă cu jumătăți de cadru (numărul în colțul unei jumătăți de cadru, textul într-o bandă alături)": "Half frame list (the number in the corner of a half frame, the text in a band beside it)",
+    "Listă cu date stocate (numărul pe o formă rotunjită în stânga și scobită în dreapta, textul într-o bandă alături)": "Stored data list (the number on a shape rounded on the left and hollowed on the right, the text in a band beside it)",
+    "Listă cu jumătăți de cadru": "Half frame list",
+    "Listă cu date stocate": "Stored data list",
+    "listă cu jumătăți de cadru": "half frame list",
+    "listă cu date stocate": "stored data list",
+    "Puncte una sub alta: numărul în colțul unei jumătăți de cadru, iar alături textul": "Points one below the other: the number in the corner of a half frame, with the text beside it",
+    "Puncte una sub alta: numărul pe forma de date stocate, iar alături textul": "Points one below the other: the number on the stored data shape, with the text beside it"
+  },
+  "templates": {},
+  "skip": []
+}

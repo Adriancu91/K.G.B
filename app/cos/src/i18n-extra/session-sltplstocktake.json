@@ -1,0 +1,28 @@
+{
+  "dict": {
+    "Fișier: ofertă, prezentarea firmei, raport, lucrare, ședință, plan de proiect, curs, lansare de produs, plan de afaceri, bun venit în echipă, eveniment, analiză SWOT, prezentare personală, bilanțul anului, studiu de caz, prezentare imobil, retrospectiva proiectului, ședința cu părinții, cerere de finanțare, instruire de protecția muncii, plan de marketing, plan de călătorie, adunarea asociației de proprietari, atelier de gătit, aniversare, nuntă, petrecere de Crăciun, raportul anual al asociației, mutarea biroului, evaluarea anuală a angajatului, bugetul anului, procedură internă, alegerea furnizorului, rezultatele inventarierii": "File: offer, company presentation, report, thesis, meeting, project plan, course, product launch, business plan, welcome to the team, event, SWOT analysis, personal presentation, year in review, case study, property presentation, project retrospective, parent meeting, funding application, workplace safety training, marketing plan, travel plan, homeowners' association meeting, cooking workshop, birthday, wedding, Christmas party, association annual report, office move, annual employee review, annual budget, internal procedure, choosing a supplier, stocktaking results",
+    "Ofertă comercială, prezentarea firmei, raport lunar, lucrare de licență, proiect școlar, ședință de echipă, plan de proiect, curs, lansare de produs, plan de afaceri, bun venit în echipă, eveniment, analiză SWOT, prezentare personală, bilanțul anului, studiu de caz, prezentare imobil, retrospectiva proiectului, ședința cu părinții, cerere de finanțare, instruire de protecția muncii, plan de marketing, plan de călătorie, adunarea asociației de proprietari, atelier de gătit, aniversare, nuntă, petrecere de Crăciun, raportul anual al asociației, mutarea biroului, evaluarea anuală a angajatului, bugetul anului, procedură internă, alegerea furnizorului, rezultatele inventarierii": "Sales offer, company presentation, monthly report, thesis, school project, team meeting, project plan, course, product launch, business plan, welcome to the team, event, SWOT analysis, personal presentation, year in review, case study, property presentation, project retrospective, parent meeting, funding application, workplace safety training, marketing plan, travel plan, homeowners' association meeting, cooking workshop, birthday, wedding, Christmas party, association annual report, office move, annual employee review, annual budget, internal procedure, choosing a supplier, stocktaking results",
+    "[Bunuri deteriorate, expirate sau dispărute]": "[Damaged, expired or missing goods]",
+    "[Documente de intrare sau ieșire neînregistrate la timp]": "[Receipt or issue documents not recorded on time]",
+    "[Erori de numărare sau de unitate de măsură]": "[Counting or unit-of-measure errors]",
+    "[Explicațiile scrise ale gestionarilor]": "[Written explanations from the storekeepers]",
+    "[plusurile înregistrate în evidență]": "[surpluses recorded in the books]",
+    "[valoarea rămasă: … lei]": "[remaining value: … lei]",
+    "Aprobarea procesului-verbal de inventariere și a propunerilor până la [data] · întrebări: [nume] · [telefon]": "Approval of the stocktaking report and the proposals by [date] · questions: [name] · [phone]",
+    "Bunurile de scos din uz:": "Goods to be written off:",
+    "Ce a cuprins:": "What it covered:",
+    "Ce am inventariat": "What we counted",
+    "Ce propunem": "What we propose",
+    "Cifrele vin din Sheets → Listă de inventariere; valorile sunt la prețul din evidență.": "The figures come from Sheets → Stocktaking list; values are at book price.",
+    "Comisia de inventariere · [data] · prezentat de [nume]": "Stocktaking committee · [date] · presented by [name]",
+    "De unde vin diferențele": "Where the differences come from",
+    "Diferențele:": "The differences:",
+    "Pentru administrator sau asociați, după inventarul anual: ce s-a inventariat și de cine, rezultatele pe gestiuni într-un tabel (valoarea scriptică și faptică, plusuri, lipsuri), explicațiile diferențelor, propunerile (casare, imputare, regularizare) și decizia cerută.": "For the manager or partners, after the annual stocktake: what was counted and by whom, the results per storage unit in a table (book and actual value, surpluses, shortages), the explanations for the differences, the proposals (write-off, charging, adjustment) and the decision requested.",
+    "Pentru fiecare diferență mare spune cauza și cine răspunde.": "For each large difference, say the cause and who is responsible.",
+    "Rezultatele inventarierii": "Stocktaking results",
+    "Rezultatele pe gestiuni": "Results per storage unit",
+    "Spune de la început cât de mari sunt diferențele și ce decizie ceri.": "Say from the start how large the differences are and what decision you are asking for."
+  },
+  "templates": {},
+  "skip": []
+}

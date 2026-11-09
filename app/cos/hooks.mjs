@@ -14,7 +14,12 @@ registerHooks({
   resolve(spec, ctx, next) {
     if (spec === "esbuild") return { url: shim, shortCircuit: true };
     // The tests' entry files name sources by absolute Windows paths (C:/…), as esbuild allows.
-    if (/^[A-Za-z]:[\/]/.test(spec)) return next(pathToFileURL(spec).href, ctx);
+    if (/^[A-Za-z]:[\\/]/.test(spec)) return next(pathToFileURL(spec).href, ctx);
+    // Vite's `?url` imports (fonts, workers): the file's own path, as a string.
+    if (spec.endsWith("?url")) {
+      const r = next(spec.slice(0, -4), ctx.parentURL?.startsWith("file:") ? ctx : { ...ctx, parentURL: appRoot });
+      return { ...r, url: `${r.url}?url`, format: "module", shortCircuit: true };
+    }
     try {
       return next(spec, ctx);
     } catch (e) {
@@ -25,6 +30,9 @@ registerHooks({
     }
   },
   load(url, ctx, next) {
+    if (url.endsWith("?url")) {
+      return { format: "module", source: `export default ${JSON.stringify(fileURLToPath(url.slice(0, -4)))};`, shortCircuit: true };
+    }
     if (url.endsWith(".svg")) {
       const { readFileSync } = process.getBuiltinModule("node:fs");
       return { format: "module", source: `export default ${JSON.stringify(readFileSync(fileURLToPath(url), "utf8"))};`, shortCircuit: true };

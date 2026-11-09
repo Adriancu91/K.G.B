@@ -1,0 +1,35 @@
+{
+ "dict": {
+  ", emis de": ", issued by",
+  ", valabil până la": ", valid until",
+  "· emis de": "· issued by",
+  "Ai un certificat calificat pe token USB sau card, ori unul instalat pe calculator?": "Do you have a qualified certificate on a USB token or card, or one installed on the computer?",
+  "Certificat de pe calculator:": "Certificate from the computer:",
+  "Certificatele de pe calculator se pot folosi doar în aplicația instalată.": "Certificates from the computer can only be used in the installed application.",
+  "Certificatele tale instalate pe calculator, cu tot cu cele de pe token USB sau card (dacă e pus în calculator). Cheia secretă rămâne pe calculator sau pe token: la semnare, sistemul îți cere PIN-ul în fereastra lui, iar Cyber Office Studio nu-l vede.": "Your certificates installed on the computer, including those on a USB token or card (if it is plugged in). The secret key stays on the computer or on the token: when signing, the system asks for your PIN in its own window, and Cyber Office Studio never sees it.",
+  "Certificatul de pe calculator": "Certificate from the computer",
+  "Folosește un certificat de pe calculator sau token…": "Use a certificate from the computer or token…",
+  "Nu am găsit niciun certificat cu cheie pe acest calculator. Dacă ai un token sau un card, pune-l în calculator (cu programul lui instalat) și caută din nou.": "No certificate with a key was found on this computer. If you have a token or a card, plug it in (with its software installed) and search again.",
+  "Nu mai folosi certificatul de pe calculator": "Stop using the certificate from the computer",
+  "Se caută certificatele de pe calculator…": "Looking for the certificates on the computer…",
+  "Se semnează… Dacă certificatul e pe token sau card, sistemul îți cere PIN-ul în fereastra lui.": "Signing… If the certificate is on a token or card, the system asks for your PIN in its own window.",
+  "Semnătura se face cu cheia de pe calculator: dacă certificatul e pe token sau card, ține-l pus și scrie PIN-ul în fereastra care apare. Apoi alegi unde se salvează PDF-ul semnat; semnăturile de dinainte rămân valabile.": "The signature is made with the key on the computer: if the certificate is on a token or card, keep it plugged in and type the PIN in the window that appears. Then choose where to save the signed PDF; earlier signatures stay valid.",
+  "Certificatul nu mai e pe calculator (tokenul e scos?).": "The certificate is no longer on the computer (is the token unplugged?).",
+  "Sistemul nu a putut folosi certificatul.": "The system could not use the certificate.",
+  "Certificatele de pe calculator se pot folosi doar pe acest sistem.": "Certificates from the computer can only be used on this system.",
+  "🔏 Semnează un fișier (.p7s)…": "🔏 Sign a file (.p7s)…",
+  "Nu ai ales unde se salvează: semnătura nu s-a făcut.": "You did not choose where to save it: the signature was not made.",
+  "Semnătură digitală pentru orice fișier (contract .docx, tabel, arhivă): se salvează alături, ca fișier .p7s separat; fișierul rămâne neschimbat": "Digital signature for any file (a .docx contract, a table, an archive): it is saved alongside, as a separate .p7s file; the file stays unchanged",
+  ". Semnătura se salvează alături, ca fișier .p7s separat (CMS, SHA-256); fișierul rămâne neschimbat. Cine îl primește are nevoie de amândouă.": ". The signature is saved alongside, as a separate .p7s file (CMS, SHA-256); the file stays unchanged. Whoever receives it needs both.",
+  "Semnătura se face cu cheia de pe calculator: dacă certificatul e pe token sau card, ține-l pus și scrie PIN-ul în fereastra care apare. Apoi alegi unde se salvează semnătura.": "The signature is made with the key on the computer: if the certificate is on a token or card, keep it plugged in and type the PIN in the window that appears. Then choose where to save the signature.",
+  "Fișierul:": "File:",
+  "Semnătură digitală (.p7s)": "Digital signature (.p7s)"
+ },
+ "templates": {
+  "Certificatul a expirat pe {0}: nu mai poate semna.": "The certificate expired on {0}: it can no longer sign.",
+  "valabil până la {0}": "valid until {0}",
+  "expirat pe {0}": "expired on {0}",
+  "Semnătura s-a salvat: {0}. Trimite-o împreună cu fișierul {1}, care a rămas neschimbat.": "The signature was saved: {0}. Send it together with the file {1}, which stayed unchanged."
+ },
+ "skip": []
+}

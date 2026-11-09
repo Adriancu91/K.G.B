@@ -1,0 +1,22 @@
+{
+  "dict": {
+    "Elimină paginile goale (spatele alb al foilor scanate)": "Remove blank pages (white backs of scanned sheets)",
+    "pagină goală scoasă": "blank page removed",
+    "pagini goale scoase": "blank pages removed",
+    "caut paginile goale…": "looking for blank pages…",
+    "Paginile fără nimic pe ele (de exemplu spatele alb al foilor scanate față-verso) se scot; paginile cu text sau cu desene rămân": "Pages with nothing on them (for example the white backs of double-sided scans) are removed; pages with text or drawings stay",
+    "⌫ Elimină paginile goale": "⌫ Remove blank pages",
+    "Găsește paginile fără nimic pe ele (de exemplu spatele alb al foilor scanate față-verso) și le scoate, după ce le vezi numerele": "Finds the pages with nothing on them (for example the white backs of double-sided scans) and removes them, after you see their numbers",
+    "Nu am găsit pagini goale.": "No blank pages found.",
+    "o pagină goală": "one blank page",
+    "Toate paginile sunt goale; un PDF trebuie să aibă cel puțin o pagină.": "All pages are blank; a PDF must have at least one page."
+  },
+  "templates": {
+    "{0} pagină goală scoasă": "{0} blank page removed",
+    "{0} pagini goale scoase": "{0} blank pages removed",
+    "Am găsit {0}: {1}. Le scot? (Ctrl+Z le aduce înapoi)": "Found {0}: {1}. Remove them? (Ctrl+Z brings them back)",
+    "Paginile nu s-au putut verifica: {0}": "The pages could not be checked: {0}",
+    "{0} pagini goale": "{0} blank pages"
+  },
+  "skip": []
+}

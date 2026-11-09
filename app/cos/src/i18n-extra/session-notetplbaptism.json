@@ -1,0 +1,10 @@
+{
+  "dict": {
+    "👶 Botez": "👶 Christening"
+  },
+  "templates": {},
+  "skip": [
+    "Botez {0}",
+    "Copilul: \nData botezului: \nBiserica și preotul: \nRestaurantul: \n\nActe:\n☐ certificatul de naștere al copilului (copie)\n☐ actele nașilor (căsătoriți religios, dacă cere parohia)\n☐ programarea la biserică făcută\n\nDe la nași (obiceiul locului):\n☐ lumânarea de botez\n☐ trusoul (hăinuța, prosopul, scutecul)\n☐ cristelnița sau cadoul\n\nCe pregătim noi:\n☐ invitațiile trimise (Sheets → Listă de invitați)\n☐ mărturiile\n☐ tortul\n☐ fotograful\n\nCine aduce ce în ziua botezului: \n"
+  ]
+}

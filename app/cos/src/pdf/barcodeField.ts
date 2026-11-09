@@ -1,5 +1,5 @@
+// Copiat neschimbat din Cyber Office Studio (aplicația proprietarului, D-071); vezi app/cos/README.md.
 // @ts-nocheck
-// Din Cyber Office Studio (src/pdf/barcodeField.ts, D-071, D-078), neschimbat.
 // Câmpul cod de bare al formularului (Pregătire formular → ▭ Câmp de completat → ▣ Cod de bare): un cod QR care ține
 // datele completate în formular, ca cine primește formularul tipărit să le poată citi cu un cititor de coduri, fără să le
 // mai scrie de mână. Datele sunt pe două rânduri, despărțite prin Tab: numele câmpurilor, apoi valorile lor.

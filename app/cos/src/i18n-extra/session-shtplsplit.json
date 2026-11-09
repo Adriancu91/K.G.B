@@ -1,0 +1,20 @@
+{
+  "dict": {
+    "Împărțirea cheltuielilor": "Shared expenses",
+    "Cheltuieli făcute împreună (excursie, casă de vacanță, cadou comun): cine cât a plătit, partea fiecăruia și cine cui mai are de dat.": "Expenses shared by a group (a trip, a holiday home, a joint gift): who paid how much, everyone's share and who still owes whom."
+  },
+  "templates": {},
+  "skip": [
+    "A plătit",
+    "Ce s-a plătit",
+    "Cheltuieli comune",
+    "Cine a plătit",
+    "De primit / de dat",
+    "Partea lui",
+    "Pe persoană",
+    "Persoana",
+    "Plătit de cineva din afara listei",
+    "Scrie numele în coloana Persoana, exact ca în coloana Cine a plătit. Plus = are de primit, minus = are de dat.",
+    "Total cheltuit"
+  ]
+}

@@ -1,0 +1,10 @@
+{
+ "dict": {
+  "Modele 3D: un model .obj, .stl, .glb, .gltf sau .ply, rotit cu mouse-ul, pus peste celule ca poză (dublu-click pe el îl rotește altfel)": "3D Models: an .obj, .stl, .glb, .gltf or .ply model, rotated with the mouse, placed over the cells as a picture (double-click it to rotate it differently)",
+  "Modelul 3D e în noua poziție": "The 3D model is in its new position",
+  "Modelul 3D e pe foaie: trage de el ca să-l muți, de colț ca să-l mărești; dublu-click îl rotește altfel": "The 3D model is on the sheet: drag it to move it, drag a corner to enlarge it; double-click to rotate it differently",
+  "Modelul 3D nu a putut fi pus pe foaie": "The 3D model could not be placed on the sheet"
+ },
+ "templates": {},
+ "skip": []
+}

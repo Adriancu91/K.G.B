@@ -1,0 +1,15 @@
+{
+  "dict": {
+    "Ce iese pe o parte": "What goes off one side",
+    "Înclină poza pe orizontală după un unghi și o curbă cu cinci puncte (sus … jos), apoi o reia de la margine sau repetă pixelii de la margine (Shear)": "Slants the picture horizontally by an angle and a five-point curve (top … bottom), then wraps it around or repeats the edge pixels",
+    "Intră pe partea cealaltă": "Wrap around",
+    "Repetă pixelii de la margine": "Repeat edge pixels",
+    "Curba: sus": "Curve: top",
+    "Curba: sfertul de sus": "Curve: upper quarter",
+    "Curba: mijloc": "Curve: middle",
+    "Curba: sfertul de jos": "Curve: lower quarter",
+    "Curba: jos": "Curve: bottom"
+  },
+  "templates": {},
+  "skip": []
+}

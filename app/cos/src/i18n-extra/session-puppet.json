@@ -1,0 +1,20 @@
+{
+  "dict": {
+    "▦ Plasă": "▦ Mesh",
+    "📌 Deformare cu pioneze…": "📌 Puppet warp…",
+    "Arată sau ascunde plasa: liniile ei se îndoaie cum se îndoaie poza": "Show or hide the mesh: its lines bend the way the picture bends",
+    "Cel mult 60 de pioneze.": "At most 60 pins.",
+    "Clic pe poză pune o pioneză (pune câteva: unde ține și unde vrei să tragi)": "Click the picture to add a pin (add a few: where it should hold and where you want to pull)",
+    "Deformare cu pioneze": "Puppet warp",
+    "Deformare cu pioneze:": "Puppet warp:",
+    "Deformare cu pioneze: pui pioneze pe poză și tragi de una; celelalte țin pe loc, iar poza se îndoaie lin între ele (o mână ridicată, un trunchi curbat)": "Puppet warp: put pins on the picture and drag one; the others hold in place and the picture bends smoothly between them (a raised hand, a curved trunk)",
+    "Deformare cu pioneze…": "Puppet warp…",
+    "Pionezele înapoi unde le-ai pus (poza dreaptă din nou)": "Pins back where you put them (the picture straight again)",
+    "Pui pioneze pe poză și tragi de una; celelalte țin pe loc, iar poza se îndoaie lin între ele (Puppet Warp)": "Put pins on the picture and drag one; the others hold in place and the picture bends smoothly between them (Puppet Warp)",
+    "Scoate toate pionezele (poza dreaptă din nou)": "Remove all pins (the picture straight again)"
+  },
+  "templates": {
+    "{0} pioneze · trage de una; clic pune alta; Alt+clic o scoate": "{0} pins · drag one; click adds another; Alt+click removes it"
+  },
+  "skip": []
+}

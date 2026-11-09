@@ -1,0 +1,22 @@
+{
+  "dict": {
+    "Bani dați sau luați cu împrumut de la prieteni și rude: cât, când și până când; ies restul de dat înapoi, cele întârziate (în roșu) și cât ai de primit și de dat în total.": "Money lent to or borrowed from friends and family: how much, when and until when; you get what is left to pay back, the overdue ones (in red) and how much you have to receive and to pay in total.",
+    "Împrumuturi": "Loans"
+  },
+  "templates": {},
+  "skip": [
+    "=COUNTIF(H2:H{0};\"Întârziat\")",
+    "=IF(OR(A{0}=\"\";C{1}=\"\");\"\";IF(G{2}<=0;\"Achitat\";IF(AND(E{3}<>\"\";E{4}<TODAY());\"Întârziat\";\"În curs\")))",
+    "Achitat",
+    "Alege în coloana B „Dat” (ai dat tu bani) sau „Primit” (ți s-au dat ție).",
+    "Am de dat (ce am primit)",
+    "Am de primit (ce am dat)",
+    "Dat",
+    "Dat sau primit",
+    "La sume mari, un contract de împrumut scris (Docs → Din șablon…) vă ferește de neînțelegeri.",
+    "Primit",
+    "Rămas (lei)",
+    "Împrumuturi întârziate",
+    "Întârziat"
+  ]
+}

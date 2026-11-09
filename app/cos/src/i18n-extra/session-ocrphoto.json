@@ -1,0 +1,11 @@
+{
+  "dict": {
+    "Nu am putut pregăti poza documentului. Debifează „Poză de document” și salvează din nou.": "Could not prepare the document photo. Uncheck “Document photo” and save again.",
+    "Pagina PDF: cât o foaie A4, cu foaia din poză.": "PDF page: A4 size, with the sheet from the photo.",
+    "Pentru pozele de documente făcute cu telefonul: foaia se găsește pe masă și se decupează, perspectiva și rândurile strâmbe se îndreaptă, umbrele dispar și hârtia devine albă. Textul se citește mai corect, iar PDF-ul arată ca o scanare": "For photos of documents taken with a phone: the sheet is found on the table and cropped, the perspective and tilted lines are straightened, shadows are removed and the paper turns white. The text is recognized more accurately and the PDF looks like a scan",
+    "Poză de document (telefon): decupează foaia, îndreaptă și albește fundalul": "Document photo (phone): crop the sheet, straighten and whiten the background",
+    "Pregătesc poza documentului: decupez foaia, îndrept rândurile, albesc fundalul…": "Preparing the document photo: cropping the sheet, straightening the lines, whitening the background…"
+  },
+  "templates": {},
+  "skip": []
+}

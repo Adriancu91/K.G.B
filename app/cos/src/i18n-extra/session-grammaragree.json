@@ -1,0 +1,49 @@
+{
+ "dict": {
+  "Acord": "Agreement",
+  "✓ Corectează tot": "✓ Fix all",
+  "✓ N-am găsit greșeli în această notiță.": "✓ No mistakes found in this note.",
+  "Corectează": "Fix",
+  "Gramatică: cuvinte repetate, spații, punctuație, literă mare, forme greșite, pleonasme și acordul verbului, cu forma corectă": "Grammar: repeated words, spacing, punctuation, capital letters, wrong forms, pleonasms and subject–verb agreement, with the correct form",
+  "Închide gramatica": "Close the grammar check",
+  "Nu mai arăta această greșeală în notiță": "Stop showing this mistake in the note",
+  "Pune forma corectă peste tot (↶ Anulează le scoate)": "Put the correct form everywhere (↶ Undo removes them)",
+  "Gramatică: cuvinte repetate, spații, punctuație, literă mare, forme greșite, pleonasme și acordul verbului, în toate slide-urile (casete, tabele, notițe)": "Grammar: repeated words, spacing, punctuation, capital letters, wrong forms, pleonasms and subject–verb agreement, on all slides (text boxes, tables, notes)",
+  "Greșelile s-au corectat (Ctrl+Z le readuce).": "The mistakes were fixed (Ctrl+Z brings them back).",
+  "Nu am găsit greșeli în prezentare.": "No mistakes found in the presentation.",
+  "Nu mai arăta această greșeală în prezentare": "Stop showing this mistake in the presentation",
+  "Pune forma corectă peste tot (Ctrl+Z le readuce)": "Put the correct form everywhere (Ctrl+Z brings them back)",
+  "Gramatică: cuvinte repetate, spații, punctuație, forme greșite, pleonasme și acordul verbului, în celulele cu text ale foii": "Grammar: repeated words, spacing, punctuation, wrong forms, pleonasms and subject–verb agreement, in the text cells of the sheet",
+  "Nu am găsit greșeli în foaie.": "No mistakes found in the sheet.",
+  "Nu mai arăta această greșeală în tabel": "Stop showing this mistake in the spreadsheet",
+  "Fă din PDF o prezentare Slides: fiecare pagină devine un slide, cu rândurile de text în casete care se pot schimba și cu textul paginii în notițele vorbitorului. Din Slides o poți prezenta, completa și salva ca .pptx": "Turn the PDF into a Slides presentation: each page becomes a slide, with the lines of text in editable text boxes and the page text in the speaker notes. From Slides you can present it, add to it and save it as .pptx"
+ },
+ "templates": {
+  "Acordul verbului: cu „{0}” se spune „{1}”, nu „{2}”.": "Subject–verb agreement: with “{0}” use “{1}”, not “{2}”.",
+  "Am găsit {0} {1} în prezentare. Click pe una te duce la ea.": "Found {0} {1} in the presentation. Click one to go to it.",
+  "Am găsit {0} {1} în foaie. Clic pe una te duce la celula ei.": "Found {0} {1} in the sheet. Click one to go to its cell.",
+  "Acordul verbului: „{0}” e la plural, deci „{1}”, nu „{2}”.": "Subject–verb agreement: “{0}” is plural, so use “{1}”, not “{2}”.",
+  "Înaintea lui „{0}” cuvântul se scrie cu articol: „{1} {2}”.": "Before “{0}” the word needs the definite article: “{1} {2}”."
+ },
+ "skip": [
+  "ești",
+  "lângă",
+  "aș",
+  "+){0,3}?[ §t]+să(?![",
+  "datorită",
+  "grație",
+  "împotriva",
+  "înspre",
+  "{3,})(§s+)(mei|tăi|săi|noștri|voștri|mele|tale|sale|noastre|voastre)(?![",
+  "alți",
+  "dacă",
+  "iubiți",
+  "mulți",
+  "noștri",
+  "puține",
+  "puțini",
+  "săi",
+  "tăi",
+  "voștri"
+ ]
+}

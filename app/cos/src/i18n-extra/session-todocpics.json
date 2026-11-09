@@ -1,0 +1,10 @@
+{
+  "dict": {
+    "Fă din PDF un document Docs editabil: textul, paragrafele, titlurile, listele, tabelele și pozele, la locul lor. Din Docs îl poți salva și ca .docx": "Turn the PDF into an editable Docs document: the text, paragraphs, headings, lists, tables and pictures, in their places. From Docs you can also save it as .docx"
+  },
+  "templates": {
+    "Se citesc textul și pozele: pagina {0} din {1}…": "Reading the text and pictures: page {0} of {1}…",
+    "Poză din pagina {0}": "Picture from page {0}"
+  },
+  "skip": []
+}

@@ -1,0 +1,10 @@
+{
+  "dict": {
+    "🐾 Animal de companie": "🐾 Pet"
+  },
+  "templates": {},
+  "skip": [
+    "Nume: \nSpecia și rasa: \nData nașterii: \nMicrocip / pașaport: \n\nMedicul veterinar: \nTelefon: \n\nVaccinuri și tratamente (data / următoarea):\n☐ vaccin antirabic: \n☐ vaccin polivalent: \n☐ deparazitare internă: \n☐ deparazitare externă (purici, căpușe): \n\nHrana:\n• ce mănâncă: \n• cât și de câte ori pe zi: \n\nAlergii, boli, medicamente:\n• \n",
+    "Animal de companie {0}"
+  ]
+}

@@ -1,0 +1,16 @@
+{
+  "dict": {
+    "180° (cu susul în jos)": "180° (upside down)",
+    "90° spre dreapta": "90° clockwise",
+    "90° spre stânga": "90° counterclockwise",
+    "Optimizează structura (obiecte nefolosite, dubluri)": "Optimize structure (unused objects, duplicates)",
+    "Rotește toate paginile:": "Rotate all pages:",
+    "Rotirea paginilor": "Page rotation",
+    "Scoate fonturile și obiectele nefolosite, unește pozele și fonturile care apar de mai multe ori, comprimă ce nu e comprimat și scoate miniaturile; conținutul paginilor rămâne la fel": "Removes unused fonts and objects, merges images and fonts that appear several times, compresses what is not compressed and removes thumbnails; the page content stays the same",
+    "structură optimizată": "structure optimized"
+  },
+  "templates": {
+    "rotit {0}°": "rotated {0}°"
+  },
+  "skip": []
+}

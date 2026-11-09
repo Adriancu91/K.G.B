@@ -1,0 +1,28 @@
+{
+  "dict": {
+    "Ca .sslides…": "As .sslides…",
+    "Unde salvezi?": "Where do you want to save?",
+    "Ca .sdoc…": "As .sdoc…",
+    "Ca .ssheet…": "As .ssheet…",
+    "În .docx": "To .docx",
+    "În .odt": "To .odt",
+    "În .xlsx": "To .xlsx",
+    "În .ods": "To .ods",
+    "În .pptx": "To .pptx",
+    "În .odp": "To .odp",
+    " Într-un .txt rămâne doar textul, fără formatare, poze și tabele.": " A .txt file keeps only the text, without formatting, pictures and tables.",
+    "În .rtf": "To .rtf",
+    "În .txt": "To .txt"
+  },
+  "templates": {
+    "Salvat în {0} la {1}. Copia de dinainte e păstrată în Versiuni.": "Saved to {0} at {1}. The previous copy is kept in Versions.",
+    "Salvat în {0}. Copia de dinainte e păstrată în Versiuni.": "Saved to {0}. The previous copy is kept in Versions.",
+    "Salvez în .{0}…": "Saving to .{0}…",
+    "Fișierul .{0} nu s-a putut salva peste cel vechi (poate e deschis în alt program sau e doar pentru citire). Folosește Salvează ca.": "The .{0} file could not be saved over the old one (it may be open in another program or read-only). Use Save As.",
+    ". Ctrl+S o salvează înapoi în .{0} sau ca prezentare Cyber Office Studio.": ". Ctrl+S saves it back to the .{0} or as a Cyber Office Studio presentation.",
+    "Documentul a fost deschis din „{0}”. Îl salvezi înapoi în acest fișier .{1} (copia de dinainte rămâne în Versiuni) sau ca document Cyber Office Studio (.sdoc), care păstrează tot ce ai făcut în Suite?": "The document was opened from “{0}”. Save it back to this .{1} file (the previous copy stays in Versions) or as a Cyber Office Studio document (.sdoc), which keeps everything you did in Suite?",
+    "Registrul a fost deschis din „{0}”. Îl salvezi înapoi în acest fișier .{1} (copia de dinainte rămâne în Versiuni) sau ca registru Cyber Office Studio (.ssheet), care păstrează tot ce ai făcut în Suite?": "The workbook was opened from “{0}”. Save it back to this .{1} file (the previous copy stays in Versions) or as a Cyber Office Studio workbook (.ssheet), which keeps everything you did in Suite?",
+    "Prezentarea a fost deschisă din „{0}”. O salvezi înapoi în acest fișier .{1} (copia de dinainte rămâne în Versiuni) sau ca prezentare Cyber Office Studio (.sslides), care păstrează tot ce ai făcut în Suite?": "The presentation was opened from “{0}”. Save it back to this .{1} file (the previous copy stays in Versions) or as a Cyber Office Studio presentation (.sslides), which keeps everything you did in Suite?"
+  },
+  "skip": []
+}

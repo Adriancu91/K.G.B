@@ -1,0 +1,20 @@
+{
+  "dict": {
+    "Evidența orelor de voluntariat": "Volunteering hours log",
+    "Pentru asociații și coordonatorii de voluntari: fiecare zi de activitate cu orele și cheltuielile decontate; ies orele pe fiecare voluntar, cele confirmate (în verde) și cele de confirmat încă (în galben).": "For associations and volunteer coordinators: every day of activity with the hours and the reimbursed expenses; you get the hours for each volunteer, those confirmed (in green) and those still to confirm (in yellow)."
+  },
+  "templates": {},
+  "skip": [
+    "Cheltuieli decontate",
+    "Confirmat",
+    "Ore",
+    "Ore confirmate",
+    "Ore de confirmat încă",
+    "Orele confirmate de coordonator intră în certificatul de voluntariat.",
+    "Pe voluntari",
+    "Scrie numele voluntarilor în coloana „Pe voluntari”, la fel ca în tabel.",
+    "Voluntariat",
+    "Voluntarul",
+    "Zile de activitate"
+  ]
+}

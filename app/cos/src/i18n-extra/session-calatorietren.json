@@ -1,0 +1,10 @@
+{
+  "dict": {
+    "🚆 Călătorie cu trenul": "🚆 Train trip",
+    "Ruta (de unde, până unde, unde schimb trenul):\nData, ora plecării și numărul trenului:\nVagonul și locul:\n\nÎnainte de plecare:\n☐ biletul cumpărat (sau pe telefon) și locul rezervat\n☐ legăturile verificate: cât timp am între trenuri la schimbare\n☐ actul de identitate și cardul de reducere, dacă am\n☐ telefonul încărcat și o baterie externă\n☐ apă și ceva de mâncare pentru drum\n\nÎn gară:\n☐ linia de plecare văzută pe tabelă, cu cel puțin 15 minute înainte\n☐ locul vagonului găsit pe peron (după numărul vagonului)\n\nLa sosire:\n☐ bagajele luate toate de pe raft\n☐ drumul de la gară până la destinație știut (autobuz, taxi, pe jos)\n\nCât a costat și cât a durat drumul:\n•\n\nObservații:\n• ": "Route (from, to, where I change trains):\nDate, departure time and train number:\nCar and seat:\n\nBefore leaving:\n☐ ticket bought (or on the phone) and seat reserved\n☐ connections checked: how much time I have between trains\n☐ ID card and discount card, if I have one\n☐ phone charged and a power bank\n☐ water and something to eat for the trip\n\nAt the station:\n☐ departure platform seen on the board, at least 15 minutes before\n☐ car position found on the platform (by car number)\n\nOn arrival:\n☐ all luggage taken off the rack\n☐ way from the station to the destination known (bus, taxi, on foot)\n\nHow much it cost and how long the trip took:\n•\n\nNotes:\n• "
+  },
+  "templates": {
+    "Călătorie cu trenul {0}": "Train trip {0}"
+  },
+  "skip": []
+}

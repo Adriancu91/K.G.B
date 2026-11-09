@@ -1,0 +1,12 @@
+{
+  "dict": {
+    "Obișnuită": "Default",
+    "Marin": "Marine",
+    "Tema fișierului": "File theme",
+    " (culorile din paletă s-au schimbat pe ": " (palette colors changed on ",
+    " foaie)": " sheet)",
+    "Teme: culorile paletei registrului; celulele colorate din paletă se schimbă odată cu tema": "Themes: the workbook's palette colors; cells colored from the palette change along with the theme"
+  },
+  "templates": {},
+  "skip": []
+}

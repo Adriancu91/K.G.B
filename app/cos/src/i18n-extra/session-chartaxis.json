@@ -1,0 +1,14 @@
+{
+  "dict": {
+    "Distanța dintre gradațiile axei valorilor (gol = automat)": "Distance between the value axis tick marks (empty = automatic)",
+    "Formatare axă": "Format Axis",
+    "Pas": "Major unit",
+    "Minim axă": "Axis minimum",
+    "Maxim axă": "Axis maximum",
+    "Pas axă": "Axis major unit",
+    "Minimul axei valorilor (gol = automat)": "Value axis minimum (empty = automatic)",
+    "Maximul axei valorilor (gol = automat)": "Value axis maximum (empty = automatic)"
+  },
+  "templates": {},
+  "skip": []
+}

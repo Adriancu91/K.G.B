@@ -1,0 +1,32 @@
+{
+  "dict": {
+    "Textură": "Texture",
+    "Adâncimea crăpăturilor": "Crack depth",
+    "Bucăți de sticlă colorată despărțite de margini închise, luminate din spate (Stained Glass)": "Pieces of colored glass separated by dark borders, lit from behind",
+    "Craquelură": "Craquelure",
+    "Distanța dintre crăpături": "Crack spacing",
+    "Felul granulației": "Grain type",
+    "Granulație": "Grain",
+    "Grăunțe peste poză, de nouă feluri: fine, moi, stropi, aglomerate, mărite, puncte sau dungi (Grain)": "Grain over the picture, of nine kinds: fine, soft, sprinkles, clumped, enlarged, stippled or streaks",
+    "Grosimea marginii": "Border thickness",
+    "Lățimea rosturilor": "Grout width",
+    "Lumina din spate": "Light from behind",
+    "Luminozitatea": "Brightness",
+    "Luminozitatea rosturilor": "Grout brightness",
+    "Mărimea pătratelor": "Square size",
+    "Mărimea plăcilor": "Tile size",
+    "O rețea de crăpături fine, ca vopseaua veche uscată pe un tablou (Craquelure)": "A network of fine cracks, like old dried paint on a painting",
+    "Patchwork": "Patchwork",
+    "Pătrățele de o singură culoare, fiecare cu relieful lui, ca o pătură cusută din petice (Patchwork)": "Small single-color squares, each with its own relief, like a quilt sewn from patches",
+    "Plăci de mozaic": "Mosaic Tiles",
+    "Poza tăiată în plăcuțe pătrate, cu rosturi între ele, ca o faianță (Mosaic Tiles)": "The picture cut into small square tiles with grout between them, like wall tiles",
+    "Vitraliu": "Stained Glass",
+    "Aglomerată": "Clumped",
+    "Contrastantă": "Contrasty",
+    "Mărită": "Enlarged",
+    "Orizontală": "Horizontal",
+    "Stropi": "Sprinkles"
+  },
+  "templates": {},
+  "skip": []
+}

@@ -1,0 +1,31 @@
+{
+  "dict": {
+    "Alta": "Other",
+    "Ce e expirat iese în roșu, ce expiră în 30 de zile în galben; verificarea pe loc, în Notițe → Verificarea de protecția muncii.": "What has expired shows in red, what expires within 30 days in yellow; the on-site check is in Notes → Workplace safety check.",
+    "Ce se verifică": "What is checked",
+    "Control medical": "Medical check-up",
+    "De obicei: instruirea periodică la 6 sau 12 luni, controlul medical la 12 luni, stingătoarele la 12 luni (vezi ce cere firma ta de protecția muncii).": "Usually: periodic training every 6 or 12 months, the medical check-up every 12 months, extinguishers every 12 months (check what your safety provider requires).",
+    "Fără dată": "No date",
+    "Hidrant": "Hydrant",
+    "În curând": "Soon",
+    "Instalația de gaze": "Gas installation",
+    "Instalația electrică": "Electrical installation",
+    "Instruire periodică": "Periodic training",
+    "La câte luni": "Every how many months",
+    "Pentru cine / unde": "For whom / where",
+    "Stingător": "Fire extinguisher",
+    "Termenele de protecția muncii": "Workplace safety deadlines",
+    "Tot ce trebuie verificat la termen: instruirea periodică, controlul medical, stingătoarele, instalația electrică, trusa de prim ajutor; din ultima verificare și din câte în câte luni ies data următoare și zilele rămase, cele expirate în roșu și cele din următoarele 30 de zile în galben.": "Everything that has to be checked on time: periodic training, the medical check-up, extinguishers, the electrical installation, the first aid kit; from the last check and how many months apart it is done come the next date and the days left, expired ones in red and those due in the next 30 days in yellow.",
+    "Trusa de prim ajutor": "First aid kit",
+    "Ultima verificare": "Last check",
+    "Un rând pe verificare: ce, pentru cine sau unde, data ultimei verificări și din câte în câte luni se face.": "One row per check: what, for whom or where, the date of the last check and how many months apart it is done.",
+    "Verificări trecute în tabel": "Checks entered"
+  },
+  "templates": {},
+  "skip": [
+    "=COUNTIF(H2:H{0};\"Fără dată\")",
+    "=COUNTIF(H2:H{0};\"În curând\")",
+    "=COUNTIF(H2:H{0};\"La zi\")",
+    "=IF(B{0}=\"\";\"\";IF(G{1}=\"\";\"Fără dată\";IF(G{2}<0;\"Expirat\";IF(G{3}<=30;\"În curând\";\"La zi\"))))"
+  ]
+}

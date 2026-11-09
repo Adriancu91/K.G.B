@@ -1,0 +1,21 @@
+{
+  "dict": {
+    "Distanța dintre rânduri": "Line spacing",
+    "Distanța dintre rânduri, la textul scris pe mai multe rânduri (Enter + Shift face rând nou): 1 = normal, 2 = dublu": "Line spacing, for text written on several lines (Shift + Enter starts a new line): 1 = normal, 2 = double",
+    "Spațiul dintre litere": "Letter spacing",
+    "Spațiul dintre litere, în miimi din mărimea literei: 0 = normal, mai mult = litere mai rare, minus = mai strânse": "Letter spacing, in thousandths of the letter size: 0 = normal, more = letters further apart, minus = tighter",
+    "↔ Litere": "↔ Letters",
+    "↕ Rânduri": "↕ Lines",
+    "Litere": "Letters",
+    "Rânduri": "Lines",
+    "Click unde vrei textul (sau trage o casetă: rândurile se rup singure), scrie, apoi Enter; dublu clic pe un text pus îl schimbă": "Click where you want the text (or drag a box: the lines wrap by themselves), type, then Enter; double-click a placed text to change it",
+    "⇥ Primul rând": "⇥ First line",
+    "Retragerea primului rând": "First line indent",
+    "Retragerea primului rând al fiecărui paragraf, în pixelii pozei (un paragraf se termină cu Shift+Enter)": "First line indent of each paragraph, in image pixels (a paragraph ends with Shift+Enter)",
+    "Spațiul după paragraf": "Space after paragraph",
+    "Spațiul în plus după fiecare paragraf, în pixelii pozei (un paragraf se termină cu Shift+Enter)": "Extra space after each paragraph, in image pixels (a paragraph ends with Shift+Enter)",
+    "¶ După": "¶ After"
+  },
+  "templates": {},
+  "skip": []
+}

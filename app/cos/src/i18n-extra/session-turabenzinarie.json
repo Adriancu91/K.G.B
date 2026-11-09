@@ -1,0 +1,10 @@
+{
+  "dict": {
+    "⛽ Predarea turei la benzinărie": "⛽ Petrol station shift handover",
+    "Tura (de la ora / până la ora):\nPredă: \nPrimește: \n\nIndexurile pompelor (la predare):\n• pompa 1: \n• pompa 2: \n\nLa predare:\n☐ indexurile pompelor citite și trecute mai sus\n☐ nivelul din rezervoare măsurat (litri pe fiecare carburant)\n☐ numerarul din casă numărat și raportul Z sau X scos\n☐ bonurile, facturile și plățile cu cardul puse deoparte\n☐ pistoalele de alimentare la locul lor, fără scurgeri\n\nSiguranța și curățenia:\n☐ stingătoarele la locul lor, cu sigiliul pus\n☐ nisipul sau materialul absorbant pentru scurgeri la îndemână\n☐ pista și toaletele curate, coșurile golite\n☐ aerul pentru roți și aspiratorul merg\n\nProbleme în tură (defecte, clienți, livrări de carburant):\n• \n\nSemnături (predă / primește):\n": "Shift (from / to):\nHanded over by: \nTaken over by: \n\nPump meter readings (at handover):\n• pump 1: \n• pump 2: \n\nAt handover:\n☐ pump meter readings taken and written above\n☐ tank levels measured (litres for each fuel)\n☐ cash in the till counted and the Z or X report printed\n☐ receipts, invoices and card payments set aside\n☐ fuel nozzles back in place, no leaks\n\nSafety and cleaning:\n☐ fire extinguishers in place, with the seal on\n☐ sand or absorbent material for spills within reach\n☐ forecourt and toilets clean, bins emptied\n☐ tyre inflator and vacuum working\n\nProblems during the shift (faults, customers, fuel deliveries):\n• \n\nSignatures (handed over / taken over):\n"
+  },
+  "templates": {
+    "Predarea turei la benzinărie {0}": "Petrol station shift handover {0}"
+  },
+  "skip": []
+}

@@ -1,0 +1,10 @@
+{
+  "dict": {
+    "🐎 Lecția de călărie": "🐎 Riding lesson",
+    "Clubul sau herghelia (adresa, telefonul):\nZiua și ora lecției:\nInstructorul:\nCalul primit (numele, cât de liniștit e):\n\nLecția de azi:\n• ce exersăm (pas, trap, galop, sărituri):\n• cât durează și cât costă:\n• ce ne-a spus instructorul să lucrăm:\n\nÎnainte de lecție:\n☐ cască de călărie potrivită pe cap și prinsă sub bărbie\n☐ cizme sau ghete cu toc mic, pantaloni lungi, mănuși\n☐ calul țesălat și copitele curățate, cu ajutorul îngrijitorului\n☐ șaua și chinga verificate, scările potrivite la lungimea piciorului\n\nLa lecție și după:\n☐ apropiere de cal din față și din lateral, niciodată din spate\n☐ urcat și coborât doar pe partea stângă, cu instructorul lângă\n☐ calul plimbat la pas la sfârșit, să se liniștească\n☐ calul răsplătit și harnașamentul pus la loc, curat\n\nCe a mers bine și ce lucrăm data viitoare:\n• ": "Club or stud farm (address, phone):\nLesson day and time:\nInstructor:\nHorse assigned (name, how calm it is):\n\nToday's lesson:\n• what we practice (walk, trot, canter, jumps):\n• how long it lasts and what it costs:\n• what the instructor told us to work on:\n\nBefore the lesson:\n☐ riding helmet that fits, buckled under the chin\n☐ boots with a low heel, long trousers, gloves\n☐ horse groomed and hooves cleaned, with the groom's help\n☐ saddle and girth checked, stirrups set to leg length\n\nDuring and after the lesson:\n☐ approach the horse from the front and side, never from behind\n☐ mount and dismount only on the left side, with the instructor nearby\n☐ horse walked at the end so it calms down\n☐ horse rewarded and the tack put away clean\n\nWhat went well and what to work on next time:\n• "
+  },
+  "templates": {
+    "Lecția de călărie {0}": "Riding lesson {0}"
+  },
+  "skip": []
+}

@@ -1,0 +1,19 @@
+{
+  "dict": {
+    "Cadre intermediare": "Tween frames",
+    "Câte cadre intermediare": "How many tween frames",
+    "cu cadrul următor": "with the next frame",
+    "cu cadrul anterior": "with the previous frame",
+    "Cu ce cadru se amestecă": "Which frame to blend with",
+    "de la ultimul la primul (buclă)": "from the last to the first (loop)",
+    "Primul cadru nu are cadru anterior.": "The first frame has no previous frame.",
+    "Ultimul cadru nu are cadru următor.": "The last frame has no next frame.",
+    "Pune între cadrul ales și celălalt cadre noi, fiecare tot mai aproape de al doilea, ca trecerea să fie lină": "Puts new frames between the selected frame and the other one, each closer to the second, for a smooth transition",
+    "Pictogramă ICO": "ICO icon"
+  },
+  "templates": {
+    "Cadru intermediar {0}": "Tween frame {0}",
+    "ICO: pictogramă pentru scurtături, dosare și site-uri (favicon), cu transparență; în fișier intră mărimile {0} px (o poză care nu e pătrată primește margini transparente).": "ICO: an icon for shortcuts, folders and websites (favicon), with transparency; the file holds the sizes {0} px (a picture that is not square gets transparent margins)."
+  },
+  "skip": []
+}

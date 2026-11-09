@@ -1,0 +1,41 @@
+{
+  "dict": {
+    "Asociați trecuți în tabel": "Shareholders in the table",
+    "Asociatul": "Shareholder",
+    "Capitalul social": "Share capital",
+    "De plătit": "To pay",
+    "Din capital, în tabel (trebuie 100%)": "Of the capital, in the table (must be 100%)",
+    "Dividend brut": "Gross dividend",
+    "Dividend net": "Net dividend",
+    "Dividende": "Dividends",
+    "Dividende brute": "Gross dividends",
+    "Dividende nete pentru asociați": "Net dividends for the shareholders",
+    "Impozit de reținut și de plătit la stat": "Tax to withhold and pay to the state",
+    "Impozit pe dividende": "Dividend tax",
+    "Impozitul pe dividende": "Dividend tax rate",
+    "Impozitul se plătește până la": "Tax due by",
+    "Impozitul se reține la plată și se declară și se plătește până pe 25 ale lunii următoare; procentul îl verifici cu contabilul.": "The tax is withheld on payment, then declared and paid by the 25th of the following month; check the rate with your accountant.",
+    "Părți sociale": "Shares",
+    "Pierderi din anii trecuți de acoperit": "Past years' losses to cover",
+    "Plătite deja": "Already paid",
+    "Procent din capital": "Share of capital",
+    "Profitul de repartizat": "Profit to distribute",
+    "Profitul împărțit ca dividende": "Profit paid out as dividends",
+    "Profitul înainte de impozit": "Profit before tax",
+    "Profitul net al anului": "Net profit for the year",
+    "Profitul net al anului împărțit asociaților: scade singură rezerva legală (5%, cel mult 20% din capital), pierderile de acoperit și ce rămâne în firmă; pe fiecare asociat ies procentul din capital, dividendul brut, impozitul reținut, netul și termenul impozitului, iar în dreapta cât mai e de plătit.": "The year's net profit split among the shareholders: the legal reserve (5%, at most 20% of the capital), losses to cover and what stays in the company are deducted automatically; for each shareholder you get the share of capital, the gross dividend, the withheld tax, the net amount and the tax deadline, and on the right what is still to be paid.",
+    "Rămâne în firmă (alte rezerve, nerepartizat)": "Kept in the company (other reserves, undistributed)",
+    "Rămase de plătit": "Still to pay",
+    "Repartizarea o aprobă asociații: Docs → Hotărârea adunării generale a asociaților sau Decizia asociatului unic.": "The shareholders approve the distribution: Docs → Resolution of the general meeting of shareholders or Decision of the sole shareholder.",
+    "Repartizarea profitului și dividendele": "Profit distribution and dividends",
+    "Rezerva legală de constituit (5%, cel mult 20% din capital)": "Legal reserve to set aside (5%, at most 20% of capital)",
+    "Rezerva legală pe care o ai deja": "Legal reserve you already have",
+    "Scrie profitul din situațiile financiare și ce rămâne în firmă; dividendele se împart singure după părțile sociale.": "Enter the profit from the financial statements and what stays in the company; dividends are split automatically by shares.",
+    "Valoarea unei părți sociale": "Value of one share"
+  },
+  "templates": {},
+  "skip": [
+    "=IF(B{0}=\"\";\"\";IF(H{1}<>\"\";\"Plătit\";\"De plătit\"))",
+    "=SUMIF(J2:J{0};\"Plătit\";G2:G{1})"
+  ]
+}

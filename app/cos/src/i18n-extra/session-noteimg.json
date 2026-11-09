@@ -1,0 +1,17 @@
+{
+  "dict": {
+    "1 notă · nu apare în poza salvată": "1 note · not in the saved picture",
+    "Clic pe poză pune un bilețel cu text (o observație, o cerere de corectură); se vede doar aici, nu și în poza salvată": "Click on the picture to place a text note (a remark, a correction request); it shows only here, not in the saved picture",
+    "Dă click pe poză ca să pui o notă; click pe 🗒 o deschide.": "Click on the picture to place a note; click 🗒 to open it.",
+    "Esc: notele rămân pe poză": "Esc: the notes stay on the picture",
+    "Notă goală": "Empty note",
+    "Scoate nota de pe poză": "Removes the note from the picture",
+    "Textul notei": "Note text",
+    "Scrie nota…": "Write the note…"
+  },
+  "templates": {
+    "Nota {0}": "Note {0}",
+    "{0} note · nu apar în poza salvată": "{0} notes · not in the saved picture"
+  },
+  "skip": []
+}

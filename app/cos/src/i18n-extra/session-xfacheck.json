@@ -1,0 +1,16 @@
+{
+  "dict": {
+    "✓ Verifică câmpurile obligatorii": "✓ Check required fields",
+    "Caută câmpurile obligatorii ale formularului rămase goale și le încadrează cu roșu, cu numele și pagina lor": "Find the form's required fields that are still empty and outline them in red, with their names and pages",
+    "câmp fără nume": "unnamed field",
+    "Câmpul obligatoriu e completat.": "The required field is filled in.",
+    "Formularul nu are câmpuri marcate ca obligatorii.": "The form has no fields marked as required."
+  },
+  "templates": {
+    "Formularul nu s-a putut verifica: {0}": "The form could not be checked: {0}",
+    "Lipsesc {0} câmpuri obligatorii din {1}: {2}{3}. Le-am încadrat cu roșu.": "{0} of {1} required fields are missing: {2}{3}. They are outlined in red.",
+    "Lipsește un câmp obligatoriu din {0}: {1}. L-am încadrat cu roșu.": "One of {0} required fields is missing: {1}. It is outlined in red.",
+    "Toate cele {0} câmpuri obligatorii sunt completate.": "All {0} required fields are filled in."
+  },
+  "skip": []
+}

@@ -1,0 +1,21 @@
+{
+  "dict": {
+    "Cuvânt cu cuvânt": "Word by Word",
+    "Dezvăluire (de jos)": "Wipe (from Bottom)",
+    "Din neclar": "From Blur",
+    "Intră din dreapta": "Fly In from Right",
+    "Lățire (din mijloc)": "Stretch (from Center)",
+    "Săritură": "Bounce",
+    "Acoperire de sus": "Cover from Top",
+    "Bare aleatoare": "Random Bars",
+    "Descoperire în sus": "Uncover Up",
+    "Din colțuri": "From Corners",
+    "Dizolvare": "Dissolve",
+    "Balon de vorbă în mijloc": "Speech Bubble in Center",
+    "Bandă în degrade jos (mov-roz)": "Gradient Band at Bottom (Purple-Pink)",
+    "Casetă fumurie rotunjită": "Rounded Smoky Box",
+    "Marcator galben pe rânduri": "Yellow Highlighter on Lines"
+  },
+  "templates": {},
+  "skip": []
+}

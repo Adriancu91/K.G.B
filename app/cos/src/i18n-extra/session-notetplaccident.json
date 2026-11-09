@@ -1,0 +1,10 @@
+{
+  "dict": {
+    "🚗 Accident auto": "🚗 Car accident"
+  },
+  "templates": {},
+  "skip": [
+    "Accident {0}",
+    "Data și ora: \nLocul: \n\nLa fața locului:\n☐ avariile pornite și triunghiul pus\n☐ dacă e cineva rănit: 112\n☐ poze cu ambele mașini, numerele și locul\n☐ formularul de constatare amiabilă completat și semnat de amândoi\n☐ datele martorilor\n\nCelălalt șofer:\n• nume și telefon: \n• numărul mașinii: \n• asigurarea RCA (firma, nr. poliței): \n\nDupă:\n☐ anunțat asigurătorul (în termenul din poliță)\n☐ programarea la constatarea daunei\n☐ service-ul ales: \n\nNumărul dosarului de daună: \n"
+  ]
+}

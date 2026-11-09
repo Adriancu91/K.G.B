@@ -1,0 +1,27 @@
+{
+  "dict": {
+    "⇦ Din filmul de acum": "⇦ From current video",
+    "⇶ Pe toate textele": "⇶ Apply to all text",
+    "＋ Siglă…": "＋ Logo…",
+    "🎨 Kit de brand": "🎨 Brand kit",
+    "Adaugă un font în kit": "Add a font to the kit",
+    "Am pus în kit culoarea și fontul textului din cadrul ales și logo-ul filmului (ce era nou).": "Added the selected frame's text color and font and the video's logo to the kit (whatever was new).",
+    "Cadrul ales nu are text: scrie-l în Proprietăți → Aa Text, apoi alege din kit.": "The selected frame has no text: type it in Properties → Aa Text, then pick from the kit.",
+    "Clic = fontul textului din cadrul ales; clic dreapta = scoate din kit": "Click = font for the selected frame's text; right-click = remove from kit",
+    "Culoarea de adăugat în kit": "Color to add to the kit",
+    "Primul font și prima culoare din kit pe toate textele filmului": "Apply the kit's first font and first color to all text in the video",
+    "Pune în kit culoarea de lângă": "Add the color next to it to the kit",
+    "Pune în kit culoarea și fontul textului din cadrul ales și logo-ul filmului": "Add the selected frame's text color and font and the video's logo to the kit",
+    "Pune în kit o siglă (PNG transparent recomandat); dacă filmul are cadre, devine și logo-ul lui": "Add a logo to the kit (transparent PNG recommended); if the video has frames, it also becomes its logo",
+    "Sigle": "Logos",
+    "Textul cadrului are acum fontul din kit.": "The frame's text now uses the kit font.",
+    "Toate textele filmului au acum fontul și culoarea din kit.": "All text in the video now uses the kit's font and color.",
+    "＋ Adaugă font…": "＋ Add font…"
+  },
+  "templates": {
+    "{0}\nClic = logo-ul filmului; clic dreapta = scoate din kit": "{0}\nClick = video logo; right-click = remove from kit",
+    "În kit încap cel mult {0}; scoate întâi una (clic dreapta pe ea).": "The kit holds at most {0}; remove one first (right-click it).",
+    "Textul cadrului are acum culoarea {0}.": "The frame's text now has the color {0}."
+  },
+  "skip": []
+}

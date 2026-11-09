@@ -1,0 +1,24 @@
+{
+  "dict": {
+    "Florărie": "Florist",
+    "Buchet de flori": "Bouquet",
+    "Trandafir": "Rose",
+    "Lalea": "Tulip",
+    "Vază cu flori": "Flower vase",
+    "Coroană de flori": "Wreath",
+    "Floarea-soarelui": "Sunflower",
+    "Coș cu flori": "Flower basket",
+    "Cutie cu flori": "Flower box"
+  },
+  "templates": {},
+  "skip": [
+    "buchet de flori aranjament cadou aniversare florărie bouquet flowers gift florist",
+    "trandafir roșu fir floare dragoste valentine rose flower love",
+    "lalea lalele primăvară 8 martie floare tulip spring flower",
+    "vază cu flori masă decor interior flower vase",
+    "coroană de flori jerbă funerară comemorare ușă wreath funeral garland",
+    "floarea-soarelui floarea soarelui petale galben vară sunflower",
+    "coș cu flori aranjament floral cadou livrare flower basket arrangement",
+    "cutie cu flori cutie rotundă aranjament cadou flower box hatbox"
+  ]
+}

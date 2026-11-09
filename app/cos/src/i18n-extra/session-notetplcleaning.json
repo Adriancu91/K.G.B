@@ -1,0 +1,10 @@
+{
+  "dict": {
+    "🧹 Curățenie": "🧹 Cleaning"
+  },
+  "templates": {},
+  "skip": [
+    "Săptămâna: \nCine ajută: \n\nBucătărie:\n☐ vasele și chiuveta\n☐ aragazul și blatul\n☐ frigiderul (aruncat ce a expirat)\n☐ gunoiul\n\nBaie:\n☐ cada / dușul\n☐ chiuveta și oglinda\n☐ toaleta\n☐ prosoape curate\n\nCamere:\n☐ praful\n☐ aspiratorul\n☐ spălat pe jos\n☐ lenjeria de pat schimbată\n\nRufe:\n☐ spălat\n☐ călcat și pus la loc\n\nO dată pe lună:\n• geamurile, cuptorul, sub mobilă\n\nDe cumpărat (detergenți, saci, bureți):\n☐ \n",
+    "Curățenie {0}"
+  ]
+}

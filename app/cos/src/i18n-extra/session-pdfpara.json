@@ -1,0 +1,10 @@
+{
+  "dict": {
+    "Editează: dă clic pe un paragraf sau pe un rând ca să-l schimbi (Enter păstrează, Shift+Enter începe un paragraf nou, Delete îl șterge, Esc renunță; Alt+clic = doar rândul) sau pe o imagine (trage-o ca s-o muți, de colțuri ca s-o mărești sau micșorezi, Delete o șterge)": "Edit: click a paragraph or a line to change it (Enter keeps it, Shift+Enter starts a new paragraph, Delete removes it, Esc cancels; Alt+click = only the line) or an image (drag it to move it, drag its corners to enlarge or shrink it, Delete removes it)",
+    "Șterge paragraful din pagină (Delete)": "Delete the paragraph from the page (Delete)",
+    "Textul paragrafului": "Paragraph text",
+    "Șterge paragraful": "Delete paragraph"
+  },
+  "templates": {},
+  "skip": []
+}

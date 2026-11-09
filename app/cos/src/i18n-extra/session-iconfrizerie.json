@@ -1,0 +1,24 @@
+{
+  "dict": {
+    "Frizerie": "Barbershop",
+    "Stâlp de frizerie": "Barber pole",
+    "Scaun de frizer": "Barber chair",
+    "Mașină de tuns": "Hair clipper",
+    "Brici": "Straight razor",
+    "Pămătuf de bărbierit": "Shaving brush",
+    "Mustață": "Moustache",
+    "Barbă": "Beard",
+    "Loțiune după ras": "Aftershave"
+  },
+  "templates": {},
+  "skip": [
+    "stâlp de frizerie semn frizer dungi barber pole sign",
+    "scaun de frizer salon tuns client barber chair",
+    "mașină de tuns tuns scurt fade contur hair clipper trimmer",
+    "briciul lamă bărbierit clasic straight razor cut-throat",
+    "pămătuf de bărbierit spumă săpun shaving brush lather",
+    "mustață mustăți ceară de mustață moustache mustache",
+    "barba aranjat ulei de barbă beard grooming",
+    "loțiune după ras colonie sticluță aftershave cologne"
+  ]
+}

@@ -1,0 +1,24 @@
+{
+  "dict": {
+    "Pădure și lemne de foc": "Forestry and firewood",
+    "Buștean": "Log",
+    "Drujbă": "Chainsaw",
+    "Butuc cu topor": "Chopping block with axe",
+    "Stivă de lemne": "Woodpile",
+    "Ciot": "Tree stump",
+    "Con de brad": "Pine cone",
+    "Sobă cu lemne": "Wood stove",
+    "Pădure": "Forest"
+  },
+  "templates": {},
+  "skip": [
+    "buștean bustean trunchi lemn tăiat exploatare forestieră log timber trunk",
+    "drujbă drujba fierăstrău cu lanț tăiat lemne chainsaw",
+    "butuc topor despicat spart lemne chopping block splitting axe",
+    "stivă de lemne lemne de foc stivuite iarnă woodpile firewood",
+    "ciot cioată copac tăiat inele tree stump",
+    "con de brad conifer pin semințe pine cone",
+    "sobă cu lemne godin încălzire foc horn wood stove heating",
+    "pădure padure brazi conifere ocol silvic forest woods"
+  ]
+}

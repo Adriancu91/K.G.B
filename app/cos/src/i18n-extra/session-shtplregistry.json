@@ -1,0 +1,37 @@
+{
+  "dict": {
+    "Registru de intrări-ieșiri": "Incoming and outgoing mail register",
+    "Corespondența firmei (scrisori, adrese, notificări, cereri), intrată și ieșită: numărul de înregistrare se pune singur, cu termenul de răspuns; cele nerezolvate cu termenul trecut ies în roșu, cele cu termenul în 3 zile în galben.": "The company’s incoming and outgoing correspondence (letters, official letters, notices, requests): the registration number fills in by itself, with the reply deadline; unresolved items past their deadline turn red, those due within 3 days turn yellow.",
+    "Nr. înregistrare": "Registration no.",
+    "Intrare / ieșire": "In / out",
+    "De la / către": "From / to",
+    "Nr. și data documentului": "Document no. and date",
+    "Conținutul pe scurt": "Short summary",
+    "Repartizat la": "Assigned to",
+    "Termen de răspuns": "Reply deadline",
+    "Rezolvat": "Resolved",
+    "Stare": "Status",
+    "Fără termen": "No deadline",
+    "Întârziat": "Overdue",
+    "Termen aproape": "Due soon",
+    "În lucru": "In progress",
+    "Intrare": "In",
+    "Ieșire": "Out",
+    "Anul registrului": "Register year",
+    "Documente intrate": "Documents received",
+    "Documente ieșite": "Documents sent",
+    "Nerezolvate": "Unresolved",
+    "Întârziate": "Overdue",
+    "Cu termenul în 3 zile": "Due within 3 days",
+    "Numărul de înregistrare se pune singur când scrii De la / către; trece-l pe document.": "The registration number fills in by itself when you type From / to; write it on the document.",
+    "Când răspunzi, scrie Da la Rezolvat; întârziatele ies în roșu, cele cu termenul în 3 zile în galben.": "When you reply, write Yes under Resolved; overdue items turn red, those due within 3 days turn yellow.",
+    "Registru": "Register",
+    "Documentele justificative (bilete, bonuri, facturi de cazare) se anexează la acest ordin, în original. Pentru calculul decontului: Sheets → Șabloane → Decont de deplasare.": "The supporting documents (tickets, receipts, accommodation invoices) are attached to this order, in original. To calculate the expense report: Sheets → Templates → Travel expense report."
+  },
+  "templates": {},
+  "skip": [
+    "=COUNTIF(C2:C{0};\"Ieșire\")",
+    "=COUNTIF(J2:J{0};\"Întârziat\")",
+    "=IF(D{0}=\"\";\"\";IF(I{1}=\"Da\";\"Rezolvat\";IF(H{2}=\"\";\"Fără termen\";IF(H{3}<TODAY();\"Întârziat\";IF(H{4}-TODAY()<=3;\"Termen aproape\";\"În lucru\")))))"
+  ]
+}

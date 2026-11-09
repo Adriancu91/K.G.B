@@ -1,0 +1,42 @@
+{
+ "dict": {
+  "(nicio coloană cu adrese)": "(no column with addresses)",
+  "✉ Câte un e-mail (.eml) pentru fiecare rând…": "✉ One e-mail (.eml) per row…",
+  "Câte un mesaj de e-mail (.eml) pentru fiecare rând, cu adresa, subiectul și textul completate. Le deschizi cu programul de e-mail și apeși Trimite: Cyber Office Studio nu trimite nimic singur": "One e-mail message (.eml) per row, with the address, subject and text filled in. Open them with your e-mail program and press Send: Cyber Office Studio never sends anything by itself",
+  "Coloana cu adresele de e-mail": "Column with the e-mail addresses",
+  "de exemplu Factura «Număr»": "for example Invoice «Number»",
+  "rând fără adresă bună, sărit": "row without a valid address, skipped",
+  "rânduri fără adresă bună, sărite": "rows without a valid address, skipped",
+  "Subiectul mesajelor": "Subject of the messages",
+  "Tabelul nu are o coloană cu adrese de e-mail": "The table has no column with e-mail addresses",
+  "mesaj .eml": ".eml message",
+  "mesaje .eml": ".eml messages",
+  "către": "to",
+  "subiect": "subject",
+  "Unde salvez mesajele?": "Where should I save the messages?",
+  "Mesajul nu a putut fi făcut: ": "The message could not be made: ",
+  "Se pregătește mesajul…": "Preparing the message…",
+  "Trimite prin e-mail: un mesaj nou cu documentul atașat ca .docx, deschis în programul tău de e-mail (scrii adresa și apeși Trimite)": "Send by e-mail: a new message with the document attached as .docx, opened in your e-mail program (type the address and press Send)",
+  "✉ Trimite prin e-mail…": "✉ Send by e-mail…",
+  "Mesaj de e-mail (.eml)": "E-mail message (.eml)",
+  "Deschide un mesaj nou în programul tău de e-mail, cu titlul notiței ca subiect și notița în mesaj, cu formatarea și pozele ei. Nu se trimite nimic până nu apeși tu Trimite acolo": "Opens a new message in your e-mail program, with the note title as subject and the note in the message, with its formatting and pictures. Nothing is sent until you press Send there",
+  "Mesajul cu notița e deschis în programul de e-mail: scrie adresa și apasă Trimite.": "The message with the note is open in your e-mail program: type the address and press Send."
+ },
+ "templates": {
+  "Gata: {0} {1} în {2}{3}. Deschide-le cu programul de e-mail și apasă Trimite": "Done: {0} {1} in {2}{3}. Open them with your e-mail program and press Send",
+  "S-au scris {0} mesaje, apoi a apărut o eroare: {1}": "{0} messages were written, then an error occurred: {1}",
+  "Se scrie mesajul {0} din {1}…": "Writing message {0} of {1}…",
+  "Mesaj salvat: {0}. Deschide-l cu dublu clic: documentul e deja atașat": "Message saved: {0}. Double-click it to open: the document is already attached",
+  "Mesajul cu „{0}” atașat e deschis în programul de e-mail: scrie adresa și apasă Trimite": "The message with “{0}” attached is open in your e-mail program: type the address and press Send",
+  "Mesajul e salvat în {0}: deschide-l cu dublu clic.": "The message is saved in {0}: double-click it to open."
+ },
+ "skip": [
+  "<!DOCTYPE html>{0}<html><head><meta charset=\"utf-8\"></head><body style=\"font-family: Calibri, Arial, sans-serif; font-size: 11pt;\">{1}{2}</body></html>",
+  "Mesaj {0}",
+  "{font {0}:",
+  "b, strong, i, em, u, ins, s, strike, del, mark, h1, h2, h3, font, code, kbd, samp, [style*=\"font-weight\"], [style*=\"italic\"], [style*=\"color\"], [style*=\"underline\"], [style*=\"line-through\"], [style*=\"background\"], [style*=\"font-size\"], [style*=\"font-family\"]",
+  "<p>Vă trimit atașat documentul „{0}”.</p>",
+  "Vă trimit atașat documentul „{0}”.",
+  "Content-Type: text/html; charset=utf-8"
+ ]
+}

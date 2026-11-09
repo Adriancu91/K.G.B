@@ -1,0 +1,24 @@
+{
+  "dict": {
+    "Instrumente de măsură": "Measuring instruments",
+    "Ruletă": "Tape measure",
+    "Șubler": "Caliper",
+    "Multimetru": "Multimeter",
+    "Manometru": "Pressure gauge",
+    "Telemetru laser": "Laser distance meter",
+    "Raportor": "Protractor",
+    "Metru pliant": "Folding ruler",
+    "Higrometru": "Hygrometer"
+  },
+  "templates": {},
+  "skip": [
+    "ruletă metru măsurare lungime tape measure",
+    "șubler măsurare diametru grosime milimetri caliper vernier",
+    "multimetru tester tensiune curent electrician multimeter voltmeter",
+    "manometru presiune bar instalații gaz pressure gauge",
+    "telemetru laser distanță măsurare cameră laser distance meter",
+    "raportor unghi grade geometrie protractor angle",
+    "metru pliant tâmplar dulgher folding ruler carpenter",
+    "higrometru umiditate aer mucegai depozit hygrometer humidity"
+  ]
+}

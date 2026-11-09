@@ -1,0 +1,20 @@
+{
+  "dict": {
+    "Stea cu 16 colțuri": "16-Point Star",
+    "Stea cu 24 de colțuri": "24-Point Star",
+    "Stea cu 32 de colțuri": "32-Point Star",
+    "Dreptunghi cu colțuri opuse tăiate": "Rectangle with Diagonal Corners Snipped",
+    "Explozie 1": "Explosion 1",
+    "Explozie 2": "Explosion 2",
+    "Schemă: Început / sfârșit": "Flowchart: Terminator",
+    "Schemă: Întârziere": "Flowchart: Delay",
+    "Schemă: Afișare": "Flowchart: Display",
+    "Schemă: Document": "Flowchart: Document",
+    "Schemă: Bandă perforată": "Flowchart: Punched Tape",
+    "Lacrimă": "Teardrop",
+    "Val": "Wave",
+    "Val dublu": "Double Wave"
+  },
+  "templates": {},
+  "skip": []
+}

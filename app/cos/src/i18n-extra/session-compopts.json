@@ -1,0 +1,13 @@
+{
+  "dict": {
+    "Care straturi se văd și care sunt ascunse": "Which layers are shown and which are hidden",
+    "Ce ține minte compoziția nouă": "What the new comp remembers",
+    "Opacitatea, modul de amestec și stilurile stratului (umbră, contur, strălucire…)": "The layer opacity, blend mode and styles (shadow, stroke, glow…)",
+    "Ține minte cum arată acum straturile (ce e bifat dedesubt: care se văd, unde e conținutul lor, opacitatea, modul de amestec și stilurile), ca variantă la care te poți întoarce": "Remember how the layers look now (what is checked below: which are shown, where their content is, opacity, blend mode and styles), as a variant you can return to",
+    "Unde e conținutul fiecărui strat (de exemplu sigla sus sau jos)": "Where the content of each layer is (for example the logo at the top or bottom)",
+    "Vizibilitate": "Visibility",
+    "Aspect (stiluri)": "Appearance (styles)"
+  },
+  "templates": {},
+  "skip": []
+}

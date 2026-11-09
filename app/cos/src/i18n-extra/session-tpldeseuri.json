@@ -1,0 +1,10 @@
+{
+  "dict": {
+    "♻ Predarea deșeurilor la colectare": "♻ Handing over waste for collection",
+    "Data predării:\nPunctul de colectare / firma care ridică:\nCine predă:\n\nCe predăm (cantitatea aproximativă):\n• hârtie și carton:\n• plastic și metal:\n• sticlă:\n• electronice uzate (DEEE):\n• baterii și becuri:\n\nÎnainte de predare:\n☐ deșeurile sortate pe feluri, în saci sau cutii separate\n☐ cartonul pliat și legat, fără bandă adezivă sau folie\n☐ electronicele întregi, cu datele șterse de pe calculatoare și telefoane\n☐ bateriile puse separat, în cutia de colectare\n☐ cartușele de toner și becurile puse deoparte, nu la gunoi\n\nLa predare:\n☐ deșeurile cântărite sau numărate de față cu noi\n☐ formularul de predare-primire semnat și primit\n☐ cantitățile trecute în evidența deșeurilor a firmei\n☐ data următoarei ridicări stabilită\n\nObservații (ce nu s-a primit și de ce):\n•\n": "Handover date:\nCollection point / company collecting:\nHanded over by:\n\nWhat we hand over (approximate amount):\n• paper and cardboard:\n• plastic and metal:\n• glass:\n• e-waste (WEEE):\n• batteries and bulbs:\n\nBefore handover:\n☐ waste sorted by type, in separate bags or boxes\n☐ cardboard folded and tied, without tape or film\n☐ electronics whole, with data wiped from computers and phones\n☐ batteries kept apart, in the collection box\n☐ toner cartridges and bulbs set aside, not in the bin\n\nAt handover:\n☐ waste weighed or counted in front of us\n☐ handover form signed and received\n☐ amounts entered in the company's waste records\n☐ date of the next collection agreed\n\nNotes (what was not accepted and why):\n•\n"
+  },
+  "templates": {
+    "Predarea deșeurilor {0}": "Waste handover {0}"
+  },
+  "skip": []
+}

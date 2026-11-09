@@ -1,0 +1,21 @@
+{
+ "dict": {
+  "Liniarizarea a ieșit greșit (lungimea nu se potrivește).": "Fast web view preparation failed (the length does not match).",
+  "PDF-ul nu are pagini.": "The PDF has no pages.",
+  "🌐 Optimizează pentru web": "🌐 Optimize for web",
+  "Fișierul e deja optimizat pentru web; îl poți pregăti din nou după modificări": "The file is already optimized for the web; you can prepare it again after changes",
+  "Vizualizare rapidă pe web: prima pagină se arată înainte să se descarce tot fișierul, iar celelalte pagini se pot cere direct": "Fast web view: the first page appears before the whole file is downloaded, and the other pages can be requested directly",
+  "Se pregătește pentru web…": "Preparing for the web…",
+  "🌐 Pentru web": "🌐 For web",
+  "Optimizează pentru web (vizualizare rapidă)": "Optimize for web (fast web view)",
+  "Prima pagină se arată înainte să se descarce tot fișierul, când PDF-ul e pus pe un site": "The first page appears before the whole file is downloaded, when the PDF is put on a website",
+  "optimizat pentru web": "optimized for web"
+ },
+ "templates": {
+  "Gata: fișierul e optimizat pentru web ({0} KB → {1} KB). Prima pagină e în primii {2} KB, deci se arată înainte să se descarce restul; celelalte {3} pagini se pot cere direct. Paginile arată la fel. Apasă Salvează ca… ca să păstrezi varianta pentru web (o modificare făcută după aceea o anulează).": "Done: the file is optimized for the web ({0} KB → {1} KB). The first page is in the first {2} KB, so it appears before the rest is downloaded; the other {3} pages can be requested directly. The pages look the same. Press Save as… to keep the web version (any change made afterwards undoes it)."
+ },
+ "skip": [
+  "{0} 0 obj\n<< /Linearized 1 /L {1} /H [ {2} {3} ] /O {4} /E {5} /N {6} /T {7} >>\nendobj\n",
+  "Pages"
+ ]
+}

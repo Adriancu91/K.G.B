@@ -1,0 +1,22 @@
+{
+ "dict": {
+  "„Pagina 1 din 3” jos, la mijloc": "“Page 1 of 3” at the bottom, centered",
+  "Dublu clic: înapoi la Normal, ca să scrii în celule": "Double-click: back to Normal, to type in cells",
+  "Înapoi la foaia obișnuită (Esc)": "Back to the normal sheet (Esc)",
+  "Micșorează tabelul ca să încapă pe lățimea paginii": "Shrink the table to fit the page width",
+  "Potrivește pe lățime": "Fit to width",
+  "Aspect pagină: foaia pe paginile de hârtie, cu antetul, subsolul și marginile, exact cum se tipărește": "Page Layout: the sheet on paper pages, with the header, footer and margins, exactly as it prints",
+  "Foaia e goală: nu are încă pagini.": "The sheet is empty: it has no pages yet.",
+  "Paginile se văd doar în aplicație (aici folosește Tipărire).": "Pages are shown only in the app (here, use Print).",
+  "✎ Modifică un stil din celula curentă…": "✎ Modify a style from the current cell…",
+  "celulă s-a schimbat": "cell changed",
+  "Modifică un stil": "Modify a style",
+  "sau unul gata făcut, de exemplu Bun, Titlu 1, Notă": "or a built-in one, for example Good, Heading 1, Note"
+ },
+ "templates": {
+  "Încă {0} pagini: le vezi toate la Tipărire sau Export PDF.": "{0} more pages: see them all in Print or Export PDF.",
+  "Care stil ia formatul celulei {0}? ({1}). Celulele care îl au se schimbă toate.": "Which style takes the format of cell {0}? ({1}). All cells that use it change.",
+  "Stilul „{0}” a fost modificat{1}": "The style “{0}” was modified{1}"
+ },
+ "skip": []
+}

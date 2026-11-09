@@ -1,0 +1,9 @@
+{
+  "dict": {
+    "🗄 Arhivarea documentelor anului": "🗄 Archiving the year's documents"
+  },
+  "templates": {},
+  "skip": [
+    "Arhivarea documentelor {0}"
+  ]
+}

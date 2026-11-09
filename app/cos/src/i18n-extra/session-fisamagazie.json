@@ -1,0 +1,32 @@
+{
+ "dict": {
+  "Aviz de însoțire": "Delivery note",
+  "Bon de consum": "Materials requisition",
+  "Bon de transfer": "Transfer slip",
+  "De la cine / la cine": "From whom / to whom",
+  "Fișa de magazie": "Stock card",
+  "Intrări": "Receipts",
+  "Intrările vin din nota de recepție (Sheets → Notă de recepție), ieșirile din aviz, factură sau bonul de consum.": "Receipts come from the goods received note (Sheets → Goods receipt note), issues from the delivery note, invoice or materials requisition.",
+  "La inventariere, stocul la zi e cel din evidență (Sheets → Listă de inventariere); diferențele intră cu procesul-verbal.": "At stocktaking, the current stock is the book stock (Sheets → Stocktaking list); differences are entered with the report.",
+  "Mișcări în fișă": "Movements on the card",
+  "Nr. document": "Document no.",
+  "O fișă pentru fiecare produs din gestiune (fă o copie a foii pentru produsul următor).": "One card for each product in the store (copy the sheet for the next product).",
+  "Prețul unitar (fără TVA)": "Unit price (excl. VAT)",
+  "Retur": "Return",
+  "Stoc negativ: verifică": "Negative stock: check",
+  "Stocul": "Stock",
+  "Stocul inițial": "Opening stock",
+  "Stocul la zi": "Current stock",
+  "Stocul minim (sub el se comandă)": "Minimum stock (reorder below it)",
+  "Suficient": "Sufficient",
+  "Total ieșiri": "Total issues",
+  "Total intrări": "Total receipts",
+  "Ultima mișcare": "Last movement",
+  "Un produs dintr-un depozit sau magazin, cu fiecare intrare și ieșire (documentul, data, de la cine sau la cine): stocul după fiecare mișcare se calculează singur din stocul inițial, iar în dreapta ies stocul la zi, valoarea lui și starea: suficient (în verde), de comandat sub stocul minim (în galben) sau stoc negativ (în roșu).": "One product in a warehouse or shop, with every receipt and issue (document, date, from whom or to whom): the stock after each movement is calculated from the opening stock, and on the right you get the current stock, its value and the status: sufficient (green), to reorder below the minimum stock (yellow) or negative stock (red).",
+  "Valoarea stocului (fără TVA)": "Stock value (excl. VAT)"
+ },
+ "templates": {},
+ "skip": [
+  "=IF(L14<0;\"Stoc negativ: verifică\";IF(AND(L7<>\"\";L14<=L7);\"De comandat\";\"Suficient\"))"
+ ]
+}

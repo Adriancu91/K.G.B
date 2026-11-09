@@ -1,0 +1,18 @@
+{
+  "dict": {
+    "Glisare în diagonală": "Diagonal push",
+    "Acoperire în diagonală": "Diagonal cover",
+    "Glisare în diagonală spre dreapta": "Diagonal push to the right",
+    "Acoperire în diagonală din dreapta": "Diagonal cover from the right",
+    "Descoperire în diagonală": "Diagonal reveal",
+    "Descoperire în diagonală spre dreapta": "Diagonal reveal to the right",
+    "Descoperire în diagonală în jos": "Diagonal reveal downward",
+    "Descoperire în diagonală în jos spre dreapta": "Diagonal reveal downward to the right",
+    "Glisare în diagonală în jos": "Diagonal push downward",
+    "Glisare în diagonală în jos spre dreapta": "Diagonal push downward to the right",
+    "Acoperire în diagonală de jos": "Diagonal cover from the bottom",
+    "Acoperire în diagonală de jos din dreapta": "Diagonal cover from the bottom right"
+  },
+  "templates": {},
+  "skip": []
+}

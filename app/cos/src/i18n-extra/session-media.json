@@ -1,0 +1,35 @@
+{
+  "dict": {
+    "Clipul e prea mare (peste 100 MB) ca să fie pus în PDF.": "The clip is too large (over 100 MB) to be put into the PDF.",
+    "Fișierul nu e un sunet sau un film pe care îl putem pune în PDF (mp4, webm, mp3, m4a, wav, ogg).": "The file is not a sound or video we can put into a PDF (mp4, webm, mp3, m4a, wav, ogg).",
+    "Ascultă sunetul": "Play sound",
+    "Închide playerul": "Close player",
+    "Oprește și închide playerul": "Stop and close the player",
+    "Redă filmul": "Play video",
+    "Alege un film (.mp4, .webm, .mov) sau un sunet (.mp3, .m4a, .wav, .ogg).": "Choose a video (.mp4, .webm, .mov) or a sound (.mp3, .m4a, .wav, .ogg).",
+    "Filmul sau sunetul de pus pe pagină": "Video or sound to place on the page",
+    "Pune un film (.mp4, .webm) sau un sunet (.mp3, .wav) în PDF: alege fișierul, apoi trage un dreptunghi pe pagină. Clipul se redă dând click pe el, aici și în programele care redau clipuri PDF.": "Put a video (.mp4, .webm) or a sound (.mp3, .wav) into the PDF: choose the file, then drag a rectangle on the page. The clip plays when you click it, here and in programs that play PDF clips.",
+    "Sunet / video: trage un dreptunghi pe pagină, acolo unde vrei clipul (Esc renunță).": "Sound / video: drag a rectangle on the page where you want the clip (Esc cancels).",
+    "Mișcă mouse-ul pe hartă: aici apar latitudinea și longitudinea. Click pune un semn și copiază coordonatele.": "Move the mouse over the map: latitude and longitude appear here. Click places a marker and copies the coordinates.",
+    "PDF-ul acesta nu e o hartă cu coordonate (geospațială)": "This PDF is not a map with coordinates (geospatial)",
+    "Pe o hartă PDF: latitudinea și longitudinea punctului de sub mouse; click pune un semn și copiază coordonatele": "On a PDF map: the latitude and longitude of the point under the mouse; click places a marker and copies the coordinates",
+    "Sub mouse": "Under the mouse"
+  },
+  "templates": {
+    "Clipul „{0}” nu se poate reda aici: e într-un format vechi sau rar. Îl poți converti în .mp4 (H.264) din modulul Video.": "The clip “{0}” cannot be played here: it is in an old or rare format. You can convert it to .mp4 (H.264) in the Video module."
+  },
+  "skip": [
+    "Action",
+    "Assets",
+    "Raw",
+    "Screen",
+    "Signed",
+    "Bounds",
+    "Measure",
+    "Hemisphere",
+    "Neatline",
+    "Projection",
+    "Registration",
+    "Zone"
+  ]
+}

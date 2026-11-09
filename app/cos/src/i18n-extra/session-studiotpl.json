@@ -1,0 +1,37 @@
+{
+ "dict": {
+  "＋ Adaugă un câmp…": "＋ Add a field…",
+  "＋ Șablon nou": "＋ New template",
+  "＋ Tabel gol": "＋ Blank table",
+  "＋ Tabelul cu marfa": "＋ Goods table",
+  "🖼 Alt logo pentru acest șablon…": "🖼 Another logo for this template…",
+  "Antetul firmei sus (logo-ul, denumirea, CUI-ul, adresa, punctul de lucru)": "Company header at the top (logo, name, tax ID, address, work point)",
+  "Câmpuri din profil și din document": "Fields from the profile and the document",
+  "Câte rânduri goale": "How many blank rows",
+  "Cine semnează (despărțiți prin virgulă)": "Who signs (separated by commas)",
+  "Coloanele (despărțite prin virgulă)": "Columns (separated by commas)",
+  "Documentele tale, cu logo-ul și antetul firmei: un titlu, text, câmpurile care se completează singure din profil și din document, tabelul cu marfa, semnăturile. Le alegi apoi din Documente, ca pe formularele gata făcute.": "Your own documents, with your company logo and header: a title, text, fields filled in automatically from the profile and the document, the goods table, signatures. You then pick them in Documents, like the ready-made forms.",
+  "Încă nu ai niciun șablon.": "You have no templates yet.",
+  "Numărul următor": "Next number",
+  "Numele șablonului": "Template name",
+  "Pune un câmp în text…": "Put a field in the text…",
+  "Rândurile de marfă se scriu în document (denumirea, codul, U.M., cantitatea, prețul); totalul se face singur.": "The goods rows are filled in the document (name, code, unit, quantity, price); the total is calculated automatically.",
+  "Șablonul se salvează singur. Îl folosești din 📄 Documente → „Un singur formular” → 🧩": "The template saves itself. Use it from 📄 Documents → “Single form” → 🧩",
+  "Scoate blocul": "Remove block",
+  "Scoate câmpul": "Remove field",
+  "Subsolul paginii (de exemplu datele bancare sau un mesaj)": "Page footer (for example bank details or a message)",
+  "Tabel gol (de completat de mână)": "Blank table (to fill in by hand)",
+  "Tabelul cu marfa": "Goods table",
+  "Textul documentului. Câmpurile se pun cu „Pune un câmp în text”: în document se înlocuiesc cu datele.": "The document text. Insert fields with “Put a field in the text”: in the document they are replaced with the data."
+ },
+ "templates": {
+  "Ștergi șablonul „{0}”? Documentele făcute deja din el nu se mai pot tipări.": "Delete the template “{0}”? Documents already made from it can no longer be printed."
+ },
+ "skip": [
+  "Adresa clientului",
+  "Clientul din document",
+  "Întocmit",
+  "Marfă de exemplu",
+  "Șablon nou"
+ ]
+}

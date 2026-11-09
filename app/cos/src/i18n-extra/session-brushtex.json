@@ -1,0 +1,24 @@
+{
+ "dict": {
+  "Granulația hârtiei de desen": "Grain of drawing paper",
+  "Grăunțe mărunte împrăștiate": "Fine scattered grains",
+  "Linii oblice dese": "Dense diagonal lines",
+  "Pete mari, ca o piatră sau un perete tencuit": "Large blotches, like stone or a plastered wall",
+  "Rosturi de zidărie": "Masonry joints",
+  "Țesătura unei pânze de pictură": "Weave of a painting canvas",
+  "Adâncimea texturii": "Texture depth",
+  "Cât de tare se vede textura: la 100, adânciturile ei nu primesc deloc culoare": "How strongly the texture shows: at 100, its hollows get no paint at all",
+  "Fără textură": "No texture",
+  "Mărime textură": "Texture scale",
+  "Mărimea modelului texturii": "Size of the texture pattern",
+  "Mărimea texturii": "Texture scale",
+  "Textura pensulei": "Brush texture",
+  "Textura: un model legat de poză (ca hârtia aspră), în locurile lui închise culoarea pătrunde mai puțin": "Texture: a pattern fixed to the picture (like rough paper); paint gets into its dark areas less",
+  "Cretă pe hârtie": "Chalk on Paper",
+  "Margine moale, cu granulația hârtiei: culoarea nu intră în adânciturile ei": "Soft edge with paper grain: paint does not get into its hollows",
+  "Pensulă moale, cu țesătura pânzei de pictură": "Soft brush with the weave of a painting canvas",
+  "Pictură pe pânză": "Paint on Canvas"
+ },
+ "templates": {},
+ "skip": []
+}

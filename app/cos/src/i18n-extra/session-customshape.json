@@ -1,0 +1,16 @@
+{
+  "dict": {
+    "◇ Definește formă": "◇ Define Custom Shape",
+    "◇ Forme proprii": "◇ Custom shapes",
+    "Forme proprii": "Custom shapes",
+    "Formele tale (făcute cu ✒ Traseu → ◇ Definește formă): alegi una și o tragi pe poză": "Your shapes (made with ✒ Path → ◇ Define Custom Shape): pick one and drag it on the picture",
+    "Șterge forma proprie aleasă din listă (formele puse deja pe poză rămân)": "Delete the selected custom shape from the list (shapes already placed on the picture stay)",
+    "Traseul devine o formă proprie, de pus oricât de mare din ✎ Adnotează → Forme proprii (cu contur sau plină)": "The path becomes a custom shape, to place at any size from ✎ Annotate → Custom shapes (outlined or filled)",
+    "Traseul e prea mic pentru o formă: trage-l mai mare.": "The path is too small for a shape: draw it bigger."
+  },
+  "templates": {
+    "Forma proprie {0}": "Custom shape {0}",
+    "Am făcut „{0}”: o găsești în ✎ Adnotează → Forme proprii.": "Made “{0}”: you will find it in ✎ Annotate → Custom shapes."
+  },
+  "skip": []
+}

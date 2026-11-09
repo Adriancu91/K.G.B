@@ -1,0 +1,43 @@
+{
+  "dict": {
+    "Bugetul anului": "Annual budget",
+    "Pentru conducere, asociați sau consiliul unei asociații: veniturile și cheltuielile anului trecut față de plan, bugetul propus pe capitole într-un tabel, graficul cheltuielilor, investițiile, economiile și aprobarea.": "For management, partners or the board of an association: last year's income and expenses against the plan, the proposed budget by chapter in a table, the expense chart, the investments, the savings and the approval.",
+    "Fișier: ofertă, prezentarea firmei, raport, lucrare, ședință, plan de proiect, curs, lansare de produs, plan de afaceri, bun venit în echipă, eveniment, analiză SWOT, prezentare personală, bilanțul anului, studiu de caz, prezentare imobil, retrospectiva proiectului, ședința cu părinții, cerere de finanțare, instruire de protecția muncii, plan de marketing, plan de călătorie, adunarea asociației de proprietari, atelier de gătit, aniversare, nuntă, petrecere de Crăciun, raportul anual al asociației, mutarea biroului, evaluarea anuală a angajatului, bugetul anului": "File: offer, company presentation, report, thesis, meeting, project plan, course, product launch, business plan, welcome to the team, event, SWOT analysis, personal presentation, year in review, case study, property presentation, project retrospective, parent meeting, funding application, workplace safety training, marketing plan, travel plan, homeowners' association meeting, cooking workshop, birthday, wedding, Christmas party, association annual report, office move, annual employee review, annual budget",
+    "Ofertă comercială, prezentarea firmei, raport lunar, lucrare de licență, proiect școlar, ședință de echipă, plan de proiect, curs, lansare de produs, plan de afaceri, bun venit în echipă, eveniment, analiză SWOT, prezentare personală, bilanțul anului, studiu de caz, prezentare imobil, retrospectiva proiectului, ședința cu părinții, cerere de finanțare, instruire de protecția muncii, plan de marketing, plan de călătorie, adunarea asociației de proprietari, atelier de gătit, aniversare, nuntă, petrecere de Crăciun, raportul anual al asociației, mutarea biroului, evaluarea anuală a angajatului, bugetul anului": "Sales offer, company presentation, monthly report, thesis, school project, team meeting, project plan, course, product launch, business plan, welcome to the team, event, SWOT analysis, personal presentation, year in review, case study, property presentation, project retrospective, parent meeting, funding application, workplace safety training, marketing plan, travel plan, homeowners' association meeting, cooking workshop, birthday, wedding, Christmas party, association annual report, office move, annual employee review, annual budget"
+  },
+  "templates": {},
+  "skip": [
+    "Alte cheltuieli",
+    "Anul trecut, pe scurt",
+    "Bugetul pentru anul [anul]",
+    "Bugetul propus pe capitole",
+    "Capitolul",
+    "Ce a ieșit peste plan: [capitolul și de ce]",
+    "Ce a ieșit sub plan: [capitolul și de ce]",
+    "Ce am învățat: [o idee]",
+    "Ce ne poate încurca:",
+    "Cheltuielile propuse",
+    "Coloana Diferență = Propus − Anul trecut; explică orice creștere mai mare de [10%].",
+    "Din ce bani: [fonduri proprii / credit / finanțare]",
+    "Economii și riscuri",
+    "Investiții",
+    "Marketing",
+    "Materiale și marfă",
+    "Pentru fiecare investiție spune în câți ani își scoate banii.",
+    "Pornește de la cifrele reale: arată că planul de anul trecut a fost urmărit.",
+    "Propus",
+    "Rezerva: [0 lei], pentru neprevăzute",
+    "Salarii",
+    "Salarii și contribuții",
+    "Schimbă cifrele din grafic cu cele din tabel (dublu clic pe grafic).",
+    "Supunem bugetul la vot",
+    "Trimite tabelul cu bugetul înainte de ședință; în prezentare spui doar ce s-a schimbat și de ce.",
+    "Unde merg banii",
+    "[Investiția 1]: [0 lei] · [când] · [ce aduce]",
+    "[Investiția 2]: [0 lei] · [când] · [ce aduce]",
+    "[Numele firmei / asociației] · propunere pentru [conducere / adunarea generală]",
+    "[o cheltuială la care renunțăm]",
+    "[prețuri mai mari / încasări întârziate]",
+    "Întrebări? · urmărim bugetul la fiecare [3 luni]"
+  ]
+}

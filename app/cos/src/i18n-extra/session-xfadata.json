@@ -1,0 +1,19 @@
+{
+  "dict": {
+    "⇧ Importă datele (.xml)…": "⇧ Import data (.xml)…",
+    "câmp completat": "filled field",
+    "câmpuri completate": "filled fields",
+    "Completează formularul XFA din datele salvate într-un .xml (de exemplu de anul trecut); Ctrl+Z anulează": "Fill in the XFA form from data saved in an .xml file (for example from last year); Ctrl+Z undoes it",
+    "Formular XFA (ca declarațiile ANAF): scrie direct în câmpuri, apoi Tipărește sau „Salvează ca…”. Datele completate se salvează ca .xml din fila Formular; butoanele lui (Validează, XML) nu funcționează aici. ": "XFA form (like the ANAF tax returns): type directly into the fields, then Print or “Save as…”. The filled-in data can be saved as .xml from the Form tab; its own buttons (Validate, XML) don't work here. ",
+    "Salvează ce s-a completat în formularul XFA ca fișier .xml (datele formularului), de păstrat sau de pus înapoi în același formular gol": "Save what was filled in the XFA form as an .xml file (the form data), to keep or to put back into the same blank form",
+    "Fișierul nu are date XML de formular.": "The file has no XML form data.",
+    "Formularul nu are loc pentru date.": "The form has no place for data.",
+    "PDF-ul nu e un formular XFA.": "The PDF is not an XFA form."
+  },
+  "templates": {
+    "Am pus datele din {0} în formular ({1} {2}). Anulează le scoate.": "Put the data from {0} into the form ({1} {2}). Undo removes it.",
+    "Am salvat datele formularului ({0} {1}) în {2}. Le pui înapoi cu ⇧ Importă datele (.xml).": "Saved the form data ({0} {1}) to {2}. Put it back with ⇧ Import data (.xml).",
+    "Datele nu s-au putut pune în formular: {0}": "The data could not be put into the form: {0}"
+  },
+  "skip": []
+}

@@ -1,0 +1,39 @@
+{
+ "dict": {
+  "Cheltuială din curs": "Exchange loss",
+  "Cheltuieli din diferențe de curs": "Exchange rate losses",
+  "Cursul îl iei de pe site-ul BNR, din ziua facturii și din ziua plății; dacă se plătește în mai multe tranșe, trece fiecare tranșă pe un rând.": "Take the rate from the central bank website, for the invoice date and the payment date; if payment is made in several instalments, enter each instalment on its own row.",
+  "Cursul la factură": "Rate at invoice",
+  "Cursul la plată": "Rate at payment",
+  "Deschisă": "Open",
+  "Diferența de curs": "Exchange difference",
+  "Efectul (+ venit, − cheltuială)": "Effect (+ gain, − loss)",
+  "Emisă către client": "Issued to customer",
+  "Facturi deschise (neîncasate sau neplătite)": "Open invoices (not yet collected or paid)",
+  "Facturi în valută și diferențe de curs": "Foreign currency invoices and exchange differences",
+  "Facturi trecute": "Invoices entered",
+  "Facturile deschise se reevaluează la sfârșitul lunii la cursul BNR; ce curs se folosește pentru TVA și reevaluare verificați cu contabilul.": "Open invoices are revalued at the end of the month at the central bank rate; check with your accountant which rate is used for VAT and revaluation.",
+  "Facturile emise sau primite în euro ori altă valută: din cursul de la factură și cel de la plată ies valoarea în lei și diferența de curs: venit (în verde) sau cheltuială (în roșu), după felul facturii; facturile încă deschise ies în galben, cu valoarea lor și rezultatul net.": "Invoices issued or received in euro or another currency: from the rate at the invoice and at the payment you get the value in lei and the exchange difference: gain (green) or loss (red), depending on the type of invoice; invoices still open show in yellow, with their value and the net result.",
+  "La o factură emisă, un curs mai mare la încasare e venit; la o factură primită, un curs mai mare la plată e cheltuială.": "On an issued invoice, a higher rate at collection is a gain; on a received invoice, a higher rate at payment is a loss.",
+  "Primită de la furnizor": "Received from supplier",
+  "Rezultatul net": "Net result",
+  "Valoarea deschisă, în lei la cursul facturii": "Open value, in lei at the invoice rate",
+  "Valoarea în lei la factură": "Value in lei at invoice",
+  "Valoarea în lei la plată": "Value in lei at payment",
+  "Valoarea în valută": "Value in currency",
+  "Valută": "Currency",
+  "Venit din curs": "Exchange gain",
+  "Venituri din diferențe de curs": "Exchange rate gains",
+  "💶 O factură în valută": "💶 A foreign currency invoice",
+  "Factura: nr. din\nPartenerul:\nValoarea: în (EUR / USD / altă monedă)\n\nLa factură:\n☐ cursul BNR al zilei luat de pe site și scris pe factură, cu valoarea în lei\n☐ factura trecută în tabel, cu felul ei și cursul (Sheets → Facturi în valută și diferențe de curs)\n☐ contul în valută al partenerului verificat (IBAN-ul și banca)\n\nLa plată sau încasare:\n☐ extrasul de cont cu suma primită sau plătită, în valută\n☐ cursul din ziua plății trecut în tabel: se vede diferența de curs\n☐ dacă s-a plătit în tranșe: fiecare tranșă pe un rând\n\nLa sfârșit de lună:\n☐ facturile încă deschise date contabilului, pentru reevaluarea la cursul BNR\n☐ diferențele de curs ale lunii verificate cu contabilul („Pe scurt”: venituri, cheltuieli, rezultatul net)\n\nObservații:\n• ": "Invoice: no. of\nPartner:\nValue: in (EUR / USD / other currency)\n\nAt invoicing:\n☐ the day's central bank rate taken from the website and written on the invoice, with the value in lei\n☐ invoice entered in the table, with its type and the rate (Sheets → Foreign currency invoices and exchange differences)\n☐ partner's foreign currency account checked (IBAN and bank)\n\nAt payment or collection:\n☐ bank statement with the amount received or paid, in currency\n☐ rate on the payment date entered in the table: the exchange difference shows\n☐ if paid in instalments: each instalment on its own row\n\nAt the end of the month:\n☐ invoices still open handed to the accountant, for revaluation at the central bank rate\n☐ the month's exchange differences checked with the accountant (“Summary”: gains, losses, net result)\n\nNotes:\n• "
+ },
+ "templates": {
+  "Factură în valută {0}": "Foreign currency invoice {0}"
+ },
+ "skip": [
+  "=COUNTIF(N2:N{0};\"Deschisă\")",
+  "=IF(I{0}=\"\";\"\";IF(L{1}=\"\";\"Deschisă\";IF(M{2}=0;\"Fără diferență\";IF(OR(AND(E{3}=\"Emisă către client\";M{4}>0);AND(E{5}=\"Primită de la furnizor\";M{6}<0));\"Venit din curs\";\"Cheltuială din curs\"))))",
+  "=IF(N{0}=\"Venit din curs\";ABS(M{1});IF(N{2}=\"Cheltuială din curs\";-ABS(M{3});\"\"))",
+  "=SUMIF(N2:N{0};\"Deschisă\";I2:I{1})"
+ ]
+}

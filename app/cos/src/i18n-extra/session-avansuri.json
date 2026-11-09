@@ -1,0 +1,46 @@
+{
+ "dict": {
+  "Achiziție de materiale": "Purchase of materials",
+  "Are de primit": "Is owed",
+  "Are de restituit": "Has to return",
+  "Avansul dat și suma restituită trec și în Sheets → Registru de casă, cu dispoziția de plată sau de încasare.": "The advance paid out and the amount returned are also entered in Sheets → Cash register, with the payment or receipt order.",
+  "Avansul se justifică în cel mult 3 zile lucrătoare de la întoarcerea din deplasare sau de la termenul stabilit, cu documentele cheltuielilor (Sheets → Decont de deplasare).": "The advance must be accounted for within 3 working days of returning from the trip or of the set deadline, with the expense documents (Sheets → Travel expense report).",
+  "Avansuri": "Advances",
+  "Avansuri acordate": "Advances given",
+  "Avansuri de trezorerie": "Cash advances",
+  "Banii dați angajaților din casierie pentru deplasări sau cumpărături, cu termenul de justificare: din cheltuielile justificate și suma restituită ies ce mai are de dat înapoi angajatul sau ce trebuie să primească în plus și starea: decontat (în verde), în termen (în albastru), rest de restituit sau de plătit (în galben), termen depășit (în roșu), cu soldul unui angajat ales în dreapta.": "Money given to employees from the cash desk for trips or purchases, with the deadline for accounting: from the justified expenses and the amount returned you get what the employee still has to return or what they are owed, and the status: settled (green), within deadline (blue), balance to return or to pay (yellow), deadline passed (red), with the balance of a chosen employee on the right.",
+  "Cheltuieli justificate": "Justified expenses",
+  "Combustibil": "Fuel",
+  "Cu termen depășit": "Deadline passed",
+  "Data acordării": "Date given",
+  "Data decontului": "Settlement date",
+  "De plătit angajaților": "To pay employees",
+  "De plătit angajatului": "To pay the employee",
+  "De restituit de angajat": "To be returned by employee",
+  "De restituit de angajați": "To be returned by employees",
+  "Decontat": "Settled",
+  "În termen": "Within deadline",
+  "Justificat cu documente": "Justified with documents",
+  "Nedecontate încă": "Not settled yet",
+  "Plăți mărunte": "Petty payments",
+  "Restituit în casierie": "Returned to cash desk",
+  "Suma acordată": "Amount given",
+  "Termen depășit": "Deadline passed",
+  "Termenul de justificare": "Accounting deadline",
+  "Total acordat": "Total given",
+  "Un angajat ales": "A chosen employee",
+  "Un angajat nu primește un avans nou până nu l-a justificat pe cel vechi; suma nejustificată la termen se poate reține, cu acordul lui, sau se recuperează pe calea legii.": "An employee does not get a new advance until the old one is accounted for; an amount not justified by the deadline can be withheld with their consent, or recovered through legal means.",
+  "Decont al avansului de trezorerie": "Cash advance settlement",
+  "Când un angajat justifică banii primiți din casierie: avansul primit, cheltuielile cu documentele lor, totalul justificat, ce dă înapoi sau ce mai primește, apoi verificarea, aprobarea și casieria": "When an employee accounts for money received from the cash desk: the advance received, the expenses with their documents, the total justified, what they return or are still owed, then the check, the approval and the cashier",
+  "💵 Decontarea unui avans": "💵 Settling an advance",
+  "Angajatul:\nAvansul primit: lei, pe data de\nScopul:\nTermenul de justificare:\n\nLa acordare:\n☐ avansul vechi al angajatului justificat (Sheets → Avansuri de trezorerie)\n☐ banii dați cu dispoziție de plată și trecuți în registrul de casă (Sheets → Registru de casă)\n☐ avansul trecut în tabel, cu termenul de justificare\n\nLa întoarcere (cel mult 3 zile lucrătoare):\n☐ bonurile, facturile și chitanțele strânse, în original\n☐ decontul completat și semnat (Docs → Decont al avansului de trezorerie; pentru o deplasare și Sheets → Decont de deplasare)\n☐ decontul verificat de contabilitate și aprobat de administrator\n☐ restul dat înapoi în casierie sau suma cheltuită în plus plătită angajatului\n☐ cheltuielile și restul trecute în tabel: starea „Decontat”\n\nObservații:\n• ": "Employee:\nAdvance received: lei, on\nPurpose:\nDeadline for accounting:\n\nWhen given:\n☐ the employee's previous advance accounted for (Sheets → Cash advances)\n☐ the money paid out with a payment order and entered in the cash book (Sheets → Cash register)\n☐ the advance entered in the table, with the deadline for accounting\n\nOn return (within 3 working days):\n☐ receipts, invoices and slips collected, in original\n☐ the settlement filled in and signed (Docs → Cash advance settlement; for a trip also Sheets → Travel expense report)\n☐ the settlement checked by accounting and approved by the administrator\n☐ the remainder returned to the cash desk or the extra amount spent paid to the employee\n☐ the expenses and remainder entered in the table: status “Settled”\n\nNotes:\n• "
+ },
+ "templates": {
+  "Decont avans {0}": "Advance settlement {0}"
+ },
+ "skip": [
+  "=COUNTIF(L2:L{0};\"În termen\")+COUNTIF(L2:L{1};\"Termen depășit\")+COUNTIF(L2:L{2};\"Rest de restituit\")",
+  "=COUNTIF(L2:L{0};\"Termen depășit\")",
+  "=IF(OR(C{0}=\"\";E{1}=\"\");\"\";IF(K{2}>0;\"De plătit angajatului\";IF(J{3}=0;\"Decontat\";IF(AND(F{4}<>\"\";TODAY()>F{5});\"Termen depășit\";IF(G{6}<>\"\";\"Rest de restituit\";\"În termen\")))))"
+ ]
+}

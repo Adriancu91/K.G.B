@@ -1,0 +1,24 @@
+{
+  "dict": {
+    "Gară și tren": "Trains and stations",
+    "Locomotivă": "Locomotive",
+    "Cale ferată": "Railway track",
+    "Trecere la nivel": "Level crossing",
+    "Bilet de tren": "Train ticket",
+    "Peron": "Platform",
+    "Tramvai": "Tram",
+    "Metrou": "Metro",
+    "Vagon de marfă": "Freight wagon"
+  },
+  "templates": {},
+  "skip": [
+    "locomotivă cu aburi tren mașinist locomotive steam engine",
+    "cale ferată șine traverse linie de tren railway track rails",
+    "trecere la nivel cu calea ferată crucea sfântului andrei barieră level crossing",
+    "bilet de tren casa de bilete călătorie abonament train ticket",
+    "peron gară linia de plecare călători așteptare platform station",
+    "tramvai transport în comun oraș tram streetcar",
+    "metrou stație de metrou subteran subway underground",
+    "vagon de marfă tren de marfă transport feroviar freight wagon boxcar"
+  ]
+}

@@ -1,0 +1,8 @@
+{
+  "dict": {},
+  "templates": {},
+  "skip": [
+    "Comanda 1: \nMagazinul: \nData comenzii: \nPlătit: card / ramburs\nLivrare (curier, AWB): \n☐ confirmarea primită pe e-mail\n☐ coletul a ajuns\n☐ verificat produsul (merge, e complet)\n☐ factura și garanția păstrate\n\nRetur (14 zile de la primire):\nPână la: \n☐ cererea de retur trimisă\n☐ coletul predat curierului\n☐ banii primiți înapoi\n\nComanda 2: \nMagazinul: \n☐ coletul a ajuns\n☐ verificat produsul\n",
+    "Comenzi online {0}"
+  ]
+}

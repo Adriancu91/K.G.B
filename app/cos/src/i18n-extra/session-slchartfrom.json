@@ -1,0 +1,18 @@
+{
+  "dict": {
+    "▦ Date din": "▦ Data from",
+    "Date din": "Data from",
+    "Din foaie de calcul…": "From a spreadsheet…",
+    "Foaia activă dintr-un .xlsx, .ods sau .csv, cu valorile formulelor calculate": "The active sheet of an .xlsx, .ods or .csv file, with formula values calculated",
+    "Selectare date: graficul ia datele dintr-un tabel de pe slide sau dintr-o foaie de calcul (.xlsx, .ods, .csv); rândul 1 = seriile, coloana 1 = etichetele": "Select data: the chart takes its data from a table on the slide or from a spreadsheet (.xlsx, .ods, .csv); row 1 = series, column 1 = labels"
+  },
+  "templates": {
+    " (cel mult {0} rânduri și {1} coloane)": " (at most {0} rows and {1} columns)",
+    "Datele din {0}: trebuie cel puțin două rânduri și două coloane (numele seriilor și etichetele).": "Data from {0}: at least two rows and two columns are needed (series names and labels).",
+    "foaia „{0}” din {1}": "sheet “{0}” from {1}",
+    "Graficul are acum datele din {0}{1}.": "The chart now uses the data from {0}{1}.",
+    "tabelul {0} de pe slide": "table {0} on the slide",
+    "Tabelul {0} de pe slide: {1}": "Table {0} on the slide: {1}"
+  },
+  "skip": []
+}

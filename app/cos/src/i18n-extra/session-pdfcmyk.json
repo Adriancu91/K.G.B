@@ -1,0 +1,12 @@
+{
+  "dict": {
+    "◑ În CMYK": "◑ To CMYK",
+    "PDF-ul nu are culori RGB de schimbat (e deja în CMYK sau în gri).": "The PDF has no RGB colors to change (it is already CMYK or grayscale).",
+    "Pentru tipografie: culorile RGB ale textului, desenelor și pozelor devin CMYK (negrul doar pe placa neagră); gri-ul și culorile CMYK rămân; Ctrl+Z anulează": "For print shops: the RGB colors of text, drawings and images become CMYK (black only on the black plate); gray and CMYK colors stay; Ctrl+Z undoes",
+    "Se trec culorile în CMYK…": "Converting colors to CMYK…"
+  },
+  "templates": {
+    "Am trecut în CMYK {0}. Ctrl+Z anulează.": "Converted {0} to CMYK. Ctrl+Z undoes."
+  },
+  "skip": []
+}

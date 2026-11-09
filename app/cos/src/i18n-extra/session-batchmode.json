@@ -1,0 +1,11 @@
+{
+  "dict": {
+    "Culorile": "Colors",
+    "în tonuri de gri": "in grayscale",
+    "Modul culorilor pentru pozele noi": "Color mode for the new pictures",
+    "Rămân cum sunt": "Leave as they are",
+    "Schimbarea se face doar la pozele de felul bifat; celelalte rămân cum sunt": "Only pictures of the checked kind are changed; the others stay as they are"
+  },
+  "templates": {},
+  "skip": []
+}

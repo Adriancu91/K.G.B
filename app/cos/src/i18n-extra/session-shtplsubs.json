@@ -1,0 +1,25 @@
+{
+  "dict": {
+    "Abonamente": "Subscriptions",
+    "Ce abonamente plătești, cât te costă pe lună și pe an și când e următoarea plată; plățile din următoarele 7 zile ies în roșu.": "Which subscriptions you pay for, what they cost per month and per year, and when the next payment is due; payments in the next 7 days show in red."
+  },
+  "templates": {},
+  "skip": [
+    "Abonamente active",
+    "Activ",
+    "Cost pe an",
+    "Cost pe lună",
+    "De plătit în 7 zile",
+    "La „Activ” alege Nu pentru un abonament oprit: rămâne în listă, dar nu se mai adună.",
+    "Presă și cursuri",
+    "Prima plată",
+    "Programe și cloud",
+    "Se plătește",
+    "Semestrial",
+    "Sport și sănătate",
+    "Televiziune și streaming",
+    "Trimestrial",
+    "Următoarea plată",
+    "Zile rămase"
+  ]
+}

@@ -1,0 +1,16 @@
+{
+  "dict": {
+    "Din imagine": "From picture",
+    "Din imagine…": "From picture…",
+    "Se recunoaște textul din imagine…": "Recognizing the text in the picture…",
+    "Textul din imagine nu a putut fi recunoscut: ": "The text in the picture could not be recognized: ",
+    "Un tabel fotografiat sau scanat (.png, .jpg): textul se recunoaște pe calculator, fără internet, și ajunge în celule": "A photographed or scanned table (.png, .jpg): the text is recognized on this computer, without internet, and goes into cells"
+  },
+  "templates": {
+    "{0} nu e o imagine care se poate citi aici (.png, .jpg, .webp, .bmp, .gif).": "{0} is not a picture that can be read here (.png, .jpg, .webp, .bmp, .gif).",
+    "Importat din {0}: {1} rânduri și {2} coloane. Verifică celulele: recunoașterea poate greși unele litere sau cifre.": "Imported from {0}: {1} rows and {2} columns. Check the cells: recognition can get some letters or digits wrong.",
+    "În {0} nu s-a găsit niciun text.": "No text was found in {0}.",
+    "Se recunoaște textul din imagine… {0}%": "Recognizing the text in the picture… {0}%"
+  },
+  "skip": []
+}

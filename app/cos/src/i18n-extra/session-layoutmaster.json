@@ -1,0 +1,12 @@
+{
+  "dict": {
+    "Ce editezi în coordonator": "What you edit in the master",
+    "Coordonator (toate slide-urile)": "Master (all slides)",
+    "Coordonatorul (pentru toate slide-urile) sau unul dintre aspecte (doar pentru slide-urile cu acel aspect)": "The master (for all slides) or one of the layouts (only for slides with that layout)"
+  },
+  "templates": {
+    "Ce pui aici apare doar pe slide-urile cu aspectul „{0}”, peste casetele coordonatorului.": "What you put here appears only on slides with the “{0}” layout, on top of the master's boxes.",
+    "Aspect: {0}{1}": "Layout: {0}{1}"
+  },
+  "skip": []
+}

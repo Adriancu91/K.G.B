@@ -1,0 +1,28 @@
+{
+  "dict": {
+    "Document recuperat. Salvează-l cu Ctrl+S ca să-l păstrezi.": "Document recovered. Save it with Ctrl+S to keep it.",
+    "Recuperează documentele nesalvate: copiile păstrate automat în ultimele 7 zile, și după închiderea fără salvare": "Recover unsaved documents: the copies kept automatically in the last 7 days, even after closing without saving",
+    "Cât scrii într-un document care n-a fost încă salvat, o copie se păstrează automat pe acest calculator, la câteva secunde. Rămâne 7 zile, chiar dacă ai închis documentul fără să-l salvezi. După ce îl salvezi, copia se șterge.": "While you write in a document that has not been saved yet, a copy is kept automatically on this computer every few seconds. It stays for 7 days, even if you closed the document without saving it. Once you save it, the copy is deleted.",
+    "Ciorna nu a putut fi citită.": "The draft could not be read.",
+    "Ciorna nu a putut fi ștearsă.": "The draft could not be deleted.",
+    "Deschide ciorna într-un document nou, nesalvat": "Open the draft in a new, unsaved document",
+    "Documente nesalvate": "Unsaved documents",
+    "Niciun document nesalvat din ultimele 7 zile.": "No unsaved documents from the last 7 days.",
+    "Recuperează documentele nesalvate": "Recover unsaved documents",
+    "Șterge ciorna (nu se mai poate recupera)": "Delete the draft (it can no longer be recovered)",
+    "Recuperează tabelele nesalvate: copiile păstrate automat în ultimele 7 zile, și după închiderea fără salvare": "Recover unsaved workbooks: the copies kept automatically in the last 7 days, even after closing without saving",
+    "Tabel recuperat. Salvează-l cu Ctrl+S ca să-l păstrezi.": "Workbook recovered. Save it with Ctrl+S to keep it.",
+    "Copiile păstrate automat în ultimele 7 zile ale prezentărilor nesalvate, și după închiderea fără salvare": "The copies of unsaved presentations kept automatically in the last 7 days, even after closing without saving",
+    "Prezentare recuperată. Salveaz-o cu Ctrl+S ca s-o păstrezi.": "Presentation recovered. Save it with Ctrl+S to keep it.",
+    "Recuperează prezentările nesalvate…": "Recover unsaved presentations…",
+    "Previzualizare înaintea imprimării: paginile exact cum ies la tipărire (Ctrl+F2)": "Print preview: the pages exactly as they will print (Ctrl+F2)",
+    "Previzualizarea nu a putut fi făcută.": "The preview could not be made.",
+    "Se pregătesc paginile…": "Preparing the pages…",
+    "Două pagini alăturate, ca într-o carte deschisă": "Two pages side by side, like an open book",
+    "Pagina anterioară": "Previous page",
+    "Paginile nu au putut fi pregătite.": "The pages could not be prepared.",
+    "Previzualizare înaintea imprimării": "Print preview"
+  },
+  "templates": {},
+  "skip": []
+}

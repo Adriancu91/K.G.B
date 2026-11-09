@@ -1,0 +1,14 @@
+{
+  "dict": {
+    "Listă cu sclipiri (numărul pe o sclipire, o stea cu patru colțuri, textul într-o bandă alături)": "Sparkle list (the number on a sparkle, a four-pointed star, the text in a band beside it)",
+    "Listă cu săgeți crestate (numărul pe o săgeată cu coada crestată, textul într-o bandă alături)": "Notched arrow list (the number on an arrow with a notched tail, the text in a band beside it)",
+    "Listă cu sclipiri": "Sparkle list",
+    "listă cu sclipiri": "sparkle list",
+    "Listă cu săgeți crestate": "Notched arrow list",
+    "listă cu săgeți crestate": "notched arrow list",
+    "Puncte una sub alta: numărul pe o sclipire (o stea cu patru colțuri), iar alături textul": "Points one below the other: the number on a sparkle (a four-pointed star), with the text beside it",
+    "Puncte una sub alta: numărul pe o săgeată cu coada crestată, iar alături textul": "Points one below the other: the number on an arrow with a notched tail, with the text beside it"
+  },
+  "templates": {},
+  "skip": []
+}

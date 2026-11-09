@@ -1,0 +1,30 @@
+{
+  "dict": {
+    "[agenții care au atins ținta: … din …]": "[agents who reached the target: … of …]",
+    "[Ținta echipei: … lei] · [ce facem diferit] · întrebări: [nume] · [telefon]": "[Team target: … lei] · [what we do differently] · questions: [name] · [phone]",
+    "Cifrele vin din Sheets → Comisioanele agenților; realizarea sub 80% e în roșu acolo.": "The figures come from Sheets → Sales agent commissions; achievement below 80% is shown in red there.",
+    "Clienți noi: [câți]": "New customers: [how many]",
+    "Clienți pierduți sau în scădere:": "Customers lost or buying less:",
+    "Clienții": "Customers",
+    "Comisioanele de plată": "Commissions to pay",
+    "Comisioanele se plătesc doar pe facturile încasate, dacă așa e regula firmei.": "Commissions are paid only on collected invoices, if that is the company rule.",
+    "Din vânzări: [procent]%": "Of sales: [percent]%",
+    "Pentru ședința lunară de vânzări: vânzările lunii față de țintă, realizarea fiecărui agent într-un tabel, vânzările pe luni într-un grafic, clienții noi și cei pierduți, comisioanele de plată și țintele lunii următoare.": "For the monthly sales meeting: the month's sales against the target, each agent's achievement in a table, sales by month in a chart, new and lost customers, the commissions to pay and next month's targets.",
+    "Realizarea": "Achievement",
+    "Realizarea pe agenți": "Achievement by agent",
+    "Restanțele mari: Sheets → Vechimea creanțelor": "Large overdue amounts: Sheets → Receivables ageing",
+    "Rezultatele vânzărilor": "Sales results",
+    "Rezultatele vânzărilor · [luna] [anul]": "Sales results · [month] [year]",
+    "Schimbă cifrele din grafic cu vânzările din ultimele luni (dublu clic pe grafic).": "Replace the chart figures with the sales of the last months (double-click the chart).",
+    "Spune de la început dacă echipa a atins ținta lunii și cu cât.": "Say at the start whether the team reached the month's target and by how much.",
+    "Ținta lunii: [suma] lei": "Month's target: [amount] lei",
+    "Țintele lunii următoare": "Next month's targets",
+    "Total comisioane și bonusuri: [suma] lei": "Total commissions and bonuses: [amount] lei",
+    "Trimise la salarii: Sheets → Stat de plată, până la [data]": "Sent to payroll: Sheets → Payroll, by [date]",
+    "Vânzări (mii lei)": "Sales (thousand lei)",
+    "Vânzări fără TVA: [suma] lei": "Sales excluding VAT: [amount] lei",
+    "Vânzările pe luni": "Sales by month"
+  },
+  "templates": {},
+  "skip": []
+}

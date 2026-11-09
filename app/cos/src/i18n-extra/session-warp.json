@@ -1,0 +1,21 @@
+{
+  "dict": {
+    "Transformarea textului": "Text transform",
+    "Transformarea textului: literele casetei pe un arc, pe un cerc sau pe un val (la clic în casetă textul apare drept, ca să-l poți scrie)": "Text transform: the letters of the box on an arch, a circle or a wave (click in the box and the text shows straight, so you can type)",
+    "◠ Arc în sus": "◠ Arch up",
+    "◡ Arc în jos": "◡ Arch down",
+    "⟿ Fără transformare": "⟿ No transform",
+    "Arc auriu": "Golden arch",
+    "Val în degrade": "Gradient wave",
+    "Bandă diagonală": "Diagonal stripe",
+    "Colț (L)": "L-shape",
+    "Dreptunghi cu două colțuri tăiate": "Rectangle with two snipped corners",
+    "Jumătate de cadru": "Half frame",
+    "Schemă: Cartelă": "Flowchart: Card",
+    "Schemă: Conector în altă pagină": "Flowchart: Off-page connector",
+    "Schemă: Decizie": "Flowchart: Decision",
+    "Schemă: Extragere": "Flowchart: Extract"
+  },
+  "templates": {},
+  "skip": []
+}

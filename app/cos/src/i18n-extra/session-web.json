@@ -1,0 +1,22 @@
+{
+  "dict": {
+    "Adresă": "Address",
+    "Adu tabelele": "Get tables",
+    "Din web": "From Web",
+    "Din web…": "From Web…",
+    "Pagina nu a putut fi adusă.": "The page could not be fetched.",
+    "Pagina nu are niciun tabel. Unele site-uri își desenează tabelele abia în browser: încearcă o pagină mai simplă sau adresa unui .csv.": "The page has no tables. Some sites only draw their tables in the browser: try a simpler page or the address of a .csv.",
+    "Scrie adresa unei pagini cu tabele (de exemplu un curs valutar, o listă de prețuri sau un clasament). Pagina e doar citită: nu se trimite nimic și nu rulează nimic din ea.": "Type the address of a page with tables (for example exchange rates, a price list or a ranking). The page is only read: nothing is sent and nothing on it runs.",
+    "Se aduce pagina…": "Fetching the page…",
+    "Tabelele unei pagini de pe internet (de exemplu un curs valutar sau o listă de prețuri): scrii adresa, iar tabelele vin ca foi": "The tables of a web page (for example exchange rates or a price list): type the address and the tables arrive as sheets",
+    "Adresa nu e bună. Verifică dacă e scrisă întreagă.": "The address is not valid. Check that it is written in full.",
+    "Adresa trebuie să înceapă cu http:// sau https://.": "The address must start with http:// or https://.",
+    "Scrie adresa paginii, de exemplu https://exemplu.ro/preturi.html": "Type the page address, for example https://example.com/prices.html",
+    "Pagina nu răspunde. Verifică adresa și legătura la internet.": "The page does not respond. Check the address and the internet connection.",
+    "Pagina e prea mare (peste 15 MB).": "The page is too large (over 15 MB)."
+  },
+  "templates": {
+    "Site-ul a răspuns cu eroarea {0}.": "The site answered with error {0}."
+  },
+  "skip": []
+}

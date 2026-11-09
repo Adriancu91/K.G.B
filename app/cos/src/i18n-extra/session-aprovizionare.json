@@ -1,0 +1,26 @@
+{
+ "dict": {
+  "Necesar de aprovizionare": "Purchasing needs",
+  "Ce trebuie comandat și cât: din stocul la zi, ce e deja pe drum, consumul mediu pe lună, termenul de livrare și zilele de siguranță ies câte zile mai ajunge stocul, punctul de comandă și cantitatea de comandat, cu valoarea; starea: suficient (în verde), de comandat (în galben) sau lipsă din stoc (în roșu).": "What to order and how much: from the current stock, what is already on the way, the average monthly usage, the delivery time and the safety days you get how many days the stock still lasts, the reorder point and the quantity to order, with its value; the status: sufficient (green), to order (yellow) or out of stock (red).",
+  "Cantitatea de comandat ajunge până la punctul de comandă plus consumul pe încă o lună; prețurile se pot compara în Sheets → Compararea ofertelor.": "The quantity to order brings the stock up to the reorder point plus one more month of usage; prices can be compared in Sheets → Offer comparison.",
+  "Cel mai puțin acoperit (zile)": "Least covered (days)",
+  "Comandat (pe drum)": "Ordered (on the way)",
+  "Consum mediu pe lună": "Average monthly usage",
+  "De comandat acum": "To order now",
+  "Lipsă din stoc": "Out of stock",
+  "Produse urmărite": "Products tracked",
+  "Punctul de comandă": "Reorder point",
+  "Punctul de comandă = consumul pe zilele de livrare plus zilele de siguranță; când stocul cu ce e pe drum ajunge la el, se comandă.": "Reorder point = usage over the delivery days plus the safety days; when the stock plus what is on the way reaches it, you order.",
+  "Stoc de siguranță (zile)": "Safety stock (days)",
+  "Stoc la zi": "Current stock",
+  "Stocul la zi se ia din fișa de magazie (Sheets → Fișa de magazie); consumul mediu, din ieșirile ultimelor luni.": "The current stock comes from the stock card (Sheets → Stock card); the average usage, from the issues of the last months.",
+  "Valoarea comenzilor (fără TVA)": "Value of the orders (excl. VAT)",
+  "Zile acoperite": "Days covered"
+ },
+ "templates": {},
+ "skip": [
+  "=COUNTIF(O2:O{0};\"Lipsă din stoc\")",
+  "=IF(K{0}=\"\";\"\";IF(N(E{1})<=0;\"Lipsă din stoc\";IF(L{2}>0;\"De comandat\";\"Suficient\")))",
+  "O2:O{0}"
+ ]
+}

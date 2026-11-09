@@ -1,0 +1,35 @@
+{
+  "dict": {
+    "Scrie locul sau mărimea nouă a conținutului, în pixeli, apoi Enter": "Type the new position or size of the content, in pixels, then press Enter",
+    "Locul conținutului de la stânga, în pixeli": "Content position from the left, in pixels",
+    "Locul conținutului de sus, în pixeli": "Content position from the top, in pixels",
+    "Lățimea conținutului, în pixeli": "Content width, in pixels",
+    "Înălțimea conținutului, în pixeli": "Content height, in pixels",
+    "Păstrează proporțiile: lățimea și înălțimea se schimbă împreună": "Keep proportions: width and height change together",
+    "Păstrează proporțiile": "Keep proportions",
+    "⬚ Rasterizează textul": "⬚ Rasterize type",
+    "Textul devine pixeli obișnuiți: se poate picta pe el, dar nu se mai rescrie": "The text becomes ordinary pixels: you can paint on it, but it can no longer be retyped",
+    "⬚ Stilurile în pixeli": "⬚ Rasterize layer style",
+    "Umbra, conturul și celelalte stiluri se pun în pixelii stratului; arată la fel, dar nu se mai pot schimba": "The shadow, stroke and other styles are merged into the layer pixels; it looks the same, but they can no longer be changed",
+    "⬚ Rasterizează tot": "⬚ Rasterize all",
+    "Textul, umplerea și stilurile devin toate pixeli obișnuiți": "Text, fill and styles all become ordinary pixels",
+    "Pregătesc variantele…": "Preparing the variants…",
+    "⊞ Compară 4 variante": "⊞ Compare 4 variants",
+    "Aceeași bucată din mijlocul pozei, la mărimea reală: originalul și trei calități alăturate, cu mărimea fișierului; clic pe o variantă o alege": "The same piece from the middle of the picture, at actual size: the original and three qualities side by side, with the file size; click a variant to choose it",
+    "Alege această calitate": "Choose this quality",
+    "Poza fără pierderi, pentru comparație": "The lossless picture, for comparison",
+    "Originalul": "Original",
+    "Metadate:": "Metadata:",
+    "Autorul, drepturile, descrierea și cuvintele cheie din ⓘ Informații: toate, doar autorul și drepturile (de exemplu pentru poze puse pe internet) sau niciuna": "The author, copyright, description and keywords from ⓘ Info: all of them, only the author and copyright (for example for pictures posted online), or none",
+    "Ce metadate intră în fișier": "Which metadata goes into the file",
+    "Toate (autor, drepturi, descriere, cuvinte cheie)": "All (author, copyright, description, keywords)",
+    "Doar autorul și drepturile": "Only author and copyright",
+    "Fără": "None",
+    "Profilul de culoare sRGB se pune în fișier, ca programele și tipografiile să afișeze culorile la fel (fișierul crește cu câțiva KB)": "The sRGB color profile is embedded in the file, so programs and print shops show the colors the same way (the file grows by a few KB)",
+    "Încorporează profilul de culoare sRGB": "Embed the sRGB color profile"
+  },
+  "templates": {
+    "Calitate {0}%": "Quality {0}%"
+  },
+  "skip": []
+}

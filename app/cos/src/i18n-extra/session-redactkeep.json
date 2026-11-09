@@ -1,0 +1,22 @@
+{
+  "dict": {
+    "Redactare: la salvare, textul de sub dreptunghiuri se scoate definitiv, iar restul paginii rămâne text (pagina devine imagine doar când sub zonă sunt poze sau desene).": "Redaction: on save, the text under the rectangles is removed permanently and the rest of the page stays text (the page becomes an image only when there are pictures or drawings under an area).",
+    "Textul vechi se scoate de tot din fișier (nu mai poate fi copiat), iar restul paginii rămâne text. Fără bifă, textul vechi doar se acoperă cu alb.": "The old text is removed from the file completely (it can no longer be copied) and the rest of the page stays text. Unchecked, the old text is only covered with white.",
+    "Straturile ascunse (cele oprite la deschidere) și tot ce e desenat în ele": "Hidden layers (those turned off on opening) and everything drawn on them",
+    "1 bucată de text ascuns": "1 piece of hidden text",
+    "Textul ascuns: invizibil, alb pe fundal alb, transparent, prea mic ca să se vadă sau în comentarii ascunse (textul de peste poze, ca la documentele scanate, rămâne)": "Hidden text: invisible, white on a white background, transparent, too small to see or in hidden comments (text over pictures, as in scanned documents, stays)",
+    "1 comentariu ascuns": "1 hidden comment"
+  },
+  "templates": {
+    "{0} bucăți de text ascuns": "{0} pieces of hidden text",
+    "{0} comentarii ascunse": "{0} hidden comments"
+  },
+  "skip": [
+    "Matrix",
+    "Configs",
+    "Locked",
+    "Order",
+    "Properties",
+    "Tr"
+  ]
+}
