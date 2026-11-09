@@ -5,6 +5,7 @@ import { api, message, type AppInfo, type ModulesReply, type Settings, type Sett
 import { NotesPage } from "./modules/notes/NotesPage";
 import { PdfPage } from "./modules/pdf/PdfPage";
 import { SheetsPage } from "./modules/sheets/SheetsPage";
+import { WritePage } from "./modules/write/WritePage";
 import { ExtractPage } from "./modules/extract/ExtractPage";
 import { PlannerPage } from "./modules/planner/PlannerPage";
 import { DocsPage } from "./modules/docs/DocsPage";
@@ -39,6 +40,7 @@ const MODULE_PAGES: Record<string, ComponentType<{ onError: (e: string | null) =
   "kgb.permits": PermitsPage,
   "kgb.team": TeamPage,
   "kgb.calc": CalcPage,
+  "kgb.write": WritePage,
 };
 
 const SIDEBAR_MIN = 160;

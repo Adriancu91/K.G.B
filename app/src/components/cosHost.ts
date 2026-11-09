@@ -1,0 +1,17 @@
+// The windows of Cyber Office Studio (Sheets D-077, Docs D-080) run in their own frame
+// (cos-sheets.html) and reach the core through this host, which the app lends them on its own window.
+// Imported by every page that opens such a frame.
+import { open, save } from "@tauri-apps/plugin-dialog";
+import { api } from "../api";
+import type { KgbHost } from "../modules/sheets/cosBridge";
+
+const host: KgbHost = {
+  moduleCall: (id, command, args) => api.moduleCall(id, command, args),
+  importFile: (id, path) => api.importFile(id, path),
+  importFileWith: (id, path, command, args) => api.importFileWith(id, path, command, args),
+  open: (o) => open(o),
+  save: (o) => save(o),
+};
+(window as Window & { kgbHost?: KgbHost }).kgbHost = host;
+
+export {};

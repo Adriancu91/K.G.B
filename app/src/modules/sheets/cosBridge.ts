@@ -41,6 +41,17 @@ export const SHEETS: BridgeKind = {
   save: "save_book",
   saveNew: "save_new_book",
 };
+export const DOCS: BridgeKind = {
+  id: "kgb.write",
+  kind: "doc",
+  own: "sdoc",
+  office: ["docx"],
+  label: "Documente",
+  savedNote: "Salvat din fereastra de documente",
+  newNote: "Document nou din fereastra de documente",
+  save: "save_doc",
+  saveNew: "save_new_doc",
+};
 let cfg: BridgeKind = SHEETS;
 
 type DialogFilter = { name: string; extensions: string[] };
@@ -196,5 +207,9 @@ export function installCosBridge(host: KgbHost, kind: BridgeKind = SHEETS): void
     pickFolder: async () => null,
     listTables: async () => [],
     writeToFolder: unsupported("Scrierea într-un dosar"),
+    // The document window: sending by e-mail and bringing several files at once are not there yet.
+    composeMail: unsupported("Trimiterea pe e-mail"),
+    openMail: unsupported("Deschiderea unui e-mail"),
+    importMany: unsupported("Aducerea mai multor fișiere deodată"),
   });
 }
