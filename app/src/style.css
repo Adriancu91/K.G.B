@@ -1724,3 +1724,9 @@ label > .suggest > input {
 .pdf-mystamps figure.active { outline: 2px solid var(--accent); }
 .pdf-mystamps img { max-width: 110px; max-height: 70px; display: block; margin: 0 auto 4px;
   background: repeating-conic-gradient(#eee 0% 25%, #fff 0% 50%) 50% / 10px 10px; }
+
+/* Etapa 7, step 7.4l-1c: hiding data */
+.redact-page { border: 1px solid var(--line); user-select: none; }
+.redact-page canvas { display: block; }
+.redact-zone { background: rgba(0, 0, 0, 0.75); outline: 1px solid #c62828; pointer-events: none; }
+.redact-zone.drawing { background: rgba(0, 0, 0, 0.35); }

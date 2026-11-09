@@ -31,6 +31,8 @@
 //! - `stamp_annot {id, based_on, pages?, text, sub?, culoare?, opacitate?,
 //!   pozitie?, biblioteca?, latime_mm?, autor?, apply}` → a `/Stamp`
 //!   annotation as in Cyber Office Studio (7.4l-1b2)
+//! - `redact {id, based_on, zone: [{page, x, y, w, h}], apply}` → the zones
+//!   hidden for good: those pages become images with black zones (7.4l-1c)
 //! - `stampile`, `stampila_save {nume, date}`, `stampila_delete {id}` →
 //!   „Ștampilele mele” (PNG, at most 12), kept as the module's files
 //! - `restore {id, version}`, `export {id, version?, dest, overwrite}`, `delete {id}`
@@ -38,6 +40,7 @@
 pub mod check;
 pub mod ops;
 pub mod overlay;
+pub mod redact;
 pub mod stamp;
 
 use std::path::PathBuf;
@@ -170,6 +173,28 @@ struct LibSave {
 /// „Ștampilele mele” are files of the module with this name prefix.
 const LIB_PREFIX: &str = "Ștampilă - ";
 const LIB_MAX: usize = 12;
+
+/// Hiding data for good (7.4l-1c).
+#[derive(Deserialize)]
+#[serde(deny_unknown_fields)]
+struct Redact {
+    id: Uuid,
+    based_on: u64,
+    /// Zones on the pages as shown: page (from 1), x, y, w, h in points, origin top-left.
+    zone: Vec<ZoneIn>,
+    #[serde(default)]
+    apply: bool,
+}
+
+#[derive(Deserialize)]
+#[serde(deny_unknown_fields)]
+struct ZoneIn {
+    page: u32,
+    x: f64,
+    y: f64,
+    w: f64,
+    h: f64,
+}
 
 /// Text over the pages (7.4l-1a).
 #[derive(Deserialize)]
@@ -391,6 +416,24 @@ impl Module for Pdf {
                     "{} cu {angle}°",
                     plural(a.pages.len(), "pagină rotită", "pagini rotite")
                 );
+                if !a.apply {
+                    return Ok(preview(&out, n, summary));
+                }
+                let v = ctx.save_document(a.id, num, &out, &summary)?;
+                Ok(json!({"applied": true, "version": v.number, "pages": n, "summary": summary}))
+            }
+            "redact" => {
+                let a: Redact = args(a)?;
+                let (num, data) = intact(ctx, a.id, Some(a.based_on))?;
+                let mut texts = texts_of(&data)?;
+                let zones: Vec<redact::Zone> = a.zone.iter().map(|z| redact::Zone { page: z.page, x: z.x, y: z.y, w: z.w, h: z.h }).collect();
+                let (out, pages) = redact::redact(&data, &zones).map_err(bad)?;
+                // The pages turned into images have no text left; the others keep theirs exactly.
+                for p in &pages {
+                    texts[*p as usize - 1] = String::new();
+                }
+                let n = ops::verify(&out, &texts, None).map_err(bad)?;
+                let summary = format!("{} pe {} (devine imagine)", plural(a.zone.len(), "zonă ascunsă", "zone ascunse"), plural(pages.len(), "pagină", "pagini"));
                 if !a.apply {
                     return Ok(preview(&out, n, summary));
                 }

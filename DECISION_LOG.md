@@ -342,3 +342,9 @@ Deciziile DECIS se schimbă doar cu aprobarea explicită a proprietarului (Maste
 - Cyber Office Studio e aplicația proprietarului; codul ei (TypeScript/React: interfețe, algoritmi, teste) se poate prelua direct în K.G.B., cu testele lui, fără rescriere de la zero.
 - Rămân valabile: dosarul `workspace` doar se citește (D-037); o bibliotecă nouă de care ar avea nevoie codul copiat (de ex. pdf-lib, tesseract.js) se cere separat; operațiile pe PDF rămân în Rust/lopdf (D-032), iar calculul din foi pe un singur motor (IronCalc), dacă proprietarul nu hotărăște altfel.
 
+### D-072 — pdf-lib în K.G.B., ca uneltele PDF din Cyber Office Studio să fie copiate direct
+- **Data:** 9 nov. 2026 · **Statut:** DECIS de proprietar („Da pdf lib”)
+- Se adaugă în fereastra aplicației `pdf-lib` 1.17.1 (MIT) și `@pdf-lib/fontkit` 1.1.1 (MIT; cu `pako` MIT/Zlib și `tslib` 0BSD), aceleași versiuni ca în Cyber Office Studio, ca uneltele PDF de acolo (peste 80, aproape toate cu teste) să se preia direct, cu testele lor (D-071).
+- Schimbă D-032 doar cât trebuie: o unealtă copiată din COS poate lucra pe octeții PDF-ului în fereastră (pdf-lib); rezultatul trece, ca până acum, prin modulul `kgb.pdf`: verificarea strictă, previzualizarea, versiunea nouă (originalul nu se schimbă). Uneltele deja scrise în Rust rămân.
+- Prima folosire: ascunderea datelor care păstrează restul paginii ca text (`redactKeep.ts`).
+

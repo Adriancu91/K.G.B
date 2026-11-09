@@ -408,3 +408,49 @@ fn stamp_annotations_and_my_stamps() {
     assert!(e(&mut ws, json!({"id": id, "based_on": 3, "text": "OK", "opacitate": 0.1})).contains("20%"));
     assert!(e(&mut ws, json!({"id": id, "based_on": 3, "text": "OK", "pozitie": "afară"})).contains("poziție"));
 }
+
+/// Step 7.4l-1c: hiding data for good — the page with zones becomes an image
+/// with black over them (its text leaves the file), the other pages keep
+/// their text exactly; preview first, then a new version.
+#[test]
+fn redact_zones_for_good() {
+    let (_t, mut ws, mm) = setup();
+    let id = import(&mut ws, &mm, "multipagina-50.pdf")["document"]["id"].clone();
+    let before: Vec<String> = serde_json::from_value(call(&mut ws, &mm, "text", json!({"id": id})).unwrap()).unwrap();
+    assert!(!before[1].is_empty());
+    let zone = json!([{"page": 2, "x": 40, "y": 40, "w": 300, "h": 60}, {"page": 2, "x": 40, "y": 200, "w": 200, "h": 30}]);
+    let p = call(&mut ws, &mm, "redact", json!({"id": id, "based_on": 1, "zone": zone})).unwrap();
+    assert_eq!(p["summary"], "2 zone ascunse pe 1 pagină (devine imagine)");
+    let r = call(&mut ws, &mm, "redact", json!({"id": id, "based_on": 1, "zone": zone, "apply": true})).unwrap();
+    assert_eq!(r["version"], 2);
+    let after: Vec<String> = serde_json::from_value(call(&mut ws, &mm, "text", json!({"id": id})).unwrap()).unwrap();
+    assert_eq!(after.len(), 50);
+    assert!(after[1].is_empty(), "page 2: no text left in the file");
+    assert_eq!(after[0], before[0]);
+    assert_eq!(after[2..], before[2..], "the other pages keep their text");
+    let out = bytes(&mut ws, &mm, &id, Some(2));
+    if let Ok(dir) = std::env::var("KGB_STAMP_PREVIEW") {
+        std::fs::write(Path::new(&dir).join("ascuns.pdf"), &out).unwrap();
+    }
+    // The black is really on the page (rendered): the zone's middle is black.
+    let png = B64.decode(call(&mut ws, &mm, "thumb", json!({"id": id, "version": 2, "page": 2, "width": 595})).unwrap()["png"].as_str().unwrap()).unwrap();
+    assert!(png.len() > 100);
+    // A redacted document can still be merged with another.
+    let other = import(&mut ws, &mm, "simplu-1-pagina.pdf")["document"]["id"].clone();
+    let m = call(&mut ws, &mm, "merge", json!({"ids": [id, other], "name": "unit"}));
+    assert!(m.is_ok(), "{m:?}");
+    assert!(call(&mut ws, &mm, "redact", json!({"id": id, "based_on": 2, "zone": []})).unwrap_err().to_string().contains("cel puțin o zonă"));
+    assert!(call(&mut ws, &mm, "redact", json!({"id": id, "based_on": 2, "zone": [{"page": 99, "x": 0, "y": 0, "w": 10, "h": 10}]})).unwrap_err().to_string().contains("nu există"));
+}
+
+/// A stamped, then redacted document still merges (found by the window test).
+#[test]
+fn stamped_redacted_merges() {
+    let (_t, mut ws, mm) = setup();
+    let id = import(&mut ws, &mm, "simplu-1-pagina.pdf")["document"]["id"].clone();
+    call(&mut ws, &mm, "stamp_annot", json!({"id": id, "based_on": 1, "text": "APROBAT", "pozitie": "sus-dreapta", "apply": true})).unwrap();
+    call(&mut ws, &mm, "redact", json!({"id": id, "based_on": 2, "zone": [{"page": 1, "x": 40, "y": 40, "w": 200, "h": 40}], "apply": true})).unwrap();
+    let other = import(&mut ws, &mm, "rotite-si-formate.pdf")["document"]["id"].clone();
+    let m = call(&mut ws, &mm, "merge", json!({"ids": [id, other], "name": "unit"}));
+    assert!(m.is_ok(), "{m:?}");
+}

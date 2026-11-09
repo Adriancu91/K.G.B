@@ -7,6 +7,7 @@ import type { PDFDocumentProxy } from "pdfjs-dist";
 import { api, message } from "../../api";
 import { Confirm } from "../../components/Confirm";
 import { drawPage, fromBase64, openPdf } from "./pdfjs";
+import { RedactPanel } from "./Redact";
 import { StampsPanel } from "./Stamps";
 
 const ID = "kgb.pdf";
@@ -97,6 +98,8 @@ export function PdfPage({ onError }: { onError: (e: string | null) => void }) {
   const [stamp, setStamp] = useState<{ open: boolean; filigran: string; antet: string; subsol: string }>({ open: false, filigran: "", antet: "", subsol: "" });
   // Stamps as in Cyber Office Studio (7.4l-1b2).
   const [stampsOpen, setStampsOpen] = useState(false);
+  // Hiding data for good (7.4l-1c).
+  const [redactOpen, setRedactOpen] = useState(false);
 
   const refresh = useCallback(async () => {
     try {
@@ -325,12 +328,16 @@ export function PdfPage({ onError }: { onError: (e: string | null) => void }) {
               <button disabled={!editable || busy} onClick={() => setStampsOpen(!stampsOpen)}>
                 Ștampilă…
               </button>
+              <button disabled={!editable || busy || !view} onClick={() => setRedactOpen(!redactOpen)}>
+                Ascunde date…
+              </button>
               {selected.length > 0 && (
                 <button className="link" onClick={() => setSelected([])}>
                   Deselectează
                 </button>
               )}
             </div>
+            {redactOpen && editable && view && <RedactPanel view={view} docId={doc.id} version={version} busy={busy} ask={ask} />}
             {stampsOpen && editable && <StampsPanel docId={doc.id} version={version} selected={selected} busy={busy} ask={ask} onError={onError} />}
             {stamp.open && editable && (
               <div className="card pdf-stamp">

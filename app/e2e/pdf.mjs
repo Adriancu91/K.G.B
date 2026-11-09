@@ -207,11 +207,42 @@ try {
   await p.click("Salvează ca versiune nouă", ".dialog button");
   await p.until("document.querySelector('.pdf-doc select')?.selectedOptions[0]?.textContent.startsWith('4 —')", 10000);
 
+  // 7.4l-1c: hiding data for good — a word found by „Caută”, a zone drawn with the mouse.
+  await p.click("Ascunde date…", ".pdf-doc button");
+  await p.until("!!document.querySelector('.pdf-redact canvas')", 5000);
+  await p.fill("input[aria-label='Cuvinte de ascuns']", "fiscala");
+  await p.click("Caută", ".pdf-redact button");
+  await p.until("(document.querySelector('.pdf-redact')?.innerText ?? '').includes('Găsite:')", 10000);
+  const foundTxt = await p.eval("document.querySelector('.pdf-redact').innerText.match(/Găsite: [^.]*/)?.[0] ?? ''");
+  check("„Caută” găsește cuvântul (fără diacritice, litere mari)", /Găsite: [1-9]/.test(foundTxt), foundTxt);
+  const drawAt = (t, x, y) => p.eval(`(() => { const el = document.querySelector('.redact-page'); const r = el.getBoundingClientRect();
+    el.dispatchEvent(new MouseEvent('${t}', { bubbles: true, clientX: r.left + ${x}, clientY: r.top + ${y} })); return true; })()`);
+  await drawAt("mousedown", 40, 300);
+  await sleep(100);
+  await drawAt("mousemove", 300, 360);
+  await sleep(100);
+  await drawAt("mouseup", 300, 360);
+  await sleep(200);
+  const zonesTxt = await p.eval("document.querySelector('.pdf-redact').innerText.match(/\\d+ zone aici/)?.[0] ?? ''");
+  check("zona trasă cu mouse-ul se adaugă (lângă cea găsită)", zonesTxt.startsWith("2 "), zonesTxt);
+  await p.eval("[...document.querySelectorAll('.pdf-redact button.primary')].find(b => b.textContent.startsWith('Previzualizează ascunderea')).click()");
+  await p.until("!!document.querySelector('.dialog.wide canvas')", 20000);
+  const redTitle = await p.eval("document.querySelector('.dialog.wide').innerText");
+  check("previzualizarea ascunderii", redTitle.includes("2 zone ascunse pe 1 pagină"), redTitle.slice(0, 120));
+  await p.screenshot(join(shots, "02d-ascuns.png"));
+  await p.click("Salvează ca versiune nouă", ".dialog button");
+  await p.until("document.querySelector('.pdf-doc select')?.selectedOptions[0]?.textContent.startsWith('5 —')", 15000);
+  const fact = (await invoke(p, "module_call", { id: "kgb.pdf", command: "list", args: {} })).find((d) => d.name === "factura.pdf");
+  const texts = await invoke(p, "module_call", { id: "kgb.pdf", command: "text", args: { id: fact.id } });
+  check("după ascundere, pagina nu mai are text în fișier", texts.length === 1 && texts[0] === "", JSON.stringify(texts).slice(0, 80));
+
   // Merge the invoice and the 4-page file.
   await p.eval(`(() => { for (const li of document.querySelectorAll('.pdf-docs li'))
     if (['factura.pdf','rotite-si-formate.pdf'].includes(li.querySelector('.grow').textContent)) li.querySelector('input').click(); return true; })()`);
+  // The redacted page (an image) is still being drawn in the window: let it finish before merging.
+  await sleep(1500);
   await p.click("Unește documentele bifate (2)");
-  await p.until("!!document.querySelector('.dialog.wide canvas')", 10000);
+  await p.until("!!document.querySelector('.dialog.wide canvas')", 30000);
   const mergeText = await p.eval("document.querySelector('.dialog.wide').innerText");
   check("unirea anunță ce nu se preia", mergeText.includes("Semnele de carte"), mergeText.slice(0, 120));
   await p.click("Creează documentul", ".dialog button");
