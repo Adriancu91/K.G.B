@@ -133,7 +133,8 @@ try {
   const ro = await fr(p, "document.body.innerText.slice(0, 400)");
   check("cu RO, foaia de calcul revine în română (Pornire)", /Pornire/.test(ro), ro.slice(0, 80));
   await p.eval("[...document.querySelectorAll('.lang-switch button')].find(b => b.textContent === 'EN')?.click()");
-  await sleep(800);
+  // WebView2 writes its storage to disk a little later: give it time before the app is stopped.
+  await sleep(4000);
   p.close();
   stop();
   await sleep(1500);

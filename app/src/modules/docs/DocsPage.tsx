@@ -156,7 +156,7 @@ function GenerateDialog(props: {
             </p>
           )}
           <div className="dialog-actions">
-            {empty.length > 0 && <span className="muted small grow">Mai ai de completat: {empty.map((f) => f.eticheta).join(", ")}</span>}
+            {empty.length > 0 && <span className="muted small grow">Mai ai de completat: <span className="no-i18n">{empty.map((f) => f.eticheta).join(", ")}</span></span>}
             <button type="button" onClick={props.onCancel}>
               Renunță
             </button>
@@ -272,7 +272,8 @@ export function DocsPage({ onError }: { onError: (e: string | null) => void }) {
                         </span>
                       </header>
                       <p className="muted small">
-                        Versiunea {m.versiune} · {m.campuri.length} câmpuri: {m.campuri.slice(0, 6).map((f) => f.eticheta).join(", ")}
+                        Versiunea {m.versiune} · {m.campuri.length} câmpuri:{" "}
+                        <span className="no-i18n">{m.campuri.slice(0, 6).map((f) => f.eticheta).join(", ")}</span>
                         {m.campuri.length > 6 ? "…" : ""}
                       </p>
                       <div className="row wrap">
