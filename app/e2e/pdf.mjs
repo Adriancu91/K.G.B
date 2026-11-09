@@ -141,28 +141,71 @@ try {
   await openDoc(p, "factura.pdf");
   await thumbsLoaded(p, 1);
   await p.eval("[...document.querySelectorAll('.pdf-doc button')].find(b => b.textContent === 'Deselectează')?.click()");
-  await p.click("Filigran, antet, ștampilă…", ".pdf-doc button");
+  await p.click("Filigran, antet, subsol…", ".pdf-doc button");
   await p.until("!!document.querySelector('.pdf-stamp')", 3000);
   await p.fill("input[aria-label='Filigranul']", "COPIE — NEPLĂTITĂ");
   await p.fill("input[aria-label='Antetul']", "Fier Vechi SRL · Iași");
   await p.click("numerotează paginile", ".pdf-stamp button");
-  await p.fill("input[aria-label='Textul ștampilei']", "PLĂTIT");
-  await p.fill("select[aria-label='Poziția ștampilei']", "sus-dreapta");
   check("„numerotează paginile” completează subsolul", (await p.eval("document.querySelector(\"input[aria-label='Subsolul']\").value")) === "Pagina {n} din {total}");
   const inkBefore = await p.eval("(() => { const i = document.querySelector('.pdf-pages img'); return i ? i.src.length : 0; })()");
   await p.eval("document.querySelector('.pdf-stamp button.primary').click()");
   await p.until("!!document.querySelector('.dialog.wide canvas')", 15000);
   await sleep(500);
   const stampTitle = await p.eval("document.querySelector('.dialog.wide').innerText");
-  check("previzualizarea arată ce se pune și că textul paginilor s-a păstrat", stampTitle.includes("filigran, antet, subsol, ștampilă pe 1 pagină") && stampTitle.includes("textul lor s-au păstrat"), stampTitle.slice(0, 160));
+  check("previzualizarea arată ce se pune și că textul paginilor s-a păstrat", stampTitle.includes("filigran, antet, subsol pe 1 pagină") && stampTitle.includes("textul lor s-au păstrat"), stampTitle.slice(0, 160));
   await p.screenshot(join(shots, "02b-filigran.png"));
   await p.click("Salvează ca versiune nouă", ".dialog button");
   await p.until("!document.querySelector('.dialog.wide')", 10000);
   await p.until("document.querySelector('.pdf-doc select')?.selectedOptions[0]?.textContent.startsWith('2 —')", 10000);
-  check("filigranul, antetul și subsolul au creat versiunea 2", (await versionLabel(p)).includes("filigran, antet, subsol, ștampilă"), await versionLabel(p));
+  check("filigranul, antetul și subsolul au creat versiunea 2", (await versionLabel(p)).includes("filigran, antet, subsol"), await versionLabel(p));
   await thumbsLoaded(p, 1);
   const inkAfter = await p.eval("(() => { const i = document.querySelector('.pdf-pages img'); return i ? i.src.length : 0; })()");
   check("miniatura paginii s-a schimbat", inkBefore > 0 && inkAfter > 0 && inkAfter !== inkBefore, `${inkBefore} → ${inkAfter}`);
+
+  // 7.4l-1b2: a stamp as in Cyber Office Studio, then one of „Ștampilele mele”.
+  await p.click("Ștampilă…", ".pdf-doc button");
+  await p.until("!!document.querySelector('.pdf-stamps')", 3000);
+  await p.click("APROBAT", ".pdf-stamps button");
+  await p.eval("document.querySelector(\"input[aria-label='Numele sub ștampilă']\").click()");
+  await p.until("!!document.querySelector(\"input[aria-label='Numele de pe ștampilă']\")", 2000);
+  await p.fill("input[aria-label='Numele de pe ștampilă']", "Ion Pop");
+  await p.eval("document.querySelector(\"button[aria-label='Culoarea albastru']\").click()");
+  await p.fill("select[aria-label='Locul ștampilei']", "sus-dreapta");
+  const line = await p.eval("document.querySelector('.pdf-stamps').innerText");
+  check("rândul de sub ștampilă: numele și data de azi", /Ion Pop · \d{2}\.\d{2}\.\d{4}/.test(line), line.match(/sub ștampilă: .*/)?.[0] ?? "");
+  await p.eval("[...document.querySelectorAll('.pdf-stamps button.primary')].find(b => b.textContent.startsWith('Previzualizează')).click()");
+  await p.until("!!document.querySelector('.dialog.wide canvas')", 15000);
+  await sleep(800);
+  const blue = await p.eval(`(() => { const c = document.querySelector('.dialog.wide canvas'); const d = c.getContext('2d').getImageData(0, 0, c.width, c.height).data; let n = 0;
+    for (let i = 0; i < d.length; i += 4) if (d[i+2] > 90 && d[i] < 80 && d[i+1] < 80) n++; return n; })()`);
+  const stTitle = await p.eval("document.querySelector('.dialog.wide').innerText");
+  check("previzualizarea arată ștampila albastră (adnotare desenată de pdf.js)", stTitle.includes("ștampila „APROBAT” pe 1 pagină") && blue > 20, `${blue} pixeli albaștri`);
+  await p.screenshot(join(shots, "02c-stampila.png"));
+  await p.click("Salvează ca versiune nouă", ".dialog button");
+  await p.until("document.querySelector('.pdf-doc select')?.selectedOptions[0]?.textContent.startsWith('3 —')", 10000);
+  check("ștampila a creat versiunea 3", (await versionLabel(p)).includes("ștampila „APROBAT”"), await versionLabel(p));
+  // „Ștampilele mele”: a red ring drawn as PNG (what StampDialog saves), chosen and put on the page.
+  const { deflateSync, crc32 } = await import("node:zlib");
+  const chunk = (ty, d) => { const b = Buffer.alloc(12 + d.length); b.writeUInt32BE(d.length, 0); b.write(ty, 4, "latin1"); d.copy(b, 8); b.writeUInt32BE(crc32(Buffer.concat([Buffer.from(ty, "latin1"), d])), 8 + d.length); return b; };
+  const S = 64, raw = Buffer.alloc((S * 4 + 1) * S);
+  for (let y = 0; y < S; y++) { raw[y * (S * 4 + 1)] = 0; for (let x = 0; x < S; x++) { const o = y * (S * 4 + 1) + 1 + x * 4; const d = Math.hypot(x - 32, y - 32); if (d > 22 && d < 30) { raw[o] = 200; raw[o + 1] = 20; raw[o + 2] = 20; raw[o + 3] = 255; } } }
+  const ih = Buffer.alloc(13); ih.writeUInt32BE(S, 0); ih.writeUInt32BE(S, 4); ih[8] = 8; ih[9] = 6;
+  const ring = Buffer.concat([Buffer.from([137, 80, 78, 71, 13, 10, 26, 10]), chunk("IHDR", ih), chunk("IDAT", deflateSync(raw)), chunk("IEND", Buffer.alloc(0))]).toString("base64");
+  await invoke(p, "module_call", { id: "kgb.pdf", command: "stampila_save", args: { nume: "Ștampila firmei", date: ring } });
+  await p.click("Ștampilă…", ".pdf-doc button");
+  await p.click("Ștampilă…", ".pdf-doc button");
+  await p.until("!!document.querySelector(\".pdf-mystamps [data-mystamp='Ștampila firmei']\")", 5000);
+  check("„Ștampilele mele” arată ștampila salvată", true);
+  await p.eval("document.querySelector(\".pdf-mystamps [data-mystamp='Ștampila firmei'] button.link\").click()");
+  await p.fill("input[aria-label='Lățimea ștampilei mele']", "30");
+  await p.eval("[...document.querySelectorAll('.pdf-stamps button.primary')].find(b => b.textContent.startsWith('Previzualizează')).click()");
+  await p.until("!!document.querySelector('.dialog.wide canvas')", 15000);
+  await sleep(800);
+  const red = await p.eval(`(() => { const c = document.querySelector('.dialog.wide canvas'); const d = c.getContext('2d').getImageData(0, 0, c.width, c.height).data; let n = 0;
+    for (let i = 0; i < d.length; i += 4) if (d[i] > 150 && d[i+1] < 80 && d[i+2] < 80) n++; return n; })()`);
+  check("ștampila mea apare pe pagină (inelul roșu)", red > 10, `${red} pixeli roșii`);
+  await p.click("Salvează ca versiune nouă", ".dialog button");
+  await p.until("document.querySelector('.pdf-doc select')?.selectedOptions[0]?.textContent.startsWith('4 —')", 10000);
 
   // Merge the invoice and the 4-page file.
   await p.eval(`(() => { for (const li of document.querySelectorAll('.pdf-docs li'))

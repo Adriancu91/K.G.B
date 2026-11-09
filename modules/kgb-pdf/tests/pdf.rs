@@ -356,3 +356,55 @@ fn stamp_and_image_on_pages() {
     assert!(err(&mut ws, base(json!({"stampila": {"text": "OK", "culoare": "mov"}}))).contains("culoarea"));
     assert!(err(&mut ws, base(json!({"stampila": {"text": ""}}))).contains("1–40"));
 }
+
+/// Step 7.4l-1b2: stamps as in Cyber Office Studio — `/Stamp` annotations
+/// with their drawing; a preset with the line under it, colour, opacity;
+/// „Ștampilele mele” (PNG) kept as the module's files, at most 12.
+#[test]
+fn stamp_annotations_and_my_stamps() {
+    let (_t, mut ws, mm) = setup();
+    let id = import(&mut ws, &mm, "rotite-si-formate.pdf")["document"]["id"].clone();
+    let before: Vec<String> = serde_json::from_value(call(&mut ws, &mm, "text", json!({"id": id})).unwrap()).unwrap();
+    let p = call(&mut ws, &mm, "stamp_annot", json!({"id": id, "based_on": 1, "text": "APROBAT", "sub": "Ion Pop · 09.11.2026", "culoare": "#1a237e", "opacitate": 0.6, "pozitie": "sus-dreapta", "autor": "Ion Pop"})).unwrap();
+    assert_eq!((p["applied"].as_bool(), p["summary"].as_str()), (Some(false), Some("ștampila „APROBAT” pe 4 pagini")));
+    let r = call(&mut ws, &mm, "stamp_annot", json!({"id": id, "based_on": 1, "text": "APROBAT", "sub": "Ion Pop · 09.11.2026", "culoare": "#1a237e", "opacitate": 0.6, "pozitie": "sus-dreapta", "autor": "Ion Pop", "apply": true})).unwrap();
+    assert_eq!(r["version"], 2);
+    let out = bytes(&mut ws, &mm, &id, Some(2));
+    for p in 1..=4 {
+        assert_eq!(kgb_pdf::stamp::stamps_on(&out, p), vec!["APROBAT Ion Pop · 09.11.2026".to_string()], "page {p}");
+    }
+    let after: Vec<String> = serde_json::from_value(call(&mut ws, &mm, "text", json!({"id": id})).unwrap()).unwrap();
+    assert_eq!(after, before, "the pages keep their text");
+    let raw = String::from_utf8_lossy(&out);
+    assert!(raw.contains("/Subtype /Stamp") || raw.contains("/Subtype/Stamp"), "real stamp annotations");
+    if let Ok(dir) = std::env::var("KGB_STAMP_PREVIEW") {
+        std::fs::write(Path::new(&dir).join("stampile-cos.pdf"), &out).unwrap();
+    }
+
+    // My stamps: a PNG, listed, put on page 2 only, deleted.
+    let png = call(&mut ws, &mm, "thumb", json!({"id": id, "page": 1, "width": 120})).unwrap()["png"].as_str().unwrap().to_string();
+    let s = call(&mut ws, &mm, "stampila_save", json!({"nume": "Ștampila firmei", "date": png})).unwrap();
+    assert!(call(&mut ws, &mm, "stampila_save", json!({"nume": "ștampila firmei", "date": png})).unwrap_err().to_string().contains("există deja"));
+    assert!(call(&mut ws, &mm, "stampila_save", json!({"nume": "x/y", "date": png})).is_err());
+    assert!(call(&mut ws, &mm, "stampila_save", json!({"nume": "JPEG", "date": B64.encode([0xFF, 0xD8, 0xFF, 0])})).unwrap_err().to_string().contains("PNG"));
+    let lib = call(&mut ws, &mm, "stampile", json!({})).unwrap();
+    assert_eq!((lib.as_array().unwrap().len(), lib[0]["nume"].as_str()), (1, Some("Ștampila firmei")));
+    assert!(lib[0]["raport"].as_f64().unwrap() > 0.5);
+    let r = call(&mut ws, &mm, "stamp_annot", json!({"id": id, "based_on": 2, "pages": [2], "biblioteca": s["id"], "latime_mm": 40, "pozitie": "jos-stanga", "apply": true})).unwrap();
+    assert_eq!(r["summary"], "ștampila „Ștampila firmei” pe 1 pagină");
+    let out = bytes(&mut ws, &mm, &id, Some(3));
+    assert_eq!(kgb_pdf::stamp::stamps_on(&out, 2).len(), 2);
+    assert_eq!(kgb_pdf::stamp::stamps_on(&out, 1).len(), 1);
+    if let Ok(dir) = std::env::var("KGB_STAMP_PREVIEW") {
+        std::fs::write(Path::new(&dir).join("stampile-cos-2.pdf"), &out).unwrap();
+    }
+    call(&mut ws, &mm, "stampila_delete", json!({"id": s["id"]})).unwrap();
+    assert!(call(&mut ws, &mm, "stampile", json!({})).unwrap().as_array().unwrap().is_empty());
+
+    // Refused clearly.
+    let e = |ws: &mut Workspace, a: Value| call(ws, &mm, "stamp_annot", a).unwrap_err().to_string();
+    assert!(e(&mut ws, json!({"id": id, "based_on": 3, "text": ""})).contains("1–40"));
+    assert!(e(&mut ws, json!({"id": id, "based_on": 3, "text": "OK", "culoare": "#ff00ff"})).contains("negru"));
+    assert!(e(&mut ws, json!({"id": id, "based_on": 3, "text": "OK", "opacitate": 0.1})).contains("20%"));
+    assert!(e(&mut ws, json!({"id": id, "based_on": 3, "text": "OK", "pozitie": "afară"})).contains("poziție"));
+}

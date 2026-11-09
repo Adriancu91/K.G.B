@@ -64,7 +64,7 @@ pub const PLACES: [&str; 9] = ["sus-stanga", "sus-centru", "sus-dreapta", "mijlo
 pub const MAX_IMAGE: usize = 5 * 1024 * 1024;
 
 /// Typst alignment and the offset that keeps a thing off the page's edge.
-fn place(p: &str) -> Result<(&'static str, i32, i32), String> {
+pub(crate) fn place(p: &str) -> Result<(&'static str, i32, i32), String> {
     let m = 36; // half an inch from the edges
     Ok(match p {
         "sus-stanga" => ("top + left", m, m + 14),
@@ -80,7 +80,7 @@ fn place(p: &str) -> Result<(&'static str, i32, i32), String> {
     })
 }
 
-fn image_kind(b: &[u8]) -> Option<&'static str> {
+pub(crate) fn image_kind(b: &[u8]) -> Option<&'static str> {
     if b.starts_with(b"\x89PNG\r\n\x1a\n") {
         Some("png")
     } else if b.starts_with(&[0xFF, 0xD8, 0xFF]) {
@@ -140,20 +140,20 @@ impl World for OverlayWorld {
 }
 
 /// A page as shown: its media box, rotation and shown size.
-struct PageBox {
+pub(crate) struct PageBox {
     x0: f64,
     y0: f64,
-    w: f64,
-    h: f64,
+    pub(crate) w: f64,
+    pub(crate) h: f64,
     rotate: i64,
 }
 
 impl PageBox {
-    fn shown(&self) -> (f64, f64) {
+    pub(crate) fn shown(&self) -> (f64, f64) {
         if self.rotate % 180 == 0 { (self.w, self.h) } else { (self.h, self.w) }
     }
     /// Maps the shown page (origin bottom-left) onto the page's own space.
-    fn matrix(&self) -> [f64; 6] {
+    pub(crate) fn matrix(&self) -> [f64; 6] {
         let (w, h, x, y) = (self.w, self.h, self.x0, self.y0);
         match self.rotate {
             90 => [0.0, 1.0, -1.0, 0.0, x + w, y],
@@ -172,7 +172,7 @@ fn num(o: &Object) -> Option<f64> {
     }
 }
 
-fn page_box(doc: &Document, id: ObjectId) -> Result<PageBox, String> {
+pub(crate) fn page_box(doc: &Document, id: ObjectId) -> Result<PageBox, String> {
     let d = doc.get_dictionary(id).map_err(|e| e.to_string())?;
     let mb = d
         .get(b"MediaBox")
@@ -190,7 +190,7 @@ fn page_box(doc: &Document, id: ObjectId) -> Result<PageBox, String> {
     Ok(PageBox { x0, y0, w: (mb[2] - mb[0]).abs(), h: (mb[3] - mb[1]).abs(), rotate })
 }
 
-fn clean(t: &str, what: &str) -> Result<String, String> {
+pub(crate) fn clean(t: &str, what: &str) -> Result<String, String> {
     let t = t.trim();
     if t.chars().count() > MAX_TEXT {
         return Err(format!("{what} are cel mult {MAX_TEXT} de caractere"));
@@ -249,13 +249,23 @@ fn layout(sizes: &[(f64, f64)], numbers: &[usize], total: usize, o: &Overlay) ->
         }
         src.push_str("]\n");
     }
-    let id = FileId::new(RootedPath::new(VirtualRoot::Project, VirtualPath::new("/overlay.typ").map_err(|e| format!("{e:?}"))?));
     let image = match (&o.image, &image_path) {
-        (Some(pic), Some(path)) => Some((
-            FileId::new(RootedPath::new(VirtualRoot::Project, VirtualPath::new(path).map_err(|e| format!("{e:?}"))?)),
-            Bytes::new(pic.data.clone()),
-        )),
+        (Some(pic), Some(path)) => Some((path.as_str(), pic.data.as_slice())),
         _ => None,
+    };
+    compile(src, inputs, image)
+}
+
+/// Typst source → PDF, with only the built-in fonts and at most one image
+/// (`path` as the source names it, its bytes); user text comes in `inputs`.
+pub(crate) fn compile(src: String, inputs: Dict, image: Option<(&str, &[u8])>) -> Result<Vec<u8>, String> {
+    let id = FileId::new(RootedPath::new(VirtualRoot::Project, VirtualPath::new("/overlay.typ").map_err(|e| format!("{e:?}"))?));
+    let image = match image {
+        Some((path, data)) => Some((
+            FileId::new(RootedPath::new(VirtualRoot::Project, VirtualPath::new(path).map_err(|e| format!("{e:?}"))?)),
+            Bytes::new(data.to_vec()),
+        )),
+        None => None,
     };
     let world = OverlayWorld { library: LazyHash::new(Library::builder().with_inputs(inputs).build()), main: Source::new(id, src), image };
     let doc: PagedDocument = typst::compile(&world)
@@ -265,7 +275,7 @@ fn layout(sizes: &[(f64, f64)], numbers: &[usize], total: usize, o: &Overlay) ->
 }
 
 /// The content of a page, decoded and joined.
-fn page_content(doc: &Document, page: ObjectId) -> Result<Vec<u8>, String> {
+pub(crate) fn page_content(doc: &Document, page: ObjectId) -> Result<Vec<u8>, String> {
     let c = doc.get_page_content(page);
     if c.is_empty() {
         return Err("textul de pus pe pagini a ieșit gol".into());

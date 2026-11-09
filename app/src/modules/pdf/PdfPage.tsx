@@ -7,6 +7,7 @@ import type { PDFDocumentProxy } from "pdfjs-dist";
 import { api, message } from "../../api";
 import { Confirm } from "../../components/Confirm";
 import { drawPage, fromBase64, openPdf } from "./pdfjs";
+import { StampsPanel } from "./Stamps";
 
 const ID = "kgb.pdf";
 const THUMBS_AT_ONCE = 60;
@@ -45,17 +46,6 @@ interface Preview {
   doc: PDFDocumentProxy;
 }
 
-const PLACES: [string, string][] = [
-  ["sus-stanga", "sus, stânga"],
-  ["sus-centru", "sus, centru"],
-  ["sus-dreapta", "sus, dreapta"],
-  ["mijloc-stanga", "mijloc, stânga"],
-  ["centru", "centru"],
-  ["mijloc-dreapta", "mijloc, dreapta"],
-  ["jos-stanga", "jos, stânga"],
-  ["jos-centru", "jos, centru"],
-  ["jos-dreapta", "jos, dreapta"],
-];
 const pages = (n: number) => (n === 1 ? "1 pagină" : `${n} pagini`);
 const when = (ms: number) => new Date(ms).toLocaleString("ro-RO");
 const kb = (n: number) => (n < 1024 * 1024 ? `${Math.max(1, Math.round(n / 1024))} KB` : `${(n / 1048576).toFixed(1)} MB`);
@@ -105,9 +95,8 @@ export function PdfPage({ onError }: { onError: (e: string | null) => void }) {
   const [notice, setNotice] = useState<string | null>(null);
   // Text over the pages (7.4l-1a).
   const [stamp, setStamp] = useState<{ open: boolean; filigran: string; antet: string; subsol: string }>({ open: false, filigran: "", antet: "", subsol: "" });
-  // A text stamp and an image (7.4l-1b).
-  const [mark, setMark] = useState({ text: "", culoare: "rosu", pozitie: "jos-dreapta" });
-  const [pic, setPic] = useState<{ name: string; date: string; latime: string; pozitie: string } | null>(null);
+  // Stamps as in Cyber Office Studio (7.4l-1b2).
+  const [stampsOpen, setStampsOpen] = useState(false);
 
   const refresh = useCallback(async () => {
     try {
@@ -331,7 +320,10 @@ export function PdfPage({ onError }: { onError: (e: string | null) => void }) {
                 Extrage în document nou
               </button>
               <button disabled={!editable || busy} onClick={() => setStamp({ ...stamp, open: !stamp.open })}>
-                Filigran, antet, ștampilă…
+                Filigran, antet, subsol…
+              </button>
+              <button disabled={!editable || busy} onClick={() => setStampsOpen(!stampsOpen)}>
+                Ștampilă…
               </button>
               {selected.length > 0 && (
                 <button className="link" onClick={() => setSelected([])}>
@@ -339,6 +331,7 @@ export function PdfPage({ onError }: { onError: (e: string | null) => void }) {
                 </button>
               )}
             </div>
+            {stampsOpen && editable && <StampsPanel docId={doc.id} version={version} selected={selected} busy={busy} ask={ask} onError={onError} />}
             {stamp.open && editable && (
               <div className="card pdf-stamp">
                 <label>
@@ -354,65 +347,12 @@ export function PdfPage({ onError }: { onError: (e: string | null) => void }) {
                   <input aria-label="Subsolul" maxLength={120} value={stamp.subsol} onChange={(e) => setStamp({ ...stamp, subsol: e.target.value })} />
                 </label>
                 <div className="row wrap">
-                  <label>
-                    Ștampilă
-                    <input aria-label="Textul ștampilei" maxLength={40} placeholder="de ex. PLĂTIT, APROBAT" value={mark.text} onChange={(e) => setMark({ ...mark, text: e.target.value })} />
-                  </label>
-                  <select aria-label="Culoarea ștampilei" value={mark.culoare} onChange={(e) => setMark({ ...mark, culoare: e.target.value })}>
-                    <option value="rosu">roșu</option>
-                    <option value="albastru">albastru</option>
-                    <option value="verde">verde</option>
-                  </select>
-                  <select aria-label="Poziția ștampilei" value={mark.pozitie} onChange={(e) => setMark({ ...mark, pozitie: e.target.value })}>
-                    {PLACES.map(([v, l]) => (
-                      <option key={v} value={v}>
-                        {l}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-                <div className="row wrap">
-                  <label>
-                    Imagine (semnătură scanată, ștampila firmei; PNG sau JPEG)
-                    <input
-                      aria-label="Imaginea de pus pe pagini"
-                      type="file"
-                      accept="image/png,image/jpeg"
-                      onChange={(e) => {
-                        const f = e.target.files?.[0];
-                        if (!f) return setPic(null);
-                        const r = new FileReader();
-                        r.onload = () => setPic({ name: f.name, date: String(r.result).split(",")[1] ?? "", latime: pic?.latime ?? "40", pozitie: pic?.pozitie ?? "jos-dreapta" });
-                        r.readAsDataURL(f);
-                      }}
-                    />
-                  </label>
-                  {pic && (
-                    <>
-                      <label className="small">
-                        lățime (mm){" "}
-                        <input aria-label="Lățimea imaginii" size={4} value={pic.latime} onChange={(e) => setPic({ ...pic, latime: e.target.value })} />
-                      </label>
-                      <select aria-label="Poziția imaginii" value={pic.pozitie} onChange={(e) => setPic({ ...pic, pozitie: e.target.value })}>
-                        {PLACES.map(([v, l]) => (
-                          <option key={v} value={v}>
-                            {l}
-                          </option>
-                        ))}
-                      </select>
-                      <button className="link" onClick={() => setPic(null)}>
-                        fără imagine
-                      </button>
-                    </>
-                  )}
-                </div>
-                <div className="row wrap">
                   <button className="link" onClick={() => setStamp({ ...stamp, subsol: "Pagina {n} din {total}" })}>
                     numerotează paginile
                   </button>
                   <button
                     className="primary"
-                    disabled={busy || !(stamp.filigran.trim() || stamp.antet.trim() || stamp.subsol.trim() || mark.text.trim() || pic)}
+                    disabled={busy || !(stamp.filigran.trim() || stamp.antet.trim() || stamp.subsol.trim())}
                     onClick={() =>
                       void ask(selected.length ? "Text pe paginile selectate" : "Text pe toate paginile", "stamp", {
                         id: doc.id,
@@ -421,8 +361,6 @@ export function PdfPage({ onError }: { onError: (e: string | null) => void }) {
                         filigran: stamp.filigran,
                         antet: stamp.antet,
                         subsol: stamp.subsol,
-                        ...(mark.text.trim() ? { stampila: mark } : {}),
-                        ...(pic ? { imagine: { date: pic.date, latime_mm: Number.parseFloat(pic.latime.replace(",", ".")) || 40, pozitie: pic.pozitie } } : {}),
                       })
                     }
                   >

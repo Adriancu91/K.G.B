@@ -28,11 +28,17 @@
 //! - `stamp {id, based_on, pages?, filigran?, antet?, subsol?, stampila?,
 //!   imagine?, apply}` → watermark / header / footer ({n}, {total}), a text
 //!   stamp and an image over the pages (7.4l-1a, 7.4l-1b)
+//! - `stamp_annot {id, based_on, pages?, text, sub?, culoare?, opacitate?,
+//!   pozitie?, biblioteca?, latime_mm?, autor?, apply}` → a `/Stamp`
+//!   annotation as in Cyber Office Studio (7.4l-1b2)
+//! - `stampile`, `stampila_save {nume, date}`, `stampila_delete {id}` →
+//!   „Ștampilele mele” (PNG, at most 12), kept as the module's files
 //! - `restore {id, version}`, `export {id, version?, dest, overwrite}`, `delete {id}`
 
 pub mod check;
 pub mod ops;
 pub mod overlay;
+pub mod stamp;
 
 use std::path::PathBuf;
 
@@ -116,6 +122,54 @@ struct Edit {
     #[serde(default)]
     apply: bool,
 }
+
+/// A stamp as in Cyber Office Studio (7.4l-1b2): a `/Stamp` annotation.
+#[derive(Deserialize)]
+#[serde(deny_unknown_fields)]
+struct StampAnnot {
+    id: Uuid,
+    based_on: u64,
+    #[serde(default)]
+    pages: Vec<u32>,
+    #[serde(default)]
+    text: String,
+    #[serde(default)]
+    sub: String,
+    #[serde(default = "red_hex")]
+    culoare: String,
+    #[serde(default = "full")]
+    opacitate: f64,
+    #[serde(default = "bottom_right")]
+    pozitie: String,
+    /// A stamp from „Ștampilele mele” (its file id) instead of the text one.
+    #[serde(default)]
+    biblioteca: Option<Uuid>,
+    #[serde(default = "default_width")]
+    latime_mm: f64,
+    #[serde(default)]
+    autor: String,
+    #[serde(default)]
+    apply: bool,
+}
+
+fn red_hex() -> String {
+    "#c62828".into()
+}
+fn full() -> f64 {
+    1.0
+}
+
+#[derive(Deserialize)]
+#[serde(deny_unknown_fields)]
+struct LibSave {
+    nume: String,
+    /// PNG (with transparency), base64.
+    date: String,
+}
+
+/// „Ștampilele mele” are files of the module with this name prefix.
+const LIB_PREFIX: &str = "Ștampilă - ";
+const LIB_MAX: usize = 12;
 
 /// Text over the pages (7.4l-1a).
 #[derive(Deserialize)]
@@ -342,6 +396,69 @@ impl Module for Pdf {
                 }
                 let v = ctx.save_document(a.id, num, &out, &summary)?;
                 Ok(json!({"applied": true, "version": v.number, "pages": n, "summary": summary}))
+            }
+            "stamp_annot" => {
+                let a: StampAnnot = args(a)?;
+                let (num, data) = intact(ctx, a.id, Some(a.based_on))?;
+                let texts = texts_of(&data)?;
+                let (image, label) = match a.biblioteca {
+                    Some(fid) => {
+                        let (fr, bytes) = ctx.get_file(fid)?;
+                        let name = fr.name.strip_prefix(LIB_PREFIX).ok_or_else(|| bad("ștampila nu e din „Ștampilele mele”"))?.trim_end_matches(".png").to_string();
+                        (Some(bytes), name)
+                    }
+                    None => (None, a.text.clone()),
+                };
+                let spec = stamp::StampSpec { label, sub: a.sub, color: a.culoare, opacity: a.opacitate, place: a.pozitie, image, width_mm: a.latime_mm, author: a.autor };
+                let out = stamp::add(&data, &a.pages, &spec).map_err(bad)?;
+                let n = ops::verify(&out, &texts, None).map_err(bad)?;
+                let chosen: Vec<u32> = if a.pages.is_empty() { (1..=n as u32).collect() } else { a.pages.clone() };
+                if let Some(p) = chosen.iter().find(|p| stamp::stamps_on(&out, **p).is_empty()) {
+                    return Err(bad(format!("ștampila nu a ajuns pe pagina {p}")));
+                }
+                let summary = format!("ștampila „{}” pe {}", spec.label, plural(chosen.len(), "pagină", "pagini"));
+                if !a.apply {
+                    return Ok(preview(&out, n, summary));
+                }
+                let v = ctx.save_document(a.id, num, &out, &summary)?;
+                Ok(json!({"applied": true, "version": v.number, "pages": n, "summary": summary}))
+            }
+            "stampile" => {
+                let mut out = Vec::new();
+                for f in ctx.list_files()?.into_iter().filter(|f| f.name.starts_with(LIB_PREFIX)) {
+                    let (_, bytes) = ctx.get_file(f.id)?;
+                    let (w, h) = stamp::png_size(&bytes).unwrap_or((1, 1));
+                    out.push(json!({"id": f.id, "nume": f.name.trim_start_matches(LIB_PREFIX).trim_end_matches(".png"), "raport": f64::from(w) / f64::from(h.max(1)), "png": B64.encode(&bytes)}));
+                }
+                Ok(json!(out))
+            }
+            "stampila_save" => {
+                let a: LibSave = args(a)?;
+                let nume = a.nume.trim();
+                if nume.is_empty() || nume.chars().count() > 40 || nume.chars().any(|c| c.is_control() || r#"\\/:*?"<>|"#.contains(c)) {
+                    return Err(bad("numele ștampilei are 1–40 de caractere, fără / \\ : * ? \" < > |"));
+                }
+                let bytes = B64.decode(a.date.as_bytes()).map_err(|_| bad("imaginea nu a ajuns întreagă"))?;
+                let (w, h) = stamp::png_size(&bytes).ok_or_else(|| bad("ștampila se păstrează ca PNG"))?;
+                if w == 0 || h == 0 || w > 2000 || h > 2000 || bytes.len() > 3 * 1024 * 1024 {
+                    return Err(bad("imaginea ștampilei e prea mare (cel mult 2000 de pixeli pe latură, 3 MB)"));
+                }
+                let list: Vec<_> = ctx.list_files()?.into_iter().filter(|f| f.name.starts_with(LIB_PREFIX)).collect();
+                let name = format!("{LIB_PREFIX}{nume}.png");
+                if list.iter().any(|f| f.name.to_lowercase() == name.to_lowercase()) {
+                    return Err(bad(format!("există deja o ștampilă „{nume}”")));
+                }
+                if list.len() >= LIB_MAX {
+                    return Err(bad(format!("„Ștampilele mele” au cel mult {LIB_MAX}; șterge una mai întâi")));
+                }
+                let f = ctx.put_file(&name, &bytes)?;
+                Ok(json!({"id": f.id}))
+            }
+            "stampila_delete" => {
+                let a: Which = args(a)?;
+                let f = ctx.list_files()?.into_iter().find(|f| f.id == a.id && f.name.starts_with(LIB_PREFIX)).ok_or_else(|| bad("ștampila nu există"))?;
+                ctx.delete_file(f.id)?;
+                Ok(json!({"deleted": true}))
             }
             "stamp" => {
                 let a: Stamp = args(a)?;
