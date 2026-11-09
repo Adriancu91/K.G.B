@@ -490,3 +490,15 @@ fn save_new_checks_and_creates() {
     let broken = B64.encode(std::fs::read(testdata("stricat-trunchiat.pdf")).unwrap());
     assert!(call(&mut ws, &mm, "save_new", json!({"id": id, "data": broken, "name": "x", "summary": "x"})).unwrap_err().to_string().contains("verificarea"));
 }
+
+/// Step 7.4l-1e: form data written where the user chose — only .xfdf, .fdf, .csv.
+#[test]
+fn save_text_writes_form_data_only() {
+    let (t, mut ws, mm) = setup();
+    let dest = t.path().join("date.xfdf");
+    call(&mut ws, &mm, "save_text", json!({"dest": dest, "text": "<xfdf/>"})).unwrap();
+    assert_eq!(std::fs::read_to_string(&dest).unwrap(), "<xfdf/>");
+    assert!(call(&mut ws, &mm, "save_text", json!({"dest": dest, "text": "x"})).is_err(), "not overwritten without asking");
+    call(&mut ws, &mm, "save_text", json!({"dest": dest, "text": "<xfdf></xfdf>", "overwrite": true})).unwrap();
+    assert!(call(&mut ws, &mm, "save_text", json!({"dest": t.path().join("x.exe"), "text": "x"})).unwrap_err().to_string().contains(".xfdf"));
+}

@@ -31,6 +31,8 @@
 //! - `stamp_annot {id, based_on, pages?, text, sub?, culoare?, opacitate?,
 //!   pozitie?, biblioteca?, latime_mm?, autor?, apply}` → a `/Stamp`
 //!   annotation as in Cyber Office Studio (7.4l-1b2)
+//! - `save_text {dest, text, overwrite?}` → form data written where the user
+//!   chose (.xfdf, .fdf, .csv; 7.4l-1e)
 //! - `save_new {id, version?, data, name, summary, apply}` → a new document
 //!   made in the window (n-up, booklet, poster…), checked, then created
 //! - `save_edit {id, based_on, data, summary, same_text_pages?, apply}` → a
@@ -213,6 +215,16 @@ struct SaveNew {
     summary: String,
     #[serde(default)]
     apply: bool,
+}
+
+/// A text file written where the user chose (form data as XFDF / FDF / CSV, 7.4l-1e).
+#[derive(Deserialize)]
+#[serde(deny_unknown_fields)]
+struct SaveText {
+    dest: PathBuf,
+    text: String,
+    #[serde(default)]
+    overwrite: bool,
 }
 
 /// Hiding data for good (7.4l-1c).
@@ -462,6 +474,18 @@ impl Module for Pdf {
                 }
                 let v = ctx.save_document(a.id, num, &out, &summary)?;
                 Ok(json!({"applied": true, "version": v.number, "pages": n, "summary": summary}))
+            }
+            "save_text" => {
+                let a: SaveText = args(a)?;
+                let ext = a.dest.extension().and_then(|e| e.to_str()).unwrap_or_default().to_lowercase();
+                if !["xfdf", "fdf", "csv"].contains(&ext.as_str()) {
+                    return Err(bad("se scriu doar fișiere .xfdf, .fdf sau .csv"));
+                }
+                if a.text.len() > 20 * 1024 * 1024 {
+                    return Err(bad("fișierul e prea mare"));
+                }
+                ctx.export_bytes(&a.dest, a.text.as_bytes(), a.overwrite)?;
+                Ok(json!({"saved": true}))
             }
             "save_new" => {
                 let a: SaveNew = args(a)?;

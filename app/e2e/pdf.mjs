@@ -50,6 +50,11 @@ const ink = (p, selector) =>
     const d = c.getContext('2d').getImageData(0, 0, c.width, c.height).data; let n = 0;
     for (let i = 0; i < d.length; i += 4) if (d[i] < 200 || d[i+1] < 200 || d[i+2] < 200) n++;
     return n / (d.length / 4); })()`);
+/** Opens a panel whose button opens and closes it (does nothing if it is open already). */
+async function openPanel(p, button, selector) {
+  if (!(await p.eval(`!!document.querySelector(${JSON.stringify(selector)})`))) await p.click(button, ".pdf-doc button");
+  await p.until(`!!document.querySelector(${JSON.stringify(selector)})`, 5000);
+}
 async function previewAndApply(p, button, applyLabel) {
   await p.click(button, ".pdf-doc button");
   await p.until("!!document.querySelector('.dialog.wide canvas')", 10000);
@@ -260,8 +265,7 @@ try {
   await openDoc(p, "factura.pdf");
   // 7.4l-1d: the invoice page is an image now: the COS compression makes the file smaller, as a new version.
   await thumbsLoaded(p, 1);
-  await p.click("Pagini pe foaie, mărime…", ".pdf-doc button");
-  await p.until("!!document.querySelector('.pdf-tools')", 5000);
+  await openPanel(p, "Pagini pe foaie, mărime…", ".pdf-tools");
   await p.fill("select[aria-label='Cât de tare se comprimă pozele']", "2");
   await p.click("Comprimă pozele", ".pdf-tools button");
   await p.until("!!document.querySelector('.dialog.wide canvas')", 30000);
@@ -269,7 +273,6 @@ try {
   check("comprimarea pozelor (din COS) micșorează fișierul", /1 poză micșorată: [\d,]+ (KB|MB) → [\d,]+ (KB|MB)/.test(compTitle), compTitle.slice(0, 160));
   await p.click("Salvează ca versiune nouă", ".dialog button");
   await p.until("document.querySelector('.pdf-doc select')?.selectedOptions[0]?.textContent.startsWith('6 —')", 15000);
-  await p.click("Pagini pe foaie, mărime…", ".pdf-doc button");
 
   // Merge the invoice and the 4-page file.
   await p.eval(`(() => { for (const li of document.querySelectorAll('.pdf-docs li'))
@@ -306,8 +309,7 @@ try {
   // 7.4l-1d: 4 pages on a sheet (COS nup.ts) → a new document of 13 sheets from the 50 pages.
   await openDoc(p, "multipagina-50.pdf");
   await thumbsLoaded(p, 1);
-  await p.click("Pagini pe foaie, mărime…", ".pdf-doc button");
-  await p.until("!!document.querySelector('.pdf-tools')", 5000);
+  await openPanel(p, "Pagini pe foaie, mărime…", ".pdf-tools");
   await p.fill("select[aria-label='Pagini pe foaie']", "4");
   await p.eval("[...document.querySelectorAll('.pdf-tools button')].find(b => b.textContent === 'Previzualizează').click()");
   await p.until("!!document.querySelector('.dialog.wide canvas')", 30000);
@@ -316,6 +318,26 @@ try {
   await p.click("Creează documentul", ".dialog button");
   await p.until("[...document.querySelectorAll('.pdf-docs li .grow')].some(e => e.textContent === 'multipagina-50 - 4 pe foaie.pdf')", 15000);
   check("documentul nou „4 pe foaie” apare în listă", true);
+
+  // 7.4l-1e: a PDF form filled in the window (COS formdata.ts), as a new version.
+  await importFile(p, "pdf/formular.pdf");
+  // Imported from here, not from the page: open the page again so the list is read anew.
+  await go(p, "Acasă");
+  await go(p, "Documente PDF");
+  await p.until("[...document.querySelectorAll('.pdf-docs li .grow')].some(e => e.textContent === 'formular.pdf')", 10000);
+  await openDoc(p, "formular.pdf");
+  await openPanel(p, "Formular…", ".pdf-form");
+  await p.until("!!document.querySelector('.pdf-form input')", 10000);
+  const firstField = await p.eval("document.querySelector('.pdf-form input:not([type=checkbox])')?.getAttribute('aria-label') ?? ''");
+  check("formularul își arată câmpurile", firstField.startsWith("Câmpul "), firstField);
+  await p.fill(`.pdf-form input[aria-label='${firstField}']`, "Ion Popescu");
+  await p.click("Salvează valorile", ".pdf-form button");
+  await p.until("!!document.querySelector('.dialog.wide canvas')", 20000);
+  check("previzualizarea completării", (await p.eval("document.querySelector('.dialog.wide').innerText")).includes("formular completat"));
+  await p.click("Salvează ca versiune nouă", ".dialog button");
+  await p.until("document.querySelector('.pdf-doc select')?.selectedOptions[0]?.textContent.startsWith('2 —')", 15000);
+  await p.until(`document.querySelector(".pdf-form input[aria-label='${firstField}']")?.value === "Ion Popescu"`, 10000);
+  check("valoarea e în versiunea nouă (recitită din fișier)", true);
 
   p.close();
   execFileSync("taskkill", ["/F", "/T", "/PID", String(proc.pid)], { stdio: "ignore" });

@@ -9,6 +9,7 @@ import { Confirm } from "../../components/Confirm";
 import { drawPage, fromBase64, openPdf } from "./pdfjs";
 import { RedactPanel } from "./Redact";
 import { ToolsPanel } from "./Tools";
+import { FormPanel } from "./Form";
 import { StampsPanel } from "./Stamps";
 
 const ID = "kgb.pdf";
@@ -103,6 +104,8 @@ export function PdfPage({ onError }: { onError: (e: string | null) => void }) {
   const [redactOpen, setRedactOpen] = useState(false);
   // Pages on a sheet, booklet, poster, smaller file (7.4l-1d).
   const [toolsOpen, setToolsOpen] = useState(false);
+  // PDF forms (7.4l-1e).
+  const [formOpen, setFormOpen] = useState(false);
 
   const refresh = useCallback(async () => {
     try {
@@ -337,12 +340,18 @@ export function PdfPage({ onError }: { onError: (e: string | null) => void }) {
               <button disabled={info.status !== "intact" || busy} onClick={() => setToolsOpen(!toolsOpen)}>
                 Pagini pe foaie, mărime…
               </button>
+              <button disabled={!editable || busy} onClick={() => setFormOpen(!formOpen)}>
+                Formular…
+              </button>
               {selected.length > 0 && (
                 <button className="link" onClick={() => setSelected([])}>
                   Deselectează
                 </button>
               )}
             </div>
+            {formOpen && editable && (
+              <FormPanel key={`${doc.id}-${version}`} docId={doc.id} version={version} name={info.name} pages={pageCount} busy={busy} ask={ask} onError={onError} onNotice={setNotice} />
+            )}
             {toolsOpen && info.status === "intact" && (
               <ToolsPanel docId={doc.id} version={version ?? info.version} name={info.name} pages={pageCount} selected={selected} busy={busy} ask={ask} onError={onError} />
             )}
