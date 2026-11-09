@@ -152,7 +152,10 @@ Interdicții permanente: fără baze de date (D-005, D-018), fără schimbări d
 - [x] 7.4k-6 Parc auto și șoferi: documente care expiră (ITP, RCA, permise) și memento-uri — **făcut 9 nov. 2026:** în Business, tabul „Parc auto”: vehicule (număr, marcă, model, an, șofer obișnuit, scos din folosință) și șoferi (telefon, categorii), fiecare cu actele lui (tipul sugerat: ITP, RCA, CASCO, rovinietă, revizie, licență, tahograf…; permis, atestat, card tahograf, avize), numărul și data expirării; sus ce expiră în 30 de zile; memento-uri ca la parteneri (30 / 7 zile, în ziua expirării, apoi săptămânal 4 săptămâni), fiecare o dată; teste: Rust (fleet) + e2e fleet 6/6, business 28/28, deliveries 4/4
 - [ ] 7.4l Module din Cyber Office Studio (D-067, confirmat de proprietar pe 8 nov. 2026 pentru 5 module, în această ordine; analiza în `docs/ANALIZA_CYBER_OFFICE_STUDIO.md`):
 - [ ] 7.4l-0 Ce au testat oamenii în COS, primele (D-078; lista în `workspace\TESTAT-DE-OAMENI.md`; fiecare verificat e2e, cu testele COS):
-    - [ ] 7.4l-0a PDF: ștampila editabilă după ce e pusă (mutare, mărire, schimbare, ștergere; recitită la redeschidere, ca în COS `stampAnnot.ts` / `Marks.tsx`)
+    - [x] 7.4l-0a PDF: ștampila editabilă după ce e pusă (mutare, mărire, schimbare, ștergere; recitită la redeschidere, ca în COS `stampAnnot.ts` / `Marks.tsx`)
+      — 9 nov. 2026: codul COS copiat neschimbat în `app/cos/src/pdf/`, iar testele COS `pdf-stamp` (19) și `pdf-stampline` (4) trec.
+      Pe pagina mare, ștampila se pune cu clic sau „pe toate paginile / paginile alese” la locul ales. Se mută, se mărește din colț, se schimbă cu dublu-clic (text, rând, culoare, opacitate) și se șterge cu Delete. Se salvează cu „Salvează ștampilele” sau Ctrl+S, ca versiune nouă după previzualizare. La redeschidere se poate schimba din nou.
+      e2e `pdf.mjs` cu clicuri, trageri și taste adevărate.
     - [ ] 7.4l-0b PDF: editarea textului la clic (textul vechi scos din pagină, culorile păstrate; COS `paragraphs.ts` / `textRemove.ts`)
     - [ ] 7.4l-0c PDF: semnătura digitală vizibilă unde alegi, cu certificatul de pe calculator / token (COS `digisign.ts`; PIN-ul îl introduce proprietarul)
     - [ ] 7.4l-0d OCR pe poze de telefon, cu poza curățată înainte (COS `enhance.ts`, `ocr.ts`; D-075)

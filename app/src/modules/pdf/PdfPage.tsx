@@ -11,6 +11,7 @@ import { RedactPanel } from "./Redact";
 import { ToolsPanel } from "./Tools";
 import { FormPanel } from "./Form";
 import { StampsPanel } from "./Stamps";
+import { extractStamps, pageSize, placeCentre, StampPage, stampMark, stampMarks, type Armed, type Mark } from "./StampEdit";
 
 const ID = "kgb.pdf";
 const THUMBS_AT_ONCE = 60;
@@ -49,6 +50,11 @@ interface Preview {
   doc: PDFDocumentProxy;
 }
 
+const toB64 = (b: Uint8Array) => {
+  let s = "";
+  for (let i = 0; i < b.length; i += 0x8000) s += String.fromCharCode(...b.subarray(i, i + 0x8000));
+  return btoa(s);
+};
 const pages = (n: number) => (n === 1 ? "1 pagină" : `${n} pagini`);
 const when = (ms: number) => new Date(ms).toLocaleString("ro-RO");
 const kb = (n: number) => (n < 1024 * 1024 ? `${Math.max(1, Math.round(n / 1024))} KB` : `${(n / 1048576).toFixed(1)} MB`);
@@ -106,6 +112,14 @@ export function PdfPage({ onError }: { onError: (e: string | null) => void }) {
   const [toolsOpen, setToolsOpen] = useState(false);
   // PDF forms (7.4l-1e).
   const [formOpen, setFormOpen] = useState(false);
+  // Editable stamps (7.4l-0a): the version without them (what the page shows), the stamps as marks, what was saved.
+  const [base, setBase] = useState<Uint8Array | null>(null);
+  const [marks, setMarks] = useState<Mark[]>([]);
+  const [savedMarks, setSavedMarks] = useState("[]");
+  const [armed, setArmed] = useState<Armed | null>(null);
+  const [selMark, setSelMark] = useState<number | null>(null);
+  const [editMark, setEditMark] = useState<number | null>(null);
+  const markId = useRef(1);
 
   const refresh = useCallback(async () => {
     try {
@@ -130,9 +144,28 @@ export function PdfPage({ onError }: { onError: (e: string | null) => void }) {
         setShowAll(false);
         setViewError(null);
         setView(null);
+        setBase(null);
+        setMarks([]);
+        setSavedMarks("[]");
+        setArmed(null);
+        setSelMark(null);
+        setEditMark(null);
         const r = await api.moduleCall<{ data: string }>(ID, "read", { id, version: i.version });
         try {
-          setView(await openPdf(fromBase64(r.data)));
+          let bytes = fromBase64(r.data);
+          let found: Mark[] = [];
+          // Stamps put earlier come back as editable stamps; the page is shown without them (they sit on top).
+          const ex = i.status === "intact" ? await extractStamps(bytes).catch(() => null) : null;
+          if (ex) {
+            bytes = ex.bytes;
+            found = ex.marks.map((m, k) => ({ ...m, id: k + 1 }));
+          }
+          markId.current = found.length + 1;
+          setMarks(found);
+          setSavedMarks(JSON.stringify(found));
+          setBase(i.status === "intact" ? bytes : null);
+          // pdf.js takes over the bytes it is given: it gets a copy.
+          setView(await openPdf(bytes.slice()));
         } catch (e) {
           setViewError(message(e));
         }
@@ -213,6 +246,57 @@ export function PdfPage({ onError }: { onError: (e: string | null) => void }) {
       await api.moduleCall(ID, "export", { id: current, version, dest, overwrite: true });
       setNotice(`Copie salvată: ${dest}`);
     });
+
+  const marksDirty = JSON.stringify(marks) !== savedMarks;
+  const saveStamps = async () => {
+    if (!base || !current || version === null) return;
+    try {
+      const out = await stampMarks(base, marks);
+      const n = marks.length;
+      await ask("Ștampilele de pe pagini", "save_edit", {
+        id: current,
+        based_on: version,
+        data: toB64(out),
+        summary: n ? `${n === 1 ? "1 ștampilă" : `${n} ștampile`} pe pagini` : "ștampilele scoase",
+        same_text_pages: Array.from({ length: view?.numPages ?? 0 }, (_, i) => i + 1),
+      });
+    } catch (e) {
+      onError(message(e));
+    }
+  };
+  const placeAll = (a: Armed, place: string) =>
+    void run(async () => {
+      if (!view) return;
+      const targets = selected.length ? selected : Array.from({ length: view.numPages }, (_, i) => i + 1);
+      const added: Mark[] = [];
+      for (const p of targets) {
+        const s = await pageSize(view, p);
+        const [x, y] = placeCentre(place, s, stampMark(a, 0, p, 0, 0, s));
+        added.push(stampMark(a, markId.current++, p, x, y, s));
+      }
+      setMarks((all) => [...all, ...added]);
+      setBig(targets[0] ?? 1);
+      setNotice(`${added.length === 1 ? "1 ștampilă pusă" : `${added.length} ștampile puse`}: le poți muta sau schimba, apoi „Salvează ștampilele”.`);
+    });
+
+  // Keys as in COS: Esc stops placing, Delete removes the chosen stamp, Ctrl+S saves the stamps.
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      const t = e.target;
+      const typing = t instanceof HTMLInputElement || t instanceof HTMLTextAreaElement || t instanceof HTMLSelectElement;
+      if (e.key === "Escape" && armed) setArmed(null);
+      else if (!typing && selMark !== null && editMark === null && (e.key === "Delete" || e.key === "Backspace")) {
+        e.preventDefault();
+        setMarks((all) => all.filter((m) => m.id !== selMark));
+        setSelMark(null);
+      } else if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "s" && marksDirty && !busy) {
+        e.preventDefault();
+        void saveStamps();
+      }
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  });
 
   const toggle = (p: number) => setSelected((s) => (s.includes(p) ? s.filter((x) => x !== p) : [...s, p].sort((a, b) => a - b)));
   const pageCount = view?.numPages ?? info?.pages ?? 0;
@@ -356,7 +440,41 @@ export function PdfPage({ onError }: { onError: (e: string | null) => void }) {
               <ToolsPanel docId={doc.id} version={version ?? info.version} name={info.name} pages={pageCount} selected={selected} busy={busy} ask={ask} onError={onError} />
             )}
             {redactOpen && editable && view && <RedactPanel key={`${doc.id}-${version}`} view={view} docId={doc.id} version={version} busy={busy} ask={ask} />}
-            {stampsOpen && editable && <StampsPanel docId={doc.id} version={version} selected={selected} busy={busy} ask={ask} onError={onError} />}
+            {stampsOpen && editable && (
+              <StampsPanel
+                selected={selected}
+                busy={busy || !base}
+                onArm={(a) => {
+                  setArmed(a);
+                  if (big === null) setBig(selected[0] ?? 1);
+                }}
+                onPlaceAll={placeAll}
+                onError={onError}
+              />
+            )}
+            {editable && (marksDirty || armed) && (
+              <div className="row wrap pdf-stamp-bar">
+                {armed && <span className="warn">Fă clic pe pagină unde pui ștampila „{armed.text}” (Esc = renunți).</span>}
+                {marksDirty && <span className="muted">Ștampilele s-au schimbat și nu sunt salvate.</span>}
+                {marksDirty && (
+                  <button className="primary" disabled={busy} onClick={() => void saveStamps()}>
+                    Salvează ștampilele
+                  </button>
+                )}
+                {marksDirty && (
+                  <button
+                    className="link"
+                    onClick={() => {
+                      setMarks(JSON.parse(savedMarks) as Mark[]);
+                      setSelMark(null);
+                      setEditMark(null);
+                    }}
+                  >
+                    Renunță la schimbări
+                  </button>
+                )}
+              </div>
+            )}
             {stamp.open && editable && (
               <div className="card pdf-stamp">
                 <label>
@@ -401,7 +519,32 @@ export function PdfPage({ onError }: { onError: (e: string | null) => void }) {
                 <button className="link" onClick={() => setBig(null)}>
                   ← Înapoi la pagini
                 </button>
-                <Canvas doc={view} page={big} width={720} />
+                {editable && base ? (
+                  <StampPage
+                    doc={view}
+                    page={big}
+                    marks={marks}
+                    armed={armed !== null}
+                    selected={selMark}
+                    editing={editMark}
+                    onPlace={(x, y, s) => {
+                      if (!armed) return;
+                      const m = stampMark(armed, markId.current++, big, x, y, s);
+                      setMarks((all) => [...all, m]);
+                      setSelMark(m.id);
+                      setArmed(null);
+                    }}
+                    onChange={(m) => setMarks((all) => all.map((x) => (x.id === m.id ? m : x)))}
+                    onRemove={(id) => {
+                      setMarks((all) => all.filter((x) => x.id !== id));
+                      setSelMark(null);
+                    }}
+                    onSelect={setSelMark}
+                    onEdit={setEditMark}
+                  />
+                ) : (
+                  <Canvas doc={view} page={big} width={720} />
+                )}
               </div>
             )}
             {big === null && version !== null && (

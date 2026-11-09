@@ -2,11 +2,12 @@
 // stamps PLĂTIT … CONFIDENȚIAL or a text of your own, the line under them
 // (date, on request the time and a name — fixed when the stamp is put),
 // four colours, opacity, where on the page; and „Ștampilele mele” made from a
-// photo (StampDialog, paper removed by stampBg). The stamp becomes a real
-// /Stamp annotation in a new version, after a preview.
+// photo (StampDialog, paper removed by stampBg). Since 7.4l-0a the stamp is put
+// on the big page and stays editable (StampEdit.tsx, COS's mark layer).
 import { useCallback, useEffect, useState } from "react";
 import { api, message } from "../../api";
 import { StampDialog } from "./StampDialog";
+import type { Armed } from "./StampEdit";
 
 const ID = "kgb.pdf";
 /** Din Cyber Office Studio (sign.ts): ștampilele gata făcute și culorile lor. */
@@ -44,11 +45,10 @@ interface MyStamp {
 }
 
 export function StampsPanel(props: {
-  docId: string;
-  version: number;
   selected: number[];
   busy: boolean;
-  ask: (title: string, command: string, args: Record<string, unknown>) => Promise<void>;
+  onArm: (a: Armed) => void;
+  onPlaceAll: (a: Armed, place: string) => void;
   onError: (e: string | null) => void;
 }) {
   const [label, setLabel] = useState("PLĂTIT");
@@ -77,8 +77,13 @@ export function StampsPanel(props: {
   const text = (label === "" ? own : label).trim();
   const sub = line.date ? stampLine(new Date(), { time: line.time, name: line.name ? line.who : "" }) : line.name ? line.who.trim() : "";
   const where = props.selected.length ? `pe ${props.selected.length === 1 ? "1 pagină" : `${props.selected.length} pagini`}` : "pe toate paginile";
-  const common = { id: props.docId, based_on: props.version, pages: props.selected, pozitie: place };
   const mineChosen = mine.find((m) => m.id === chosen);
+  const mm = Number.parseFloat(width.replace(",", ".")) || 40;
+  const armed: Armed | null = mineChosen
+    ? { text: mineChosen.nume, img: `data:image/png;base64,${mineChosen.png}`, ratio: mineChosen.raport, widthPt: (mm * 72) / 25.4 }
+    : text
+      ? { text, sub, color, opacity: opacity / 100 }
+      : null;
 
   return (
     <div className="card pdf-stamps">
@@ -124,23 +129,17 @@ export function StampsPanel(props: {
             </option>
           ))}
         </select>
-        {chosen ? (
-          <button
-            className="primary"
-            disabled={props.busy}
-            onClick={() => void props.ask(`Ștampila „${mineChosen?.nume}”`, "stamp_annot", { ...common, biblioteca: chosen, latime_mm: Number.parseFloat(width.replace(",", ".")) || 40 })}
-          >
-            Previzualizează {where}
-          </button>
-        ) : (
-          <button
-            className="primary"
-            disabled={props.busy || !text}
-            onClick={() => void props.ask(`Ștampila „${text}”`, "stamp_annot", { ...common, text, sub, culoare: color, opacitate: opacity / 100, autor: line.name ? line.who : "" })}
-          >
-            Previzualizează {where}
-          </button>
-        )}
+        <button
+          className="primary"
+          disabled={props.busy || (!chosen && !text)}
+          title="Alege locul cu un clic pe pagina mare; ștampila se poate apoi muta, mări, schimba (dublu-clic) sau șterge"
+          onClick={() => armed && props.onArm(armed)}
+        >
+          Pune cu clic pe pagină
+        </button>
+        <button disabled={props.busy || (!chosen && !text)} onClick={() => armed && props.onPlaceAll(armed, place)}>
+          Pune {where}
+        </button>
       </div>
 
       <h4>Ștampilele mele</h4>
@@ -176,7 +175,11 @@ export function StampsPanel(props: {
         Ștampilă nouă din poză (ștampila firmei, o semnătură pe hârtie albă):{" "}
         <input aria-label="Poza ștampilei" type="file" accept="image/png,image/jpeg" onChange={(e) => setFile(e.target.files?.[0] ?? null)} />
       </label>
-      <p className="muted small">Ștampila e o adnotare adevărată (/Stamp): se vede în orice program de PDF și se poate muta sau șterge acolo. Rezultatul e o versiune nouă.</p>
+      <p className="muted small">
+        Ștampila rămâne de schimbat și după salvare: o muți și o mărești trăgând de ea, dublu-clic o schimbă (textul,
+        culoarea, opacitatea), Delete o șterge. E o adnotare adevărată (/Stamp), deci se vede în orice program de PDF.
+        „Salvează ștampilele” face o versiune nouă.
+      </p>
       {file && (
         <StampDialog
           file={file}
