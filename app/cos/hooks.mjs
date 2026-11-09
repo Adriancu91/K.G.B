@@ -23,7 +23,16 @@ registerHooks({
     try {
       return next(spec, ctx);
     } catch (e) {
-      if (spec.startsWith(".") && !/\.[a-z0-9]+$/i.test(spec)) return next(`${spec}.ts`, ctx);
+      if (spec.startsWith(".") && !/\.[a-z0-9]+$/i.test(spec)) {
+        // `./x` is x.ts, x.tsx or the folder x with its index.ts, as the bundler resolves it.
+        for (const tail of [".ts", ".tsx", "/index.ts"]) {
+          try {
+            return next(`${spec}${tail}`, ctx);
+          } catch {
+            /* try the next form */
+          }
+        }
+      }
       // Packages named from a temporary entry file (outside the app) resolve from the app's node_modules.
       if (!spec.startsWith(".") && !spec.startsWith("file:") && !spec.startsWith("node:")) return next(spec, { ...ctx, parentURL: appRoot });
       throw e;
@@ -37,10 +46,12 @@ registerHooks({
       const { readFileSync } = process.getBuiltinModule("node:fs");
       return { format: "module", source: `export default ${JSON.stringify(readFileSync(fileURLToPath(url), "utf8"))};`, shortCircuit: true };
     }
-    if (url.endsWith(".ts") && url.startsWith("file:")) {
+    if (/\.tsx?$/.test(url) && url.startsWith("file:")) {
       const { readFileSync } = process.getBuiltinModule("node:fs");
       const file = fileURLToPath(url);
-      const out = transformSync(file, readFileSync(file, "utf8"), { lang: "ts", sourceType: "module" });
+      const tsx = url.endsWith(".tsx");
+      // .tsx (dialogs imported by the logic under test): JSX with React's automatic runtime, as Vite builds it.
+      const out = transformSync(file, readFileSync(file, "utf8"), { lang: tsx ? "tsx" : "ts", sourceType: "module", ...(tsx ? { jsx: { runtime: "automatic" } } : {}) });
       if (out.errors?.length) throw new Error(`${file}: ${out.errors.map((e) => e.message).join("; ")}`);
       return { format: "module", source: out.code, shortCircuit: true };
     }

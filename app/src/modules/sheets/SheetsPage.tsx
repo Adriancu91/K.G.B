@@ -7,18 +7,8 @@ import { useCallback, useEffect, useRef, useState, type KeyboardEvent } from "re
 import { open, save } from "@tauri-apps/plugin-dialog";
 import { api, message } from "../../api";
 import { Confirm } from "../../components/Confirm";
-import type { KgbHost } from "./cosBridge";
-
-// The spreadsheet window of Cyber Office Studio (D-073, D-077) runs in its own frame and reaches the core
-// through this host, which the app lends it on its own window.
-const host: KgbHost = {
-  moduleCall: (id, command, args) => api.moduleCall(id, command, args),
-  importFile: (id, path) => api.importFile(id, path),
-  importFileWith: (id, path, command, args) => api.importFileWith(id, path, command, args),
-  open: (o) => open(o),
-  save: (o) => save(o),
-};
-(window as Window & { kgbHost?: KgbHost }).kgbHost = host;
+// The spreadsheet window of Cyber Office Studio (D-073, D-077) runs in its own frame; this lends it the core.
+import "../../components/cosHost";
 
 const ID = "kgb.sheets";
 const ROW_H = 26;

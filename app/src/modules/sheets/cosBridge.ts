@@ -14,7 +14,45 @@ import { api as cos } from "../../../cos/src/api";
 import type { ExportFormat, FileKind, OpenedFile, Settings } from "../../../cos/src/api";
 import { FORMATS } from "../../../cos/src/web/disk";
 
-export const ID = "kgb.sheets";
+/** What differs between the copied windows (Sheets, Docs): their module, their own format and its words. */
+export interface BridgeKind {
+  /** The K.G.B. module that keeps the window's documents. */
+  id: string;
+  kind: FileKind;
+  /** The window's own format (JSON): "ssheet", "sdoc". */
+  own: string;
+  /** The other formats it opens and saves back ("xlsx", "docx"). */
+  office: string[];
+  label: string;
+  savedNote: string;
+  newNote: string;
+  /** The module's commands for a new version / a new document. */
+  save: string;
+  saveNew: string;
+}
+export const SHEETS: BridgeKind = {
+  id: "kgb.sheets",
+  kind: "sheets",
+  own: "ssheet",
+  office: ["xlsx"],
+  label: "Registre",
+  savedNote: "Salvat din foaia de calcul",
+  newNote: "Registru nou din foaia de calcul",
+  save: "save_book",
+  saveNew: "save_new_book",
+};
+export const DOCS: BridgeKind = {
+  id: "kgb.write",
+  kind: "doc",
+  own: "sdoc",
+  office: ["docx"],
+  label: "Documente",
+  savedNote: "Salvat din fereastra de documente",
+  newNote: "Document nou din fereastra de documente",
+  save: "save_doc",
+  saveNew: "save_new_doc",
+};
+let cfg: BridgeKind = SHEETS;
 
 type DialogFilter = { name: string; extensions: string[] };
 /** What the app lends the frame: module calls and the system dialogs. */
@@ -45,7 +83,7 @@ const utf8 = new TextEncoder();
 export const pathOf = (id: string, name: string) => `${PREFIX}${id}/${name}`;
 const idOf = (path: string): string | null => (path.startsWith(PREFIX) ? path.slice(PREFIX.length).split("/")[0] ?? null : null);
 const nameOf = (path: string) => path.split(/[\\/]/).pop() ?? path;
-const isSheetFile = (name: string) => /\.ssheet$/i.test(name);
+const isOwnFile = (name: string) => name.toLowerCase().endsWith(`.${cfg.own}`);
 
 interface Read {
   version: number;
@@ -55,11 +93,11 @@ interface Read {
 
 /** A workbook of the core as the window opens it: .ssheet as text, everything else as bytes to import. */
 export async function openDocument(id: string, version?: number): Promise<OpenedFile> {
-  const r = await kgb.moduleCall<Read>(ID, "read", { id, version });
+  const r = await kgb.moduleCall<Read>(cfg.id, "read", { id, version });
   const path = pathOf(id, r.name);
   versions.set(id, r.version);
   const data = unb64(r.data);
-  return isSheetFile(r.name) ? { path, content: new TextDecoder().decode(data) } : { path, content: "", imported: data };
+  return isOwnFile(r.name) ? { path, content: new TextDecoder().decode(data) } : { path, content: "", imported: data };
 }
 
 async function saveBook(path: string, data: Uint8Array, summary: string): Promise<{ path: string }> {
@@ -67,13 +105,13 @@ async function saveBook(path: string, data: Uint8Array, summary: string): Promis
   if (!id) throw new Error("registrul nu este în spațiul de lucru");
   const based_on = versions.get(id);
   if (based_on === undefined) throw new Error("registrul nu a fost deschis din spațiul de lucru");
-  const r = await kgb.moduleCall<{ version: number }>(ID, "save_book", { id, based_on, data: b64(data), summary });
+  const r = await kgb.moduleCall<{ version: number }>(cfg.id, cfg.save, { id, based_on, data: b64(data), summary });
   versions.set(id, r.version);
   return { path };
 }
 
 async function saveNew(name: string, data: Uint8Array, summary: string): Promise<{ path: string }> {
-  const r = await kgb.moduleCall<{ document: { id: string; current?: number } }>(ID, "save_new_book", { name, data: b64(data), summary });
+  const r = await kgb.moduleCall<{ document: { id: string; current?: number } }>(cfg.id, cfg.saveNew, { name, data: b64(data), summary });
   versions.set(r.document.id, r.document.current ?? 1);
   return { path: pathOf(r.document.id, name) };
 }
@@ -100,10 +138,11 @@ const unsupported = (what: string) => async (): Promise<never> => {
 let installed = false;
 
 /** Puts the K.G.B. file functions over the copied window's `api`, once, before the window is shown. */
-export function installCosBridge(host: KgbHost): void {
+export function installCosBridge(host: KgbHost, kind: BridgeKind = SHEETS): void {
   if (installed) return;
   installed = true;
   kgb = host;
+  cfg = kind;
   const base = { ...cos };
   Object.assign(cos, {
     // Small preferences of the window (zoom, last choices); the workbooks themselves are in the core.
@@ -119,16 +158,13 @@ export function installCosBridge(host: KgbHost): void {
     },
     // Opening: a workbook from the computer becomes a document of the core, then opens from there.
     openFile: async (kind: FileKind): Promise<OpenedFile | null> => {
-      if (kind !== "sheets") return null;
-      const picked = await open({
-        multiple: false,
-        filters: [{ name: "Registre", extensions: ["ssheet", "xlsx"] }],
-      });
+      if (kind !== cfg.kind) return null;
+      const picked = await open({ multiple: false, filters: [{ name: cfg.label, extensions: [cfg.own, ...cfg.office] }] });
       if (!picked || Array.isArray(picked)) return null;
       const name = nameOf(picked);
-      const r = isSheetFile(name)
-        ? await kgb.importFileWith<{ document: { id: string } }>(ID, picked, "save_new_book", { summary: "Deschis de pe calculator" })
-        : await kgb.importFile<{ document: { id: string } }>(ID, picked);
+      const r = isOwnFile(name)
+        ? await kgb.importFileWith<{ document: { id: string } }>(cfg.id, picked, cfg.saveNew, { summary: "Deschis de pe calculator" })
+        : await kgb.importFile<{ document: { id: string } }>(cfg.id, picked);
       return openDocument(r.document.id);
     },
     readFile: async (path: string): Promise<OpenedFile> => {
@@ -138,9 +174,9 @@ export function installCosBridge(host: KgbHost): void {
     },
     saveFile: async (req: { path: string | null; content: string; kind: FileKind; suggestedName?: string }) => {
       const data = utf8.encode(req.content);
-      if (req.path && idOf(req.path) && isSheetFile(req.path)) return saveBook(req.path, data, "Salvat din foaia de calcul");
+      if (req.path && idOf(req.path) && isOwnFile(req.path)) return saveBook(req.path, data, cfg.savedNote);
       const stem = (req.suggestedName ?? "").replace(/\.[^.]+$/, "").replace(/[.\s]+$/, "") || "Fără titlu";
-      return saveNew(`${stem}.ssheet`, data, "Registru nou din foaia de calcul");
+      return saveNew(`${stem}.${cfg.own}`, data, cfg.newNote);
     },
     // „În .xlsx”: the workbook opened from an .xlsx gets a new version in the same format.
     overwriteFile: async (req: { path: string; format: ExportFormat; data: Uint8Array }) => {
@@ -151,7 +187,7 @@ export function installCosBridge(host: KgbHost): void {
     importFile: async (format: ExportFormat) => {
       const picked = await open({ multiple: false, filters: filtersOf(format) });
       if (!picked || Array.isArray(picked)) return null;
-      const r = await kgb.importFileWith<{ name: string; data: string }>(ID, picked, "peek", {});
+      const r = await kgb.importFileWith<{ name: string; data: string }>(cfg.id, picked, "peek", {});
       const data = unb64(r.data);
       return { path: r.name, data, size: data.length };
     },
@@ -160,7 +196,7 @@ export function installCosBridge(host: KgbHost): void {
       const name = ext && !req.suggestedName.toLowerCase().endsWith(`.${ext}`) ? `${req.suggestedName}.${ext}` : req.suggestedName;
       const dest = await save({ defaultPath: name, filters: filtersOf(req.format) });
       if (!dest) return null;
-      await kgb.moduleCall(ID, "export_file", { dest, data: b64(req.data) });
+      await kgb.moduleCall(cfg.id, "export_file", { dest, data: b64(req.data) });
       return { path: dest };
     },
     print: async () => {
@@ -171,5 +207,9 @@ export function installCosBridge(host: KgbHost): void {
     pickFolder: async () => null,
     listTables: async () => [],
     writeToFolder: unsupported("Scrierea într-un dosar"),
+    // The document window: sending by e-mail and bringing several files at once are not there yet.
+    composeMail: unsupported("Trimiterea pe e-mail"),
+    openMail: unsupported("Deschiderea unui e-mail"),
+    importMany: unsupported("Aducerea mai multor fișiere deodată"),
   });
 }

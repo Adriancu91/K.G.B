@@ -1,0 +1,18 @@
+[package]
+name = "kgb-write"
+version = "0.1.0"
+edition.workspace = true
+publish.workspace = true
+license.workspace = true
+description = "K.G.B. module: text documents written in the document window copied from Cyber Office Studio (D-080), as versioned documents."
+
+[dependencies]
+kgb-core.workspace = true
+serde.workspace = true
+serde_json.workspace = true
+uuid.workspace = true
+base64 = "0.22.1"
+zip = { version = "9.4.1", default-features = false, features = ["deflate"] }
+
+[dev-dependencies]
+tempfile.workspace = true

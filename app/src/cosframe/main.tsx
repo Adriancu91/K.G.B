@@ -1,7 +1,8 @@
-// The frame that shows the spreadsheet window of Cyber Office Studio inside K.G.B. (D-073, D-077).
-// It has its own page (cos-sheets.html) so the window's styles (app/cos/src/styles.css, theme.css) stay
-// apart from the app's. The app opens it as `cos-sheets.html#doc=<id>` (a workbook of the core) or
-// `cos-sheets.html#new` and lends it the core through `window.kgbHost` (see modules/sheets/SheetsPage).
+// The frame that shows a window of Cyber Office Studio inside K.G.B.: the spreadsheet (D-073, D-077) or
+// the document window (D-080). It has its own page (cos-sheets.html) so the window's styles
+// (app/cos/src/styles.css, theme.css) stay apart from the app's. The app opens it as
+// `cos-sheets.html#doc=<id>` / `#new` (Sheets) or `#app=docs&doc=<id>` / `#app=docs&new` (Docs) and lends
+// it the core through `window.kgbHost` (see modules/sheets/SheetsPage, modules/write/WritePage).
 import { StrictMode, Suspense, lazy, useEffect, useState } from "react";
 import { createRoot } from "react-dom/client";
 import type { OpenedFile } from "../../cos/src/api";
@@ -9,16 +10,20 @@ import { setCurrentModule } from "../../cos/src/active";
 import { AskHost } from "../../cos/src/ask";
 import { ScreenshotHost } from "../../cos/src/screenshot";
 import { SketchHost } from "../../cos/src/sketch";
-import { installCosBridge, openDocument, type KgbHost } from "../modules/sheets/cosBridge";
+import { DOCS, SHEETS, installCosBridge, openDocument, type KgbHost } from "../modules/sheets/cosBridge";
 import "../../cos/src/styles.css";
 import "../../cos/src/theme.css";
 
-const Sheets = lazy(() => import("../../cos/src/sheets/Sheets"));
+const hash = new URLSearchParams(location.hash.slice(1));
+const docs = hash.get("app") === "docs";
+const Window = lazy(() => (docs ? import("../../cos/src/docs/Docs") : import("../../cos/src/sheets/Sheets")));
+const what = docs ? "documentul" : "registrul";
 
 const host = (window.parent as Window & { kgbHost?: KgbHost }).kgbHost;
 
 function Frame() {
-  const doc = /^#doc=([0-9a-f-]+)$/i.exec(location.hash)?.[1] ?? null;
+  const id = hash.get("doc");
+  const doc = id && /^[0-9a-f-]+$/i.test(id) ? id : null;
   const [initial, setInitial] = useState<OpenedFile | null>(null);
   const [ready, setReady] = useState(doc === null);
   const [error, setError] = useState<string | null>(null);
@@ -32,14 +37,14 @@ function Frame() {
       (e) => setError(String(e)),
     );
   }, [doc]);
-  if (error) return <p className="frame-error">Registrul nu s-a putut deschide: {error}</p>;
-  if (!ready) return <p className="frame-wait">Se deschide registrul…</p>;
+  if (error) return <p className="frame-error">Nu s-a putut deschide {what}: {error}</p>;
+  if (!ready) return <p className="frame-wait">Se deschide {what}…</p>;
   // The window's own dialogs (questions, screen clip, sketch), mounted by the COS app around its modules;
   // without AskHost a question would fall back to the system confirm(), which the app does not allow.
   return (
     <>
-      <Suspense fallback={<p className="frame-wait">Se pregătește foaia de calcul…</p>}>
-        <Sheets initial={initial} onConsumed={() => setInitial(null)} />
+      <Suspense fallback={<p className="frame-wait">Se pregătește fereastra…</p>}>
+        <Window initial={initial} onConsumed={() => setInitial(null)} />
       </Suspense>
       <AskHost />
       <ScreenshotHost />
@@ -50,12 +55,12 @@ function Frame() {
 
 const root = createRoot(document.getElementById("root")!);
 if (!host) {
-  root.render(<p className="frame-error">Foaia de calcul se deschide doar din aplicația K.G.B.</p>);
+  root.render(<p className="frame-error">Fereastra se deschide doar din aplicația K.G.B.</p>);
 } else {
-  installCosBridge(host);
+  installCosBridge(host, docs ? DOCS : SHEETS);
   // The window's shortcuts (Ctrl+S, Ctrl+O, Ctrl+Z…) work only in the application "in front" (COS active.ts);
-  // in this frame the spreadsheet is always in front.
-  setCurrentModule("sheets");
+  // in this frame the window is always in front.
+  setCurrentModule(docs ? "doc" : "sheets");
   root.render(
     <StrictMode>
       <Frame />
