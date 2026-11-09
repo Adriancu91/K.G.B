@@ -29,5 +29,5 @@ testdata/etapa3/extern/
 testdata/proprietar/
 spikes/s6-docgen/out/
 
-# Corpusul de test al Cyber Office Studio, legat local pentru testele copiate (app/cos/README.md); nu intră în repo.
-app/test-corpus
+# Fișierele private ale proprietarului nu intră niciodată în corpusul copiat din Cyber Office Studio.
+app/test-corpus/utilizator/
