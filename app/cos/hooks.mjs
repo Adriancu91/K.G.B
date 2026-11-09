@@ -42,6 +42,11 @@ registerHooks({
     if (url.endsWith("?url")) {
       return { format: "module", source: `export default ${JSON.stringify(fileURLToPath(url.slice(0, -4)))};`, shortCircuit: true };
     }
+    // JSON imported without `with { type: "json" }` (the translations), as the bundler allows.
+    if (url.endsWith(".json") && url.startsWith("file:")) {
+      const { readFileSync } = process.getBuiltinModule("node:fs");
+      return { format: "module", source: `export default ${readFileSync(fileURLToPath(url), "utf8")};`, shortCircuit: true };
+    }
     if (url.endsWith(".svg")) {
       const { readFileSync } = process.getBuiltinModule("node:fs");
       return { format: "module", source: `export default ${JSON.stringify(readFileSync(fileURLToPath(url), "utf8"))};`, shortCircuit: true };

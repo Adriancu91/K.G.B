@@ -18,6 +18,7 @@ import { EN_STATUS, STATUS_PATTERNS } from './i18n-en-status';
 import { EN_ALERTS, ALERT_PATTERNS } from './i18n-en-alerts';
 import { EN_ERRORS, ERROR_PATTERNS } from './i18n-en-errors';
 import { EXTRA } from './i18n-extra';
+import type { Extra } from './i18n-extra/types';
 
 // Mesajele de eroare ale cititorilor de fișiere pot apărea oriunde (fereastră mică, stare, dialog): stau în dicționarul de bază.
 Object.assign(EN, EN_ERRORS);
@@ -44,7 +45,10 @@ const EXTRA_PATTERNS: Pattern[] = [];
 const escRe = (s: string) => s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 /** Ca la traducere: fără semnele de la început (pictograme, ghilimele) și fără „…”, „:”, „▾” și spațiile de la capăt. */
 const bare = (x: string) => x.trim().replace(/^[^\p{L}\p{N}{]+/u, '').replace(/[\s▾▸…:]+$/, '');
-for (const { modules, data } of EXTRA) {
+/** Pune dicționarele în căutare. Pe lângă cele din src/i18n-extra, o aplicație care găzduiește ferestrele (K.G.B.) își adaugă
+ *  cu `addExtra` dicționarul ei, după pornire: tiparele intră la coada listei, iar textele lui contează ca deja traduse. */
+function addExtraData(list: readonly Extra[]) {
+for (const { modules, data } of list) {
   const d: Record<string, string> = { ...(data.dict ?? {}) };
   // Bucățile de frază („ (obișnuite)”, „Exportul .odt a eșuat: ”) se caută fără spațiile și semnele de la capete.
   for (const [k, v] of Object.entries(data.dict ?? {})) { const b = bare(k); if (b && b !== k && !(b in d)) d[b] = bare(v) || v.trim(); }
@@ -77,6 +81,8 @@ for (const { modules, data } of EXTRA) {
     }]);
   }
 }
+}
+addExtraData(EXTRA);
 
 let lang: Lang = 'ro';
 let observer: MutationObserver | null = null;
@@ -169,6 +175,13 @@ const PATTERNS: Pattern[] = [
   ...EXTRA_PATTERNS,
 ];
 const EN_VALUES = new Set([...Object.values(EN), ...Object.values(EN_IMAGES), ...Object.values(EN_VIDEO), ...Object.values(EN_STATUS), ...Object.values(EN_DOCS_DLG), ...Object.values(EN_SHEETS_DLG), ...Object.values(EN_SLIDES_DLG), ...Object.values(EN_PDF_DLG), ...Object.values(EN_ALERTS), ...Object.values(ALL_EXTRA)]);
+/** Dicționarele unei aplicații gazdă (K.G.B.), adăugate după pornire: aceleași reguli ca src/i18n-extra. */
+export function addExtra(list: readonly Extra[]) {
+  const n = EXTRA_PATTERNS.length;
+  addExtraData(list);
+  PATTERNS.push(...EXTRA_PATTERNS.slice(n));
+  for (const { data } of list) for (const v of Object.values(data.dict ?? {})) EN_VALUES.add(v);
+}
 /** Textele puse deja de noi (pentru testul care caută ce a rămas netradus). */
 const produced = new Set<string>();
 

@@ -27,6 +27,7 @@ import { ChatPage } from "./pages/ChatPage";
 import { PhonePage } from "./pages/PhonePage";
 import { TeamOverviewPage } from "./pages/TeamOverviewPage";
 import { QuickSearch } from "./components/QuickSearch";
+import { setLang, useLang } from "./i18n/lang";
 
 /// Interfaces of the built-in modules, by module id.
 const MODULE_PAGES: Record<string, ComponentType<{ onError: (e: string | null) => void }>> = {
@@ -53,6 +54,7 @@ interface NavItem {
 }
 
 export function App() {
+  const lang = useLang();
   const [info, setInfo] = useState<AppInfo | null>(null);
   const [settings, setSettings] = useState<SettingsReply | null>(null);
   const [modules, setModules] = useState<ModulesReply | null>(null);
@@ -232,6 +234,14 @@ export function App() {
                 </button>
               ))}
             </nav>
+            <div className="lang-switch" role="group" aria-label="Limba">
+              {(["ro", "en"] as const).map((l) => (
+                <button key={l} className={lang === l ? "on" : ""} aria-pressed={lang === l} onClick={() => setLang(l)}
+                  title={l === "ro" ? "Interfața în română" : "Interface in English"}>
+                  {l.toUpperCase()}
+                </button>
+              ))}
+            </div>
           </>
         )}
         {!collapsed && <div className="resizer" onPointerDown={startDrag} title="Trage pentru a redimensiona" />}

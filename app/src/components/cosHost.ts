@@ -3,6 +3,7 @@
 // Imported by every page that opens such a frame.
 import { open, save } from "@tauri-apps/plugin-dialog";
 import { api } from "../api";
+import { currentLang, onLang } from "../i18n/lang";
 import type { KgbHost } from "../modules/sheets/cosBridge";
 
 const host: KgbHost = {
@@ -11,6 +12,8 @@ const host: KgbHost = {
   importFileWith: (id, path, command, args) => api.importFileWith(id, path, command, args),
   open: (o) => open(o),
   save: (o) => save(o),
+  lang: () => currentLang(),
+  onLang: (f) => onLang(f),
 };
 (window as Window & { kgbHost?: KgbHost }).kgbHost = host;
 
