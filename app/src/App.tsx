@@ -315,7 +315,7 @@ export function App() {
       </main>
       <QuickSearch pages={nav.filter((n) => n.id !== "home")} onOpen={setPage} />
       <footer className="status">
-        <span>{info.workspace?.name}</span>
+        <span className="no-i18n">{info.workspace?.name}</span>
         <span title={info.workspace?.dir}>
           Stocare: {info.recovery?.note ?? "în regulă"} · deschisă în {info.recovery?.open_ms} ms
         </span>
