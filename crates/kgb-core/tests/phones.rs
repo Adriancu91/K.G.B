@@ -143,3 +143,23 @@ fn timesheet_from_phone() {
     let photo = Upload { name: "x.jpg".into(), mime: "image/jpeg".into(), data: vec![1] };
     assert!(phones::submit(&mut ws, &p, "pontaj", f(json!({"miscare": "intrare", "ora": "08:00", "data": "2026-11-09"})), vec![photo]).is_err());
 }
+
+/// Step 7.4m-6c: the driver reports a delivery's stage (applied on the PC).
+#[test]
+fn driver_delivery_stage() {
+    let t = tempfile::tempdir().unwrap();
+    let mut ws = Workspace::create(&t.path().join("ws"), "T").unwrap();
+    let (id, token) = phones::pair(&mut ws, "Telefon șofer").unwrap();
+    phones::approve(&mut ws, id, "Vasile").unwrap();
+    let p = phones::by_token(&ws, &token).unwrap().unwrap();
+    let f = |v: serde_json::Value| v.as_object().unwrap().clone();
+    let liv = uuid::Uuid::now_v7().to_string();
+    let aviz = Upload { name: "aviz-semnat.jpg".into(), mime: "image/jpeg".into(), data: vec![0xFF, 0xD8, 7] };
+    phones::submit(&mut ws, &p, "livrare", f(json!({"livrare": liv, "etapa": "in_drum", "aviz": "AV-12"})), vec![]).unwrap();
+    phones::submit(&mut ws, &p, "livrare", f(json!({"livrare": liv, "etapa": "livrat", "primit_de": "Ion Client"})), vec![aviz]).unwrap();
+    let mut err = |v: serde_json::Value| phones::submit(&mut ws, &p, "livrare", f(v), vec![]).unwrap_err().to_string();
+    assert!(err(json!({"livrare": liv, "etapa": "in_drum"})).contains("avizului"));
+    assert!(err(json!({"livrare": liv, "etapa": "livrat", "aviz": "x"})).contains("cine a primit"));
+    assert!(err(json!({"livrare": liv, "etapa": "confirmat"})).contains("doar"));
+    assert!(err(json!({"livrare": "x", "etapa": "in_drum", "aviz": "A"})).contains("aleasă"));
+}

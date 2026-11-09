@@ -10,7 +10,8 @@
 //! - Pairing: the phone types the 8-digit code shown on the PC (valid 10
 //!   minutes, 5 wrong tries end it), then waits for approval on the PC.
 //! - An approved phone only adds to the inbox (reception sheets, driver
-//!   documents, bank statements); it reads nothing back.
+//!   documents, bank statements…); it reads back only the product names
+//!   (for the sheets) and its own person's deliveries on the road (7.4m-6c).
 //! - Plain HTTP inside the local network (the firm's Wi-Fi): anyone on that
 //!   network can see the traffic. Fine for an office Wi-Fi with a password;
 //!   not for public Wi-Fi. From outside the office, through a private network
@@ -288,7 +289,7 @@ async fn handle(req: Request<Incoming>, session: Arc<Mutex<Option<Session>>>) ->
     if method == Method::GET && path == "/m/api/ping" {
         return Ok(json_reply(StatusCode::OK, json!({"kgb": true})));
     }
-    if method != Method::POST && !(method == Method::GET && (path == "/m/api/eu" || path == "/m/api/produse")) {
+    if method != Method::POST && !(method == Method::GET && (path == "/m/api/eu" || path == "/m/api/produse" || path == "/m/api/livrari")) {
         return Ok(err(StatusCode::NOT_FOUND, "nu există"));
     }
     let body: Value = if method == Method::POST {
@@ -354,6 +355,35 @@ async fn handle(req: Request<Incoming>, session: Arc<Mutex<Option<Session>>>) ->
                     .map(|x| json!({"id": x["id"], "nume": x["nume"], "um": x["um"], "cod": x["cod"]}))
                     .collect();
                 json_reply(StatusCode::OK, json!({"produse": items}))
+            }
+            _ => err(StatusCode::UNAUTHORIZED, "telefonul nu e aprobat"),
+        }),
+        // The driver's own deliveries still on the road (7.4m-6c): the ones
+        // whose driver is the phone's person; what they need, nothing else.
+        "/m/api/livrari" => with(&mut |s| match phones::by_token(&s.ws, &token) {
+            Ok(Some(p)) if p.stare == "aprobat" => {
+                let me = p.membru_nume.trim().to_lowercase();
+                let list = s.mm.call(&mut s.ws, None, "kgb.business", "deliveries", json!({})).unwrap_or(json!([]));
+                let items: Vec<Value> = list
+                    .as_array()
+                    .into_iter()
+                    .flatten()
+                    .filter(|d| {
+                        ["incarcat", "in_drum"].contains(&d["etapa"].as_str().unwrap_or_default())
+                            && !me.is_empty()
+                            && d["campuri"]["sofer"].as_str().is_some_and(|x| x.trim().to_lowercase() == me)
+                    })
+                    .map(|d| {
+                        let linii: Vec<Value> = d["linii"]
+                            .as_array()
+                            .into_iter()
+                            .flatten()
+                            .map(|l| json!({"descriere": l["descriere"], "cantitate": l["cantitate_text"], "um": l["um"]}))
+                            .collect();
+                        json!({"id": d["id"], "numar": d["numar_text"], "destinatar": d["destinatar"], "adresa": d["adresa"], "data": d["data"], "etapa": d["etapa"], "vehicul": d["campuri"]["vehicul"], "linii": linii})
+                    })
+                    .collect();
+                json_reply(StatusCode::OK, json!({"livrari": items}))
             }
             _ => err(StatusCode::UNAUTHORIZED, "telefonul nu e aprobat"),
         }),

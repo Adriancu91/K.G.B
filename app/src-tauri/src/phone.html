@@ -62,6 +62,7 @@
     <button data-go="document"><b>Documente de la șofer</b><br><span class="muted">fotografiază avizul, CMR-ul, bonul de cântar</span></button>
     <button data-go="extras"><b>Extras de cont</b><br><span class="muted">PDF-ul sau fișierul CSV din aplicația băncii</span></button>
     <button data-go="inventar"><b>Inventar numărat</b><br><span class="muted">numeri în depozit: produsul și cât ai găsit</span></button>
+    <button id="goTrips"><b>Livrările mele</b><br><span class="muted">șofer: am plecat, am livrat, poza avizului semnat</span></button>
     <button id="goClock"><b>Pontaj</b><br><span class="muted">am intrat / am ieșit — ora o declari tu, fără locație</span></button>
     <button data-go="bon"><b>Bon de cheltuială</b><br><span class="muted">fotografiază bonul: motorină, piese, consumabile</span></button>
     <p id="sent" class="ok"></p>
@@ -71,6 +72,14 @@
       <p class="muted">Pagina trece singură pe un PC pornit. Dacă la deschidere nu se încarcă (PC-ul ei e stins), deschide una dintre adresele de mai jos; salvează-le ca semn de carte.</p>
       <div id="spareList"></div>
     </details>
+  </section>
+
+  <section id="trips" class="card" hidden>
+    <h2>Livrările mele</h2>
+    <p class="muted">Livrările din Business în care ești trecut ca șofer. Ce trimiți de aici ajunge pe PC, unde se trece în Business.</p>
+    <div id="tripList"></div>
+    <p id="tripMsg" class="error"></p>
+    <button id="tripBack">Înapoi</button>
   </section>
 
   <section id="clock" class="card" hidden>
@@ -108,7 +117,7 @@
 const KEY = "kgb.phone.token";
 const store = { get() { try { return localStorage.getItem(KEY) || ""; } catch { return ""; } }, set(v) { try { localStorage.setItem(KEY, v); } catch {} }, clear() { try { localStorage.removeItem(KEY); } catch {} } };
 const $ = (id) => document.getElementById(id);
-const show = (id) => { for (const s of ["pair", "wait", "revoked", "menu", "form", "clock"]) $(s).hidden = s !== id; };
+const show = (id) => { for (const s of ["pair", "wait", "revoked", "menu", "form", "clock", "trips"]) $(s).hidden = s !== id; };
 const FORMS = {
   receptie: { title: "Fișă de recepție", files: "Poze generale (aviz, încărcătura) — opțional", accept: "image/*", lines: true, fields: [["furnizor", "Furnizor"], ["document", "Aviz / factură (număr)"], ["vehicul", "Vehicul"], ["observatii", "Observații", true]] },
   document: { title: "Documente de la șofer", files: "Poze cu documentele", accept: "image/*", fields: [["sofer", "Șofer"], ["vehicul", "Vehicul"], ["nota", "Notă", true]] },
@@ -232,6 +241,56 @@ async function clock(miscare) {
 $("clockIn").onclick = () => clock("intrare");
 $("clockOut").onclick = () => clock("iesire");
 $("clockBack").onclick = () => show("menu");
+
+// The driver's deliveries (7.4m-6c): report "on the road" and "delivered".
+const SENT = "kgb.phone.livrari";
+const sentMap = () => { try { return JSON.parse(kv.get(SENT) || "{}"); } catch { return {}; } };
+const esc = (t) => String(t ?? "").replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c]);
+async function loadTrips() {
+  $("tripMsg").textContent = "";
+  $("tripList").innerHTML = "<p class='muted'>Se încarcă…</p>";
+  try {
+    const r = await api("/m/api/livrari");
+    const sent = sentMap();
+    $("tripList").innerHTML = r.livrari.length ? "" : "<p class='muted'>Nicio livrare încărcată pe numele tău.</p>";
+    for (const d of r.livrari) {
+      const next = d.etapa === "incarcat" ? "in_drum" : "livrat";
+      const box = document.createElement("div");
+      box.className = "line trip";
+      box.dataset.trip = d.numar;
+      box.innerHTML = `
+        <div class="head"><b>${esc(d.numar)} · ${esc(d.destinatar)}</b><span class="muted">${esc(d.data)}</span></div>
+        <div>${esc(d.adresa)}</div>
+        <div class="muted">${d.linii.map((l) => `${esc(l.descriere)}: ${esc(l.cantitate)} ${esc(l.um)}`).join("<br>")}</div>
+        ${sent[d.id] === next ? `<p class="ok">Trimis la PC (${next === "in_drum" ? "în drum" : "livrat"}); se trece în Business de pe PC.</p>` : ""}
+        ${sent[d.id] === next ? "" : next === "in_drum"
+          ? `<label>Numărul avizului <input data-aviz maxlength="100"></label><button class="primary" data-go-stage>Am plecat — în drum</button>`
+          : `<label>Cine a primit marfa <input data-who maxlength="100"></label><label>Poza avizului semnat <input data-photo type="file" accept="image/*" capture="environment"></label><button class="primary" data-go-stage>Am livrat</button>`}`;
+      if (sent[d.id] === next) { $("tripList").appendChild(box); continue; }
+      box.querySelector("[data-go-stage]").onclick = async () => {
+        $("tripMsg").textContent = "";
+        const btn = box.querySelector("[data-go-stage]");
+        btn.disabled = true;
+        try {
+          const campuri = { livrare: d.id, numar: d.numar, destinatar: d.destinatar, etapa: next };
+          const fisiere = [];
+          if (next === "in_drum") campuri.aviz = box.querySelector("[data-aviz]").value.trim();
+          else {
+            campuri.primit_de = box.querySelector("[data-who]").value.trim();
+            const f = box.querySelector("[data-photo]").files[0];
+            if (f) { const small = await shrink(f); fisiere.push({ nume: `aviz-semnat-${d.numar}.jpg`, mime: small.type, date: await b64(small) }); }
+          }
+          await api("/m/api/trimite", { tip: "livrare", campuri, fisiere });
+          const m = sentMap(); m[d.id] = next; kv.set(SENT, JSON.stringify(m));
+          loadTrips();
+        } catch (e) { $("tripMsg").textContent = e.message; btn.disabled = false; }
+      };
+      $("tripList").appendChild(box);
+    }
+  } catch (e) { $("tripList").innerHTML = ""; $("tripMsg").textContent = e.message; }
+}
+$("goTrips").onclick = () => { show("trips"); loadTrips(); };
+$("tripBack").onclick = () => show("menu");
 function open(k) {
   kind = k; chosen = [];
   const f = FORMS[k];

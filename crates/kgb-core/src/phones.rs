@@ -51,7 +51,12 @@ pub const KINDS: &[(&str, &str)] = &[
     ("bon", "bon de cheltuială"),
     // 7.4m-6b: entry or exit, declared by the person (D-064: no location).
     ("pontaj", "pontaj"),
+    // 7.4m-6c: the driver's stage of a delivery (applied on the PC).
+    ("livrare", "etapă de livrare"),
 ];
+
+/// The stages a driver reports from the phone, and the field each needs.
+pub const DRIVER_STAGES: &[(&str, &str, &str)] = &[("in_drum", "aviz", "numărul avizului"), ("livrat", "primit_de", "cine a primit marfa")];
 
 /// A time of day "HH:MM" (00:00–23:59).
 fn clock(t: &str) -> bool {
@@ -424,6 +429,18 @@ pub fn submit_with_lines(ws: &mut Workspace, from: &Phone, kind: &str, fields: s
         }
         if !uploads.is_empty() {
             return Err(bad("pontajul nu are fișiere"));
+        }
+    }
+    if kind == "livrare" {
+        let field = |k: &str| clean.get(k).and_then(Value::as_str).unwrap_or_default().to_string();
+        if Uuid::parse_str(&field("livrare")).is_err() {
+            return Err(bad("livrarea nu e aleasă"));
+        }
+        let Some((_, need, label)) = DRIVER_STAGES.iter().find(|(st, _, _)| *st == field("etapa")) else {
+            return Err(bad("de pe telefon se trimite doar „în drum” sau „livrat”"));
+        };
+        if field(need).is_empty() || field(need).chars().count() > 200 {
+            return Err(bad(format!("scrie {label}")));
         }
     }
     if kind == "bon" {

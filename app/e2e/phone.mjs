@@ -184,6 +184,27 @@ try {
   const pays = await biz("payments", {});
   check("bonul devine o plată în Business, cu explicația", JSON.stringify(pays).includes("Benzinăria X") && JSON.stringify(pays).includes("motorină"), JSON.stringify(pays).slice(0, 300));
 
+  // 7.4m-6c: the driver's deliveries on the phone; stages applied on the PC.
+  const mine = await biz("delivery_save", { destinatar: "Client Test SRL", adresa: "Str. Fabricii 1, Iași", data: "2026-11-09", linii: [{ descriere: "Fier vechi", cantitate: "2.000", um: "kg" }] });
+  const other = await biz("delivery_save", { destinatar: "Alt Client", adresa: "Bacău", data: "2026-11-09", linii: [{ descriere: "Cupru", cantitate: "10", um: "kg" }] });
+  await biz("delivery_step", { id: mine.id, etapa: "incarcat", campuri: { vehicul: "IS-01-ABC", sofer: "Proprietar" } });
+  await biz("delivery_step", { id: other.id, etapa: "incarcat", campuri: { vehicul: "BC-02-XYZ", sofer: "Alt Șofer" } });
+  const trips = (await phone("/m/api/livrari")).json?.livrari ?? [];
+  check("telefonul vede doar livrările în care persoana lui e șofer", trips.length === 1 && trips[0].numar === mine.numar && trips[0].linii[0].cantitate === "2.000", JSON.stringify(trips));
+  const go = await phone("/m/api/trimite", { tip: "livrare", campuri: { livrare: mine.id, numar: mine.numar, etapa: "in_drum", aviz: "AV-901" }, fisiere: [] });
+  check("șoferul trimite „am plecat”, cu avizul", go.status === 200, JSON.stringify(go.json));
+  await p.until("[...document.querySelectorAll('.stage-to-business button')].length === 1", 8000);
+  await p.click("Trece etapa în Business", ".stage-to-business button");
+  await p.until("document.querySelector('.phone-page').innerText.includes('e acum „în drum” în Business')", 8000);
+  const done1 = await phone("/m/api/trimite", { tip: "livrare", campuri: { livrare: mine.id, numar: mine.numar, etapa: "livrat", primit_de: "Ion Client" }, fisiere: [{ nume: "aviz-semnat.png", mime: "image/png", date: PNG }] });
+  check("…apoi „am livrat”, cu poza avizului semnat", done1.status === 200);
+  await p.until("[...document.querySelectorAll('.stage-to-business button')].length === 1", 8000);
+  await p.click("Trece etapa în Business", ".stage-to-business button");
+  await p.until("document.querySelector('.phone-page').innerText.includes('e acum „livrat” în Business')", 8000);
+  const dl = (await biz("deliveries", {})).find((d) => d.id === mine.id);
+  check("în Business livrarea e „livrat”, cu avizul și cine a primit", dl?.etapa === "livrat" && dl?.campuri?.aviz === "AV-901" && dl?.campuri?.primit_de === "Ion Client", JSON.stringify(dl?.campuri));
+  check("o livrare predată nu mai apare pe telefon", ((await phone("/m/api/livrari")).json?.livrari ?? []).length === 0);
+
   // 7.4m-6b: entry and exit from the phone, into the team timesheet.
   const clockIn = await phone("/m/api/trimite", { tip: "pontaj", campuri: { miscare: "intrare", ora: "07:58", data: "2026-11-09" }, fisiere: [] });
   const clockOut = await phone("/m/api/trimite", { tip: "pontaj", campuri: { miscare: "iesire", ora: "16:30", data: "2026-11-09" }, fisiere: [] });

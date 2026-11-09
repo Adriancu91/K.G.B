@@ -43,7 +43,7 @@ interface Phone {
 }
 interface Received {
   id: string;
-  tip: "receptie" | "document" | "extras" | "inventar" | "bon" | "pontaj";
+  tip: "receptie" | "document" | "extras" | "inventar" | "bon" | "pontaj" | "livrare";
   telefon_nume: string;
   membru_nume: string;
   campuri: Record<string, string>;
@@ -85,7 +85,40 @@ const KIND: Record<Received["tip"], string> = {
   inventar: "Inventar numărat",
   bon: "Bon de cheltuială",
   pontaj: "Pontaj",
+  livrare: "Etapă de livrare",
 };
+
+const STAGE: Record<string, string> = { in_drum: "în drum", livrat: "livrat" };
+
+/** A driver's stage from the phone, applied to the delivery in Business (7.4m-6c). */
+function StageToBusiness({ x, onDone, onError }: { x: Received; onDone: (msg: string) => void; onError: (e: string | null) => void }) {
+  const c = x.campuri;
+  const etapa = c.etapa ?? "";
+  const fields: Record<string, string> = etapa === "in_drum" ? { aviz: c.aviz ?? "" } : { primit_de: c.primit_de ?? "" };
+  return (
+    <div className="row wrap stage-to-business">
+      <span>
+        {c.numar} → <strong>{STAGE[etapa] ?? etapa}</strong>
+        {etapa === "in_drum" ? ` (aviz ${c.aviz})` : ` (primit de ${c.primit_de})`}
+      </span>
+      <button
+        onClick={() =>
+          void (async () => {
+            try {
+              await api.moduleCall("kgb.business", "delivery_step", { id: c.livrare, etapa, campuri: fields });
+              await invoke("phone_done", { id: x.id, gata: true });
+              onDone(`${c.numar} e acum „${STAGE[etapa] ?? etapa}” în Business; mesajul șoferului e marcat rezolvat.`);
+            } catch (e) {
+              onError(message(e));
+            }
+          })()
+        }
+      >
+        Trece etapa în Business
+      </button>
+    </div>
+  );
+}
 
 interface Employee {
   id: string;
@@ -624,6 +657,7 @@ export function PhonePage({ modules, onError }: { modules: ModulesReply; onError
               ))}
             </div>
             <ReceptionLines x={x} business={business} onDone={(m) => void load().then(() => setNotice(m))} onError={onError} />
+            {x.tip === "livrare" && !x.procesat && business && <StageToBusiness x={x} onDone={(m) => void load().then(() => setNotice(m))} onError={onError} />}
             {x.tip === "bon" && !x.procesat && business && (
               <ReceiptToBusiness x={x} accounts={allAccounts} onDone={(m) => void load().then(() => setNotice(m))} onError={onError} />
             )}
