@@ -1,0 +1,35 @@
+// Test pentru „Desen → forme” din Notițe (src/notes/inkShape.ts): linie, dreptunghi și cerc trase „de mână” (cu tremur) se recunosc;
+// scrisul, mâzgăliturile și formele deschise nu. Rulare (în suite/): node tests/notes-inkshape.test.mjs
+import { build } from 'esbuild';
+import { pathToFileURL } from 'node:url';
+import { tmpdir } from 'node:os';
+import { join } from 'node:path';
+import { rmSync } from 'node:fs';
+const out = join(tmpdir(), `suite-inkshape-${process.pid}.mjs`);
+await build({ entryPoints: ['src/notes/inkShape.ts'], bundle: true, format: 'esm', platform: 'node', outfile: out, logLevel: 'error' });
+const { recognize } = await import(pathToFileURL(out).href);
+rmSync(out, { force: true });
+let fail = 0;
+const check = (name, ok, info = '') => { console.log(`${ok ? 'ok ' : 'GREȘIT'} ${name}${ok ? '' : ' ' + info}`); if (!ok) fail++; };
+// Tremur mic, mereu același (fără Math.random, ca testul să dea la fel de fiecare dată).
+const j = (i) => Math.sin(i * 12.9898) * 3;
+const P = (x, y) => [x, y, 0.5];
+const line = Array.from({ length: 30 }, (_, i) => P(100 + i * 10 + j(i), 200 + i * 4 + j(i + 7)));
+const rect = [];
+for (let i = 0; i <= 20; i++) rect.push(P(100 + i * 15 + j(i), 100 + j(i + 1)));
+for (let i = 0; i <= 10; i++) rect.push(P(400 + j(i + 2), 100 + i * 20 + j(i)));
+for (let i = 0; i <= 20; i++) rect.push(P(400 - i * 15 + j(i + 3), 300 + j(i)));
+for (let i = 0; i <= 10; i++) rect.push(P(100 + j(i + 4), 300 - i * 20 + j(i)));
+const circle = Array.from({ length: 60 }, (_, i) => { const a = (i / 58) * Math.PI * 2; return P(300 + 100 * Math.cos(a) + j(i), 300 + 80 * Math.sin(a) + j(i + 3)); });
+const scribble = Array.from({ length: 40 }, (_, i) => P(100 + i * 8, 200 + (i % 2 ? 40 : -40)));
+const arc = Array.from({ length: 30 }, (_, i) => { const a = (i / 29) * Math.PI; return P(300 + 100 * Math.cos(a), 300 + 100 * Math.sin(a)); });
+const tiny = Array.from({ length: 10 }, (_, i) => P(100 + i, 100 + i));
+const r1 = recognize(line), r2 = recognize(rect), r3 = recognize(circle);
+check('linia trasă de mână → linie dreaptă', r1?.tool === 'line' && Math.abs(r1.pts[0][0] - line[0][0]) < 1, JSON.stringify(r1));
+check('dreptunghiul → dreptunghi', r2?.tool === 'rect' && Math.abs(r2.pts[0][0] - 100) < 5 && Math.abs(r2.pts[1][1] - 300) < 5, JSON.stringify(r2));
+check('cercul → elipsă', r3?.tool === 'ellipse' && Math.abs(r3.pts[1][0] - r3.pts[0][0] - 200) < 10, JSON.stringify(r3));
+check('mâzgălitura rămâne', recognize(scribble) === null, JSON.stringify(recognize(scribble)));
+check('arcul (formă deschisă) rămâne', recognize(arc) === null, JSON.stringify(recognize(arc)));
+check('punctul mic rămâne', recognize(tiny) === null);
+console.log(fail ? `${fail} greșeli` : 'TOATE OK');
+process.exit(fail ? 1 : 0);

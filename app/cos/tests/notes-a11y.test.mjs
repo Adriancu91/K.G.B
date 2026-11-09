@@ -1,0 +1,26 @@
+// Test pentru ♿ Verifică accesibilitatea din Notițe. Rulare (în suite/): node tests/notes-a11y.test.mjs
+import { build } from 'esbuild';
+import { pathToFileURL } from 'node:url';
+import { tmpdir } from 'node:os';
+import { join } from 'node:path';
+import { rmSync } from 'node:fs';
+const out = join(tmpdir(), `suite-notesa11y-${process.pid}.mjs`);
+await build({ entryPoints: ['src/notes/a11y.ts'], bundle: true, format: 'esm', platform: 'node', outfile: out, logLevel: 'error', external: ['@tiptap/*'] });
+const { checkNote } = await import(pathToFileURL(out).href);
+rmSync(out, { force: true });
+let fail = 0;
+const check = (name, ok, got) => { console.log((ok ? 'ok ' : 'GREȘIT ') + name + (ok ? '' : ' → ' + JSON.stringify(got))); if (!ok) fail++; };
+const NL = String.fromCharCode(10);
+const texts = (t, b) => checkNote(t, b).map((x) => x.text);
+check('notiță bună: fără probleme', texts('Plan', ['# Plan', '## Pași', 'Vezi programul (https://exemplu.ro)', '| A | B |', '| --- | --- |', '| 1 | 2 |'].join(NL)).length === 0, texts('Plan', '# Plan'));
+check('fără titlu', texts('', 'text').includes('Notița nu are titlu'), texts('', 'text'));
+const skip = checkNote('T', ['# Unu', 'text', '### Trei'].join(NL));
+check('titlu care sare un nivel, cu locul lui', skip.length === 1 && skip[0].text.includes('Titlu 3') && skip[0].pos === 11, skip);
+check('titlu gol', texts('T', '## ').some((x) => x.includes('Titlu 2 gol')), texts('T', '## '));
+check('tabel fără cap', texts('T', ['| a | b |', '| 1 | 2 |'].join(NL)).includes('Tabel fără rând de cap'), texts('T', '| a | b |'));
+check('legătură „aici”', texts('T', 'Detalii aici (https://x.ro)').some((x) => x.includes('„aici”')), texts('T', 'Detalii aici (https://x.ro)'));
+check('text galben greu de citit', texts('T', 'Atenție {galben:important}').some((x) => x.includes('important')), texts('T', '{galben:important}'));
+check('text albastru e în regulă', texts('T', 'Atenție {albastru:important}').length === 0, texts('T', '{albastru:important}'));
+check('rând lung doar cu MAJUSCULE', texts('T', 'ACESTA ESTE UN RÂND FOARTE IMPORTANT').some((x) => x.includes('MAJUSCULE')), texts('T', 'ACESTA ESTE'));
+console.log(fail ? `\n${fail} verificări greșite` : '\nToate verificările au trecut');
+process.exit(fail ? 1 : 0);
