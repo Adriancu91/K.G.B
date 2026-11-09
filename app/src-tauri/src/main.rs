@@ -1067,6 +1067,10 @@ fn reminders_tick(app: State<AppState>, handle: tauri::AppHandle, azi: String) -
         }
         // Team messages from the other PCs (step 7.4f).
         kgb_core::chat::notify(&mut s.ws, &fp)?;
+        // "K.G.B. is open on this PC", at most every 10 minutes, in an organization (7.4h).
+        if let Some(c) = org::current(s.ws.store(), &fp)? {
+            kgb_core::presence::beat(s.ws.store_mut(), &fp, &c.member.id.to_string(), &c.member.name)?;
+        }
         let mut new = s.mm.remind_for(&mut s.ws, Some(&fp), &azi)?;
         let known: std::collections::BTreeSet<uuid::Uuid> = new.iter().map(|n| n.id).collect();
         for n in notifications::list(&s.ws, false, usize::MAX)? {
@@ -1078,6 +1082,46 @@ fn reminders_tick(app: State<AppState>, handle: tauri::AppHandle, azi: String) -
     })?;
     desktop_notify(&handle, &new);
     Ok(new.len())
+}
+
+// ---------- „Echipa pe scurt” (Etapa 7, step 7.4h; D-064) ----------
+
+#[derive(Serialize)]
+struct TeamReply {
+    /// Administrators see every card; the others only their own.
+    admin: bool,
+    carduri: Vec<kgb_core::presence::Card>,
+    eu: Option<kgb_core::presence::Card>,
+    culori: &'static [&'static str],
+    organizatie: bool,
+}
+
+#[tauri::command]
+fn team_overview(app: State<AppState>) -> CmdResult<TeamReply> {
+    with_session(&app, |s| {
+        let fp = s.device.fingerprint();
+        let organizatie = org::organization(s.ws.store())?.is_some();
+        let admin = organizatie && org::require_admin(s.ws.store(), Some(&fp), "").is_ok();
+        Ok(TeamReply {
+            admin,
+            carduri: if admin { kgb_core::presence::all(s.ws.store())? } else { vec![] },
+            eu: kgb_core::presence::mine(s.ws.store(), &fp)?,
+            culori: kgb_core::presence::COLORS,
+            organizatie,
+        })
+    })
+}
+
+/// What the member writes about themselves („la ce lucrez”, colour).
+#[tauri::command]
+fn team_set_mine(app: State<AppState>, lucrez: String, culoare: String) -> CmdResult<()> {
+    with_session(&app, |s| {
+        let fp = s.device.fingerprint();
+        let Some(c) = org::current(s.ws.store(), &fp)? else {
+            return Err(CoreError::invalid("echipa", "acest PC nu e într-o organizație"));
+        };
+        kgb_core::presence::set_mine(s.ws.store_mut(), &fp, &c.member.id.to_string(), &c.member.name, &lucrez, &culoare)
+    })
 }
 
 // ---------- team messages (Etapa 7, step 7.4f) ----------
@@ -1388,6 +1432,8 @@ fn main() {
             sources_list,
             anaf_lookup,
             media_now,
+            team_overview,
+            team_set_mine,
             chat_list,
             chat_send,
             chat_send_voice,

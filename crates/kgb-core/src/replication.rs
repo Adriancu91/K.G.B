@@ -141,15 +141,31 @@ fn member_op(op: &Op) -> bool {
             && op.state.fields.get("module").and_then(Value::as_str) == Some(crate::chat::CHAT_MODULE))
 }
 
+/// The presence cards of „Echipa pe scurt” (step 7.4h, D-064).
+fn presence_op(op: &Op) -> bool {
+    base(op.state.coll.as_str()) == crate::presence::PRESENCE_COLLECTION
+}
+
+/// The fingerprint of a device key (hex).
+fn fingerprint_of(key: &str) -> Option<String> {
+    registry::parse_key(key).map(|k| crate::identity::fingerprint(&k))
+}
+
 /// Changes that travel between devices; everything else is local.
 fn shared(op: &Op) -> bool {
     let coll = op.state.coll.as_str();
-    coll == registry::REGISTRY_COLLECTION || org_table(coll) || member_op(op) || module_for(op).is_some()
+    coll == registry::REGISTRY_COLLECTION || org_table(coll) || member_op(op) || presence_op(op) || module_for(op).is_some()
 }
 
 /// Whether the device with key `key` may receive `op`.
 fn readable(st: &RegState, key: &str, op: &Op) -> bool {
     let coll = op.state.coll.as_str();
+    // A presence card goes to administrators and to the device it describes.
+    if presence_op(op) {
+        return st.member_of(key).is_some()
+            && (st.is_admin(key)
+                || fingerprint_of(key).is_some_and(|f| crate::presence::written_by_itself(&op.state.fields, &f)));
+    }
     if coll == registry::REGISTRY_COLLECTION || org_table(coll) || member_op(op) {
         return st.member_of(key).is_some();
     }
@@ -333,7 +349,11 @@ pub fn apply(store: &mut Store, dev: &DeviceIdentity, resp: &Value) -> CoreResul
             reason(sum, "făcută înainte ca autorul să fie în organizație");
             return false;
         };
-        let ok = if org_table(coll) {
+        let ok = if presence_op(op) {
+            // A device writes only its own card.
+            then.member_of(author).is_some()
+                && fingerprint_of(author).is_some_and(|f| crate::presence::written_by_itself(&op.state.fields, &f))
+        } else if org_table(coll) {
             then.is_admin(author)
         } else if member_op(op) {
             then.member_of(author).is_some()

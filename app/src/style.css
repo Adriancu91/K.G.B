@@ -1387,3 +1387,78 @@ label > .suggest > input {
   background: var(--danger);
   border-color: var(--danger);
 }
+
+/* Etapa 7, step 7.4h: team overview */
+.team-overview {
+  display: grid;
+  gap: 12px;
+  max-width: 1000px;
+}
+.member-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 10px;
+}
+.member-card {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  padding: 10px;
+  border: 1px solid var(--line);
+  background: var(--panel);
+}
+.member-body {
+  display: grid;
+  gap: 4px;
+  min-width: 0;
+}
+.member-body p {
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+.avatar {
+  flex: 0 0 auto;
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: #fff;
+  background: #4a525b;
+}
+.avatar.c-otel {
+  background: #34536d;
+}
+.avatar.c-nisip {
+  background: #7e7462;
+}
+.avatar.c-masliniu {
+  background: #58613a;
+}
+.avatar.c-caramiziu {
+  background: #8c4a32;
+}
+.avatar.c-violet {
+  background: #5b4a7a;
+}
+.team-overview .tag {
+  justify-self: start;
+  font-size: 0.75em;
+  padding: 1px 6px;
+  border: 1px solid currentColor;
+}
+.team-overview .tag.ok {
+  color: var(--ok);
+}
+.member-self {
+  display: grid;
+  gap: 8px;
+  max-width: 600px;
+  padding-top: 8px;
+  border-top: 1px solid var(--line);
+}
+.member-self label {
+  display: grid;
+  gap: 4px;
+}
