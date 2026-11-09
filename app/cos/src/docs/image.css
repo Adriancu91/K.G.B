@@ -1,0 +1,157 @@
+/* Copiat neschimbat din Cyber Office Studio (D-071); vezi app/cos/README.md. */
+/* Imaginile din Docs: selecție, colțuri de redimensionare, bara de unelte, aliniere. */
+.page .ProseMirror .doc-image { position: relative; max-width: 100%; margin: 0.6em 0; line-height: 0; }
+.page .ProseMirror .doc-image img { display: block; max-width: 100%; height: auto; margin: 0; cursor: pointer; }
+.page .ProseMirror .doc-image.align-left { margin-right: auto; }
+.page .ProseMirror .doc-image.align-center { margin-left: auto; margin-right: auto; }
+.page .ProseMirror .doc-image.align-right { margin-left: auto; }
+.page .ProseMirror .doc-image.align-wrapLeft { float: left; margin: 0.3em 1.2em 0.6em 0; }
+.page .ProseMirror .doc-image.align-wrapRight { float: right; margin: 0.3em 0 0.6em 1.2em; }
+/* Fără lățime setată, imaginea are mărimea ei (limitată la pagină). */
+.page .ProseMirror .doc-image:not([style*='width']) { width: fit-content; }
+.page .ProseMirror::after { content: ''; display: block; clear: both; }
+
+.page .ProseMirror .doc-image.is-selected img { outline: 2px solid var(--accent); outline-offset: 1px; }
+.page .ProseMirror .ProseMirror-selectednode { outline: none; }
+
+.img-handle {
+  position: absolute; width: 12px; height: 12px; background: var(--panel);
+  border: 2px solid var(--accent); border-radius: 2px; z-index: 2;
+}
+.img-handle.nw { top: -6px; left: -6px; cursor: nwse-resize; }
+.img-handle.ne { top: -6px; right: -6px; cursor: nesw-resize; }
+.img-handle.sw { bottom: -6px; left: -6px; cursor: nesw-resize; }
+.img-handle.se { bottom: -6px; right: -6px; cursor: nwse-resize; }
+.img-size {
+  position: absolute; right: 8px; bottom: 8px; padding: 2px 6px; border-radius: 4px;
+  background: rgba(0, 0, 0, 0.65); color: #fff; font-size: 12px; line-height: 1.4;
+}
+
+.img-toolbar {
+  position: absolute; left: 50%; top: calc(100% + 10px); transform: translateX(-50%); z-index: 3;
+  display: flex; align-items: center; gap: 2px; padding: 4px 6px; white-space: nowrap; line-height: 1.4;
+  background: var(--panel); border: 1px solid var(--border); border-radius: 8px;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.15); font-size: 13px;
+}
+.img-toolbar .fmt { white-space: nowrap; }
+
+@media print {
+  .img-handle, .img-size, .img-toolbar, .img-alt { display: none !important; }
+  .page .ProseMirror .doc-image img { outline: none !important; }
+}
+
+/* Legenda sub imagine: face parte din imagine, deci nu se desparte de ea nici pe hârtie. */
+.page .ProseMirror .img-caption { line-height: 1.4; margin-top: 4px; font-size: 0.9em; font-style: italic; color: var(--muted); text-align: center; white-space: pre-wrap; }
+.page .ProseMirror .img-caption input { width: 100%; box-sizing: border-box; padding: 2px 6px; border: 1px solid var(--accent); border-radius: 4px; font: inherit; font-style: italic; text-align: center; color: var(--text); background: var(--panel); }
+@media print {
+  .page .ProseMirror .doc-image { break-inside: avoid; page-break-inside: avoid; }
+  .page .ProseMirror .img-caption { color: #444; }
+}
+/* Pensula de formatare pornită: cursorul arată că urmează să alegi textul care primește formatul. */
+.page .ProseMirror.painting, .page .ProseMirror.painting * { cursor: copy; }
+/* Chenarul paragrafelor: paragrafele vecine cu chenar se văd ca o singură casetă, ca în Word. */
+.page .ProseMirror [data-box="1"] { border: 1px solid var(--box-c, #6b6b80); padding: 4px 8px; margin-top: 0.6em; margin-bottom: 0.6em; }
+.page .ProseMirror [data-box="1"]:not([data-box-sides]) + [data-box="1"]:not([data-box-sides]) { border-top: 0; margin-top: 0; padding-top: 2px; }
+.page .ProseMirror [data-box="1"]:not([data-box-sides]):has(+ [data-box="1"]:not([data-box-sides])) { border-bottom: 0; margin-bottom: 0; padding-bottom: 2px; }
+/* Chenarul ales din listă: linia (groasă, dublă, întreruptă, punctată) și laturile (doar sus, doar jos, sus și jos, bară în stânga). */
+.page .ProseMirror [data-box="1"][data-box-line="thick"] { border-width: 2.5px; }
+.page .ProseMirror [data-box="1"][data-box-line="double"] { border-style: double; border-width: 3px; }
+.page .ProseMirror [data-box="1"][data-box-line="dashed"] { border-style: dashed; }
+.page .ProseMirror [data-box="1"][data-box-line="dotted"] { border-style: dotted; border-width: 1.5px; }
+.page .ProseMirror [data-box="1"][data-box-sides="top"] { border-bottom-style: none; border-left-style: none; border-right-style: none; padding-left: 0; padding-right: 0; }
+.page .ProseMirror [data-box="1"][data-box-sides="bottom"] { border-top-style: none; border-left-style: none; border-right-style: none; padding-left: 0; padding-right: 0; }
+.page .ProseMirror [data-box="1"][data-box-sides="tb"] { border-left-style: none; border-right-style: none; padding-left: 0; padding-right: 0; }
+.page .ProseMirror [data-box="1"][data-box-sides="left"] { border-top-style: none; border-bottom-style: none; border-right-style: none; border-left-width: 4px; padding-top: 0; padding-bottom: 0; }
+.page .ProseMirror [data-shade] { padding-left: 8px; padding-right: 8px; }
+@media print { .page .ProseMirror [data-shade] { -webkit-print-color-adjust: exact; print-color-adjust: exact; } }
+
+/* Textul alternativ al pozei, sub bara ei. */
+.doc-image .img-alt {
+  position: absolute; left: 0; right: 0; top: calc(100% + 52px); z-index: 4;
+  background: var(--panel, #fff); border: 1px solid var(--border, #ccc); border-radius: 6px; padding: 6px; font-size: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, .15); min-width: 260px;
+}
+.doc-image .img-alt textarea { display: block; width: 100%; margin-top: 4px; font: inherit; resize: vertical; box-sizing: border-box; }
+
+/* Rândul de antet repetat pe fiecare pagină: pe ecran o dungă albastră la stânga rândului; la tipărire primul rând marcat
+   devine antetul tabelului (table-header-group), pe care tipărirea îl repetă singură în capul fiecărei pagini. */
+.page .ProseMirror tr[data-repeat-header] > :first-child { box-shadow: inset 3px 0 0 #5b8def; }
+@media print {
+  .page .ProseMirror tr[data-repeat-header] > :first-child { box-shadow: none; }
+  .page .ProseMirror table:has(> tbody > tr[data-repeat-header]:first-child) > tbody { display: contents; }
+  .page .ProseMirror table > tbody > tr[data-repeat-header]:first-child { display: table-header-group; break-inside: avoid; }
+}
+
+/* Înălțimea rândului în bara de tabel. */
+.table-tools .row-height { display: inline-flex; align-items: center; gap: 3px; }
+.table-tools .row-h { width: 3.6em; text-align: right; border: 1px solid var(--border); background: var(--bg); color: var(--text); }
+
+/* Formele (imagini cu descriere de formă): culorile în bara imaginii și în meniul Forme. */
+.img-toolbar .shape-col { display: inline-flex; align-items: center; gap: 3px; padding: 0 3px; }
+.img-toolbar .shape-col input[type=color], .shape-colors input[type=color] { width: 26px; height: 20px; padding: 0; border: 1px solid var(--border); background: none; cursor: pointer; }
+.img-toolbar .shape-sw { font: inherit; }
+.shape-pop { width: 260px; }
+.shape-colors { display: flex; gap: 12px; padding: 2px 4px 6px; font-size: 12px; }
+.shape-colors label { display: inline-flex; align-items: center; gap: 4px; }
+
+/* Decuparea imaginii: chenarul a ceea ce rămâne, cu restul pozei întunecat. */
+.page .ProseMirror .doc-image .crop-layer { position: absolute; left: 0; top: 0; right: 0; overflow: hidden; z-index: 3; line-height: 1.4; }
+.page .ProseMirror .doc-image .crop-box { position: absolute; border: 2px solid #fff; outline: 1px solid #000; box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.55); }
+.page .ProseMirror .doc-image .crop-h { position: absolute; width: 14px; height: 14px; background: #fff; border: 1px solid #000; margin: -8px 0 0 -8px; }
+.crop-h.n { left: 50%; top: 0; cursor: ns-resize; } .crop-h.s { left: 50%; top: 100%; cursor: ns-resize; }
+.crop-h.w { left: 0; top: 50%; cursor: ew-resize; } .crop-h.e { left: 100%; top: 50%; cursor: ew-resize; }
+.crop-h.nw { left: 0; top: 0; cursor: nwse-resize; } .crop-h.se { left: 100%; top: 100%; cursor: nwse-resize; }
+.crop-h.ne { left: 100%; top: 0; cursor: nesw-resize; } .crop-h.sw { left: 0; top: 100%; cursor: nesw-resize; }
+.page .ProseMirror .doc-image .crop-bar { position: absolute; left: 50%; bottom: 8px; transform: translateX(-50%); display: flex; gap: 4px; padding: 4px 6px;
+  background: var(--panel); border: 1px solid var(--border); border-radius: 8px; white-space: nowrap; font-size: 13px; }
+@media print { .page .ProseMirror .doc-image .crop-layer { display: none !important; } }
+
+/* Textul artistic: câmpul de text din bara imaginii și butoanele de stil din meniul Forme. */
+.img-toolbar .wordart-text { width: 12em; font: inherit; }
+.img-toolbar .wa-color { display: inline-flex; align-items: center; gap: 2px; font-weight: 700; cursor: pointer; }
+.img-toolbar .wa-color input { width: 22px; height: 20px; padding: 0; border: 1px solid var(--border); border-radius: 3px; background: none; cursor: pointer; }
+.shape-pop .wordart-new { width: 100%; box-sizing: border-box; margin: 2px 0 6px; font: inherit; }
+.wordart-styles { display: flex; gap: 4px; }
+.wordart-btn { flex: 1; height: 30px; border: 1px solid var(--border); border-radius: 4px; background: var(--panel); cursor: pointer; font: 900 16px "Arial Black", sans-serif; }
+.wa-blue { color: #1d4ed8; } .wa-gold { color: #d97706; text-shadow: 1px 1px 1px rgba(0,0,0,.4); }
+.wa-outline { color: transparent; -webkit-text-stroke: 1px #dc2626; } .wa-rainbow { color: #8b5cf6; }
+.wa-poster { color: #fff; -webkit-text-stroke: 1px #111; }
+
+/* „În fața textului” / „În spatele textului” (floating.ts): imaginea nu ocupă loc în rând și se mută liber (margin-left / margin-top).
+   z-index stă pe <img>, nu pe învelitoare, ca bara și mânerele să rămână mereu deasupra, chiar și la imaginile din spate. */
+.page .ProseMirror .doc-image.align-front, .page .ProseMirror .doc-image.align-behind { position: absolute; margin: 0; }
+.page .ProseMirror .doc-image.align-front > img, .page .ProseMirror .doc-image.align-behind > img { position: relative; cursor: move; }
+.page .ProseMirror .doc-image.align-front .img-toolbar, .page .ProseMirror .doc-image.align-behind .img-toolbar,
+.page .ProseMirror .doc-image.align-front .img-handle, .page .ProseMirror .doc-image.align-behind .img-handle,
+.page .ProseMirror .doc-image.align-front .img-alt, .page .ProseMirror .doc-image.align-behind .img-alt { z-index: 5000; }
+.img-grip {
+  position: absolute; left: 50%; top: -30px; transform: translateX(-50%); z-index: 5000; width: 24px; height: 24px; line-height: 22px;
+  text-align: center; font-size: 15px; cursor: move; background: var(--panel); border: 2px solid var(--accent); border-radius: 50%; user-select: none;
+}
+@media print { .img-grip { display: none !important; } }
+
+/* Fereastra „Datele graficului” (ChartDialog.tsx). */
+.chart-dlg-back { position: fixed; inset: 0; z-index: 9000; display: flex; align-items: center; justify-content: center; background: rgba(0, 0, 0, 0.35); }
+.chart-dlg { background: var(--panel, #fff); color: var(--text, #222); border: 1px solid var(--border, #ccc); border-radius: 10px; padding: 14px 16px; width: min(760px, 94vw); max-height: 86vh; display: flex; flex-direction: column; gap: 8px; box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3); font-size: 13px; }
+.chart-dlg h3 { margin: 0; font-size: 16px; }
+.chart-dlg-row { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.chart-dlg-row label { display: inline-flex; align-items: center; gap: 4px; }
+.chart-dlg-hint { margin: 0; color: var(--muted, #666); }
+.chart-dlg-grid { overflow: auto; border: 1px solid var(--border, #ccc); border-radius: 6px; }
+.chart-dlg-grid table { border-collapse: collapse; }
+.chart-dlg-grid td { padding: 0; border: 1px solid var(--border, #ddd); }
+.chart-dlg-grid input { width: 90px; border: 0; padding: 4px 6px; font: inherit; background: transparent; color: inherit; }
+.chart-dlg-grid input.head { font-weight: 600; background: rgba(79, 107, 237, 0.08); }
+.diag-text { width: 100%; box-sizing: border-box; font: inherit; resize: vertical; }
+.diag-preview { max-width: 100%; max-height: 260px; object-fit: contain; align-self: center; border: 1px solid var(--border, #ddd); border-radius: 6px; background: #fff; }
+.eq-src { font-family: Consolas, monospace; font-size: 14px; }
+.eq-syms { gap: 3px; }
+.eq-sym { min-width: 26px; padding: 2px 4px; font-size: 14px; }
+.eq-preview { min-height: 40px; padding: 6px; }
+
+/* În fila contextuală Imagine a panglicii: grupurile stau în rândul panglicii, nu într-o bară plutitoare sub poză. */
+.ribbon-slot, .img-toolbar.in-ribbon { display: contents; }
+.img-toolbar.in-ribbon .sep { display: inline-block; width: 1px; height: 18px; margin: 0 3px; background: var(--border); }
+/* Poziția exactă a imaginii din fața / spatele textului, în cm. */
+.img-toolbar .img-pos { display: inline-flex; align-items: center; gap: 3px; font-size: 12px; margin-left: 4px; }
+.img-toolbar .img-pos input { width: 42px; padding: 1px 4px; font: inherit; color: var(--text); background: var(--bg); border: 1px solid var(--border); border-radius: 4px; text-align: right; }

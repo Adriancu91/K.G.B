@@ -1,0 +1,31 @@
+/* Copiat neschimbat din Cyber Office Studio (D-071); vezi app/cos/README.md. */
+/* Galeria Stiluri din Pornire: stilurile la vedere, cu previzualizare (ca în procesorul de text cunoscut). */
+.doc-style-gallery { display: flex; align-items: stretch; height: 54px; border: 1px solid var(--border); border-radius: 4px; background: var(--bg); }
+.doc-style-strip { display: flex; overflow: hidden; }
+.doc-style-tile { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; width: 60px; height: 52px; padding: 0 2px; margin: 0; border: 1px solid transparent; border-radius: 3px; background: transparent; overflow: hidden; }
+.doc-style-tile:hover { background: var(--hover); }
+.doc-style-tile.active { border-color: var(--accent); background: var(--hover); }
+.doc-style-prev { display: block; max-width: 100%; white-space: nowrap; overflow: hidden; line-height: 22px; height: 22px; }
+.doc-style-name { font-size: 10px; line-height: 12px; color: var(--muted, #666); white-space: nowrap; max-width: 100%; overflow: hidden; text-overflow: ellipsis; }
+.doc-style-more { width: 16px; padding: 0; margin: 0; border: 0; border-left: 1px solid var(--border); border-radius: 0 3px 3px 0; background: transparent; font-size: 10px; }
+.doc-style-more:hover, .doc-style-more.active { background: var(--hover); }
+.doc-style-pop { top: 100%; left: 0; width: 330px; padding: 6px; }
+.doc-style-grid { display: grid; grid-template-columns: repeat(5, 60px); gap: 4px; margin-bottom: 6px; }
+.doc-style-pane { width: 100%; text-align: left; }
+.ribbon .ribbon-group .doc-style-gallery button.doc-style-tile { box-sizing: border-box; flex: 0 0 60px; width: 60px; min-width: 0; max-width: 60px; height: 52px; padding: 0 2px; }
+.ribbon .ribbon-group .doc-style-gallery button.doc-style-more { box-sizing: border-box; flex: 0 0 16px; width: 16px; min-width: 0; height: auto; padding: 0; }
+.ribbon-panel.compact .ribbon-group .doc-style-gallery button.rb-opt { display: none; }
+/* Grupul Editare: trei butoane mici unul sub altul. */
+.ribbon .doc-edit-rows { gap: 1px; align-items: flex-start; }
+.ribbon .ribbon-group .doc-edit-rows button { height: 18px; line-height: 16px; padding: 0 6px; font-size: 12px; }
+/* Treapta „compactă” a panglicii: listele late devin înguste. */
+.ribbon-panel.compact .doc-narrow { width: 46px; }
+.ribbon-panel.compact .font-select { width: 92px; }
+/* Fereastra Font (Ctrl+D). */
+.font-dlg { width: 460px; max-width: calc(100vw - 32px); }
+.font-dlg-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px 12px; margin-bottom: 8px; }
+.font-dlg-grid label, .font-dlg-effects > label:last-child { display: flex; flex-direction: column; gap: 3px; font-size: 12px; }
+.font-dlg-color { display: flex; gap: 6px; align-items: center; }
+.font-dlg-effects { display: flex; flex-wrap: wrap; gap: 6px 14px; border: 1px solid var(--border); border-radius: 6px; padding: 6px 10px 10px; margin: 0 0 8px; }
+.font-dlg-check { display: flex; align-items: center; gap: 4px; font-size: 13px; }
+.font-dlg-preview { height: 64px; display: flex; align-items: center; justify-content: center; border: 1px solid var(--border); border-radius: 6px; background: #fff; color: #000; overflow: hidden; margin-bottom: 8px; }

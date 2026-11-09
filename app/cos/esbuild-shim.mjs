@@ -7,11 +7,19 @@ import { pathToFileURL } from "node:url";
 export async function build(opts) {
   // Several entries into a folder (outdir): one re-export file per entry, named as esbuild names them.
   if (opts.outdir && !opts.outfile) {
-    mkdirSync(opts.outdir, { recursive: true });
-    for (const entry of opts.entryPoints) {
-      const abs = isAbsolute(entry) ? entry : resolve(process.cwd(), entry);
-      const name = abs.split(/[\\/]/).pop().replace(/\.[^.]+$/, "");
-      writeFileSync(resolve(opts.outdir, `${name}.js`), `export * from ${JSON.stringify(pathToFileURL(abs).href)};\n`);
+    // Like esbuild, the outputs keep their folders below the entries' lowest common folder (src/docs/x.ts and
+    // src/sheets/y.ts → <outdir>/docs/x.js, <outdir>/sheets/y.js).
+    const abs = opts.entryPoints.map((e) => (isAbsolute(e) ? e : resolve(process.cwd(), e)).split(/[\\/]/));
+    let common = abs[0].length - 1;
+    for (const parts of abs) {
+      let i = 0;
+      while (i < common && i < parts.length - 1 && parts[i] === abs[0][i]) i++;
+      common = i;
+    }
+    for (const parts of abs) {
+      const out = resolve(opts.outdir, ...parts.slice(common)).replace(/\.[^.\\/]+$/, ".js");
+      mkdirSync(dirname(out), { recursive: true });
+      writeFileSync(out, `export * from ${JSON.stringify(pathToFileURL(parts.join("/")).href)};\n`);
     }
     return { errors: [], warnings: [] };
   }
