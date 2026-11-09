@@ -382,3 +382,11 @@ Deciziile DECIS se schimbă doar cu aprobarea explicită a proprietarului (Maste
   - Total: **COS 98,1 %, IronCalc 27,9 %**. IronCalc mai pierde la referințele de tabel (`Tabel[Coloană]`, #NAME?), la referințele 3D între foi (`Sheet1:Sheet3!A1`), la formatul OOXML strict și se oprește singur la un registru (bug62181).
 - **Decizia:** foile de calcul din K.G.B. folosesc motorul COS (`formula.ts`, TypeScript, în fereastră), cu testele lui; nucleul Rust păstrează valorile și versiunile, ca la celelalte module. Greșelile găsite de măsurătoare (134) se repară în COS și vin odată cu mutarea.
 - **IronCalc** rămâne deocamdată doar unde e azi (calculul șabloanelor și verificarea foilor editate în `kgb-sheets`) până când mutarea Sheets îl înlocuiește; nu se mai extinde. Schimbă D-033 (IronCalc, un singur motor): un singur motor rămâne regula, dar motorul e cel din COS.
+
+### D-078 — Ce au testat oamenii în COS are prioritate și se păstrează întocmai
+- **Data:** 9 nov. 2026 · **Statut:** DECIS — acord COS + K.G.B. (D-074), la cererea proprietarului transmisă de sesiunea COS; lista în `workspace\TESTAT-DE-OAMENI.md`
+- (a) În fiecare modul mutat, funcțiile încercate de proprietar și de colegi (și schimbările făcute după observațiile lor) se mută **primele**.
+- (b) Poarta modulului nu trece dacă una dintre ele s-a pierdut sau se poartă altfel: aceleași taste, aceeași ordine a butoanelor, aceleași mesaje.
+- (c) Se verifică în aplicația reală (e2e), nu doar cu teste de cod.
+- (d) O schimbare la ele se face doar de comun acord COS + K.G.B., cu motivul scris.
+- **Ce înseamnă azi pentru K.G.B.** (puse în WORKLIST înaintea celorlalte): ștampila PDF editabilă după ce e pusă (mutată, mărită, schimbată, ștearsă, și după salvare); editarea textului PDF la clic; semnătura digitală vizibilă unde alegi (certificatul și PIN-ul le dă proprietarul, nu agentul); OCR pe poze de telefon cu curățarea pozei; butonul „Trimite o observație”; interfața în engleză cu verificarea „0 texte netraduse” (K.G.B. e azi doar în română).
