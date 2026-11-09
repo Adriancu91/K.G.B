@@ -1,0 +1,29 @@
+{
+  "dict": {
+    "Registrul mijloacelor fixe": "Fixed asset register",
+    "Calculatoarele, mașinile și utilajele firmei, cu valoarea de intrare și durata în luni: ies amortizarea lunară (liniară, din luna următoare punerii în funcțiune), cea cumulată, valoarea rămasă și amortizarea din anul curent; cele amortizate complet ies în verde.": "The company's computers, cars and machinery, with the purchase value and the useful life in months: you get the monthly depreciation (straight-line, from the month after it was put into use), the accumulated depreciation, the remaining value and this year's depreciation; fully depreciated assets are shown in green."
+  },
+  "templates": {},
+  "skip": [
+    "=IF(I{0}=\"\";\"\";IF(I{1}>=G{2};\"Amortizat complet\";IF(I{3}=0;\"Neînceput\";\"În amortizare\")))",
+    "=SUMIF(M2:M{0};\"În amortizare\";H2:H{1})",
+    "Amortizare cumulată",
+    "Amortizare liniară: începe din luna următoare punerii în funcțiune; se numără lunile încheiate până la data din P2.",
+    "Amortizare lunară",
+    "Amortizare pe lună (cele în amortizare)",
+    "Amortizare în anul curent",
+    "Amortizat complet",
+    "Amortizate complet",
+    "Calculat la data (o schimbi aici)",
+    "Cod de clasificare",
+    "Data punerii în funcțiune",
+    "Durata în luni o iei din catalogul mijloacelor fixe (de exemplu: un calculator 36 de luni, un autoturism 60).",
+    "Luni amortizate",
+    "Mijloace fixe",
+    "Mijloace fixe în listă",
+    "Neînceput",
+    "Valoare de intrare",
+    "Valoare de intrare totală",
+    "Valoare rămasă"
+  ]
+}

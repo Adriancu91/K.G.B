@@ -1,0 +1,24 @@
+{
+  "dict": {
+    "Imobiliare": "Real estate",
+    "Panou De vânzare": "For sale sign",
+    "Plan de apartament": "Floor plan",
+    "Suprafață": "Floor area",
+    "Credit ipotecar": "Mortgage",
+    "Căutare locuință": "Home search",
+    "Contract de închiriere": "Rental agreement",
+    "Cheile casei": "House keys",
+    "Vizionare": "Property viewing"
+  },
+  "templates": {},
+  "skip": [
+    "panou de vânzare imobil casă anunț agenție for sale sign property",
+    "plan de apartament compartimentare camere schiță etaj floor plan layout rooms",
+    "suprafață metri pătrați mp arie cote dimensiuni floor area square meters",
+    "credit ipotecar ipotecă dobândă împrumut casă rată mortgage home loan interest",
+    "căutare locuință chirie cumpărare anunțuri imobiliare home search house hunting",
+    "contract de închiriere chirie locațiune proprietar chiriaș rental agreement lease tenant",
+    "cheile casei predare chei mutare proprietar nou house key handover moving",
+    "vizionare vizită imobil zi porți deschise property viewing open house visit"
+  ]
+}

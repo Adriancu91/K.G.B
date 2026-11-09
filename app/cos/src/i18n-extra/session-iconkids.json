@@ -1,0 +1,24 @@
+{
+  "dict": {
+    "Copii": "Children",
+    "Biberon": "Baby bottle",
+    "Cărucior de copil": "Baby stroller",
+    "Suzetă": "Pacifier",
+    "Ursuleț": "Teddy bear",
+    "Cuburi": "Toy blocks",
+    "Rățușcă": "Rubber duck",
+    "Zmeu": "Kite",
+    "Titirez": "Spinning top"
+  },
+  "templates": {},
+  "skip": [
+    "biberon lapte bebeluș sugar baby bottle milk infant",
+    "cărucior de copil bebeluș plimbare stroller pram baby",
+    "suzetă bebeluș sugar pacifier dummy baby",
+    "ursuleț de pluș jucărie teddy bear toy plush",
+    "cuburi joacă grădiniță jucării litere toy blocks kindergarten",
+    "rățușcă rață de cauciuc baie jucărie rubber duck bath toy",
+    "zmeu joacă vânt parc kite wind park",
+    "titirez sfârleză jucărie spinning top toy"
+  ]
+}

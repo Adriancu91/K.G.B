@@ -1,0 +1,33 @@
+{
+  "dict": {
+    "Apel": "Appeal",
+    "Cel mai apropiat termen": "Next hearing",
+    "Contestație": "Objection",
+    "De actualizat": "To update",
+    "De pregătit până atunci": "To prepare before then",
+    "Dosare active": "Active cases",
+    "Dosarul": "Case",
+    "După fiecare termen scrie data următorului; un termen trecut și neschimbat iese „De actualizat” (în roșu).": "After each hearing, enter the date of the next one; a past date left unchanged shows \"To update\" (in red).",
+    "Executare": "Enforcement",
+    "Fond": "First instance",
+    "Instanța": "Court",
+    "La Închis = Da dosarul nu mai intră la cele active; la De pregătit treci actele, martorii sau taxa de timbru.": "With Closed = Yes the case no longer counts as active; under To prepare list the documents, witnesses or court fee.",
+    "Mediere": "Mediation",
+    "Numărul dosarului": "Case number",
+    "Obiectul": "Subject matter",
+    "Partea adversă": "Opposing party",
+    "Pentru avocați, consilieri juridici și firmele cu procese: fiecare dosar cu numărul, instanța, clientul, partea adversă, obiectul, stadiul și termenul următor, cu ora și ce e de pregătit; ies zilele până la termen și starea: în 7 zile (în galben), de actualizat după un termen trecut (în roșu), în lucru (în verde), fără termen sau închis; în dreapta dosarele active și cel mai apropiat termen, cu instanța lui.": "For lawyers, legal advisers and companies with lawsuits: each case with its number, court, client, opposing party, subject matter, stage and next hearing, with the time and what to prepare; you get the days until the hearing and the status: within 7 days (in yellow), to update after a past hearing (in red), in progress (in green), no hearing set or closed; on the right the active cases and the next hearing, with its court.",
+    "Recurs": "Second appeal",
+    "Stadiul": "Stage",
+    "Termene în 7 zile": "Hearings within 7 days",
+    "Termenele dosarelor": "Court case deadlines",
+    "Termenul următor": "Next hearing date"
+  },
+  "templates": {},
+  "skip": [
+    "=COUNTIF(M2:M{0};\"De actualizat\")",
+    "=COUNTIF(M2:M{0};\"Fără termen\")",
+    "=COUNTIF(M2:M{0};\"În 7 zile\")",
+    "=IF(B{0}=\"\";\"\";IF(L{1}=\"Da\";\"Închis\";IF(H{2}=\"\";\"Fără termen\";IF(H{3}<TODAY();\"De actualizat\";IF(H{4}-TODAY()<=7;\"În 7 zile\";\"În lucru\")))))"
+  ]
+}

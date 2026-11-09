@@ -1,0 +1,29 @@
+{
+  "dict": {
+    "Brad de Crăciun": "Christmas tree",
+    "Glob de Crăciun": "Christmas bauble",
+    "Lumânare": "Candle",
+    "Verighete": "Wedding rings",
+    "Pahare ciocnite": "Clinking glasses",
+    "Petardă cu confeti": "Party popper",
+    "Felicitare": "Greeting card",
+    "Artificii": "Fireworks",
+    "Sărbători și petreceri": "Holidays and parties",
+    "Balon de petrecere": "Party balloon",
+    "🎆 Revelionul": "🎆 New Year's Eve"
+  },
+  "templates": {},
+  "skip": [
+    "artificii revelion an nou sărbătoare fireworks new year celebration",
+    "balon aniversare zi de naștere petrecere balloon birthday party",
+    "brad crăciun iarnă sărbători christmas tree winter holidays",
+    "felicitare card urare invitație greeting card invitation",
+    "glob ornament crăciun brad decor christmas bauble",
+    "lumanare lumină comemorare paște candle light memorial",
+    "pahare ciocnite noroc șampanie toast revelion cheers champagne",
+    "petarda confeti petrecere surpriză felicitări party popper confetti celebration",
+    "verighete inele nuntă logodnă căsătorie wedding rings engagement",
+    "Revelion {0}",
+    "Unde:\nCâte persoane:\nBugetul:\n\nCu o lună înainte:\n☐ locul ales (acasă, la cabană, la restaurant) și rezervarea făcută\n☐ lista invitaților, cu confirmările lor\n☐ meniul hotărât: aperitive, felul principal, desertul, tortul de la miezul nopții\n☐ transportul și cazarea pentru cei care vin de departe\n\nCu o săptămână înainte:\n☐ cumpărăturile mari făcute (Notițe → 🛒 Listă de cumpărături)\n☐ băuturile și șampania pentru miezul nopții\n☐ muzica pregătită și boxele încercate\n☐ decorațiunile: globuri, ghirlande, baloane\n\nÎn ziua de 31:\n☐ masa pusă și mâncarea pregătită\n☐ artificii doar dintre cele vândute liber, aprinse afară, departe de oameni, de animale și de mașini\n☐ cine conduce spre casă nu bea (sau taxiul chemat dinainte)\n☐ invitațiile și felicitările trimise (Docs → Inserare → ☺ Pictograme → Sărbători și petreceri)\n\nCheltuieli:\n•\n\nObservații:\n• "
+  ]
+}

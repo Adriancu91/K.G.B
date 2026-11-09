@@ -1,0 +1,39 @@
+{
+ "dict": {
+  "Angajați cu diferențe": "Employees with differences",
+  "CASS și impozitul pe tichete se rețin în statul de plată, împreună cu salariul (Sheets → Stat de plată).": "Health contribution and income tax on the vouchers are withheld in the payroll, together with the salary (Sheets → Payroll).",
+  "Concediu de odihnă": "Annual leave",
+  "Concediu medical": "Sick leave",
+  "Date în plus": "Given in excess",
+  "Date în plus, de scăzut": "Given in excess, to deduct",
+  "De dat": "To give",
+  "De dat în plus": "To give extra",
+  "De dat în plus luna viitoare": "To give extra next month",
+  "Delegații și alte absențe": "Business trips and other absences",
+  "Luna și anul": "Month and year",
+  "Tichete": "Vouchers",
+  "Tichete cuvenite": "Vouchers due",
+  "Tichete date": "Vouchers given",
+  "Tichete de masă": "Meal vouchers",
+  "Tichetele date în plus se scad din cele de luna viitoare, iar cele date în minus se adaugă; zilele de concediu le iei din Sheets → Evidență concedii sau din Pontaj lunar.": "Vouchers given in excess are deducted from next month's, and those given short are added; take the leave days from Sheets → Leave tracker or from Monthly timesheet.",
+  "Tichetele de masă pe o lună, pentru fiecare angajat: din zilele lucrătoare scazi concediile și delegațiile și ies zilele lucrate, tichetele cuvenite și valoarea lor; cu tichetele date se vede diferența de regularizat luna viitoare: în regulă (în verde), de dat în plus (în galben), date în plus (în roșu).": "Meal vouchers for one month, for each employee: subtract leave and business trips from the working days and you get the days worked, the vouchers due and their value; with the vouchers given you see the difference to settle next month: OK (green), to give extra (yellow), given in excess (red).",
+  "Tichetele se dau doar pentru zilele lucrate efectiv: nu pentru concediul de odihnă, concediul medical sau zilele de delegație în care angajatul primește diurnă.": "Vouchers are given only for days actually worked: not for annual leave, sick leave or business trip days on which the employee receives a daily allowance.",
+  "Valoarea cuvenită": "Value due",
+  "Valoarea dată": "Value given",
+  "Valoarea maximă a unui tichet o stabilește legea și se schimbă: verifică valoarea de anul acesta înainte să o scrii în celula galbenă.": "The maximum value of a voucher is set by law and changes: check this year's value before entering it in the yellow cell.",
+  "Valoarea tichetelor cuvenite": "Value of vouchers due",
+  "Valoarea unui tichet": "Value of one voucher",
+  "Zile lucrătoare în lună": "Working days in month",
+  "Lista cu tichetele de masă date pe o lună: fiecare angajat cu zilele lucrate, numărul de tichete, valoarea, seriile sau cardul pe care s-au încărcat și semnătura de primire, cu totalul și semnăturile celor care le-au calculat și distribuit": "The list of meal vouchers given for one month: each employee with the days worked, the number of vouchers, the value, the series or the card they were loaded on and the signature of receipt, with the total and the signatures of those who calculated and distributed them",
+  "Stat de distribuire a tichetelor de masă": "Meal voucher distribution sheet",
+  "🍽 Tichetele de masă ale lunii": "🍽 This month’s meal vouchers",
+  "Luna:\nValoarea unui tichet: lei\nComanda la emitent: nr. din\n\nLa început de lună:\n☐ zilele lucrătoare și concediile planificate luate din pontaj (Sheets → Pontaj lunar)\n☐ tichetele cuvenite calculate pentru fiecare angajat (Sheets → Tichete de masă)\n☐ diferențele de luna trecută adăugate sau scăzute\n☐ comanda trimisă emitentului, cu valoarea verificată pentru anul acesta\n\nLa distribuire:\n☐ tichetele date sau cardurile încărcate, cu semnătura fiecărui angajat (Docs → Stat de distribuire a tichetelor de masă)\n☐ tichetele date trecute în tabel: starea „În regulă” sau diferența\n\nLa sfârșit de lună:\n☐ concediile și delegațiile neplanificate trecute, ca diferența să se regularizeze luna viitoare\n☐ valoarea tichetelor trimisă la salarii, pentru CASS și impozit (Sheets → Stat de plată)\n\nObservații:\n• ": "Month:\nValue of one voucher: lei\nOrder to the issuer: no. of\n\nAt the start of the month:\n☐ working days and planned leave taken from the timesheet (Sheets → Monthly timesheet)\n☐ vouchers due calculated for each employee (Sheets → Meal vouchers)\n☐ last month’s differences added or deducted\n☐ order sent to the issuer, with the value checked for this year\n\nAt distribution:\n☐ vouchers handed out or cards loaded, with each employee’s signature (Docs → Meal voucher distribution sheet)\n☐ vouchers given entered in the table: status “OK” or the difference\n\nAt the end of the month:\n☐ unplanned leave and business trips entered, so the difference is settled next month\n☐ voucher value sent to payroll, for health contribution and tax (Sheets → Payroll)\n\nNotes:\n• "
+ },
+ "templates": {
+  "Tichete de masă {0}": "Meal vouchers {0}"
+ },
+ "skip": [
+  "=COUNTIF(M2:M{0};\"De dat în plus\")+COUNTIF(M2:M{1};\"Date în plus\")",
+  "=IF(H{0}=\"\";\"\";IF(I{1}=\"\";IF(H{2}=0;\"În regulă\";\"De dat\");IF(J{3}=0;\"În regulă\";IF(J{4}>0;\"De dat în plus\";\"Date în plus\"))))"
+ ]
+}

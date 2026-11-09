@@ -1,0 +1,24 @@
+{
+  "dict": {
+    "Muzică": "Music",
+    "Chitară": "Guitar",
+    "Pian": "Piano",
+    "Tobă": "Drum",
+    "Microfon": "Microphone",
+    "Difuzor": "Speaker",
+    "Metronom": "Metronome",
+    "Disc de vinil": "Vinyl record",
+    "Trompetă": "Trumpet"
+  },
+  "templates": {},
+  "skip": [
+    "chitară acustică corzi formație cântare guitar acoustic strings band",
+    "pian clape orgă claviatură sintetizator piano keyboard keys organ",
+    "tobă tobe percuție bețe ritm drum drums percussion",
+    "microfon karaoke cântăreț podcast înregistrare voce microphone singer recording voice",
+    "difuzor boxă sonorizare volum sunet speaker loudspeaker sound system",
+    "metronom ritm tempo exercițiu lecție metronome rhythm tempo practice",
+    "disc vinil placă pick-up dj album vinyl record turntable",
+    "trompetă fanfară alamă suflători goarnă trumpet brass band horn"
+  ]
+}

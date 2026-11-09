@@ -1,0 +1,23 @@
+{
+  "dict": {
+    "Priză": "Outlet",
+    "Întrerupător": "Light switch",
+    "Tablou electric": "Fuse box",
+    "Stâlp electric": "Power pole",
+    "Contor": "Meter",
+    "Robinet": "Faucet",
+    "Calorifer": "Radiator",
+    "Butelie de gaz": "Gas cylinder"
+  },
+  "templates": {},
+  "skip": [
+    "priză curent electric perete outlet socket wall power",
+    "întrerupător comutator lumină aprins stins light switch toggle",
+    "tablou electric siguranțe disjunctor fuse box breaker panel",
+    "stâlp electric rețea linie cabluri power pole line grid",
+    "contor citire consum index kilowați meter reading usage",
+    "robinet apă instalații sanitare faucet tap water plumbing",
+    "calorifer radiator încălzire căldură heating heat",
+    "butelie gaz aragaz combustibil gas cylinder bottle propane"
+  ]
+}

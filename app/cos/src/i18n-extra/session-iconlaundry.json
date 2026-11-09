@@ -1,0 +1,24 @@
+{
+  "dict": {
+    "Spălătorie și călcat": "Laundry and ironing",
+    "Fier de călcat": "Iron",
+    "Coș de rufe": "Laundry basket",
+    "Cârlig de rufe": "Clothespin",
+    "Uscător de rufe": "Drying rack",
+    "Spălare la 30 de grade": "Wash at 30 degrees",
+    "Nu se calcă": "Do not iron",
+    "Fără înălbitor": "Do not bleach",
+    "Uscare în uscător": "Tumble dry"
+  },
+  "templates": {},
+  "skip": [
+    "fier de călcat cămăși abur iron ironing steam",
+    "coș de rufe rufe murdare spălătorie laundry basket hamper",
+    "cârlig de rufe întins rufele clothespin peg",
+    "uscător de rufe rufe la uscat drying rack clothes horse",
+    "spălare la 30 de grade spălare delicată etichetă de îngrijire wash 30 care label",
+    "nu se calcă etichetă de îngrijire do not iron care label",
+    "fără înălbitor nu se albește etichetă de îngrijire do not bleach care label",
+    "uscare în uscător mașină de uscat etichetă de îngrijire tumble dry care label"
+  ]
+}

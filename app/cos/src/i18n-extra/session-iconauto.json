@@ -1,0 +1,24 @@
+{
+  "dict": {
+    "Auto și trafic": "Cars and traffic",
+    "Volan": "Steering wheel",
+    "Anvelopă": "Tire",
+    "Bidon de ulei": "Oil can",
+    "Baterie auto": "Car battery",
+    "Semafor": "Traffic light",
+    "Parcare": "Parking",
+    "Vitezometru": "Speedometer",
+    "Număr de înmatriculare": "License plate"
+  },
+  "templates": {},
+  "skip": [
+    "volan condus șofer mașină steering wheel driving driver",
+    "anvelopă roată cauciuc vulcanizare iarnă tire tyre wheel",
+    "bidon ulei schimb service lubrifiant motor oil can service",
+    "baterie auto acumulator pornire mașină car battery accumulator",
+    "semafor trafic intersecție stop traffic light",
+    "parcare loc de parcare garaj parking lot garage",
+    "vitezometru viteză kilometraj bord speedometer speed dashboard",
+    "număr de înmatriculare plăcuță mașină înregistrare license plate registration"
+  ]
+}

@@ -1,0 +1,24 @@
+{
+  "dict": {
+    "Papetărie": "Stationery",
+    "Capsator": "Stapler",
+    "Perforator": "Hole punch",
+    "Biblioraft": "Lever arch file",
+    "Radieră": "Eraser",
+    "Marker": "Highlighter",
+    "Flipchart": "Flip chart",
+    "Notiță adezivă": "Sticky note",
+    "Distrugător de documente": "Paper shredder"
+  },
+  "templates": {},
+  "skip": [
+    "capsator capse prindere hârtii birou stapler staples",
+    "perforator găuri dosar hârtii birou hole punch",
+    "biblioraft dosar cu inele arhivă documente lever arch file binder",
+    "radieră gumă de șters creion greșeală eraser rubber",
+    "marker evidențiator subliniere text important highlighter",
+    "flipchart tablă prezentare ședință curs instruire flip chart",
+    "notiță adezivă bilețel lipicios memento de reținut sticky note",
+    "distrugător de documente tocător hârtie confidențial gdpr paper shredder"
+  ]
+}

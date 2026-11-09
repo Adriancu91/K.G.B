@@ -1,0 +1,10 @@
+{
+  "dict": {
+    "👋 Angajat nou": "👋 New employee"
+  },
+  "templates": {},
+  "skip": [
+    "Angajat nou {0}",
+    "Numele: \nPostul: \nPrima zi: \nCine îl însoțește în prima săptămână: \n\nÎnainte de prima zi:\n☐ contractul de muncă semnat și trimis în REVISAL\n☐ fișa postului pregătită (Docs → Fișa postului)\n☐ fișa de aptitudini de la medicina muncii\n☐ instructajul de securitate a muncii și PSI programat\n☐ biroul, calculatorul și telefonul pregătite\n☐ contul de e-mail și parolele de acces făcute\n\nÎn prima zi:\n☐ prezentat echipei și turul firmei\n☐ cheile, ecusonul și echipamentul de protecție primite\n☐ regulamentul intern citit și semnat\n\nÎn prima lună:\n☐ discuție la sfârșitul primei săptămâni\n☐ evaluarea de la sfârșitul perioadei de probă\n\nNote: "
+  ]
+}

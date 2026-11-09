@@ -1,0 +1,12 @@
+{
+  "dict": {
+    "Retragerea din dreapta": "Right indent",
+    "Retragerea din stânga": "Left indent",
+    "Retragerea tuturor rândurilor din dreapta, în pixelii pozei (se vede la textul aliniat la dreapta, centrat sau într-o casetă de paragraf)": "Right indent of all lines, in image pixels (visible with right-aligned or centered text, or in a paragraph box)",
+    "Retragerea tuturor rândurilor din stânga, în pixelii pozei": "Left indent of all lines, in image pixels",
+    "Spațiul în plus înainte de fiecare paragraf, în pixelii pozei (un paragraf se termină cu Shift+Enter)": "Extra space before each paragraph, in image pixels (a paragraph ends with Shift+Enter)",
+    "Spațiul înainte de paragraf": "Space before paragraph"
+  },
+  "templates": {},
+  "skip": []
+}

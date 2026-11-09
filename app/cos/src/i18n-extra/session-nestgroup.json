@@ -1,0 +1,11 @@
+{
+  "dict": {
+    "Pune stratul ales într-un grup nou (Ctrl+G): grupul are ochi și opacitate pentru toate straturile din el; ▲ / ▼ mută alte straturi în grup; un strat dintr-un grup intră într-un grup din grupul lui": "Put the selected layer in a new group (Ctrl+G): the group has visibility and opacity for all layers in it; ▲ / ▼ move other layers into the group; a layer already in a group goes into a new group inside its group",
+    "Felul degradeului": "Gradient style",
+    "Liniar: dintr-o parte în alta; Radial: din mijloc în cerc; Unghiular: în jurul mijlocului, ca acele ceasului; Oglindit: din mijloc spre ambele părți; Romb: din mijloc în formă de romb": "Linear: from one side to the other; Radial: from the center in a circle; Angle: around the center, like clock hands; Reflected: from the center toward both sides; Diamond: from the center in a diamond shape",
+    "Oglindit": "Reflected",
+    "Unghiular": "Angle"
+  },
+  "templates": {},
+  "skip": []
+}

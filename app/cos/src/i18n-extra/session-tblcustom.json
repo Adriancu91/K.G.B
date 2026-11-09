@@ -1,0 +1,31 @@
+{
+  "dict": {
+    "Capul tabelului": "Header row",
+    "Contur și o linie sub fiecare rând": "Outline and a line under every row",
+    "Culorile se aplică tabelului cu cursorul. Debifează o culoare ca partea aceea să rămână fără fundal.": "The colors apply to the table with the cursor. Uncheck a color to leave that part without a fill.",
+    "Doar sub cap și deasupra totalului": "Only under the header and above the total",
+    "Linii în jurul fiecărei celule": "Lines around every cell",
+    "Liniile": "Lines",
+    "Literele capului": "Header text",
+    "Numele e folosit de stilurile gata făcute; alege altul.": "That name is used by the built-in styles; choose another one.",
+    "Rândul de total": "Total row",
+    "Rândurile alternate (dungile)": "Banded rows (stripes)",
+    "Salvează și aplică": "Save and apply",
+    "Stil de tabel nou": "New Table Style",
+    "Stil de tabel nou: alegi culorile capului, ale dungilor, ale totalului și liniile; stilul se ține în registru și în .xlsx": "New Table Style: choose the colors of the header, the stripes, the total and the lines; the style is kept in the workbook and in .xlsx",
+    "Stil de tabel nou…": "New Table Style…",
+    "Stilul de tabel are nevoie de un nume.": "The table style needs a name.",
+    "Șterge stilul de tabel": "Delete Table Style",
+    "Șterge stilul propriu din registru; tabelul acesta primește stilul albastru obișnuit, celelalte își păstrează culorile": "Delete the custom style from the workbook; this table gets the usual blue style, the others keep their colors"
+  },
+  "templates": {
+    "Stilul de tabel „{0}” e gata; îl găsești la capătul galeriei Stiluri tabel.": "The table style “{0}” is ready; you find it at the end of the Table Styles gallery.",
+    "Stilul meu de tabel {0}": "My table style {0}",
+    "Stilul de tabel „{0}” s-a șters din registru.": "The table style “{0}” was deleted from the workbook."
+  },
+  "skip": [
+    "Ana",
+    "Dan",
+    "Ion"
+  ]
+}

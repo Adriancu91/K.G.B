@@ -1,0 +1,12 @@
+{
+  "dict": {
+    "Îndreaptă liniile curbate de obiectiv, luminează colțurile întunecate, scoate marginile colorate și îndreaptă perspectiva (clădirile care se apleacă spre spate), unghiul și scara (Lens Correction)": "Straightens lines curved by the lens, brightens dark corners, removes colour fringes and corrects perspective (buildings leaning back), angle and scale",
+    "Întinde marginea": "Extend the edge",
+    "Marginile goale": "Empty edges",
+    "Perspectivă orizontală (− lărgește stânga)": "Horizontal perspective (− widens left)",
+    "Perspectivă verticală (− lărgește sus)": "Vertical perspective (− widens top)",
+    "Transparente": "Transparent"
+  },
+  "templates": {},
+  "skip": []
+}

@@ -1,0 +1,19 @@
+{
+  "dict": {
+    "A doua lumină (albă)": "Second light (white)",
+    "A doua lumină: orizontal": "Second light: horizontal",
+    "A doua lumină: vertical": "Second light: vertical",
+    "Albastră": "Blue",
+    "Caldă": "Warm",
+    "De departe (ca soarele)": "Distant (like the sun)",
+    "Direcția (reflector, de departe)": "Direction (spot, distant)",
+    "O lumină (punct, reflector sau de departe, ca soarele) luminează o parte din poză, restul se întunecă; culoarea luminii, a doua lumină și relieful din poză (Lighting Effects)": "A light (point, spot or distant, like the sun) lights part of the picture while the rest darkens; light colour, a second light and relief from the picture",
+    "Punct": "Point",
+    "Relief din poză": "Relief from picture",
+    "Roșie": "Red",
+    "Tipul luminii": "Light type",
+    "Uneltele istoricului (sau clic dreapta pe unealtă)": "History tools (or right-click the tool)"
+  },
+  "templates": {},
+  "skip": []
+}

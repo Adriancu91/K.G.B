@@ -1,0 +1,14 @@
+{
+ "dict": {
+  "✎ Desenare tabel: trage un dreptunghi ca să faci un tabel; în tabel, o linie orizontală = rând nou, verticală = coloană nouă.": "✎ Draw Table: drag a rectangle to make a table; in a table, a horizontal line = new row, a vertical one = new column.",
+  "Ieși din desenarea tabelului (Esc)": "Stop drawing the table (Esc)",
+  "✎ Desenare tabel": "✎ Draw Table",
+  "Desenare tabel: trage cu mausul un dreptunghi ca să faci un tabel, apoi linii în el (orizontală = rând nou, verticală = coloană nouă); Esc iese": "Draw Table: drag a rectangle with the mouse to make a table, then lines in it (horizontal = new row, vertical = new column); Esc exits",
+  "⌫ Radieră: clic pe linia dintre două celule ca să le unești.": "⌫ Eraser: click the line between two cells to merge them.",
+  "Radieră: clic pe linia dintre două celule le unește (sau ține apăsat Shift)": "Eraser: clicking the line between two cells merges them (or hold Shift)",
+  "⌫ Radieră": "⌫ Eraser",
+  "✎ Desenare tabel: trage un dreptunghi ca să faci un tabel; în tabel, o linie orizontală sau verticală împarte celula atinsă. Shift + clic pe o linie o șterge.": "✎ Draw Table: drag a rectangle to make a table; inside a table, a horizontal or vertical line splits the cell it crosses. Shift + click on a line erases it."
+ },
+ "templates": {},
+ "skip": []
+}

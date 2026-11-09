@@ -1,0 +1,10 @@
+{
+  "dict": {
+    "Scindare stânga-dreapta: aceeași foaie în două părți, una lângă alta, derulate separat (de exemplu coloanele de la început în stânga și cele de la capăt în dreapta). Încă un clic = Eliminare scindare": "Split left-right: the same sheet in two side-by-side parts, scrolled separately (for example the first columns on the left and the last ones on the right). Click again = Remove split",
+    "Scindare stânga-dreapta": "Split left-right",
+    "Stânga-dreapta": "Left-right",
+    "A doua parte a foii: se derulează separat și arată imediat ce scrii în stânga; dublu clic pe o celulă = o alegi în stânga": "Second part of the sheet: it scrolls separately and shows right away what you type on the left; double-click a cell = select it on the left"
+  },
+  "templates": {},
+  "skip": []
+}

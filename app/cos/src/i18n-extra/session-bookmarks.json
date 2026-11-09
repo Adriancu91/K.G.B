@@ -1,0 +1,12 @@
+{
+  "dict": {
+    "🔖 Semn aici": "🔖 Bookmark here",
+    "Pune un semn de carte la locul de acum din player": "Add a bookmark at the current position in the player",
+    "Sari la semnul acesta": "Jump to this bookmark",
+    "Semne de carte: locuri însemnate în clip, la care sari dintr-un clic (în prezentare: Alt+End / Alt+Home)": "Bookmarks: marked places in the clip that you jump to with one click (in the slide show: Alt+End / Alt+Home)",
+    "Șterge semnul acesta": "Delete this bookmark",
+    "Șterge semnul": "Delete bookmark"
+  },
+  "templates": {},
+  "skip": []
+}

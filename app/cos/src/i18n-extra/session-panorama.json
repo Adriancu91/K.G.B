@@ -1,0 +1,24 @@
+{
+  "dict": {
+    "⟷ Panoramă…": "⟷ Panorama…",
+    "2–12 poze ale aceleiași priveliști, făcute una lângă alta, lipite într-o singură poză lată": "2–12 photos of the same view, taken side by side, stitched into one wide picture",
+    "Caut părțile comune și lipesc pozele…": "Finding the shared parts and stitching the photos…",
+    "Lipește pozele": "Stitch photos",
+    "Nu am găsit o parte comună între poze, așa că nu am făcut panorama. Pozele trebuie să se suprapună cam o treime, ca la o panoramă făcută din mână.": "I found no shared part between the photos, so I did not make the panorama. The photos should overlap by about a third, as in a handheld panorama.",
+    "Panoramă": "Panorama",
+    "Panoramă: 2–12 poze ale aceleiași priveliști, făcute una lângă alta, lipite într-o singură poză lată": "Panorama: 2–12 photos of the same view, taken side by side, stitched into one wide picture",
+    "Panoramă.jpg": "Panorama.jpg",
+    "Panoramă.png": "Panorama.png",
+    "Pentru o panoramă alege cel puțin 2 poze care au o parte comună (Ctrl+click pe ele în fereastră).": "For a panorama, choose at least 2 photos that share a part (Ctrl+click them in the window).",
+    "poze. Le pun în ordinea potrivită singur; trebuie să se suprapună cam o treime, cu aparatul ținut drept.": "photos. I put them in the right order myself; they should overlap by about a third, with the camera held level.",
+    "Taie marginile rămase goale": "Crop the empty edges",
+    "Una dintre poze nu a putut fi deschisă, așa că nu am făcut panorama.": "One of the photos could not be opened, so I did not make the panorama.",
+    "Pozele se întind întâi pe un cilindru, ca la panoramele făcute rotindu-te pe loc; debifează pentru poze făcute mergând pe lângă un perete sau pentru scanări": "The photos are first wrapped onto a cylinder, as for panoramas taken by turning on the spot; untick for photos taken walking along a wall or for scans",
+    "Pozele sunt făcute rotindu-mă pe loc (proiecție cilindrică)": "The photos were taken turning on the spot (cylindrical projection)"
+  },
+  "templates": {
+    "Am lipit {0} din {1} poze într-o panoramă de {2} × {3} px. N-am găsit unde se potrivește: {4}.": "I stitched {0} of {1} photos into a {2} × {3} px panorama. I could not find where these fit: {4}.",
+    "Am lipit {0} poze într-o panoramă de {1} × {2} px.": "I stitched {0} photos into a {1} × {2} px panorama."
+  },
+  "skip": []
+}

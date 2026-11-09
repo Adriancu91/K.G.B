@@ -1,0 +1,12 @@
+{
+ "dict": {
+  "A doua parte a documentului: se derulează separat și arată imediat ce scrii sus; dublu clic = scrii în locul acela": "The second part of the document: it scrolls separately and shows right away what you write above; double-click = write in that place",
+  "Trage ca să schimbi cât ocupă fiecare parte; dublu clic = Eliminare scindare": "Drag to change how much each part takes up; double-click = Remove Split",
+  "⊟ Scindare": "⊟ Split",
+  "▭ Eliminare scindare": "▭ Remove Split",
+  "Eliminare scindare: documentul din nou într-o singură parte (Ctrl+Alt+S)": "Remove Split: the document in a single part again (Ctrl+Alt+S)",
+  "Scindare (Ctrl+Alt+S): documentul în două părți ale ferestrei, fiecare derulată separat, ca să vezi un loc în timp ce scrii în altul (dublu clic jos = scrii acolo)": "Split (Ctrl+Alt+S): the document in two parts of the window, each scrolled separately, so you can see one place while you write in another (double-click below = write there)"
+ },
+ "templates": {},
+ "skip": []
+}

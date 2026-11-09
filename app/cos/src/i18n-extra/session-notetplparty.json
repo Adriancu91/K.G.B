@@ -1,0 +1,10 @@
+{
+  "dict": {
+    "🎉 Petrecere": "🎉 Party"
+  },
+  "templates": {},
+  "skip": [
+    "Data și ora: \nLocul: \nCâți invitați: \nBuget: \n\nInvitații (☐ = a confirmat):\n☐ \n☐ \n☐ \n\nMeniul:\n• aperitive: \n• felul principal: \n• tortul / desertul: \n• băuturi: \n\nDe pregătit:\n☐ rezervarea sau curățenia\n☐ cumpărăturile\n☐ decorul și muzica\n☐ cadourile sau mărturiile\n\nCine ce aduce:\n• \n",
+    "Petrecere {0}"
+  ]
+}

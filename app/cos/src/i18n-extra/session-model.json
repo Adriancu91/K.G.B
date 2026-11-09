@@ -1,0 +1,24 @@
+{
+  "dict": {
+    "Model 3D: un .obj sau .stl, rotit cu mouse-ul cum vrei și pus la cursor ca poză transparentă": "3D Model: an .obj or .stl, rotated with the mouse as you like and inserted at the cursor as a transparent picture",
+    "Model 3D: un .obj sau .stl, rotit cu mouse-ul cum vrei și pus pe slide ca poză transparentă": "3D Model: an .obj or .stl, rotated with the mouse as you like and placed on the slide as a transparent picture",
+    "Model 3D: un .obj sau .stl, rotit cu mouse-ul cum vrei și pus în notiță ca poză (numele fișierului se găsește la căutare)": "3D Model: an .obj or .stl, rotated with the mouse as you like and inserted into the note as a picture (the file name can be found by search)",
+    "Fișierul .obj nu are fețe („f …”) de desenat.": "The .obj file has no faces (\"f …\") to draw.",
+    "Fișierul .stl nu poate fi citit (nu e nici binar, nici text cu „vertex”).": "The .stl file cannot be read (it is neither binary nor text with \"vertex\").",
+    "Fișierul nu are nicio față de desenat.": "The file has no faces to draw.",
+    "Modelul nu are mărime (toate punctele sunt în același loc).": "The model has no size (all points are in the same place).",
+    "📂 Alege fișierul…": "📂 Choose file…",
+    "Alege un model 3D (.obj sau .stl, de exemplu o piesă proiectată sau un obiect pentru imprimanta 3D), rotește-l cu mouse-ul și pune-l ca poză.": "Choose a 3D model (.obj or .stl, for example a designed part or an object for a 3D printer), rotate it with the mouse and insert it as a picture.",
+    "Din lateral": "From the side",
+    "fețe": "faces",
+    "Modelul e culcat (sus pe axa Z, ca la piesele proiectate)": "The model lies down (up along the Z axis, as with designed parts)",
+    "Poza modelului nu a putut fi făcută.": "The picture of the model could not be made.",
+    "Rotire orizontală": "Horizontal rotation",
+    "Trage cu mouse-ul ca să rotești modelul": "Drag with the mouse to rotate the model",
+    "Model 3D: un .obj sau .stl, rotit cu mouse-ul cum vrei; apoi dă click pe pagină unde îl pui (ca poză transparentă)": "3D model: an .obj or .stl, rotated with the mouse as you like; then click on the page where you want it (as a transparent picture)"
+  },
+  "templates": {
+    "Modelul 3D „{0}” e pe slide, ca poză; mută-l sau mărește-l ca pe orice poză": "The 3D model \"{0}\" is on the slide as a picture; move or resize it like any picture"
+  },
+  "skip": []
+}

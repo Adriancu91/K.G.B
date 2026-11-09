@@ -1,0 +1,24 @@
+{
+  "dict": {
+    "Optică": "Optician",
+    "Ochelari de vedere": "Glasses",
+    "Ochelari de soare": "Sunglasses",
+    "Lentilă de contact": "Contact lens",
+    "Tabel optometric": "Eye chart",
+    "Toc de ochelari": "Glasses case",
+    "Picături de ochi": "Eye drops",
+    "Control al vederii": "Eye exam",
+    "Stand cu rame": "Frame display"
+  },
+  "templates": {},
+  "skip": [
+    "ochelari de vedere dioptrii miopie optician glasses spectacles eyewear",
+    "ochelari de soare vară protecție uv plajă sunglasses shades",
+    "lentilă de contact lentile lunare zilnice contact lens",
+    "tabel optometric litere citire acuitate vizuală consult eye chart vision test",
+    "toc de ochelari etui cutie husă glasses case",
+    "picături de ochi soluție flacon ochi uscați eye drops",
+    "control al vederii consult oftalmolog ochi vedere eye exam ophthalmologist",
+    "stand cu rame vitrină magazin optică expunere frames display"
+  ]
+}

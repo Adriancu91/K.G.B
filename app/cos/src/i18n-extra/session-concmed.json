@@ -1,0 +1,53 @@
+{
+ "dict": {
+  "01 Boală obișnuită": "01 Ordinary illness",
+  "01 Boală obișnuită, 8–14 zile": "01 Ordinary illness, 8–14 days",
+  "01 Boală obișnuită, de la 15 zile": "01 Ordinary illness, 15 days or more",
+  "01 Boală obișnuită, până la 7 zile": "01 Ordinary illness, up to 7 days",
+  "02 Accident în afara muncii": "02 Non-work accident",
+  "05 Boală infectocontagioasă (grupa A)": "05 Infectious disease (group A)",
+  "06 Urgență medico-chirurgicală": "06 Medical or surgical emergency",
+  "07 Carantină": "07 Quarantine",
+  "08 Sarcină și lăuzie": "08 Pregnancy and childbirth",
+  "09 Îngrijirea copilului bolnav": "09 Caring for a sick child",
+  "10 Reducerea timpului de muncă": "10 Reduced working time",
+  "12 Tuberculoză": "12 Tuberculosis",
+  "13 Boală cardiovasculară": "13 Cardiovascular disease",
+  "14 Neoplazie, SIDA": "14 Cancer, AIDS",
+  "15 Risc maternal": "15 Maternal risk",
+  "Angajatorul plătește primele 5 zile calendaristice (din care se numără doar cele lucrătoare); restul se recuperează din FNUASS. La certificatele „În continuare” și la codurile cu „Nu” plătește totul FNUASS.": "The employer pays the first 5 calendar days (only the working days among them count); the rest is recovered from the health insurance fund (FNUASS). For “Continuation” certificates and for the codes marked “No”, FNUASS pays everything.",
+  "Angajatorul plătește zilele 1–5": "Employer pays days 1–5",
+  "Certificate trecute": "Certificates entered",
+  "Certificatele de concediu medical ale angajaților: din codul indemnizației, perioada și media zilnică a veniturilor ies zilele lucrătoare, procentul (la boala obișnuită după durata concediului), indemnizația și împărțirea ei: zilele 1–5 de la angajator, restul din FNUASS, de recuperat; procentele stau într-un tabel de schimbat, în dreapta.": "Employees' sick leave certificates: from the benefit code, the period and the average daily income you get the working days, the percentage (for ordinary illness, by the length of the leave), the benefit and how it is split: days 1–5 from the employer, the rest from the health insurance fund (FNUASS), to be recovered; the percentages sit in an editable table on the right.",
+  "Codul indemnizației": "Benefit code",
+  "Concedii medicale": "Sick leave",
+  "Din FNUASS (se recuperează)": "From FNUASS (recovered)",
+  "Felul certificatului": "Certificate type",
+  "În continuare": "Continuation",
+  "Indemnizația": "Benefit",
+  "Indemnizații în total": "Total benefits",
+  "Inițial": "Initial",
+  "La boala obișnuită procentul se ia după zilele calendaristice ale certificatului; la un certificat în continuare se poate scrie direct procentul după durata totală. Procentele (în galben) se schimbă prin lege: verificați-le cu contabilul.": "For ordinary illness the percentage follows the calendar days of the certificate; for a continuation certificate you can type the percentage for the total length directly. The percentages (in yellow) change by law: check them with your accountant.",
+  "Media zilnică a veniturilor": "Average daily income",
+  "Media zilnică: veniturile brute din ultimele 6 luni (cel mult 12 salarii minime pe lună) împărțite la zilele lucrătoare din acele luni.": "Daily average: the gross income of the last 6 months (at most 12 minimum wages per month) divided by the working days in those months.",
+  "Plătite de angajator": "Paid by the employer",
+  "Seria și nr. certificatului": "Certificate series and no.",
+  "Suma de la angajator": "Amount from the employer",
+  "Suma din FNUASS": "Amount from FNUASS",
+  "Zile calendaristice": "Calendar days",
+  "Zile de la angajator": "Days from the employer",
+  "Zile din FNUASS": "Days from FNUASS",
+  "Zile lucrătoare de concediu": "Working days of leave",
+  "🤒 Un concediu medical": "🤒 A sick leave",
+  "Angajatul:\nCertificatul (seria și nr.):\nCodul indemnizației:\nPerioada:\n\nPrimirea certificatului:\n☐ seria, numărul, codul și perioada verificate pe certificat\n☐ certificatul primit cel târziu pe 5 ale lunii următoare (după aceea nu se mai plătește)\n☐ zilele trecute ca CM în pontaj (Sheets → Pontaj lunar)\n\nCalculul:\n☐ media zilnică făcută din veniturile ultimelor 6 luni\n☐ indemnizația și împărțirea între angajator și FNUASS calculate (Sheets → Concedii medicale)\n☐ indemnizația trecută în statul de plată al lunii (Sheets → Stat de plată)\n\nPentru contabil:\n☐ certificatul și calculul date contabilului pentru declarația 112\n☐ suma din FNUASS urmărită: se scade din contribuția datorată sau se cere înapoi de la casa de sănătate\n\nObservații:\n• ": "Employee:\nCertificate (series and no.):\nBenefit code:\nPeriod:\n\nReceiving the certificate:\n☐ series, number, code and period checked on the certificate\n☐ certificate received by the 5th of the following month at the latest (after that it is no longer paid)\n☐ days entered as sick leave (CM) in the timesheet (Sheets → Monthly timesheet)\n\nCalculation:\n☐ daily average worked out from the income of the last 6 months\n☐ benefit and the split between employer and FNUASS calculated (Sheets → Sick leave)\n☐ benefit entered in the month's payroll (Sheets → Payroll)\n\nFor the accountant:\n☐ certificate and calculation given to the accountant for return 112\n☐ FNUASS amount followed up: deducted from the contribution due or claimed back from the health insurance office\n\nNotes:\n• ",
+  "Cerere de recuperare a indemnizațiilor din FNUASS": "Request to recover sick leave benefits from FNUASS",
+  "Cererea firmei către casa de asigurări de sănătate pentru banii plătiți angajaților în concediu medical și nerecuperați din contribuții: luna, declarația 112, certificatele cu zilele și sumele din FNUASS, totalul cerut, contul bancar și actele anexate": "The company's request to the health insurance office for the money paid to employees on sick leave and not recovered from contributions: the month, return 112, the certificates with the days and amounts from FNUASS, the total requested, the bank account and the attached documents"
+ },
+ "templates": {
+  "Concediu medical {0}": "Sick leave {0}"
+ },
+ "skip": [
+  "=IF({0};\"\";IF(D{1}=\"01 Boală obișnuită\";IF(H{2}<=7;$T$10;IF(H{3}<=14;$T$11;$T$12));VLOOKUP(D{4};$S{5}:$U{6};2;0)))",
+  "=IF({0};\"\";IF(OR(E{1}=\"În continuare\";IFERROR(VLOOKUP(D{2};$S{3}:$U{4};3;0);\"Da\")=\"Nu\");0;MIN(I{5};NETWORKDAYS(F{6};MIN(G{7};F{8}+4);{9}))))"
+ ]
+}

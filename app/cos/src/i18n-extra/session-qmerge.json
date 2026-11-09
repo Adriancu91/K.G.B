@@ -1,0 +1,38 @@
+{
+  "dict": {
+    "Doar rândurile care se potrivesc": "Only matching rows",
+    "Doar rândurile de aici fără pereche acolo": "Only rows here with no match there",
+    "Toate rândurile de aici, cu potrivirile de acolo": "All rows here, with matches from there",
+    "Adaugă dedesubt alt tabel": "Append another table",
+    "Celălalt tabel": "Other table",
+    "Coloanele aduse": "Columns to bring",
+    "Felul îmbinării": "Join kind",
+    "Îmbină cu alt tabel": "Merge with another table",
+    "Potrivește cu coloana": "Match with column",
+    "Registrul nu are alt tabel sau altă foaie cu date.": "The workbook has no other table or sheet with data.",
+    "bară /": "slash /",
+    "bară verticală |": "vertical bar |",
+    "cratimă -": "hyphen -",
+    "Doar celulele cu toată valoarea la fel (altfel și bucăți din text)": "Only cells whose whole value matches (otherwise parts of the text too)",
+    "Împarte coloana după separator": "Split column by delimiter",
+    "Înlocuiește valorile": "Replace values",
+    "punct și virgulă ;": "semicolon ;",
+    "Valoarea de căutat": "Value to find",
+    "virgulă ,": "comma ,",
+    "Fără spații în plus": "Trim extra spaces",
+    "Prima Literă Mare": "Capitalize Each Word",
+    "Cum se formatează": "How to format",
+    "Formatează textul": "Format text"
+  },
+  "templates": {
+    "Adaugă dedesubt rândurile din {0}": "Append the rows from {0}",
+    "Îmbină cu {0} ({1} = {2}, doar potrivirile){3}": "Merge with {0} ({1} = {2}, matches only){3}",
+    "Îmbină cu {0} ({1} = {2}){3}": "Merge with {0} ({1} = {2}){3}",
+    "Păstrează rândurile fără pereche în {0} ({1} = {2})": "Keep rows with no match in {0} ({1} = {2})",
+    "Împarte {0} după „{1}”": "Split {0} by “{1}”",
+    "Înlocuiește în {0} textul „{1}” cu „{2}”": "Replace text “{1}” with “{2}” in {0}",
+    "Înlocuiește în {0} valoarea „{1}” cu „{2}”": "Replace value “{1}” with “{2}” in {0}",
+    "Formatează {0}: {1}": "Format {0}: {1}"
+  },
+  "skip": []
+}

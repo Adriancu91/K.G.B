@@ -1,0 +1,11 @@
+{
+  "dict": {
+    "Radar (pânză de păianjen)": "Radar (spider web)",
+    "Radar umplut": "Filled radar"
+  },
+  "templates": {},
+  "skip": [
+    "<text class=\"rd-cat\" x=\"{0}\" y=\"{1}\" text-anchor=\"{2}\" font-size=\"11\" fill=\"#555\">{3}</text>",
+    "<text x=\"{0}\" y=\"{1}\" font-size=\"10\" fill=\"#666\">{2}</text>"
+  ]
+}

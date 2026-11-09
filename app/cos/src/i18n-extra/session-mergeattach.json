@@ -1,0 +1,20 @@
+{
+ "dict": {
+  "atașat": "attached",
+  "documentul lui, ca .docx": "their document, as .docx",
+  "documentul lui, ca PDF": "their document, as PDF",
+  "Exemplarul fiecărui destinatar, pus ca fișier atașat la mesajul lui (de exemplu factura sau contractul lui)": "Each recipient’s copy, attached to their message (for example their invoice or contract)",
+  "Fișierul atașat la mesaje": "File attached to the messages",
+  "mesaj .eml cu PDF-ul atașat": ".eml message with the PDF attached",
+  "mesaje .eml cu PDF-ul atașat": ".eml messages with the PDF attached",
+  "mesaj .eml cu fișierul .docx atașat": ".eml message with the .docx file attached",
+  "mesaje .eml cu fișierul .docx atașat": ".eml messages with the .docx file attached",
+  "Câte un fișier PDF pentru fiecare rând…": "One PDF file per row…",
+  "Felul fișierelor": "File type",
+  "Fișierele atașate la e-mail intră și ele în PDF (📎 Atașamente)": "The files attached to the e-mail go into the PDF too (📎 Attachments)"
+ },
+ "templates": {
+  "Gata: {0} documente PDF în {1}": "Done: {0} PDF documents in {1}"
+ },
+ "skip": []
+}

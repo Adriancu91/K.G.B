@@ -1,0 +1,27 @@
+/* Copiat neschimbat din Cyber Office Studio (D-071); vezi app/cos/README.md. */
+/* ✏ Desen (Docs, Sheets): aceleași unelte ca stratul de desen din Slides (slides.css), aici pentru modulele fără Slides încărcat. */
+.sketch-dlg { max-width: min(96vw, 800px); }
+.sketch-help { margin: 0 0 8px; opacity: .8; font-size: 13px; }
+.sketch-paper { width: min(90vw, 720px); background: #fff; border: 1px solid var(--border, #ccc); border-radius: 4px; }
+.sketch-dlg .sl-draw-wrap { display: flex; flex-direction: column; align-items: center; gap: 8px; }
+.sketch-dlg .sl-draw-bar { display: flex; flex-wrap: wrap; align-items: center; gap: 4px; padding: 4px 8px; border: 1px solid var(--border); border-radius: 8px; background: var(--bg, #fff); }
+.sketch-dlg .sl-draw-bar button.on { background: var(--accent-soft, rgba(37, 99, 235, .15)); outline: 1px solid var(--accent, #2563eb); }
+.sketch-dlg .sl-draw-colors { display: inline-flex; gap: 5px; margin: 0 6px; }
+.sketch-dlg .sl-draw-colors button { width: 18px; height: 18px; min-width: 0; padding: 0; border-radius: 50%; border: 1px solid rgba(0, 0, 0, .35); }
+.sketch-dlg .sl-draw-colors button.on { outline: 2px solid var(--accent, #2563eb); outline-offset: 1px; background-clip: padding-box; }
+.sketch-dlg .sl-draw-area { position: relative; }
+.sketch-dlg .sl-draw-ink { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 20; touch-action: none; cursor: crosshair; }
+.sketch-dlg .sl-draw-ink.sl-draw-eraser { cursor: cell; }
+.sketch-dlg .sl-draw-ink path { fill: none; stroke-linecap: round; stroke-linejoin: round; }
+.sketch-dlg .sl-draw-box { fill: none; stroke: var(--accent, #2563eb); stroke-width: 1; stroke-dasharray: 4 4; opacity: .5; vector-effect: non-scaling-stroke; }
+.sketch-dlg .sl-sep { width: 1px; align-self: stretch; background: var(--border, #ccc); margin: 0 4px; }
+.sketch-dlg .sl-draw-ink.sl-draw-lasso { cursor: default; }
+.sketch-dlg .sl-draw-ink path.sl-draw-picked { filter: drop-shadow(0 0 2px var(--accent, #2563eb)); }
+.sketch-dlg .sl-draw-pick { fill: rgba(37, 99, 235, .06); stroke: var(--accent, #2563eb); stroke-width: 1.5; stroke-dasharray: 6 3; vector-effect: non-scaling-stroke; cursor: move; }
+.sketch-dlg .sl-draw-loop { fill: rgba(37, 99, 235, .08); stroke: var(--accent, #2563eb); stroke-width: 1; stroke-dasharray: 3 3; vector-effect: non-scaling-stroke; }
+
+/* 📏 Rigla din Desenează (drawRuler.ts): se mută trăgând, se rotește cu rotița. */
+.sketch-dlg .sl-draw-ruler { cursor: move; }
+.sketch-dlg .sl-draw-ruler rect { fill: rgba(240, 240, 235, .85); stroke: #6b7280; stroke-width: 1; vector-effect: non-scaling-stroke; }
+.sketch-dlg .sl-draw-ink .sl-draw-ruler path { stroke: #374151; stroke-width: 1; vector-effect: non-scaling-stroke; fill: none; }
+.sketch-dlg .sl-draw-ruler text { fill: #374151; font-family: system-ui, sans-serif; user-select: none; }

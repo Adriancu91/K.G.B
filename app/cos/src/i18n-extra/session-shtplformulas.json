@@ -1,0 +1,23 @@
+{
+  "dict": {},
+  "templates": {},
+  "skip": [
+    "=COUNTIF(H2:H{0};\"Azi\")+COUNTIF(H2:H{1};\"În 7 zile\")",
+    "=COUNTIF(H2:H{0};\"Deteriorată\")+COUNTIF(H2:H{1};\"Lipsă\")",
+    "=COUNTIF(I2:I{0};\"Curând\")",
+    "=COUNTIF(I2:I{0};\"La angajat\")",
+    "=COUNTIF(I2:I{0};\"Restantă\")",
+    "=COUNTIF(K2:K{0};\"Nesatisfăcător\")",
+    "=COUNTIF(K2:K{0};\"Satisfăcător\")",
+    "=COUNTIF(L2:L{0};\"Întârziată\")",
+    "=IF(C{0}=\"\";\"\";IF(G{1}<>\"\";\"Restituit\";IF(F{2}<>\"\";\"La angajat\";\"În depozit\")))",
+    "=IF(G{0}=\"\";\"\";IF(G{1}=0;\"Azi\";IF(G{2}<=7;\"În 7 zile\";IF(G{3}<=30;\"În 30 de zile\";\"\"))))",
+    "=IF(G{0}=\"\";\"\";IF(J{1}<=0;\"Plătită\";IF(F{2}=\"\";\"De plată\";IF(F{3}<TODAY();\"Întârziată\";IF(F{4}-TODAY()<=7;\"În 7 zile\";\"De plată\")))))",
+    "=IF(H{0}=\"\";\"\";IF(H{1}<0;\"Restantă\";IF(H{2}<=30;\"Curând\";\"La zi\")))",
+    "=IF(J{0}=\"\";\"\";IF(J{1}*10>=45;\"Foarte bine\";IF(J{2}*10>=35;\"Bine\";IF(J{3}*10>=25;\"Satisfăcător\";\"Nesatisfăcător\"))))",
+    "=M4+COUNTIF(H2:H{0};\"În 30 de zile\")",
+    "=SUMIF(I2:I{0};\"La angajat\";E2:E{1})",
+    "=SUMIF(L2:L{0};\"În 7 zile\";J2:J{1})",
+    "=SUMIF(L2:L{0};\"Întârziată\";J2:J{1})"
+  ]
+}

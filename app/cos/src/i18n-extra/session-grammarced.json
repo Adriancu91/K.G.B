@@ -1,0 +1,35 @@
+{
+  "dict": {
+    "Pleonasm: „a adăuga” înseamnă deja „a pune în plus”.": "Pleonasm: “to add” already means “to put in extra”.",
+    "Pleonasm: „a ieși” înseamnă deja „a merge afară”.": "Pleonasm: “to exit” already means “to go outside”.",
+    "Pleonasm: „a intra” înseamnă deja „a merge înăuntru”.": "Pleonasm: “to enter” already means “to go inside”.",
+    "Pleonasm: „a repeta” înseamnă deja „a face din nou”.": "Pleonasm: “to repeat” already means “to do again”.",
+    "Pleonasm: „a se întoarce” și „a se retrage” înseamnă deja „a merge înapoi”.": "Pleonasm: “to return” and “to retreat” already mean “to go back”.",
+    "Pleonasm: „hemoragie” înseamnă deja „pierdere de sânge”.": "Pleonasm: “hemorrhage” already means “loss of blood”.",
+    "Pleonasm: un monopol este deja exclusiv.": "Pleonasm: a monopoly is already exclusive.",
+    "Se scrie legat: „orice”, „oricine”, „oricum”, „oricând”, „oriunde”, „oricare”.": "Written as one word: “ori” joins the next word (for example “orice”, “oricine”, “oricum”, “oriunde”, “oricare”).",
+    "După „a”, după viitor („vei”, „vom”), condițional („ar”, „aș”) și după „poate” / „trebuie” se scrie „fi” cu un singur „i”.": "After “a”, the future (“vei”, “vom”), the conditional (“ar”, “as”) and after “poate” / “trebuie”, “fi” is written with a single “i”.",
+    "În „să fi fost” se scrie „fi” cu un singur „i”.": "In “sa fi fost”, “fi” is written with a single “i”."
+  },
+  "templates": {
+    "Literele cu sedilă (ş, ţ) sunt o scriere veche; în română se scrie cu virgulă dedesubt: „{0}”.": "Letters with a cedilla are an old spelling; Romanian uses s and t with a comma below: “{0}”."
+  },
+  "skip": [
+    "(adăug",
+    "(ie[șs]",
+    "(întoar",
+    "(ori)-(ce|cine|cum|când|unde|care|câte|câți)",
+    "*) afară",
+    "*) de sânge",
+    "*) din nou",
+    "*) în plus",
+    "*|întorc",
+    "*|întors",
+    "bibliotecă",
+    "frustrantă",
+    "pioneză",
+    "succintă",
+    "(a|voi|vei|va|vom|veți|vor|ar|aș|poate|pot|poți|putem|puteți|putea|trebuie) fii",
+    "(să) fii (fost)"
+  ]
+}

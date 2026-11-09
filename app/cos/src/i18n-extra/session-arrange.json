@@ -1,0 +1,16 @@
+{
+  "dict": {
+    "▦ În grilă": "▦ Tiled",
+    "◫ Alăturate": "◫ Side by side",
+    "🗗 Cascadă": "🗗 Cascade",
+    "🗗 Aranjează toate": "🗗 Arrange all",
+    "Aranjează toate ferestrele programului pe ecran: în grilă, alăturate, una sub alta sau în cascadă (o fereastră nouă: clic dreapta pe tab → ⧉ Mută în fereastră nouă)": "Arrange all program windows on the screen: tiled, side by side, stacked or cascaded (a new window: right-click a tab → ⧉ Move to new window)",
+    "E deschisă o singură fereastră. Ca să ai mai multe: clic dreapta pe un tab → ⧉ Mută în fereastră nouă, apoi aranjează-le.": "Only one window is open. To get more: right-click a tab → ⧉ Move to new window, then arrange them.",
+    "Ferestrele în trepte, una peste alta, cu titlurile vizibile": "Windows in steps, one over another, with their titles visible",
+    "Ferestrele una lângă alta, de la stânga la dreapta": "Windows next to each other, from left to right",
+    "Ferestrele una sub alta, fiecare pe toată lățimea ecranului": "Windows one below another, each across the full screen width",
+    "Toate ferestrele împart ecranul în părți egale": "All windows share the screen in equal parts"
+  },
+  "templates": {},
+  "skip": []
+}

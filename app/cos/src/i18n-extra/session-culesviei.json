@@ -1,0 +1,10 @@
+{
+  "dict": {
+    "🍇 Culesul viei": "🍇 Grape harvest",
+    "Parcela și soiul:\nZiua culesului și câți culegători vin:\nZahărul din struguri (refractometru) și vremea:\n\nÎnainte de cules:\n☐ găleți, foarfeci și lăzi spălate, câte ajung pentru toți culegătorii\n☐ teascul, zdrobitorul și vasele pentru must curățate și clătite\n☐ butoaiele spălate, verificate să nu curgă și pregătite\n☐ masa și apa pentru culegători, cine aduce ce\n\nLa cules:\n☐ boabele mucegăite sau stricate scoase din ciorchine\n☐ lăzile numărate sau cântărite la capătul fiecărui rând\n☐ strugurii duși la teasc în aceeași zi\n\nDupă cules:\n☐ mustul pus în vase, cu data și cantitatea scrise pe fiecare\n☐ uneltele spălate și puse la uscat\n\nCât s-a cules (kg) și cât must a ieșit (litri):\n•\n\nObservații:\n• ": "Plot and grape variety:\nHarvest day and how many pickers are coming:\nSugar in the grapes (refractometer) and weather:\n\nBefore the harvest:\n☐ buckets, shears and crates washed, enough for all the pickers\n☐ wine press, crusher and must containers cleaned and rinsed\n☐ barrels washed, checked for leaks and ready\n☐ food and water for the pickers, who brings what\n\nDuring the harvest:\n☐ moldy or damaged berries removed from the bunches\n☐ crates counted or weighed at the end of each row\n☐ grapes taken to the press the same day\n\nAfter the harvest:\n☐ must put into containers, with the date and amount written on each\n☐ tools washed and left to dry\n\nHow much was picked (kg) and how much must came out (liters):\n•\n\nNotes:\n• "
+  },
+  "templates": {
+    "Culesul viei {0}": "Grape harvest {0}"
+  },
+  "skip": []
+}

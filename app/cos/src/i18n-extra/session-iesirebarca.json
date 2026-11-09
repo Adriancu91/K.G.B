@@ -1,0 +1,10 @@
+{
+  "dict": {
+    "⛵ Ieșire cu barca": "⛵ Boat trip",
+    "Barca și locul de plecare:\nOra plecării și ora întoarcerii:\nCâte persoane la bord:\nPrognoza (vânt, valuri):\n\nÎnainte de plecare:\n☐ vestă de salvare pentru fiecare om de la bord\n☐ colacul de salvare și parâma la îndemână\n☐ motorul pornit la mal, combustibil dus-întors și o rezervă\n☐ telefonul încărcat, într-o pungă impermeabilă\n☐ cineva de pe mal știe traseul și ora întoarcerii\n☐ actele bărcii și permisul de conducere a ambarcațiunii la bord\n\nLa întoarcere:\n☐ barca legată, motorul oprit și cheia scoasă\n☐ apa scoasă din barcă, echipamentul pus la uscat\n☐ ce s-a stricat sau lipsește, notat mai jos\n\nDe reparat sau de cumpărat:\n•\n\nObservații:\n• ": "Boat and launch spot:\nDeparture and return time:\nPeople on board:\nForecast (wind, waves):\n\nBefore leaving:\n☐ a life jacket for everyone on board\n☐ lifebuoy and line within reach\n☐ engine started on shore, fuel for the round trip plus a reserve\n☐ phone charged, in a waterproof pouch\n☐ someone on shore knows the route and the return time\n☐ boat papers and the skipper's license on board\n\nOn return:\n☐ boat tied up, engine off and key removed\n☐ water bailed out, gear hung up to dry\n☐ anything broken or missing noted below\n\nTo repair or buy:\n•\n\nNotes:\n• "
+  },
+  "templates": {
+    "Ieșire cu barca {0}": "Boat trip {0}"
+  },
+  "skip": []
+}

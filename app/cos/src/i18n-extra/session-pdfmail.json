@@ -1,0 +1,23 @@
+{
+ "dict": {
+  "Trimite prin e-mail: un mesaj nou cu PDF-ul atașat, deschis în programul tău de e-mail (scrii adresa și apeși Trimite)": "Send by e-mail: a new message with the PDF attached, opened in your e-mail program (type the address and press Send)",
+  "documentele merg doar în aplicația Cyber Office Studio": "documents work only in the Cyber Office Studio app",
+  "Fișierele (PDF-uri, poze, documente .docx / .odt / .rtf / .txt, tabele .xlsx / .ods / .csv) intră în ordinea de mai jos (schimb-o cu ▲ ▼ sau trăgând un rând). La un PDF poți scrie doar paginile care intră, de exemplu „1-3, 5”; gol = toate.": "The files (PDFs, pictures, .docx / .odt / .rtf / .txt documents, .xlsx / .ods / .csv spreadsheets) go in in the order below (change it with ▲ ▼ or by dragging a row). For a PDF you can type only the pages that go in, for example “1-3, 5”; empty = all.",
+  "Combină mai multe PDF-uri, poze, documente (.docx, .odt, .rtf, .txt) și tabele (.xlsx, .ods, .csv) într-un PDF nou: alegi ordinea fișierelor și, la fiecare PDF, paginile care intră": "Combine several PDFs, pictures, documents (.docx, .odt, .rtf, .txt) and spreadsheets (.xlsx, .ods, .csv) into a new PDF: you choose the order of the files and, for each PDF, the pages that go in",
+  "Combină mai multe PDF-uri, poze, documente și tabele într-un PDF nou": "Combine several PDFs, pictures, documents and spreadsheets into a new PDF",
+  "tabelul e gol": "the spreadsheet is empty",
+  "Alegi dosarul, apoi fiecare document se face PDF separat": "You choose the folder, then each document becomes a separate PDF",
+  "făcut PDF": "made into PDF",
+  "se face PDF…": "making the PDF…"
+ },
+ "templates": {
+  "Mesaj salvat: {0}. Deschide-l cu dublu clic: PDF-ul e deja atașat": "Message saved: {0}. Double-click it to open: the PDF is already attached",
+  "document, {0} {1}": "document, {0} {1}",
+  "tabel, {0} {1}": "spreadsheet, {0} {1}"
+ },
+ "skip": [
+  "<p class=\"cut\">(foaia e tăiată la {0} de rânduri și {1} de coloane)</p>",
+  "<p class=\"cut\">(tabelul e tăiat la {0} de rânduri și {1} de coloane)</p>",
+  "<style>table.sheet{font-size:9pt;width:auto}table.sheet td{padding:1pt 4pt;white-space:nowrap}table.sheet td.n{text-align:right}"
+ ]
+}

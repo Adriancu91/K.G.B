@@ -1,0 +1,15 @@
+{
+  "dict": {
+    "Desen: desenează de mână cu creionul, markerul și radiera; desenul se pune la cursor, ca poză": "Drawing: draw freehand with the pen, highlighter and eraser; the drawing is inserted at the cursor as a picture",
+    "Desen: desenează de mână cu creionul, markerul și radiera; desenul se pune peste celule, ca poză": "Drawing: draw freehand with the pen, highlighter and eraser; the drawing is placed over the cells as a picture",
+    "Desenul e pe foaie: trage de el ca să-l muți, de colțul din dreapta jos ca să-l mărești; Delete îl șterge": "The drawing is on the sheet: drag it to move it, drag the bottom-right corner to resize it; Delete removes it",
+    "Desenul nu a putut fi pus pe foaie": "The drawing could not be placed on the sheet",
+    "Desenează cu mouse-ul, cu creionul tabletei sau cu degetul. La „✓ Gata” desenul se pune ca poză (doar liniile, fără fundal).": "Draw with the mouse, a tablet pen or your finger. On “✓ Done” the drawing is inserted as a picture (only the lines, no background).",
+    "Închide fără să pui desenul": "Close without inserting the drawing",
+    "Pune desenul ca poză (Esc sau Enter)": "Insert the drawing as a picture (Esc or Enter)",
+    "Lasou (L): încercuiește liniile ca să le alegi, apoi trage de ele ca să le muți; Delete le șterge": "Lasso (L): circle lines to select them, then drag them to move them; Delete removes them",
+    "Șterge liniile alese (Delete)": "Delete the selected lines (Delete)"
+  },
+  "templates": {},
+  "skip": []
+}

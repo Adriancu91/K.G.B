@@ -1,0 +1,29 @@
+{
+  "dict": {
+    "Revizii și reparații auto": "Car service and repairs",
+    "Fiecare vizită la service: km, ce s-a făcut, piese și manoperă; ies cheltuielile pe total și pe anul acesta și câți km mai ai până la următorul schimb de ulei.": "Every visit to the garage: mileage, what was done, parts and labour; you get the total spent, the spending this year and how many km are left until the next oil change."
+  },
+  "templates": {},
+  "skip": [
+    "=MAX(MAXIFS(B2:B{0};C2:C{1};\"Schimb ulei și filtre\");MAXIFS(B2:B{2};C2:C{3};\"Revizie completă\"))",
+    "Alege din listă ce s-a făcut; „Schimb ulei și filtre” și „Revizie completă” mută următorul schimb de ulei. Sub 1000 km rămași iese în roșu.",
+    "Anvelope",
+    "Caroserie",
+    "Ce s-a făcut",
+    "Cheltuieli anul acesta",
+    "Cheltuieli în total",
+    "Distribuție",
+    "Frâne",
+    "Km acum (îi scrii de la bord)",
+    "Km rămași până atunci",
+    "Manopera",
+    "Piese",
+    "Revizie completă",
+    "Schimb de ulei la fiecare (km)",
+    "Schimb ulei și filtre",
+    "Service",
+    "Ultimul schimb de ulei la km",
+    "Următorul schimb de ulei la km",
+    "Vizite la service"
+  ]
+}

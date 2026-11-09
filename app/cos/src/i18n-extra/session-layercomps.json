@@ -1,0 +1,18 @@
+{
+  "dict": {
+    "＋ Compoziție nouă": "＋ New Layer Comp",
+    "Arată straturile ca în această compoziție. Dublu-click: redenumește": "Shows the layers as in this comp. Double-click: rename",
+    "Compoziția de dinainte": "Previous layer comp",
+    "Compoziția următoare": "Next layer comp",
+    "Compoziții de straturi": "Layer Comps",
+    "Numele compoziției": "Layer comp name",
+    "Pune în compoziție starea de acum a straturilor": "Puts the current state of the layers into the comp",
+    "Șterge compoziția (straturile rămân cum sunt)": "Deletes the comp (the layers stay as they are)",
+    "Ține minte cum arată acum straturile (care se văd, opacitatea, modul de amestec), ca variantă la care te poți întoarce": "Remembers how the layers look now (which are visible, opacity, blend mode), as a version you can return to"
+  },
+  "templates": {
+    "Actualizează {0}": "Update {0}",
+    "Compoziția {0}": "Layer Comp {0}"
+  },
+  "skip": []
+}

@@ -5,6 +5,7 @@
 import { createRequire, registerHooks } from "node:module";
 import { fileURLToPath, pathToFileURL } from "node:url";
 
+const appRoot = new URL("../package.json", import.meta.url).href;
 const shim = new URL("./esbuild-shim.mjs", import.meta.url).href;
 // TypeScript → JavaScript with oxc (from rolldown, already in the app through vite): like esbuild, it drops the
 // imports that are only types, which Node's own type stripping cannot know.
@@ -18,6 +19,8 @@ registerHooks({
       return next(spec, ctx);
     } catch (e) {
       if (spec.startsWith(".") && !/\.[a-z0-9]+$/i.test(spec)) return next(`${spec}.ts`, ctx);
+      // Packages named from a temporary entry file (outside the app) resolve from the app's node_modules.
+      if (!spec.startsWith(".") && !spec.startsWith("file:") && !spec.startsWith("node:")) return next(spec, { ...ctx, parentURL: appRoot });
       throw e;
     }
   },

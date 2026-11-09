@@ -1,0 +1,13 @@
+{
+ "dict": {
+  "Formatarea": "Formatting",
+  "Font / culoare": "Font / color",
+  "a formatat": "formatted"
+ },
+ "templates": {
+  "fără {0}": "not {0}"
+ },
+ "skip": [
+  "{0} { color: inherit; text-decoration: none; } {1} { display: none; } {2} { border-bottom: 0; }"
+ ]
+}

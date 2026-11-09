@@ -1,0 +1,10 @@
+{
+  "dict": {
+    "Coeficientul în obiectiv": "Objective coefficient",
+    "Creștere / scădere permisă: cât se poate schimba coeficientul celulei în obiectiv fără să se schimbe soluția, respectiv partea dreaptă a condiției fără să se schimbe prețul umbră.": "Allowable increase / decrease: how much the cell's objective coefficient can change without changing the solution, and how much the constraint's right-hand side can change without changing the shadow price.",
+    "Creștere permisă": "Allowable increase",
+    "Scădere permisă": "Allowable decrease"
+  },
+  "templates": {},
+  "skip": []
+}

@@ -1,0 +1,24 @@
+{
+  "dict": {
+    "Foto și film": "Photo and film",
+    "Trepied": "Tripod",
+    "Diafragmă": "Aperture",
+    "Bliț": "Flash",
+    "Claquetă": "Clapperboard",
+    "Proiector de film": "Film projector",
+    "Peliculă": "Film strip",
+    "Lumină de studio": "Studio light",
+    "Fotografie": "Photo"
+  },
+  "templates": {},
+  "skip": [
+    "trepied stativ aparat foto filmare tripod stand",
+    "diafragmă obiectiv lentilă expunere aperture lens shutter",
+    "bliț blitz lumină fotografie flash speedlight",
+    "claquetă clachetă filmare dublă regie clapperboard film shoot",
+    "proiector film cinema sală projector movie cinema",
+    "peliculă film negativ bandă cadre film strip negative",
+    "lumină de studio softbox reflector ședință foto studio light",
+    "fotografie poză imagine peisaj photo picture image"
+  ]
+}

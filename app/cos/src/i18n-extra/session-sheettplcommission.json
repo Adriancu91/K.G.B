@@ -1,0 +1,29 @@
+{
+  "dict": {
+    "Agentul": "Agent",
+    "Bonus": "Bonus",
+    "Bonus de la realizarea de": "Bonus from an achievement of",
+    "Cât din vânzări merge pe comisioane": "Share of sales paid as commission",
+    "Comisioane": "Commissions",
+    "Comisioane și bonusuri de plată": "Commissions and bonuses to pay",
+    "Comisioanele agenților": "Sales agent commissions",
+    "Comision": "Commission",
+    "Comisionul se plătește de obicei odată cu salariul (Sheets → Stat de plată), ca venit din salarii.": "The commission is usually paid with the salary (Sheets → Payroll), as salary income.",
+    "Procent comision": "Commission rate",
+    "Procent de la ținta atinsă": "Rate once the target is met",
+    "Procent sub țintă": "Rate below target",
+    "Rânduri cu ținta atinsă": "Rows with the target met",
+    "Rânduri sub 80% din țintă": "Rows below 80% of target",
+    "Realizare": "Achievement",
+    "Realizarea medie": "Average achievement",
+    "Regulile comisionului": "Commission rules",
+    "Schimbă procentele și bonusul din „Regulile comisionului”: se recalculează tot tabelul.": "Change the rates and the bonus under “Commission rules”: the whole table is recalculated.",
+    "Ținta lunii": "Monthly target",
+    "Un rând pe agent și lună: scrie vânzările fără TVA și ținta; comisionul și bonusul ies singure.": "One row per agent and month: enter the sales excluding VAT and the target; the commission and the bonus are worked out automatically.",
+    "Vânzări (fără TVA)": "Sales (excl. VAT)",
+    "Vânzări în total": "Total sales",
+    "Vânzările fiecărui agent pe lună față de țintă: ies realizarea, comisionul cu procentul mic sub țintă și cel mare de la ținta atinsă, bonusul peste un prag și totalul de plată; procentele și bonusul se schimbă într-un singur loc, în dreapta.": "Each agent’s monthly sales against the target: you get the achievement, the commission at the lower rate below target and the higher rate once the target is met, a bonus above a threshold and the total to pay; the rates and the bonus are changed in one place, on the right."
+  },
+  "templates": {},
+  "skip": []
+}

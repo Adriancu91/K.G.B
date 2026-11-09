@@ -1,0 +1,10 @@
+{
+  "dict": {
+    "Dreptunghi din stânga sus": "Box from top left",
+    "Dreptunghi din dreapta jos": "Box from bottom right",
+    "Dreptunghi din dreapta sus": "Box from top right",
+    "Dreptunghi din stânga jos": "Box from bottom left"
+  },
+  "templates": {},
+  "skip": []
+}

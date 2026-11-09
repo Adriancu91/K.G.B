@@ -1,0 +1,20 @@
+{
+  "dict": {
+    "Note școlare": "School grades",
+    "Notele pe fiecare materie: media cu două zecimale și rotunjită, media generală și materiile sub 5, în roșu.": "Grades for each subject: the average with two decimals and rounded, the overall average and the subjects below 5, in red."
+  },
+  "templates": {},
+  "skip": [
+    "Chimie",
+    "Educație fizică",
+    "Fizică",
+    "Geografie",
+    "Limba engleză",
+    "Limba și literatura română",
+    "Materia",
+    "Media generală",
+    "Media rotunjită",
+    "Religie",
+    "Scrie notele de la 1 la 10; media generală se face din mediile rotunjite. Rândurile goale de jos sunt pentru alte materii."
+  ]
+}

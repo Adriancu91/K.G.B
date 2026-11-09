@@ -1,0 +1,8 @@
+{
+  "dict": {},
+  "templates": {
+    "Antetul secțiunii {0}": "Section {0} header",
+    "Subsolul secțiunii {0}": "Section {0} footer"
+  },
+  "skip": []
+}

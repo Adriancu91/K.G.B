@@ -1,0 +1,14 @@
+{
+  "dict": {
+    "Clasificare": "Classification",
+    "Clasificarea documentului. Click: o schimbi în Proprietăți": "Document classification. Click to change it in Properties",
+    "Fără clasificare": "No classification",
+    "Confidențial": "Confidential",
+    "Public": "Public",
+    "Strict confidențial": "Highly confidential",
+    "Uz general": "General",
+    "Cât de confidențial e documentul: se vede în bara de jos și se păstrează în .docx / .xlsx": "How confidential the document is: shown in the status bar and kept in the .docx / .xlsx"
+  },
+  "templates": {},
+  "skip": []
+}

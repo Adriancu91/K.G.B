@@ -1,0 +1,12 @@
+{
+ "dict": {
+  "𝐁 Formatare la vedere": "𝐁 Live formatting",
+  "Formatare la vedere: aldinul, cursivul, culorile și titlurile se văd direct în câmpul de scris; semnele lor (**, acoladele) rămân estompate": "Live formatting: bold, italic, colors and headings show right in the writing area; their marks (**, braces) stay faded",
+  "Pozele și desenele se văd în Notițe; aici scrii textul. Ctrl+W închide fereastra.": "Pictures and drawings show in Notes; here you write the text. Ctrl+W closes the window."
+ },
+ "templates": {},
+ "skip": [
+  "Așa scriu cursiv: WMil 0123 ăîșțâ",
+  "@font-face { font-family: \"{0}\"; src: local(\"{1}\"); font-style: normal; font-weight: 400; }"
+ ]
+}

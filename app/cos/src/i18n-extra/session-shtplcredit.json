@@ -1,0 +1,36 @@
+{
+  "dict": {
+    "Calculator de credit": "Loan calculator",
+    "Consum carburant": "Fuel consumption",
+    "Rata lunară pentru rate egale și graficul de rambursare lună de lună: dobânda, cât scade creditul, totalul de plată.": "The monthly payment for equal instalments and the month-by-month repayment schedule: interest, how the loan goes down, the total to pay.",
+    "La fiecare plin: kilometrii și litrii; ies consumul la 100 km, costul total și costul pe kilometru.": "At every fill-up: the odometer and the litres; you get the consumption per 100 km, the total cost and the cost per kilometre.",
+    "Tabele gata făcute: registru de casă, facturi, buget, inventar, deviz, salariu, decont de deplasare, plan de proiect, concedii, credit, consum carburant": "Ready-made tables: cash register, invoices, budget, inventory, estimate, salary, travel expense report, project plan, leave, loan, fuel consumption"
+  },
+  "templates": {},
+  "skip": [
+    "CALCULATOR DE CREDIT (rate egale)",
+    "Carburant",
+    "Cost",
+    "Cost pe km",
+    "Cost total",
+    "Credit",
+    "Data primei rate",
+    "Din care dobândă",
+    "Din credit",
+    "Dobânda",
+    "Dobânda pe an",
+    "Fă de fiecare dată plinul; primul rând e plinul de pornire.",
+    "Km la bord",
+    "Km parcurși",
+    "Litri",
+    "Litri (fără primul plin)",
+    "Numărul de luni",
+    "Preț / litru",
+    "Rămas de plată",
+    "Rata",
+    "Rata lunară",
+    "Schimbi celulele galbene; tabelul se reface singur (ultima rată închide creditul la zero).",
+    "Suma împrumutată",
+    "Total de plată"
+  ]
+}

@@ -1,0 +1,24 @@
+{
+  "dict": {
+    "◇ Izometric: dreapta": "◇ Isometric: Right",
+    "◇ Izometric: stânga": "◇ Isometric: Left",
+    "◇ Izometric: sus": "◇ Isometric: Top",
+    "⧉ Perspectivă: culcată": "⧉ Perspective: Relaxed",
+    "⧉ Perspectivă: dreapta": "⧉ Perspective: Right",
+    "⧉ Perspectivă: jos": "⧉ Perspective: Below",
+    "⧉ Perspectivă: sus": "⧉ Perspective: Above",
+    "⧉ Perspectivă: stânga": "⧉ Perspective: Left",
+    "⬚ Fără rotire 3-D": "⬚ No 3-D Rotation",
+    "Rotirea 3-D a formei: perspectivă sau izometric": "Shape 3-D rotation: perspective or isometric",
+    "Rotirea 3-D a pozei: perspectivă sau izometric": "Picture 3-D rotation: perspective or isometric",
+    "Rotire 3-D": "3-D Rotation",
+    "Culcată pe masă": "Laid on a Table",
+    "Perspectivă dreapta cu umbră": "Perspective Right with Shadow",
+    "Perspectivă stânga cu umbră": "Perspective Left with Shadow",
+    "Reflexie cu colțuri rotunjite": "Reflected Rounded Rectangle",
+    "A Text cu reflexie": "A Reflected Text",
+    "Culoarea temei, cu reflexie": "Theme Color, Reflected"
+  },
+  "templates": {},
+  "skip": []
+}

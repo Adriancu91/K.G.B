@@ -1,0 +1,14 @@
+{
+  "dict": {
+    "Listă cu casete cu săgeată (numărul într-o casetă cu o săgeată spre text, textul într-o bandă alături)": "Arrow callout list (the number in a box with an arrow towards the text, the text in a band beside it)",
+    "Listă cu casete cu săgeată în jos (numărul într-o casetă cu o săgeată în jos, textul într-o bandă alături)": "Down arrow callout list (the number in a box with an arrow pointing down, the text in a band beside it)",
+    "Listă cu casete cu săgeată": "Arrow callout list",
+    "Listă cu casete cu săgeată în jos": "Down arrow callout list",
+    "listă cu casete cu săgeată": "arrow callout list",
+    "listă cu casete cu săgeată în jos": "down arrow callout list",
+    "Puncte una sub alta: numărul într-o casetă cu o săgeată spre text, iar alături textul": "Points one below the other: the number in a box with an arrow towards the text, with the text beside it",
+    "Puncte una sub alta: numărul într-o casetă cu o săgeată în jos, iar alături textul": "Points one below the other: the number in a box with an arrow pointing down, with the text beside it"
+  },
+  "templates": {},
+  "skip": []
+}

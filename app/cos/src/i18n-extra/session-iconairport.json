@@ -1,0 +1,24 @@
+{
+  "dict": {
+    "Aeroport": "Airport",
+    "Turn de control": "Control tower",
+    "Carte de îmbarcare": "Boarding pass",
+    "Pașaport": "Passport",
+    "Bandă de bagaje": "Baggage claim",
+    "Tabelă de plecări": "Departures board",
+    "Poartă de securitate": "Security gate",
+    "Avion la decolare": "Plane taking off",
+    "Pistă de aterizare": "Runway"
+  },
+  "templates": {},
+  "skip": [
+    "turn de control aeroport trafic aerian control tower",
+    "carte de îmbarcare bilet de avion check-in boarding pass ticket",
+    "pașaport acte de călătorie vamă frontieră passport",
+    "bandă de bagaje preluare bagaje sosiri baggage claim",
+    "tabelă de plecări sosiri zboruri orar departures board",
+    "poartă de securitate detector de metale control bagaje airport security",
+    "avion la decolare plecări zbor take-off departures",
+    "pistă de aterizare decolare aerodrom runway airstrip"
+  ]
+}

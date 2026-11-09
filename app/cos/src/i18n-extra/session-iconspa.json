@@ -1,0 +1,24 @@
+{
+  "dict": {
+    "Spa și relaxare": "Spa and relaxation",
+    "Pietre de masaj": "Massage stones",
+    "Halat de baie": "Bathrobe",
+    "Saună": "Sauna",
+    "Ulei esențial": "Essential oil",
+    "Prosoape rulate": "Rolled towels",
+    "Jacuzzi": "Hot tub",
+    "Papuci de casă": "Slippers",
+    "Floare de lotus": "Lotus flower"
+  },
+  "templates": {},
+  "skip": [
+    "pietre de masaj pietre calde relaxare massage stones",
+    "halat de baie prosop hotel spa bathrobe robe",
+    "saună abur găleată de lemn căuș sauna steam",
+    "ulei esențial aromaterapie sticluță parfum de cameră essential oil aromatherapy",
+    "prosoape rulate prosop hotel spa rolled towels",
+    "jacuzzi cadă cu bule apă caldă hot tub whirlpool",
+    "papuci de casă hotel spa slippers",
+    "floare de lotus yoga meditație relaxare lotus flower"
+  ]
+}

@@ -1,0 +1,20 @@
+{
+  "dict": {
+    "Detectează limba textului lipit sau scris: un pasaj lipit sau un paragraf scris (în timp ce scrii) în engleză, franceză, germană… primește limba lui, ca să nu fie subliniat ca greșit": "Detect the language of pasted or typed text: a pasted passage or a typed paragraph (while you type) in English, French, German… gets its own language, so it is not underlined as wrong",
+    "🔀 Combină mai multe .docx…": "🔀 Combine several .docx…",
+    "Alege mai multe .docx corectate de oameni diferiți: modificările tuturor se pun peste documentul de acum, într-un tab nou, fiecare pe numele celui care a lucrat la fișier, de acceptat sau respins una câte una": "Pick several .docx files reviewed by different people: all their changes are placed over the current document, in a new tab, each under the name of the person who worked on the file, to accept or reject one by one",
+    "Se citesc fișierele .docx…": "Reading the .docx files…",
+    "Foile de calcul din notiță: un tabel e adus la zi din fișier.": "Spreadsheets in the note: one table was updated from its file.",
+    "Olandeză": "Dutch",
+    "Poloneză": "Polish",
+    "Portugheză": "Portuguese"
+  },
+  "templates": {
+    "Prea mari ca să fie comparate: {0}": "Too large to compare: {0}",
+    "Foile de calcul din notiță: {0} tabele sunt aduse la zi din fișier.": "Spreadsheets in the note: {0} tables were updated from their files."
+  },
+  "skip": [
+    "não é são uma um com os as do da dos das no na nos nas pelo pela mas também ainda muito estão foi ter tem isso você ele ela eles elas seu sua mais quando onde porque já sobre entre até pelos pelas",
+    "w z na się nie że jest są od jak ale tak dla przez przy jego jej ich być było był może tylko już bardzo który która które oraz czy także został jako jednak"
+  ]
+}

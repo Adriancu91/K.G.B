@@ -1,0 +1,21 @@
+{
+  "dict": {
+    "Citiri contoare": "Meter readings",
+    "Curent, gaz și apă: indexul lunar de pe fiecare contor; ies consumul pe lună, costul estimat cu prețurile tale și lunile mult peste medie, în roșu.": "Electricity, gas and water: the monthly reading of each meter; you get the monthly consumption, the estimated cost at your prices and the months well above average, in red."
+  },
+  "templates": {},
+  "skip": [
+    "Apă (m³)",
+    "Apă consumată (m³)",
+    "Apă și canal (lei / m³)",
+    "Contoare",
+    "Cost estimat",
+    "Cost mediu pe lună",
+    "Index apă",
+    "Index curent",
+    "Index gaz",
+    "Lunile cu costul cu peste 20% mai mare decât media ies în roșu. Prețurile din celulele galbene le iei de pe factură.",
+    "Prețuri pe unitate (lei, cu TVA)",
+    "Scrie o dată pe lună indexul de pe fiecare contor; consumul e diferența față de luna trecută."
+  ]
+}

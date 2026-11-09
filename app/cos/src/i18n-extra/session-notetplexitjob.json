@@ -1,0 +1,10 @@
+{
+  "dict": {
+    "🚪 Plecarea unui angajat": "🚪 Employee leaving"
+  },
+  "templates": {},
+  "skip": [
+    "Plecarea unui angajat {0}",
+    "Numele: \nPostul: \nUltima zi lucrată: \nCum încetează: (acordul părților / demisie / altul)\n\nActele:\n☐ actul de încetare semnat (Docs → Acord de încetare a contractului de muncă)\n☐ încetarea trecută în REVISAL, la timp\n☐ concediul de odihnă rămas socotit (plătit sau efectuat)\n☐ lichidarea calculată și plătită\n☐ adeverința de vechime eliberată\n\nPredarea:\n☐ laptopul, telefonul și încărcătoarele predate\n☐ cheile, ecusonul și cardul de acces predate\n☐ lucrările în curs predate colegului care preia\n☐ proces-verbal de predare-primire semnat\n\nAccesul:\n☐ contul de e-mail închis (cu răspuns automat și redirecționare)\n☐ parolele comune schimbate\n☐ accesul la programe, bancă și SPV oprit\n\nLa sfârșit:\n☐ discuția de plecare (ce a mers bine, ce putem schimba)\n☐ clienții și furnizorii anunțați de noul om de contact\n\nNote: "
+  ]
+}

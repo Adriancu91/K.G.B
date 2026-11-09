@@ -1,0 +1,40 @@
+{
+  "dict": {
+    "◎ Zonă de focalizare…": "◎ Focus Area…",
+    "Interval de focalizare": "In-focus range",
+    "Intervalul de focalizare": "In-focus range",
+    "Mai mare: granulația fină a fundalului nu mai e luată drept detaliu": "Higher: fine grain in the background is no longer taken for detail",
+    "Mai mare: se selectează și locuri mai puțin clare": "Higher: less sharp areas are selected too",
+    "Margini moi": "Soften edge",
+    "N-am găsit nicio parte clară în poză: mărește intervalul de focalizare sau scade zgomotul.": "No sharp area was found in the image: increase the in-focus range or lower the noise level.",
+    "Se selectează partea clară a pozei. Albul din previzualizare se selectează, negrul nu.": "The sharp part of the image is selected. White in the preview is selected, black is not.",
+    "Selectează singur partea clară a pozei (subiectul pe care s-a focalizat), fără fundalul încețoșat (Focus Area)": "Automatically selects the sharp part of the image (the subject in focus), leaving out the blurred background",
+    "Selectează singur partea clară a pozei, fără fundalul încețoșat (Focus Area)": "Automatically selects the sharp part of the image, leaving out the blurred background",
+    "Zgomot în poză": "Image noise level",
+    "Zgomotul din poză": "Image noise level",
+    "Zonă de focalizare": "Focus Area",
+    "Zonă de focalizare…": "Focus Area…",
+    "Cât de opac e pixelul (0 = transparent, 100 = opac)": "How opaque the pixel is (0 = transparent, 100 = opaque)",
+    "Culoarea în cod hexazecimal": "The color as a hex code",
+    "Culoarea pixelului de sub mouse (roșu, verde, albastru), așa cum se vede": "The color of the pixel under the mouse (red, green, blue), as shown",
+    "Mărimea selecției (dreptunghiul care o cuprinde), în pixeli": "Selection size (its bounding rectangle), in pixels",
+    "Poziția mouse-ului pe poză, în pixeli (de la colțul din stânga sus)": "Mouse position on the image, in pixels (from the top left corner)",
+    "Estompat": "Faded",
+    "Vechi": "Vintage",
+    "Dramatic": "Dramatic",
+    "Luminos": "Bright",
+    "💾 Salvează presetarea": "💾 Save preset",
+    "Numele presetării": "Preset name",
+    "Păstrează reglajele de acum ca presetare, ca să le pui pe altă poză dintr-un clic (rămâne pe calculator)": "Keeps the current settings as a preset, so you can apply them to another image in one click (stored on this computer)",
+    "Presetările mele": "My presets",
+    "Foarte gros": "Extra bold",
+    "Mărimea literelor, în pixelii pozei (orice mărime, nu doar S / M / L / XL)": "Letter size, in image pixels (any size, not just S / M / L / XL)",
+    "Mărimea textului în pixeli": "Text size in pixels",
+    "Aldin: litere mai groase": "Bold: thicker letters",
+    "Cursiv: litere aplecate": "Italic: slanted letters"
+  },
+  "templates": {
+    "Presetarea mea {0}": "My preset {0}"
+  },
+  "skip": []
+}

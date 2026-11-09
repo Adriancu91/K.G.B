@@ -1,0 +1,14 @@
+{
+  "dict": {
+    "Listă cu heptagoane (numărul pe un heptagon, cu 7 colțuri, textul într-o bandă alături)": "Heptagon list (the number on a heptagon, with 7 corners, the text in a band beside it)",
+    "Listă cu paralelograme (numărul pe un paralelogram înclinat spre dreapta, textul într-o bandă alături)": "Parallelogram list (the number on a parallelogram slanted to the right, the text in a band beside it)",
+    "Listă cu heptagoane": "Heptagon list",
+    "Listă cu paralelograme": "Parallelogram list",
+    "listă cu heptagoane": "heptagon list",
+    "listă cu paralelograme": "parallelogram list",
+    "Puncte una sub alta: numărul pe un heptagon (7 colțuri), iar alături textul": "Points one under another: the number on a heptagon (7 corners), with the text beside it",
+    "Puncte una sub alta: numărul pe un paralelogram înclinat, iar alături textul (pași care merg înainte)": "Points one under another: the number on a slanted parallelogram, with the text beside it (steps moving forward)"
+  },
+  "templates": {},
+  "skip": []
+}

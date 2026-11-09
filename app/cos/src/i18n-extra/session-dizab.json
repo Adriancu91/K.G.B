@@ -1,0 +1,40 @@
+{
+ "dict": {
+  "Achiziții de la unități protejate": "Purchases from sheltered units",
+  "Acoperit prin achiziții": "Covered by purchases",
+  "Contribuția": "Contribution",
+  "Contribuția pentru persoanele cu dizabilități": "Contribution for persons with disabilities",
+  "Cu termenul depășit": "Past the deadline",
+  "De la câți salariați se aplică": "Applies from this many employees",
+  "De plată încă": "Still to pay",
+  "Din salariul minim, pe loc neocupat": "Of the minimum wage, per unfilled post",
+  "Firmele cu cel puțin 50 de salariați trebuie să aibă angajate persoane cu dizabilități în cel puțin 4% din numărul mediu de salariați; altfel plătesc lunar, pentru fiecare loc neocupat, 50% din salariul minim brut.": "Companies with at least 50 employees must employ persons with disabilities in at least 4% of the average number of employees; otherwise they pay monthly, for each unfilled post, 50% of the gross minimum wage.",
+  "Locuri neocupate": "Unfilled posts",
+  "Locuri obligatorii": "Required posts",
+  "Locuri ocupate": "Posts filled",
+  "Locurile obligatorii sunt luate aici ca partea întreagă din 4% (rotunjire în jos). Achizițiile de produse sau servicii de la unitățile protejate autorizate se scad din suma datorată.": "The required posts are taken here as the whole part of 4% (rounded down). Purchases of goods or services from authorised sheltered units are deducted from the amount owed.",
+  "Nu e cazul": "Not applicable",
+  "Număr mediu de salariați": "Average number of employees",
+  "Pentru firmele cu cel puțin 50 de salariați, lună de lună: din numărul mediu de salariați ies locurile obligatorii (4%), cele neocupate și suma datorată (50% din salariul minim pe loc), din care se scad achizițiile de la unitățile protejate; starea: nu e cazul, locuri ocupate, acoperit sau plătit (în verde), de plată (în galben), termen depășit (în roșu).": "For companies with at least 50 employees, month by month: from the average number of employees come the required posts (4%), the unfilled ones and the amount owed (50% of the minimum wage per post), minus the purchases from sheltered units; the status: not applicable, posts filled, covered or paid (in green), to pay (in yellow), deadline passed (in red).",
+  "Persoane cu dizabilități angajate": "Employees with disabilities",
+  "Procentul de locuri obligatorii": "Share of required posts",
+  "Salariul minim brut": "Gross minimum wage",
+  "Suma datorată": "Amount owed",
+  "Suma datorată în total": "Total amount owed",
+  "Suma se declară și se plătește până pe 25 ale lunii următoare. Pragul, procentele și felul rotunjirii se schimbă prin lege: verificați-le cu contabilul.": "The amount is declared and paid by the 25th of the following month. The threshold, the percentages and the rounding change by law: check them with your accountant.",
+  "Termenul de plată": "Payment deadline",
+  "Luna:\nNumărul mediu de salariați:\n\nVerificat:\n☐ numărul mediu de salariați al lunii luat de la contabil sau din pontaj\n☐ persoanele cu dizabilități angajate, cu certificatul valabil la dosar\n☐ locurile obligatorii și cele neocupate calculate (Sheets → Contribuția pentru persoanele cu dizabilități)\n\nDacă sunt locuri neocupate:\n☐ achizițiile de la unitățile protejate autorizate, cu facturile și autorizația unității\n☐ suma rămasă de plată, după achiziții\n\nPentru contabil:\n☐ suma trecută în declarația lunară, până pe 25 ale lunii următoare\n☐ plata făcută și „Plătit” pus pe „Da” în tabel\n☐ un post nou pentru o persoană cu dizabilități de anunțat, dacă e cazul (Notițe → Angajat nou)\n\nObservații:\n• ": "Month:\nAverage number of employees:\n\nChecked:\n☐ the average number of employees for the month taken from the accountant or the timesheet\n☐ the employees with disabilities, with a valid certificate on file\n☐ the required and unfilled posts worked out (Sheets → Contribution for persons with disabilities)\n\nIf there are unfilled posts:\n☐ the purchases from authorised sheltered units, with the invoices and the unit's authorisation\n☐ the amount left to pay, after the purchases\n\nFor the accountant:\n☐ the amount entered in the monthly return, by the 25th of the following month\n☐ the payment made and “Paid” set to “Yes” in the table\n☐ a new post for a person with disabilities to advertise, if needed (Notes → New employee)\n\nRemarks:\n• ",
+  "♿ Contribuția pentru persoanele cu dizabilități": "♿ Contribution for persons with disabilities",
+  "Contract de parteneriat cu o unitate protejată": "Partnership contract with a sheltered unit",
+  "Contractul firmei cu o unitate protejată autorizată, din care cumpără produse sau servicii făcute de persoane cu dizabilități în locul contribuției lunare pentru locurile neocupate: părțile, autorizația unității, ce se cumpără, valoarea pe lună, facturarea și plata, durata și semnăturile": "The company's contract with an authorised sheltered unit, from which it buys goods or services made by persons with disabilities instead of the monthly contribution for the unfilled posts: the parties, the unit's authorisation, what is bought, the monthly value, invoicing and payment, the term and the signatures"
+ },
+ "templates": {
+  "Contribuția pentru persoanele cu dizabilități {0}": "Contribution for persons with disabilities {0}"
+ },
+ "skip": [
+  "=IF({0};\"\";IF(N(B{1})<$O$2;\"Nu e cazul\";IF(G{2}=0;\"Locuri ocupate\";IF(I{3}=0;\"Acoperit prin achiziții\";IF(K{4}=\"Da\";\"Plătit\";IF(TODAY()>J{5};\"Termen depășit\";\"De plată\"))))))",
+  "=SUMIF(L2:L{0};\"De plată\";I2:I{1})+SUMIF(L2:L{2};\"Termen depășit\";I2:I{3})",
+  "=SUMIF(L2:L{0};\"Plătit\";I2:I{1})",
+  "=SUMIF(L2:L{0};\"Termen depășit\";I2:I{1})"
+ ]
+}

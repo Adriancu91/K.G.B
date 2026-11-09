@@ -1,0 +1,24 @@
+{
+ "dict": {
+  "Butoane de opțiune": "Option Buttons",
+  "Butoane de opțiune (○ ◉, toate la vedere)": "Option buttons (○ ◉, all visible)",
+  "Butoane de opțiune / listă combo": "Option buttons / combo box",
+  "Butoane de opțiune puse: clic pe o variantă": "Option buttons added: click a choice",
+  "Butoane de opțiune sau listă combo în celulele alese: alegi o variantă dintr-o listă, iar în celulă se scrie numărul ei (1, 2, …), ca să-l folosești în formule, de exemplu cu ALEGE sau INDEX": "Option buttons or a combo box in the selected cells: you pick a choice from a list and the cell gets its number (1, 2, …), so you can use it in formulas, for example with CHOOSE or INDEX",
+  "Celula arată rezultatul unei formule; variantele schimbă doar numere scrise": "The cell shows the result of a formula; the choices only change typed numbers",
+  "În celulă se scrie numărul variantei alese (1 pentru prima, 2 pentru a doua…), ca să-l folosești în formule.": "The cell gets the number of the chosen item (1 for the first, 2 for the second…), so you can use it in formulas.",
+  "Listă combo": "Combo Box",
+  "Listă combo (derulantă)": "Combo box (drop-down)",
+  "Listă combo pusă: alege din listă": "Combo box added: pick from the list",
+  "Mic; Mediu; Mare  sau  A1:A5": "Small; Medium; Large  or  A1:A5",
+  "Scrie cel puțin două variante, despărțite prin „;” (sau o zonă, de exemplu A1:A5).": "Type at least two choices, separated by \";\" (or a range, for example A1:A5).",
+  "Variantele au fost scoase (numerele rămân)": "The choices were removed (the numbers stay)",
+  "Variante": "Choices",
+  "variante:": "choices:"
+ },
+ "templates": {
+  "{0} (sau Alt+↑ / Alt+↓); în celulă se scrie numărul variantei alese, de la 1 la {1}": "{0} (or Alt+↑ / Alt+↓); the cell gets the number of the chosen item, from 1 to {1}",
+  "Cel mult {0} de variante.": "At most {0} choices."
+ },
+ "skip": []
+}

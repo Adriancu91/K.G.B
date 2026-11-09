@@ -1,0 +1,32 @@
+{
+  "dict": {
+    "🧯 Exercițiul de evacuare": "🧯 Evacuation drill",
+    "Clădirea / punctul de lucru:\nCine a condus exercițiul:\nOra alarmei:\nOra la care ultimul om a ajuns la punctul de adunare:\n\nÎnainte:\n☐ oamenii anunțați (sau nu, dacă exercițiul e neanunțat) și cei care conduc evacuarea pe fiecare etaj numiți\n☐ căile de evacuare și ieșirile de urgență libere, cu indicatoarele la vedere\n☐ stingătoarele la locul lor și verificate (Sheets → Evidența stingătoarelor, nimic în roșu)\n☐ planul de evacuare afișat, cu punctul de adunare marcat\n\nÎn timpul exercițiului:\n☐ alarma s-a auzit în toate încăperile\n☐ toți au ieșit pe traseul din plan, fără lift\n☐ la punctul de adunare s-a făcut prezența, după lista oamenilor de azi (și a vizitatorilor)\n☐ cei care au nevoie de ajutor (persoane cu dizabilități, vizitatori) au fost însoțiți\n\nDupă:\n☐ procesul-verbal al exercițiului scris și semnat\n\nCât a durat evacuarea:\nOameni evacuați:\nCe n-a mers (ușă blocată, alarmă care nu s-a auzit, cine a întârziat):\n•\n\nDe făcut până la exercițiul următor:\n• ": "Building / site:\nDrill led by:\nAlarm time:\nTime the last person reached the assembly point:\n\nBefore:\n☐ people informed (or not, if the drill is unannounced) and the evacuation leaders for each floor named\n☐ escape routes and emergency exits clear, with the signs visible\n☐ fire extinguishers in place and checked (Sheets → Fire extinguisher register, nothing in red)\n☐ evacuation plan on display, with the assembly point marked\n\nDuring the drill:\n☐ the alarm could be heard in every room\n☐ everyone left by the route in the plan, without the lift\n☐ a roll call was taken at the assembly point, from today's list of people (and visitors)\n☐ those who need help (people with disabilities, visitors) were accompanied\n\nAfter:\n☐ the drill report written and signed\n\nHow long the evacuation took:\nPeople evacuated:\nWhat went wrong (blocked door, alarm not heard, who was late):\n•\n\nTo do before the next drill:\n• ",
+    "Anul fabricației": "Year of manufacture",
+    "Apă 6 l": "Water 6 l",
+    "Câte luni trec între verificări scrie firma autorizată care le verifică; schimbă 12 din N2 dacă e altfel.": "How many months pass between checks is set by the authorised company that checks them; change the 12 in N2 if it is different.",
+    "Cea mai apropiată verificare": "Nearest check",
+    "Defect": "Faulty",
+    "Defecte": "Faulty",
+    "Evidența stingătoarelor": "Fire extinguisher register",
+    "Fără verificare": "Not checked",
+    "Locul (etaj, încăperea)": "Location (floor, room)",
+    "Pe planul de evacuare: Docs → Inserare → ☺ Pictograme → Protecția muncii (stingătorul) și Pompieri și urgențe.": "On the evacuation plan: Docs → Insert → ☺ Icons → Workplace safety (the extinguisher) and Fire and emergency.",
+    "Pentru firme, magazine, școli și asociații de proprietari: fiecare stingător cu seria, tipul, locul, anul fabricației și data ultimei verificări; ies verificarea următoare (după câte luni scrii, de obicei 12), zilele rămase și starea: expirat sau defect (în roșu), în 30 de zile (în galben), la zi (în verde), fără verificare sau scos din uz; în dreapta câte sunt de verificat și cea mai apropiată verificare, cu locul stingătorului.": "For companies, shops, schools and residents' associations: each fire extinguisher with its serial number, type, location, year of manufacture and the date of the last check; you get the next check (after the number of months you set, usually 12), the days left and the status: overdue or faulty (in red), within 30 days (in yellow), up to date (in green), not checked or out of service; on the right how many need checking and the nearest check, with the extinguisher's location.",
+    "Presiune și sigiliu în regulă": "Pressure and seal OK",
+    "Spumă 6 l": "Foam 6 l",
+    "Stingătoare": "Extinguishers",
+    "Stingătoare în uz": "Extinguishers in use",
+    "Stingătorul": "Extinguisher",
+    "Un stingător descărcat, cu sigiliul rupt sau cu acul presiunii în afara zonei verzi: Presiune și sigiliu = Nu (iese Defect).": "An extinguisher that is discharged, has a broken seal or a pressure needle outside the green zone: Pressure and seal = No (shows Faulty).",
+    "Verificare la (luni)": "Check every (months)",
+    "Verificarea următoare": "Next check"
+  },
+  "templates": {
+    "Exercițiu de evacuare {0}": "Evacuation drill {0}"
+  },
+  "skip": [
+    "=COUNTIF(K2:K{0};\"Fără verificare\")",
+    "=IF(B{0}=\"\";\"\";IF(J{1}=\"Da\";\"Scos din uz\";IF(I{2}=\"Nu\";\"Defect\";IF(F{3}=\"\";\"Fără verificare\";IF(G{4}<TODAY();\"Expirat\";IF(G{5}-TODAY()<=30;\"În 30 de zile\";\"La zi\"))))))"
+  ]
+}

@@ -1,0 +1,26 @@
+{
+  "dict": {
+    "„Ar trebui să fie” = cât din timp a trecut între început și termen; un obiectiv rămas în urmă cu peste 10% iese în galben.": "“Should be at” = how much of the time between the start and the deadline has passed; a goal more than 10% behind turns yellow.",
+    "Actualizează coloana „Realizat acum” o dată pe lună, înainte de ședință.": "Update the “Achieved so far” column once a month, before the meeting.",
+    "Ar trebui să fie": "Should be at",
+    "Atins": "Achieved",
+    "Atinse": "Achieved",
+    "Fără date încă": "No data yet",
+    "În urmă": "Behind",
+    "Întârziate (termenul a trecut)": "Overdue (deadline passed)",
+    "Obiectivele anului cu pornirea, ținta și cât s-a realizat: ies progresul (merge și când ținta e mai mică, la costuri), cât ar trebui să fie după timpul trecut și starea: atins (în verde), în urmă (în galben), întârziat (în roșu); în dreapta progresul mediu.": "The goals for the year with the starting point, the target and what has been achieved: you get the progress (it also works when the target is lower, for costs), where it should be given the time elapsed and the status: achieved (in green), behind (in yellow), overdue (in red); on the right the average progress.",
+    "Pe drum": "On track",
+    "Progresul = cât s-a făcut din drumul de la pornire până la țintă; merge și când ținta e mai mică (costuri, reclamații).": "Progress = how much of the way from the starting point to the target has been covered; it also works when the target is lower (costs, complaints).",
+    "Progresul mediu": "Average progress",
+    "Realizat acum": "Achieved so far",
+    "Urmărirea obiectivelor": "Goal tracking"
+  },
+  "templates": {},
+  "skip": [
+    "=COUNTIF(L2:L{0};\"Fără date\")",
+    "=COUNTIF(L2:L{0};\"În urmă\")",
+    "=COUNTIF(L2:L{0};\"Întârziat\")",
+    "=COUNTIF(L2:L{0};\"Pe drum\")",
+    "=IF(B{0}=\"\";\"\";IF(G{1}=\"\";\"Fără date\";IF(G{2}>=1;\"Atins\";IF(AND(J{3}<>\"\";J{4}<TODAY());\"Întârziat\";IF(AND(K{5}<>\"\";K{6}-G{7}>1/10);\"În urmă\";\"Pe drum\")))))"
+  ]
+}

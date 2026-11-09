@@ -1,0 +1,26 @@
+{
+  "dict": {
+    "◐ Selectează și maschează…": "◐ Select and Mask…",
+    "Rafinezi selecția cu previzualizare: netezire, estompare, marginea mutată; iese ca selecție sau mască": "Refine the selection with a preview: smooth, feather, shift edge; output as a selection or a mask",
+    "Selectează și maschează": "Select and Mask",
+    "Selectează și maschează: rafinezi selecția într-o fereastră cu previzualizare (pe roșu, negru, alb sau alb-negru), cu netezire, estompare și marginea mutată; iese ca selecție sau ca mască": "Select and Mask: refine the selection in a window with a preview (on red, black, white or black and white), with smoothing, feathering and a shifted edge; output as a selection or a mask",
+    "◐ Selectează și maschează": "◐ Select and Mask",
+    "Ce nu e selectat se vede acoperit cu roșu": "What isn't selected is shown covered in red",
+    "Ce se face cu selecția rafinată": "What to do with the refined selection",
+    "Cu plus selecția crește, cu minus se micșorează (de exemplu ca să scapi de marginea fundalului rămasă pe obiect)": "With plus the selection grows, with minus it shrinks (for example to get rid of background fringe left on the object)",
+    "Cum se vede": "View",
+    "Doar ce e selectat, pe fond alb": "Only what's selected, on a white background",
+    "Doar ce e selectat, pe fond negru": "Only what's selected, on a black background",
+    "Marginea selecției se topește treptat în restul pozei": "The selection edge fades gradually into the rest of the picture",
+    "Mască pe stratul ales": "Mask on the selected layer",
+    "Mută marginea": "Shift Edge",
+    "Nu mai rămâne nimic selectat: micșorează „Mută marginea”.": "Nothing is left selected: reduce “Shift Edge”.",
+    "Pe alb": "On White",
+    "Pe negru": "On Black",
+    "Rotunjește colțurile și scoate zimții și găurile mici din selecție": "Rounds the corners and removes jagged edges and small holes from the selection",
+    "Selecția ca mască: alb = selectat, negru = neselectat": "The selection as a mask: white = selected, black = not selected",
+    "Suprapunere": "Overlay"
+  },
+  "templates": {},
+  "skip": []
+}

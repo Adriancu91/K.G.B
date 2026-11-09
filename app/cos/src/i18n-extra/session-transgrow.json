@@ -1,0 +1,10 @@
+{
+  "dict": {
+    "Creștere din stânga sus": "Grow from top left",
+    "Creștere din dreapta sus": "Grow from top right",
+    "Creștere din stânga jos": "Grow from bottom left",
+    "Creștere din dreapta jos": "Grow from bottom right"
+  },
+  "templates": {},
+  "skip": []
+}

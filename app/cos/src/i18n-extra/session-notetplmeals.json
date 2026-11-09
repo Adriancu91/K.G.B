@@ -1,0 +1,10 @@
+{
+  "dict": {
+    "🍽 Plan de mese": "🍽 Meal plan"
+  },
+  "templates": {},
+  "skip": [
+    "Săptămâna: \nCâte persoane: \n\nLuni:\n• prânz: \n• cină: \n\nMarți:\n• prânz: \n• cină: \n\nMiercuri:\n• prânz: \n• cină: \n\nJoi:\n• prânz: \n• cină: \n\nVineri:\n• prânz: \n• cină: \n\nSâmbătă:\n• prânz: \n• cină: \n\nDuminică:\n• prânz: \n• cină: \n\nDe cumpărat pentru toată săptămâna:\n☐ \n☐ \n☐ \n☐ \n\nDe pregătit dinainte (duminică seara):\n☐ \n",
+    "Mese {0}"
+  ]
+}

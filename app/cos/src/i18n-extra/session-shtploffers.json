@@ -1,0 +1,23 @@
+{
+  "dict": {
+    "Aceleași produse sau servicii cerute la trei furnizori: pe fiecare rând iese cel mai mic preț (în verde) și cine îl dă; jos totalul fiecărei oferte, prețurile lipsă și condițiile (livrare, plată, garanție), în dreapta cea mai mică ofertă completă.": "The same products or services asked from three suppliers: each row shows the lowest price (in green) and who gives it; below, the total of each offer, the missing prices and the terms (delivery, payment, warranty), on the right the lowest complete offer.",
+    "Cea mai mică ofertă completă": "Lowest complete offer",
+    "Cel mai ieftin la": "Cheapest at",
+    "Cel mai mic preț": "Lowest price",
+    "Cel mai mic preț de pe fiecare rând iese în verde; o ofertă cu prețuri lipsă nu intră la „completă”.": "The lowest price on each row is shown in green; an offer with missing prices does not count as complete.",
+    "Compararea ofertelor": "Offer comparison",
+    "Economia față de oferta completă": "Saving compared to the complete offer",
+    "Garanția (luni)": "Warranty (months)",
+    "Luând fiecare produs de la cel mai ieftin": "Buying each product from the cheapest",
+    "Oferte": "Offers",
+    "Plata la (zile de la factură)": "Payment in (days from invoice)",
+    "Prețuri lipsă": "Missing prices",
+    "Produse cerute": "Products requested",
+    "Scrie numele furnizorilor în E1, F1 și G1, apoi prețul pe unitate, fără TVA.": "Write the supplier names in E1, F1 and G1, then the unit price, without VAT.",
+    "Termen de livrare (zile)": "Delivery time (days)",
+    "Total ofertă (fără TVA)": "Offer total (without VAT)",
+    "Valoare la cel mai mic preț": "Value at the lowest price"
+  },
+  "templates": {},
+  "skip": []
+}

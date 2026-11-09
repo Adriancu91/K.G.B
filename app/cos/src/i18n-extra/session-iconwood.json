@@ -1,0 +1,24 @@
+{
+  "dict": {
+    "Tâmplărie": "Woodworking",
+    "Rindea": "Hand plane",
+    "Daltă": "Chisel",
+    "Menghină": "Bench vise",
+    "Bormașină": "Power drill",
+    "Bloc de șlefuit": "Sanding block",
+    "Cuie": "Nails",
+    "Scânduri": "Wood planks",
+    "Clemă de strângere": "Bar clamp"
+  },
+  "templates": {},
+  "skip": [
+    "rindea geluire lemn tâmplar dulgher hand plane woodworking",
+    "daltă dăltuire lemn tâmplar sculptură wood chisel",
+    "menghină strângere banc de lucru atelier bench vise",
+    "bormașină mașină de găurit înșurubat acumulator burghiu power drill cordless",
+    "bloc de șlefuit șmirghel glaspapir șlefuire finisaj sanding block sandpaper",
+    "cuie cui bătut fixare tâmplar nails",
+    "scânduri cherestea lemn de construcție depozit wood planks lumber timber",
+    "clemă de strângere sergent tâmplar lipire presare f-clamp bar clamp"
+  ]
+}

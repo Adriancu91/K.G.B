@@ -1,0 +1,24 @@
+{
+  "dict": {
+    "Gelaterie": "Ice cream parlour",
+    "Cornet de înghețată": "Ice cream cone",
+    "Cupă de înghețată": "Ice cream sundae",
+    "Înghețată pe băț": "Ice lolly",
+    "Lingură de înghețată": "Ice cream scoop",
+    "Vitrină de înghețată": "Gelato display case",
+    "Milkshake": "Milkshake",
+    "Vafă": "Waffle",
+    "Cărucior de înghețată": "Ice cream cart"
+  },
+  "templates": {},
+  "skip": [
+    "cornet de înghețată glob vanilie ciocolată vară ice cream cone",
+    "cupă de înghețată desert globuri frișcă sundae ice cream cup",
+    "înghețată pe băț eschimo glazură ciocolată popsicle ice lolly",
+    "lingură de înghețată porționare glob scoop ice cream scoop",
+    "vitrină de înghețată frigorifică tăvi sortimente gelato display case",
+    "milkshake shake lapte frișcă pai pahar desert băutură rece",
+    "vafă vafa gofră desert belgian waffle",
+    "cărucior de înghețată vânzător stradal parc umbrelă ice cream cart vendor"
+  ]
+}

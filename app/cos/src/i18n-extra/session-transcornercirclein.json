@@ -1,0 +1,9 @@
+{
+  "dict": {
+    "Cerc spre dreapta sus": "Circle to top right",
+    "Cerc spre stânga jos": "Circle to bottom left",
+    "Cerc spre dreapta jos": "Circle to bottom right"
+  },
+  "templates": {},
+  "skip": []
+}

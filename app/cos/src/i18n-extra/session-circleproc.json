@@ -1,0 +1,12 @@
+{
+  "dict": {
+    "Proces cu cercuri": "Basic Circle Process",
+    "Pași în cercuri la fel de mari, cu o săgeată între ei (pe slide-urile verticale, de sus în jos)": "Steps in circles of the same size, with an arrow between them (top to bottom on portrait slides)",
+    "Proces cu cercuri (pași în cercuri, cu săgeți între ei)": "Circle process (steps in circles, with arrows between them)",
+    "Listă cu etape": "Vertical Chevron List",
+    "Etape una sub alta: numărul într-o săgeată, iar alături etapa": "Stages one below the other: the number in an arrow, with the stage beside it",
+    "Listă cu etape (numărul într-o săgeată, textul lângă ea)": "Chevron list (the number in an arrow, the text beside it)"
+  },
+  "templates": {},
+  "skip": []
+}

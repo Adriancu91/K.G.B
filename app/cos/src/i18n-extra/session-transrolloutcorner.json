@@ -1,0 +1,10 @@
+{
+ "dict": {
+  "Rostogolire spre stânga sus": "Roll out to top left",
+  "Rostogolire spre dreapta sus": "Roll out to top right",
+  "Rostogolire spre stânga jos": "Roll out to bottom left",
+  "Rostogolire spre dreapta jos": "Roll out to bottom right"
+ },
+ "templates": {},
+ "skip": []
+}

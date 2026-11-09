@@ -1,0 +1,34 @@
+{
+ "dict": {
+  "🧾 Închiderea zilei la casa de marcat": "🧾 Closing the day at the fiscal till",
+  "Diferența la plăți": "Payment difference",
+  "Diferență la plăți": "Payment difference",
+  "Diferența la plăți trebuie să fie 0: vânzările zilei sunt egale cu numerarul plus cardul. Dacă primești și tichete sau vouchere, trece-le la card sau adaugă o coloană.": "The payment difference must be 0: the day's sales equal cash plus card. If you also accept meal tickets or vouchers, add them to card or add a column.",
+  "În regulă": "OK",
+  "Încasat card": "Collected by card",
+  "Încasat numerar": "Collected in cash",
+  "Numerar nepredat": "Cash not handed over",
+  "Numerar predat": "Cash handed over",
+  "Numerarul predat în casierie se trece și în Sheets → Registru de casă; cel depus la bancă apare în extrasul de cont.": "Cash handed over to the cash desk is also entered in Sheets → Cash register; cash deposited at the bank shows up in the bank statement.",
+  "Predat altă sumă": "Different amount handed over",
+  "Rapoartele Z ale casei de marcat": "Fiscal till Z reports",
+  "Raportul Z de la închiderea fiecărei zile: vânzările pe cote de TVA, plățile cu numerar și card și numerarul predat; ies totalul zilei, TVA-ul pe cote și starea: în regulă (în verde), numerar nepredat (în galben), diferență între vânzări și plăți sau numerar predat greșit (în roșu), cu totalurile lunii în dreapta.": "The Z report from closing each day: sales by VAT rate, cash and card payments and the cash handed over; you get the day's total, VAT by rate and the status: OK (green), cash not handed over (yellow), difference between sales and payments or wrong cash handed over (red), with the month's totals on the right.",
+  "Sumele le iei din raportul Z scos la închiderea zilei: totalul pe fiecare cotă de TVA și plățile cu numerar și card.": "Take the amounts from the Z report printed at the end of the day: the total for each VAT rate and the cash and card payments.",
+  "Total vânzări": "Total sales",
+  "Vânzări cota 11% (cu TVA)": "Sales at 11% VAT (with VAT)",
+  "Vânzări cota 21% (cu TVA)": "Sales at 21% VAT (with VAT)",
+  "Vânzări fără TVA (0%)": "Sales without VAT (0%)",
+  "Zile cu diferențe": "Days with differences",
+  "Zile cu raport Z": "Days with a Z report",
+  "Casa de marcat:\nCasierul:\n\nLa închidere:\n☐ raportul Z scos și păstrat (nr. raportului: )\n☐ numerarul din sertar numărat și egal cu numerarul din raportul Z\n☐ plățile cu cardul egale cu raportul de la terminalul POS (închiderea lotului)\n☐ vânzările zilei și plățile trecute în tabel (Sheets → Rapoartele Z ale casei de marcat)\n\nBanii:\n☐ numerarul predat în casierie, cu dispoziție de încasare, sau depus la bancă\n☐ suma trecută în registrul de casă (Sheets → Registru de casă)\n☐ fondul de rest lăsat în sertar pentru ziua următoare: lei\n\nDacă ceva nu se potrivește:\n☐ diferența anunțată administratorului și trecută în proces-verbal (Docs → Proces-verbal de constatare a diferenței de casă)\n\nObservații:\n• ": "Fiscal till:\nCashier:\n\nAt closing:\n☐ Z report printed and kept (report no.: )\n☐ cash in the drawer counted and equal to the cash in the Z report\n☐ card payments equal to the report from the POS terminal (batch closing)\n☐ the day's sales and payments entered in the table (Sheets → Fiscal till Z reports)\n\nThe money:\n☐ cash handed over to the cash desk, with a receipt order, or deposited at the bank\n☐ amount entered in the cash book (Sheets → Cash register)\n☐ change float left in the drawer for the next day: lei\n\nIf something does not match:\n☐ difference reported to the administrator and entered in a report (Docs → Cash difference report)\n\nNotes:\n• ",
+  "Proces-verbal de constatare a diferenței de casă": "Cash difference report",
+  "Când numerarul din sertar nu se potrivește cu raportul Z la închiderea zilei: casa de marcat, raportul Z, numerarul și cardul față de raport, lipsa sau plusul, explicația casierului și ce se face cu diferența": "When the cash in the drawer does not match the Z report at the end of the day: the fiscal till, the Z report, cash and card against the report, the shortage or surplus, the cashier's explanation and what is done with the difference"
+ },
+ "templates": {
+  "Închiderea zilei {0}": "Closing the day {0}"
+ },
+ "skip": [
+  "=COUNTIF(N2:N{0};\"Diferență la plăți\")+COUNTIF(N2:N{1};\"Predat altă sumă\")",
+  "=IF(B{0}=\"\";\"\";IF(L{1}<>0;\"Diferență la plăți\";IF(AND(M{2}=\"\";N(J{3})>0);\"Numerar nepredat\";IF(ROUND(N(M{4})-N(J{5});2)<>0;\"Predat altă sumă\";\"În regulă\"))))"
+ ]
+}

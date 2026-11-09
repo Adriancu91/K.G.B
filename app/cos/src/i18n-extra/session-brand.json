@@ -1,0 +1,8 @@
+{
+ "dict": {},
+ "templates": {},
+ "skip": [
+  "Studio",
+  "Suite"
+ ]
+}

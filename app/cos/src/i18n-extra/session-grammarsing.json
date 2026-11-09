@@ -1,0 +1,43 @@
+{
+  "dict": {
+    "Detectează limba textului lipit sau scris: un pasaj lipit sau un paragraf scris (la Enter) în engleză, franceză, germană… primește limba lui, ca să nu fie subliniat ca greșit": "Detect the language of pasted or typed text: a pasted passage or a typed paragraph (on Enter) in English, French, German… gets its own language, so it is not underlined as wrong",
+    "„Decât” se folosește cu negație („nu am decât”); fără negație se spune „doar” sau „numai”.": "This word (“only”) needs a negation in Romanian; without one, use “doar” or “numai”.",
+    "Cu „să”, verbul „a ști” se scrie „să știi”.": "Wrong verb form after the subjunctive particle; see the suggested fix.",
+    "Se scrie „ceea ce”.": "It is written “ceea ce”."
+  },
+  "templates": {
+    "Acordul verbului: „{0}” e la singular, deci „{1}”, nu „{2}”.": "Subject–verb agreement: “{0}” is singular, so use “{1}”, not “{2}”."
+  },
+  "skip": [
+    "câine",
+    "câtă",
+    "deși",
+    "pântece",
+    "părinte",
+    "pește",
+    "președinte",
+    "sânge",
+    "șarpe",
+    "șoarece",
+    "toată",
+    "vicepreședinte",
+    "adică",
+    "dimineața",
+    "jumătatea",
+    "marțea",
+    "mulțimea",
+    "primăvara",
+    "sâmbăta",
+    "§p{N})”\"])( +)([,;:!?]|[.](?![.",
+    "câțiva",
+    "(?<!nu )(?<!n-)(?<!mai )(am|ai|are|avem|aveți|au) decât",
+    "(ceia) ce",
+    "(să) ști",
+    "creată",
+    "creează",
+    "dintr-odată",
+    "greșeala",
+    "într-adevăr",
+    "să știi"
+  ]
+}

@@ -1,0 +1,14 @@
+{
+  "dict": {
+    "Listă cu segmente de cerc (numărul pe un cerc cu o bucată tăiată drept în dreapta sus, textul într-o bandă alături)": "Circle segment list (the number on a circle with a piece cut off straight at the top right, the text in a band beside it)",
+    "Listă cu ecrane (numărul pe forma de ecran, ascuțită în stânga și rotunjită în dreapta, textul într-o bandă alături)": "Display list (the number on a display shape, pointed on the left and rounded on the right, the text in a band beside it)",
+    "Listă cu segmente de cerc": "Circle segment list",
+    "Listă cu ecrane": "Display list",
+    "listă cu segmente de cerc": "circle segment list",
+    "listă cu ecrane": "display list",
+    "Puncte una sub alta: numărul pe un cerc cu o bucată tăiată drept, iar alături textul": "Points one below the other: the number on a circle with a piece cut off straight, with the text beside it",
+    "Puncte una sub alta: numărul pe forma de ecran, iar alături textul": "Points one below the other: the number on a display shape, with the text beside it"
+  },
+  "templates": {},
+  "skip": []
+}

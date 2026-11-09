@@ -1,0 +1,13 @@
+{
+  "dict": {
+    "Coboară de sus": "Drop from top",
+    "Dezvăluire (de la stânga)": "Wipe (from left)",
+    "Intră din stânga": "Slide in from left",
+    "Zoom (se micșorează)": "Zoom (shrinks in)",
+    "Chenar subțire în mijloc": "Thin frame in the middle",
+    "Etichetă roșie stânga-sus": "Red tag, top left",
+    "Umbră spre marginea de jos": "Shade toward the bottom edge"
+  },
+  "templates": {},
+  "skip": []
+}

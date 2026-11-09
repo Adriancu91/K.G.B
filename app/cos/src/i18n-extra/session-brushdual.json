@@ -1,0 +1,15 @@
+{
+ "dict": {
+  "Fără pensulă dublă": "No dual brush",
+  "Mărime pensulă dublă": "Dual brush size",
+  "Mărimea pensulei a doua, din mărimea primei": "Size of the second brush, relative to the first",
+  "Mărimea pensulei duble": "Dual brush size",
+  "Pensula dublă": "Dual brush",
+  "Pensula dublă: a doua pensulă trece pe același drum, iar culoarea rămâne doar unde trec amândouă (margini rupte, pete, fire)": "Dual brush: a second brush follows the same path and paint stays only where both pass (broken edges, blotches, bristles)",
+  "Pete rupte, ca bătute cu un burete (pensulă dublă cu Spray)": "Broken blotches, as if dabbed with a sponge (dual brush with Spray)"
+ },
+ "templates": {
+  "Pensulă dublă: {0}": "Dual brush: {0}"
+ },
+ "skip": []
+}

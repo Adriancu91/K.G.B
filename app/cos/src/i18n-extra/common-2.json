@@ -1,0 +1,27 @@
+{
+  "dict": {
+    "Mască de claritate": "Unsharp Mask",
+    "📷 Instantaneu nou": "📷 New Snapshot",
+    "Șterge toate": "Delete All",
+    "Tăiat (Ctrl+− sau Ctrl+Shift+X)": "Strikethrough (Ctrl+− or Ctrl+Shift+X)",
+    "Culoarea de fundal (Delete umple selecția cu ea; ⇄ sau X o face principală)": "Background color (Delete fills the selection with it; ⇄ or X makes it the main color)",
+    "Oprește (pentru cei fără parolă):": "Stop (for people without the password):",
+    "Testul t: două eșantioane pe perechi": "t-Test: Paired Two Sample for Means",
+    "Testul t: două eșantioane, varianțe diferite": "t-Test: Two-Sample Assuming Unequal Variances",
+    "Testul t: două eșantioane, varianțe egale": "t-Test: Two-Sample Assuming Equal Variances",
+    "Testul z: două eșantioane pentru medii": "z-Test: Two Sample for Means",
+    "De la pagina": "From page",
+    "＋ Text aici": "＋ Text here",
+    "Text pe": "Text on"
+  },
+  "templates": {
+    "🧮 Rezolvitor: {0} Raportul e în foaia „{1}”.": "🧮 Solver: {0} The report is on the “{1}” sheet.",
+    "Aici se primește doar {0}.": "Only {0} is allowed here.",
+    "Pe {0} se primește acum doar {1}": "{0} now accepts only {1}",
+    "Fără {0}: {1}": "Without {0}: {1}",
+    "încă {0}…": "{0} more…",
+    " (notă: {0})": " (note: {0})",
+    "{0} (bază {1})": "{0} (base {1})"
+  },
+  "skip": []
+}

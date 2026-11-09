@@ -1,0 +1,43 @@
+{
+  "dict": {
+    "Flux de numerar pe 12 luni": "12-month cash flow",
+    "Încasările și plățile estimate ale firmei pe fiecare lună, pe categorii: soldul de la sfârșitul lunii trece singur în luna următoare; lunile pe minus ies în roșu, cu cel mai mic sold și luna în care cade.": "The company's expected receipts and payments for each month, by category: the closing balance of each month carries over to the next one by itself; months in the red are shown in red, with the lowest balance and the month it falls in."
+  },
+  "templates": {},
+  "skip": [
+    "Aug",
+    "Cel mai mic sold",
+    "Chirie și utilități",
+    "Contribuții și impozit pe salarii",
+    "Dec",
+    "Flux de numerar",
+    "Fluxul lunii (încasări − plăți)",
+    "Furnizori (mărfuri, materiale)",
+    "Impozit pe profit / venit",
+    "Împrumuturi primite",
+    "În luna",
+    "Încasări de la clienți",
+    "Încasări în numerar",
+    "Iul",
+    "Iun",
+    "Luni cu sold negativ",
+    "Mai",
+    "Noi",
+    "Oct",
+    "Plățile către furnizori le iei din șablonul Facturi de la furnizori.",
+    "Rate la bancă",
+    "Salarii nete",
+    "Scrie soldul de la începutul anului (în galben) și sumele estimate pe fiecare lună; soldul trece singur în luna următoare.",
+    "Sep",
+    "Sold la început de lună",
+    "Sold la începutul anului",
+    "Sold la sfârșit de lună",
+    "Sold la sfârșitul anului",
+    "Total încasări",
+    "Total încasări pe an",
+    "Total plăți",
+    "Total plăți pe an",
+    "Transport și carburant",
+    "TVA de plată"
+  ]
+}

@@ -1,0 +1,35 @@
+{
+  "dict": {
+    "Evidența TVA pe luni": "Monthly VAT record",
+    "Vânzările și achizițiile fiecărei luni: ies TVA-ul colectat și deductibil, cât e de plată sau de recuperat (în verde) și termenul decontului, pe 25 ale lunii următoare; deconturile nedepuse cu termenul trecut ies în roșu.": "Each month's sales and purchases: you get the output and input VAT, how much is payable or refundable (in green) and the return deadline, the 25th of the following month; returns not filed after the deadline are shown in red."
+  },
+  "templates": {},
+  "skip": [
+    "=IF(F{0}=\"\";\"\";IF(F{1}>0;\"De plată\";IF(F{2}<0;\"De recuperat\";\"Zero\")))",
+    "Achiziții fără TVA",
+    "Aprilie",
+    "August",
+    "Dacă depui decontul pe trimestru, completează doar ultima lună a trimestrului.",
+    "De recuperat",
+    "Decembrie",
+    "Deconturi întârziate",
+    "Depus și plătit",
+    "Diferența pe an",
+    "Evidența TVA",
+    "Februarie",
+    "Ianuarie",
+    "Iulie",
+    "Iunie",
+    "Martie",
+    "Noiembrie",
+    "Octombrie",
+    "Septembrie",
+    "Termen de depunere",
+    "Total pe an",
+    "TVA de plată pe an",
+    "TVA de recuperat pe an",
+    "TVA-ul se calculează cu cota din M2; dacă o factură are altă cotă, scrie TVA-ul direct peste formulă.",
+    "Vânzări fără TVA",
+    "Zile până la termen"
+  ]
+}

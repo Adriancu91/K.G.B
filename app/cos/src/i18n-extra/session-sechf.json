@@ -1,0 +1,12 @@
+{
+  "dict": {
+    "🔗 Legat de anterior": "🔗 Link to Previous",
+    "Legat de anterior": "Link to Previous",
+    "Antetul secțiunii": "Section header",
+    "Subsolul secțiunii": "Section footer",
+    "Legat de anterior: secțiunea în care e cursorul are același antet și subsol ca secțiunea de dinainte; debifat, îi scrii antetul și subsolul ei": "Link to Previous: the section with the cursor has the same header and footer as the section before it; unchecked, you write its own header and footer",
+    "Antet / subsol propriu": "Own header / footer"
+  },
+  "templates": {},
+  "skip": []
+}

@@ -1,0 +1,24 @@
+{
+  "dict": {
+    "Mobilier": "Furniture",
+    "Scaun": "Chair",
+    "Masă": "Table",
+    "Dulap de haine": "Wardrobe",
+    "Birou de lucru": "Desk",
+    "Bibliotecă cu rafturi": "Bookcase",
+    "Comodă": "Chest of drawers",
+    "Fotoliu": "Armchair",
+    "Cuier": "Coat rack"
+  },
+  "templates": {},
+  "skip": [
+    "scaun scaune bucătărie sală de mese mobilă chair seat furniture",
+    "masă de sufragerie masă de lucru mobilă dining table furniture",
+    "dulap de haine șifonier garderobă dormitor mobilă wardrobe closet furniture",
+    "birou de lucru masă de scris calculator acasă mobilă desk workstation furniture",
+    "bibliotecă rafturi cărți etajeră mobilă bookcase bookshelf furniture",
+    "comodă sertare dormitor hol mobilă dresser chest of drawers furniture",
+    "fotoliu scaun tapițat living relaxare mobilă armchair lounge chair furniture",
+    "cuier pom pentru haine hol intrare mobilă coat rack stand hall furniture"
+  ]
+}

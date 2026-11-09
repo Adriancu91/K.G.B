@@ -1,0 +1,29 @@
+{
+ "dict": {
+  "Categoriile: A sunt clienții mari sau cu contract, B cei care cumpără des, C restul (prețul de listă). Reducerile le schimbi în căsuțele galbene.": "Categories: A are large customers or those with a contract, B those who buy often, C the rest (list price). You change the discounts in the yellow boxes.",
+  "Clienți A (fără TVA)": "Customers A (without VAT)",
+  "Clienți A: reducere (%)": "Customers A: discount (%)",
+  "Clienți B (fără TVA)": "Customers B (without VAT)",
+  "Clienți B: reducere (%)": "Customers B: discount (%)",
+  "Clienți C (fără TVA)": "Customers C (without VAT)",
+  "Clienți C: reducere (%)": "Customers C: discount (%)",
+  "Lista de prețuri": "Price list",
+  "Listă de prețuri pentru clienți": "Price list for customers",
+  "Prețul de achiziție (fără TVA)": "Purchase price (without VAT)",
+  "Prețul de achiziție nu se trimite clienților: înainte să trimiți lista, ascunde coloana K sau șterge-o dintr-o copie.": "The purchase price is not sent to customers: before sending the list, hide column K or delete it from a copy.",
+  "Prețul de listă (fără TVA)": "List price (without VAT)",
+  "Prețul de listă cu TVA": "List price with VAT",
+  "Prețul de listă fără și cu TVA și prețurile cu reducere pentru clienții A, B și C (reducerile le alegi o dată, în dreapta); după prețul de achiziție, starea arată produsele vândute sub cost clienților A (în galben) sau tuturor (în roșu).": "The list price without and with VAT and the discounted prices for customers A, B and C (you choose the discounts once, on the right); from the purchase price, the status shows the products sold below cost to customers A (yellow) or to everyone (red).",
+  "Prețurile de listă le poți lua din Sheets → Calculul prețului de vânzare; o schimbare de prețuri se anunță din timp clienților cu contract.": "You can take the list prices from Sheets → Selling price calculation; a price change is announced in advance to customers with a contract.",
+  "Reducerile pe categorii": "Discounts by category",
+  "Sub cost la clienții A": "Below cost for customers A",
+  "Sub cost la toți": "Below cost for everyone",
+  "Valabilă de la data": "Valid from"
+ },
+ "templates": {},
+ "skip": [
+  "=COUNTIF(L2:L{0};\"Sub cost la clienții A\")",
+  "=COUNTIF(L2:L{0};\"Sub cost la toți\")",
+  "=IF(OR(G{0}=\"\";K{1}=\"\");\"\";IF(J{2}<K{3};\"Sub cost la toți\";IF(H{4}<K{5};\"Sub cost la clienții A\";\"Bun\")))"
+ ]
+}

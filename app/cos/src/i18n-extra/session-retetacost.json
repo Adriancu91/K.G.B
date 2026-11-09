@@ -1,0 +1,35 @@
+{
+  "dict": {
+    "Cantitatea brută": "Gross quantity",
+    "Cantitatea netă (în rețetă)": "Net quantity (in the recipe)",
+    "Cantitatea netă e cea care intră în rețetă (după curățare); la pierderi treci cât se aruncă (coji, oase, cotor), în procente.": "The net quantity is what goes into the recipe (after trimming); under waste, enter how much is thrown away (peels, bones, cores), as a percentage.",
+    "Costul ingredientelor": "Ingredient cost",
+    "Costul pe porție": "Cost per portion",
+    "Cota TVA se verifică cu contabilul; prețul recomandat e rotunjit în sus la 10 bani.": "Check the VAT rate with your accountant; the suggested price is rounded up to 10 bani.",
+    "Din costul rețetei": "Share of recipe cost",
+    "Ingredientele, din prețul fără TVA": "Ingredients, as share of price excl. VAT",
+    "Ingredientul": "Ingredient",
+    "Marja pe porție (lei)": "Margin per portion (lei)",
+    "Numele rețetei": "Recipe name",
+    "Pentru cafenele, patiserii, restaurante și catering: ingredientele cu cantitatea netă, pierderile la curățare și prețul de achiziție; ies cantitatea brută, costul fiecărui ingredient și costul pe porție, cât din prețul de vânzare se duce pe ingrediente, marja și prețul recomandat pentru ținta aleasă.": "For cafés, pastry shops, restaurants and catering: the ingredients with their net quantity, trimming waste and purchase price; you get the gross quantity, the cost of each ingredient and the cost per portion, how much of the selling price goes on ingredients, the margin and the suggested price for the target you choose.",
+    "Peste țintă": "Above target",
+    "Pierderi la curățare (%)": "Trimming waste (%)",
+    "Porții din rețetă": "Portions per recipe",
+    "Prețul de achiziție (lei / U.M.)": "Purchase price (lei / unit)",
+    "Prețul de achiziție e pe aceeași unitate ca și cantitatea (de exemplu lei pe kg, dacă scrii kg).": "The purchase price uses the same unit as the quantity (for example lei per kg, if you enter kg).",
+    "Prețul de vânzare pe porție (cu TVA)": "Selling price per portion (incl. VAT)",
+    "Prețul fără TVA": "Price excl. VAT",
+    "Prețul recomandat (cu TVA)": "Suggested price (incl. VAT)",
+    "Rețeta": "Recipe",
+    "Rețetă cu costul pe porție": "Recipe cost per portion",
+    "Ținta: ingredientele din preț (%)": "Target: ingredients as share of price (%)",
+    "Totalul rețetei": "Recipe total",
+    "🍰 Un preparat nou în meniu": "🍰 A new dish on the menu"
+  },
+  "templates": {},
+  "skip": [
+    "=IF(L9=\"\";\"\";IF(L10<0;\"În pierdere\";IF(L9*100>N(L11);\"Peste țintă\";\"Bun\")))",
+    "Preparat nou {0}",
+    "Preparatul:\nCategoria din meniu (cafea, desert, fel principal…):\nPorții din rețetă:\nPrețul ales (cu TVA):\n\nÎnainte de a-l pune în meniu:\n☐ rețeta încercată de cel puțin două ori, cu cantitățile scrise exact\n☐ costul calculat în Sheets → Rețetă cu costul pe porție (cu pierderile la curățare)\n☐ prețul ales după „Prețul recomandat” și verificat față de concurență\n☐ alergenii notați mai jos (gluten, lapte, ouă, nuci, soia…)\n☐ o poză făcută pentru meniu și pentru afiș\n\nLa lansare:\n☐ trecut în meniu și în Sheets → Listă de prețuri pentru clienți\n☐ personalul a gustat preparatul și știe ce să spună despre el\n☐ ingredientele noi trecute la Sheets → Necesar de aprovizionare\n\nAlergeni:\n•\n\nCe au spus primii clienți:\n•\n\nObservații:\n• "
+  ]
+}

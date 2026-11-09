@@ -1,0 +1,24 @@
+{
+  "dict": {
+    "Fântâni și izvoare": "Wells and springs",
+    "Fântână cu cumpănă": "Well sweep",
+    "Fântână cu roată": "Wishing well",
+    "Cișmea": "Stone fountain",
+    "Izvor de munte": "Mountain spring",
+    "Pompă de apă manuală": "Hand water pump",
+    "Cofă de apă": "Wooden water pail",
+    "Analiza apei": "Water test",
+    "Foraj de apă": "Borehole"
+  },
+  "templates": {},
+  "skip": [
+    "fântână cu cumpănă sat găleată ciutură well sweep",
+    "fântână cu roată acoperiș lanț ghizd water well wheel",
+    "cișmea fântână de piatră izvor la drum stone fountain",
+    "izvor de munte apă de izvor pârâu stânci mountain spring",
+    "pompă de apă manuală cu mâner curte hand water pump",
+    "cofă de apă vas de lemn doage găleată veche wooden water pail",
+    "analiza apei eprubetă probă calitatea apei water test",
+    "foraj de apă puț forat pânză freatică borehole"
+  ]
+}

@@ -1,0 +1,10 @@
+{
+  "dict": {
+    "Foaie nouă (doar graficul)": "New sheet (chart only)",
+    "Graficul se mută pe o foaie a lui, mare cât ecranul; datele rămân pe foaia lor": "The chart moves to its own sheet, as large as the screen; the data stays on its sheet"
+  },
+  "templates": {
+    "Graficul e acum pe foaia „{0}”; datele au rămas pe foaia „{1}”": "The chart is now on sheet “{0}”; the data stayed on sheet “{1}”"
+  },
+  "skip": ["Diagramă{0}"]
+}

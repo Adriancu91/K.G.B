@@ -1,0 +1,11 @@
+{
+  "dict": {
+    "📌 Lipește pe margine": "📌 Dock to edge",
+    "Fereastra e înapoi unde era.": "The window is back where it was.",
+    "Fereastra e lipită pe marginea din dreapta, mereu deasupra. Încă un clic pe 📌 o pune înapoi.": "The window is docked to the right edge, always on top. One more click on 📌 puts it back.",
+    "Lipește pe margine: fereastra devine o coloană îngustă pe marginea din dreapta a ecranului, mereu deasupra, ca să iei notițe lângă alt program. Din nou: revine unde era": "Dock to edge: the window becomes a narrow column on the right edge of the screen, always on top, so you can take notes next to another program. Again: it goes back where it was",
+    "Mereu deasupra: fereastra rămâne peste celelalte programe, chiar când lucrezi în ele": "Always on top: the window stays above other programs, even while you work in them"
+  },
+  "templates": {},
+  "skip": []
+}

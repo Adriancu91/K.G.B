@@ -1,0 +1,39 @@
+{
+  "dict": {
+    " Salvează ca… îl scrie; Ctrl+Z anulează.": " Save as… writes it; Ctrl+Z undoes.",
+    "Condiția de tipar": "Printing condition",
+    "Condiția de tipar:": "Printing condition:",
+    "Fă din PDF unul PDF/X-1a, cum îl cer tipografiile: câmpurile și comentariile desenate pe pagină, transparența aplatizată, culorile în CMYK, caseta de tăiere și condiția de tipar aleasă; Ctrl+Z anulează": "Make the PDF a PDF/X-1a, as print shops ask for it: fields and comments drawn on the page, transparency flattened, colors in CMYK, the trim box and the chosen printing condition; Ctrl+Z undoes",
+    "Fă-l PDF/X-1a": "Make it PDF/X-1a",
+    "Întreabă tipografia ce condiție de tipar folosește; dacă nu știi, pentru hârtie lucioasă sau mată în Europa e prima.": "Ask the print shop which printing condition it uses; if you don't know, the first one is right for glossy or matte paper in Europe.",
+    "PDF/X-1a e felul de PDF cerut de multe tipografii. Câmpurile formularului și comentariile tipăribile se desenează pe pagină, legăturile și scripturile ies, paginile cu transparență devin o poză (cu textul tot căutabil), culorile RGB trec în CMYK, iar fiecare pagină primește caseta de tăiere. Ctrl+Z anulează.": "PDF/X-1a is the kind of PDF many print shops ask for. Form fields and printable comments are drawn on the page, links and scripts are removed, pages with transparency become a picture (with the text still searchable), RGB colors become CMYK, and every page gets a trim box. Ctrl+Z undoes.",
+    "PDF/X-1a pentru tipografie": "PDF/X-1a for the print shop",
+    "Rezoluția paginilor aplatizate": "Resolution of flattened pages",
+    "Rezoluția paginilor aplatizate:": "Resolution of flattened pages:",
+    "câmp desenat pe pagină": "field drawn on the page",
+    "câmpuri desenate pe pagină": "fields drawn on the page",
+    "casetă de tăiere pusă": "trim box added",
+    "casete de tăiere puse": "trim boxes added",
+    "comentarii desenate pe pagină": "comments drawn on the page",
+    "comentariu desenat pe pagină": "comment drawn on the page",
+    "culori RGB rămase (poze sau desene cu profil de culoare)": "RGB colors left (images or drawings with a color profile)",
+    "fișierul e criptat (scoate parola întâi)": "the file is encrypted (remove the password first)",
+    "Hârtie cretată, Europa (ISO 12647-2, FOGRA39)": "Coated paper, Europe (ISO 12647-2, FOGRA39)",
+    "Hârtie cretată, SUA (GRACoL)": "Coated paper, USA (GRACoL)",
+    "Hârtie de ziar, Europa (FOGRA40)": "Newsprint, Europe (FOGRA40)",
+    "Hârtie necretată, Europa (FOGRA47)": "Uncoated paper, Europe (FOGRA47)",
+    "Reviste, SUA (SWOP)": "Magazines, USA (SWOP)",
+    "legătură scoasă": "link removed",
+    "legături scoase": "links removed",
+    "pagină aplatizată": "page flattened",
+    "pagini aplatizate": "pages flattened",
+    "transparență rămasă": "transparency left",
+    "Se face PDF/X-1a…": "Making PDF/X-1a…"
+  },
+  "templates": {
+    "{0} și {1} trecute în CMYK": "{0} and {1} converted to CMYK",
+    "fonturi neîncorporate: {0}{1}": "fonts not embedded: {0}{1}",
+    "Gata: PDF/X-1a:2003 pentru {0}{1}.": "Done: PDF/X-1a:2003 for {0}{1}."
+  },
+  "skip": ["Annot{0}"]
+}

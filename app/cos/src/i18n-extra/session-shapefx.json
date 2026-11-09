@@ -1,0 +1,14 @@
+{
+  "dict": {
+    "Efectul formei": "Shape effect",
+    "Efectul formei: umbră, strălucire în culoarea ei sau margini estompate": "Shape effect: shadow, glow in its own color or soft edges",
+    "Margini estompate": "Soft edges",
+    "Reflexie": "Reflection",
+    "Stilul pozei: chenar, ramă albă, umbră, colțuri rotunjite, oval, strălucire, margini estompate, reflexie (Ctrl+Z îl scoate)": "Picture style: border, white frame, shadow, rounded corners, oval, glow, soft edges, reflection (Ctrl+Z removes it)",
+    "Culoarea chenarului pozei": "Picture border color",
+    "Grosimea chenarului pozei": "Picture border width",
+    "Pune chenarul cu culoarea și grosimea alese (Ctrl+Z îl scoate)": "Add the border with the chosen color and width (Ctrl+Z removes it)"
+  },
+  "templates": {},
+  "skip": []
+}

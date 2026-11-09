@@ -1,0 +1,28 @@
+{
+  "dict": {
+    " (fonturile s-au schimbat pe ": " (fonts changed on ",
+    "Fontul de Corp al temei (fontul obișnuit al celulelor)": "Theme Body font (the default cell font)",
+    "Fontul de Titluri al temei": "Theme Headings font",
+    "Fonturile temei: Titluri și Corp (Corp e fontul obișnuit al celulelor)": "Theme fonts: Headings and Body (Body is the default cell font)",
+    "Clasice": "Classic",
+    "Moderne": "Modern",
+    "Obișnuite": "Default",
+    "Rotunde": "Rounded",
+    "Simple": "Simple",
+    "Tehnice": "Technical",
+    "Tradiționale": "Traditional",
+    "Obișnuite: Calibri Light / Calibri": "Default: Calibri Light / Calibri",
+    "Tradiționale: Times New Roman / Times New Roman": "Traditional: Times New Roman / Times New Roman"
+  },
+  "templates": {
+    "{0} (Corp)": "{0} (Body)",
+    "{0} (Titluri)": "{0} (Headings)",
+    "Din fișier: {0} / {1}": "From file: {0} / {1}",
+    "{0}: {1} / {2}": "{0}: {1} / {2}",
+    "Fonturile temei: {0} / {1}": "Theme fonts: {0} / {1}",
+    "Fonturile temei: {0} / {1}{2}": "Theme fonts: {0} / {1}{2}"
+  },
+  "skip": [
+    "<font><sz val=\"11\"/><name val=\"{0}\"/>{1}</font>"
+  ]
+}

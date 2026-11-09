@@ -1,0 +1,21 @@
+{
+  "dict": {
+    "(nu mai există)": "(no longer exists)",
+    "(textul celulei sau numele macrocomenzii)": "(the cell text or the macro name)",
+    "Butoanele au fost scoase (textul din celule rămâne)": "The buttons were removed (the text in the cells stays)",
+    "Buton cu macrocomandă": "Macro button",
+    "Buton cu macrocomandă în celulele alese: clic pe buton rulează macrocomanda aleasă, de la celula aleasă atunci": "Macro button in the selected cells: clicking the button runs the chosen macro, starting from the cell selected at that moment",
+    "Buton macro": "Macro Button",
+    "Cât se înregistrează o macrocomandă, butoanele nu rulează alte macrocomenzi": "While a macro is being recorded, buttons do not run other macros",
+    "Clic pe buton rulează macrocomanda, de la celula aleasă atunci (cele cu referințe relative), ca Vizualizare → Macrocomenzi → ▶ Rulează.": "Clicking the button runs the macro from the cell selected at that moment (for relative references), like View → Macros → ▶ Run.",
+    "Macrocomanda": "Macro",
+    "Nu ai încă macrocomenzi. Înregistrează una din Vizualizare → Macrocomenzi → ⏺ Înregistrează, apoi pune butonul.": "You have no macros yet. Record one from View → Macros → ⏺ Record, then add the button.",
+    "Text pe buton": "Button text"
+  },
+  "templates": {
+    "Buton pus: clic pe el (sau Spațiu pe celulă) rulează macrocomanda „{0}” de la celula aleasă": "Button added: clicking it (or Space on the cell) runs the macro “{0}” from the selected cell",
+    "Macrocomanda „{0}” nu mai există: alege alta din Inserare → Controale → ▶ Buton macro": "The macro “{0}” no longer exists: choose another one from Insert → Controls → ▶ Macro Button",
+    "Rulează macrocomanda „{0}”": "Run the macro “{0}”"
+  },
+  "skip": []
+}

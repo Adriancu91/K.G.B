@@ -1,0 +1,10 @@
+{
+  "dict": {
+    "🪵 Comandă de lemne de foc": "🪵 Firewood order",
+    "Furnizorul (firma sau ocolul silvic):\nTelefonul:\nAdresa de livrare:\n\nLemnele comandate:\n• esența (fag, stejar, carpen, salcâm, amestec):\n• cantitatea (metri steri sau metri cubi):\n• lungimea bucăților (1 m, 33 cm, 25 cm):\n• prețul pe unitate și transportul:\n\nÎnainte de livrare:\n☐ prețul stabilit pe metru ster sau pe metru cub, nu pe „căruță” sau „remorcă”\n☐ lemnele uscate cel puțin un an sau uscate în uscător\n☐ data și ora livrării stabilite\n☐ loc liber pentru mașină și pentru descărcare\n\nLa livrare:\n☐ avizul de însoțire primit, cu codul de verificare a transportului\n☐ cantitatea măsurată la descărcare: lungime × lățime × înălțime\n☐ lemnele verificate: fără putregai, fără prea multe bucăți subțiri\n☐ chitanța sau factura primită\n☐ lemnele stivuite sub acoperiș, ferite de ploaie și de pământ\n\nCât a ieșit măsurat și ce plătim:\n• ": "Supplier (company or forestry office):\nPhone:\nDelivery address:\n\nFirewood ordered:\n• species (beech, oak, hornbeam, acacia, mixed):\n• quantity (stacked cubic metres or solid cubic metres):\n• log length (1 m, 33 cm, 25 cm):\n• price per unit and transport:\n\nBefore delivery:\n☐ price agreed per stacked or solid cubic metre, not per \"cart\" or \"trailer\"\n☐ wood dried for at least a year or kiln-dried\n☐ delivery date and time agreed\n☐ space cleared for the truck and for unloading\n\nOn delivery:\n☐ delivery note received, with the transport verification code\n☐ quantity measured when unloaded: length × width × height\n☐ wood checked: no rot, not too many thin pieces\n☐ receipt or invoice received\n☐ wood stacked under a roof, off the ground and out of the rain\n\nWhat it measured and what we pay:\n• "
+  },
+  "templates": {
+    "Lemne de foc {0}": "Firewood {0}"
+  },
+  "skip": []
+}

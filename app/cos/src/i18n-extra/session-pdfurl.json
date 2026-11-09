@@ -1,0 +1,12 @@
+{
+ "dict": {
+  "Adresă web → PDF": "Web address → PDF",
+  "Adresă web → PDF…": "Web address → PDF…",
+  "Adresă web → PDF merge doar în aplicația Cyber Office Studio (nu în browser).": "Web address → PDF only works in the Cyber Office Studio app (not in the browser).",
+  "O pagină de pe internet, după adresa ei (https://…) → PDF A4, cu pozele și culorile ei; fără scripturi și fără cookie-uri": "A page from the internet, by its address (https://…) → A4 PDF, with its pictures and colors; no scripts and no cookies",
+  "Scrie adresa paginii (de exemplu https://exemplu.ro/articol). Pagina se aduce cu pozele și culorile ei, dar fără scripturi și fără cookie-uri; paginile care se arată doar cu scripturi pot ieși goale.": "Type the page address (for example https://example.com/article). The page is fetched with its pictures and colors, but without scripts and without cookies; pages that only show up with scripts may come out empty.",
+  "Adresa nu e bună. Scrie-o întreagă, de exemplu https://exemplu.ro/pagina.": "The address is not valid. Type it in full, for example https://example.com/page."
+ },
+ "templates": {},
+ "skip": []
+}

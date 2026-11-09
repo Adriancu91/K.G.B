@@ -1,0 +1,10 @@
+{
+  "dict": {
+    "🛒 Achiziție de la furnizori": "🛒 Purchase from suppliers"
+  },
+  "templates": {},
+  "skip": [
+    "Ce cumpărăm: \nPentru (lucrarea / departamentul): \nBugetul aprobat: \n\nCererea de ofertă:\n☐ lista produselor scrisă (cantități, cerințe), cu acordul celui care le folosește\n☐ cererea de ofertă trimisă la cel puțin 3 furnizori (Docs → Cerere de ofertă)\n☐ termenul de răspuns notat; furnizorii care n-au răspuns sunați\n\nAlegerea:\n☐ ofertele puse alături (Sheets → Compararea ofertelor), cu termenul, plata și garanția\n☐ ales furnizorul (cea mai mică ofertă completă sau motivul altei alegeri, scris)\n☐ comanda trimisă și confirmată în scris (prețul, termenul, locul de livrare)\n\nLa primire:\n☐ marfa verificată la livrare: cantitatea, calitatea, avizul sau factura\n☐ nota de recepție (NIR) făcută; diferențele trecute într-un proces-verbal (Docs → Proces-verbal de recepție)\n☐ factura plătită la termen (Sheets → Facturi de la furnizori)\n☐ garanția și documentele păstrate la dosar\n",
+    "Achiziție {0}"
+  ]
+}

@@ -1,0 +1,10 @@
+{
+  "dict": {
+    "📑 Reînnoirea unui contract": "📑 Contract renewal"
+  },
+  "templates": {},
+  "skip": [
+    "Contractul (partener, nr. și data): \nSfârșitul de acum: \nPreavizul (zile): \n\nCu o lună înainte:\n☐ contractul găsit în Sheets → Evidența contractelor (zilele rămase, starea De reînnoit)\n☐ citit ce spune contractul despre prelungire și preaviz\n☐ hotărât: prelungim, schimbăm condițiile sau încetăm\n☐ cerută oferta nouă / prețul nou de la partener (sau trimisă a noastră)\n\nDacă prelungim sau schimbăm:\n☐ actul adițional scris (Docs → Act adițional la contract)\n☐ actul adițional semnat de ambele părți, câte un exemplar\n☐ noua dată de sfârșit și valoarea trecute în Evidența contractelor\n\nDacă încetăm:\n☐ notificarea trimisă în termenul de preaviz (Docs → Cerere de reziliere)\n☐ confirmarea primirii păstrată (registratură, e-mail sau poștă cu confirmare)\n☐ ultimele plăți și predările făcute; contractul trecut ca încheiat",
+    "Reînnoirea contractului {0}"
+  ]
+}

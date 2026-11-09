@@ -1,0 +1,25 @@
+{
+ "dict": {
+  "Adaosul pe bucată (lei)": "Markup per unit (lei)",
+  "Adaosul se pune la prețul de achiziție fără TVA; TVA se calculează la urmă, la prețul de vânzare fără TVA.": "The markup is applied to the purchase price without VAT; VAT is calculated last, on the selling price without VAT.",
+  "Calculul prețului de vânzare": "Selling price calculation",
+  "Din prețul de achiziție și adaosul comercial ies prețul fără TVA, TVA și prețul cu TVA, rotunjit în sus la 10 bani pentru etichetă; apoi adaosul în lei și marja, iar starea arată produsele vândute în pierdere (în roșu) și cele sub adaosul minim pe care îl alegi (în galben).": "From the purchase price and the markup you get the price without VAT, the VAT and the price with VAT, rounded up to 10 bani for the label; then the markup in lei and the margin, and the status shows the products sold at a loss (red) and those below the minimum markup you choose (yellow).",
+  "În pierdere": "At a loss",
+  "Marja (din vânzare)": "Margin (of sales)",
+  "Marja e partea din prețul de vânzare (fără TVA) care rămâne după costul mărfii: un adaos de 25% înseamnă o marjă de 20%.": "The margin is the part of the selling price (without VAT) left after the cost of the goods: a 25% markup means a 20% margin.",
+  "Marja medie": "Average margin",
+  "Preț de achiziție (fără TVA)": "Purchase price (without VAT)",
+  "Preț de vânzare cu TVA": "Selling price with VAT",
+  "Preț de vânzare fără TVA": "Selling price without VAT",
+  "Prețul de vânzare": "Selling price",
+  "Prețul rotunjit (cu TVA)": "Rounded price (with VAT)",
+  "Prețul rotunjit e cel de pe etichetă; adaosul și marja se calculează din el. Prețurile noi se trec și în Sheets → Notă de recepție.": "The rounded price is the one on the label; the markup and the margin are calculated from it. New prices are also entered in Sheets → Goods receipt note.",
+  "Produse în listă": "Products in the list",
+  "Sub adaosul minim": "Below the minimum markup"
+ },
+ "templates": {},
+ "skip": [
+  "=COUNTIF(M2:M{0};\"În pierdere\")",
+  "=IF(K{0}=\"\";\"\";IF(K{1}<0;\"În pierdere\";IF(N(E{2})<P$3;\"Sub adaosul minim\";\"Bun\")))"
+ ]
+}

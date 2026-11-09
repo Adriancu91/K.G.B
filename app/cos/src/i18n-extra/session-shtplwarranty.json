@@ -1,0 +1,26 @@
+{
+  "dict": {
+    "Ce ai cumpărat, de unde și pe câte luni e garanția; ies data la care expiră, zilele rămase, ce expiră curând (în galben) și ce nu mai e în garanție (în roșu).": "What you bought, where from and how many months the warranty lasts; you get the date it expires, the days left, what expires soon (in yellow) and what is no longer under warranty (in red).",
+    "Garanții": "Warranties"
+  },
+  "templates": {},
+  "skip": [
+    "=COUNTIF(H2:H{0};\"Expiră curând\")",
+    "=COUNTIF(H2:H{0};\"În garanție\")+COUNTIF(H2:H{1};\"Expiră curând\")",
+    "=IF(A{0}=\"\";\"\";IF(G{1}=\"\";\"\";IF(G{2}<0;\"Expirată\";IF(G{3}<=30;\"Expiră curând\";\"În garanție\"))))",
+    "=SUMIF(H2:H{0};\"În garanție\";D2:D{1})+SUMIF(H2:H{2};\"Expiră curând\";D2:D{3})",
+    "Cumpărat pe",
+    "Expirată",
+    "Expiră în următoarele 30 de zile",
+    "Garanție (luni)",
+    "La produsele noi, vânzătorul răspunde pentru defecte cel puțin 2 ani (garanția legală).",
+    "Magazinul",
+    "Preț (lei)",
+    "Produse în garanție",
+    "Produsul",
+    "Păstrează bonul și certificatul de garanție: fără ele reclamația e mai grea.",
+    "Unde e bonul",
+    "Valoarea lor",
+    "În garanție"
+  ]
+}

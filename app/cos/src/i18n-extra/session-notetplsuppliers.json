@@ -1,0 +1,10 @@
+{
+  "dict": {
+    "💸 Plăți către furnizori": "💸 Payments to suppliers"
+  },
+  "templates": {},
+  "skip": [
+    "Plăți către furnizori {0}",
+    "Săptămâna: \nBani în cont: \n\nÎnainte de plată:\n☐ facturile primite trecute în tabel (Sheets → Facturi de la furnizori)\n☐ întâi cele întârziate (în roșu), apoi cele de plătit în 7 zile (în galben)\n☐ suma de plată comparată cu banii din cont\n☐ IBAN-ul și CUI-ul fiecărui furnizor verificate pe factură\n\nPlățile:\n☐ ordinele de plată făcute în bancă\n☐ la fiecare, numărul facturii scris în detaliile plății\n☐ suma plătită trecută în tabel, la „Plătit”\n\nDupă:\n☐ dovezile de plată salvate lângă facturi\n☐ furnizorii cu care am amânat plata anunțați\n☐ facturile rămase mutate pe săptămâna viitoare\n\nDe plătit săptămâna asta:\n• "
+  ]
+}

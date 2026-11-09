@@ -1,0 +1,25 @@
+{
+  "dict": {
+    "📐 Măsurători pentru mobilă la comandă": "📐 Measurements for custom furniture",
+    "Clientul și telefonul:\nAdresa:\nCe se face (bucătărie, dulap, comodă, birou):\n\nÎnainte de plecare:\n☐ ruleta, nivela, telefonul pentru poze și mostrele de culori în geantă\n☐ ora stabilită cu clientul și adresa verificată\n\nLa client:\n☐ lățimea, înălțimea și adâncimea locului, măsurate în mai multe puncte (pereții nu sunt drepți)\n☐ prizele, întrerupătoarele, țevile și caloriferele însemnate pe schiță\n☐ ușa, fereastra și plintele însemnate (deschiderea ușilor, pervazul)\n☐ pe unde intră mobila: ușa de la intrare, liftul, scara\n☐ materialul, culoarea și mânerele alese împreună cu clientul\n☐ poze cu locul, din față și din colțuri\n\nDupă:\n☐ comanda scrisă în Sheets → Comenzi de mobilier, cu termenul și avansul\n\nDimensiunile (L × Î × A, în cm):\n•\n\nCe mai trebuie întrebat sau adus:\n• ": "Customer and phone:\nAddress:\nWhat is being made (kitchen, wardrobe, chest of drawers, desk):\n\nBefore leaving:\n☐ tape measure, spirit level, phone for photos and colour samples in the bag\n☐ time agreed with the customer and address checked\n\nAt the customer:\n☐ width, height and depth of the space, measured at several points (walls are not straight)\n☐ sockets, switches, pipes and radiators marked on the sketch\n☐ door, window and skirting boards marked (door swing, window sill)\n☐ how the furniture gets in: front door, lift, stairs\n☐ material, colour and handles chosen together with the customer\n☐ photos of the space, from the front and from the corners\n\nAfter:\n☐ order written in Sheets → Furniture orders, with the deadline and the deposit\n\nDimensions (W × H × D, in cm):\n•\n\nWhat still needs to be asked or brought:\n• ",
+    "Comenzi de mobilier": "Furniture orders",
+    "Comenzi în lucru": "Orders in progress",
+    "Dimensiuni, material, culoare": "Dimensions, material, colour",
+    "Încasat în total": "Collected in total",
+    "Încasat până acum": "Collected so far",
+    "La fiecare plată a clientului mărește „Încasat până acum”; o comandă livrată rămâne „De încasat” până se plătește tot.": "With every customer payment, increase “Collected so far”; a delivered order stays “To collect” until it is fully paid.",
+    "Livrat și montat": "Delivered and fitted",
+    "Măsurătorile de la client: Notițe → 📋 Din șablon → 📐 Măsurători pentru mobilă la comandă.": "Measurements at the customer: Notes → 📋 From template → 📐 Measurements for custom furniture.",
+    "Pe oferte și pliante: Docs → Inserare → ☺ Pictograme → Mobilier.": "On quotes and flyers: Docs → Insert → ☺ Icons → Furniture.",
+    "Pentru ateliere și magazine de mobilă la comandă: fiecare comandă cu clientul, telefonul, produsul, dimensiunile, termenul de livrare, prețul și cât s-a încasat; ies restul de plată, zilele până la termen și starea: întârziat (în roșu), în 7 zile sau livrat dar de încasat (în galben), gata (în verde); în dreapta comenzile în lucru, banii de încasat și cel mai apropiat termen, cu clientul.": "For custom furniture workshops and shops: each order with the customer, phone, product, dimensions, delivery deadline, price and how much has been collected; you get the balance due, the days until the deadline and the status: late (in red), within 7 days or delivered but still to collect (in yellow), done (in green); on the right the orders in progress, the money still to collect and the nearest deadline, with the customer.",
+    "Termenul de livrare": "Delivery deadline",
+    "Valoarea comenzilor în lucru": "Value of orders in progress"
+  },
+  "templates": {
+    "Măsurători mobilă {0}": "Furniture measurements {0}"
+  },
+  "skip": [
+    "=COUNTIF(M2:M{0};\"Întârziat\")",
+    "=IF(B{0}=\"\";\"\";IF(K{1}=\"Da\";IF(J{2}>0;\"De încasat\";\"Gata\");IF(G{3}=\"\";\"Fără termen\";IF(G{4}<TODAY();\"Întârziat\";IF(G{5}-TODAY()<=7;\"În 7 zile\";\"În lucru\")))))"
+  ]
+}

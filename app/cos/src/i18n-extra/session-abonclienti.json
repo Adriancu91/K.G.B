@@ -1,0 +1,32 @@
+{
+  "dict": {
+    "12 ședințe": "12 sessions",
+    "8 ședințe": "8 sessions",
+    "Abonamente trecute în tabel": "Memberships in the table",
+    "Abonamentele clienților": "Client memberships",
+    "Abonamentul": "Membership",
+    "Active": "Active",
+    "Cei care expiră în 7 zile ies în galben: e momentul să-i suni pentru reînnoire (fișa clientului: Notițe → Din șablon → Fișa unui client).": "Those expiring within 7 days show in yellow: it is time to call them about renewing (the client record: Notes → From template → Client record).",
+    "Cu ședințele terminate": "With all sessions used",
+    "Data începerii": "Start date",
+    "Epuizat": "Used up",
+    "Expiră în următoarele 7 zile": "Expiring in the next 7 days",
+    "La fiecare venire crești „Ședințe folosite” cu 1; la abonamentele fără limită de ședințe lași „Ședințe incluse” gol.": "At each visit, increase “Sessions used” by 1; for memberships with no session limit, leave “Sessions included” empty.",
+    "Nelimitat": "Unlimited",
+    "Pentru săli de sport, cursuri, saloane și spălătorii auto: fiecare abonament vândut, cu data începerii, zilele de valabilitate și ședințele incluse; ies data expirării, ședințele rămase, restul de plată și starea (activ, expiră în 7 zile în galben, expirat, epuizat); în dreapta câte sunt active și cât mai e de încasat.": "For gyms, courses, salons and car washes: every membership sold, with the start date, the days it is valid and the sessions included; you get the expiry date, the sessions left, the balance due and the status (active, expiring within 7 days in yellow, expired, used up); on the right, how many are active and how much is still to be collected.",
+    "Ședințe folosite": "Sessions used",
+    "Ședințe incluse": "Sessions included",
+    "Ședințe rămase": "Sessions left",
+    "Un rând pe fiecare abonament vândut: clientul, felul, data începerii, câte zile e valabil (30 pentru lunar) și câte ședințe include.": "One row per membership sold: the client, the type, the start date, how many days it is valid (30 for monthly) and how many sessions it includes.",
+    "Vândute (prețul tuturor)": "Sold (total price)",
+    "🎫 Reînnoirea unui abonament": "🎫 Membership renewal"
+  },
+  "templates": {},
+  "skip": [
+    "=COUNTIF(N2:N{0};\"Activ\")+COUNTIF(N2:N{1};\"Expiră curând\")",
+    "=COUNTIF(N2:N{0};\"Expiră curând\")",
+    "=IF(B{0}=\"\";\"\";IF(G{1}=\"\";\"Fără dată\";IF(G{2}<TODAY();\"Expirat\";IF(AND(H{3}<>\"\";J{4}=0);\"Epuizat\";IF(G{5}-TODAY()<=7;\"Expiră curând\";\"Activ\")))))",
+    "Clientul:\nTelefonul:\nAbonamentul de acum (felul, prețul):\nExpiră la:\nȘedințe rămase:\n\nÎnainte de expirare (în ultimele 7 zile, când iese galben în Sheets → Abonamentele clienților):\n☐ clientul sunat sau anunțat prin mesaj că abonamentul se termină\n☐ întrebat ce i-a plăcut și ce ar vrea altfel (notat mai jos)\n☐ propus abonamentul potrivit (lunar, trimestrial, cu ședințe) și o eventuală reducere de fidelitate\n☐ restul de plată de pe abonamentul vechi încasat, dacă mai era\n\nLa reînnoire:\n☐ rând nou în Sheets → Abonamentele clienților: data începerii, zilele, ședințele, prețul\n☐ plata încasată și trecută la „Plătit”, cu bonul sau chitanța date\n☐ prima ședință din abonamentul nou programată (Sheets → Programări clienți)\n☐ fișa clientului actualizată (Notițe → Din șablon → Fișa unui client)\n\nCe a spus clientul:\n•\n\nObservații:\n• ",
+    "Reînnoire abonament {0}"
+  ]
+}

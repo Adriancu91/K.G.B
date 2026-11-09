@@ -1,0 +1,14 @@
+{
+  "dict": {
+    "Pe lângă fișierul ales se salvează, în același dosar, câte o copie la fiecare mărime bifată, cu mărimea în nume (de exemplu poza@2x.png): utile pentru site-uri și aplicații": "Besides the chosen file, a copy at each ticked size is saved in the same folder, with the size in its name (for example picture@2x.png): useful for websites and apps",
+    "Și la mărimile:": "Also at sizes:",
+    "Câte culori are GIF-ul": "How many colors the GIF has",
+    "Câte culori are paleta GIF-ului: mai puține culori fac fișierul mai mic, dar pozele cu multe nuanțe arată mai grosier (difuzarea ajută)": "How many colors the GIF palette has: fewer colors make the file smaller, but pictures with many shades look coarser (dithering helps)"
+  },
+  "templates": {
+    "✓ Și la alte mărimi: {0}": "✓ Also at other sizes: {0}",
+    "Nu am putut salva mărimile {0} (poza ar fi prea mare sau dosarul nu se poate scrie).": "Could not save the sizes {0} (the picture would be too large or the folder cannot be written).",
+    "Și la mărimea {0}": "Also at size {0}"
+  },
+  "skip": []
+}

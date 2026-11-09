@@ -1,0 +1,10 @@
+{
+  "dict": {
+    "🥛 Predarea laptelui la colectare": "🥛 Handing over milk for collection",
+    "Ferma / crescătorul:\nCentrul de colectare:\nNumărul de animale mulse:\n\nLaptele predat:\n• cantitatea (litri):\n• temperatura la predare:\n• ora predării:\n\nÎnainte de predare:\n☐ ugerele spălate și primele jeturi aruncate\n☐ laptele strecurat și răcit sub 6 °C, cât mai repede după muls\n☐ bidoanele spălate, clătite și uscate\n☐ laptele de la animalele tratate cu medicamente pus deoparte, până trece termenul de așteptare\n☐ capacele bidoanelor bine închise\n\nLa centrul de colectare:\n☐ laptele cântărit sau măsurat de față cu noi\n☐ proba luată pentru analize (grăsime, proteine, germeni)\n☐ bonul de predare primit, cu cantitatea și data\n☐ cantitatea trecută în carnetul fermei\n\nRezultatele analizelor și plata pe luna aceasta:\n• \n": "Farm / farmer:\nCollection centre:\nNumber of animals milked:\n\nMilk handed over:\n• amount (litres):\n• temperature at handover:\n• time of handover:\n\nBefore handover:\n☐ udders washed and the first squirts discarded\n☐ milk strained and cooled below 6 °C, as soon as possible after milking\n☐ churns washed, rinsed and dried\n☐ milk from animals treated with medicines kept apart until the withdrawal period is over\n☐ churn lids tightly closed\n\nAt the collection centre:\n☐ milk weighed or measured in front of us\n☐ sample taken for testing (fat, protein, bacteria)\n☐ handover receipt received, with the amount and date\n☐ amount entered in the farm logbook\n\nTest results and payment for this month:\n• \n"
+  },
+  "templates": {
+    "Predarea laptelui {0}": "Milk handover {0}"
+  },
+  "skip": []
+}

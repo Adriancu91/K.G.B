@@ -1,0 +1,24 @@
+{
+  "dict": {
+    "Astronomie": "Astronomy",
+    "Planetă cu inele": "Ringed planet",
+    "Cometă": "Comet",
+    "Constelație": "Constellation",
+    "Observator astronomic": "Observatory",
+    "Stea căzătoare": "Shooting star",
+    "Galaxie": "Galaxy",
+    "Astronaut": "Astronaut",
+    "Fazele Lunii": "Moon phases"
+  },
+  "templates": {},
+  "skip": [
+    "planetă cu inele saturn sistem solar spațiu ringed planet saturn",
+    "cometă coadă cer noaptea comet",
+    "constelație stele carul mare harta cerului constellation stars",
+    "observator astronomic cupolă planetariu observatory dome",
+    "stea căzătoare dorință meteor shooting star wish",
+    "galaxie spirală univers calea lactee galaxy universe",
+    "astronaut cosmonaut costum spațial cască astronaut spacesuit",
+    "fazele lunii lună nouă lună plină calendar lunar moon phases"
+  ]
+}

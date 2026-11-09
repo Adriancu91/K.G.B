@@ -1,0 +1,29 @@
+{
+  "dict": {
+    "Zilele de naștere ale colegilor": "Colleagues' birthdays",
+    "Data nașterii fiecărui coleg: ies următoarea aniversare, câți ani împlinește și în câte zile; cei care au ziua azi (în verde) sau în următoarele 7 zile (în galben) și următorul sărbătorit, ca să nu uite nimeni de felicitări.": "Each colleague's date of birth: you get the next birthday, the age they turn and in how many days; those whose birthday is today (in green) or in the next 7 days (in yellow) and who is next, so nobody forgets the wishes."
+  },
+  "templates": {},
+  "skip": [
+    "Zile de naștere",
+    "Departamentul",
+    "Data nașterii",
+    "Următoarea aniversare",
+    "Împlinește (ani)",
+    "Zile rămase",
+    "Când",
+    "Cadoul / ce facem",
+    "Felicitat",
+    "Azi",
+    "În 7 zile",
+    "În 30 de zile",
+    "Colegi în listă",
+    "Au ziua azi",
+    "În următoarele 7 zile",
+    "În următoarele 30 de zile",
+    "Următorul sărbătorit",
+    "La data",
+    "Scrie data nașterii; următoarea aniversare, vârsta și zilele rămase se calculează singure.",
+    "Pentru un film de felicitare: Video → Carton → stilul Aniversare."
+  ]
+}

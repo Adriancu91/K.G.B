@@ -1,0 +1,24 @@
+{
+  "dict": {
+    "Fermă de animale": "Livestock farm",
+    "Vacă": "Cow",
+    "Porc": "Pig",
+    "Oaie": "Sheep",
+    "Găină": "Hen",
+    "Bidon de lapte": "Milk churn",
+    "Balot de fân": "Hay bale",
+    "Potcoavă": "Horseshoe",
+    "Adăpătoare": "Water trough"
+  },
+  "templates": {},
+  "skip": [
+    "vacă vaca bovine lapte grajd fermă cow cattle dairy",
+    "porc purcel porcine cocină fermă pig piglet swine",
+    "oaie miel lână stână cioban turmă sheep lamb wool flock",
+    "găină gaina cocoș pui ouă coteț păsări hen chicken poultry",
+    "bidon de lapte muls colectare lapte fermă milk churn milk can dairy",
+    "balot de fân paie furaj cosit hay bale straw fodder",
+    "potcoavă potcoava cal noroc herghelie horseshoe horse luck",
+    "adăpătoare jgheab apă iesle animale water trough feeder"
+  ]
+}

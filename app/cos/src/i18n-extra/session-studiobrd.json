@@ -1,0 +1,25 @@
+{
+ "dict": {
+  "🧾 Achiziție de la persoane fizice": "🧾 Purchase from individuals",
+  "borderou de achiziție": "purchase slip",
+  "Deșeuri cumpărate de la o persoană fizică: vânzătorul, cantitățile, prețul, impozitul reținut și declarația lui": "Waste bought from an individual: the seller, quantities, price, tax withheld and their statement",
+  "Borderou de achiziție (de la persoane fizice)": "Purchase slip (from individuals)",
+  "Deșeuri cumpărate de la o persoană fizică: vânzătorul cu actul de identitate, cantitățile, prețul, impozitul reținut și declarația lui": "Waste bought from an individual: the seller with their ID, quantities, price, tax withheld and their statement",
+  "Domiciliul": "Home address",
+  "Impozitul reținut (%), dacă se reține": "Tax withheld (%), if any",
+  "Numele și prenumele vânzătorului": "Seller full name",
+  "Plata (numerar / în cont)": "Payment (cash / bank transfer)",
+  "Vânzătorul (persoana fizică)": "Seller (individual)",
+  "Numărul următor de borderou": "Next purchase slip number",
+  "Seria borderourilor de achiziție": "Purchase slip series"
+ },
+ "templates": {},
+ "skip": [
+  "<div>Autorizația de mediu: {0}</div>",
+  "<div>Punct de colectare: {0}</div>",
+  "<tr><td colspan=\"6\" class=\"n\">Impozit reținut ({0}%)</td><td class=\"n\">{1}</td></tr>\n<tr><td colspan=\"6\" class=\"n\"><b>Rest de plată</b></td><td class=\"n\"><b>{2}</b></td></tr>",
+  "Actul de identitate",
+  "eliberată de ",
+  "Vânzătorul (numele și prenumele)"
+ ]
+}

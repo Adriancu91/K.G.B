@@ -1,0 +1,8 @@
+{
+  "dict": {
+    "Scindare: aceeași foaie în două părți, sus și jos, derulate separat (de exemplu capul tabelului sus și rândurile de la capăt jos). Încă un clic = Eliminare scindare": "Split: the same sheet in two parts, top and bottom, scrolled separately (for example the table header at the top and the last rows at the bottom). Click again = Remove Split",
+    "A doua parte a foii: se derulează separat și arată imediat ce scrii sus; dublu clic pe o celulă = o alegi sus": "The second part of the sheet: it scrolls separately and immediately shows what you type above; double-click a cell = select it above"
+  },
+  "templates": {},
+  "skip": []
+}

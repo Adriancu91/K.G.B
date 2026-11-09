@@ -1,0 +1,14 @@
+{
+  "dict": {
+    "▦ Foaie de calcul…": "▦ Spreadsheet…",
+    "Foaie de calcul: prima foaie dintr-un fișier .xlsx, .ods sau .csv intră în notiță ca tabel, cu valorile formulelor calculate": "Spreadsheet: the first sheet of an .xlsx, .ods or .csv file goes into the note as a table, with the formula values calculated"
+  },
+  "templates": {
+    "Fișierul „{0}” nu s-a putut citi: {1}": "The file “{0}” could not be read: {1}",
+    "Fișierul are peste {0} MB și nu se poate pune în notiță.": "The file is over {0} MB and cannot be put into the note.",
+    "În „{0}” nu e niciun tabel de pus în notiță (foaia e goală).": "“{0}” has no table to put into the note (the sheet is empty).",
+    "Tabelul din „{0}” e pus în notiță ({1} rânduri, {2} coloane).": "The table from “{0}” is in the note ({1} rows, {2} columns).",
+    "Tabelul din „{0}” e pus în notiță, tăiat la {1} rânduri și {2} coloane.": "The table from “{0}” is in the note, cut to {1} rows and {2} columns."
+  },
+  "skip": []
+}

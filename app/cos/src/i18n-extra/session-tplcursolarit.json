@@ -1,0 +1,10 @@
+{
+  "dict": {
+    "🏺 Curs de olărit": "🏺 Pottery class",
+    "Atelierul de ceramică:\nAdresa și telefonul:\nZiua și ora cursului:\n\nCe lucrăm:\n• obiectul (cană, bol, vas, farfurie):\n• tehnica (la roată / modelat cu mâna / din plăci de lut):\n• culorile glazurii alese:\n\nÎnainte de curs:\n☐ haine vechi sau un șorț care se poate murdări\n☐ unghiile scurte, fără inele și brățări\n☐ taxa pentru curs și pentru material plătită\n☐ un prosop și o cutie pentru piesele duse acasă\n\nDupă curs:\n☐ piesa lăsată la uscat, cu numele scris pe fund\n☐ data primei arderi aflată\n☐ glazura pusă după prima ardere\n☐ data la care piesa e gata de ridicat\n\nCe a ieșit bine și ce încercăm data viitoare:\n• ": "Pottery studio:\nAddress and phone:\nClass day and time:\n\nWhat we are making:\n• the piece (mug, bowl, vase, plate):\n• the technique (on the wheel / hand-built / from clay slabs):\n• the glaze colors chosen:\n\nBefore the class:\n☐ old clothes or an apron that can get dirty\n☐ short nails, no rings or bracelets\n☐ class and material fee paid\n☐ a towel and a box for the pieces taken home\n\nAfter the class:\n☐ piece left to dry, with the name written on the bottom\n☐ date of the first firing known\n☐ glaze applied after the first firing\n☐ date when the piece is ready for pickup\n\nWhat turned out well and what we try next time:\n• "
+  },
+  "templates": {
+    "Curs de olărit {0}": "Pottery class {0}"
+  },
+  "skip": []
+}

@@ -1,0 +1,10 @@
+{
+  "dict": {
+    "🔑 Predarea gestiunii": "🔑 Stock custody handover",
+    "Gestiunea:\nPredă:\nPrimește:\nComisia:\n\nÎnainte de predare:\n☐ decizia de numire a comisiei și a gestionarului nou semnată\n☐ toate intrările și ieșirile trecute în evidență până în ziua predării\n☐ listele de inventariere pregătite (Sheets → Listă de inventariere)\n\nLa predare:\n☐ bunurile numărate de comisie, cu ambii gestionari de față\n☐ diferențele explicate în scris (Docs → Notă explicativă a gestionarului)\n☐ procesul-verbal de inventariere semnat (Docs → Proces-verbal de inventariere)\n☐ documentele, cheile, sigiliile și numerarul predate\n☐ codul alarmei schimbat\n☐ procesul-verbal de predare-primire semnat de toți (Docs → Proces-verbal de predare-primire a gestiunii)\n\nDupă predare:\n☐ un exemplar dat la contabilitate\n☐ lipsurile rămase rezolvate (imputate sau trecute pe cheltuieli)\n\nCe a rămas de rezolvat:\n• ": "Stock location:\nHanded over by:\nTaken over by:\nCommittee:\n\nBefore the handover:\n☐ the decision naming the committee and the new storekeeper signed\n☐ all receipts and issues recorded up to the handover day\n☐ the stock count sheets ready (Sheets → Stocktaking list)\n\nAt the handover:\n☐ the goods counted by the committee, with both storekeepers present\n☐ the differences explained in writing (Docs → Stock keeper explanatory note)\n☐ the stocktaking report signed (Docs → Stocktaking report)\n☐ the documents, keys, seals and cash handed over\n☐ the alarm code changed\n☐ the handover report signed by everyone (Docs → Stock custody handover report)\n\nAfter the handover:\n☐ one copy given to accounting\n☐ the remaining shortages settled (charged to the storekeeper or expensed)\n\nStill to be settled:\n• "
+  },
+  "templates": {
+    "Predarea gestiunii {0}": "Stock custody handover {0}"
+  },
+  "skip": []
+}

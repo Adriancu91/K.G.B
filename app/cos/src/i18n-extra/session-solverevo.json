@@ -1,0 +1,9 @@
+{
+  "dict": {
+    "Automată: exactă (simplex) când formulele sunt liniare, altfel căutare în pantă. Evolutivă: o populație de soluții care se amestecă, pentru formule cu salturi (condiții DACĂ, rotunjiri, căutări în tabele), unde căutarea în pantă rămâne pe loc; mai lentă.": "Automatic: exact (simplex) when the formulas are linear, otherwise a gradient search. Evolutionary: a population of solutions that mix, for formulas with jumps (IF conditions, rounding, table lookups), where the gradient search gets stuck; slower.",
+    "Evolutivă (formule cu salturi)": "Evolutionary (formulas with jumps)",
+    "Metoda de rezolvare": "Solving method"
+  },
+  "templates": {},
+  "skip": []
+}

@@ -1,0 +1,36 @@
+{
+  "dict": {
+    "Contabile": "Accounting",
+    "De eliminat": "To be disposed of",
+    "De eliminat (termenul a trecut)": "To be disposed of (period expired)",
+    "Dosare în evidență": "Files on record",
+    "Dosarele arhivei firmei: ce conține fiecare, anul, câți ani se păstrează și unde stă; ies anul din care se poate elimina, dosarele de eliminat (în roșu), cele fără termen (în galben), cele păstrate (în verde) și câte file sunt în arhivă.": "The company archive files: what each contains, the year, how many years it is kept and where it is stored; you get the year from which it can be disposed of, the files to dispose of (in red), those without a retention period (in yellow), those kept (in green) and how many pages are in the archive.",
+    "Dosarul (ce conține)": "File (contents)",
+    "Eliminarea se face cu proces-verbal; apoi scrie „Da” la Eliminat.": "Disposal is done with a written report; then enter “Yes” under Disposed.",
+    "Eliminat": "Disposed",
+    "Eliminate": "Disposed of",
+    "Evidența arhivei": "Archive register",
+    "Fără termen de păstrare": "No retention period",
+    "Felul documentelor": "Document type",
+    "File în arhivă (fără cele eliminate)": "Pages in the archive (excluding disposed)",
+    "Fiscale": "Tax",
+    "Juridice": "Legal",
+    "Nr. de file": "No. of pages",
+    "Păstrat": "Kept",
+    "Păstrate": "Kept",
+    "Permanent": "Permanent",
+    "Permanente": "Permanent files",
+    "Personal și salarii": "Staff and payroll",
+    "Se păstrează (ani)": "Kept for (years)",
+    "Se poate elimina din": "Can be disposed of from",
+    "Termene uzuale: documentele contabile 5 ani, registrul-jurnal și inventarul 10 ani, statele de plată 50 de ani.": "Usual periods: accounting documents 5 years, the journal and inventory 10 years, payrolls 50 years.",
+    "Un dosar se poate elimina de la 1 ianuarie după anul lui plus anii de păstrare.": "A file can be disposed of from 1 January after its year plus the retention years."
+  },
+  "templates": {},
+  "skip": [
+    "=COUNTIF(I2:I{0};\"De eliminat\")",
+    "=COUNTIF(I2:I{0};\"Fără termen\")",
+    "=COUNTIF(I2:I{0};\"Păstrat\")",
+    "=IF(B{0}=\"\";\"\";IF(J{1}=\"Da\";\"Eliminat\";IF(H{2}=\"\";\"Fără termen\";IF(H{3}=\"Permanent\";\"Permanent\";IF(H{4}<=YEAR(TODAY());\"De eliminat\";\"Păstrat\")))))"
+  ]
+}

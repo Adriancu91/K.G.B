@@ -1,0 +1,10 @@
+{
+  "dict": {
+    "Pod (primul element pe malul din stânga, ultimul pe malul din dreapta, pașii dintre ele pe pod)": "Bridge (the first item on the left bank, the last on the right bank, the steps between them on the bridge)",
+    "Pod": "Bridge",
+    "pod": "bridge",
+    "De unde pornim pe malul din stânga, unde ajungem pe malul din dreapta, iar pașii dintre ele pe un pod (trecerea de la o situație la alta)": "Where we start on the left bank, where we get to on the right bank, and the steps between them on a bridge (the move from one situation to another)"
+  },
+  "templates": {},
+  "skip": []
+}

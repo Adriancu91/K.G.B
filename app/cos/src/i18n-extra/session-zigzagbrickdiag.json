@@ -1,0 +1,14 @@
+{
+  "dict": {
+    "Blocuri în zigzag (pașii de la stânga la dreapta, pe rând sus și jos)": "Zigzag blocks (the steps from left to right, alternately up and down)",
+    "Piramidă din blocuri (ideile în blocuri așezate ca o piramidă de cărămizi, de sus în jos)": "Block pyramid (the ideas in blocks laid out like a brick pyramid, from top to bottom)",
+    "Blocuri în zigzag": "Zigzag blocks",
+    "blocuri în zigzag": "zigzag blocks",
+    "Piramidă din blocuri": "Block pyramid",
+    "piramidă din blocuri": "block pyramid",
+    "Pași de la stânga la dreapta, în blocuri pe rând sus și jos (multe etape într-un spațiu mic)": "Steps from left to right, in blocks alternately up and down (many stages in a small space)",
+    "Idei în blocuri așezate ca o piramidă de cărămizi, de sus în jos (ce se sprijină pe ce)": "Ideas in blocks laid out like a brick pyramid, from top to bottom (what rests on what)"
+  },
+  "templates": {},
+  "skip": []
+}

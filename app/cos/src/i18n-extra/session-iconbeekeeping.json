@@ -1,0 +1,24 @@
+{
+  "dict": {
+    "Apicultură": "Beekeeping",
+    "Stup": "Beehive",
+    "Fagure": "Honeycomb",
+    "Borcan cu miere": "Honey jar",
+    "Afumător": "Bee smoker",
+    "Ramă de stup": "Hive frame",
+    "Pălărie de apicultor": "Beekeeper hat",
+    "Lingură pentru miere": "Honey dipper",
+    "Centrifugă de miere": "Honey extractor"
+  },
+  "templates": {},
+  "skip": [
+    "stup coșniță albine apicultor apicultura beehive hive skep",
+    "fagure faguri ceară celule hexagon honeycomb wax comb",
+    "borcan cu miere miere de albine salcâm polifloră honey jar",
+    "afumător afumator fum stupină bee smoker",
+    "ramă de stup rama faguri cadru beehive frame",
+    "pălărie de apicultor mască voal plasă protecție beekeeper hat veil",
+    "lingură pentru miere lingura dipper honey dipper spoon",
+    "centrifugă de miere centrifuga extracție extractor honey extractor"
+  ]
+}

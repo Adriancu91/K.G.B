@@ -1,0 +1,24 @@
+{
+  "dict": {
+    "Croitorie și artizanat": "Sewing and crafts",
+    "Mașină de cusut": "Sewing machine",
+    "Ac cu ață": "Needle and thread",
+    "Ghem cu andrele": "Yarn and knitting needles",
+    "Metru de croitor": "Tape measure",
+    "Manechin de croitorie": "Dress form",
+    "Degetar": "Thimble",
+    "Pistol de lipit": "Hot glue gun",
+    "Gherghef": "Embroidery hoop"
+  },
+  "templates": {},
+  "skip": [
+    "mașină de cusut croitorie atelier confecții sewing machine tailor",
+    "ac cu ață cusut de mână croitorie reparații needle thread sewing",
+    "ghem lână andrele tricotat împletit croșetat yarn knitting wool",
+    "metru de croitor centimetru panglică măsurători croitorie tape measure tailor",
+    "manechin de croitorie bust probă rochie modă atelier dress form mannequin",
+    "degetar cusut de mână croitorie thimble sewing",
+    "pistol de lipit silicon lipici cald bricolaj handmade hot glue gun",
+    "gherghef goblen broderie cusături punct în cruce embroidery hoop cross stitch"
+  ]
+}

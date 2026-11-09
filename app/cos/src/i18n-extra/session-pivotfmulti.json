@@ -1,0 +1,29 @@
+{
+  "dict": {
+    "(niciunul: toate)": "(none: all)",
+    "Bifează unul sau mai multe elemente: deasupra rezumatului apare „(Mai multe elemente)” și cifrele țin cont doar de ele. Fără bife, alegi din listă o singură valoare sau toate.": "Tick one or more items: the cell above the summary shows that several items are chosen and the figures count only those items. With nothing ticked, you pick a single value or all from the list.",
+    "Doar elementele bifate": "Only the ticked items",
+    "Elementele filtrului": "Filter items",
+    "Pune și un raport (valorile înainte și după, condițiile atinse, limitele, sensibilitatea) într-o foaie nouă": "Also add a report (values before and after, binding constraints, limits, sensitivity) on a new sheet",
+    "Fișier: .sslides, .pptx și .odp într-un singur fișier .zip": "File: .sslides, .pptx and .odp in a single .zip file",
+    "Împachetează într-o arhivă .zip…": "Package into a .zip archive…",
+    "Împachetez prezentarea: arhiva .zip…": "Packaging the presentation: .zip archive…",
+    "La fel, dar cele trei fișiere (al Cyber Office Studio, .pptx și .odp) stau într-o singură arhivă .zip, ușor de trimis sau de copiat": "Same, but the three files (Cyber Office Studio, .pptx and .odp) go into a single .zip archive, easy to send or copy"
+  },
+  "templates": {
+    "Prezentarea e împachetată în arhiva {0}.zip din dosarul ales (cu {1}.sslides, {2}.pptx și {3}.odp în ea).": "The presentation is packaged in the archive {0}.zip in the chosen folder (with {1}.sslides, {2}.pptx and {3}.odp inside)."
+  },
+  "skip": [
+    "(Mai multe elemente)",
+    "Cât poate scădea / crește fiecare celulă schimbată, cu celelalte la valoarea finală și toate condițiile respectate:",
+    "fără limită",
+    "Limita de jos",
+    "Limita de sus",
+    "Limitele",
+    "Obiectivul atunci",
+    "Cât se schimbă obiectivul dacă o celulă aflată la 0 crește cu 1 (costul redus) sau dacă partea dreaptă a unei condiții crește cu 1 (prețul umbră):",
+    "Sensibilitatea",
+    "Costul redus",
+    "Prețul umbră"
+  ]
+}

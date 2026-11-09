@@ -1,0 +1,18 @@
+{
+ "dict": {
+  "📇 Din tabel (.csv)…": "📇 From table (.csv)…",
+  "o poză": "one image",
+  "Seturi de date: câte o poză pentru fiecare rând dintr-un tabel .csv; straturile de text cu numele (sau textul) unei coloane primesc valorile ei (ecusoane, diplome, etichete)": "Data sets: one image for each row of a .csv table; text layers named after a column (or containing its name) receive its values (badges, certificates, labels)",
+  "Seturi de date: o poză pentru fiecare rând dintr-un tabel .csv…": "Data sets: one image for each row of a .csv table…",
+  "Straturile de text primesc valorile din coloanele cu același nume": "Text layers receive the values from the columns with the same name",
+  "Tabelul nu are rânduri cu date sub capul de tabel.": "The table has no data rows below the header.",
+  "Unde salvez pozele făcute din tabel?": "Where should the images made from the table be saved?"
+ },
+ "templates": {
+  " Coloane fără strat: {0}.": " Columns without a layer: {0}.",
+  "Am făcut {0} din tabel în {1} (coloane legate: {2}).{3}": "Made {0} from the table in {1} (linked columns: {2}).{3}",
+  "Nicio coloană din tabel ({0}) nu se potrivește cu numele unui strat sau cu textul unui strat de text. Redenumește straturile ca în capul tabelului.": "No column of the table ({0}) matches a layer name or the text of a text layer. Rename the layers as in the table header.",
+  "Pozele din tabel nu s-au putut salva toate în {0} (salvate: {1}).": "Not all images from the table could be saved in {0} (saved: {1})."
+ },
+ "skip": []
+}

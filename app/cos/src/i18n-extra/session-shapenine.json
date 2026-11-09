@@ -1,0 +1,13 @@
+{
+  "dict": {
+    "Schemă: Acces direct": "Flowchart: Direct Access Storage",
+    "Schemă: Arhivare": "Flowchart: Offline Storage",
+    "Schemă: Însumare": "Flowchart: Summing Junction",
+    "Schemă: Memorie internă": "Flowchart: Internal Storage",
+    "Schemă: Proces predefinit": "Flowchart: Predefined Process",
+    "Schemă: Sau": "Flowchart: Or",
+    "Teșitură": "Bevel"
+  },
+  "templates": {},
+  "skip": []
+}

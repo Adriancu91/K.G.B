@@ -1,0 +1,10 @@
+{
+  "dict": {
+    "📂 Pregătirea unui termen în instanță": "📂 Preparing for a court hearing"
+  },
+  "templates": {},
+  "skip": [
+    "Numărul dosarului:\nInstanța și sala:\nData și ora termenului:\nClientul:\nPartea adversă:\nStadiul (fond, apel, recurs):\n\nÎnainte de termen:\n☐ dosarul verificat pe portalul instanței (soluția de la termenul trecut, actele depuse de cealaltă parte)\n☐ întâmpinarea, cererile sau concluziile scrise depuse la timp\n☐ actele noi și dovezile trimise și părții adverse\n☐ taxa judiciară de timbru plătită și dovada atașată\n☐ martorii anunțați (numele, ora, adresa instanței)\n☐ clientul anunțat și împuternicirea sau delegația la dosar\n\nDupă termen:\n☐ soluția sau amânarea notată, cu data noului termen în Sheets → Termenele dosarelor\n☐ clientul informat; ce e de făcut până la termenul următor\n\nCe s-a întâmplat la termen:\n•\n\nDe făcut până la următorul termen:\n☐ ",
+    "Termen {0}"
+  ]
+}

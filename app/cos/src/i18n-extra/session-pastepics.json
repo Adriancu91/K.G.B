@@ -1,0 +1,23 @@
+{
+  "dict": {
+    "Aduce pozele din pagina de unde ai copiat (doar citite) și le pune în notiță": "Fetches the pictures from the page you copied from (read only) and puts them in the note",
+    "Fără poze": "No pictures",
+    "Lasă notița fără aceste poze": "Leave the note without these pictures",
+    "Poza a fost pusă în notiță.": "The picture was added to the note.",
+    "Pozele nu au putut fi aduse (verifică legătura la internet).": "The pictures could not be fetched (check your internet connection).",
+    "Se aduc pozele din textul lipit…": "Fetching the pictures from the pasted text…",
+    "Textul lipit are o poză de pe internet.": "The pasted text has a picture from the internet.",
+    "🖼 Adu pozele": "🖼 Get the pictures",
+    "Salvează tabelele PDF-ului (facturi, extrase de cont, liste de prețuri) direct ca foaie de calcul .xlsx, cu numerele gata de adunat": "Saves the PDF tables (invoices, bank statements, price lists) directly as an .xlsx spreadsheet, with the numbers ready to add up",
+    "Tabelele ca foaie de calcul (.xlsx)": "Tables as a spreadsheet (.xlsx)",
+    "Tabele .xlsx…": "Tables .xlsx…",
+    "Prezentare .pptx…": "Presentation .pptx…",
+    "Salvează PDF-ul direct ca prezentare .pptx: fiecare pagină devine un slide, cu rândurile de text în casete care se pot schimba și tabelele ca tabele": "Saves the PDF directly as a .pptx presentation: each page becomes a slide, with the text lines in editable boxes and the tables as tables"
+  },
+  "templates": {
+    "Am pus {0} din {1} poze; celelalte nu au răspuns.": "Added {0} of {1} pictures; the others did not respond.",
+    "Cele {0} poze au fost puse în notiță.": "The {0} pictures were added to the note.",
+    "Textul lipit are {0} poze de pe internet.": "The pasted text has {0} pictures from the internet."
+  },
+  "skip": []
+}

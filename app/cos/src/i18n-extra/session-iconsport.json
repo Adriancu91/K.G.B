@@ -1,0 +1,23 @@
+{
+  "dict": {
+    "Sport": "Sports",
+    "Rachetă de tenis": "Tennis racket",
+    "Coș de baschet": "Basketball hoop",
+    "Fluier": "Whistle",
+    "Cronometru": "Stopwatch",
+    "Podium": "Podium",
+    "Poartă de fotbal": "Football goal",
+    "Înot": "Swimming",
+    "Patină": "Ice skate"
+  },
+  "templates": {},
+  "skip": [
+    "baschet coș panou basketball hoop sport",
+    "cronometru timp cursă record stopwatch timer race",
+    "înot piscină înotător bazin swimming pool swimmer",
+    "patină patinaj gheață patinoar iarnă ice skate skating winter",
+    "poartă fotbal gol plasă handbal football soccer goal net",
+    "podium clasament câștigător premiere locul întâi podium winner ranking first place",
+    "tenis rachetă minge badminton tennis racket ball sport"
+  ]
+}

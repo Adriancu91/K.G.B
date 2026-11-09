@@ -1,0 +1,13 @@
+{
+  "dict": {
+    "Rotește poza în jurul pionezei alese (galbenă cu chenar alb); restul pozei se îndoaie lin până la celelalte pioneze": "Rotates the image around the selected pin (yellow with a white outline); the rest of the image bends smoothly up to the other pins",
+    "Rotirea pionezei": "Pin rotation",
+    "Rotirea pionezei, în grade": "Pin rotation, in degrees",
+    "Densitatea plasei": "Mesh density",
+    "Densitatea plasei: cu mai multe puncte îndoirea iese mai fină, dar Aplică durează mai mult": "Mesh density: more points give a smoother bend, but Apply takes longer",
+    "Mai multe puncte": "More points",
+    "Mai puține puncte": "Fewer points"
+  },
+  "templates": {},
+  "skip": []
+}

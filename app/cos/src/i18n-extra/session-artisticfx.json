@@ -1,0 +1,29 @@
+{
+  "dict": {
+    "Apăsarea": "Pressure",
+    "Creion colorat": "Colored Pencil",
+    "Culori în puține trepte și margini negre, ca un afiș tipărit (Poster Edges)": "Colors in a few steps and black edges, like a printed poster",
+    "Definiție": "Definition",
+    "Grosimea creionului": "Pencil width",
+    "Grosimea marginilor": "Edge thickness",
+    "Hașuri oblice în culorile pozei pe hârtie, mai dese unde poza e mai închisă (Colored Pencil)": "Diagonal hatching in the picture's colors on paper, denser where the picture is darker",
+    "Intensitatea marginilor": "Edge intensity",
+    "Luminozitatea hârtiei": "Paper brightness",
+    "Luminozitatea strălucirii": "Glow brightness",
+    "Margini de afiș": "Poster Edges",
+    "Mărimea buretelui": "Sponge size",
+    "Mărimea pensulei": "Brush size",
+    "Mărimea strălucirii": "Glow size",
+    "Mărimea tușei": "Stroke size",
+    "Moliciune": "Softness",
+    "Neon": "Neon Glow",
+    "Pete mari și plate de vopsea, puse cu spatula, cu marginile păstrate (Palette Knife)": "Large flat patches of paint laid on with a knife, edges kept",
+    "Pete plate cu urme de pensulă, ca vopseaua întinsă cu o pensulă aproape uscată (Dry Brush)": "Flat patches with brush marks, like paint spread with an almost dry brush",
+    "Poza în tonuri închise, cu marginile strălucind în culoarea aleasă (Neon Glow)": "The picture in dark tones, with the edges glowing in the chosen color",
+    "Spatulă": "Palette Knife",
+    "Trepte de culoare": "Color steps",
+    "Vopsea pusă cu buretele: pete cu goluri mici, mai închise (Sponge)": "Paint applied with a sponge: patches with small, darker holes"
+  },
+  "templates": {},
+  "skip": []
+}

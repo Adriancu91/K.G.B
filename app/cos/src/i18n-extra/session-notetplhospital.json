@@ -1,0 +1,10 @@
+{
+  "dict": {
+    "🏥 Internare în spital": "🏥 Hospital stay"
+  },
+  "templates": {},
+  "skip": [
+    "Internare {0}",
+    "Spitalul / secția: \nMedicul: \nData internării: \nTelefonul secției: \n\nActe:\n☐ buletinul și cardul de sănătate\n☐ biletul de trimitere\n☐ analizele și scrisorile medicale mai vechi\n☐ lista medicamentelor pe care le iei\n\nHaine:\n☐ pijama, halat și papuci\n☐ haine de schimb pentru ieșire\n\nIgienă:\n☐ periuța și pasta de dinți, săpunul\n☐ prosopul\n\nAltele:\n☐ încărcătorul de telefon\n☐ ochelarii / aparatul auditiv\n\nCine trebuie anunțat:\n• \n• \n\nÎntrebări pentru medic:\n• \n"
+  ]
+}

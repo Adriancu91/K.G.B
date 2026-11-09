@@ -1,0 +1,24 @@
+{
+  "dict": {
+    "Olărit și ceramică": "Pottery and ceramics",
+    "Roată de olar": "Potter's wheel",
+    "Ulcior": "Clay jug",
+    "Cuptor de ars ceramică": "Pottery kiln",
+    "Vas glazurat": "Glazed vase",
+    "Farfurie pictată": "Painted plate",
+    "Bol de ceramică": "Ceramic bowl",
+    "Unelte de modelat": "Clay modeling tools",
+    "Bulgăre de lut": "Clay lump"
+  },
+  "templates": {},
+  "skip": [
+    "roată de olar strung olărit potter wheel throwing",
+    "ulcior de lut cană țărănească clay jug pitcher",
+    "cuptor de ars ardere oale pottery kiln firing",
+    "vas glazurat smălțuit glazură oală decorată glazed vase",
+    "farfurie pictată decorată ceramică populară painted plate",
+    "bol de ceramică castron lucrat manual ceramic bowl handmade",
+    "unelte de modelat lut buclă spatulă clay modeling tools",
+    "bulgăre de lut argilă materie primă clay lump"
+  ]
+}

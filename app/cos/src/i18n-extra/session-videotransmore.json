@@ -1,0 +1,16 @@
+{
+  "dict": {
+    "Cortină de jos": "Wipe up",
+    "Cortină în diagonală": "Diagonal wipe",
+    "Jaluzele verticale": "Vertical blinds",
+    "Cerc spre interior": "Circle in",
+    "Dreptunghi": "Box",
+    "Romb": "Diamond",
+    "Ceas": "Clock",
+    "Despicare": "Split",
+    "Descoperire": "Reveal",
+    "Acoperire de jos": "Cover up"
+  },
+  "templates": {},
+  "skip": []
+}

@@ -1,0 +1,10 @@
+{
+  "dict": {
+    "Text din fișier: tot conținutul altui document (.docx, .odt, .rtf, .txt) sau al unui e-mail (.eml, .msg), cu formatarea, tabelele și pozele, pus la cursor": "Text from file: the whole content of another document (.docx, .odt, .rtf, .txt) or of an email (.eml, .msg), with its formatting, tables and pictures, placed at the cursor"
+  },
+  "templates": {
+    "„{0}” are peste {1} MB și nu se poate pune în notiță.": "“{0}” is over {1} MB and cannot be put into the note.",
+    "E-mailul „{0}” nu s-a putut citi: {1}": "The email “{0}” could not be read: {1}"
+  },
+  "skip": []
+}

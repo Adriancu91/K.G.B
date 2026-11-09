@@ -1,0 +1,13 @@
+{
+  "dict": {
+    "＋ Adaugă cu pensula": "＋ Add with brush",
+    "− Scoate cu pensula": "− Remove with brush",
+    "✕ Fără pensule": "✕ No brushes",
+    "Pensulele zonei de focalizare": "Focus area brushes",
+    "Pictează pe previzualizare locurile care nu trebuie selectate (de exemplu o parte clară din fundal)": "Paint on the preview the places that must not be selected (for example a sharp part of the background)",
+    "Pictează pe previzualizare locurile care trebuie selectate, deși nu sunt găsite singure": "Paint on the preview the places that must be selected, even though they are not found automatically",
+    "Scoate toate trăsăturile pensulelor": "Remove all brush strokes"
+  },
+  "templates": {},
+  "skip": []
+}

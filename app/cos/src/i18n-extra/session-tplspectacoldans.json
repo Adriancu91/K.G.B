@@ -1,0 +1,10 @@
+{
+  "dict": {
+    "💃 Spectacolul de dans": "💃 Dance show",
+    "Școala sau clubul de dans:\nSala și adresa:\nData și ora (repetiția generală / spectacolul):\n\nGrupa și dansul:\n• grupa (vârsta, nivelul) și instructorul:\n• numele dansului și muzica:\n• locul în program (al câtelea număr):\n\nCu o săptămână înainte:\n☐ costumul gata, încercat și cu numele scris pe el\n☐ încălțămintea potrivită (poante, pantofi de step, pantofi de dans) curată\n☐ taxa pentru spectacol și pentru costum plătită\n☐ biletele sau invitațiile pentru familie luate\n☐ ora repetiției generale știută\n\nÎn ziua spectacolului:\n☐ sosiți la sală cu cel puțin o oră înainte\n☐ părul și machiajul făcute după cerința instructorului\n☐ apă, o gustare și haine de schimb în geantă\n☐ copilul predat în culise și ora de ridicare stabilită\n\nCum a mers și ce reținem pentru anul viitor:\n• ": "Dance school or club:\nVenue and address:\nDate and time (dress rehearsal / show):\n\nGroup and dance:\n• group (age, level) and instructor:\n• name of the dance and the music:\n• place in the programme (which number):\n\nA week before:\n☐ costume ready, tried on and with the name written on it\n☐ the right footwear (pointe shoes, tap shoes, dance shoes) clean\n☐ show and costume fee paid\n☐ tickets or invitations for the family collected\n☐ dress rehearsal time known\n\nOn the day of the show:\n☐ arrive at the venue at least an hour early\n☐ hair and make-up done as the instructor asked\n☐ water, a snack and a change of clothes in the bag\n☐ child handed over backstage and pick-up time agreed\n\nHow it went and what we remember for next year:\n• "
+  },
+  "templates": {
+    "Spectacolul de dans {0}": "Dance show {0}"
+  },
+  "skip": []
+}

@@ -1,0 +1,12 @@
+{
+  "dict": {
+    "Limba de verificare a textului ales: de exemplu un pasaj în engleză, sau „Nu verifica ortografia” pentru nume, coduri și adrese. Se păstrează în .docx.": "Proofing language of the selected text: for example a passage in English, or “Do not check spelling” for names, codes and addresses. Kept in .docx.",
+    "Limba textului ales": "Language of the selected text",
+    "Nu verifica ortografia": "Do not check spelling",
+    "Română (Republica Moldova)": "Romanian (Moldova)",
+    "Galben intens": "Intense yellow",
+    "Turcoaz intens": "Intense teal"
+  },
+  "templates": {},
+  "skip": []
+}

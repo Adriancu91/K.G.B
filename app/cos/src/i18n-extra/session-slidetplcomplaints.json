@@ -1,0 +1,30 @@
+{
+  "dict": {
+    "[Clientul 3]: [ce a reclamat] → [încă deschisă, până la data]": "[Customer 3]: [what they complained about] → [still open, until date]",
+    "[instruirea echipei / procedura nouă]": "[team training / the new procedure]",
+    "[Schimbarea transportatorului / furnizorului] · [buget pentru …] · întrebări: [nume] · [telefon]": "[Changing the carrier / supplier] · [budget for …] · questions: [name] · [phone]",
+    "[verificarea înainte de livrare]": "[the check before delivery]",
+    "Alege doar reclamațiile mari sau cele care se repetă.": "Pick only the big complaints or the ones that keep coming back.",
+    "Analiza reclamațiilor": "Complaints analysis",
+    "Analiza reclamațiilor · [luna / trimestrul] [anul]": "Complaints analysis · [month / quarter] [year]",
+    "Cât ne-au costat": "What they cost us",
+    "Câte": "How many",
+    "Ce schimbăm": "What we change",
+    "Cifrele vin din Sheets → Registrul reclamațiilor, din tabelul Pe scurt.": "The figures come from Sheets → Complaints register, from the In short table.",
+    "De unde vin reclamațiile": "Where the complaints come from",
+    "Față de perioada trecută: [mai multe / mai puține cu …]": "Compared with the previous period: [more / fewer by …]",
+    "În medie: [zile] zile": "On average: [days] days",
+    "Închise: [câte] · deschise: [câte]": "Closed: [how many] · open: [how many]",
+    "La noi:": "On our side:",
+    "La parteneri:": "With partners:",
+    "Pentru administrator sau ședința lunară: câte reclamații au venit și câte s-au rezolvat la timp, cauzele într-un tabel și într-un grafic, cât ne-au costat, reclamațiile importante și ce schimbăm ca să nu se repete.": "For the manager or the monthly meeting: how many complaints came in and how many were resolved on time, the causes in a table and a chart, what they cost us, the important complaints and what we change so they do not happen again.",
+    "Răspunsurile trimise: Docs → Răspuns la reclamația unui client": "Replies sent: Docs → Reply to a customer complaint",
+    "Reclamații (număr)": "Complaints (count)",
+    "Reclamații primite: [câte]": "Complaints received: [how many]",
+    "Reclamațiile importante": "The important complaints",
+    "Reclamațiile pe cauze": "Complaints by cause",
+    "Spune de la început câte reclamații au fost și dacă sunt mai multe sau mai puține decât înainte.": "Say at the start how many complaints there were and whether there are more or fewer than before."
+  },
+  "templates": {},
+  "skip": []
+}

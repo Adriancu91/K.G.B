@@ -1,0 +1,14 @@
+{
+  "dict": {
+    "Listă cu sferturi de cerc (numărul pe un sfert de cerc, textul într-o bandă alături)": "Quarter circle list (the number on a quarter circle, the text in a band beside it)",
+    "Listă cu plăcuțe cu un colț tăiat și unul rotunjit (numărul pe o plăcuță cu colțul din stânga sus rotunjit și cel din dreapta sus tăiat, textul într-o bandă alături)": "Snipped and rounded plate list (the number on a plate with the top left corner rounded and the top right corner cut off, the text in a band beside it)",
+    "Listă cu sferturi de cerc": "Quarter circle list",
+    "Listă cu plăcuțe cu un colț tăiat și unul rotunjit": "Snipped and rounded plate list",
+    "listă cu sferturi de cerc": "quarter circle list",
+    "listă cu plăcuțe cu un colț tăiat și unul rotunjit": "snipped and rounded plate list",
+    "Puncte una sub alta: numărul pe un sfert de cerc, iar alături textul": "Points one below the other: the number on a quarter circle, with the text beside it",
+    "Puncte una sub alta: numărul pe o plăcuță cu colțul din stânga sus rotunjit și cel din dreapta sus tăiat, iar alături textul": "Points one below the other: the number on a plate with the top left corner rounded and the top right corner cut off, with the text beside it"
+  },
+  "templates": {},
+  "skip": []
+}

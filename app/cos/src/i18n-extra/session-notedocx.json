@@ -1,0 +1,11 @@
+{
+  "dict": {
+    "Notița ca document .docx (titlu, text formatat, liste, tabele, poze), direct, fără să treacă prin Docs": "The note as a .docx document (title, formatted text, lists, tables, pictures), directly, without going through Docs",
+    "Notița ca document .odt (titlu, text formatat, liste, tabele, poze), direct, fără să treacă prin Docs": "The note as an .odt document (title, formatted text, lists, tables, pictures), directly, without going through Docs"
+  },
+  "templates": {
+    "Notița e salvată ca .{0}.": "The note is saved as .{0}.",
+    "Notița nu s-a putut salva ca .{0}: {1}": "The note could not be saved as .{0}: {1}"
+  },
+  "skip": []
+}

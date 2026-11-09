@@ -1,0 +1,30 @@
+{
+ "dict": {
+  "Ce livrează": "What they deliver",
+  "Cel mai bun furnizor": "Best supplier",
+  "Clasa": "Class",
+  "Clasa A (preferați)": "Class A (preferred)",
+  "Clasa A de la 85 de puncte, clasa B de la 70; sub 70 furnizorul e clasa C și se caută altul (Sheets → Compararea ofertelor).": "Class A from 85 points, class B from 70; below 70 the supplier is class C and you look for another one (Sheets → Offer comparison).",
+  "Clasa B (acceptați)": "Class B (accepted)",
+  "Clasa C (de înlocuit)": "Class C (to replace)",
+  "Decizia": "Decision",
+  "Evaluarea furnizorilor": "Supplier evaluation",
+  "Furnizori evaluați": "Suppliers evaluated",
+  "Furnizorii notați la sfârșit de an sau de trimestru: din livrările la termen și cele fără neconformități, plus notele pentru preț și colaborare, iese punctajul din 100 și clasa: A preferat (în verde), B acceptat (în galben) sau C de înlocuit (în roșu), cu cel mai bun furnizor în dreapta.": "Suppliers rated at the end of the year or quarter: on-time deliveries and deliveries without nonconformities, plus the ratings for price and cooperation, give the score out of 100 and the class: A preferred (green), B accepted (yellow) or C to replace (red), with the best supplier on the right.",
+  "La termen (%)": "On time (%)",
+  "Livrări fără neconformități": "Deliveries without nonconformities",
+  "Livrări în perioadă": "Deliveries in the period",
+  "Livrări la termen": "On-time deliveries",
+  "Livrările și întârzierile se iau din notele de recepție (Sheets → Notă de recepție); neconformitățile, din notificările trimise furnizorilor.": "Deliveries and delays are taken from the goods receipt notes (Sheets → Goods receipt note); nonconformities, from the notices sent to suppliers.",
+  "Nota pentru colaborare (1–5)": "Cooperation rating (1–5)",
+  "Nota pentru preț (1–5)": "Price rating (1–5)",
+  "Preferat": "Preferred",
+  "Punctaj (din 100)": "Score (out of 100)",
+  "Punctajul mediu": "Average score",
+  "Punctajul: 35% livrările la termen, 35% livrările fără neconformități, 20% prețul și 10% colaborarea (răspunsuri, documente, rezolvarea reclamațiilor).": "The score: 35% on-time deliveries, 35% deliveries without nonconformities, 20% price and 10% cooperation (replies, documents, handling of complaints)."
+ },
+ "templates": {},
+ "skip": [
+  "=IF(L{0}=\"\";\"\";IF(L{1}=\"A\";\"Preferat\";IF(L{2}=\"B\";\"Acceptat\";\"De înlocuit\")))"
+ ]
+}

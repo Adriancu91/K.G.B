@@ -1,0 +1,15 @@
+{
+  "dict": {
+    "Fișierul nu are sarcini (.ics fără VTODO).": "The file has no tasks (.ics without VTODO).",
+    "N-am găsit în notiță sarcinile din fișier (au fost exportate din Suite, cu Export sarcini?).": "The tasks in the file were not found in this note (were they exported from Suite, with Export tasks?).",
+    "redeschisă": "reopened",
+    "sarcină bifată": "task checked",
+    "Sarcinile bifate în programul de calendar, aduse înapoi: alegi fișierul .ics cu ele (exportat de acolo), iar rândurile notiței se bifează sau se debifează la fel": "Tasks checked in your calendar app, brought back: choose the .ics file with them (exported from there), and the note's lines are checked or unchecked the same way",
+    "Sarcinile din fișier sunt ale altei notițe: deschide notița din care le-ai exportat și încearcă din nou.": "The tasks in the file belong to another note: open the note you exported them from and try again."
+  },
+  "templates": {
+    "Din calendar: {0} {1}, {2} {3}.": "From the calendar: {0} {1}, {2} {3}.",
+    "Sarcinile notiței erau deja la zi cu calendarul ({0} găsite).": "The note's tasks were already up to date with the calendar ({0} found)."
+  },
+  "skip": []
+}

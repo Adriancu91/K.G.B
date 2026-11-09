@@ -1,0 +1,32 @@
+{
+  "dict": {
+    "Clienți de revenit": "Customers to follow up",
+    "Comandă": "Order",
+    "Comanda medie": "Average order",
+    "Comenzile se trec apoi la vânzările agentului (Sheets → Comisioanele agenților).": "Orders are then added to the agent's sales (Sheets → Sales agent commissions).",
+    "Data vizitei": "Visit date",
+    "De revenit": "Follow up",
+    "Din vizite, cu comandă": "Share of visits with an order",
+    "Fără rezultat": "No result",
+    "Fiecare vizită a agenților: data, clientul, scopul și rezultatul din listă, valoarea comenzii și data următoarei vizite; cele întârziate ies în roșu, cele din săptămâna asta în galben, iar în dreapta câte vizite s-au încheiat cu comandă.": "Every visit by the sales agents: the date, the customer, the purpose and the result from a list, the order value and the date of the next visit; overdue visits show in red, this week's in yellow, and on the right how many visits ended with an order.",
+    "Încasare": "Collection",
+    "Ofertă": "Quote",
+    "Ofertă cerută": "Quote requested",
+    "Planul vizitelor la clienți": "Customer visit plan",
+    "Scrie data următoarei vizite: cele întârziate ies în roșu, cele din săptămâna asta în galben.": "Enter the date of the next visit: overdue ones show in red, this week's in yellow.",
+    "Un rând pe vizită: data, agentul, clientul și ce s-a ales; valoarea doar la comenzi.": "One row per visit: the date, the agent, the customer and the outcome; the value only for orders.",
+    "Următoarea vizită": "Next visit",
+    "Valoarea comenzii": "Order value",
+    "Valoarea comenzilor": "Value of orders",
+    "Vizite": "Visits",
+    "Vizite cu comandă": "Visits with an order",
+    "Vizite întârziate": "Overdue visits",
+    "Vizite trecute în tabel": "Visits entered",
+    "Zile până atunci": "Days left"
+  },
+  "templates": {},
+  "skip": [
+    "=COUNTIF(G2:G{0};\"Comandă\")",
+    "=COUNTIF(G2:G{0};\"De revenit\")+COUNTIF(G2:G{1};\"Ofertă cerută\")"
+  ]
+}

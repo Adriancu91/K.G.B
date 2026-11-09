@@ -1,0 +1,10 @@
+{
+  "dict": {
+    "🔒 Casa înainte de plecare": "🔒 The house before you leave"
+  },
+  "templates": {},
+  "skip": [
+    "Plecăm: \nNe întoarcem: \nCine are cheia de rezervă: \n\nApă, gaz, curent:\n☐ robinetul de apă închis\n☐ gazul oprit / centrala pe modul vacanță\n☐ aparatele scoase din priză (televizor, router, încărcătoare)\n☐ frigiderul golit de ce se strică\n\nCasa:\n☐ geamurile și ușa de la balcon închise\n☐ gunoiul dus\n☐ plantele udate sau lăsate la vecini\n☐ cineva ia poșta din cutie\n\nAnimale:\n☐ cine are grijă de ele: \n\nNumere utile:\n• vecin: \n• administrator: \n",
+    "Plecare {0}"
+  ]
+}

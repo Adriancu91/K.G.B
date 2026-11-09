@@ -1,0 +1,10 @@
+{
+  "dict": {
+    "🎄 Crăciun": "🎄 Christmas"
+  },
+  "templates": {},
+  "skip": [
+    "Unde petrecem: \nCâți suntem: \nBuget: \n\nCadouri (☐ = cumpărat):\n☐ \n☐ \n☐ \n\nMeniul:\n• sarmalele și friptura: \n• cozonacul și prăjiturile: \n• băuturi: \n\nDe pregătit:\n☐ bradul și ornamentele\n☐ luminițele\n☐ felicitările\n☐ cumpărăturile pentru masă\n☐ curățenia\n\nColinde și vizite:\n• \n",
+    "Crăciun {0}"
+  ]
+}

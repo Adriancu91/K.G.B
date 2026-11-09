@@ -1,0 +1,16 @@
+{
+  "dict": {
+    "✎ Deschide foaia legată": "✎ Open linked sheet",
+    "Deschide foaia legată: fișierul tabelului în care e cursorul se deschide în Sheets, într-un tab nou; după ce îl schimbi și îl salvezi, ↻ Actualizează foile legate aduce tabelul la zi": "Open linked sheet: the file of the table the cursor is in opens in Sheets, in a new tab; after you change and save it, ↻ Update linked sheets brings the table up to date",
+    "Deschide foaia legată: fișierul tabelului ales se deschide în Sheets, într-un tab nou; după ce îl schimbi și îl salvezi, ↻ Actualizează foile legate aduce tabelul la zi": "Open linked sheet: the file of the selected table opens in Sheets, in a new tab; after you change and save it, ↻ Update linked sheets brings the table up to date",
+    "Pune cursorul în tabelul legat pe care vrei să-l schimbi.": "Put the cursor in the linked table you want to change.",
+    "Alege pe slide tabelul legat pe care vrei să-l schimbi.": "Select on the slide the linked table you want to change.",
+    "Deschide în Sheets fișierul din care e pus tabelul (într-un tab nou sau în cel deja deschis); după ce îl schimbi și îl salvezi, ↻ Reîmprospătează foile aduce tabelul la zi": "Open in Sheets the file the table comes from (in a new tab or in the one already open); after you change and save it, ↻ Refresh sheets brings the table up to date"
+  },
+  "templates": {
+    "Foaia „{0}” e deschisă în Sheets: schimb-o, salveaz-o, apoi aici ↻ Actualizează foile legate.": "The sheet “{0}” is open in Sheets: change it, save it, then here ↻ Update linked sheets.",
+    "„{0}” nu se poate deschide aici.": "“{0}” cannot be opened here.",
+    "Foaia „{0}” e deschisă în Sheets: schimb-o, salveaz-o, apoi aici ↻ Reîmprospătează foile.": "The sheet “{0}” is open in Sheets: change it, save it, then here ↻ Refresh sheets."
+  },
+  "skip": []
+}

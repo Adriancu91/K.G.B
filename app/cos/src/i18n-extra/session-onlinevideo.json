@@ -1,0 +1,17 @@
+{
+  "dict": {
+    "Video online": "Online video",
+    "▶ Video online": "▶ Online video",
+    "Lipește adresa clipului (de pe un site video). Intră în document coperta clipului și legătura spre el; clipul pornește în browser.": "Paste the address of the clip (from a video site). The clip's cover and a link to it go into the document; the clip plays in the browser.",
+    "Video online: adresa unui clip; intră coperta lui (poza, ▶ și titlul) și legătura spre el": "Online video: the address of a clip; its cover (picture, ▶ and title) and a link to it are inserted",
+    "Adresa trebuie să fie o pagină web (de exemplu https://… ).": "The address must be a web page (for example https://… ).",
+    "Coperta nu s-a putut desena.": "The cover could not be drawn.",
+    "Lipește adresa clipului (de pe un site video). Pe slide intră coperta clipului; în prezentare, un clic pe ea pornește clipul în browser.": "Paste the address of the clip (from a video site). The clip's cover goes on the slide; in the slide show, a click on it plays the clip in the browser.",
+    "Video online: adresa unui clip; pe slide intră coperta lui, iar în prezentare clic pe ea pornește clipul în browser": "Online video: the address of a clip; its cover goes on the slide, and in the slide show a click on it plays the clip in the browser",
+    "Se aduce coperta clipului…": "Fetching the clip's cover…"
+  },
+  "templates": {
+    "Clipul „{0}” e pe slide; în prezentare, clic pe el îl pornește în browser": "The clip “{0}” is on the slide; in the slide show, click it to play it in the browser"
+  },
+  "skip": []
+}

@@ -1,0 +1,33 @@
+{
+  "dict": {
+    "Articolul nu mai e în fișier.": "The article is no longer in the file.",
+    "Pagina nu există.": "The page does not exist.",
+    "Toată pagina": "Whole page",
+    " Alege partea din pagină și apasă „+ Articol nou”.": " Choose the part of the page and press “+ New article”.",
+    "+ Articol nou (pagina": "+ New article (page",
+    "Articole": "Articles",
+    "Caseta de dinainte": "Previous box",
+    "Caseta următoare (unde continuă textul)": "Next box (where the text continues)",
+    "Ce parte din pagina deschisă ia caseta nouă (la „+ Articol nou” și la ＋)": "Which part of the open page the new box takes (for “+ New article” and ＋)",
+    "Începe un articol nou cu o casetă pe pagina deschisă acum": "Start a new article with a box on the page open now",
+    "Numele articolului": "Article name",
+    "Numele articolului nou": "Name of the new article",
+    "Partea din pagină pentru caseta nouă": "Part of the page for the new box",
+    "PDF-ul nu are articole (casete de text care se citesc în ordine, de la o pagină la alta).": "The PDF has no articles (text boxes read in order, from one page to another).",
+    "Scoate caseta arătată acum": "Remove the box shown now",
+    "Șterge articolul (textul din pagini rămâne)": "Delete the article (the text on the pages stays)"
+  },
+  "templates": {
+    "Articolul {0}": "Article {0}",
+    "Un articol poate avea cel mult {0} de casete.": "An article can have at most {0} boxes.",
+    "Un PDF poate avea cel mult {0} de articole aici.": "A PDF can have at most {0} articles here.",
+    "Adaugă la sfârșitul articolului o casetă pe pagina deschisă acum ({0}), în partea aleasă mai jos": "Add a box at the end of the article on the page open now ({0}), in the part chosen below",
+    "Articolul „{0}”: casete {1}, pe paginile {2}": "Article “{0}”: boxes {1}, on pages {2}",
+    "Închide grupul de unelte {0} și revino la lista tuturor uneltelor": "Close the {0} tools and go back to the list of all tools"
+  },
+  "skip": [
+    "Bead",
+    "Thread",
+    "Threads"
+  ]
+}

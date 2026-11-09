@@ -1,0 +1,20 @@
+{
+  "dict": {
+    "Al treilea câmp pe rânduri": "Third row field",
+    "% din totalul părintelui": "% of parent total",
+    "% din totalul cumulat": "% running total",
+    "% din elementul ales": "% of the chosen item",
+    "Diferența față de elementul ales": "Difference from the chosen item",
+    "% diferență față de elementul ales": "% difference from the chosen item",
+    "Elementul de bază": "Base item",
+    "Elementul de bază: fiecare rând se compară cu valoarea acestui rând (100% sau diferența 0 la el)": "Base item: each row is compared with the value of this row (100% or a difference of 0 on it)",
+    "Față de": "Compared with",
+    "Al treilea câmp pe rânduri: fiecare valoare a celui de-al doilea câmp se împarte după valorile acestei coloane, cu subtotalul ei": "Third row field: each value of the second field is split by the values of this column, with its subtotal"
+  },
+  "templates": {},
+  "skip": [
+    ", „{0}” și „{1}”",
+    "{0} din „{1}” pe {2}{3}{4}",
+    "Rezumat pe {0}: {1}{2}"
+  ]
+}

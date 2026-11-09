@@ -1,0 +1,33 @@
+{
+ "dict": {
+  "Carburantul, reparațiile, asigurările și taxele mașinilor firmei, cu documentul și TVA-ul: la folosința mixtă ies 50% TVA de dedus și 50% cheltuială deductibilă, la cea exclusiv pentru firmă 100%; în dreapta TVA-ul de dedus și cel nedeductibil, cheltuielile deductibile și nedeductibile și totalul pe feluri.": "Fuel, repairs, insurance and taxes for the company vehicles, with the document and the VAT: with mixed use you get 50% deductible VAT and 50% deductible expense, with business use only 100%; on the right the VAT to deduct and the non-deductible VAT, the deductible and non-deductible expenses and the total by type.",
+  "Cheltuiala (cu TVA nededus)": "Expense (incl. non-deducted VAT)",
+  "Cheltuială deductibilă": "Deductible expense",
+  "Cheltuială nedeductibilă": "Non-deductible expense",
+  "Cheltuieli auto": "Vehicle expenses",
+  "Cheltuieli auto (TVA și deductibilitate)": "Vehicle expenses (VAT and deductibility)",
+  "Cheltuieli deductibile": "Deductible expenses",
+  "Cheltuieli nedeductibile": "Non-deductible expenses",
+  "Documente trecute": "Documents entered",
+  "Exclusiv pentru firmă": "Business use only",
+  "Exclusiv pentru firmă se alege doar pentru mașinile cu foaie de parcurs pentru fiecare drum (Sheets → Foaie de parcurs) sau pentru cele care intră în excepțiile legii (de exemplu agenți de vânzări, transport, taxi).": "Choose business use only just for vehicles with a logbook for every trip (Sheets → Mileage log) or for those covered by the legal exceptions (for example sales agents, transport, taxi).",
+  "Folosința": "Use",
+  "Folosința goală se socotește mixtă: la o mașină folosită și în scop personal se deduce doar jumătate din TVA, iar cheltuiala (cu TVA-ul nededus) e deductibilă tot pe jumătate.": "An empty use counts as mixed: for a vehicle also used privately only half of the VAT is deducted, and the expense (with the non-deducted VAT) is also deductible by half.",
+  "Mașina (nr. de înmatriculare)": "Vehicle (registration no.)",
+  "Mixtă (50%)": "Mixed (50%)",
+  "Regulile și excepțiile se schimbă: verificați cu contabilul felul în care se trec mașinile firmei.": "The rules and exceptions change: check with your accountant how the company vehicles are recorded.",
+  "Reparații și piese": "Repairs and parts",
+  "Spălătorie și parcare": "Car wash and parking",
+  "Taxe și rovinietă": "Taxes and road vignette",
+  "Total plătit": "Total paid",
+  "TVA de dedus": "VAT to deduct",
+  "🚘 Mașinile firmei la sfârșit de lună": "🚘 Company vehicles at month end",
+  "Luna:\nMașinile:\n\nDocumentele:\n☐ bonurile de carburant și facturile de service strânse, pe firmă și cu numărul mașinii\n☐ toate trecute în tabel, cu felul și folosința (Sheets → Cheltuieli auto (TVA și deductibilitate))\n☐ foile de parcurs completate pentru mașinile „Exclusiv pentru firmă” (Sheets → Foaie de parcurs)\n\nVerificări:\n☐ consumul lunii comparat cu kilometrii parcurși (Sheets → Consum carburant)\n☐ ITP-ul, RCA-ul și rovinieta valabile și luna viitoare (Notițe → Mașina: acte și revizii)\n☐ revizia următoare programată, după kilometri (Sheets → Revizii și reparații auto)\n\nPentru contabil:\n☐ TVA-ul de dedus și cel nedeductibil din „Pe scurt” trimise contabilului\n☐ documentele date contabilului, cu foile de parcurs\n\nObservații:\n• ": "Month:\nVehicles:\n\nDocuments:\n☐ fuel receipts and service invoices collected, in the company's name and with the vehicle number\n☐ all entered in the table, with the type and the use (Sheets → Vehicle expenses (VAT and deductibility))\n☐ mileage logs filled in for the “Business use only” vehicles (Sheets → Mileage log)\n\nChecks:\n☐ the month's consumption compared with the kilometres driven (Sheets → Fuel consumption)\n☐ inspection, insurance and road vignette valid next month too (Notes → Car: papers and servicing)\n☐ next service scheduled, by kilometres (Sheets → Car service and repairs)\n\nFor the accountant:\n☐ VAT to deduct and non-deductible VAT from “Summary” sent to the accountant\n☐ documents handed to the accountant, with the mileage logs\n\nNotes:\n• "
+ },
+ "templates": {
+  "Mașinile firmei {0}": "Company vehicles {0}"
+ },
+ "skip": [
+  "IF(F{0}=\"Exclusiv pentru firmă\";1;0.5)"
+ ]
+}

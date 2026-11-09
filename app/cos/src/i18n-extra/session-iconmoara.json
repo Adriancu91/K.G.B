@@ -1,0 +1,23 @@
+{
+  "dict": {
+    "Moară și cereale": "Mill and grain",
+    "Moară de apă": "Water mill",
+    "Piatră de moară": "Millstone",
+    "Sită de făină": "Flour sieve",
+    "Căuș cu boabe": "Grain scoop",
+    "Știulete de porumb": "Corn cob",
+    "Siloz de cereale": "Grain silo",
+    "Coș de moară": "Mill hopper"
+  },
+  "templates": {},
+  "skip": [
+    "moară de vânt cu aripi veche sat windmill",
+    "moară de apă roată pârâu râu water mill wheel",
+    "pietre de moară râșniță măcinat millstone grinding",
+    "sită de făină cernut ciur flour sieve",
+    "căuș cu boabe cereale grâu porumb măsură grain scoop",
+    "știulete de porumb mălai boabe corn cob maize",
+    "siloz de cereale depozit grâne magazie grain silo",
+    "coș de moară pâlnie boabe măcinat mill hopper"
+  ]
+}

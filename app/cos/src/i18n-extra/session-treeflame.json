@@ -1,0 +1,26 @@
+{
+  "dict": {
+    "Copac": "Tree",
+    "Flăcări": "Flames",
+    "Desenează foc peste poză: de-a lungul marginii de jos, o flacără sau o lumânare; focul doar luminează, ca lumina adevărată (Flame)": "Draws fire over the picture: along the bottom edge, a single flame or a candle; the fire only brightens, like real light",
+    "Desenează un copac peste poză: trunchi, ramuri și frunze, după tipul ales; alt model dă alt copac (Tree)": "Draws a tree over the picture: trunk, branches and leaves, by the chosen type; another pattern gives another tree",
+    "Frunze": "Leaves",
+    "Grosimea trunchiului": "Trunk thickness",
+    "Înălțimea flăcărilor": "Flame height",
+    "Lățimea (o flacără, lumânare)": "Width (single flame, candle)",
+    "Locul (o flacără, lumânare)": "Position (single flame, candle)",
+    "Tipul copacului": "Tree type",
+    "Albastră (gaz)": "Blue (gas)",
+    "Brad": "Fir",
+    "Copac de toamnă": "Autumn tree",
+    "Copac fără frunze": "Bare tree",
+    "Foc de-a lungul marginii de jos": "Fire along the bottom edge",
+    "Lumânare (flacără liniștită)": "Candle (calm flame)",
+    "Mesteacăn": "Birch",
+    "Naturală": "Natural",
+    "O flacără": "Single flame",
+    "Stejar (coroană largă)": "Oak (wide crown)"
+  },
+  "templates": {},
+  "skip": []
+}

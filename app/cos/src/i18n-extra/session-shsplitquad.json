@@ -1,0 +1,11 @@
+{
+  "dict": {
+    "Patru panouri": "Four panes",
+    "Patru panouri: aceeași foaie în patru părți; cele de sus se derulează împreună în jos, cele din stânga împreună spre dreapta (de exemplu capul tabelului și prima coloană rămân la vedere oriunde te duci). Încă un clic = Eliminare scindare": "Four panes: the same sheet in four parts; the top ones scroll down together, the left ones scroll right together (for example the table header and the first column stay in view wherever you go). Click again = Remove split",
+    "Dreapta jos: rândurile din stânga jos și coloanele din dreapta sus; clic pe o celulă = scrii în ea aici, dublu clic = o alegi în foaie": "Bottom right: the rows of the bottom left and the columns of the top right; click a cell = type in it here, double-click = select it in the sheet",
+    "Dreapta sus: aceleași rânduri ca foaia din stânga, alte coloane; clic pe o celulă = scrii în ea aici, dublu clic = o alegi în foaie": "Top right: the same rows as the sheet on the left, other columns; click a cell = type in it here, double-click = select it in the sheet",
+    "Stânga jos: aceleași coloane ca foaia de sus, alte rânduri; clic pe o celulă = scrii în ea aici, dublu clic = o alegi sus": "Bottom left: the same columns as the sheet above, other rows; click a cell = type in it here, double-click = select it above"
+  },
+  "templates": {},
+  "skip": []
+}

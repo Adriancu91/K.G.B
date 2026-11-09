@@ -1,0 +1,35 @@
+{
+  "dict": {
+    "Educație": "Education",
+    "Sănătate": "Health",
+    "Tichie de absolvent": "Graduation cap",
+    "Școală": "School",
+    "Riglă": "Ruler",
+    "Alfabet": "Alphabet",
+    "Eprubetă": "Flask",
+    "Atom": "Atom",
+    "Piesă de puzzle": "Puzzle piece",
+    "Trusă medicală": "First aid kit",
+    "Puls": "Heartbeat",
+    "Pastilă": "Pill",
+    "Stetoscop": "Stethoscope",
+    "Dinte": "Tooth",
+    "Alergare": "Running",
+    "Măr": "Apple"
+  },
+  "templates": {},
+  "skip": [
+    "absolvire diplomă facultate școală graduation cap",
+    "chimie laborator știință experiment flask science lab",
+    "clădire liceu clasă school building",
+    "dentist stomatolog dantură tooth dental",
+    "fizică știință atom physics science",
+    "fruct mâncare sănătoasă dietă apple fruit food diet",
+    "inimă bătăi ritm cardiac heartbeat pulse health",
+    "joc rezolvare problemă puzzle game solution",
+    "măsurare lungime desen ruler measure",
+    "medic doctor consultație stethoscope doctor",
+    "prim ajutor medic urgență first aid medical kit",
+    "sport mișcare fitness alergător run sport exercise"
+  ]
+}

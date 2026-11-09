@@ -1,0 +1,12 @@
+{
+  "dict": {
+    "Fișierul .eps conține doar desen PostScript, iar miniatura din el e deteriorată. Salvează-l ca PDF sau SVG din programul în care a fost făcut și deschide-l pe acela.": "The .eps file contains only PostScript drawing and its thumbnail is damaged. Save it as PDF or SVG from the program it was made in and open that instead.",
+    "Fișierul .eps e deteriorat și nu poate fi citit.": "The .eps file is damaged and cannot be read.",
+    "Fișierul .eps conține doar desen PostScript, fără o poză în el, și nu-l putem desena aici. Salvează-l ca PDF sau SVG din programul în care a fost făcut și deschide-l pe acela.": "The .eps file contains only PostScript drawing, with no picture inside, and it cannot be drawn here. Save it as PDF or SVG from the program it was made in and open that instead."
+  },
+  "templates": {
+    "Desenul PostScript din fișierul .eps nu se poate desena aici, așa că s-a deschis poza de previzualizare din el ({0}), mai mică și uneori doar alb-negru. Pentru calitate întreagă, salvează-l ca PDF sau SVG din programul în care a fost făcut.": "The PostScript drawing in the .eps file cannot be drawn here, so its preview picture was opened instead ({0}), smaller and sometimes black and white only. For full quality, save it as PDF or SVG from the program it was made in.",
+    "Fișierul .eps a fost deschis cu pixelii din el ({0}); la salvare iese PNG, JPG, TIFF sau alt format obișnuit.": "The .eps file was opened with the pixels stored in it ({0}); saving produces PNG, JPG, TIFF or another common format."
+  },
+  "skip": []
+}

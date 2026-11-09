@@ -1,0 +1,11 @@
+{
+  "dict": {
+    "Notița nu are rânduri de bifat (☐). Pune-le cu butonul ☐ De făcut, apoi încearcă din nou.": "The note has no checklist lines (☐). Add them with the ☐ To Do button, then try again.",
+    "Rândurile de bifat (☐ / ☑) ca sarcini într-un fișier .ics: programele de e-mail și de calendar le pun în lista lor de sarcini; mementoul notiței devine termenul": "The checklist lines (☐ / ☑) as tasks in an .ics file: e-mail and calendar programs put them in their task list; the note's reminder becomes the due date",
+    "Sarcini": "Tasks",
+    "Export sarcini (.ics)": "Export tasks (.ics)",
+    "Sarcini pentru calendar (.ics)": "Tasks for the calendar (.ics)"
+  },
+  "templates": {},
+  "skip": ["{0}-{1}@suite-notite", "Din notița „{0}”", "PRODID:-//Cyber Office Studio//Notite//RO"]
+}

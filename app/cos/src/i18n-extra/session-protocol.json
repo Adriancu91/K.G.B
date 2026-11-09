@@ -1,0 +1,38 @@
+{
+ "dict": {
+  "Băuturi și gustări la întâlniri": "Drinks and snacks at meetings",
+  "Baza de calcul": "Calculation base",
+  "Cadouri pentru parteneri": "Gifts for partners",
+  "Cheltuieli de protocol": "Entertainment expenses",
+  "Cheltuieli de protocol (din tabel)": "Entertainment expenses (from table)",
+  "Cheltuieli totale (de la începutul anului)": "Total expenses (year to date)",
+  "Cheltuieli trecute": "Expenses entered",
+  "Cheltuielile de protocol se scad din profit doar până la 2% din diferența dintre veniturile impozabile și cheltuielile lor, fără impozitul pe profit și fără protocolul însuși; restul e nedeductibil.": "Entertainment expenses are deducted from profit only up to 2% of the difference between taxable income and its expenses, excluding profit tax and the entertainment expenses themselves; the rest is non-deductible.",
+  "Deductibil": "Deductible",
+  "Din care impozitul pe profit": "Of which profit tax",
+  "Felul cheltuielii": "Type of expense",
+  "În limită": "Within limit",
+  "Limita contează doar la impozitul pe profit; verificați calculul și TVA-ul cheltuielilor de protocol cu contabilul.": "The limit only matters for profit tax; check the calculation and the VAT on entertainment expenses with your accountant.",
+  "Limita deductibilă": "Deductible limit",
+  "Masă de afaceri": "Business meal",
+  "Mesele de afaceri, cadourile și gustările pentru parteneri, cu documentul, ocazia și TVA-ul; din veniturile și cheltuielile de la începutul anului iese limita deductibilă de 2%, cât se scade din profit și cât e nedeductibil: în limită (în verde) sau peste limită (în roșu), cu totalul pe feluri de cheltuieli.": "Business meals, gifts and snacks for partners, with the document, the occasion and the VAT; from the year-to-date income and expenses you get the 2% deductible limit, how much is deducted from profit and how much is non-deductible: within limit (green) or over limit (red), with the total by type of expense.",
+  "Nedeductibil": "Non-deductible",
+  "Ocazia sau partenerul": "Occasion or partner",
+  "Pe feluri (fără TVA)": "By type (excl. VAT)",
+  "Pe fiecare factură sau bon păstrați scopul: cu ce partener, la ce întâlnire sau ocazie; cadourile de valoare mică pentru parteneri se trec tot aici.": "On each invoice or receipt keep the purpose: with which partner, at which meeting or occasion; small gifts for partners are also entered here.",
+  "Peste limită": "Over limit",
+  "Protocol": "Entertainment",
+  "Valoarea fără TVA": "Value excl. VAT",
+  "Venituri impozabile (de la începutul anului)": "Taxable income (year to date)",
+  "Decont al cheltuielilor de protocol": "Entertainment expense report",
+  "Justificarea unei mese de afaceri, a unor cadouri sau gustări pentru parteneri: partenerul, ocazia, participanții și scopul întâlnirii, documentele cu valoarea și TVA-ul, totalul, cine a plătit și aprobarea administratorului": "Justification of a business meal, gifts or snacks for partners: the partner, the occasion, the attendees and the purpose of the meeting, the documents with the value and the VAT, the total, who paid and the administrator’s approval",
+  "🥂 O cheltuială de protocol": "🥂 An entertainment expense",
+  "Partenerul:\nOcazia:\nValoarea: lei\n\nÎnainte:\n☐ cheltuiala aprobată de administrator (cine participă, cât se poate cheltui)\n\nDupă:\n☐ factura sau bonul fiscal pe firmă, cu CUI-ul firmei\n☐ decontul scris, cu participanții și scopul întâlnirii (Docs → Decont al cheltuielilor de protocol)\n☐ cadourile date trecute pe nume, cu valoarea fiecăruia\n☐ cheltuiala trecută în tabel, la felul ei (Sheets → Cheltuieli de protocol)\n☐ dacă s-a plătit din casierie: decontul avansului făcut (Notițe → Decontarea unui avans)\n\nLa sfârșit de lună:\n☐ limita de 2% verificată în tabel: „În limită” sau „Peste limită”\n☐ documentele date contabilului, cu decontul atașat\n\nObservații:\n• ": "Partner:\nOccasion:\nValue: lei\n\nBefore:\n☐ expense approved by the administrator (who attends, how much can be spent)\n\nAfter:\n☐ invoice or receipt in the company's name, with the company's tax ID\n☐ written report, with the attendees and the purpose of the meeting (Docs → Entertainment expense report)\n☐ gifts given recorded by name, with the value of each\n☐ expense entered in the table, under its type (Sheets → Entertainment expenses)\n☐ if paid from the cash desk: the advance settlement done (Notes → Settling an advance)\n\nAt the end of the month:\n☐ 2% limit checked in the table: “Within limit” or “Over limit”\n☐ documents handed to the accountant, with the report attached\n\nNotes:\n• "
+ },
+ "templates": {
+  "Protocol {0}": "Entertainment {0}"
+ },
+ "skip": [
+  "=IF(L7=\"\";\"\";IF(L5<=L7;\"În limită\";\"Peste limită\"))"
+ ]
+}

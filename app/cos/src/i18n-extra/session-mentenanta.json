@@ -1,0 +1,38 @@
+{
+  "dict": {
+    "Anvelope / roți": "Tyres / wheels",
+    "Baterie / încărcare": "Battery / charging",
+    "Ce e depășit iese în roșu, ce vine în 14 zile în galben; după intervenție scrii data nouă în „Ultima intervenție”.": "Overdue items show in red, those due within 14 days in yellow; after the work is done, enter the new date under “Last service”.",
+    "Cine o face": "Done by",
+    "Costul ultimelor intervenții": "Cost of the latest services",
+    "Curățenie și ungere": "Cleaning and lubrication",
+    "De exemplu: revizia stivuitorului la 180 de zile, verificarea ISCIR la 365, cântarul la verificarea metrologică la 365 (vezi cartea tehnică a utilajului).": "For example: forklift service every 180 days, pressure-equipment inspection every 365, scale calibration check every 365 (see the machine’s technical manual).",
+    "Depășită": "Overdue",
+    "Depășite": "Overdue",
+    "În următoarele 14 zile": "In the next 14 days",
+    "La câte zile": "Every (days)",
+    "Lucrări trecute în tabel": "Tasks in the table",
+    "Mentenanță": "Maintenance",
+    "Nr. de inventar / serie": "Inventory / serial no.",
+    "Plan de mentenanță a utilajelor": "Equipment maintenance plan",
+    "Revizie periodică": "Periodic service",
+    "Schimb de ulei și filtre": "Oil and filter change",
+    "Stivuitoarele, cântarele, compresoarele și celelalte utilaje, cu fiecare lucrare care se repetă (revizie, verificare ISCIR sau metrologică, schimb de ulei): din ultima intervenție și din câte în câte zile ies data următoare și zilele rămase; cele depășite ies în roșu, cele din următoarele 14 zile în galben, iar în dreapta și costul intervențiilor.": "Forklifts, scales, compressors and other machines, with every recurring task (service, pressure-equipment or calibration inspection, oil change): from the last service and the interval in days you get the next date and the days left; overdue ones show in red, those due in the next 14 days in yellow, and on the right the cost of the services.",
+    "Ultima intervenție": "Last service",
+    "Un rând pe fiecare lucrare care se repetă: utilajul, lucrarea, data ultimei intervenții și din câte în câte zile se face.": "One row per recurring task: the machine, the task, the date of the last service and how many days apart it is done.",
+    "Utilajul": "Machine",
+    "Verificare electrică": "Electrical check",
+    "Verificare metrologică": "Calibration check",
+    "🛠 Revizia unui utilaj": "🛠 Equipment service"
+  },
+  "templates": {},
+  "skip": [
+    "=COUNTIF(I2:I{0};\"Depășită\")",
+    "=COUNTIF(I2:I{0};\"Fără dată\")",
+    "=COUNTIF(I2:I{0};\"În curând\")",
+    "=COUNTIF(I2:I{0};\"La zi\")",
+    "=IF(B{0}=\"\";\"\";IF(H{1}=\"\";\"Fără dată\";IF(H{2}<0;\"Depășită\";IF(H{3}<=14;\"În curând\";\"La zi\"))))",
+    "Revizie utilaj {0}",
+    "Utilajul (stivuitor, cântar, compresor…):\nNr. de inventar / serie:\nLucrarea (revizie, verificare ISCIR, verificare metrologică, schimb de ulei):\nCine o face (firma de service, persoana):\n\nÎnainte:\n☐ data stabilită cu firma de service și utilajul oprit din lucru la ora aceea\n☐ cartea tehnică și fișa ultimei revizii scoase la îndemână\n☐ defectele observate de la ultima revizie notate mai jos\n\nLa revizie:\n☐ lucrările făcute trecute pe rând în raportul de service\n☐ piesele schimbate notate (ce, câte, prețul)\n☐ etichetele de verificare sau sigiliile puse acolo unde se cer\n☐ utilajul încercat după revizie, de față cu cine îl folosește\n\nDupă:\n☐ raportul de service și factura puse la dosarul utilajului\n☐ data nouă trecută în Sheets → Plan de mentenanță a utilajelor (Ultima intervenție)\n☐ data următoarei revizii notată în calendar\n\nDefecte observate:\n•\n\nPiese schimbate și cost:\n•\n\nObservații:\n• "
+  ]
+}

@@ -1,0 +1,10 @@
+{
+  "dict": {
+    "🏠 Vizionarea unei locuințe": "🏠 Viewing a home"
+  },
+  "templates": {},
+  "skip": [
+    "Vizionare {0}",
+    "Adresa:\nAnunțul (link / agenția):\nPrețul cerut:\nData și ora vizionării:\nPersoana de contact:\n\nÎnainte de vizionare:\n☐ anunțul trecut în Sheets → Compararea locuințelor (prețul și suprafața utilă)\n☐ întrebat de cheltuielile lunare (întreținere, căldură) și de restanțele la asociație\n☐ drumul până la serviciu încercat la ora de vârf\n\nLa vizionare:\n☐ umezeală, mucegai, fisuri (colțuri, baie, sub geamuri)\n☐ geamurile, ușa de intrare și instalațiile (apă, curent, gaz, centrala)\n☐ zgomotul, vecinii, lumina naturală și locul de parcare\n☐ actele: extrasul de carte funciară, certificatul energetic, planul cadastral\n\nDupă vizionare:\n☐ nota mea (1–10) trecută în Sheets → Compararea locuințelor și „Da” la Am vizitat-o\n\nCe mi-a plăcut:\n•\n\nCe nu mi-a plăcut:\n•\n\nÎntrebări de pus:\n❓ "
+  ]
+}

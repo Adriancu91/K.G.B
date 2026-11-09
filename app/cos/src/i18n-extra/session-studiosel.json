@@ -1,0 +1,11 @@
+{
+ "dict": {
+  "Scrie numele sau CNP-ul vânzătorului…": "Type the seller’s name or personal ID number…",
+  "＋ Vânzător nou": "＋ New seller",
+  "🧾 Vânzători (persoane fizice)": "🧾 Sellers (individuals)",
+  "Cei de la care cumperi deșeuri, cu borderou de achiziție. Se adaugă singuri din borderou; în borderou îi cauți după nume sau CNP. Datele lor stau doar pe acest calculator; șterge-i când nu mai ai nevoie de ele.": "The people you buy waste from with a purchase slip. They are added automatically from the slip; in the slip you search them by name or personal ID number. Their data stays only on this computer; delete them when you no longer need it.",
+  "vânzătorul": "seller"
+ },
+ "templates": {},
+ "skip": []
+}

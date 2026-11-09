@@ -1,0 +1,21 @@
+{
+  "dict": {
+    "Afișare modificări": "Show Changes",
+    "Arată modificările din": "Show changes from",
+    "celulă schimbată": "cell changed",
+    "celule schimbate": "cells changed",
+    "Nicio celulă schimbată aici de când se ține lista.": "No cells changed here since the list started.",
+    "Șterge lista modificărilor din registru (celulele rămân cum sunt)": "Clear the workbook's list of changes (cells stay as they are)",
+    "Afișare modificări: celulele schimbate în registru, cu ce era înainte, ce e acum, când și cine; doar pentru foaia sau zona aleasă, dacă vrei": "Show Changes: the cells changed in the workbook, with the old value, the new value, when and by whom; only for the current sheet or selected range, if you like"
+  },
+  "templates": {
+    " (și încă {0} celule odată cu ea)": " (and {0} more cells with it)",
+    "{0} {1}, cele mai noi sus. Clic pe una te duce la ea.": "{0} {1}, newest first. Click one to go to it.",
+    "Foaia „{0}” nu mai există": "Sheet “{0}” no longer exists",
+    "Zona aleasă ({0})": "Selected range ({0})",
+    "Foaia {0}": "Sheet {0}",
+    "Se văd primele {0}.": "Showing the first {0}.",
+    "azi, {0}": "today, {0}"
+  },
+  "skip": []
+}

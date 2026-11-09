@@ -1,0 +1,10 @@
+{
+  "dict": {
+    "🌿 Culesul plantelor medicinale": "🌿 Picking medicinal herbs",
+    "Locul culesului (pajiștea, marginea pădurii):\nData și vremea:\nCine merge:\n\nCe culegem:\n• planta și partea folosită (flori, frunze, rădăcini):\n• cât adunăm (mănunchiuri, coșuri):\n• unde le punem la uscat:\n\nÎnainte de plecare:\n☐ plantele recunoscute sigur (cu o carte sau un om care le știe)\n☐ locul departe de drumuri, câmpuri stropite și fabrici\n☐ foarfecă sau cuțit mic, coș sau saci de pânză (nu de plastic)\n☐ mănuși, apă și haine potrivite\n\nLa cules și după:\n☐ cules doar într-o zi uscată, după ce s-a dus roua\n☐ lăsat cel puțin o treime din plante pe loc, ca să crească din nou\n☐ plantele întinse la uscat la umbră, într-un strat subțire\n☐ borcanele etichetate cu numele plantei și data culesului\n\nCe am cules și ce reținem pentru anul viitor:\n• ": "Picking place (meadow, forest edge):\nDate and weather:\nWho is going:\n\nWhat we pick:\n• the plant and the part used (flowers, leaves, roots):\n• how much we gather (bundles, baskets):\n• where we lay them out to dry:\n\nBefore leaving:\n☐ plants identified for sure (with a book or someone who knows them)\n☐ place far from roads, sprayed fields and factories\n☐ scissors or a small knife, basket or cloth bags (not plastic)\n☐ gloves, water and suitable clothes\n\nWhile picking and after:\n☐ picked only on a dry day, after the dew is gone\n☐ at least a third of the plants left in place, so they grow back\n☐ plants spread out to dry in the shade, in a thin layer\n☐ jars labeled with the plant name and the picking date\n\nWhat we picked and what we remember for next year:\n• "
+  },
+  "templates": {
+    "Culesul plantelor medicinale {0}": "Picking medicinal herbs {0}"
+  },
+  "skip": []
+}

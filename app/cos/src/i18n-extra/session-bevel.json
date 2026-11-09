@@ -1,0 +1,23 @@
+{
+  "dict": {
+    "Exterior": "Outer Bevel",
+    "Interior": "Inner Bevel",
+    "Felul": "Style",
+    "Felul reliefului": "Bevel style",
+    "În relief": "Emboss",
+    "Pernă": "Pillow Emboss",
+    "Degrade din fișier": "Gradient from file",
+    "Umplerea": "Fill type",
+    "Umplerea conturului": "Stroke fill type"
+  },
+  "templates": {},
+  "skip": [
+    "Embs",
+    "OtrB",
+    "PlEb",
+    "InrB",
+    "Rdl ",
+    "Lnr ",
+    "GrFl"
+  ]
+}

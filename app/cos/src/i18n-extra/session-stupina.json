@@ -1,0 +1,10 @@
+{
+  "dict": {
+    "🐝 Verificarea stupinei": "🐝 Apiary inspection",
+    "Stupina (locul):\nData și vremea:\nCâte familii am verificat:\n\nLa fiecare stup:\n☐ matca văzută sau ouă proaspete în celule\n☐ puietul compact, fără celule goale printre el\n☐ hrana: câte rame cu miere și cu păstură\n☐ semne de roire (botci pe marginea ramelor)\n☐ varroa: numărătoarea pe fundul cu plasă, tratamentul la zi\n☐ urdinișul curat, fără albine moarte în fața stupului\n\nDupă vizită:\n☐ ramele noi sau faguri artificiali puși unde trebuie\n☐ hrănirea (sirop sau turtă) notată pe stup\n☐ data următoarei vizite\n\nStupi care au nevoie de ceva:\n•\n\nObservații:\n• ": "Apiary (location):\nDate and weather:\nColonies checked:\n\nAt each hive:\n☐ queen seen or fresh eggs in the cells\n☐ compact brood, no empty cells scattered through it\n☐ stores: how many frames of honey and bee bread\n☐ signs of swarming (queen cells on the frame edges)\n☐ varroa: count on the screened bottom board, treatment up to date\n☐ clean entrance, no dead bees in front of the hive\n\nAfter the visit:\n☐ new frames or foundation put where needed\n☐ feeding (syrup or fondant) noted on the hive\n☐ date of the next visit\n\nHives that need something:\n•\n\nNotes:\n• "
+  },
+  "templates": {
+    "Verificarea stupinei {0}": "Apiary inspection {0}"
+  },
+  "skip": []
+}

@@ -1,0 +1,13 @@
+{
+  "dict": {
+    "Paranteză stânga": "Left Bracket",
+    "Paranteză dreapta": "Right Bracket",
+    "Acoladă stânga": "Left Brace",
+    "Acoladă dreapta": "Right Brace",
+    "Paranteze": "Double Bracket",
+    "Acolade": "Double Brace",
+    "Arc": "Arc"
+  },
+  "templates": {},
+  "skip": []
+}

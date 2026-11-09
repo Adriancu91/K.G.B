@@ -1,0 +1,9 @@
+{
+  "dict": {
+    "În .csv": "To .csv"
+  },
+  "templates": {
+    "Tabelul a fost deschis din „{0}”. Îl salvezi înapoi în acest fișier .csv (doar valorile foii de acum, fără formule și formatare; copia de dinainte rămâne în Versiuni) sau ca registru Cyber Office Studio (.ssheet), care păstrează tot ce ai făcut în Suite?": "The table was opened from “{0}”. Do you save it back to this .csv file (only the values of the current sheet, without formulas and formatting; the previous copy is kept in Versions) or as a Cyber Office Studio workbook (.ssheet), which keeps everything you did in Suite?"
+  },
+  "skip": []
+}

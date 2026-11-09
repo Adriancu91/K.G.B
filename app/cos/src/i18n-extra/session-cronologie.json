@@ -1,0 +1,35 @@
+{
+  "dict": {
+    "＋ Cadru nou": "＋ New Frame",
+    "💾 Salvează GIF…": "💾 Save GIF…",
+    "Animația se face din straturi: fiecare strat cu pixeli e un cadru, de jos în sus. Pune cel puțin două straturi sau apasă ＋ Cadru nou și schimbă puțin copia.": "The animation is made from layers: each layer with pixels is a frame, from bottom to top. Add at least two layers, or press ＋ New Frame and change the copy a little.",
+    "Arată cadrul și alege stratul lui (ca să-l schimbi)": "Show the frame and select its layer (to change it)",
+    "Cadrele": "Frames",
+    "Margine moale": "Soft edge",
+    "Trăsăturile au marginea estompată, ca o pensulă moale: selecția trece treptat spre margine": "Strokes have a feathered edge, like a soft brush: the selection fades gradually toward the edge",
+    "Masca vectorială": "Vector Mask",
+    "Masca vectorială a stratului ales din traseul deschis (traseul rămâne și se poate schimba după aceea)": "Vector mask of the selected layer from the open path (the path is kept and can be changed later)",
+    "Schimbi masca vectorială: mută punctele traseului, apoi ◐ Mască o actualizează.": "You are changing the vector mask: move the path points, then ◐ Mask updates it.",
+    "Scoate masca vectorială": "Remove the vector mask",
+    "Scoate masca vectorială (rămâne masca de dinainte de ea)": "Remove the vector mask (the mask from before it remains)",
+    "Traseul din care e făcută masca stratului ales: mută punctele, apoi ◐ Mască o actualizează": "The path the selected layer's mask is made from: move the points, then ◐ Mask updates it",
+    "Cadru": "Frame",
+    "Cadru gol: zona aleasă devine un loc pentru o poză (gri, cu un X); trage apoi o poză peste el sau alege stratul lui și 🖼 Din fișier…": "Empty frame: the selected area becomes a placeholder for a picture (gray, with an X); then drag a picture onto it, or select its layer and use 🖼 From File…",
+    "Cadrul anterior": "Previous frame",
+    "Cadrul de acum": "Current frame",
+    "Cadrul următor": "Next frame",
+    "Cât stă cadrul pe ecran": "How long the frame stays on screen",
+    "Copie a cadrului ales, pusă deasupra lui: o schimbi apoi puțin, ca să se miște": "A copy of the selected frame, placed above it: change it a little so things move",
+    "Cronologie: animație din cadre; fiecare strat e un cadru, cu durata lui, redată aici și salvată ca GIF": "Timeline: frame animation; each layer is a frame with its own duration, played here and saved as GIF",
+    "Închide cronologia": "Close the timeline",
+    "La fel ca toate": "Same as all",
+    "Primul cadru": "First frame",
+    "Redă animația la nesfârșit, cu durata fiecărui cadru": "Play the animation in a loop, with each frame's duration",
+    "Redarea animației": "Animation playback",
+    "Salvează animația ca GIF animat (se repetă la nesfârșit)": "Save the animation as an animated GIF (loops forever)"
+  },
+  "templates": {
+    "Cadrul {0} din {1} · {2} în total": "Frame {0} of {1} · {2} in total"
+  },
+  "skip": []
+}

@@ -1,0 +1,15 @@
+{
+  "dict": {
+    "🎁 Idei de cadouri": "🎁 Gift ideas",
+    "🔧 Reparații și întreținere": "🔧 Repairs and maintenance"
+  },
+  "templates": {},
+  "skip": [
+    "Antrenament {0}",
+    "Ce (casă / mașină / aparat): \nProblema:\n\nMeșter / service: \nTelefon: \nPreț cerut: \n\nDe făcut:\n☐ \n\nFăcut pe: \nGaranție până la: \nUrmătoarea verificare: \n",
+    "Data: {0}\nDurata: \nCum m-am simțit: \n\nÎncălzire:\n☐ \n\nExerciții (serii × repetări, greutate):\n☐ \n☐ \n☐ \n\nRelaxare:\n☐ întinderi\n\nData viitoare:\n• \n",
+    "Idei de cadouri",
+    "Pentru cine / ocazia / data:\n• \n\nIdei:\n☐ \n☐ \n\nBuget: \nUnde găsesc: \n\nCumpărate:\n• \n",
+    "Reparații {0}"
+  ]
+}

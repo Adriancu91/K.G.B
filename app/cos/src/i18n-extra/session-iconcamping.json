@@ -1,0 +1,24 @@
+{
+  "dict": {
+    "Camping și drumeții": "Camping and hiking",
+    "Foc de tabără": "Campfire",
+    "Sac de dormit": "Sleeping bag",
+    "Lanternă frontală": "Headlamp",
+    "Bocanci de munte": "Hiking boots",
+    "Bețe de trekking": "Trekking poles",
+    "Termos": "Thermos",
+    "Marcaj turistic": "Trail marker",
+    "Hamac": "Hammock"
+  },
+  "templates": {},
+  "skip": [
+    "foc de tabără lemne camping seară la munte campfire bonfire",
+    "sac de dormit somn în aer liber camping sleeping bag",
+    "lanternă frontală lumină noaptea peșteră headlamp head torch",
+    "bocanci de munte încălțăminte drumeție hiking boots",
+    "bețe de trekking drumeție urcare munte trekking poles",
+    "termos ceai cald băutură caldă excursie thermos flask",
+    "marcaj turistic traseu montan semn pe copac trail marker blaze",
+    "hamac odihnă între copaci relaxare hammock"
+  ]
+}

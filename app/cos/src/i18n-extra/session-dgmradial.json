@@ -1,0 +1,10 @@
+{
+  "dict": {
+    "Radial (primul în mijloc, restul în jur)": "Radial (first in the middle, the rest around it)",
+    "Țintă (cercuri unul în altul)": "Target (circles inside each other)",
+    "Cercuri unul în altul, de la exterior spre centru (de la general la ținta principală)": "Circles inside each other, from the outside to the center (from the general to the main target)",
+    "O idee în mijloc, legată de ideile din jurul ei (primul rând e mijlocul)": "One idea in the middle, linked to the ideas around it (the first line is the middle)"
+  },
+  "templates": {},
+  "skip": []
+}

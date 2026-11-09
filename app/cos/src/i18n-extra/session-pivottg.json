@@ -1,0 +1,22 @@
+{
+  "dict": {
+    "+ Grupează categorii": "+ Group categories",
+    "Grup ales de mână": "Manual group",
+    "Grup ales de mână: bifezi categoriile care se adună pe un singur rând (de exemplu Nord = Cluj + Iași); celelalte rămân pe rândul lor": "Manual group: tick the categories to be added up on a single row (for example North = Cluj + Iasi); the others stay on their own row",
+    "Grupurile alese de mână merg cu un singur câmp pe rânduri, cu cel puțin două categorii, și fără rang sau „față de elementul ales”": "Manual groups work with a single row field, with at least two categories, and without rank or \"relative to the chosen item\"",
+    "Scoate grupul": "Remove the group",
+    "+ Element calculat": "+ Calculated item",
+    "Element calculat": "Calculated item",
+    "Element calculat: un rând nou, sub categorii, cu o formulă din alte rânduri (de exemplu Cluj - Iași = diferența dintre ele); rândul Total rămâne totalul categoriilor": "Calculated item: a new row, below the categories, with a formula from other rows (for example Cluj - Iasi = the difference between them); the Total row stays the total of the categories",
+    "Elementele calculate merg doar cu un singur câmp pe rânduri, cel mult unul pe coloane și cu valorile arătate ca cifre": "Calculated items work only with a single row field, at most one column field and with values shown as numbers",
+    "Formula cu numele categoriilor de pe rânduri (de exemplu Cluj - Iași), pe fiecare coloană a rezumatului. Numele cu spații se scriu între apostrofuri. Rândul Total nu îl include.": "Formula with the names of the row categories (for example Cluj - Iasi), on each column of the summary. Names with spaces go between apostrophes. The Total row does not include it.",
+    "Formula elementului calculat": "Calculated item formula",
+    "Numele elementului calculat": "Calculated item name",
+    "Scoate elementul calculat": "Remove the calculated item"
+  },
+  "templates": {
+    "Grup{0}": "Group{0}",
+    "Element{0}": "Item{0}"
+  },
+  "skip": []
+}

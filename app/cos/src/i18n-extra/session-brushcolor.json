@@ -1,0 +1,14 @@
+{
+  "dict": {
+    "Variație nuanță": "Hue jitter",
+    "Variație luminozitate": "Brightness jitter",
+    "Fiecare amprentă are altă nuanță, la întâmplare, în jurul culorii alese (100 = orice culoare)": "Each dab gets a random hue around the chosen color (100 = any color)",
+    "Fiecare amprentă e mai deschisă sau mai închisă, la întâmplare": "Each dab is randomly lighter or darker",
+    "Frunziș colorat": "Colored foliage",
+    "Ca Frunziș, dar fiecare frunză cu altă nuanță și lumină (toamnă, flori)": "Like Foliage, but each leaf with a different hue and lightness (autumn, flowers)",
+    "Confetti": "Confetti",
+    "Buline împrăștiate, fiecare în altă culoare": "Scattered dots, each in a different color"
+  },
+  "templates": {},
+  "skip": []
+}

@@ -1,0 +1,24 @@
+{
+  "dict": {
+    "Poștă și curierat": "Post and courier",
+    "Cutie poștală": "Mailbox",
+    "Timbru": "Postage stamp",
+    "Plic cu fereastră": "Window envelope",
+    "Scuter de livrare": "Delivery scooter",
+    "Dulap de colete": "Parcel locker",
+    "Confirmare de primire": "Delivery confirmation",
+    "Colet urmărit": "Tracked parcel",
+    "Etichetă de expediere": "Shipping label"
+  },
+  "templates": {},
+  "skip": [
+    "cutie poștală scrisori corespondență mailbox letterbox",
+    "timbru marcă poștală scrisoare postage stamp",
+    "plic cu fereastră factură corespondență window envelope invoice mail",
+    "scuter livrare curier mâncare delivery scooter courier",
+    "dulap de colete ridicare automată parcel locker pickup",
+    "confirmare de primire recomandată semnat primit delivery receipt confirmation",
+    "colet urmărit urmărire awb livrare tracking parcel",
+    "etichetă de expediere awb adresă colet shipping label address"
+  ]
+}

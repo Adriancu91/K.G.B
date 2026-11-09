@@ -1,0 +1,11 @@
+{
+  "dict": {
+    "Forma nu mai e pe pagină.": "The shape is no longer on the page.",
+    "Altă culoare pentru formă (umplerea și linia ei)": "Another colour for the shape (its fill and its line)",
+    "Șterge forma din pagină (Delete)": "Delete the shape from the page (Delete)",
+    "Grosimea liniei formei": "Line thickness of the shape",
+    "Editează: dă clic pe un paragraf sau pe un rând ca să-l schimbi (Enter păstrează, Shift+Enter începe un paragraf nou, Delete îl șterge, Esc renunță; Alt+clic = doar rândul) sau pe o imagine ori o formă desenată: linie, chenar, dreptunghi (trage-o ca s-o muți, de colțuri ca s-o mărești sau micșorezi, săgețile o mută cu câte un punct, cu Shift câte 10, Delete o șterge)": "Edit: click a paragraph or a line to change it (Enter keeps it, Shift+Enter starts a new paragraph, Delete removes it, Esc cancels; Alt+click = only the line) or an image or a drawn shape: line, frame, rectangle (drag it to move it, drag its corners to enlarge or shrink it, the arrow keys move it by one point, with Shift by 10, Delete removes it)"
+  },
+  "templates": {},
+  "skip": []
+}

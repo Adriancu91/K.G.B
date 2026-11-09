@@ -1,0 +1,16 @@
+{
+  "dict": {
+    "Copie a traseului": "Copy of the path",
+    "Deschide traseul (îl poți schimba, face selecție, contura, umple). Dublu-click: redenumește": "Opens the path (you can change it, make a selection, stroke, fill). Double-click: rename",
+    "Numele traseului": "Path name",
+    "Păstrează traseul în lista Trasee, ca să-l folosești din nou mai târziu": "Keeps the path in the Paths list, to use it again later",
+    "Pune forma de acum în traseul salvat deschis": "Puts the current shape into the open saved path",
+    "Salvează traseul": "Save path",
+    "Șterge traseul din listă (poza rămâne neschimbată)": "Deletes the path from the list (the picture stays unchanged)",
+    "Trasee": "Paths"
+  },
+  "templates": {
+    "Traseul {0}": "Path {0}"
+  },
+  "skip": []
+}

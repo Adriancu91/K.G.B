@@ -1,0 +1,11 @@
+{
+ "dict": {
+  "Fișierele (PDF-uri, poze, documente .docx / .odt / .rtf / .txt, tabele .xlsx / .ods / .csv, prezentări .pptx / .odp / .ppt, e-mailuri .eml) intră în ordinea de mai jos (schimb-o cu ▲ ▼ sau trăgând un rând). La un PDF poți scrie doar paginile care intră, de exemplu „1-3, 5”; gol = toate.": "The files (PDFs, pictures, .docx / .odt / .rtf / .txt documents, .xlsx / .ods / .csv spreadsheets, .pptx / .odp / .ppt presentations, .eml e-mails) go in in the order below (change it with ▲ ▼ or by dragging a row). For a PDF you can type only the pages that go in, for example “1-3, 5”; empty = all.",
+  "Către:": "To:",
+  "Combină mai multe PDF-uri, poze, documente, tabele, prezentări și e-mailuri într-un PDF nou": "Combine several PDFs, pictures, documents, spreadsheets, presentations and e-mails into a new PDF"
+ },
+ "templates": {
+  "e-mail, {0} {1}": "e-mail, {0} {1}"
+ },
+ "skip": []
+}

@@ -1,0 +1,14 @@
+{
+  "dict": {
+    "Săgeți crescătoare (ideile pe săgeți una sub alta, fiecare mai lungă decât cea de deasupra)": "Increasing arrows (the ideas on arrows one below the other, each longer than the one above)",
+    "Bară cu etape (o bară lungă împărțită în segmente lipite, câte o etapă pe segment)": "Phase bar (a long bar split into adjoining segments, one stage per segment)",
+    "Săgeți crescătoare": "Increasing arrows",
+    "săgeți crescătoare": "increasing arrows",
+    "Bară cu etape": "Phase bar",
+    "bară cu etape": "phase bar",
+    "Idei pe săgeți una sub alta, fiecare mai lungă decât cea de deasupra (vânzări, clienți sau rezultate care cresc)": "Ideas on arrows one below the other, each longer than the one above (growing sales, customers or results)",
+    "O bară lungă tăiată în segmente lipite, câte o etapă pe segment (fazele unui proiect, trimestrele unui an)": "A long bar cut into adjoining segments, one stage per segment (the phases of a project, the quarters of a year)"
+  },
+  "templates": {},
+  "skip": []
+}

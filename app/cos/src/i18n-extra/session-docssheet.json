@@ -1,0 +1,16 @@
+{
+  "dict": {
+    "Alege foaia": "Choose the sheet",
+    "foi. Care intră în document?": "sheets. Which one goes into the document?",
+    "Foaia": "Sheet",
+    "Inserează": "Insert",
+    "; tabelul e tăiat la 2000 de rânduri și 40 de coloane": "; the table is cut at 2000 rows and 40 columns",
+    "Foaie de calcul: o foaie dintr-un fișier .xlsx, .ods sau .csv intră la cursor ca tabel, cu valorile formulelor calculate și formatarea ei (sume, culori, aldin, celule îmbinate)": "Spreadsheet: one sheet from an .xlsx, .ods or .csv file goes in at the cursor as a table, with the formula values calculated and its formatting (amounts, colours, bold, merged cells)"
+  },
+  "templates": {
+    " (fișierul are {0} foi; a intrat cea activă)": " (the file has {0} sheets; the active one went in)",
+    "Am pus foaia „{0}” din {1}{2}{3}.": "Inserted sheet “{0}” from {1}{2}{3}.",
+    "Foaia de calcul nu a putut fi citită: {0}": "The spreadsheet could not be read: {0}"
+  },
+  "skip": []
+}

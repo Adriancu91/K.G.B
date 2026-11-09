@@ -1,0 +1,10 @@
+{
+  "dict": {
+    "🏢 Întreținerea blocului pe luna aceasta": "🏢 This month's building maintenance fees"
+  },
+  "templates": {},
+  "skip": [
+    "Întreținere bloc {0}",
+    "Luna:\nBlocul / scara:\nTermenul de plată afișat:\n\nPână la întocmirea listei:\n☐ citirile contoarelor de apă strânse de la toate apartamentele (sau estimate, cu mențiune)\n☐ facturile lunii primite: apă, curent pe părțile comune, gaz, lift, salubritate\n☐ schimbările de persoane pe apartament anunțate și trecute\n☐ cheltuielile trecute în Sheets → Lista de plată a întreținerii (pe persoane, pe cota-parte, apa, fondul de reparații)\n☐ restanțele din luna trecută trecute la Restanțe\n\nDupă întocmire:\n☐ lista verificată de cenzor și semnată de președinte\n☐ lista afișată la avizier (Docs → Inserare → ☺ Pictograme → Utilități pentru anunț)\n☐ încasările trecute la Plătit, pe măsură ce vin\n☐ cei cu restanțe anunțați înainte de penalități\n\nFacturi plătite de asociație:\n•\n\nLucrări și reparații în bloc:\n•\n\nObservații:\n• "
+  ]
+}

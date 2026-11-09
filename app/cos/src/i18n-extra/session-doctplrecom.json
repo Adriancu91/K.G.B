@@ -1,0 +1,11 @@
+{
+  "dict": {
+    "Contracte, cerere, proces-verbal, împuternicire, ofertă de preț, CV, scrisoare de intenție, demisie, declarație, minută de ședință, cerere de concediu, notificare de plată, contract de vânzare auto, contract de comodat, adeverință de salariat, scrisoare de recomandare": "Contracts, request, handover report, power of attorney, price offer, CV, cover letter, resignation, declaration, meeting minutes, leave request, payment notice, car sale contract, loan-for-use contract, employment certificate, recommendation letter",
+    "Scrisoare de recomandare": "Recommendation letter",
+    "Un fost șef, profesor sau coleg recomandă o persoană pentru un loc de muncă, o bursă sau o facultate": "A former manager, teacher or colleague recommends a person for a job, a scholarship or a university"
+  },
+  "templates": {},
+  "skip": [
+    "\n<p><strong>[Nume și prenume]</strong><br>[Funcția] · [Firma / instituția]<br>[telefon] · [e-mail]</p>\n<p>[Localitatea], [data]</p>\n<p>Către: [firma / comisia de admitere / persoana căreia îi scrieți]</p>\n<h1 style=\"text-align: center\">SCRISOARE DE RECOMANDARE</h1>\n<p></p>\n<p>Prin prezenta o / îl recomand cu toată încrederea pe <strong>[Nume și prenume]</strong> pentru [postul de … / bursa … / programul de studii …].</p>\n<h2>Cum ne cunoaștem</h2>\n<p>Am lucrat împreună [la firma … / în cadrul …] în perioada [de la … până la …], unde [Numele] a fost [funcția, clasa sau rolul], iar eu [șeful direct / profesorul / coordonatorul] său.</p>\n<h2>Ce a făcut</h2>\n<ul>\n<li><p>[o sarcină sau un proiect important, cu rezultatul lui]</p></li>\n<li><p>[o realizare concretă, de exemplu cu cifre]</p></li>\n<li><p>[o responsabilitate pe care a preluat-o singur(ă)]</p></li>\n</ul>\n<h2>Calități</h2>\n<p>[Numele] este [o persoană serioasă, punctuală, care învață repede …]. Am apreciat în mod deosebit [o calitate, cu un exemplu].</p>\n<p>Sunt convins(ă) că va fi un câștig pentru [firma / instituția] dumneavoastră și o / îl recomand fără rezerve. Vă stau la dispoziție pentru orice detalii, la telefon sau prin e-mail.</p>\n<p></p>\n<p>Cu stimă,</p>\n<p><strong>[Nume și prenume]</strong><br>[Funcția]<br>Semnătura: ____________</p>"
+  ]
+}

@@ -1,0 +1,24 @@
+{
+  "dict": {
+    "Sudură și lăcătușerie": "Welding and metalwork",
+    "Aparat de sudură": "Welding machine",
+    "Mască de sudură": "Welding helmet",
+    "Electrozi": "Welding rods",
+    "Polizor unghiular": "Angle grinder",
+    "Nicovală": "Anvil",
+    "Grindă metalică": "Steel beam",
+    "Arzător oxigaz": "Cutting torch",
+    "Poartă metalică": "Metal gate"
+  },
+  "templates": {},
+  "skip": [
+    "aparat de sudură invertor sudor sudat metal welding machine welder",
+    "mască de sudură cască de sudor protecție ochi vizor welding helmet mask",
+    "electrozi electrod de sudură vergea sudor welding electrodes rods",
+    "polizor unghiular flex disc de tăiat șlefuit metal angle grinder",
+    "nicovală nicovala fierar forjă ciocan fier forjat anvil blacksmith",
+    "grindă metalică profil I oțel structură metalică steel beam girder",
+    "arzător oxigaz flacără tăiere oxiacetilenică lipire gas torch cutting",
+    "poartă metalică fier forjat gard grilaj lăcătușerie metal gate fence"
+  ]
+}

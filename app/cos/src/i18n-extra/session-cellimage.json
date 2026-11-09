@@ -1,0 +1,19 @@
+{
+  "dict": {
+    "Adresa nu e o poză (merg PNG, JPG, GIF, WebP, BMP, AVIF, ICO).": "The address is not a picture (PNG, JPG, GIF, WebP, BMP, AVIF, ICO work).",
+    "Poza e prea mare (peste 8 MB).": "The picture is too large (over 8 MB).",
+    "Poza nu a putut fi adusă (verifică adresa și legătura la internet).": "The picture could not be fetched (check the address and the internet connection).",
+    "Se aduce poza…": "Fetching the picture…",
+    "Pune în celulă o poză de la o adresă web (http / https). Mărimea: 0 încape în celulă, 1 o umple, 2 mărimea pozei, 3 înălțimea și lățimea date.": "Puts a picture from a web address (http / https) in the cell. Sizing: 0 fits the cell, 1 fills it, 2 original size, 3 the given height and width.",
+    "sursă; [text_alternativ]; [mărime]; [înălțime]; [lățime]": "source; [alt_text]; [sizing]; [height]; [width]",
+    "Limba în care e scris textul, ca cod de două litere (ro, en, fr, de, it, es, hu, pt, nl, pl), ghicită pe calculator, fără internet.": "The language the text is written in, as a two-letter code (for example en, fr or es), guessed on the computer, without internet.",
+    "Aduce textul de la o adresă web (http / https), de exemplu un curs valutar sau un XML; cu FILTERXML scoți din el ce-ți trebuie. Cât se aduce, celula arată #BUSY!.": "Fetches the text from a web address (http / https), for example an exchange rate or an XML; with FILTERXML you take out what you need. While it is fetched, the cell shows #BUSY!.",
+    "adresă": "address",
+    "Se aduc datele de la adresa web (WEBSERVICE); rezultatul apare singur în câteva clipe.": "The data is being fetched from the web address (WEBSERVICE); the result appears by itself in a few moments."
+  },
+  "templates": {},
+  "skip": [
+    "de-DE hu-HU",
+    "fr-FR it-IT"
+  ]
+}

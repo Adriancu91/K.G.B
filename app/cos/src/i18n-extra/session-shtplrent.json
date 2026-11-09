@@ -1,0 +1,26 @@
+{
+  "dict": {
+    "Evidența chiriilor": "Rent tracker",
+    "Pentru o locuință dată cu chirie: chiria și utilitățile pe fiecare lună, cât s-a încasat și când; ies restanțele (în roșu) și un impozit estimat.": "For a home you rent out: the rent and utilities for each month, how much was collected and when; you get the arrears (in red) and an estimated tax."
+  },
+  "templates": {},
+  "skip": [
+    "=COUNTIF(I2:I{0};\"Neplătit\")+COUNTIF(I2:I{1};\"Parțial\")",
+    "=IF(E{0}=\"\";\"\";IF(H{1}<=0;\"Plătit\";IF(N(F{2})>0;\"Parțial\";\"Neplătit\")))",
+    "Chiria",
+    "Chiriașul / locuința",
+    "Chirii",
+    "Chirii (fără utilități)",
+    "Data încasării",
+    "De încasat în total",
+    "De plată",
+    "Impozit estimat",
+    "Luni neplătite sau parțiale",
+    "Neplătit",
+    "Plătit",
+    "Procent impozit (verifică-l la ANAF)",
+    "Rest de plată",
+    "Restanțe",
+    "Un rând pe lună. Utilitățile sunt cele pe care chiriașul ți le dă înapoi; impozitul e doar o estimare pe chirii."
+  ]
+}

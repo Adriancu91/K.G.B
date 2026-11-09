@@ -1,0 +1,23 @@
+{
+  "dict": {
+    "Curățenie": "Cleaning",
+    "Mătură": "Broom",
+    "Găleată": "Bucket",
+    "Mop": "Mop",
+    "Pulverizator": "Spray bottle",
+    "Burete": "Sponge",
+    "Aspirator": "Vacuum cleaner",
+    "Sac de gunoi": "Trash bag"
+  },
+  "templates": {},
+  "skip": [
+    "mătură măturat curățenie curte broom sweep cleaning",
+    "găleată apă spălat curățenie bucket pail water",
+    "mop spălat pe jos podea curățenie mop floor cleaning",
+    "pulverizator spray soluție geamuri dezinfectant spray bottle window cleaner disinfectant",
+    "burete vase spălat spumă sponge dishes foam",
+    "aspirator aspirat praf covor vacuum cleaner dust carpet",
+    "detergent bidon soluție rufe spălătorie detergent laundry",
+    "sac de gunoi deșeuri menajere trash bag garbage waste"
+  ]
+}

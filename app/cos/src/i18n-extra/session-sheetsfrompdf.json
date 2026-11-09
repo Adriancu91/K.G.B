@@ -1,0 +1,16 @@
+{
+  "dict": {
+    "Tabelele unui PDF (facturi, extrase de cont, liste de prețuri), cu numerele gata de adunat": "The tables of a PDF (invoices, bank statements, price lists), with the numbers ready to add up",
+    "tabel": "table",
+    "tabele": "tables"
+  },
+  "templates": {
+    "{0} nu are text (paginile sunt scanări sau poze). Fă-l întâi căutabil în modulul PDF sau folosește «Din imagine…».": "{0} has no text (the pages are scans or pictures). Make it searchable first in the PDF module or use “From image…”.",
+    "Importat din {0}: {1} rânduri, din {2} {3}. Numerele sunt gata de adunat.": "Imported from {0}: {1} rows, from {2} {3}. The numbers are ready to add up.",
+    "Importat din {0}: {1} rânduri. N-am găsit tabele, așa că fiecare rând de text e un rând în tabel.": "Imported from {0}: {1} rows. No tables were found, so each line of text is a row in the spreadsheet.",
+    "În {0} nu am găsit text de pus în tabel.": "No text to put in the spreadsheet was found in {0}.",
+    "Se citesc tabelele din {0}: pagina {1} din {2}…": "Reading the tables in {0}: page {1} of {2}…",
+    "Tabelele din {0} nu au putut fi citite.": "The tables in {0} could not be read."
+  },
+  "skip": []
+}

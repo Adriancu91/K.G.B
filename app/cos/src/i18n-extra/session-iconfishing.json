@@ -1,0 +1,24 @@
+{
+  "dict": {
+    "Pescuit": "Fishing",
+    "Undiță": "Fishing rod",
+    "Cârlig de pescuit": "Fish hook",
+    "Mulinetă": "Fishing reel",
+    "Plută": "Fishing float",
+    "Minciog": "Landing net",
+    "Barcă cu vâsle": "Rowing boat",
+    "Cutie de pescuit": "Tackle box",
+    "Permis de pescuit": "Fishing license"
+  },
+  "templates": {},
+  "skip": [
+    "undiță băț de pescuit lansetă pescar fishing rod angler",
+    "cârlig de pescuit ac ghimpe fish hook",
+    "mulinetă tambur fir de pescuit fishing reel spool line",
+    "plută flotor dop semnalizare prindere fishing float bobber",
+    "minciog plasă de pescuit năvod mreajă landing net fishing net",
+    "barcă cu vâsle lac baltă vâslă row boat rowing",
+    "cutie de pescuit trusă accesorii năluci tackle box",
+    "permis de pescuit autorizație legitimație aprobare fishing license permit"
+  ]
+}

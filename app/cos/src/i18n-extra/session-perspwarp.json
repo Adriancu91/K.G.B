@@ -1,0 +1,22 @@
+{
+  "dict": {
+    "⊞ Amândouă": "⊞ Both",
+    "▦ Deformare în perspectivă…": "▦ Perspective Warp…",
+    "② Deformează": "② Warp",
+    "Colțurile planului înapoi unde le-ai pus la pasul 1": "The plane's corners back where you placed them in step 1",
+    "Deformare în perspectivă": "Perspective Warp",
+    "Deformare în perspectivă:": "Perspective Warp:",
+    "Deformare în perspectivă: pui un plan pe o suprafață dreaptă (fațada unei clădiri), apoi îi tragi colțurile sau apeși ⇕ și toată poza se îndreaptă după el": "Perspective Warp: place a plane on a flat surface (a building's facade), then drag its corners or press ⇕ and the whole picture straightens with it",
+    "Deformare în perspectivă…": "Perspective Warp…",
+    "Laturile de sus și de jos ale planului devin orizontale": "The plane's top and bottom edges become horizontal",
+    "Laturile din stânga și din dreapta ale planului devin verticale (clădirile nu mai par că se apleacă)": "The plane's left and right edges become vertical (buildings no longer seem to lean)",
+    "Pasul 1: pui cele 4 colțuri pe o suprafață dreaptă din poză (fațada unei clădiri, o masă, un drum); deformarea începe din nou": "Step 1: place the 4 corners on a flat surface in the picture (a building's facade, a table, a road); the warp starts over",
+    "Pasul 2: tragi colțurile planului unde vrei, iar toată poza (și ce e în afara planului) le urmează": "Step 2: drag the plane's corners where you want, and the whole picture (including what's outside the plane) follows them",
+    "Planul devine un dreptunghi drept: și verticalele, și orizontalele": "The plane becomes a straight rectangle: both verticals and horizontals",
+    "Pui un plan pe o suprafață dreaptă (o clădire), apoi îi tragi colțurile și tot stratul îl urmează (Perspective Warp)": "Place a plane on a flat surface (a building), then drag its corners and the whole layer follows it",
+    "Pune colțurile pe colțurile unei suprafețe drepte, apoi ② Deformează": "Put the corners on the corners of a flat surface, then ② Warp",
+    "Trage colțurile sau apasă ⇕ / ⇔: tot stratul se îndreaptă după plan": "Drag the corners or press ⇕ / ⇔: the whole layer straightens with the plane"
+  },
+  "templates": {},
+  "skip": []
+}

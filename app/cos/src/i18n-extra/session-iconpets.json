@@ -1,0 +1,24 @@
+{
+  "dict": {
+    "Animale de companie": "Pets",
+    "Câine": "Dog",
+    "Os de ros": "Chew bone",
+    "Bol pentru hrană": "Food bowl",
+    "Lesă cu zgardă": "Leash and collar",
+    "Colivie": "Birdcage",
+    "Acvariu": "Aquarium",
+    "Cușcă de transport": "Pet carrier",
+    "Cușca câinelui": "Dog house"
+  },
+  "templates": {},
+  "skip": [
+    "câine cățel animal de companie veterinar dog puppy pet",
+    "os de ros jucărie recompensă câine bone chew treat",
+    "bol castron hrană apă mâncare animale pet bowl food",
+    "lesă zgardă plimbare dresaj leash collar walk",
+    "colivie pasăre papagal canar cușcă birdcage parrot",
+    "acvariu pești apă plante aquarium fish tank",
+    "cușcă de transport cutie călătorie veterinar pet carrier crate",
+    "cușca câinelui adăpost curte câine dog house kennel"
+  ]
+}

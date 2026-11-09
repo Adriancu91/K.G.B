@@ -1,0 +1,28 @@
+{
+  "dict": {
+    "🧹 Optimizează structura": "🧹 Optimize structure",
+    "Fără să schimbe pozele sau ce se vede: scoate obiectele nefolosite, unește copiile identice (aceeași siglă, același font), comprimă ce a rămas necomprimat și scoate miniaturile vechi": "Without changing the pictures or what you see: removes unused objects, merges identical copies (the same logo, the same font), compresses what was left uncompressed and removes old thumbnails",
+    "Se optimizează structura…": "Optimizing the structure…",
+    "Structura PDF-ului e deja optimizată: n-am găsit nimic de câștigat.": "The PDF structure is already optimized: there was nothing to gain.",
+    "Am scos:": "Removed:",
+    "Apasă Salvează ca… ca să păstrezi PDF-ul curățat.": "Press Save As… to keep the cleaned PDF.",
+    "1 comentariu": "1 comment",
+    "1 strat ascuns": "1 hidden layer",
+    "N-am găsit linii de completat (scrise „____” / „......” sau trase), chenare goale sau căsuțe ☐ în document. (La paginile scanate, fă întâi OCR.) ": "No fill-in lines (typed “____” / “......” or drawn), empty boxes or ☐ boxes were found in the document. (For scanned pages, run OCR first.) ",
+    "Contrastul textului": "Text contrast",
+    "Nu e text vizibil de măsurat.": "There is no visible text to measure.",
+    "Textul se distinge bine de fundal (primele 30 de pagini verificate).": "Text stands out clearly from the background (first 30 pages checked).",
+    "Textul se distinge bine de fundal.": "Text stands out clearly from the background."
+  },
+  "templates": {
+    "Gata: {0} KB → {1} KB. Obiecte nefolosite scoase: {2}; dubluri unite: {3}; fluxuri comprimate: {4}; miniaturi și date private scoase: {5}. Paginile arată la fel. Apasă Salvează ca… ca să păstrezi varianta optimizată.": "Done: {0} KB → {1} KB. Unused objects removed: {2}; duplicates merged: {3}; streams compressed: {4}; thumbnails and private data removed: {5}. The pages look the same. Press Save as… to keep the optimized version.",
+    "{0} metadate": "{0} metadata entries",
+    "{0} comentarii": "{0} comments",
+    "{0} straturi ascunse": "{0} hidden layers",
+    "Bucăți de text cu prea puțin contrast față de fundal: {0} (pagini: {1}). Cel mai slab: {2}:1 (trebuie cel puțin 4,5:1), de exemplu „{3}”.": "Pieces of text with too little contrast against the background: {0} (pages: {1}). Weakest: {2}:1 (must be at least 4.5:1), for example “{3}”."
+  },
+  "skip": [
+    "Info",
+    "Root"
+  ]
+}

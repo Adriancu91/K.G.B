@@ -1,0 +1,31 @@
+{
+ "dict": {
+  "📥 Recepție marfă": "📥 Goods receipt",
+  "Cant. din document": "Qty on document",
+  "Cant. primită": "Qty received",
+  "Cât scrie în avizul / factura furnizorului": "What the supplier’s delivery note / invoice says",
+  "Marfa primită de la un furnizor: cantitatea din documentul lui față de cea primită, cu diferențele": "Goods received from a supplier: the quantity on their document versus what arrived, with the differences",
+  "notă de recepție": "receipt note",
+  "Marfa primită de la un furnizor: cantitatea din documentul lui față de cea primită, diferențele, comisia și gestionarul": "Goods received from a supplier: the quantity on their document versus what arrived, the differences, the committee and the storekeeper",
+  "Notă de recepție (intrarea mărfii)": "Receipt note (goods in)",
+  "Clientul / destinatarul (la recepție: furnizorul)": "Client / consignee (for a receipt: the supplier)",
+  "Comisia de recepție (numele, despărțite prin virgulă)": "Receiving committee (names, separated by commas)",
+  "Constatările comisiei (starea mărfii, diferențele)": "Committee findings (condition of goods, differences)",
+  "Documentul furnizorului (aviz / factură, nr. și data)": "Supplier document (delivery note / invoice, no. and date)",
+  "Recepția": "Receipt",
+  "Numărul următor de recepție": "Next receipt number",
+  "Seria notelor de recepție": "Receipt note series"
+ },
+ "templates": {},
+ "skip": [
+  "<td><b>Membru al comisiei</b><br>{0}<br><br><br>Semnătura</td>",
+  "La recepție s-au constatat diferențe la {0} {1} față de documentul furnizorului (coloana 5).",
+  "Documentul furnizorului",
+  "Gestionarul",
+  "Marfa recepționată corespunde cantitativ cu documentul furnizorului.",
+  "poziție",
+  "poziții",
+  "Sediul furnizorului",
+  "Transportul"
+ ]
+}

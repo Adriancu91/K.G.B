@@ -1,0 +1,34 @@
+{
+  "dict": {
+    "Acte și scadențe": "Documents and due dates",
+    "ITP, RCA, rovinieta, buletinul, pașaportul: până când e valabil fiecare, câte zile mai sunt; cele expirate ies în roșu, cele care expiră în 30 de zile în galben.": "Car inspection, insurance, road tax, ID card, passport: how long each is valid and how many days are left; expired ones show in red, those expiring within 30 days in yellow."
+  },
+  "templates": {},
+  "skip": [
+    "=COUNTIF(F2:F{0};\"Expiră curând\")",
+    "=IF(E{0}=\"\";\"\";IF(E{1}<0;\"Expirat\";IF(E{2}<=30;\"Expiră curând\";\"Valabil\")))",
+    "Acte în listă",
+    "Actul",
+    "Asigurarea locuinței (PAD)",
+    "Carte de identitate",
+    "Costul tuturor reînnoirilor",
+    "Emis la",
+    "Expiră curând",
+    "Expiră în 30 de zile",
+    "Expirat",
+    "Expirate",
+    "Extinctor",
+    "Pașaport",
+    "Permis de conducere",
+    "Revizie auto",
+    "Rovinieta",
+    "Scadențe",
+    "Scrie data până la care e valabil actul; zilele rămase și starea se calculează singure.",
+    "Trusa medicală auto",
+    "Unde se reînnoiește",
+    "Următoarea scadență",
+    "Valabil",
+    "Valabil până la",
+    "Verificarea centralei"
+  ]
+}

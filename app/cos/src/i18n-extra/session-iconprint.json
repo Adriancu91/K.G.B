@@ -1,0 +1,24 @@
+{
+  "dict": {
+    "Tipografie și copiere": "Printing and copying",
+    "Plotter": "Plotter",
+    "Cartuș de toner": "Toner cartridge",
+    "Top de hârtie": "Ream of paper",
+    "Ghilotină de hârtie": "Paper cutter",
+    "Legare cu spirală": "Spiral binding",
+    "Laminator": "Laminator",
+    "Banner roll-up": "Roll-up banner",
+    "Cărți de vizită": "Business cards"
+  },
+  "templates": {},
+  "skip": [
+    "plotter imprimantă lată format mare afișe proiecte wide format printer",
+    "cartuș de toner cerneală tuș imprimantă consumabile toner cartridge ink",
+    "top de hârtie coli A4 500 de file hârtie de copiator paper ream sheets",
+    "ghilotină de hârtie ghilotina tăietor de hârtie cuțit tăiat coli paper cutter guillotine trimmer",
+    "legare cu spirală îndosariere broșură caiet spiralat spiral binding booklet",
+    "laminator laminare folie plastifiere protecție document laminating machine",
+    "banner roll-up rollup stand expoziție târg reclamă afiș pull up banner stand",
+    "cărți de vizită carte de vizita contact firmă tipărite business cards"
+  ]
+}

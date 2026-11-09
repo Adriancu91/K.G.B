@@ -1,0 +1,17 @@
+{
+  "dict": {
+    "Text deasupra săgeții": "Text above arrow",
+    "Indici în față": "Pre-scripts (left indices)",
+    "Paranteze unghiulare": "Angle brackets",
+    "Fracție oblică": "Skewed fraction",
+    "Fracție pe rând": "Linear fraction"
+  },
+  "templates": {},
+  "skip": [
+    "2H_2 + O_2 overset(t, ->) 2H_2 O",
+    "{}_92^238 U",
+    "angle(x^2) - angle(x)^2",
+    "sfrac(1, 2)",
+    "lfrac(a + b, c)"
+  ]
+}

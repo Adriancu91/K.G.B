@@ -1,0 +1,19 @@
+{
+  "dict": {
+    "Ascult sunetul clipului ca să găsesc pauzele…": "Listening to the clip sound to find the pauses…",
+    "Clipul pare să fie numai liniște, așa că nu am scos nimic.": "The clip seems to be all silence, so nothing was removed.",
+    "Doar pauzele cel puțin atât de lungi se scot": "Only pauses at least this long are removed",
+    "Găsește în sunetul clipului liniștea (pauzele dintre fraze, așteptarea de la început și de la sfârșit) și o scoate; clipul rămâne în bucăți lipite, care se pot scurta sau muta. Ctrl+Z le pune la loc.": "Finds the silence in the clip sound (the pauses between sentences, the waiting at the start and at the end) and removes it; the clip stays in joined pieces, which can be shortened or moved. Ctrl+Z puts them back.",
+    "Nu am putut citi sunetul clipului (poate nu are sunet sau e prea mare).": "Could not read the clip sound (maybe it has no sound or it is too large).",
+    "Pauzele scoase": "Removed pauses",
+    "Pauzele se scot doar din clipurile salvate pe calculator, în aplicația instalată.": "Pauses can only be removed from clips saved on the computer, in the installed app.",
+    "🔇 Scoate pauzele": "🔇 Remove pauses",
+    "mai lungi de": "longer than"
+  },
+  "templates": {
+    "Am scos liniștea de la capetele clipului {0} ({1} s).": "Removed the silence at the ends of clip {0} ({1} s).",
+    "Am scos pauzele din clipul {0} ({1} s): acum e în {2} bucăți.": "Removed the pauses from clip {0} ({1} s): it is now in {2} pieces.",
+    "Nu am găsit pauze mai lungi de {0} s în clipul {1}.": "No pauses longer than {0} s were found in clip {1}."
+  },
+  "skip": []
+}

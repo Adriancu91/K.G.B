@@ -1,0 +1,18 @@
+{
+  "dict": {
+    "🌈 Profilul de culoare…": "🌈 Color profile…",
+    "Convertește în sRGB": "Convert to sRGB",
+    "Fișierul nu spune în ce profil e.": "The file does not say which profile it is in.",
+    "În stânga: acum. În dreapta: după conversie.": "Left: now. Right: after the conversion.",
+    "O poză din Adobe RGB, Display P3 sau ProPhoto care arată ștearsă: convertește-o în sRGB, cum o arată ecranul și site-urile": "A picture from Adobe RGB, Display P3 or ProPhoto that looks washed out: convert it to sRGB, the way screens and websites show it",
+    "O poză din Adobe RGB, Display P3 sau ProPhoto, convertită în sRGB": "A picture from Adobe RGB, Display P3 or ProPhoto, converted to sRGB",
+    "Poza e în": "The picture is in",
+    "Poza se arată ca sRGB; dacă a fost făcută în alt profil, culorile par șterse sau prea tari. Alege profilul ei: se convertesc toate straturile în sRGB.": "The picture is shown as sRGB; if it was made in another profile, the colors look washed out or too strong. Choose its profile: all layers are converted to sRGB.",
+    "Profilul de culoare": "Color profile",
+    "Profilul de culoare…": "Color profile…"
+  },
+  "templates": {
+    "Profilul din fișier: {0}.": "Profile in the file: {0}."
+  },
+  "skip": []
+}

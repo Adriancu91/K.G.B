@@ -1,0 +1,14 @@
+{
+  "dict": {
+    "Plăcintă (un cerc plin tăiat în felii egale, câte o idee pe felie)": "Pie (a full circle cut into equal slices, one idea per slice)",
+    "Țintă cu dreptunghiuri (dreptunghiuri unul în altul, textul sus în fiecare)": "Nested target (rectangles one inside the other, the text at the top of each)",
+    "Plăcintă": "Pie",
+    "plăcintă": "pie",
+    "Țintă cu dreptunghiuri": "Nested target",
+    "țintă cu dreptunghiuri": "nested target",
+    "Un cerc plin tăiat în felii egale din centru, câte o idee pe felie (părțile egale ale unui întreg)": "A full circle cut into equal slices from the center, one idea per slice (the equal parts of a whole)",
+    "Dreptunghiuri unul în altul, cu textul sus în fiecare (de la cadrul larg la ce e în miezul lui)": "Rectangles one inside the other, with the text at the top of each (from the wide frame to what lies at its core)"
+  },
+  "templates": {},
+  "skip": []
+}

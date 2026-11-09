@@ -1,0 +1,24 @@
+{
+  "dict": {
+    "Bijuterii și ceasuri": "Jewelry and watches",
+    "Diamant": "Diamond",
+    "Inel cu diamant": "Diamond ring",
+    "Colier": "Necklace",
+    "Cercei": "Earrings",
+    "Ceas de mână": "Wristwatch",
+    "Brățară": "Bracelet",
+    "Coroană": "Crown",
+    "Cutie de bijuterii": "Jewelry box"
+  },
+  "templates": {},
+  "skip": [
+    "diamant briliant piatră prețioasă bijutier diamond gem jewel",
+    "inel cu diamant inel de logodnă cerere în căsătorie engagement ring",
+    "colier lănțișor pandantiv medalion necklace pendant chain",
+    "cercei pereche urechi bijuterii earrings",
+    "ceas de mână ceasornic curea ceasornicar wristwatch watch",
+    "brățară mărgele perle încheietură bracelet beads bangle",
+    "coroană rege regină aur premiu vip crown king queen",
+    "cutie de bijuterii caseta etui cadou jewelry box case"
+  ]
+}

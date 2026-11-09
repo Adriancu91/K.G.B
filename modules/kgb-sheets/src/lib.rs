@@ -29,6 +29,18 @@
 //! - `convert {id, version?}` → a new, editable XLSX document from CSV, ODS,
 //!   XLS, XLSB or XLSM (values; other formats' formulas become their values)
 //! - `restore {id, version}`, `export {id, version?, dest, overwrite}`, `delete {id}`
+//!
+//! The spreadsheet window copied from Cyber Office Studio (D-073, D-077) edits whole workbooks in the
+//! window and hands them back here; nothing is saved before it passes [`check_book`]:
+//! - `read {id, version?}` → `{version, name, data}` (the bytes of a version)
+//! - `save_book {id, based_on, data, summary}` → a new version of an .xlsx or .ssheet document
+//! - `save_new_book {name, data, summary}` → a new document (.xlsx or .ssheet)
+//! - `peek {name, data}` → the same file back, for the window to read without keeping it (Import CSV /
+//!   from text, tables from a document); the app hands it over from the system dialog
+//! - `export_file {dest, data}` → the window's export (.xlsx, .csv, .pdf…) at a path the user chose
+//!
+//! `.ssheet` is the window's own format (JSON, `"format": "suite-sheet"`): it keeps what an .xlsx cannot
+//! (threaded cell notes, scenarios, queries, sheets linked from documents).
 
 pub mod book;
 pub mod convert;
@@ -145,6 +157,74 @@ fn yes() -> bool {
 
 #[derive(Deserialize)]
 #[serde(deny_unknown_fields)]
+struct SaveBook {
+    id: Uuid,
+    based_on: u64,
+    data: String,
+    summary: String,
+}
+
+#[derive(Deserialize)]
+#[serde(deny_unknown_fields)]
+struct SaveNewBook {
+    name: String,
+    data: String,
+    summary: String,
+}
+
+#[derive(Deserialize)]
+#[serde(deny_unknown_fields)]
+struct ExportFile {
+    dest: PathBuf,
+    data: String,
+}
+
+/// The largest workbook the window may hand back.
+const MAX_BOOK_BYTES: usize = 100 * 1024 * 1024;
+
+fn is_ssheet(name: &str) -> bool {
+    name.rsplit_once('.').is_some_and(|(_, e)| e.eq_ignore_ascii_case("ssheet"))
+}
+
+/// A workbook from the window, before it is saved: an .xlsx must pass the archive check and open with
+/// its sheets; an .ssheet must be the window's JSON with named sheets. Returns the number of sheets.
+pub fn check_book(name: &str, data: &[u8]) -> Result<usize, String> {
+    if data.len() > MAX_BOOK_BYTES {
+        return Err(format!("registrul are peste {} MB", MAX_BOOK_BYTES / 1024 / 1024));
+    }
+    if is_ssheet(name) {
+        let v: Value = serde_json::from_slice(data).map_err(|_| "registrul .ssheet nu este JSON valid".to_string())?;
+        if v["format"] != "suite-sheet" || v["version"] != 1 {
+            return Err("registrul .ssheet nu are formatul „suite-sheet”, versiunea 1".into());
+        }
+        let sheets = v["sheets"].as_array().filter(|s| !s.is_empty()).ok_or("registrul nu are nicio foaie")?;
+        if sheets.iter().any(|s| !s["name"].is_string() || !s["cells"].is_object()) {
+            return Err("o foaie nu are nume sau celule".into());
+        }
+        return Ok(sheets.len());
+    }
+    match Format::from_name(name) {
+        Some(Format::Xlsx) => {
+            let b = book::read(data, Format::Xlsx)?;
+            if b.sheets.is_empty() {
+                return Err("registrul nu are nicio foaie".into());
+            }
+            Ok(b.sheets.len())
+        }
+        _ => Err("se salvează doar .xlsx sau .ssheet".into()),
+    }
+}
+
+fn summary_of(s: &str) -> CoreResult<String> {
+    let s = s.trim().chars().take(200).collect::<String>();
+    if s.is_empty() {
+        return Err(bad("lipsește descrierea schimbării"));
+    }
+    Ok(s)
+}
+
+#[derive(Deserialize)]
+#[serde(deny_unknown_fields)]
 struct UseTemplate {
     template: String,
 }
@@ -229,7 +309,7 @@ impl Module for Sheets {
                 let docs: Vec<_> = ctx
                     .list_documents()?
                     .into_iter()
-                    .filter(|d| Format::from_name(&d.name).is_some())
+                    .filter(|d| Format::from_name(&d.name).is_some() || is_ssheet(&d.name))
                     .collect();
                 Ok(serde_json::to_value(docs).expect("serialisable"))
             }
@@ -344,6 +424,63 @@ impl Module for Sheets {
                 report["applied"] = json!(true);
                 report["version"] = json!(saved.number);
                 Ok(report)
+            }
+            "read" => {
+                let a: Which = args(a)?;
+                let doc = ctx
+                    .list_documents()?
+                    .into_iter()
+                    .find(|d| d.id == a.id)
+                    .ok_or_else(|| bad("documentul nu există"))?;
+                let (v, data) = ctx.read_document(a.id, a.version)?;
+                Ok(json!({"version": v.number, "name": doc.name, "data": B64.encode(&data)}))
+            }
+            "save_book" => {
+                let a: SaveBook = args(a)?;
+                let doc = ctx
+                    .list_documents()?
+                    .into_iter()
+                    .find(|d| d.id == a.id)
+                    .ok_or_else(|| bad("documentul nu există"))?;
+                if doc.current != a.based_on {
+                    return Err(bad(format!(
+                        "a fost salvat între timp (versiunea {}); redeschide-l",
+                        doc.current
+                    )));
+                }
+                let summary = summary_of(&a.summary)?;
+                let data = B64.decode(a.data.as_bytes()).map_err(|_| bad("registrul nu a ajuns întreg"))?;
+                let sheets = check_book(&doc.name, &data).map_err(|e| bad(format!("registrul nu trece verificarea: {e}")))?;
+                let v = ctx.save_document(a.id, a.based_on, &data, &summary)?;
+                Ok(json!({"version": v.number, "sheets": sheets, "summary": summary}))
+            }
+            "save_new_book" => {
+                let a: SaveNewBook = args(a)?;
+                let name = a.name.trim();
+                if name.is_empty() || name.contains(['/', '\\']) {
+                    return Err(bad("numele registrului nu este valid"));
+                }
+                let summary = summary_of(&a.summary)?;
+                let data = B64.decode(a.data.as_bytes()).map_err(|_| bad("registrul nu a ajuns întreg"))?;
+                let sheets = check_book(name, &data).map_err(|e| bad(format!("registrul nu trece verificarea: {e}")))?;
+                let d = ctx.import_document(name, &data)?;
+                ctx.log(&format!("registru nou din fereastră ({sheets} foi): {summary}"));
+                Ok(json!({"document": d, "sheets": sheets, "summary": summary}))
+            }
+            "peek" => {
+                // Nothing is stored: the window reads the file and decides what to do with it.
+                let a: Import = args(a)?;
+                Ok(json!({"name": a.name, "data": a.data}))
+            }
+            "export_file" => {
+                let a: ExportFile = args(a)?;
+                let data = B64.decode(a.data.as_bytes()).map_err(|_| bad("fișierul nu a ajuns întreg"))?;
+                if data.len() > MAX_BOOK_BYTES {
+                    return Err(bad("fișierul este prea mare"));
+                }
+                // The save dialog has already asked before replacing a file.
+                ctx.export_bytes(&a.dest, &data, true)?;
+                Ok(json!({"path": a.dest, "bytes": data.len()}))
             }
             "templates" => Ok(json!({"templates": templates::TEMPLATES, "note": templates::NOTE})),
             "use_template" => {

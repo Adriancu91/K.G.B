@@ -1,0 +1,11 @@
+{
+  "dict": {
+    "Buton de acțiune: Gol": "Action Button: Blank",
+    "Buton de acțiune: Înapoi": "Action Button: Back or Previous",
+    "Buton de acțiune: Înainte": "Action Button: Forward or Next",
+    "Buton de acțiune: Început": "Action Button: Beginning",
+    "Buton de acțiune: Sfârșit": "Action Button: End"
+  },
+  "templates": {},
+  "skip": []
+}

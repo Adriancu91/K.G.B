@@ -1,0 +1,24 @@
+{
+  "dict": {
+    "Calculatoare și accesorii": "Computers and accessories",
+    "Mouse": "Mouse",
+    "Tastatură": "Keyboard",
+    "Stick USB": "USB stick",
+    "Router wireless": "Wireless router",
+    "Hard disk": "Hard drive",
+    "Cameră web": "Webcam",
+    "Cablu USB": "USB cable",
+    "Sursă UPS": "UPS unit"
+  },
+  "templates": {},
+  "skip": [
+    "mouse calculator clic cursor computer mouse",
+    "tastatură taste scriere calculator keyboard typing",
+    "stick usb memorie flash salvare date usb flash drive",
+    "router internet rețea wireless antenă modem network",
+    "hard disk hdd ssd stocare date backup hard drive storage",
+    "cameră web videoconferință apel video webcam",
+    "cablu usb încărcător conectare usb cable charger",
+    "sursă ups neîntreruptibilă baterie de rezervă pană de curent backup power"
+  ]
+}

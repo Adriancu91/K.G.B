@@ -1,0 +1,10 @@
+{
+  "dict": {
+    "🧯 Verificarea de protecția muncii": "🧯 Workplace safety check"
+  },
+  "templates": {},
+  "skip": [
+    "Locul de muncă / punctul de lucru:\nCine face verificarea:\n\nInstruirea oamenilor:\n☐ fișele de instruire semnate de toți angajații (și de cei noi)\n☐ instruirea periodică făcută la termen (Slides → Instruire de protecția muncii)\n☐ angajații noi au făcut instruirea la angajare\n\nStingerea incendiilor și evacuarea:\n☐ stingătoarele la locul lor, cu verificarea la zi\n☐ căile de evacuare și ieșirile libere, cu indicatoare\n☐ planul de evacuare afișat la vedere\n\nPrim ajutor și echipamente:\n☐ trusa de prim ajutor completă, fără produse expirate\n☐ echipamentul de protecție dat și purtat (mănuși, ochelari, încălțăminte)\n☐ prizele, cablurile și aparatele fără defecte\n\nCe trebuie reparat și până când:\n• ",
+    "Verificare protecția muncii {0}"
+  ]
+}

@@ -1,0 +1,10 @@
+{
+  "dict": {
+    "📚 Împrumuturi de la bibliotecă": "📚 Library loans",
+    "Biblioteca:\nNumărul permisului de bibliotecă:\nProgramul (zilele și orele):\n\nCărțile împrumutate (titlul, autorul, data de returnare):\n• \n• \n• \n\nÎnainte de termen:\n☐ datele de returnare trecute în calendar\n☐ prelungirea cerută la timp (la ghișeu, la telefon sau pe site)\n☐ cărțile verificate să nu aibă pagini îndoite sau notițe pe ele\n☐ semnele de carte și foile proprii scoase dintre pagini\n\nLa bibliotecă:\n☐ cărțile predate la ghișeu sau puse în cutia de returnare\n☐ returnarea confirmată (bonul sau mesajul primit)\n☐ penalitățile de întârziere plătite, dacă sunt\n☐ cărțile rezervate ridicate\n☐ permisul de bibliotecă reînnoit, dacă expiră\n\nCe vreau să citesc data viitoare:\n• \n": "Library:\nLibrary card number:\nOpening hours (days and times):\n\nBorrowed books (title, author, return date):\n• \n• \n• \n\nBefore the due date:\n☐ return dates added to the calendar\n☐ renewal requested in time (at the desk, by phone or on the website)\n☐ books checked for folded pages or notes written in them\n☐ bookmarks and personal papers taken out from between the pages\n\nAt the library:\n☐ books handed in at the desk or put in the book return box\n☐ return confirmed (receipt or message received)\n☐ late fees paid, if any\n☐ reserved books picked up\n☐ library card renewed, if it is expiring\n\nWhat I want to read next time:\n• \n"
+  },
+  "templates": {
+    "Împrumuturi de la bibliotecă {0}": "Library loans {0}"
+  },
+  "skip": []
+}

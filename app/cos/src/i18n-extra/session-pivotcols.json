@@ -1,0 +1,20 @@
+{
+  "dict": {
+    "Al doilea câmp pe coloane": "Second column field",
+    "Al doilea câmp pe coloane: fiecare coloană a primului câmp se împarte după valorile acestei coloane, cu o coloană de subtotal pentru fiecare grup": "Second column field: each column of the first field is split by the values of this column, with a subtotal column for each group",
+    "Încă un câmp pe coloane": "Another column field",
+    "O coloană „… Total” după fiecare grup al primului câmp de pe coloane": "A \"… Total\" column after each group of the first column field",
+    "Subtotaluri pe coloane": "Column subtotals",
+    "Mai multe valori merg doar cu cel mult un câmp pe coloane și cu valorile arătate ca cifre": "More values work only with at most one column field and with values shown as numbers",
+    "Gruparea coloanelor": "Column grouping",
+    "Grupează coloanele pe": "Group columns by",
+    "Grupează numerele de pe coloane": "Group the column numbers",
+    "Mărimea intervalului pe coloane": "Column interval size",
+    "Câmpurile calculate merg doar cu cel mult un câmp pe coloane și cu valorile arătate ca cifre": "Calculated fields work only with at most one column field and with values shown as numbers"
+  },
+  "templates": {},
+  "skip": [
+    " și „{0}”{1}",
+    "Rezumat pe {0}{1}: {2}{3}"
+  ]
+}

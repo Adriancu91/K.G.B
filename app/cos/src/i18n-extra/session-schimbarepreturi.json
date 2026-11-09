@@ -1,0 +1,14 @@
+{
+ "dict": {
+  "Când se schimbă prețurile de vânzare ale mărfii din magazin: stocul numărat în ziua schimbării, prețul vechi și cel nou pentru fiecare produs, diferența pe bucată și pe total (în plus sau în minus), cu motivul și semnăturile comisiei și ale gestionarului": "When the selling prices of the goods in the shop change: the stock counted on the day of the change, the old and the new price of each product, the difference per unit and in total (plus or minus), with the reason and the signatures of the committee and the storekeeper",
+  "Proces-verbal de modificare a prețurilor": "Price change report",
+  "🏷 Schimbarea prețurilor": "🏷 Price change",
+  "Ce se schimbă și de ce:\nProdusele:\nDe la data:\n\nCalculul:\n☐ prețurile noi calculate din prețul de achiziție și adaos (Sheets → Calculul prețului de vânzare)\n☐ niciun produs în pierdere sau sub adaosul minim\n☐ lista prețurilor noi aprobată de administrator\n\nÎn magazin:\n☐ stocul numărat în ziua schimbării, la prețul vechi\n☐ diferența de preț trecută în proces-verbal (Docs → Proces-verbal de modificare a prețurilor)\n☐ etichetele noi puse la raft\n☐ prețurile schimbate și în casa de marcat\n\nClienții:\n☐ lista de prețuri pentru clienți refăcută\n☐ clienții cu contract anunțați din timp, cum scrie în contract (Docs → Anunțul modificării prețurilor către clienți)\n\nObservații:\n• ": "What changes and why:\nProducts:\nFrom the date:\n\nThe calculation:\n☐ new prices calculated from the purchase price and the markup (Sheets → Selling price calculation)\n☐ no product at a loss or below the minimum markup\n☐ list of new prices approved by the administrator\n\nIn the shop:\n☐ stock counted on the day of the change, at the old price\n☐ price difference entered in a report (Docs → Price change report)\n☐ new labels put on the shelf\n☐ prices changed in the cash register too\n\nCustomers:\n☐ price list for customers redone\n☐ customers with a contract notified in advance, as the contract says (Docs → Price change notice to customers)\n\nNotes:\n• ",
+  "Anunțul modificării prețurilor către clienți": "Price change notice to customers",
+  "Scrisoare către un client cu contract: de la ce dată se schimbă prețurile, de ce, tabelul cu prețul vechi și cel nou, reducerea lui și ce se întâmplă cu comenzile deja trimise, cu termenul în care poate răspunde": "Letter to a customer with a contract: from what date prices change, why, the table with the old and the new price, their discount and what happens to orders already sent, with the deadline for replying"
+ },
+ "templates": {
+  "Schimbarea prețurilor {0}": "Price change {0}"
+ },
+ "skip": []
+}

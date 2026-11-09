@@ -1,0 +1,23 @@
+{
+  "dict": {
+    "Arată toate perioadele (scoate filtrul de pe coloană)": "Show all periods (clear the filter from the column)",
+    "Câte perioade arată cronologia: ani, trimestre, luni sau zile": "Which periods the timeline shows: years, quarters, months or days",
+    "Coloana cu cursorul nu are date calendaristice: cronologia merge doar pe o coloană cu date": "The column with the cursor has no dates: a timeline works only on a date column",
+    "Cronologie": "Timeline",
+    "Cronologie pentru coloana cu date de sub cursor: perioadele (ani, trimestre, luni, zile) ca butoane, un clic arată doar rândurile din perioada aceea": "Timeline for the date column under the cursor: the periods (years, quarters, months, days) as buttons; one click shows only the rows in that period",
+    "Închide cronologia (filtrul rămâne)": "Close the timeline (the filter stays)",
+    "Inserare cronologie": "Insert Timeline",
+    "Inserare cronologie: perioadele coloanei cu date de sub cursor, ca butoane de filtrare": "Insert Timeline: the periods of the date column under the cursor, as filter buttons",
+    "Nicio dată în rândurile arătate": "No dates in the visible rows",
+    "Prea multe perioade: alege Luni sau Ani": "Too many periods: choose Months or Years",
+    "Pune cursorul într-un tabel cu cap de tabel pe primul rând și o coloană cu date, apoi apasă din nou": "Put the cursor in a table with headers in the first row and a date column, then press again",
+    "Toate perioadele": "All periods"
+  },
+  "templates": {
+    "{0}{1}: {2} {3} (Shift+clic: până la ea)": "{0}{1}: {2} {3} (Shift+click: up to here)",
+    "Coloana {0} are deja o cronologie": "Column {0} already has a timeline",
+    "Cronologie pentru coloana {0}: clic pe o perioadă = doar rândurile din ea, Shift+clic = până la ea": "Timeline for column {0}: click a period = only its rows, Shift+click = up to it",
+    "Toate perioadele: {0}": "All periods: {0}"
+  },
+  "skip": []
+}

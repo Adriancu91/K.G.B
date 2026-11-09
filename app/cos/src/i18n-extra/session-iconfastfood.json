@@ -1,0 +1,24 @@
+{
+  "dict": {
+    "Fast-food": "Fast food",
+    "Burger": "Burger",
+    "Hot dog": "Hot dog",
+    "Cartofi prăjiți": "French fries",
+    "Shaorma": "Shawarma wrap",
+    "Pahar de suc cu pai": "Soda cup",
+    "Cutie de pizza": "Pizza box",
+    "Ketchup și muștar": "Ketchup and mustard",
+    "Meniu pe tavă": "Meal tray"
+  },
+  "templates": {},
+  "skip": [
+    "burger hamburger chifla carne fast-food meniu burger hamburger",
+    "hot dog crenvurst cârnat chiflă muștar hot dog sausage",
+    "cartofi prăjiți pai porție fast-food french fries chips",
+    "shaorma kebab lipie wrap fast-food shawarma wrap doner",
+    "pahar de suc pai răcoritoare băutură la pachet soda cup straw soft drink",
+    "cutie de pizza livrare comandă pizzerie felii pizza box delivery",
+    "ketchup muștar sosuri sticle condimente ketchup mustard sauce bottles",
+    "meniu pe tavă tavă comandă la ghișeu restaurant cu autoservire meal tray combo"
+  ]
+}

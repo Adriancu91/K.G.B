@@ -1,0 +1,33 @@
+{
+  "dict": {
+    "Mutare: cutii și cheltuieli": "Moving: boxes and costs",
+    "Fiecare cutie cu numărul ei, camera și ce e în ea, fragilă sau nu: ies cutiile pe camere, cele ajunse (în verde) și cele care încă lipsesc (în galben), plus cheltuielile mutării, estimat față de real.": "Every box with its number, the room and what is in it, fragile or not: you get the boxes per room, those that arrived (in green) and those still missing (in yellow), plus the moving costs, estimated against actual."
+  },
+  "templates": {},
+  "skip": [
+    "Ajunsă",
+    "Ajunse",
+    "Baie",
+    "Bucătărie",
+    "Ce e în cutie",
+    "Cheltuielile mutării",
+    "Curățenia",
+    "Cutii",
+    "Cutii, bandă, folie",
+    "Debara / boxă",
+    "Dormitor",
+    "Firma de mutări / transportul",
+    "Fragil",
+    "Fragile",
+    "Garanția și prima chirie",
+    "Hol",
+    "Încă lipsesc",
+    "La sosire, treci „Da” la Ajunsă: în galben rămân cutiile care încă lipsesc.",
+    "Mobilă și lucruri noi",
+    "Mutarea internetului și a contractelor",
+    "Pe camere",
+    "Scrie numărul cutiei pe ea cu markerul, la fel ca în tabel.",
+    "Sufragerie",
+    "Total cutii"
+  ]
+}

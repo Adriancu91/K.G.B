@@ -1,0 +1,14 @@
+{
+  "dict": {
+    "⊞ Buton în text": "⊞ Button in Text"
+  },
+  "templates": {
+    "Buton pus: dublu clic pe „{0}” rulează macrocomanda de după el (în .docx e câmpul MACROBUTTON).": "Button added: double-click “{0}” to run the macro after it (in .docx it is the MACROBUTTON field).",
+    "Macrocomanda „{0}” nu există în acest document și nici pentru toate documentele: înregistreaz-o din Vizualizare → Macrocomenzi.": "The macro “{0}” does not exist in this document or for all documents: record it from View → Macros.",
+    "Buton macro: dublu clic rulează macrocomanda „{0}”": "Macro button: double-click to run the macro “{0}”",
+    "Pune la cursor un buton „{0}”: dublu clic pe el rulează macrocomanda (câmpul MACROBUTTON în .docx)": "Insert a “{0}” button at the cursor: double-clicking it runs the macro (the MACROBUTTON field in .docx)"
+  },
+  "skip": [
+    "<text:execute-macro text:name=\"{0}\">{1}</text:execute-macro>"
+  ]
+}

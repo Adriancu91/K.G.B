@@ -1,0 +1,22 @@
+// Test pentru urmărirea formulelor din Sheets: celulele și zonele la care se referă o formulă. Rulare (în suite/): node tests/sheets-trace.test.mjs
+import { build } from 'esbuild';
+import { pathToFileURL } from 'node:url';
+import { tmpdir } from 'node:os';
+import { join } from 'node:path';
+import { rmSync } from 'node:fs';
+const out = join(tmpdir(), `suite-trace-${process.pid}.mjs`);
+await build({ stdin: { contents: "export { formulaRanges } from './src/sheets/formula.ts';", resolveDir: process.cwd(), loader: 'ts' }, bundle: true, format: 'esm', platform: 'node', outfile: out, logLevel: 'error' });
+const { formulaRanges } = await import(pathToFileURL(out).href);
+rmSync(out, { force: true });
+let fail = 0;
+const eq = (name, got, want) => { const ok = JSON.stringify(got) === JSON.stringify(want); console.log(`${ok ? 'ok ' : 'GREȘIT'} ${name}${ok ? '' : ` → ${JSON.stringify(got)} (trebuia ${JSON.stringify(want)})`}`); if (!ok) fail++; };
+const g = (r0, c0, r1 = r0, c1 = c0) => ({ r0, c0, r1, c1 });
+eq('o celulă', formulaRanges('=A1*2'), [g(0, 0)]);
+eq('zonă și celulă cu $', formulaRanges('=SUM(B2:C4)+$D$1'), [g(1, 1, 3, 2), g(0, 3)]);
+eq('zonă scrisă invers', formulaRanges('=SUM(C4:B2)'), [g(1, 1, 3, 2)]);
+eq('textul dintre ghilimele nu contează', formulaRanges('="A1"&B1'), [g(0, 1)]);
+eq('altă foaie nu contează', formulaRanges("=Foaie2!A1+'Foaie 3'!B2+C3"), [g(2, 2)]);
+eq('numele funcțiilor nu sunt celule (LOG10)', formulaRanges('=LOG10(A2)'), [g(1, 0)]);
+eq('fără formulă', formulaRanges('A1'), []);
+console.log(fail ? `\n${fail} verificări greșite` : '\nToate verificările au trecut');
+process.exit(fail ? 1 : 0);

@@ -1,0 +1,24 @@
+{
+  "dict": {
+    ", aldin": ", bold",
+    ", cursiv": ", italic",
+    "✎ Rescrie textul": "✎ Rewrite text",
+    "Desenează din nou stratul cu textul scris aici, cu același font, aceeași mărime, culoare și loc (ce ai pictat pe strat se pierde)": "Redraws the layer with the text written here, in the same font, size, color and place (anything painted on the layer is lost)",
+    "Textul stratului": "Layer text",
+    "Explicație cu săgeată în jos": "Down arrow callout",
+    "Explicație cu săgeată în sus": "Up arrow callout",
+    "Explicație cu săgeată la dreapta": "Right arrow callout",
+    "Explicație cu săgeată la stânga": "Left arrow callout",
+    "Schemă: Colaționare": "Flowchart: Collate",
+    "Schemă: Operație manuală": "Flowchart: Manual operation",
+    "Masca stratului ales din traseu: se vede doar ce e în interiorul lui, fără să se șteargă nimic": "Mask of the selected layer from the path: only what is inside it stays visible, nothing is erased",
+    "◐ Mască din traseu": "◐ Mask from path",
+    "Fără trecere (tăietură)": "No transition (cut)"
+  },
+  "templates": {
+    "Textele ({0}) se văd cum au fost desenate; cuvintele, fontul și culoarea lor se pot rescrie din ⓘ Proprietăți.": "The texts ({0}) look as they were drawn; their words, font and color can be rewritten from ⓘ Properties."
+  },
+  "skip": [
+    "Txt TEXT"
+  ]
+}

@@ -1,0 +1,10 @@
+{
+ "dict": {
+  "🏬 Magazia la sfârșit de lună": "🏬 Store at month end",
+  "Gestiunea:\nLuna:\nGestionarul:\n\nDocumentele lunii:\n☐ toate notele de recepție trecute în fișele de magazie (Sheets → Notă de recepție)\n☐ bonurile de consum semnate și scăzute din fișe (Sheets → Bon de consum)\n☐ transferurile trimise confirmate de gestiunea care le-a primit (Sheets → Bon de transfer)\n☐ avizele și facturile de vânzare scăzute din fișe\n\nFișele de magazie:\n☐ fiecare fișă are stocul la zi (Sheets → Fișa de magazie)\n☐ nicio fișă cu stoc negativ (dacă apare, lipsește un document de intrare)\n☐ produsele sub stocul minim trecute pe lista de comandat\n☐ câteva produse numărate prin sondaj și potrivite cu fișa\n\nLa contabilitate:\n☐ documentele lunii predate, cu borderou\n☐ stocul la zi confirmat cu evidența contabilă\n☐ diferențele găsite explicate în scris (Docs → Notă explicativă a gestionarului)\n\nDe comandat:\n•\n\nObservații:\n• ": "Store:\nMonth:\nStorekeeper:\n\nThe month's documents:\n☐ all goods receipt notes entered on the stock cards (Sheets → Goods receipt note)\n☐ materials requisitions signed and deducted from the cards (Sheets → Materials requisition)\n☐ transfers sent confirmed by the receiving store (Sheets → Transfer slip)\n☐ sales delivery notes and invoices deducted from the cards\n\nThe stock cards:\n☐ every card shows the current stock (Sheets → Stock card)\n☐ no card with negative stock (if one appears, a receipt document is missing)\n☐ products below the minimum stock put on the reorder list\n☐ a few products counted as a spot check and matched with the card\n\nAt accounting:\n☐ the month's documents handed over, with a cover list\n☐ the current stock confirmed against the accounting records\n☐ the differences found explained in writing (Docs → Stock keeper explanatory note)\n\nTo reorder:\n•\n\nNotes:\n• "
+ },
+ "templates": {
+  "Magazia la sfârșit de lună {0}": "Store at month end {0}"
+ },
+ "skip": []
+}

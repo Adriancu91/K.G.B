@@ -1,0 +1,12 @@
+{
+  "dict": {
+    "⇥ Se oprește aici": "⇥ Stop here",
+    "Clipul pornește de la locul de acum din player": "The clip starts from the current position in the player",
+    "Clipul rulează din nou întreg": "The clip plays in full again",
+    "Clipul se oprește la locul de acum din player": "The clip stops at the current position in the player",
+    "Decupare clip: derulează în playerul de pe slide până unde vrei să înceapă sau să se oprească, apoi apasă; fișierul rămâne întreg": "Trim clip: move the player on the slide to where it should start or stop, then click; the file stays whole",
+    "sfârșit": "end"
+  },
+  "templates": {},
+  "skip": []
+}

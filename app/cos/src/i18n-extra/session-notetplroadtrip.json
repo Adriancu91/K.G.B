@@ -1,0 +1,10 @@
+{
+  "dict": {
+    "🚗 Drum lung cu mașina": "🚗 Long car trip"
+  },
+  "templates": {},
+  "skip": [
+    "Drum lung {0}",
+    "Unde: \nCând plecăm: \nCine conduce / cu cine: \nKm de mers: \n\nMașina (cu o zi înainte):\n☐ presiunea în roți (și roata de rezervă)\n☐ uleiul și lichidul de răcire\n☐ lichidul de parbriz\n☐ plinul făcut\n\nActe:\n☐ permisul și buletinul\n☐ talonul și asigurarea RCA (carte verde în străinătate)\n☐ rovinieta și vigneta țărilor prin care trecem\n\nÎn portbagaj:\n☐ trusa medicală, triunghiurile, vesta, extinctorul\n☐ cablurile de pornire\n☐ apă și ceva de mâncare\n☐ încărcătorul de telefon\n\nPe drum:\n• pauză la 2 ore\n• opriri: \n• unde dormim: \n"
+  ]
+}

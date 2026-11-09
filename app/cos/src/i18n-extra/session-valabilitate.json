@@ -1,0 +1,28 @@
+{
+  "dict": {
+    "💊 Verificarea termenelor de valabilitate": "💊 Checking expiry dates",
+    "Ce expiră în 30 de zile iese în galben: pune-l în față la raft, la promoție sau cere returul la furnizor.": "What expires within 30 days shows in yellow: move it to the front of the shelf, put it on promotion or ask the supplier for a return.",
+    "În 90 de zile": "Within 90 days",
+    "Lotul scos din raft (expirat, distrus sau returnat) primește Retras = Da și nu mai intră la valoarea din raft.": "A batch taken off the shelf (expired, destroyed or returned) gets Withdrawn = Yes and no longer counts in the shelf value.",
+    "Loturi expirate": "Expired batches",
+    "Loturi în 30 de zile": "Batches within 30 days",
+    "Loturi în raft": "Batches on the shelf",
+    "Pentru farmacii, magazine, restaurante și depozite: fiecare lot cu produsul, lotul, raftul, cantitatea, prețul de achiziție și data expirării; ies zilele rămase, valoarea lotului și starea: expirat (în roșu), expiră în 30 de zile (în galben), în 90 de zile (în albastru), valabil (în verde) sau retras; în dreapta valoarea expirată, ce expiră curând și cel mai apropiat termen, cu produsul și lotul lui.": "For pharmacies, shops, restaurants and warehouses: each batch with the product, batch number, shelf, quantity, purchase price and expiry date; you get the days left, the batch value and the status: expired (in red), expires within 30 days (in yellow), within 90 days (in blue), valid (in green) or withdrawn; on the right the expired value, what expires soon and the nearest expiry date, with its product and batch.",
+    "Preț de achiziție": "Purchase price",
+    "Retras": "Withdrawn",
+    "Termene de valabilitate pe loturi": "Batch expiry dates",
+    "Valoarea expirată": "Expired value",
+    "Valoarea în 30 de zile": "Value within 30 days",
+    "Valoarea în raft": "Value on the shelf",
+    "Valoarea lotului": "Batch value",
+    "Gestiunea / raftul verificat:\nCine a verificat:\n\nLa raft și în depozit:\n☐ produsele expirate scoase de la raft și puse deoparte, cu eticheta „Nu se vinde”\n☐ produsele care expiră în 30 de zile (galben în Sheets → Termene de valabilitate pe loturi) aduse în față\n☐ loturile noi trecute în tabel, cu lotul și data expirării de pe ambalaj\n☐ produsele cu ambalaj deteriorat sau păstrate greșit (frig, căldură, umezeală) puse deoparte\n\nCe faci cu ce expiră:\n☐ furnizorii întrebați de retur sau de schimb, înainte de termen\n☐ promoție sau reducere pentru ce expiră curând\n☐ cele expirate predate pentru distrugere, cu procesul-verbal semnat\n☐ în tabel: Retras = Da la loturile scoase din raft\n\nPe scurt:\nValoarea expirată:\nValoarea care expiră în 30 de zile:\n\nDe comandat mai puțin (se vinde greu):\n• ": "Store / shelf checked:\nChecked by:\n\nOn the shelf and in the storeroom:\n☐ expired products taken off the shelf and set aside, labelled “Not for sale”\n☐ products expiring within 30 days (yellow in Sheets → Batch expiry dates) moved to the front\n☐ new batches entered in the table, with the batch and the expiry date from the package\n☐ products with damaged packaging or stored wrongly (cold, heat, damp) set aside\n\nWhat to do with what expires:\n☐ suppliers asked about a return or exchange, before the date\n☐ a promotion or discount for what expires soon\n☐ expired products handed over for destruction, with the signed report\n☐ in the table: Withdrawn = Yes for the batches taken off the shelf\n\nIn short:\nExpired value:\nValue expiring within 30 days:\n\nOrder less of (sells slowly):\n• "
+  },
+  "templates": {
+    "Verificare termene {0}": "Expiry check {0}"
+  },
+  "skip": [
+    "=COUNTIF(K2:K{0};\"În 30 de zile\")",
+    "=IF(B{0}=\"\";\"\";IF(J{1}=\"Da\";\"Retras\";IF(H{2}=\"\";\"Fără dată\";IF(H{3}<TODAY();\"Expirat\";IF(H{4}-TODAY()<=30;\"În 30 de zile\";IF(H{5}-TODAY()<=90;\"În 90 de zile\";\"Valabil\"))))))",
+    "=SUMIF(K2:K{0};\"În 30 de zile\";G2:G{1})"
+  ]
+}

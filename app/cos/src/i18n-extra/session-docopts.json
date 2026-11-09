@@ -1,0 +1,31 @@
+{
+  "dict": {
+    "Nesalvat (Ctrl+S salvează)": "Not saved (Ctrl+S saves)",
+    "Opțiuni: numele tău, ortografia, AutoCorect, salvarea automată, rigla și panourile": "Options: your name, spelling, AutoCorrect, AutoSave, the ruler and the panes",
+    "Apare la comentarii și la modificările urmărite.": "Shown on comments and tracked changes.",
+    "de exemplu: Ana Popescu": "for example: Jane Smith",
+    "Debifat: schimbările se scriu în fișier doar la Ctrl+S. Documentele fără fișier se păstrează oricum ca ciornă (Fișier → Recuperează…).": "Unchecked: changes are written to the file only on Ctrl+S. Documents without a file are still kept as drafts (File → Recover…).",
+    "Opțiuni AutoCorect…": "AutoCorrect Options…",
+    "Ortografie la scris": "Spelling while typing",
+    "Panoul cu comentarii și modificări": "The comments and changes pane",
+    "Panoul de comentarii": "Comments pane",
+    "Panoul de navigare (titlurile documentului)": "The Navigation pane (the document headings)",
+    "Rigla": "Ruler",
+    "Rigla deasupra paginii": "The ruler above the page",
+    "Salvare": "Save",
+    "Salvare automată: documentul deja salvat într-un fișier se salvează singur după fiecare schimbare": "AutoSave: a document already saved to a file saves itself after every change",
+    "Semnele de formatare": "Formatting marks",
+    "Semnele de formatare (¶ la sfârșit de paragraf, · la spații, → la Tab)": "Formatting marks (¶ at the end of a paragraph, · for spaces, → for Tab)",
+    "Verifică ortografia în timp ce scrii (cuvintele greșite subliniate cu roșu)": "Check spelling as you type (misspelled words underlined in red)",
+    "Panoul Stiluri": "The Styles pane",
+    "AutoCorect lucrează în casetele de text și în tabele, cu aceleași reguli ca în Docs; Backspace imediat după o corectură o anulează.": "AutoCorrect works in text boxes and tables, with the same rules as in Docs; Backspace right after a correction undoes it.",
+    "Salvare automată: prezentarea deja salvată într-un fișier se salvează singură după fiecare schimbare (debifat: doar la Ctrl+S)": "AutoSave: a presentation already saved to a file saves itself after every change (unchecked: only on Ctrl+S)",
+    "Completare automată": "AutoComplete",
+    "Completare automată a valorilor din celule (restul unui text deja scris în coloană apare cât scrii)": "AutoComplete for cell values (the rest of a text already in the column appears as you type)",
+    "Salvare automată: tabelul deja salvat într-un fișier se salvează singur după fiecare schimbare (debifat: doar la Ctrl+S)": "AutoSave: a workbook already saved to a file saves itself after every change (unchecked: only on Ctrl+S)",
+    "AutoCorect în celule": "AutoCorrect in cells",
+    "AutoCorect cât scrii în celule: ș / ț cu virgulă, DOuă MAjuscule, lista de înlocuiri (nu în formule)": "AutoCorrect as you type in cells: s / t with comma below, TWo INitial CApitals, the replacement list (not in formulas)"
+  },
+  "templates": {},
+  "skip": []
+}

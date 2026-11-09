@@ -1,0 +1,10 @@
+{
+  "dict": {
+    "🥾 Drumeție la munte": "🥾 Mountain hike",
+    "Traseul (de unde plec, până unde, marcajul):\nData, ora plecării și ora la care trebuie să fiu înapoi:\nCine merge (și un telefon de urgență):\n\nCu o zi înainte:\n☐ prognoza meteo verificată pentru munte (vânt, ploaie, ceață)\n☐ traseul și timpul de mers văzute pe hartă, cu un punct de întoarcere\n☐ cineva de acasă știe traseul și ora la care mă întorc\n☐ telefonul încărcat, o baterie externă și numărul Salvamont salvat\n\nÎn rucsac:\n☐ apă (cel puțin 1,5 litri) și ceva de mâncare\n☐ haină de ploaie și un strat cald, chiar dacă e soare jos\n☐ lanternă frontală și trusa mică de prim ajutor\n☐ bocanci purtați înainte, nu noi\n\nPe traseu:\n☐ marcajul urmărit; la cel lipsă, înapoi la ultimul văzut\n☐ întoarcerea la ora stabilită, chiar dacă nu am ajuns sus\n\nCât am mers (ore, kilometri, diferență de nivel):\n•\n\nObservații (izvoare, locuri de popas, ce aș lua data viitoare):\n• ": "Route (where I start, where to, trail marker):\nDate, departure time and the time I must be back:\nWho is coming (and an emergency phone number):\n\nThe day before:\n☐ mountain weather forecast checked (wind, rain, fog)\n☐ route and walking time checked on the map, with a turnaround point\n☐ someone at home knows the route and when I will be back\n☐ phone charged, a power bank and the mountain rescue number saved\n\nIn the backpack:\n☐ water (at least 1.5 liters) and something to eat\n☐ rain jacket and a warm layer, even if it is sunny down below\n☐ headlamp and a small first aid kit\n☐ hiking boots worn before, not new ones\n\nOn the trail:\n☐ trail markers followed; if one is missing, back to the last one seen\n☐ turn back at the agreed time, even if I have not reached the top\n\nHow far I walked (hours, kilometers, elevation gain):\n•\n\nNotes (springs, resting spots, what I would bring next time):\n• "
+  },
+  "templates": {
+    "Drumeție la munte {0}": "Mountain hike {0}"
+  },
+  "skip": []
+}

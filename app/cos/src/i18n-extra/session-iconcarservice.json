@@ -1,0 +1,24 @@
+{
+  "dict": {
+    "Service auto": "Car service",
+    "Cric": "Car jack",
+    "Cheie în cruce": "Lug wrench",
+    "Bujie": "Spark plug",
+    "Filtru de ulei": "Oil filter",
+    "Elevator auto": "Car lift",
+    "Martor motor": "Check engine light",
+    "Spălătorie auto": "Car wash",
+    "Ștergător de parbriz": "Windshield wiper"
+  },
+  "templates": {},
+  "skip": [
+    "cric ridicare mașină schimbat roata pană car jack",
+    "cheie în cruce cheie de roți prezoane schimbat roata lug wrench",
+    "bujie aprindere motor revizie spark plug ignition",
+    "filtru de ulei schimb de ulei revizie motor oil filter",
+    "elevator auto rampă ridicare atelier vulcanizare car lift hoist",
+    "martor motor bord avertizare defect diagnoză check engine warning light",
+    "spălătorie auto spălat mașina perii apă car wash",
+    "ștergător de parbriz lamele lichid de parbriz windshield wiper"
+  ]
+}

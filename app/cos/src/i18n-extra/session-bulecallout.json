@@ -1,0 +1,14 @@
+{
+  "dict": {
+    "Listă cu bule ovale (numărul într-o bulă ovală cu coada în jos, spre stânga, textul într-o bandă alături)": "Oval callout list (the number in an oval speech bubble with its tail pointing down and to the left, the text in a band beside it)",
+    "Listă cu bule rotunjite (numărul într-o bulă cu colțurile rotunjite și coada în jos, spre stânga, textul într-o bandă alături)": "Rounded callout list (the number in a speech bubble with rounded corners and its tail pointing down and to the left, the text in a band beside it)",
+    "Listă cu bule ovale": "Oval callout list",
+    "Listă cu bule rotunjite": "Rounded callout list",
+    "listă cu bule ovale": "oval callout list",
+    "listă cu bule rotunjite": "rounded callout list",
+    "Puncte una sub alta: numărul într-o bulă ovală cu coada în jos, iar alături textul": "Points one below the other: the number in an oval speech bubble with its tail pointing down, with the text beside it",
+    "Puncte una sub alta: numărul într-o bulă cu colțurile rotunjite, iar alături textul": "Points one below the other: the number in a speech bubble with rounded corners, with the text beside it"
+  },
+  "templates": {},
+  "skip": []
+}

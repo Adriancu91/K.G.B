@@ -1,0 +1,23 @@
+{
+ "dict": {
+  "Bonul": "The requisition",
+  "Bonul se semnează de cine a cerut, de gestionar și de cine a primit; un exemplar merge la contabilitate.": "The requisition is signed by the requester, the storekeeper and the receiver; one copy goes to accounting.",
+  "Cantitatea cerută": "Quantity requested",
+  "Cantitatea eliberată": "Quantity issued",
+  "Eliberate doar în parte": "Only partly issued",
+  "Fiecare material eliberat se scade în fișa lui (Sheets → Fișa de magazie, documentul „Bon de consum”).": "Each issued material is deducted on its card (Sheets → Stock card, document “Materials requisition”).",
+  "Gestiunea (de unde se dă)": "Store (issued from)",
+  "Locul de consum (secția, șantierul)": "Place of use (department, site)",
+  "Materiale pe bon": "Materials on the requisition",
+  "Materialele date din magazie pentru o lucrare, o comandă sau o secție: cantitatea cerută față de cea eliberată, cu prețul; ies valoarea pe fiecare rând și totalul, ce nu s-a putut da (în galben) și valoarea lui, iar în dreapta datele bonului: gestiunea, locul de consum și cine a cerut, a eliberat și a primit.": "Materials issued from the store for a job, an order or a department: quantity requested versus quantity issued, with the price; you get the value per row and the total, what could not be issued (yellow) and its value, and on the right the requisition details: the store, the place of use and who requested, issued and received.",
+  "Materialul": "Material",
+  "Neeliberat": "Not issued",
+  "Pentru (comanda, lucrarea)": "For (order, job)",
+  "Scrie cât s-a cerut și cât s-a dat din magazie: ce nu s-a putut da iese în galben, cu valoarea lui.": "Enter how much was requested and how much was issued from the store: what could not be issued shows in yellow, with its value.",
+  "Valoarea eliberată": "Value issued",
+  "Valoarea eliberată (fără TVA)": "Value issued (excl. VAT)",
+  "Valoarea neeliberată (fără TVA)": "Value not issued (excl. VAT)"
+ },
+ "templates": {},
+ "skip": []
+}

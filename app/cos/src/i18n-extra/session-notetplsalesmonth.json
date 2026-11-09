@@ -1,0 +1,10 @@
+{
+  "dict": {
+    "🤝 Ședința lunară de vânzări": "🤝 Monthly sales meeting"
+  },
+  "templates": {},
+  "skip": [
+    "Luna:\nCine participă:\n\nÎnainte de ședință:\n☐ vânzările și ținta fiecărui agent trecute în Sheets → Comisioanele agenților\n☐ facturile neîncasate ale clienților fiecărui agent (Sheets → Vechimea creanțelor)\n☐ ofertele trimise și încă fără răspuns, pe agenți\n\nÎn ședință:\n☐ realizarea fiecărui agent față de țintă și cei sub 80%\n☐ clienții noi și clienții pierduți în lună\n☐ restanțele mari: cine sună și până când\n☐ țintele pentru luna următoare\n\nDupă ședință:\n☐ comisioanele și bonusurile trimise la salarii (Sheets → Stat de plată)\n☐ țintele noi trecute în tabel\n\nCe a mers bine și ce schimbăm:\n• ",
+    "Vânzările lunii {0}"
+  ]
+}

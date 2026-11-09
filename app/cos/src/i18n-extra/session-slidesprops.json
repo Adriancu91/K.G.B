@@ -1,0 +1,19 @@
+{
+  "dict": {
+    "Proprietățile prezentării": "Presentation properties",
+    "Titlul, subiectul, autorul, cuvintele cheie și clasificarea prezentării (se păstrează și în .pptx)": "The presentation's title, subject, author, keywords and classification (also kept in the .pptx)",
+    "slide-uri": "slides",
+    "Numele clasificării apare jos pe fiecare pagină (la tipărire, PDF și .docx), după textul subsolului": "The classification name appears at the bottom of every page (when printing, in PDF and .docx), after the footer text",
+    "Scrie clasificarea în subsol": "Show the classification in the footer",
+    "Numele clasificării, cu litere mari, pe diagonala fiecărei pagini": "The classification name, in capitals, across every page",
+    "Scrie clasificarea ca filigran": "Show the classification as a watermark",
+    "Scrie clasificarea în subsolul slide-urilor": "Show the classification in the slide footer",
+    "Numele clasificării apare jos pe slide-uri (nu pe cele de titlu), după textul subsolului, și în .pptx": "The classification name appears at the bottom of the slides (not on title slides), after the footer text, and in the .pptx",
+    "Scrie clasificarea în subsol la tipărire": "Show the classification in the printed footer",
+    "Numele clasificării apare jos pe fiecare pagină tipărită sau în PDF, pe toate foile, după textul subsolului": "The classification name appears at the bottom of every printed or PDF page, on all sheets, after the footer text"
+  },
+  "templates": {
+    "{0} {1}. Proprietățile se salvează în prezentare și în fișierul .pptx exportat.": "{0} {1}. The properties are saved in the presentation and in the exported .pptx file."
+  },
+  "skip": []
+}

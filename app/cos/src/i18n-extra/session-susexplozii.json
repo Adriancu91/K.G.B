@@ -1,0 +1,14 @@
+{
+  "dict": {
+    "Listă cu casete cu săgeată în sus (numărul într-o casetă cu o săgeată în sus, textul într-o bandă alături)": "Up arrow callout list (the number in a box with an arrow pointing up, the text in a band beside it)",
+    "Listă cu explozii mari (numărul pe o explozie cu colțuri lungi, textul într-o bandă alături)": "Large explosion list (the number on an explosion with long points, the text in a band beside it)",
+    "Listă cu casete cu săgeată în sus": "Up arrow callout list",
+    "Listă cu explozii mari": "Large explosion list",
+    "listă cu casete cu săgeată în sus": "up arrow callout list",
+    "listă cu explozii mari": "large explosion list",
+    "Puncte una sub alta: numărul într-o casetă cu o săgeată în sus, iar alături textul": "Points one below the other: the number in a box with an arrow pointing up, with the text beside it",
+    "Puncte una sub alta: numărul pe o explozie cu colțuri lungi, iar alături textul": "Points one below the other: the number on an explosion with long points, with the text beside it"
+  },
+  "templates": {},
+  "skip": []
+}

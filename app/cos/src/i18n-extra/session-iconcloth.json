@@ -1,0 +1,24 @@
+{
+  "dict": {
+    "Îmbrăcăminte": "Clothing",
+    "Tricou": "T-shirt",
+    "Rochie": "Dress",
+    "Pantaloni": "Trousers",
+    "Pantof sport": "Sneaker",
+    "Umeraș": "Hanger",
+    "Nasture": "Button",
+    "Mosor de ață": "Thread spool",
+    "Pălărie": "Hat"
+  },
+  "templates": {},
+  "skip": [
+    "tricou bluză haine îmbrăcăminte magazin t-shirt shirt clothes",
+    "rochie haine femei îmbrăcăminte dress clothes women",
+    "pantaloni blugi haine îmbrăcăminte trousers pants jeans",
+    "pantof sport adidași încălțăminte papuci sneaker shoe footwear",
+    "umeraș dulap garderobă cuier hanger wardrobe",
+    "nasture cusut croitorie mercerie button sewing",
+    "mosor de ață fir cusut croitorie mercerie thread spool sewing",
+    "pălărie căciulă accesorii modă hat fashion accessories"
+  ]
+}

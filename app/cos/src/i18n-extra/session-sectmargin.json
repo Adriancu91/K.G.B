@@ -1,0 +1,11 @@
+{
+  "dict": {
+    "Doar secțiunea aceasta: ca documentul": "This section only: same as the document",
+    "Secțiunea în care e cursorul ia din nou marginile documentului": "The section with the cursor takes the document margins again"
+  },
+  "templates": {
+    "Doar secțiunea aceasta: {0} cm": "This section only: {0} cm",
+    "Margini de {0} cm": "Margins of {0} cm"
+  },
+  "skip": []
+}

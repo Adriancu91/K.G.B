@@ -1,0 +1,10 @@
+{
+  "dict": {
+    "💰 Economii pentru un obiectiv": "💰 Savings goal"
+  },
+  "templates": {},
+  "skip": [
+    "Ce vreau să-mi cumpăr / să fac: \nCât costă: \nPână când: \nCât pun deoparte pe lună: \nUnde țin banii: (cont de economii / pușculiță / depozit)\n\nDepunerile (☐ = am pus banii):\n☐ luna 1: \n☐ luna 2: \n☐ luna 3: \n☐ luna 4: \n☐ luna 5: \n☐ luna 6: \n\nStrâns până acum: \nMai am de strâns: \n\nDe unde pot economisi:\n• \n• \n",
+    "Economii {0}"
+  ]
+}

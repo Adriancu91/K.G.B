@@ -1,0 +1,38 @@
+{
+  "dict": {
+    "Trăsătură cu radiera": "Eraser stroke",
+    "Copie a stratului": "Layer copy",
+    "Unește în jos: sub stratul ales nu e alt strat (sau unul dintre ele e blocat).": "Merge down: there is no other layer under the chosen one (or one of them is locked).",
+    "O acțiune ține minte pașii făcuți pe poză (ajustări, filtre, galeria de filtre, rotiri, oglindiri, mărimea pozei, decuparea, selecțiile, umplerea și conturul selecției, trăsăturile cu pensula, creionul și radiera, gradientul, găleata, straturile: strat nou, copie, unire, aplatizare, opacitatea și modul de amestec), cu setările lor, și îi repetă pe altă poză cu un clic sau cu tasta ei. Pașii merg pe stratul ales (doar în selecție, dacă ai una); rotirea și mărimea, pe toată poza. Selecțiile și trăsăturile se țin minte în proporții din poză, deci cad la fel și pe o poză de altă mărime (selecțiile cu bagheta sau după culori nu, doar inversarea lor). Cu ⑂ Adaugă condiția, acțiunea redă altă acțiune după cum e poza în acel moment (lată, înaltă, pătrată, cu mai multe straturi, cu o selecție). Un singur Ctrl+Z anulează toată acțiunea. Acțiunile stau pe acest calculator.": "An action remembers the steps done on the picture (adjustments, filters, the filter gallery, rotations, flips, the image size, cropping, selections, filling and stroking the selection, strokes with the brush, pencil and eraser, the gradient, the paint bucket, layers: new layer, copy, merge, flatten, opacity and blend mode) with their settings and repeats them on another picture with one click or with its key. The steps work on the chosen layer (only inside the selection, if you have one); rotation and size work on the whole picture. Selections and strokes are remembered as proportions of the picture, so they land the same way on a picture of another size (selections made with the wand or by color are not, only their inversion). With ⑂ Add condition, the action plays another action depending on how the picture is at that moment (wide, tall, square, with several layers, with a selection). A single Ctrl+Z undoes the whole action. Actions are kept on this computer.",
+    "Dacă": "If",
+    "redă": "play",
+    "altfel": "otherwise",
+    "(nimic)": "(nothing)",
+    "⑂ Adaugă condiția": "⑂ Add condition",
+    "Condiția": "Condition",
+    "Acțiunea redată dacă da": "Action played if yes",
+    "Acțiunea redată dacă nu": "Action played if not",
+    "poza e lată": "the picture is wide",
+    "poza e înaltă": "the picture is tall",
+    "poza e pătrată": "the picture is square",
+    "are mai multe straturi": "it has several layers",
+    "are o selecție": "it has a selection",
+    "La redare, după cum e poza în acel moment, se redă una dintre acțiuni (de exemplu alt chenar pentru pozele înalte); pasul se pune la sfârșit și îl muți cu ↑": "When playing, one of the actions is played depending on how the picture is at that moment (for example another frame for tall pictures); the step is added at the end and you move it with ↑"
+  },
+  "templates": {
+    "Trăsătură cu creionul, {0}": "Pencil stroke, {0}",
+    "Trăsătură cu pensula, {0}": "Brush stroke, {0}",
+    "Gradient radial, {0}": "Radial gradient, {0}",
+    "Gradient liniar, {0}": "Linear gradient, {0}",
+    "Găleată de vopsea, {0}": "Paint bucket, {0}",
+    "Opacitatea stratului: {0}%": "Layer opacity: {0}%",
+    "Modul de amestec al stratului: {0}": "Layer blend mode: {0}",
+    "Stratul „{0}” e blocat (🔒): pașii de după nu s-au mai făcut.": "The layer “{0}” is locked (🔒): the following steps were not done.",
+    "Condiție: dacă poza e lată → „{0}”, altfel „{1}”": "Condition: if the picture is wide → “{0}”, otherwise “{1}”",
+    "Condiție: dacă poza e înaltă → „{0}”, altfel „{1}”": "Condition: if the picture is tall → “{0}”, otherwise “{1}”",
+    "Condiție: dacă poza e pătrată → „{0}”, altfel „{1}”": "Condition: if the picture is square → “{0}”, otherwise “{1}”",
+    "Condiție: dacă are mai multe straturi → „{0}”, altfel „{1}”": "Condition: if it has several layers → “{0}”, otherwise “{1}”",
+    "Condiție: dacă are o selecție → „{0}”, altfel „{1}”": "Condition: if it has a selection → “{0}”, otherwise “{1}”"
+  },
+  "skip": []
+}

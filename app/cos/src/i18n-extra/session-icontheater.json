@@ -1,0 +1,24 @@
+{
+  "dict": {
+    "Teatru și cinema": "Theater and cinema",
+    "Măști de teatru": "Theater masks",
+    "Cortină de scenă": "Stage curtain",
+    "Popcorn": "Popcorn",
+    "Scaune de sală": "Theater seats",
+    "Binoclu de teatru": "Opera glasses",
+    "Afiș de spectacol": "Show poster",
+    "Ecran de cinema": "Cinema screen",
+    "Ochelari 3D": "3D glasses"
+  },
+  "templates": {},
+  "skip": [
+    "măști de teatru masca comedie tragedie actor scenă theater masks drama comedy tragedy",
+    "cortină de scenă cortina draperie stage curtain",
+    "popcorn floricele porumb gustare cinema snack",
+    "scaune de sală fotolii rând loc sală de spectacol theater seats row",
+    "binoclu de teatru lornietă operă opera glasses binoculars",
+    "afiș de spectacol afis premieră program show poster premiere",
+    "ecran de cinema film proiecție sală cinema screen movie",
+    "ochelari 3d film tridimensional 3d glasses"
+  ]
+}

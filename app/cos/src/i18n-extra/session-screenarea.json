@@ -1,0 +1,10 @@
+{
+  "dict": {
+    "● Înregistrează zona": "● Record area",
+    "Ce înregistrezi?": "What do you want to record?",
+    "Trage cu mouse-ul un dreptunghi peste partea din ecran pe care vrei s-o arăți, sau înregistrează tot ecranul.": "Drag a rectangle with the mouse over the part of the screen you want to show, or record the whole screen.",
+    "Înregistrarea ecranului a fost anulată.": "Screen recording was canceled."
+  },
+  "templates": {},
+  "skip": []
+}

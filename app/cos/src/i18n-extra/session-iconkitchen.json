@@ -1,0 +1,24 @@
+{
+  "dict": {
+    "Cuptor": "Oven",
+    "Cuțit de bucătărie": "Kitchen knife",
+    "Mănușă de bucătărie": "Oven mitt",
+    "Oală": "Pot",
+    "Polonic": "Ladle",
+    "Sucitor": "Rolling pin",
+    "Tel": "Whisk",
+    "Tigaie": "Frying pan",
+    "Bucătărie": "Kitchen"
+  },
+  "templates": {},
+  "skip": [
+    "cuptor aragaz copt prăjitură oven stove baking",
+    "cuțit tăiat bucătar măcelărie kitchen knife chef",
+    "mănușă bucătărie cuptor fierbinte oven mitt glove hot",
+    "oală cratiță supă ciorbă gătit pot soup cooking",
+    "polonic supă ciorbă servit ladle soup serving",
+    "sucitor aluat cocă patiserie plăcintă rolling pin dough baking",
+    "tel bătut ouă frișcă patiserie whisk baking",
+    "tigaie prăjit ochiuri gătit frying pan cooking"
+  ]
+}

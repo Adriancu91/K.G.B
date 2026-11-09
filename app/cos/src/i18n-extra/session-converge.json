@@ -1,0 +1,33 @@
+{
+  "dict": {
+    "Radial convergent": "Converging Radial",
+    "Idei în jurul unui scop, fiecare cu o săgeată spre el (primul rând e scopul din mijloc)": "Ideas around a goal, each with an arrow pointing to it (the first line is the goal in the middle)",
+    "Proces în trepte în jos": "Step Down Process",
+    "Pași în scară, de sus din stânga în jos spre dreapta, legați cu săgeți îndoite": "Steps in a staircase, from top left down to the right, joined by bent arrows",
+    "Radial convergent (primul în mijloc, restul cu săgeți spre el)": "Converging radial (the first in the middle, the rest with arrows to it)",
+    "Proces în trepte în jos (pași în scară, cu săgeți îndoite)": "Step down process (steps in a staircase, with bent arrows)",
+    "Scopul": "Goal",
+    "Fagure": "Hexagon Cluster",
+    "Idei în hexagoane lipite ca un fagure, pe două rânduri (părți legate între ele)": "Ideas in hexagons joined like a honeycomb, on two rows (connected parts)",
+    "Roți dințate": "Gears",
+    "Idei în roți care se prind una de alta (procese care se pun în mișcare unul pe altul)": "Ideas in gears that mesh with each other (processes that drive one another)",
+    "Fagure (hexagoane lipite pe două rânduri)": "Hexagon cluster (hexagons joined on two rows)",
+    "Roți dințate (idei care se prind una de alta)": "Gears (ideas that mesh with each other)",
+    "Ochi": "Eye",
+    "Cortină în zigzag de sus": "Zigzag Wipe Down",
+    "Benzi desenate (galben, contur negru gros)": "Comic (yellow, thick black outline)",
+    "Panglică roșie cu capetele tăiate": "Red ribbon with notched ends",
+    "Turcoaz": "Turquoise",
+    "Contrast mare": "High contrast",
+    "Vin": "Wine",
+    "Pastel": "Pastel",
+    "Elegante": "Elegant",
+    "Înguste": "Narrow",
+    "Înguste: Bahnschrift / Segoe UI": "Narrow: Bahnschrift / Segoe UI",
+    "Elegante: Palatino Linotype / Palatino Linotype": "Elegant: Palatino Linotype / Palatino Linotype"
+  },
+  "templates": {},
+  "skip": [
+    "Bahnschrift"
+  ]
+}

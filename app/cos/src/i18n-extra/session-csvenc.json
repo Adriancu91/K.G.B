@@ -1,0 +1,24 @@
+{
+  "dict": {
+    "Bară verticală „|” (punct zecimal)": "Vertical bar “|” (decimal point)",
+    "Exportă…": "Export…",
+    "Punct și virgulă „;” (virgulă zecimală)": "Semicolon “;” (decimal comma)",
+    "Salvează foaia ca .csv: alegi separatorul (de obicei „;”, cum îl citesc programele de tabele în română) și codificarea (UTF-8 sau Windows-1250 pentru programele vechi)": "Save the sheet as .csv: choose the separator (usually “;”, as spreadsheet programs read it in Romanian) and the encoding (UTF-8, or Windows-1250 for older programs)",
+    "UTF-16 (text Unicode)": "UTF-16 (Unicode text)",
+    "UTF-8 cu semnătură (recomandat)": "UTF-8 with signature (recommended)",
+    "UTF-8 fără semnătură": "UTF-8 without signature",
+    "Virgulă „,” (punct zecimal)": "Comma “,” (decimal point)",
+    "Windows-1250 (programe mai vechi)": "Windows-1250 (older programs)",
+    "Toate foile (câte un fișier .csv pentru fiecare)": "All sheets (one .csv file for each)"
+  },
+  "templates": {
+    "Salvat în {0} cu codificarea UTF-8: are litere pe care codificarea lui de până acum ({1}) nu le poate scrie. Copia de dinainte e păstrată în Versiuni.": "Saved to {0} with UTF-8 encoding: it has letters its previous encoding ({1}) cannot store. The previous copy is kept in Versions.",
+    "Exportat CSV în UTF-8: {0} (tabelul are litere pe care codificarea aleasă nu le poate scrie)": "Exported CSV in UTF-8: {0} (the table has letters the chosen encoding cannot store)",
+    "Se scriu valorile foii „{0}”, nu formulele și nici formatarea.": "The values of the sheet “{0}” are written, not the formulas or the formatting.",
+    "Exportate {0} fișiere .csv, câte unul pentru fiecare foaie, lângă {1}": "Exported {0} .csv files, one for each sheet, next to {1}",
+    "Exportate {0} fișiere .csv, câte unul pentru fiecare foaie, lângă {1} (unele în UTF-8: au litere pe care codificarea aleasă nu le poate scrie)": "Exported {0} .csv files, one for each sheet, next to {1} (some in UTF-8: they have letters the chosen encoding cannot store)",
+    "Prima foaie e exportată în {0}, dar celelalte nu s-au putut scrie în același dosar.": "The first sheet is exported to {0}, but the others could not be written to the same folder.",
+    "Se scriu valorile celor {0} foi, nu formulele și nici formatarea.": "The values of the {0} sheets are written, not the formulas or the formatting."
+  },
+  "skip": []
+}

@@ -1,0 +1,11 @@
+{
+  "dict": {
+    "Deschide foaia legată: fișierul tabelului în care e cursorul se deschide în Sheets, într-un tab nou; după ce îl schimbi și îl salvezi, tabelul de aici se aduce singur la zi": "Open linked sheet: the file of the table the cursor is in opens in Sheets, in a new tab; after you change and save it, the table here updates by itself",
+    "Deschide foaia legată: fișierul tabelului ales se deschide în Sheets, într-un tab nou; după ce îl schimbi și îl salvezi, tabelul de aici se aduce singur la zi": "Open linked sheet: the file of the selected table opens in Sheets, in a new tab; after you change and save it, the table here updates by itself",
+    "Deschide în Sheets fișierul din care e pus tabelul (într-un tab nou sau în cel deja deschis); după ce îl schimbi și îl salvezi, tabelul de aici se aduce singur la zi": "Open in Sheets the file the table comes from (in a new tab or in the one already open); after you change and save it, the table here updates by itself"
+  },
+  "templates": {
+    "Foaia „{0}” e deschisă în Sheets: schimb-o și salveaz-o, iar tabelul de aici se aduce singur la zi.": "The sheet “{0}” is open in Sheets: change it and save it, and the table here updates by itself."
+  },
+  "skip": []
+}

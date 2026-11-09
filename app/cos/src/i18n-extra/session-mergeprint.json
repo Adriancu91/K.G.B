@@ -1,0 +1,19 @@
+{
+  "dict": {
+    "🖨 Tipărește exemplarele": "🖨 Print the copies",
+    "Ce exemplare tipărești": "Which copies to print",
+    "de la … până la …": "from … to …",
+    "Până la exemplarul": "To copy",
+    "Tipărește exemplarele direct, fără să le pui în document: modelul cu câmpuri rămâne cum e": "Print the copies directly, without putting them in the document: the template with fields stays as it is",
+    "care": "which",
+    "toate": "all",
+    "doar cel din previzualizare": "only the one in the preview",
+    "De la exemplarul": "From copy",
+    "exemplar": "copy",
+    "exemplare": "copies"
+  },
+  "templates": {
+    "Am trimis la tipărire {0} {1}. Documentul a rămas modelul cu câmpuri": "Sent {0} {1} to the printer. The document is still the template with fields"
+  },
+  "skip": []
+}

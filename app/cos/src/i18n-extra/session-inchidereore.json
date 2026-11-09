@@ -1,0 +1,10 @@
+{
+  "dict": {
+    "⏱ Închiderea lunii pentru un client": "⏱ Closing the month for a client"
+  },
+  "templates": {},
+  "skip": [
+    "Ore de facturat {0}",
+    "Clientul:\nLuna:\nProiectul / dosarul:\nTariful convenit (lei / oră):\n\nÎnainte de factură:\n☐ toate orele lunii trecute în Sheets → Ore lucrate pe clienți (data, de la – până la, pauza)\n☐ orele care nu se plătesc trecute cu „Nu” la Facturabil\n☐ la Clientul ales scris numele clientului: orele și suma de facturat verificate\n☐ lista orelor trimisă clientului spre confirmare, dacă așa e înțelegerea\n\nFactura:\n☐ factura emisă (Sheets → Factură (e-Factura)), cu orele și tariful pe rând\n☐ factura trimisă și, unde e cazul, încărcată în SPV\n☐ în Sheets → Ore lucrate pe clienți ales „Da” la Facturat și scris numărul facturii\n☐ termenul de plată notat; la întârziere, Sheets → Penalități de întârziere\n\nOre lucrate (pe scurt):\n•\n\nCe urmează luna viitoare:\n•\n\nObservații:\n• "
+  ]
+}

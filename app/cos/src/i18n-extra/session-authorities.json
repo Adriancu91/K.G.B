@@ -1,0 +1,33 @@
+{
+  "dict": {
+    "Alte surse": "Other Authorities",
+    "Apare pe multe pagini; clic: prima citare": "Appears on many pages; click: the first citation",
+    "Doctrină": "Treatises",
+    "Jurisprudență": "Cases",
+    "Legi": "Statutes",
+    "Prevederi constituționale": "Constitutional Provisions",
+    "Regulamente": "Regulations",
+    "Tabel de autorități": "Table of Authorities",
+    "Tabelul se completează singur cu citările marcate (alege o citare → Tabel de autorități → Marchează).": "The table fills itself with the marked citations (select a citation → Table of Authorities → Mark).",
+    "§ Tabel de autorități": "§ Table of Authorities",
+    "☰ Inserează tabelul": "☰ Insert the table",
+    "Categoria citării": "Citation category",
+    "Categoriile din tabel": "Categories in the table",
+    "Citarea întreagă": "Long citation",
+    "Citarea întreagă apare în tabel; după cea scurtă se caută celelalte locuri la „Marchează toate”. Marcajele se văd doar cu ¶.": "The long citation appears in the table; “Mark All” looks for the short one in the rest of the document. The marks are visible only with ¶.",
+    "Citarea nu mai apare nemarcată în document.": "The citation no longer appears unmarked in the document.",
+    "Citarea scurtă": "Short citation",
+    "de ex. Legea nr. 31/1990": "e.g. Law no. 31/1990",
+    "de ex. Legea nr. 31/1990 privind societățile": "e.g. Law no. 31/1990 on companies",
+    "Folosește „passim” (citările de pe 5 pagini sau mai multe)": "Use “passim” (citations on 5 or more pages)",
+    "Inserare tabel de autorități": "Insert Table of Authorities",
+    "Marcare citare": "Mark Citation",
+    "Marchează fiecare loc din document unde apare citarea scurtă": "Mark every place in the document where the short citation appears",
+    "Tabel de autorități: marchezi legile, hotărârile și cărțile citate, apoi pui tabelul lor pe categorii, cu paginile": "Table of Authorities: mark the cited laws, court decisions and books, then insert their table by category, with the pages",
+    "Tabelul citărilor marcate, pe categorii, în ordine alfabetică, cu paginile; se completează singur": "The table of the marked citations, by category, in alphabetical order, with the pages; it fills itself"
+  },
+  "templates": {},
+  "skip": [
+    "TA „{0}”"
+  ]
+}

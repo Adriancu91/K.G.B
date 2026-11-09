@@ -1,0 +1,24 @@
+{
+  "dict": {
+    "⊕ Uniune": "⊕ Union",
+    "⊖ Combinare": "⊖ Combine",
+    "⧈ Fragmentare": "⧈ Fragment",
+    "⊗ Intersecție": "⊗ Intersect",
+    "⊘ Scădere": "⊘ Subtract",
+    "Din prima formă aleasă se scot celelalte": "The other shapes are cut out of the first selected shape",
+    "Formele se taie în bucăți după liniile lor; fiecare bucată devine o formă": "The shapes are cut into pieces along their outlines; each piece becomes a shape",
+    "O singură formă din toate formele alese": "A single shape from all the selected shapes",
+    "O singură formă, fără zonele în care formele se suprapun": "A single shape, without the areas where the shapes overlap",
+    "Rămâne doar zona comună tuturor formelor alese": "Only the area shared by all the selected shapes remains",
+    "⧉ Unire forme": "⧉ Merge Shapes",
+    "Din formele alese nu iese nicio formă.": "The selected shapes do not produce any shape.",
+    "Formele alese nu au nicio zonă comună.": "The selected shapes have no area in common.",
+    "Inserare forme": "Insert Shapes",
+    "Unire forme": "Merge Shapes",
+    "Unire forme: alege cel puțin două forme (Shift+click pe a doua)": "Merge Shapes: select at least two shapes (Shift+click the second one)"
+  },
+  "templates": {
+    "Unire forme: cele {0} forme alese devin una (sau se taie în bucăți); formatul e al primei forme": "Merge Shapes: the {0} selected shapes become one (or are cut into pieces); the format is taken from the first shape"
+  },
+  "skip": []
+}

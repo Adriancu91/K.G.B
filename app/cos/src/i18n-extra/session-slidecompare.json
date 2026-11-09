@@ -1,0 +1,27 @@
+{
+  "dict": {
+    "notițele": "the notes",
+    "⇄ Compară cu „": "⇄ Compare with “",
+    "✕ Respinge toate": "✕ Reject all",
+    "Adu slide-ul aici": "Bring the slide here",
+    "Compară prezentările": "Compare presentations",
+    "diferență": "difference",
+    "diferențe": "differences",
+    "Ia varianta din celălalt fișier": "Take the version from the other file",
+    "Închide comparația (Esc)": "Close the comparison (Esc)",
+    "Lipsește din celălalt fișier": "Missing from the other file",
+    "Mergi la slide": "Go to the slide",
+    "Nicio diferență rămasă: prezentarea de aici e la fel cu cealaltă (în afară de cele respinse).": "No differences left: this presentation matches the other one (except for the rejected ones).",
+    "Păstrează slide-ul cum e aici": "Keep the slide as it is here",
+    "Scoate slide-ul și de aici": "Remove the slide here too",
+    "Slide nou în celălalt fișier": "New slide in the other file",
+    "Slide-ul e doar în celălalt fișier: Acceptă îl aduce aici": "The slide is only in the other file: Accept brings it here",
+    "Citesc prezentarea de comparat…": "Reading the presentation to compare…",
+    "Compară prezentarea cu altă versiune a ei (.sslides, .pptx, .odp, de exemplu cea primită înapoi de la un coleg): slide cu slide, fiecare diferență cu Acceptă / Respinge": "Compare the presentation with another version of it (.sslides, .pptx, .odp, for example the one a colleague sent back): slide by slide, each difference with Accept / Reject"
+  },
+  "templates": {
+    "{0} {1}. Acceptă = ia varianta din celălalt fișier; Respinge = rămâne cum e aici. Ctrl+Z anulează.": "{0} {1}. Accept = take the version from the other file; Reject = keep it as it is here. Ctrl+Z undoes.",
+    "în „{0}”, slide-ul {1}": "in “{0}”, slide {1}"
+  },
+  "skip": []
+}

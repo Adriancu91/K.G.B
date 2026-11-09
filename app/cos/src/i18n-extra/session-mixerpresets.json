@@ -1,0 +1,27 @@
+{
+  "dict": {
+    "🎨 Încarcă acum": "🎨 Load now",
+    "🧽 Curăță acum": "🧽 Clean now",
+    "Combinații gata făcute de Umed, Încărcare și Proporție": "Ready-made combinations of Wet, Load and Mix",
+    "Curăță după fiecare trăsătură": "Clean after each stroke",
+    "Din toate straturile": "From all layers",
+    "După fiecare trăsătură pensula pornește curată, fără culorile luate de pe poză": "After each stroke the brush starts clean, without the colours picked up from the picture",
+    "După fiecare trăsătură pensula se umple din nou cu culoarea ei": "After each stroke the brush is refilled with its colour",
+    "Golește pensula acum: trăsătura următoare doar întinde culorile de pe poză (când nu se curăță singură)": "Empty the brush now: the next stroke only spreads the colours of the picture (when it does not clean itself)",
+    "Încarcă după fiecare trăsătură": "Load after each stroke",
+    "Pensula ia culorile din toate straturile vizibile, nu doar din stratul ales": "The brush picks up colours from all visible layers, not just the selected layer",
+    "Presetarea pensulei de amestec": "Mixer brush preset",
+    "Umple pensula acum cu culoarea ei (când nu se încarcă singură)": "Fill the brush with its colour now (when it does not load itself)",
+    "Foarte ud, încărcare mică": "Very wet, light load",
+    "Ud": "Wet",
+    "Ud, amestec puternic": "Wet, heavy mix",
+    "Umed, amestec ușor": "Moist, light mix",
+    "Umed, amestec puternic": "Moist, heavy mix",
+    "Uscat": "Dry",
+    "Uscat, încărcare mare": "Dry, heavy load",
+    "Personalizat": "Custom",
+    "Presetare": "Preset"
+  },
+  "templates": {},
+  "skip": []
+}

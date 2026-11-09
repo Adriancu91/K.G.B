@@ -1,0 +1,23 @@
+{
+  "dict": {
+    ", cu textul căutabil": ", with searchable text",
+    "◩ Aplatizează transparența…": "◩ Flatten transparency…",
+    "150 ppi (imprimantă de birou)": "150 ppi (office printer)",
+    "300 ppi (tipar, obișnuită)": "300 ppi (print, usual)",
+    "600 ppi (text mic, linii fine)": "600 ppi (small text, fine lines)",
+    "Aplatizează transparența": "Flatten transparency",
+    "Nicio pagină nu are transparență.": "No page has transparency.",
+    "Paginile cu transparență (opacitate, umbre moi, moduri de amestec) devin o poză la rezoluția aleasă, cu textul tot căutabil, pentru tipografiile care cer transparența aplatizată (PDF/X-1a)": "Pages with transparency (opacity, soft shadows, blend modes) become an image at the chosen resolution, with the text still searchable, for print shops that require flattened transparency (PDF/X-1a)",
+    "Se aplatizează transparența…": "Flattening transparency…",
+    "Se caută transparența…": "Looking for transparency…",
+    "Textul rămâne căutabil (pus invizibil peste poză)": "Keep the text searchable (invisible over the image)",
+    "Unele tipografii (fluxurile PDF/X-1a) nu primesc transparența: opacitatea, umbrele moi și modurile de amestec. Paginile care o folosesc se desenează exact cum arată și devin o poză la rezoluția de mai jos; legăturile, comentariile, caseta de tăiere și mărimea paginii rămân. Celelalte pagini nu se schimbă. Ctrl+Z anulează.": "Some print shops (PDF/X-1a workflows) do not accept transparency: opacity, soft shadows and blend modes. Pages that use it are drawn exactly as they look and become an image at the resolution below; links, comments, the trim box and the page size stay. Other pages do not change. Ctrl+Z undoes.",
+    "Aplatizează": "Flatten",
+    "Rezoluția": "Resolution"
+  },
+  "templates": {
+    "Am aplatizat {0} la {1} ppi{2}. Ctrl+Z anulează.": "Flattened {0} at {1} ppi{2}. Ctrl+Z undoes.",
+    "Pagini cu transparență: {0} din {1} ({2}{3}).": "Pages with transparency: {0} of {1} ({2}{3})."
+  },
+  "skip": []
+}

@@ -1,0 +1,12 @@
+{
+  "dict": {
+    "▭ Margini din fișier": "▭ Margins from file",
+    "▭ Margini obișnuite": "▭ Default margins",
+    "▭ Margini normale": "▭ Normal margins",
+    "▭ Margini late": "▭ Wide margins",
+    "Marginile interioare": "Internal margins",
+    "Marginile interioare ale casetei: cât spațiu rămâne între chenar și text": "Internal margins of the box: how much space is left between the border and the text"
+  },
+  "templates": {},
+  "skip": []
+}

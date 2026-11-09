@@ -1,0 +1,41 @@
+{
+ "dict": {
+  "🏷 Declară PDF/UA-1": "🏷 Declare PDF/UA-1",
+  "Am pus declarația PDF/UA-1 în metadate (și titlul, dacă lipsea). Salvează fișierul ca s-o păstrezi.": "I added the PDF/UA-1 declaration to the metadata (and the title, if it was missing). Save the file to keep it.",
+  "Întâi trebuie reparate regulile cu ✗": "The rules marked ✗ must be fixed first",
+  "PDF/UA (standardul de accesibilitate):": "PDF/UA (the accessibility standard):",
+  "Scrie în metadate că fișierul respectă PDF/UA-1": "Writes in the metadata that the file complies with PDF/UA-1",
+  "Comentarii și câmpuri în structură": "Comments and fields in the structure",
+  "Declarat PDF/UA în metadate": "Declared PDF/UA in the metadata",
+  "Etichete sigure (fără Suspects)": "Reliable tags (no Suspects)",
+  "Fișierul nu se declară PDF/UA; după ce trec celelalte reguli, „Declară PDF/UA-1” pune declarația.": "The file does not declare PDF/UA; once the other rules pass, “Declare PDF/UA-1” adds the declaration.",
+  "Fișierul spune că etichetele pot fi greșite (MarkInfo / Suspects); trebuie verificate și refăcute.": "The file says its tags may be wrong (MarkInfo / Suspects); they must be checked and redone.",
+  "Metadatele XMP nu au titlul (dc:title); se pune la declarare.": "The XMP metadata has no title (dc:title); it is added when declaring.",
+  "Respectă regulile PDF/UA verificate; poate fi declarat PDF/UA-1.": "Meets the checked PDF/UA rules; it can be declared PDF/UA-1.",
+  "Sunt amestecate titluri H cu titluri numerotate H1–H6.": "Plain H headings are mixed with numbered H1–H6 headings.",
+  "Tipuri de etichete cunoscute": "Known tag types",
+  "Titlul în metadatele XMP": "Title in the XMP metadata",
+  "Titluri fără niveluri sărite": "Headings without skipped levels",
+  "Accesibil, cu un lucru de verificat.": "Accessible, with one thing to check.",
+  "O problemă de accesibilitate și un lucru de verificat.": "One accessibility problem and one thing to check.",
+  "O problemă de accesibilitate.": "One accessibility problem.",
+  "Nu e PDF/UA: o regulă nu e respectată.": "Not PDF/UA: one rule is not met."
+ },
+ "templates": {
+  "Etichete necunoscute, fără traducere în RoleMap: {0}.": "Unknown tags, not mapped in RoleMap: {0}.",
+  "Nivelul sare: {0} (cititorul de ecran arată un cuprins cu goluri).": "The level jumps: {0} (the screen reader shows an outline with gaps).",
+  "PDF/UA-{0}: toate regulile verificate sunt respectate.": "PDF/UA-{0}: all checked rules are met.",
+  "{0} probleme de accesibilitate și {1} lucruri de verificat.": "{0} accessibility problems and {1} things to check.",
+  "{0} probleme de accesibilitate și un lucru de verificat.": "{0} accessibility problems and one thing to check.",
+  "{0} probleme de accesibilitate.": "{0} accessibility problems.",
+  "Accesibil, cu {0} lucruri de verificat.": "Accessible, with {0} things to check.",
+  "O problemă de accesibilitate și {0} lucruri de verificat.": "One accessibility problem and {0} things to check.",
+  "Nu e PDF/UA: {0} reguli nu sunt respectate.": "Not PDF/UA: {0} rules are not met.",
+  "Pe pagina {0} sunt comentarii, legături sau câmpuri care nu sunt în etichete.": "On page {0} there are comments, links or fields that are not in the tags.",
+  "Pe {0} pagini ({1}) sunt comentarii, legături sau câmpuri care nu sunt în etichete.": "On {0} pages ({1}) there are comments, links or fields that are not in the tags."
+ },
+ "skip": [
+  "Document Part Art Sect Div BlockQuote Caption TOC TOCI Index NonStruct Private P H H1 H2 H3 H4 H5 H6 ",
+  "Suspects"
+ ]
+}

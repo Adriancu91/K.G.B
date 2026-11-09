@@ -1,0 +1,17 @@
+{
+  "dict": {
+    "⛓ Desface legătura": "⛓ Unlink",
+    "🖇 Din fișier legat…": "🖇 Linked from file…",
+    "Citește din nou fișierele pozelor legate și aduce la zi straturile lor (se face și singur când revii în fereastră)": "Reads the linked pictures' files again and updates their layers (also done automatically when you return to the window)",
+    "O poză din calculator, pe un strat nou legat de fișierul ei: când fișierul se schimbă (de exemplu sigla refăcută), stratul se aduce singur la zi, în același loc și la aceeași mărime": "A picture from your computer, on a new layer linked to its file: when the file changes (for example a redone logo), the layer updates itself, in the same place and at the same size",
+    "Pozele legate sunt la zi.": "Linked pictures are up to date.",
+    "Pozele legate: un strat e adus la zi din fișier. Ctrl+Z readuce poza de dinainte.": "Linked pictures: one layer updated from its file. Ctrl+Z brings back the previous picture.",
+    "Stratul ales rămâne cu poza de acum, dar nu se mai aduce la zi din fișier": "The selected layer keeps its current picture but is no longer updated from the file"
+  },
+  "templates": {
+    "Nu găsesc fișierul legat: {0}.": "Linked file not found: {0}.",
+    "Poză legată de fișierul {0}": "Picture linked to the file {0}",
+    "Pozele legate: {0} straturi aduse la zi din fișier. Ctrl+Z readuce poza de dinainte.": "Linked pictures: {0} layers updated from their files. Ctrl+Z brings back the previous picture."
+  },
+  "skip": []
+}

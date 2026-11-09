@@ -1,0 +1,35 @@
+{
+  "dict": {
+    "Evaluările anuale ale echipei": "Annual team reviews",
+    "Notele de la 1 la 5 ale fiecărui coleg pe cele 6 criterii din fișa de evaluare: media și calificativul se calculează singure; ies media echipei, câți au fiecare calificativ (Foarte bine în verde, Nesatisfăcător în roșu) și câte discuții mai sunt de făcut.": "Each colleague's scores from 1 to 5 on the 6 criteria of the appraisal form: the average and the rating are calculated automatically; you get the team average, how many have each rating (Very good in green, Unsatisfactory in red) and how many review meetings are still to be held."
+  },
+  "templates": {},
+  "skip": [
+    "Bine",
+    "Calificativul",
+    "Calificativul: de la 4,5 Foarte bine, de la 3,5 Bine, de la 2,5 Satisfăcător.",
+    "Calitate",
+    "Cunoștințe",
+    "Da",
+    "Discuția făcută",
+    "Discuții de făcut",
+    "Echipă",
+    "Evaluați",
+    "Evaluări",
+    "Evaluări anuale",
+    "Foarte bine",
+    "Inițiativă",
+    "Media",
+    "Media echipei",
+    "Nesatisfăcător",
+    "Notele: 1 = nesatisfăcător … 5 = foarte bine, ca în Docs → Fișa de evaluare a performanțelor.",
+    "Nr.",
+    "Nu",
+    "Numele și prenumele",
+    "Pe scurt",
+    "Postul",
+    "Regulament",
+    "Satisfăcător",
+    "Termene"
+  ]
+}

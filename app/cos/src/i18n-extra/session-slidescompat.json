@@ -1,0 +1,39 @@
+{
+  "dict": {
+    "ajung ca forme separate (căsuțe și săgeți): se văd la fel, dar nu se mai reașază singure când adaugi o căsuță": "become separate shapes (boxes and arrows): they look the same, but no longer rearrange themselves when you add a box",
+    "ajung ca linii drepte între capete": "become straight lines between their ends",
+    "apar ca poze: se văd la fel, dar datele lor nu se mai pot schimba în alt program": "appear as pictures: they look the same, but their data can no longer be changed in another program",
+    "apar ca poze: se văd la fel, dar în alt program nu se mai pot modifica (în Cyber Office Studio, din fișierul .sslides, da)": "appear as pictures: they look the same, but can no longer be edited in another program (in Cyber Office Studio, from the .sslides file, they can)",
+    "apare poza întreagă, cu culorile de la început": "the whole picture appears, with its original colors",
+    "casetele apar fără efect": "the boxes appear without the effect",
+    "Clipuri video și sunete": "Video clips and sounds",
+    "Conectori frânți sau curbați": "Elbow or curved connectors",
+    "cuvintele aldine, colorate sau cu alt font din mijlocul textului iau formatul casetei": "bold, colored or differently styled words inside the text take the format of the box",
+    "Desene de mână": "Hand drawings",
+    "Efecte (umbră, strălucire, 3-D, text pe arc, litere în degrade)": "Effects (shadow, glow, 3-D, text on an arc, gradient letters)",
+    "Formatare pe cuvinte": "Formatting on words",
+    "Forme cu umplere în degrade sau cu poză": "Shapes with a gradient or picture fill",
+    "Fundaluri în degrade": "Gradient backgrounds",
+    "Grafice pâlnie, cascadă, histogramă, cutie…": "Funnel, waterfall, histogram, box charts…",
+    "nu se scriu (avansul automat după secunde rămâne)": "are not saved (automatic advance after seconds stays)",
+    "nu se scriu în fișier": "are not saved in the file",
+    "nu se scriu: casetele apar toate odată": "are not saved: all boxes appear at once",
+    "nu se scriu: prezentarea pornește de la primul slide, o singură dată": "are not saved: the show starts from the first slide and runs once",
+    "Numărul slide-ului, data și subsolul": "Slide number, date and footer",
+    "Poze decupate, în formă sau cu culori schimbate": "Pictures cropped, shaped or with changed colors",
+    "rămâne doar forma, fără imaginea de la cameră": "only the shape stays, without the camera image",
+    "se scriu ca grafic cu coloane, bare, linie sau inel, cu aceleași date": "are saved as a column, bar, line or doughnut chart, with the same data",
+    "Setările prezentării (buclă, chioșc, prezentări personalizate)": "Slide show settings (loop, kiosk, custom shows)",
+    "slide-urile rămân, dar fără împărțirea pe secțiuni": "the slides stay, but without the division into sections",
+    "textul și formele rămân, dar clicul nu mai duce nicăieri": "the text and shapes stay, but clicking no longer goes anywhere",
+    "Tranziții între slide-uri": "Transitions between slides",
+    "Ce se schimbă când salvezi prezentarea în alt format. Fișierul .sslides păstrează tot. Clic pe un rând te duce la primul slide unde apare.": "What changes when you save the presentation in another format. The .sslides file keeps everything. Clicking a row takes you to the first slide where it appears.",
+    "Prezentarea se salvează în acest format fără să se schimbe ceva important.": "The presentation is saved in this format without anything important changing.",
+    "Revizuire: ce se pierde la .pptx / .odp": "Review: what is lost in .pptx / .odp",
+    "Verifică compatibilitatea: ce se schimbă sau se pierde când salvezi prezentarea ca .pptx sau .odp": "Check compatibility: what changes or is lost when you save the presentation as .pptx or .odp"
+  },
+  "templates": {
+    "Slide-ul {0}": "Slide {0}"
+  },
+  "skip": []
+}

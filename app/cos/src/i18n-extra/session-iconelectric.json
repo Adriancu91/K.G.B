@@ -1,0 +1,24 @@
+{
+  "dict": {
+    "Electrician": "Electrical work",
+    "Clește": "Pliers",
+    "Creion de tensiune": "Voltage tester",
+    "Bandă izolatoare": "Insulating tape",
+    "Tambur de cablu": "Cable reel",
+    "Doză de derivație": "Junction box",
+    "Siguranță fuzibilă": "Fuse",
+    "Prelungitor": "Power strip",
+    "Bec LED": "LED bulb"
+  },
+  "templates": {},
+  "skip": [
+    "clește patent tăiat sârmă electrician pliers",
+    "creion de tensiune șurubelniță de tensiune fază verificare curent voltage tester",
+    "bandă izolatoare izolație îmbinare fire electrician insulating tape",
+    "tambur de cablu rolă cablu șantier cable reel drum",
+    "doză de derivație cutie de joncțiune legături fire junction box",
+    "siguranță fuzibilă fuzibil ars scurtcircuit fuse",
+    "prelungitor multipriză triplu ștecher power strip extension cord",
+    "bec led economic iluminat lumină led bulb"
+  ]
+}

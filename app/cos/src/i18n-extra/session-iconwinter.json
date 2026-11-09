@@ -1,0 +1,24 @@
+{
+  "dict": {
+    "Sporturi de iarnă": "Winter sports",
+    "Schiuri": "Skis",
+    "Placă de snowboard": "Snowboard",
+    "Sanie": "Sled",
+    "Om de zăpadă": "Snowman",
+    "Telescaun": "Chairlift",
+    "Ochelari de schi": "Ski goggles",
+    "Mănuși de iarnă": "Mittens",
+    "Clăpari": "Ski boots"
+  },
+  "templates": {},
+  "skip": [
+    "schiuri schi pârtie stațiune skis skiing slope",
+    "placă de snowboard pârtie snowboarding",
+    "sanie săniuș copii derdeluș sled sledge",
+    "om de zăpadă iarnă copii snowman",
+    "telescaun teleschi cablu urcare pe munte chairlift ski lift",
+    "ochelari de schi mască pârtie ski goggles",
+    "mănuși de iarnă cu un deget frig mittens winter gloves",
+    "clăpari ghete de schi închizători ski boots"
+  ]
+}

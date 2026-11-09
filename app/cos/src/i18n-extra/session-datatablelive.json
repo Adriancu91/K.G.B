@@ -1,0 +1,7 @@
+{
+  "dict": {},
+  "templates": {
+    "Tabel de date: {0} rezultate în {1}:{2} (se recalculează singure când schimbi formula sau datele; Ctrl+Z anulează)": "Data Table: {0} results in {1}:{2} (they recalculate on their own when you change the formula or its data; Ctrl+Z undoes)"
+  },
+  "skip": []
+}

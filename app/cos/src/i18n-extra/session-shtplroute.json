@@ -1,0 +1,19 @@
+{
+  "dict": {
+    "Foaie de parcurs": "Mileage log",
+    "Fiecare drum cu mașina: traseul, scopul și kilometrii de la bord; ies km de serviciu și personali, procentul de serviciu și costul drumurilor de serviciu.": "Every car trip: the route, the purpose and the odometer readings; shows business and personal km, the business share and the cost of business trips."
+  },
+  "templates": {},
+  "skip": [
+    "Alege la Tipul: Serviciu sau Personal. Costul pe km îl schimbi tu; km negativi ies în roșu.",
+    "Costul drumurilor de serviciu",
+    "Km de serviciu",
+    "Km în total",
+    "Km la plecare",
+    "Km la sosire",
+    "Km personali",
+    "Parcurs",
+    "Partea de serviciu",
+    "Traseul (de la – până la)"
+  ]
+}

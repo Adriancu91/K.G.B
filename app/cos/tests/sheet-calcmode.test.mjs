@@ -1,0 +1,33 @@
+// Test: calculul manual din Sheets se păstrează în fișierul .ssheet și în .xlsx (calcPr calcMode="manual").
+// Rulare (în suite/): node tests/sheet-calcmode.test.mjs
+import { build } from 'esbuild';
+import { pathToFileURL } from 'node:url';
+import { tmpdir } from 'node:os';
+import { join } from 'node:path';
+import { rmSync } from 'node:fs';
+import assert from 'node:assert/strict';
+const dir = join(tmpdir(), `suite-calc-${process.pid}`);
+await build({ entryPoints: ['src/sheets/xlsx.ts', 'src/sheets/format.ts'], bundle: true, format: 'esm', platform: 'node', outdir: dir, logLevel: 'error' });
+const imp = (n) => import(pathToFileURL(join(dir, n + '.js')).href);
+const { readXlsx, writeXlsx } = await imp('xlsx');
+const { parseSheetDoc, emptySheetDoc } = await imp('format');
+rmSync(dir, { recursive: true, force: true });
+const sheet = { name: 'Foaia 1', cells: { A1: '5', B1: '=A1*2' }, styles: {}, colW: {} };
+const back = await readXlsx(await writeXlsx([{ sheet, results: {} }], 0, [], true));
+assert.equal(back.calc, 'manual');
+console.log('OK     .xlsx: calculul manual se scrie și se citește');
+const auto = await readXlsx(await writeXlsx([{ sheet, results: {} }]));
+assert.equal(auto.calc, undefined);
+console.log('OK     .xlsx: fără calcul manual rămâne automat');
+const d = { ...emptySheetDoc(), calc: 'manual' };
+assert.equal(parseSheetDoc(JSON.stringify(d)).calc, 'manual');
+assert.equal(parseSheetDoc(JSON.stringify({ ...d, calc: 'ciudat' })).calc, undefined);
+console.log('OK     .ssheet: calculul manual se păstrează (și o valoare greșită se ignoră)');
+const it = await readXlsx(await writeXlsx([{ sheet, results: {} }], 0, [], false, { max: 50, delta: 0.01 }));
+assert.deepEqual(it.iter, { max: 50, delta: 0.01 });
+assert.equal(auto.iter, undefined);
+console.log('OK     .xlsx: calculul iterativ (treceri și schimbare) se scrie și se citește');
+assert.deepEqual(parseSheetDoc(JSON.stringify({ ...emptySheetDoc(), iter: { max: 99999, delta: -1 } })).iter, { max: 32767, delta: 0 });
+assert.equal(parseSheetDoc(JSON.stringify(emptySheetDoc())).iter, undefined);
+console.log('OK     .ssheet: calculul iterativ se păstrează, cu valori curățate');
+console.log('\nTOATE TESTELE AU TRECUT');

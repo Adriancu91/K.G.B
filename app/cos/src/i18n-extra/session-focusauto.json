@@ -1,0 +1,7 @@
+{
+  "dict": {
+    "Alege singur intervalul care desparte cel mai bine partea clară de fundal (după zgomotul ales)": "Picks the range that best separates the sharp part from the background by itself (for the chosen noise)"
+  },
+  "templates": {},
+  "skip": []
+}

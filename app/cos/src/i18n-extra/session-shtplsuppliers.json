@@ -1,0 +1,32 @@
+{
+  "dict": {
+    "Facturi de la furnizori": "Supplier invoices",
+    "Facturile primite: totalul, cât ai plătit și scadența; ies restul de plată, zilele până la scadență, facturile întârziate (în roșu) cu suma lor, cele de plătit în 7 zile (în galben) și cele plătite (în verde).": "Invoices received: the total, how much you paid and the due date; you get the balance due, the days until the due date, overdue invoices (in red) with their amount, those due within 7 days (in yellow) and those paid (in green)."
+  },
+  "templates": {},
+  "skip": [
+    "Furnizori",
+    "Furnizorul",
+    "Nr. factură",
+    "Data facturii",
+    "Scadența",
+    "Total de plată",
+    "Plătit",
+    "Data plății",
+    "Rest de plată",
+    "Zile până la scadență",
+    "Stare",
+    "Plătită",
+    "Întârziată",
+    "În 7 zile",
+    "De plată",
+    "Facturi în listă",
+    "Total facturat",
+    "Facturi întârziate",
+    "Suma întârziată",
+    "De plătit în 7 zile",
+    "Cea mai mare întârziere (zile)",
+    "Scrie totalul facturii și scadența; la fiecare plată adaugă suma în Plătit. Restul și starea se calculează singure.",
+    "Facturile tale către clienți: șablonul Evidență facturi emise."
+  ]
+}

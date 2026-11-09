@@ -1,0 +1,10 @@
+{
+  "dict": {
+    "🎣 Concurs de pescuit": "🎣 Fishing contest",
+    "Balta și organizatorul:\nData și orele (start, încheiere):\nTaxa de participare:\nPremiile:\n\nÎnainte de concurs:\n☐ regulamentul scris și afișat (momeala permisă, câte lansete, cu reținere sau cu eliberarea peștelui)\n☐ standurile numerotate și trase la sorți\n☐ cântarul verificat și juriul ales\n☐ lista participanților, cu taxa încasată\n☐ minciog și saltea de primire la fiecare stand\n\nÎn ziua concursului:\n☐ semnalul de start și de încheiere, la ora anunțată\n☐ capturile cântărite, trecute pe fișa standului și semnate de pescar\n☐ peștele eliberat în baltă după cântărire, dacă așa scrie în regulament\n☐ clasamentul afișat și premiile înmânate\n\nClasamentul:\n•\n\nObservații:\n• ": "Lake and organiser:\nDate and times (start, finish):\nEntry fee:\nPrizes:\n\nBefore the contest:\n☐ rules written and posted (allowed bait, how many rods, keep or release the fish)\n☐ pegs numbered and drawn by lot\n☐ scales checked and judges chosen\n☐ list of participants, with the fee collected\n☐ landing net and unhooking mat at every peg\n\nOn contest day:\n☐ start and finish signal, at the announced time\n☐ catches weighed, written on the peg sheet and signed by the angler\n☐ fish released back into the lake after weighing, if the rules say so\n☐ standings posted and prizes handed out\n\nStandings:\n•\n\nNotes:\n• "
+  },
+  "templates": {
+    "Concurs de pescuit {0}": "Fishing contest {0}"
+  },
+  "skip": []
+}

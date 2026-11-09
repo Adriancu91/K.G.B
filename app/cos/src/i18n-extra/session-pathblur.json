@@ -1,0 +1,16 @@
+{
+  "dict": {
+    "Estompare pe drum": "Path blur",
+    "Mișcare de-a lungul unui drum curbat ales (de la început, prin cot, la sfârșit): o mașină care ia o curbă, apă care curge, un dansator (Path Blur)": "Motion along a chosen curved path (from the start, through the bend, to the end): a car taking a turn, flowing water, a dancer (Path Blur)",
+    "Începutul: orizontal": "Start: horizontal",
+    "Începutul: vertical": "Start: vertical",
+    "Cotul: orizontal": "Bend: horizontal",
+    "Cotul: vertical": "Bend: vertical",
+    "Sfârșitul: orizontal": "End: horizontal",
+    "Sfârșitul: vertical": "End: vertical",
+    "Viteză (lungimea mișcării)": "Speed (length of the motion)",
+    "Conicitate (mișcarea scade spre sfârșit)": "Taper (the motion fades towards the end)"
+  },
+  "templates": {},
+  "skip": []
+}

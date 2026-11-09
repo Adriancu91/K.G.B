@@ -1,0 +1,29 @@
+{
+  "dict": {
+    "Ce s-a lucrat": "Work done",
+    "Clientul ales": "Selected client",
+    "De facturat": "To invoice",
+    "De facturat pentru el": "To invoice for them",
+    "Din care facturabile": "Of which billable",
+    "După ce ai emis factura, alegi „Da” la Facturat și scrii numărul ei; la Clientul ales vezi cât mai ai de facturat cuiva.": "Once you have issued the invoice, choose \"Yes\" under Invoiced and enter its number; under Selected client you see how much is still to invoice for someone.",
+    "Facturabil": "Billable",
+    "Facturat": "Invoiced",
+    "Facturat deja": "Already invoiced",
+    "Ore lucrate": "Hours worked",
+    "Ore lucrate în total": "Total hours worked",
+    "Ore lucrate pe clienți": "Hours worked per client",
+    "Ore lucrate pentru el": "Hours worked for them",
+    "Partea facturabilă": "Billable share",
+    "Pauză (min)": "Break (min)",
+    "Pentru consultanți, avocați, contabili, programatori și cei care lucrează cu ora: fiecare bucată de lucru cu data, clientul, proiectul și orele de la – până la, cu pauza; ies orele lucrate, valoarea după tariful obișnuit sau al rândului și dacă mai e de facturat (în galben); în dreapta orele facturabile, cât s-a facturat și cât mai e de facturat, în total și pentru un client ales.": "For consultants, lawyers, accountants, programmers and anyone paid by the hour: each piece of work with the date, client, project and the from – to hours, with the break; you get the hours worked, the value at the usual rate or the row's own rate, and whether it is still to be invoiced (in yellow); on the right the billable hours, how much was invoiced and how much is still to invoice, in total and for a selected client.",
+    "Tariful (lei / oră)": "Rate (lei / hour)",
+    "Tariful obișnuit (lei / oră)": "Usual rate (lei / hour)",
+    "Tariful rândului se scrie doar când e altul decât cel obișnuit; „Nu” la Facturabil = ore care nu se plătesc.": "Enter a row's rate only when it differs from the usual one; \"No\" under Billable = hours that are not paid.",
+    "Un rând pe fiecare bucată de lucru: data, clientul, orele (de exemplu 9:00 și 12:30) și pauza în minute.": "One row per piece of work: the date, the client, the hours (for example 9:00 and 12:30) and the break in minutes.",
+    "Valoarea orelor facturabile": "Value of billable hours"
+  },
+  "templates": {},
+  "skip": [
+    "=IF(L{0}=\"\";\"\";IF(M{1}=\"Da\";\"Facturat\";\"De facturat\"))"
+  ]
+}

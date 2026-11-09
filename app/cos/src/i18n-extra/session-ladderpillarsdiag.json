@@ -1,0 +1,14 @@
+{
+  "dict": {
+    "Scară cu trepte (pașii pe treptele unei scări, de jos în sus)": "Ladder (the steps on the rungs of a ladder, from bottom to top)",
+    "Coloane pe o bază (ideile în coloane înalte, alăturate, pe o bază comună)": "Pillars on a base (the ideas in tall columns, side by side, on a common base)",
+    "Scară cu trepte": "Ladder",
+    "scară cu trepte": "ladder",
+    "Coloane pe o bază": "Pillars on a base",
+    "coloane pe o bază": "pillars on a base",
+    "Pași pe treptele unei scări, primul jos și ultimul sus (urcarea spre un scop)": "Steps on the rungs of a ladder, the first at the bottom and the last at the top (the climb toward a goal)",
+    "Idei în coloane înalte, alăturate, pe o bază comună (pilonii care țin un întreg)": "Ideas in tall columns, side by side, on a common base (the pillars that hold up a whole)"
+  },
+  "templates": {},
+  "skip": []
+}

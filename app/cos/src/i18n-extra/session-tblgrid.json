@@ -1,0 +1,37 @@
+{
+  "dict": {
+    "Negru cu chenar": "Black with Border",
+    "Albastru cu chenar": "Blue with Border",
+    "Portocaliu cu chenar": "Orange with Border",
+    "Gri cu chenar": "Gray with Border",
+    "Auriu cu chenar": "Gold with Border",
+    "Albastru deschis cu chenar": "Light Blue with Border",
+    "Verde cu chenar": "Green with Border",
+    "Negru cu grilă": "Black with Grid",
+    "Albastru cu grilă": "Blue with Grid",
+    "Portocaliu cu grilă": "Orange with Grid",
+    "Gri cu grilă": "Gray with Grid",
+    "Auriu cu grilă": "Gold with Grid",
+    "Albastru deschis cu grilă": "Light Blue with Grid",
+    "Verde cu grilă": "Green with Grid",
+    "Negru intens": "Black Intense",
+    "Negru cu cap și grilă": "Black with Header and Grid",
+    "Negru umplut": "Black Filled",
+    "Albastru cu cap și grilă": "Blue with Header and Grid",
+    "Albastru umplut": "Blue Filled",
+    "Portocaliu cu cap și grilă": "Orange with Header and Grid",
+    "Portocaliu umplut": "Orange Filled",
+    "Gri cu cap și grilă": "Gray with Header and Grid",
+    "Gri umplut": "Gray Filled",
+    "Auriu cu cap și grilă": "Gold with Header and Grid",
+    "Auriu umplut": "Gold Filled",
+    "Albastru deschis cu cap și grilă": "Light Blue with Header and Grid",
+    "Albastru deschis umplut": "Light Blue Filled",
+    "Verde cu cap și grilă": "Green with Header and Grid",
+    "Verde umplut": "Green Filled"
+  },
+  "templates": {},
+  "skip": [
+    "<s t=\"_localImage\"><k n=\"_rvRel:LocalImageIdentifier\" t=\"i\"/><k n=\"CalcOrigin\" t=\"i\"/><k n=\"Text\" t=\"s\"/></s></rvStructures>"
+  ]
+}

@@ -1,0 +1,16 @@
+{
+  "dict": {
+    "Datele modelului sunt într-un fișier separat (.bin) lângă .gltf; alege varianta .glb, cu totul într-un fișier.": "The model data is in a separate file (.bin) next to the .gltf; choose the .glb version, with everything in one file.",
+    "Fișierul .ply are doar puncte (o scanare fără fețe), nu și fețe de desenat.": "The .ply file only has points (a scan without faces), no faces to draw.",
+    "Fișierul .ply are un tip de date necunoscut.": "The .ply file has an unknown data type.",
+    "Fișierul .ply nu are puncte.": "The .ply file has no points.",
+    "Fișierul .ply nu poate fi citit (lipsește antetul „ply … end_header”).": "The .ply file cannot be read (the \"ply … end_header\" header is missing).",
+    "Fișierul glTF nu are niciun obiect de desenat.": "The glTF file has no object to draw.",
+    "Fișierul glTF nu are triunghiuri de desenat.": "The glTF file has no triangles to draw.",
+    "Fișierul glTF nu poate fi citit.": "The glTF file cannot be read.",
+    "Modelul glTF e comprimat (Draco / meshopt) și nu poate fi citit; salvează-l din programul 3D fără comprimare.": "The glTF model is compressed (Draco / meshopt) and cannot be read; save it from the 3D program without compression.",
+    "Alege un model 3D (.obj, .stl, .glb / .gltf sau .ply, de exemplu o piesă proiectată, un obiect pentru imprimanta 3D sau o scanare), rotește-l cu mouse-ul și pune-l ca poză.": "Choose a 3D model (.obj, .stl, .glb / .gltf or .ply, for example a designed part, an object for a 3D printer or a scan), rotate it with the mouse and insert it as a picture."
+  },
+  "templates": {},
+  "skip": []
+}

@@ -1,0 +1,10 @@
+{
+  "dict": {
+    "🗣 Discuția de evaluare": "🗣 Review meeting"
+  },
+  "templates": {},
+  "skip": [
+    "Discuția de evaluare {0}",
+    "Colegul: \nData discuției: \nSala / unde: \n\nÎnainte:\n☐ fișa postului recitită (Docs → Fișa postului)\n☐ obiectivele de anul trecut și ce s-a obținut, cu cifre\n☐ notele trecute în tabel (Sheets → Evaluările anuale ale echipei)\n☐ prezentarea pregătită (Slides → Evaluarea anuală a angajatului)\n☐ colegul anunțat cu o săptămână înainte\n\nÎn discuție:\n☐ întâi ce a mers bine, cu exemple\n☐ ce putem îmbunătăți și ce ajutor îi trebuie\n☐ obiectivele pentru anul viitor, stabilite împreună\n☐ ce cursuri sau responsabilități noi își dorește\n\nDupă:\n☐ fișa de evaluare semnată de amândoi (Docs → Fișa de evaluare a performanțelor)\n☐ cursurile cerute trecute în buget\n☐ următoarea discuție scurtă în calendar\n\nCe a spus colegul:\n• "
+  ]
+}

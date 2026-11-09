@@ -1,0 +1,15 @@
+{
+  "dict": {
+    "Contracte, cerere, proces-verbal, împuternicire, ofertă de preț, CV, scrisoare de intenție, demisie, declarație, minută de ședință, cerere de concediu, notificare de plată, contract de vânzare auto, contract de comodat, adeverință de salariat, scrisoare de recomandare, reclamație, contract de împrumut": "Contracts, request, handover report, power of attorney, price offer, CV, cover letter, resignation, declaration, meeting minutes, leave request, payment notice, car sale contract, loan-for-use contract, employment certificate, recommendation letter, complaint, loan contract",
+    "Contract de împrumut": "Loan contract",
+    "O sumă de bani împrumutată între persoane sau firme: suma în cifre și în litere, când și cum se dă înapoi, cu sau fără dobândă": "A sum of money lent between people or companies: the amount in figures and in words, when and how it is paid back, with or without interest"
+  },
+  "templates": {},
+  "skip": [
+    "\n<h1 style=\"text-align: center\">CONTRACT DE ÎMPRUMUT</h1>\n<p style=\"text-align: center\">(împrumut de bani) · Nr. [nr.] / [data]</p>\n<h2>1. Părțile</h2>\n<p>1.1. {0} (cel care dă banii),</p>\n<p>și</p>\n<p>1.2. {1} (cel care primește banii).</p>\n<h2>2. Obiectul contractului</h2>\n<p>2.1. Împrumutătorul îi împrumută Împrumutatului suma de <strong>[suma] lei</strong> (adică [suma în litere] lei), pe care Împrumutatul se obligă să o dea înapoi în condițiile de mai jos.</p>\n<p>2.2. Suma se dă [în numerar, la semnarea contractului / prin transfer în contul IBAN al Împrumutatului, în cel mult [nr.] zile de la semnare]. Semnarea contractului ține loc de dovadă a primirii banilor în numerar.</p>\n<h2>3. Dobânda</h2>\n<p>3.1. Împrumutul se acordă [fără dobândă / cu o dobândă de [procent] % pe an, calculată la suma rămasă de dat înapoi].</p>\n<h2>4. Restituirea</h2>\n<p>4.1. Împrumutatul dă înapoi suma [o dată, până la data de [data] / în [nr.] rate lunare de câte [suma] lei, până pe [ziua] a fiecărei luni, începând cu [luna, anul]].</p>\n<p>4.2. Plata se face [în numerar, cu chitanță / prin transfer în contul IBAN al Împrumutătorului]. Împrumutatul poate da banii înapoi și mai devreme, fără penalități.</p>\n<h2>5. Întârzierea la plată</h2>\n<p>5.1. Pentru fiecare zi de întârziere, Împrumutatul plătește penalități de [procent] % din suma neplătită la timp, fără ca penalitățile să depășească suma datorată.</p>\n<p>5.2. Dacă Împrumutatul întârzie mai mult de [nr.] zile cu o rată, Împrumutătorul poate cere toată suma rămasă, după o notificare scrisă.</p>\n<h2>6. Alte prevederi</h2>\n<p>6.1. Neînțelegerile se rezolvă pe cale amiabilă; altfel, de către instanța competentă.</p>\n<p>6.2. Contractul s-a încheiat în [2] exemplare, câte unul pentru fiecare parte.</p>\n{2}",
+    "Împrumutat",
+    "ÎMPRUMUTAT",
+    "Împrumutător",
+    "ÎMPRUMUTĂTOR"
+  ]
+}

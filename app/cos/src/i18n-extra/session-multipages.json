@@ -1,0 +1,16 @@
+{
+  "dict": {
+    "▦ Mai multe pagini": "▦ Multiple Pages",
+    "Mai multe pagini merge doar în aplicația instalată.": "Multiple Pages works only in the installed app.",
+    "Mai multe pagini: toate paginile, mici, una lângă alta, cum ies la tipărire; clic pe una ca să mergi la ea": "Multiple Pages: all pages, small, side by side, as they will print; click one to go to it",
+    "Câte pagini se văd pe un rând": "How many pages are shown in a row",
+    "Paginile nu au putut fi desenate.": "The pages could not be drawn.",
+    "Pe rând": "Per row",
+    "Toate paginile, mici, una lângă alta": "All pages, small, side by side"
+  },
+  "templates": {
+    "Pagina {0}: clic ca s-o vezi mare": "Page {0}: click to see it large",
+    "Pagina {0}: clic ca să mergi la ea în document": "Page {0}: click to go to it in the document"
+  },
+  "skip": []
+}

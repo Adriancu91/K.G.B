@@ -1,0 +1,21 @@
+{
+  "dict": {
+    "↺ Toate la implicit": "↺ Reset all to defaults",
+    "Apasă tastele…": "Press the keys…",
+    "Caută o comandă sau o tastă": "Search for a command or a key",
+    "Lista scurtăturilor din Imagini; poți pune tastele tale pe orice comandă (Ctrl+Alt+Shift+K)": "The shortcuts in Images; you can put your own keys on any command (Ctrl+Alt+Shift+K)",
+    "Nicio comandă nu se potrivește.": "No command matches.",
+    "Pune tastele tale pe orice comandă: „Schimbă”, apoi apasă tastele (de exemplu Ctrl+Shift+K sau F6). Ale tale au întâietate față de cele implicite și rămân și după repornire. Esc renunță.": "Put your own keys on any command: “Change”, then press the keys (for example Ctrl+Shift+K or F6). Yours take precedence over the defaults and are kept after a restart. Esc cancels.",
+    "Revino la scurtătura implicită": "Back to the default shortcut",
+    "Scurtătura implicită": "Default shortcut",
+    "Taste fixe (unelte, pensulă, mutare)": "Fixed keys (tools, brush, moving)",
+    "Toate scurtăturile au revenit la cele implicite.": "All shortcuts are back to their defaults.",
+    "Vezi scurtăturile și alege-ți tastele tale pentru orice comandă": "See the shortcuts and choose your own keys for any command"
+  },
+  "templates": {
+    "{0} e folosită de Windows sau de Cyber Office Studio și nu se poate schimba. Alege altă combinație.": "{0} is used by Windows or by Cyber Office Studio and cannot be changed. Choose another combination.",
+    "{0} era la „{1}”; acum pornește „{2}”.": "{0} was on “{1}”; it now starts “{2}”.",
+    "{0} pornea „{1}”; acum pornește „{2}”.": "{0} used to start “{1}”; it now starts “{2}”."
+  },
+  "skip": ["Num "]
+}
