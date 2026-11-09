@@ -1547,3 +1547,23 @@ label > .suggest > input {
 .match-panel .tag.ok {
   color: var(--ok);
 }
+
+/* Etapa 7, step 7.4k-1: offers */
+.offers {
+  display: grid;
+  gap: 10px;
+}
+.offers .tag {
+  font-size: 0.8em;
+  padding: 1px 6px;
+  border: 1px solid currentColor;
+}
+.offers .tag.ok {
+  color: var(--ok);
+}
+.offers .tag.warn {
+  color: var(--warn-text);
+}
+.offers .tag.bad {
+  color: var(--danger);
+}

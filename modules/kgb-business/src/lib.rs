@@ -33,6 +33,7 @@ pub mod efactura;
 pub mod invoices;
 pub mod matching;
 pub mod num;
+pub mod offers;
 pub mod package;
 pub mod purchases;
 pub mod reports;
@@ -1017,6 +1018,17 @@ impl Module for Business {
             "match_suggest" => self.match_suggest(ctx),
             "efactura_import" => self.efactura_import(ctx, args(a)?),
             "accountant_package" => self.accountant_package(ctx, args(a)?),
+            // Step 7.4k-1: offers with a validity date.
+            "offers" => self.offers(ctx, args(a)?),
+            "offer_save" => self.offer_save(ctx, args(a)?),
+            "offer_copy" => self.offer_copy(ctx, args(a)?),
+            "offer_close" => self.offer_close(ctx, args(a)?),
+            "offer_pdf" => {
+                let a: InvoicePdf = args(a)?;
+                let pdf = self.offer_pdf(ctx, a.id)?;
+                ctx.export_bytes(&a.dest, &pdf, true)?;
+                Ok(json!({"octeti": pdf.len()}))
+            }
             "match_confirm" => self.match_confirm(ctx, args(a)?),
             "aging" => {
                 let a: Today = args(a)?;

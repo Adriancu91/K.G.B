@@ -827,6 +827,104 @@
       "indexes": [
         "avans"
       ]
+    },
+    {
+      "collection": "oferte",
+      "description": "ofertele către clienți (7.4k-1): linii cu TVA, valabile până la o dată; expiră singure; acceptate, respinse sau închise cu motiv; nu se modifică, se copiază ca ofertă nouă",
+      "schema": {
+        "fields": {
+          "numar": {
+            "type": "integer",
+            "required": true,
+            "min": 1
+          },
+          "data": {
+            "type": "string",
+            "required": true,
+            "nullable": false,
+            "max_len": 10
+          },
+          "valabil_pana": {
+            "type": "string",
+            "required": true,
+            "nullable": false,
+            "max_len": 10
+          },
+          "partener": {
+            "type": "string",
+            "required": true,
+            "nullable": false,
+            "max_len": 36
+          },
+          "client": {
+            "type": "object",
+            "required": true,
+            "nullable": false
+          },
+          "linii": {
+            "type": "array",
+            "required": true,
+            "nullable": false
+          },
+          "total_fara_tva": {
+            "type": "integer",
+            "required": true
+          },
+          "total_tva": {
+            "type": "integer",
+            "required": true
+          },
+          "total": {
+            "type": "integer",
+            "required": true
+          },
+          "stare": {
+            "type": "string",
+            "required": true,
+            "nullable": false,
+            "enum": [
+              "deschisa",
+              "acceptata",
+              "respinsa",
+              "inchisa"
+            ]
+          },
+          "motiv": {
+            "type": "string",
+            "required": false,
+            "nullable": true,
+            "max_len": 300
+          },
+          "inchisa_la": {
+            "type": "string",
+            "required": false,
+            "nullable": true,
+            "max_len": 10
+          },
+          "copie_dupa": {
+            "type": "string",
+            "required": false,
+            "nullable": true,
+            "max_len": 36
+          },
+          "nota": {
+            "type": "string",
+            "required": false,
+            "nullable": true,
+            "max_len": 500
+          },
+          "creat_ms": {
+            "type": "integer",
+            "required": true,
+            "min": 0
+          }
+        },
+        "additional": false
+      },
+      "indexes": [
+        "partener",
+        "stare"
+      ]
     }
   ],
   "data_format": 1,
