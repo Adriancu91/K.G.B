@@ -1,0 +1,252 @@
+// The phone page, seen from the PC (Etapa 7, step 7.4m; D-068): start or
+// stop it, the address and pairing code for phones, the phones (approve,
+// remove) and what they sent (photos, reception sheets, bank statements).
+import { invoke } from "@tauri-apps/api/core";
+import { useCallback, useEffect, useState } from "react";
+import { api, message, type ModulesReply } from "../api";
+
+interface Phone {
+  id: string;
+  nume: string;
+  stare: "asteapta" | "aprobat" | "revocat";
+  membru_nume: string;
+  vazut_ms: number;
+}
+interface Received {
+  id: string;
+  tip: "receptie" | "document" | "extras";
+  telefon_nume: string;
+  membru_nume: string;
+  campuri: Record<string, string>;
+  fisiere: { id: string; nume: string; mime: string; octeti: number }[];
+  procesat: boolean;
+  creat_ms: number;
+}
+interface Reply {
+  pornit: boolean;
+  adresa: string | null;
+  cod: [string, number] | null;
+  telefoane: Phone[];
+  primite: Received[];
+  admin: boolean;
+  persoane: string[];
+}
+interface Account {
+  id: string;
+  nume: string;
+  tip: string;
+}
+
+const KIND: Record<Received["tip"], string> = { receptie: "Fișă de recepție", document: "Documente de la șofer", extras: "Extras de cont" };
+const FIELD: Record<string, string> = { furnizor: "Furnizor", document: "Aviz / factură", vehicul: "Vehicul", observatii: "Observații", sofer: "Șofer", nota: "Notă", banca: "Banca" };
+const when = (ms: number) => {
+  const d = new Date(ms);
+  const p = (n: number) => String(n).padStart(2, "0");
+  return `${p(d.getDate())}.${p(d.getMonth() + 1)}.${d.getFullYear()} ${p(d.getHours())}:${p(d.getMinutes())}`;
+};
+
+function FileView({ f }: { f: Received["fisiere"][number] }) {
+  const [url, setUrl] = useState<string | null>(null);
+  useEffect(() => () => void (url && URL.revokeObjectURL(url)), [url]);
+  const load = () =>
+    invoke<{ nume: string; data: string }>("phone_file", { id: f.id }).then((r) => {
+      const bin = Uint8Array.from(atob(r.data), (c) => c.charCodeAt(0));
+      setUrl(URL.createObjectURL(new Blob([bin], { type: f.mime })));
+    });
+  if (url && f.mime.startsWith("image/")) return <img className="phone-photo" src={url} alt={f.nume} />;
+  if (url) return <a href={url} download={f.nume}>{f.nume}</a>;
+  return (
+    <button className="link" onClick={() => void load()}>
+      {f.mime.startsWith("image/") ? "arată poza" : "deschide"} {f.nume} ({Math.round(f.octeti / 1024)} KB)
+    </button>
+  );
+}
+
+export function PhonePage({ modules, onError }: { modules: ModulesReply; onError: (e: string | null) => void }) {
+  const [r, setR] = useState<Reply | null>(null);
+  const [who, setWho] = useState<Record<string, string>>({});
+  const [accounts, setAccounts] = useState<Account[]>([]);
+  const [acc, setAcc] = useState<Record<string, string>>({});
+  const [notice, setNotice] = useState<string | null>(null);
+  const [showDone, setShowDone] = useState(false);
+  const business = modules.modules.some((m) => m.id === "kgb.business" && m.enabled);
+
+  const load = useCallback(async () => {
+    try {
+      setR(await invoke<Reply>("phone_status"));
+      onError(null);
+    } catch (e) {
+      onError(message(e));
+    }
+  }, [onError]);
+  useEffect(() => {
+    void load();
+    const t = setInterval(() => void load(), 5000);
+    return () => clearInterval(t);
+  }, [load]);
+  useEffect(() => {
+    if (business) void api.moduleCall<Account[]>("kgb.business", "accounts").then((a) => setAccounts(a.filter((x) => x.tip === "banca")), () => setAccounts([]));
+  }, [business]);
+  const act = async (fn: () => Promise<unknown>, done?: string) => {
+    try {
+      await fn();
+      if (done) setNotice(done);
+      onError(null);
+      await load();
+    } catch (e) {
+      onError(message(e));
+    }
+  };
+
+  if (!r) return <p className="muted">Se încarcă…</p>;
+  const waiting = r.telefoane.filter((p) => p.stare === "asteapta");
+  const list = r.primite.filter((x) => showDone || !x.procesat);
+  return (
+    <section className="phone-page">
+      {notice && (
+        <p className="muted" role="status">
+          {notice}
+        </p>
+      )}
+      <div className="card phone-server">
+        {r.pornit ? (
+          <>
+            <p>
+              Pagina de telefon e <strong>pornită</strong>. Pe telefon, conectat la Wi-Fi-ul firmei, deschide în browser:
+            </p>
+            <p className="phone-address">{r.adresa}</p>
+            {r.cod ? (
+              <p>
+                Codul de asociere: <span className="phone-code">{r.cod[0]}</span> <span className="muted small">(încă {Math.ceil(r.cod[1] / 60)} min, o singură dată)</span>
+              </p>
+            ) : (
+              <p className="muted">Niciun cod valabil.</p>
+            )}
+            {r.admin && (
+              <div className="row">
+                <button onClick={() => void act(() => invoke("phone_new_code"))}>Cod nou</button>
+                <button className="danger-text" onClick={() => void act(() => invoke("phone_stop"), "Pagina de telefon e oprită.")}>
+                  Oprește pagina
+                </button>
+              </div>
+            )}
+            <p className="muted small">
+              Merge doar în rețeaua firmei. Pe un Wi-Fi public nu o folosi: legătura nu e criptată. Prima dată, Windows poate întreba dacă K.G.B. poate primi
+              conexiuni; răspunde „Permite” doar pentru rețele private.
+            </p>
+          </>
+        ) : (
+          <>
+            <p>Pagina de telefon e oprită. Pornită, telefoanele firmei trimit aici fișe de recepție, poze cu documentele de la șoferi și extrase de cont.</p>
+            {r.admin ? (
+              <button className="primary" onClick={() => void act(() => invoke("phone_start"))}>
+                Pornește pagina de telefon
+              </button>
+            ) : (
+              <p className="muted">Doar un administrator o pornește.</p>
+            )}
+          </>
+        )}
+      </div>
+
+      {waiting.length > 0 && r.admin && (
+        <div className="card">
+          <h3>Telefoane care așteaptă aprobarea</h3>
+          {waiting.map((p) => (
+            <div className="row wrap" key={p.id} data-phone={p.nume}>
+              <strong>{p.nume}</strong>
+              <select aria-label={`Cine folosește ${p.nume}`} value={who[p.id] ?? r.persoane[0] ?? ""} onChange={(e) => setWho({ ...who, [p.id]: e.target.value })}>
+                {r.persoane.map((n) => (
+                  <option key={n} value={n}>
+                    {n}
+                  </option>
+                ))}
+              </select>
+              <button className="primary" onClick={() => void act(() => invoke("phone_approve", { id: p.id, membru: who[p.id] ?? r.persoane[0] ?? "" }), `${p.nume} e aprobat.`)}>
+                Aprobă
+              </button>
+              <button className="danger-text" onClick={() => void act(() => invoke("phone_revoke", { id: p.id }))}>
+                Refuză
+              </button>
+            </div>
+          ))}
+        </div>
+      )}
+
+      <h3>Primite de pe telefon</h3>
+      <label className="small">
+        <input type="checkbox" checked={showDone} onChange={(e) => setShowDone(e.target.checked)} /> arată și cele rezolvate
+      </label>
+      {list.length === 0 && <p className="muted">Nimic nou.</p>}
+      <ul className="phone-inbox">
+        {list.map((x) => (
+          <li key={x.id} className={x.procesat ? "card muted" : "card"} data-received={x.tip}>
+            <div className="row wrap">
+              <strong>{KIND[x.tip]}</strong>
+              <span className="muted small">
+                {when(x.creat_ms)} · {x.membru_nume} ({x.telefon_nume})
+              </span>
+              <span className="grow" />
+              <button className="link" onClick={() => void act(() => invoke("phone_done", { id: x.id, gata: !x.procesat }))}>
+                {x.procesat ? "redeschide" : "rezolvat"}
+              </button>
+            </div>
+            {Object.entries(x.campuri).map(([k, v]) => (
+              <div key={k} className="small">
+                <span className="muted">{FIELD[k] ?? k}:</span> {v}
+              </div>
+            ))}
+            <div className="row wrap">
+              {x.fisiere.map((f) => (
+                <FileView key={f.id} f={f} />
+              ))}
+            </div>
+            {x.tip === "extras" && !x.procesat && x.fisiere[0] && business && (
+              <div className="row wrap">
+                <select aria-label="Contul bancar" value={acc[x.id] ?? accounts[0]?.id ?? ""} onChange={(e) => setAcc({ ...acc, [x.id]: e.target.value })}>
+                  {accounts.length === 0 && <option value="">niciun cont bancar în Business</option>}
+                  {accounts.map((a) => (
+                    <option key={a.id} value={a.id}>
+                      {a.nume}
+                    </option>
+                  ))}
+                </select>
+                <button
+                  disabled={accounts.length === 0}
+                  onClick={() =>
+                    void act(async () => {
+                      const res = await invoke<{ importate: number; sarite: number }>("phone_import_statement", { id: x.id, fisier: x.fisiere[0]!.id, cont: acc[x.id] ?? accounts[0]?.id });
+                      setNotice(`Extras importat în Business: ${res.importate} operații noi${res.sarite ? `, ${res.sarite} deja importate` : ""}.`);
+                    })
+                  }
+                >
+                  Importă în Business
+                </button>
+              </div>
+            )}
+          </li>
+        ))}
+      </ul>
+
+      {r.telefoane.some((p) => p.stare === "aprobat") && (
+        <div className="card">
+          <h3>Telefoane asociate</h3>
+          {r.telefoane
+            .filter((p) => p.stare === "aprobat")
+            .map((p) => (
+              <div className="row wrap" key={p.id}>
+                <span>
+                  {p.nume} · {p.membru_nume} <span className="muted small">· văzut {when(p.vazut_ms)}</span>
+                </span>
+                {r.admin && (
+                  <button className="link danger-text" onClick={() => void act(() => invoke("phone_revoke", { id: p.id }), `${p.nume} nu mai are acces.`)}>
+                    scoate
+                  </button>
+                )}
+              </div>
+            ))}
+        </div>
+      )}
+    </section>
+  );
+}

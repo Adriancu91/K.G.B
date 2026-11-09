@@ -23,6 +23,7 @@ pub mod modules;
 pub mod notifications;
 pub mod org;
 pub mod partners;
+pub mod phones;
 pub mod presence;
 pub mod peers;
 pub mod profiles;

@@ -23,6 +23,7 @@ import { DevicesPage } from "./pages/DevicesPage";
 import { SourcesPage } from "./pages/SourcesPage";
 import { PartnersPage } from "./pages/PartnersPage";
 import { ChatPage } from "./pages/ChatPage";
+import { PhonePage } from "./pages/PhonePage";
 import { TeamOverviewPage } from "./pages/TeamOverviewPage";
 import { QuickSearch } from "./components/QuickSearch";
 
@@ -124,7 +125,7 @@ export function App() {
       });
     }
   }
-  nav.push({ id: "partners", label: "Parteneri" }, { id: "chat", label: "Mesaje" }, { id: "team-overview", label: "Echipa pe scurt" }, { id: "catalog", label: "Catalog module" }, { id: "org", label: "Organizație" }, { id: "devices", label: "Dispozitive și sincronizare" }, { id: "sources", label: "Surse externe" }, { id: "settings", label: "Setări" }, { id: "data", label: "Date și backup" }, { id: "diagnostics", label: "Diagnostic" });
+  nav.push({ id: "partners", label: "Parteneri" }, { id: "chat", label: "Mesaje" }, { id: "phone", label: "Telefon" }, { id: "team-overview", label: "Echipa pe scurt" }, { id: "catalog", label: "Catalog module" }, { id: "org", label: "Organizație" }, { id: "devices", label: "Dispozitive și sincronizare" }, { id: "sources", label: "Surse externe" }, { id: "settings", label: "Setări" }, { id: "data", label: "Date și backup" }, { id: "diagnostics", label: "Diagnostic" });
 
   // If the open module was disabled or hidden, fall back to the start page.
   useEffect(() => {
@@ -290,6 +291,7 @@ export function App() {
         {page === "sources" && <SourcesPage onError={setError} />}
         {page === "partners" && <PartnersPage onError={setError} />}
         {page === "chat" && <ChatPage onError={setError} />}
+        {page === "phone" && <PhonePage modules={modules} onError={setError} />}
         {page === "team-overview" && <TeamOverviewPage modules={modules} onError={setError} />}
         {page === "org" && <OrgPage onError={setError} onChanged={() => void loadModules()} />}
         {page === "diagnostics" && <DiagnosticsPage onError={setError} />}

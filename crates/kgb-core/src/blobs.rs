@@ -85,7 +85,9 @@ pub fn may_serve(store: &Store, peer: &str, hash: &str) -> CoreResult<PathBuf> {
     let allowed = records(store)?
         .into_iter()
         // Voice messages belong to every member (step 7.4f).
-        .any(|(h, _, _, module)| h == hash && (module == crate::chat::CHAT_MODULE || st.access(peer, &module) != Access::Niciunul));
+        .any(|(h, _, _, module)| {
+            h == hash && module != crate::phones::PHONE_MODULE && (module == crate::chat::CHAT_MODULE || st.access(peer, &module) != Access::Niciunul)
+        });
     if !allowed {
         return Err(CoreError::invalid(
             "fișierul",

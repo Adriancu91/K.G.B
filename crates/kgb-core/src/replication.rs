@@ -121,7 +121,14 @@ const FILE_TABLES: &[&str] = &["core.files", "core.documents", "core.document_ve
 fn module_for(op: &Op) -> Option<String> {
     let coll = op.state.coll.as_str();
     if FILE_TABLES.contains(&coll) {
-        return op.state.fields.get("module").and_then(Value::as_str).map(String::from);
+        // The phone inbox's photos stay on the PC that received them (7.4m).
+        return op
+            .state
+            .fields
+            .get("module")
+            .and_then(Value::as_str)
+            .filter(|m| *m != crate::phones::PHONE_MODULE)
+            .map(String::from);
     }
     module_of(coll).map(String::from)
 }

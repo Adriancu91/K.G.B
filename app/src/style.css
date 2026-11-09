@@ -1647,3 +1647,41 @@ label > .suggest > input {
   display: grid;
   gap: 4px;
 }
+
+/* Etapa 7, step 7.4m: the phone page, seen from the PC */
+.phone-page {
+  display: grid;
+  gap: 12px;
+  max-width: 900px;
+}
+.phone-server {
+  display: grid;
+  gap: 8px;
+}
+.phone-address {
+  font-size: 1.3em;
+  font-family: Consolas, "Courier New", monospace;
+  user-select: all;
+}
+.phone-code {
+  font-size: 1.6em;
+  font-family: Consolas, "Courier New", monospace;
+  letter-spacing: 0.08em;
+  font-weight: 700;
+}
+.phone-inbox {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 8px;
+}
+.phone-inbox li {
+  display: grid;
+  gap: 4px;
+}
+.phone-photo {
+  max-width: 260px;
+  max-height: 260px;
+  border: 1px solid var(--line);
+}

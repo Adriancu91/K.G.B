@@ -9,6 +9,7 @@ use std::sync::{Arc, Mutex};
 mod external;
 mod media;
 mod net;
+mod phone;
 use std::time::Instant;
 
 use kgb_core::identity::{self, DeviceIdentity};
@@ -1168,6 +1169,132 @@ fn team_set_mine(app: State<AppState>, lucrez: String, culoare: String) -> CmdRe
     })
 }
 
+// ---------- the phone page (Etapa 7, step 7.4m; D-068) ----------
+
+#[derive(Serialize)]
+struct PhoneReply {
+    pornit: bool,
+    adresa: Option<String>,
+    /// The pairing code and the seconds it is still valid.
+    cod: Option<(String, u64)>,
+    telefoane: Vec<kgb_core::phones::Phone>,
+    primite: Vec<Value>,
+    /// Only administrators start the page and approve phones.
+    admin: bool,
+    /// Who may be chosen as a phone's user: the organization's members, or the owner.
+    persoane: Vec<String>,
+}
+
+fn phone_admin(s: &Session) -> Result<(), CoreError> {
+    org::require_admin(s.ws.store(), Some(&s.device.fingerprint()), "pagina de telefon")
+}
+
+#[tauri::command]
+fn phone_status(app: State<AppState>) -> CmdResult<PhoneReply> {
+    with_session(&app, |s| {
+        let persoane = if org::organization(s.ws.store())?.is_some() {
+            org::members(s.ws.store(), false)?.into_iter().filter(|m| m.active).map(|m| m.name).collect()
+        } else {
+            vec![my_name(s)?]
+        };
+        Ok(PhoneReply {
+            pornit: phone::address().is_some(),
+            adresa: phone::address(),
+            cod: phone::current_code(),
+            telefoane: kgb_core::phones::list(&s.ws)?,
+            primite: kgb_core::phones::inbox(&s.ws)?,
+            admin: phone_admin(s).is_ok(),
+            persoane,
+        })
+    })
+}
+
+#[tauri::command]
+fn phone_start(app: State<AppState>) -> CmdResult<String> {
+    with_session(&app, |s| {
+        phone_admin(s)?;
+        modules::audit(&mut s.ws, "core.phones", "pagina de telefon pornită", "ok", "")
+    })?;
+    let a = phone::start(app.session.clone())?;
+    phone::new_code();
+    Ok(a)
+}
+
+#[tauri::command]
+fn phone_stop(app: State<AppState>) -> CmdResult<()> {
+    with_session(&app, |s| {
+        phone_admin(s)?;
+        modules::audit(&mut s.ws, "core.phones", "pagina de telefon oprită", "ok", "")
+    })?;
+    phone::stop();
+    Ok(())
+}
+
+#[tauri::command]
+fn phone_new_code(app: State<AppState>) -> CmdResult<String> {
+    with_session(&app, |s| phone_admin(s))?;
+    Ok(phone::new_code())
+}
+
+#[tauri::command]
+fn phone_approve(app: State<AppState>, id: uuid::Uuid, membru: String) -> CmdResult<()> {
+    with_session(&app, |s| {
+        phone_admin(s)?;
+        kgb_core::phones::approve(&mut s.ws, id, &membru)?;
+        modules::audit(&mut s.ws, "core.phones", "telefon aprobat", "ok", &membru)
+    })
+}
+
+#[tauri::command]
+fn phone_revoke(app: State<AppState>, id: uuid::Uuid) -> CmdResult<()> {
+    with_session(&app, |s| {
+        phone_admin(s)?;
+        kgb_core::phones::revoke(&mut s.ws, id)?;
+        modules::audit(&mut s.ws, "core.phones", "telefon scos", "ok", "")
+    })
+}
+
+#[tauri::command]
+fn phone_done(app: State<AppState>, id: uuid::Uuid, gata: bool) -> CmdResult<()> {
+    with_session(&app, |s| kgb_core::phones::mark_done(&mut s.ws, id, gata))
+}
+
+#[derive(Serialize)]
+struct PhoneFile {
+    nume: String,
+    data: String,
+}
+
+/// A photo or file received from a phone (base64, to show or save).
+#[tauri::command]
+fn phone_file(app: State<AppState>, id: uuid::Uuid) -> CmdResult<PhoneFile> {
+    use base64::Engine as _;
+    with_session(&app, |s| {
+        let (nume, bytes) = kgb_core::phones::file(&s.ws, id)?;
+        Ok(PhoneFile { nume, data: base64::engine::general_purpose::STANDARD.encode(bytes) })
+    })
+}
+
+/// A bank statement received from a phone, imported into Business (the
+/// person on this PC needs the right to write in Business).
+#[tauri::command]
+fn phone_import_statement(app: State<AppState>, id: uuid::Uuid, fisier: uuid::Uuid, cont: uuid::Uuid) -> CmdResult<Value> {
+    use base64::Engine as _;
+    with_session(&app, |s| {
+        let (nume, bytes) = kgb_core::phones::file(&s.ws, fisier)?;
+        let fp = s.device.fingerprint();
+        let r = s.mm.call(
+            &mut s.ws,
+            Some(&fp),
+            "kgb.business",
+            "bank_import",
+            serde_json::json!({"cont": cont, "name": nume, "data": base64::engine::general_purpose::STANDARD.encode(bytes)}),
+        )?;
+        kgb_core::phones::mark_done(&mut s.ws, id, true)?;
+        Ok(r)
+    })
+}
+
 // ---------- team messages (Etapa 7, step 7.4f) ----------
 
 /// The name messages from this PC are signed with: the member's name in an
@@ -1476,6 +1603,15 @@ fn main() {
             sources_list,
             anaf_lookup,
             media_now,
+            phone_status,
+            phone_start,
+            phone_stop,
+            phone_new_code,
+            phone_approve,
+            phone_revoke,
+            phone_done,
+            phone_file,
+            phone_import_statement,
             team_overview,
             team_set_mine,
             chat_list,
