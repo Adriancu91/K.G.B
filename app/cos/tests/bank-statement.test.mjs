@@ -137,7 +137,7 @@ const pdfWordsOf = async (data) => {
     }
   }
   const pages = pdoc.numPages;
-  await pdoc.destroy();
+  await pdoc.loadingTask.destroy();
   return { words: ws, pages };
 };
 const { words } = await pdfWordsOf(await makeStatementPdf());

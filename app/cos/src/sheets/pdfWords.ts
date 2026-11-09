@@ -26,6 +26,6 @@ export async function pdfWords(data: Uint8Array): Promise<{ words: PdfWord[]; pa
     }
     return { words, pages: doc.numPages };
   } finally {
-    await doc.destroy();
+    await doc.loadingTask.destroy();
   }
 }

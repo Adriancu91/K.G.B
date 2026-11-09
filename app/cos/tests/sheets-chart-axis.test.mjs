@@ -10,7 +10,7 @@ import JSZip from 'jszip';
 const dir = join(tmpdir(), `suite-chartaxis-${process.pid}`);
 const entry = join(tmpdir(), `suite-chartaxis-entry-${process.pid}.ts`);
 const p = (f) => JSON.stringify(join(process.cwd(), f).split(String.fromCharCode(92)).join('/'));
-writeFileSync(entry, `export { readXlsx, writeXlsx } from ${p('src/sheets/xlsx.ts')};\nexport { chartSvg, userScale, niceScale } from ${p('src/sheets/chartSvg.ts')};\nexport { cleanAxis } from ${p('src/sheets/chart.ts')};\nexport { parseSheet, serializeSheet } from ${p('src/sheets/format.ts')};\n`);
+writeFileSync(entry, `export { readXlsx, writeXlsx } from ${p('src/sheets/xlsx.ts')};\nexport { chartSvg, userScale, niceScale } from ${p('src/sheets/chartSvg.ts')};\nexport { cleanAxis } from ${p('src/sheets/chart.ts')};\n`);
 await build({ entryPoints: [entry], bundle: true, format: 'esm', platform: 'node', outfile: join(dir, 'x.mjs'), logLevel: 'error' });
 const { readXlsx, writeXlsx, chartSvg, userScale, niceScale, cleanAxis } = await import(pathToFileURL(join(dir, 'x.mjs')).href);
 rmSync(dir, { recursive: true, force: true });

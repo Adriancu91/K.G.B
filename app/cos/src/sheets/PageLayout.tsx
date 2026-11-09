@@ -9,7 +9,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { HF_FIELDS, MARGIN_NAMES, PAPERS, type PrintMargin, type PrintPaper, type SheetPrint } from './print';
 
-type PdfDoc = { numPages: number; getPage(n: number): Promise<any>; destroy(): Promise<void> }; // eslint-disable-line @typescript-eslint/no-explicit-any
+type PdfDoc = { numPages: number; getPage(n: number): Promise<any>; loadingTask: { destroy(): Promise<void> } }; // eslint-disable-line @typescript-eslint/no-explicit-any
 
 /** Câte pagini se desenează cel mult (memoria laptopului); restul se văd la Tipărire / Export PDF. */
 export const LAYOUT_MAX_PAGES = 40;
@@ -66,9 +66,9 @@ export default function PageLayout({ data, busy, error, set, onChange, onNormal,
       const { default: workerUrl } = await import('pdfjs-dist/build/pdf.worker.min.mjs?url');
       pdfjs.GlobalWorkerOptions.workerSrc = workerUrl;
       loaded = (await pdfjs.getDocument({ data: data.slice(), isEvalSupported: false }).promise) as unknown as PdfDoc;
-      if (alive) { setDoc(loaded); setFail(''); } else void loaded.destroy();
+      if (alive) { setDoc(loaded); setFail(''); } else void loaded.loadingTask.destroy();
     })().catch(() => { if (alive) setFail('Paginile nu au putut fi pregătite.'); });
-    return () => { alive = false; if (loaded) void loaded.destroy(); };
+    return () => { alive = false; if (loaded) void loaded.loadingTask.destroy(); };
   }, [data]);
 
   // Paginile, una sub alta, cu lățimea zonei (cel mult mărimea reală a hârtiei), la rezoluția ecranului.

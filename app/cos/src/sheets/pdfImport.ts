@@ -18,6 +18,6 @@ export async function pdfFileToSheet(data: Uint8Array, title: string, progress?:
     const r = await pdfToSheet(doc, title, (n) => progress?.(n, doc.numPages));
     return { ...r, pages: doc.numPages };
   } finally {
-    void doc.destroy();
+    void doc.loadingTask.destroy();
   }
 }
