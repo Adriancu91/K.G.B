@@ -92,5 +92,18 @@ Fiecare șablon poartă nota: *„Model orientativ… nu înlocuiește un progra
 
 **Limită:** rata constantă (anuitate). Ratele descrescătoare, comisioanele și dobânda variabilă nu sunt modelate.
 
+## Adăugate la pasul 7.4i (9 nov. 2026)
+Toate sunt verificate în `modules/kgb-sheets/tests/templates.rs` cu valorile de mai jos, calculate de mână. Sumele de bani se rotunjesc la 2 zecimale pe fiecare rând (`ROUND(…,2)`).
+
+**Deviz de lucrări** (foaia „Deviz”): `Valoare = ROUND(Cantitate × Preț,2)` pe rândurile 12–21; `Total direct = SUM`; `Cheltuieli indirecte = ROUND(Total direct × B8,2)`; `Profit = ROUND((Total direct + Indirecte) × B9,2)`; `Total fără TVA = Direct + Indirecte + Profit`; `TVA = ROUND(Total fără TVA × B7,2)`; `Total cu TVA`. Exemplu: 4275 + 3465 + 2160 = 9900; 990; 435,60; 11.325,60; TVA 2.378,38; total 13.703,98.
+
+**Centralizator de cheltuieli**: total pe obiect = suma celor patru coloane; total pe coloană; `Pondere = total obiect / total general` (gol dacă totalul general e 0). Exemplu: 24.000 / 60.000 / 36.000 din 120.000 → 20%, 50%, 30%.
+
+**Situație de plată**: `Valoare perioadă = ROUND(Executat în perioadă × Preț,2)`; `Valoare cumulată = ROUND((Executat anterior + în perioadă) × Preț,2)`; `Rest = Cant. contract − anterior − în perioadă`; `TVA = ROUND(Total perioadă × C6,2)`; `Reținere garanție = ROUND(Total perioadă × C7,2)`; `De plată = Total + TVA − Reținere`. Exemplu: 4.800 + 31.200 = 36.000; cumulat 66.400; TVA 7.560; reținere 1.800; de plată 41.760.
+
+**Listă de inventariere**: `Valoare scriptică = ROUND(Cant. scriptică × Preț,2)`, `Valoare faptică = ROUND(Cant. faptică × Preț,2)`, `Diferență cant. = faptic − scriptic`, `Diferență valoare = Valoare faptică − Valoare scriptică`, `Constatare = „plus” / „minus” / gol`. Exemplu: ciment −2 saci (−65 lei, minus), oțel +12 kg (+64,80 lei, plus); totaluri 14.220 / 14.219,80, diferență −0,20.
+
+**Limită:** sunt modele orientative; nu înlocuiesc devizele întocmite după normele de deviz din construcții sau un program de gestiune autorizat.
+
 ## Ce urmează
 Master Plan §6.3 cere mai multe categorii: cash-flow, P&L, stocuri, HR, proiecte, construcții etc. Acestea **nu sunt făcute** în Etapa 3. Primele cinci acoperă câte un șablon din categoriile cele mai folosite. Restul se adaugă pe aceeași regulă: formule documentate aici și verificate cu valori de mână.

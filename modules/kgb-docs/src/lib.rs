@@ -91,7 +91,7 @@ const BUILT_IN: [(&str, &str, &str, &[u8]); 5] = [
     ),
 ];
 /// The built-in PDF models, written in Typst (step 4.8b; D-045).
-const BUILT_IN_PDF: [(&str, &str, &str, &str); 3] = [
+const BUILT_IN_PDF: [(&str, &str, &str, &str); 9] = [
     (
         "pdf-oferta",
         "Ofertă comercială (PDF)",
@@ -109,6 +109,43 @@ const BUILT_IN_PDF: [(&str, &str, &str, &str); 3] = [
         "Adeverință de salariat (PDF)",
         "hr",
         include_str!("../models/pdf-adeverinta-salariat.typ"),
+    ),
+    // Step 7.4i: more models, written by K.G.B.; parties fill from the partner directory.
+    (
+        "pdf-contract-vanzare",
+        "Contract de vânzare-cumpărare (PDF)",
+        "comercial",
+        include_str!("../models/pdf-contract-vanzare.typ"),
+    ),
+    (
+        "pdf-contract-inchiriere",
+        "Contract de închiriere (PDF)",
+        "comercial",
+        include_str!("../models/pdf-contract-inchiriere.typ"),
+    ),
+    (
+        "pdf-pv-predare-primire",
+        "Proces-verbal de predare-primire (PDF)",
+        "tehnic",
+        include_str!("../models/pdf-pv-predare-primire.typ"),
+    ),
+    (
+        "pdf-decizie",
+        "Decizie (PDF)",
+        "administrativ",
+        include_str!("../models/pdf-decizie.typ"),
+    ),
+    (
+        "pdf-imputernicire",
+        "Împuternicire (PDF)",
+        "administrativ",
+        include_str!("../models/pdf-imputernicire.typ"),
+    ),
+    (
+        "pdf-nir",
+        "Notă de intrare-recepție (NIR) (PDF)",
+        "tehnic",
+        include_str!("../models/pdf-nir.typ"),
     ),
 ];
 const CATEGORIES: [&str; 5] = ["administrativ", "comercial", "hr", "tehnic", "altele"];

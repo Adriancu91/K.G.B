@@ -118,3 +118,37 @@ fn pdf_from_a_typst_model() {
     );
     assert!(call(&mut ws, &mm, "model_update", json!({"id": m["id"], "data": "AAAA"})).is_err());
 }
+
+/// Step 7.4i: every new model compiles to a PDF with its title and the
+/// values typed in; the parties use field names the partner directory fills.
+#[test]
+fn the_new_models_of_7_4i_generate() {
+    let (_tmp, mut ws, mm) = setup();
+    let list = call(&mut ws, &mm, "models", json!({})).unwrap();
+    let models = list.as_array().unwrap();
+    assert_eq!(models.len(), 14, "5 Word + 9 PDF");
+    for (name, title, party) in [
+        ("Contract de vânzare-cumpărare (PDF)", "CONTRACT DE VÂNZARE-CUMPĂRARE", "cumparator"),
+        ("Contract de închiriere (PDF)", "CONTRACT DE ÎNCHIRIERE", "chirias"),
+        ("Proces-verbal de predare-primire (PDF)", "PROCES-VERBAL DE PREDARE-PRIMIRE", "partener"),
+        ("Decizie (PDF)", "DECIZIE", ""),
+        ("Împuternicire (PDF)", "ÎMPUTERNICIRE", ""),
+        ("Notă de intrare-recepție (NIR) (PDF)", "NOTĂ DE INTRARE-RECEPȚIE", "furnizor"),
+    ] {
+        let m = models.iter().find(|m| m["nume"] == name).unwrap_or_else(|| panic!("{name}"));
+        let fields: Vec<String> = m["campuri"].as_array().unwrap().iter().filter(|f| f["din_firma"] != true).map(|f| f["camp"].as_str().unwrap().to_string()).collect();
+        if !party.is_empty() {
+            assert!(fields.iter().any(|f| f == party), "{name}: {fields:?}");
+        }
+        // Every field gets a value marked with its name.
+        let vals: serde_json::Map<String, Value> = fields.iter().map(|f| (f.clone(), json!(format!("val-{f}")))).collect();
+        let g = call(&mut ws, &mm, "generate", json!({"model": m["id"], "valori": vals})).unwrap_or_else(|e| panic!("{name}: {e}"));
+        let text = call(&mut ws, &mm, "text", json!({"id": g["id"]})).unwrap()["text"].as_str().unwrap().to_string();
+        let flat: String = text.split_whitespace().collect::<Vec<_>>().join(" ");
+        assert!(flat.contains(title), "{name}: {flat}");
+        assert!(flat.contains("Kronos Global Business SRL"), "{name}");
+        for f in &fields {
+            assert!(flat.contains(&format!("val-{f}")), "{name}: {f} missing");
+        }
+    }
+}

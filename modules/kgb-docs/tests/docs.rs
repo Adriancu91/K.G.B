@@ -52,17 +52,24 @@ fn built_in_models_generate_with_the_right_fields() {
         .iter()
         .map(|m| m["nume"].as_str().unwrap())
         .collect();
+    // Step 7.4i added six PDF models; sorted by category, then name.
     assert_eq!(
         names,
         [
             "Cerere",
+            "Decizie (PDF)",
+            "Împuternicire (PDF)",
             "Contract de prestări servicii",
+            "Contract de vânzare-cumpărare (PDF)",
+            "Contract de închiriere (PDF)",
             "Ofertă comercială",
             "Ofertă comercială (PDF)",
             "Adeverință de salariat",
             "Adeverință de salariat (PDF)",
+            "Notă de intrare-recepție (NIR) (PDF)",
+            "Proces-verbal de predare-primire (PDF)",
             "Proces-verbal de recepție",
-            "Proces-verbal de recepție (PDF)"
+            "Proces-verbal de recepție (PDF)",
         ]
     );
     // Listing again does not add them twice.
@@ -72,7 +79,7 @@ fn built_in_models_generate_with_the_right_fields() {
             .as_array()
             .unwrap()
             .len(),
-        8
+        14
     );
 
     let c = model(&list, "Contract de prestări servicii").clone();

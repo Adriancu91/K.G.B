@@ -47,7 +47,7 @@ fn close(got: &str, want: f64) -> bool {
 }
 
 #[test]
-fn the_library_lists_five_templates() {
+fn the_library_lists_nine_templates() {
     let (_t, mut ws, mm) = setup();
     let l = call(&mut ws, &mm, "templates", json!({})).unwrap();
     let ids: Vec<&str> = l["templates"]
@@ -58,7 +58,7 @@ fn the_library_lists_five_templates() {
         .collect();
     assert_eq!(
         ids,
-        ["buget-lunar", "factura", "registru-casa", "cost-km", "rate-credit"]
+        ["buget-lunar", "factura", "registru-casa", "cost-km", "rate-credit", "deviz", "centralizator", "situatie-plata", "inventar"]
     );
     assert!(l["note"].as_str().unwrap().contains("orientativ"));
     assert!(call(&mut ws, &mm, "use_template", json!({"template": "nu-exista"})).is_err());
@@ -231,4 +231,59 @@ fn editing_a_copy_never_changes_the_template() {
     // A new use of the template starts from the original values again.
     let again = use_t(&mut ws, &mm, "factura");
     assert!(close(&get(&mut ws, &mm, &again, "Factură", "F11"), 1026.0));
+}
+
+/// Step 7.4i. Deviz: 45 × 95 = 4275; 90 × 38.50 = 3465; 90 × 24 = 2160;
+/// direct 9900; indirect 10% = 990; profit 4% of 10890 = 435.60;
+/// without VAT 11325.60; VAT 21% = 2378.376 → 2378.38; total 13703.98.
+#[test]
+fn works_estimate() {
+    let (_t, mut ws, mm) = setup();
+    let id = use_t(&mut ws, &mm, "deviz");
+    for (cell, want) in [("F12", 4275.0), ("F13", 3465.0), ("F14", 2160.0), ("F15", 0.0), ("F22", 9900.0), ("F23", 990.0), ("F24", 435.6), ("F25", 11325.6), ("F26", 2378.38), ("F27", 13703.98)] {
+        let v = get(&mut ws, &mm, &id, "Deviz", cell);
+        assert!(close(&v, want), "{cell}: {v} ≠ {want}");
+    }
+}
+
+/// Centralizator: rows 24000, 60000, 36000; columns 57000, 48000, 10000,
+/// 5000; total 120000; shares 20%, 50%, 30%.
+#[test]
+fn cost_summary() {
+    let (_t, mut ws, mm) = setup();
+    let id = use_t(&mut ws, &mm, "centralizator");
+    for (cell, want) in [("F5", 24000.0), ("F6", 60000.0), ("F7", 36000.0), ("B15", 57000.0), ("C15", 48000.0), ("D15", 10000.0), ("E15", 5000.0), ("F15", 120000.0), ("G5", 0.2), ("G6", 0.5), ("G7", 0.3)] {
+        let v = get(&mut ws, &mm, &id, "Centralizator", cell);
+        assert!(close(&v, want), "{cell}: {v} ≠ {want}");
+    }
+}
+
+/// Situație de plată: 150 × 32 = 4800 (cumulated 450 × 32 = 14400, 50 left);
+/// 60 × 520 = 31200 (cumulated 100 × 520 = 52000, 20 left); period 36000,
+/// cumulated 66400; VAT 7560; retention 5% = 1800; to pay 41760.
+#[test]
+fn payment_statement() {
+    let (_t, mut ws, mm) = setup();
+    let id = use_t(&mut ws, &mm, "situatie-plata");
+    for (cell, want) in [("G9", 4800.0), ("H9", 14400.0), ("I9", 50.0), ("G10", 31200.0), ("H10", 52000.0), ("I10", 20.0), ("G19", 36000.0), ("H19", 66400.0), ("G20", 7560.0), ("G21", 1800.0), ("G22", 41760.0)] {
+        let v = get(&mut ws, &mm, &id, "Situație de plată", cell);
+        assert!(close(&v, want), "{cell}: {v} ≠ {want}");
+    }
+}
+
+/// Inventar: ciment 120 vs 118 × 32.50 → 3900 / 3835, −2, −65, „minus”;
+/// cărămidă equal; oțel 800 vs 812 × 5.40 → 4320 / 4384.80, +12, +64.80,
+/// „plus”; totals 14220 / 14219.80, difference −0.20.
+#[test]
+fn stock_count() {
+    let (_t, mut ws, mm) = setup();
+    let id = use_t(&mut ws, &mm, "inventar");
+    let g = |ws: &mut Workspace, a1: &str| get(ws, &mm, &id, "Inventar", a1);
+    for (cell, want) in [("G6", 3900.0), ("H6", 3835.0), ("I6", -2.0), ("J6", -65.0), ("I7", 0.0), ("G8", 4320.0), ("H8", 4384.8), ("I8", 12.0), ("J8", 64.8), ("G26", 14220.0), ("H26", 14219.8), ("J26", -0.2)] {
+        let v = g(&mut ws, cell);
+        assert!(close(&v, want), "{cell}: {v} ≠ {want}");
+    }
+    assert_eq!(g(&mut ws, "K6"), "minus");
+    assert_eq!(g(&mut ws, "K7"), "");
+    assert_eq!(g(&mut ws, "K8"), "plus");
 }
