@@ -154,7 +154,7 @@ impl Business {
             let Some(pay) = ctx.get(PAYMENTS, Uuid::parse_str(&s(&l, "plata")).unwrap_or_default())? else {
                 continue;
             };
-            let amount = i(&pay, "suma");
+            let amount = crate::cash::link_amount(&l, i(&pay, "suma"));
             let label = format!(
                 "{} {}",
                 if s(&pay, "sens") == "incasare" {

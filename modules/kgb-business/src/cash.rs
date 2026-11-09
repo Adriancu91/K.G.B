@@ -86,6 +86,16 @@ pub(crate) struct PaymentSave {
 pub(crate) struct PaymentLink {
     plata: Uuid,
     document: DocRef,
+    /// Part of the payment for this document, as typed (step 7.4j-2); what is
+    /// left of the payment when absent.
+    #[serde(default)]
+    suma: Option<String>,
+}
+
+/// What a link pays (step 7.4j-2): its own amount, or — for links made before
+/// a payment could be split — the whole payment.
+pub(crate) fn link_amount(link: &RecordState, payment_total: Money) -> Money {
+    link.fields.get("suma").and_then(Value::as_i64).unwrap_or(payment_total)
 }
 
 #[derive(Deserialize)]
@@ -164,7 +174,7 @@ impl Business {
         let mut paid: Money = ctx
             .scan(LINKS, |r| r.fields.get("document") == Some(&key))?
             .iter()
-            .filter_map(|l| live.get(&s(l, "plata")).copied())
+            .filter_map(|l| live.get(&s(l, "plata")).map(|total| link_amount(l, *total)))
             .sum();
         for st in ctx.scan(SETTLEMENTS, |_| true)? {
             if st
@@ -211,14 +221,33 @@ impl Business {
         }
     }
 
+    /// What of a payment is not yet linked to a document.
+    pub(crate) fn unlinked(&self, ctx: &mut ModuleContext<'_>, payment: Uuid, payment_total: Money) -> CoreResult<Money> {
+        let key = json!(payment.to_string());
+        let used: Money = ctx
+            .scan(LINKS, |r| r.fields.get("plata") == Some(&key))?
+            .iter()
+            .map(|l| link_amount(l, payment_total))
+            .sum();
+        Ok(payment_total - used)
+    }
+
+    /// A link of `amount` from `payment` (worth `payment_total`) to a document.
+    /// `pending` is what this same batch already takes from the payment.
+    #[allow(clippy::too_many_arguments)]
     pub(crate) fn link_write(
         &self,
         ctx: &mut ModuleContext<'_>,
         payment: Uuid,
+        payment_total: Money,
         amount: Money,
+        pending: Money,
         sens: &str,
         d: &DocRef,
     ) -> CoreResult<Write> {
+        if amount <= 0 {
+            return Err(bad("legătura", "suma trebuie să fie mai mare decât zero"));
+        }
         let (total, direction, label) = self.doc_amount(ctx, d)?;
         if sens != direction {
             return Err(bad(
@@ -240,12 +269,20 @@ impl Business {
                 ),
             ));
         }
-        let key = json!(payment.to_string());
-        if !ctx.scan(LINKS, |r| r.fields.get("plata") == Some(&key))?.is_empty() {
-            return Err(bad("legătura", "plata este deja legată de un document"));
+        let free = self.unlinked(ctx, payment, payment_total)? - pending;
+        if amount > free {
+            return Err(bad(
+                "legătura",
+                if free <= 0 {
+                    "plata este deja legată în întregime".to_string()
+                } else {
+                    format!("din plată mai sunt nelegați {} lei; suma e {} lei", num::fmt_money(free), num::fmt_money(amount))
+                },
+            ));
         }
         let mut f = Fields::new();
-        f.insert("plata".into(), key);
+        f.insert("plata".into(), json!(payment.to_string()));
+        f.insert("suma".into(), json!(amount));
         f.insert("document".into(), json!(d.id.to_string()));
         f.insert("tip_document".into(), json!(d.tip));
         f.insert("creat_ms".into(), json!(now_ms()));
@@ -334,7 +371,7 @@ impl Business {
             batch.push(Write::put(SERIES, series.id, sf).expect(series.version));
         }
         if let Some(d) = &a.document {
-            batch.push(self.link_write(ctx, id, amount, &a.sens, d)?);
+            batch.push(self.link_write(ctx, id, amount, amount, 0, &a.sens, d)?);
         }
         let mut f = Fields::new();
         f.insert("cont".into(), json!(a.cont.to_string()));
@@ -369,9 +406,14 @@ impl Business {
         if !s(&p, "storno_de").is_empty() || !s(&p, "avans_persoana").is_empty() {
             return Err(bad("plata", "un storno sau un avans nu se leagă de documente"));
         }
-        let w = self.link_write(ctx, p.id, i(&p, "suma"), &s(&p, "sens"), &a.document)?;
+        let total = i(&p, "suma");
+        let amount = match &a.suma {
+            Some(t) if !t.trim().is_empty() => num::money(t).ok_or_else(|| bad("suma", format!("„{t}” nu este o sumă")))?,
+            _ => self.unlinked(ctx, p.id, total)?,
+        };
+        let w = self.link_write(ctx, p.id, total, amount, 0, &s(&p, "sens"), &a.document)?;
         ctx.write(vec![w])?;
-        Ok(json!({"plata": p.id}))
+        Ok(json!({"plata": p.id, "suma": amount}))
     }
 
     pub(crate) fn payment_storno(&self, ctx: &mut ModuleContext<'_>, a: PaymentStorno) -> CoreResult<Value> {
@@ -446,11 +488,10 @@ impl Business {
             .map(|p| s(p, "storno_de"))
             .filter(|x| !x.is_empty())
             .collect();
-        let links: BTreeMap<String, String> = ctx
-            .scan(LINKS, |_| true)?
-            .iter()
-            .map(|l| (s(l, "plata"), format!("{}:{}", s(l, "tip_document"), s(l, "document"))))
-            .collect();
+        let mut links: BTreeMap<String, Vec<(String, RecordState)>> = BTreeMap::new();
+        for l in ctx.scan(LINKS, |_| true)? {
+            links.entry(s(&l, "plata")).or_default().push((format!("{}:{}", s(&l, "tip_document"), s(&l, "document")), l));
+        }
         let settled: BTreeSet<String> = ctx.scan(SETTLEMENTS, |_| true)?.iter().map(|d| s(d, "avans")).collect();
         let mut list: Vec<Value> = all
             .iter()
@@ -459,7 +500,12 @@ impl Business {
                 v["id"] = json!(p.id);
                 v["suma_text"] = json!(num::fmt_money(i(p, "suma")));
                 v["stornata"] = json!(reversed.contains(&p.id.to_string()));
-                v["legata_de"] = links.get(&p.id.to_string()).map_or(Value::Null, |x| json!(x));
+                let mine = links.get(&p.id.to_string());
+                v["legata_de"] = mine.and_then(|x| x.first()).map_or(Value::Null, |x| json!(x.0));
+                v["legaturi"] = json!(mine.map_or(0, Vec::len));
+                let used: Money = mine.map_or(0, |x| x.iter().map(|(_, l)| link_amount(l, i(p, "suma"))).sum());
+                v["nelegat"] = json!(i(p, "suma") - used);
+                v["nelegat_text"] = json!(num::fmt_money(i(p, "suma") - used));
                 v["decontat"] = json!(settled.contains(&p.id.to_string()));
                 v
             })

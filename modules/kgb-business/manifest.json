@@ -741,7 +741,7 @@
     },
     {
       "collection": "potriviri",
-      "description": "legătura unei plăți cu documentul pe care îl achită (o singură dată pe plată)",
+      "description": "legătura unei plăți cu documentul pe care îl achită; o plată se poate împărți pe mai multe documente, fiecare legătură cu suma ei (7.4j-2)",
       "schema": {
         "fields": {
           "plata": {
@@ -769,6 +769,12 @@
             "type": "integer",
             "required": true,
             "min": 0
+          },
+          "suma": {
+            "type": "integer",
+            "required": false,
+            "nullable": true,
+            "min": 1
           }
         },
         "additional": false

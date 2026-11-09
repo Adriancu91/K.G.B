@@ -218,15 +218,26 @@ impl Business {
                 .map(|p| (p.id.to_string(), i(p, "suma")))
                 .collect()
         };
-        let mut per_payment: BTreeMap<String, usize> = BTreeMap::new();
+        // A payment may be split over several documents (7.4j-2), never above its amount.
+        let all_pay: BTreeMap<String, Money> = payments.iter().map(|p| (p.id.to_string(), i(p, "suma"))).collect();
+        let mut per_payment: BTreeMap<String, Money> = BTreeMap::new();
         let mut per_doc: BTreeMap<String, Money> = BTreeMap::new();
         for l in &links {
             c.looked_at += 1;
-            *per_payment.entry(s(l, "plata")).or_default() += 1;
-            *per_doc.entry(s(l, "document")).or_default() += live_pay.get(&s(l, "plata")).copied().unwrap_or(0);
+            let total = all_pay.get(&s(l, "plata")).copied().unwrap_or(0);
+            let amount = crate::cash::link_amount(l, total);
+            if amount <= 0 {
+                c.problems.push(format!("legătura {} are suma {}", l.id, num::fmt_money(amount)));
+            }
+            *per_payment.entry(s(l, "plata")).or_default() += amount;
+            if live_pay.contains_key(&s(l, "plata")) {
+                *per_doc.entry(s(l, "document")).or_default() += amount;
+            }
         }
-        for (p, n) in per_payment.iter().filter(|(_, n)| **n > 1) {
-            c.problems.push(format!("plata {p} e legată de {n} documente"));
+        for (p, used) in &per_payment {
+            if all_pay.get(p).is_some_and(|t| used > t) {
+                c.problems.push(format!("din plata {p} s-au legat {} lei peste sumă", num::fmt_money(used - all_pay[p])));
+            }
         }
         let totals: BTreeMap<String, Money> = invoices
             .iter()

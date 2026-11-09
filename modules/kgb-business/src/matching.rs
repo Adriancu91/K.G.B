@@ -38,6 +38,10 @@ pub(crate) struct Confirm {
 pub(crate) struct Pair {
     plata: Uuid,
     document: DocRef,
+    /// Part of the payment for this document (a payment split over several
+    /// invoices, 7.4j-2); what is left of the payment when absent.
+    #[serde(default)]
+    suma: Option<String>,
 }
 
 fn fold(t: &str) -> String {
@@ -69,7 +73,12 @@ impl Business {
     pub(crate) fn match_suggest(&self, ctx: &mut ModuleContext<'_>) -> CoreResult<Value> {
         let all = ctx.scan(PAYMENTS, |_| true)?;
         let reversed: BTreeSet<String> = all.iter().map(|p| s(p, "storno_de")).filter(|x| !x.is_empty()).collect();
-        let linked: BTreeSet<String> = ctx.scan(LINKS, |_| true)?.iter().map(|l| s(l, "plata")).collect();
+        let mut used: BTreeMap<String, i64> = BTreeMap::new();
+        let totals: BTreeMap<String, i64> = all.iter().map(|p| (p.id.to_string(), i(p, "suma"))).collect();
+        for l in ctx.scan(LINKS, |_| true)? {
+            let t = totals.get(&s(&l, "plata")).copied().unwrap_or(0);
+            *used.entry(s(&l, "plata")).or_default() += crate::cash::link_amount(&l, t);
+        }
         let open = self.open_documents(ctx)?;
         let open = open.as_array().cloned().unwrap_or_default();
         // Partner details for matching by CUI and name.
@@ -91,10 +100,14 @@ impl Business {
         let mut out = Vec::new();
         for p in &all {
             let pid = p.id.to_string();
-            if linked.contains(&pid) || reversed.contains(&pid) || !s(p, "storno_de").is_empty() || !s(p, "avans_persoana").is_empty() {
+            if reversed.contains(&pid) || !s(p, "storno_de").is_empty() || !s(p, "avans_persoana").is_empty() {
                 continue;
             }
-            let amount = i(p, "suma");
+            // What of the payment is still free to link.
+            let amount = i(p, "suma") - used.get(&pid).copied().unwrap_or(0);
+            if amount <= 0 {
+                continue;
+            }
             let direction = s(p, "sens");
             let text = fold(&s(p, "explicatie"));
             let mut cands: Vec<(i64, Vec<String>, &Value)> = Vec::new();
@@ -149,7 +162,7 @@ impl Business {
             let second = cands.get(1).map_or(0, |c| c.0);
             let sure = best >= SURE && best - second >= 25;
             out.push(json!({
-                "plata": {"id": p.id, "data": s(p, "data"), "suma": amount, "suma_text": num::fmt_money(amount), "sens": direction, "explicatie": s(p, "explicatie")},
+                "plata": {"id": p.id, "data": s(p, "data"), "suma": amount, "suma_text": num::fmt_money(amount), "partial": amount != i(p, "suma"), "sens": direction, "explicatie": s(p, "explicatie")},
                 "sigur": sure,
                 "candidati": cands.iter().take(3).map(|(sc, why, d)| json!({
                     "scor": sc, "motive": why, "document": {"tip": d["tip"], "id": d["id"]}, "eticheta": d["eticheta"], "rest_text": d["rest_text"],
@@ -164,27 +177,30 @@ impl Business {
         if a.perechi.is_empty() {
             return Err(bad("potrivirea", "nimic de confirmat"));
         }
-        let mut seen = BTreeSet::new();
+        let mut per_pay: BTreeMap<Uuid, i64> = BTreeMap::new();
         let mut per_doc: BTreeMap<Uuid, i64> = BTreeMap::new();
         let mut writes = Vec::new();
         for pair in &a.perechi {
-            if !seen.insert(pair.plata) {
-                return Err(bad("potrivirea", "o plată apare de două ori"));
-            }
             let p = crate::live(ctx, PAYMENTS, pair.plata, "plata")?;
             if !s(&p, "storno_de").is_empty() || !s(&p, "avans_persoana").is_empty() {
                 return Err(bad("plata", "un storno sau un avans nu se leagă de documente"));
             }
             // Two payments for the same document in one batch must fit together.
             let before = *per_doc.get(&pair.document.id).unwrap_or(&0);
-            let amount = i(&p, "suma");
-            let (total, _, label) = self.doc_amount(ctx, &pair.document)?;
-            let left = total - self.paid_on(ctx, pair.document.id)? - before;
+            let pending = *per_pay.get(&pair.plata).unwrap_or(&0);
+            let total = i(&p, "suma");
+            let amount = match &pair.suma {
+                Some(t) if !t.trim().is_empty() => num::money(t).ok_or_else(|| bad("suma", format!("„{t}” nu este o sumă")))?,
+                _ => self.unlinked(ctx, p.id, total)? - pending,
+            };
+            let (doc_total, _, label) = self.doc_amount(ctx, &pair.document)?;
+            let left = doc_total - self.paid_on(ctx, pair.document.id)? - before;
             if amount > left {
                 return Err(bad("potrivirea", format!("pe {label} mai sunt de achitat {} lei", num::fmt_money(left))));
             }
             per_doc.insert(pair.document.id, before + amount);
-            writes.push(self.link_write(ctx, p.id, amount, &s(&p, "sens"), &pair.document)?);
+            writes.push(self.link_write(ctx, p.id, total, amount, pending, &s(&p, "sens"), &pair.document)?);
+            per_pay.insert(pair.plata, pending + amount);
         }
         let n = writes.len();
         ctx.write(writes)?;

@@ -108,6 +108,19 @@ try {
   const open = await biz(p, "open_documents");
   check("după confirmare factura e încasată", open.filter((d) => d.tip === "factura").length === 0, JSON.stringify(open));
 
+  // One payment split over two invoices (7.4j-2): 1.000 lei for F 2 (605) and F 3 (395 of 1.210).
+  const f2 = await biz(p, "invoice_issue", { serie: series.id, partener: client.id, data: "2026-11-06", linii: [{ descriere: "A", cantitate: "1", pret_unitar: "500", cota_tva: 21 }] });
+  const f3 = await biz(p, "invoice_issue", { serie: series.id, partener: client.id, data: "2026-11-07", linii: [{ descriere: "B", cantitate: "1", pret_unitar: "1000", cota_tva: 21 }] });
+  const pay = await biz(p, "payment_save", { cont: bank.id, data: "2026-11-08", sens: "incasare", suma: "1.000,00" });
+  await biz(p, "payment_link", { plata: pay.id, document: { tip: "factura", id: f2.id }, suma: "605,00" });
+  await biz(p, "payment_link", { plata: pay.id, document: { tip: "factura", id: f3.id } });
+  const rest = (await biz(p, "open_documents")).find((d) => d.id === f3.id)?.rest;
+  check("o plată împărțită pe două facturi: F 2 achitată, F 3 cu restul", rest === 81_500 && !(await biz(p, "open_documents")).some((d) => d.id === f2.id), String(rest));
+  await p.click("Stoc", ".sheet-tabs button, button");
+  await p.click("Casă și bancă", "button");
+  await p.until("document.body.innerText.includes('achită 2 documente')", 8000);
+  check("lista plăților arată „achită 2 documente”", true);
+
   // e-Factura.
   const xml = join(files, "FT-77.xml");
   writeFileSync(xml, UBL);
@@ -117,7 +130,7 @@ try {
   // The monthly package.
   const zip = join(files, "pachet.zip");
   const pk = await biz(p, "accountant_package", { luna: "2026-11", dest: zip });
-  check("pachetul lunar pentru contabil se scrie (ZIP)", existsSync(zip) && readFileSync(zip).subarray(0, 2).toString("latin1") === "PK" && pk.facturi === 1 && pk.cheltuieli === 1, JSON.stringify(pk));
+  check("pachetul lunar pentru contabil se scrie (ZIP)", existsSync(zip) && readFileSync(zip).subarray(0, 2).toString("latin1") === "PK" && pk.facturi === 3 && pk.cheltuieli === 1, JSON.stringify(pk));
 
   // The daily backup.
   await invoke(p, "reminders_tick", { azi: iso() });

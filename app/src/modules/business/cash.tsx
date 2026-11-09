@@ -28,6 +28,10 @@ interface Payment {
   storno_de: string | null;
   stornata: boolean;
   legata_de: string | null;
+  /** How many documents it pays, and what of it is not linked yet (7.4j-2). */
+  legaturi: number;
+  nelegat: number;
+  nelegat_text: string;
   decontat: boolean;
 }
 interface OpenDoc {
@@ -48,7 +52,7 @@ const today = () => {
 };
 
 interface Suggestion {
-  plata: { id: string; data: string; suma_text: string; sens: string; explicatie: string };
+  plata: { id: string; data: string; suma_text: string; partial: boolean; sens: string; explicatie: string };
   sigur: boolean;
   candidati: { scor: number; motive: string[]; document: { tip: string; id: string }; eticheta: string; rest_text: string }[];
 }
@@ -113,7 +117,7 @@ function MatchPanel({ payments, onDone, onError }: { payments: number; onDone: (
           <li key={x.plata.id} className={x.sigur ? "sure" : ""}>
             <div>
               <strong>
-                {x.plata.sens === "incasare" ? "Încasare" : "Plată"} {x.plata.suma_text} lei
+                {x.plata.sens === "incasare" ? "Încasare" : "Plată"} {x.plata.suma_text} lei{x.plata.partial ? " (partea încă nelegată)" : ""}
               </strong>{" "}
               <span className="muted small">
                 {x.plata.data.split("-").reverse().join(".")} · {x.plata.explicatie || "fără detalii"}
@@ -159,7 +163,7 @@ export function CashView({ onError }: { onError: (e: string | null) => void }) {
   const blank = { cont: "", sens: "incasare", suma: "", data: today(), document: "", chitanta: "", avans: "", explicatie: "" };
   const [pf, setPf] = useState(blank);
   const [settle, setSettle] = useState<{ avans: string; cheltuieli: string[]; restituit: string } | null>(null);
-  const [linking, setLinking] = useState<{ plata: string; document: string } | null>(null);
+  const [linking, setLinking] = useState<{ plata: string; document: string; suma: string } | null>(null);
 
   const refresh = useCallback(async () => {
     try {
@@ -399,13 +403,14 @@ export function CashView({ onError }: { onError: (e: string | null) => void }) {
               <td className="num">{p.sens === "plata" ? p.suma_text : ""}</td>
               <td>
                 {[p.numar, p.partener_nume, p.explicatie, p.avans_persoana ? `avans: ${p.avans_persoana}` : null].filter(Boolean).join(" · ")}
-                {p.legata_de && <span className="badge"> achită {docLabel(p.legata_de)}</span>}
+                {p.legata_de && <span className="badge"> achită {p.legaturi > 1 ? `${p.legaturi} documente` : docLabel(p.legata_de)}</span>}
+                {p.legata_de && p.nelegat > 0 && <span className="badge"> nelegat {p.nelegat_text} lei</span>}
                 {p.sursa === "extras" && <span className="badge"> extras</span>}
                 {p.storno_de && <span className="badge"> storno</span>}
               </td>
               <td className="row">
-                {!p.legata_de && !p.storno_de && !p.stornata && !p.avans_persoana && docsFor(p.sens).length > 0 && (
-                  <button className="link" onClick={() => setLinking({ plata: p.id, document: docsFor(p.sens)[0]?.id ?? "" })}>
+                {p.nelegat > 0 && !p.storno_de && !p.stornata && !p.avans_persoana && docsFor(p.sens).length > 0 && (
+                  <button className="link" onClick={() => setLinking({ plata: p.id, document: docsFor(p.sens)[0]?.id ?? "", suma: "" })}>
                     Leagă de document
                   </button>
                 )}
@@ -437,6 +442,13 @@ export function CashView({ onError }: { onError: (e: string | null) => void }) {
                 </option>
               ))}
             </select>
+            <input
+              aria-label="Suma legată"
+              placeholder={`toată plata rămasă (${payments.find((p) => p.id === linking.plata)?.nelegat_text ?? ""} lei)`}
+              value={linking.suma}
+              onChange={(e) => setLinking({ ...linking, suma: e.target.value })}
+              title="O plată se poate împărți pe mai multe documente: scrie partea pentru acest document"
+            />
             <button
               className="primary"
               disabled={busy}
@@ -444,9 +456,9 @@ export function CashView({ onError }: { onError: (e: string | null) => void }) {
                 const doc = openDocs.find((d) => d.id === linking.document);
                 if (!doc) return;
                 void run(async () => {
-                  await api.moduleCall(ID, "payment_link", { plata: linking.plata, document: { tip: doc.tip, id: doc.id } });
+                  await api.moduleCall(ID, "payment_link", { plata: linking.plata, document: { tip: doc.tip, id: doc.id }, ...(linking.suma.trim() ? { suma: linking.suma } : {}) });
                   setLinking(null);
-                  setNotice("Plata a fost legată de document.");
+                  setNotice("Plata a fost legată de document. Dacă a rămas o parte nelegată, o poți lega de alt document.");
                 });
               }}
             >
