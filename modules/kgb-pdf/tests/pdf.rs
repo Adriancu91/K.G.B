@@ -274,3 +274,54 @@ fn bad_arguments_are_refused_clearly() {
     );
     assert!(call(&mut ws, &mm, "import", json!({"name": "a.pdf", "data": "%%%"})).is_err());
 }
+
+/// Step 7.4l-1a: watermark, header and footer over the pages — preview,
+/// then a new version; every page keeps its own text; Romanian letters and
+/// page numbers in the overlay; the page as shown changes (rendered).
+#[test]
+fn stamp_watermark_header_footer() {
+    let (_t, mut ws, mm) = setup();
+    let id = import(&mut ws, &mm, "rotite-si-formate.pdf")["document"]["id"].clone();
+    let before: Vec<String> = serde_json::from_value(call(&mut ws, &mm, "text", json!({"id": id})).unwrap()).unwrap();
+    let thumb = |ws: &mut Workspace, v: u64, page: u32| call(ws, &mm, "thumb", json!({"id": id, "version": v, "page": page, "width": 300})).unwrap()["png"].as_str().unwrap().to_string();
+    let args = json!({"id": id, "based_on": 1, "filigran": "CONFIDENȚIAL — copie", "antet": "Fier Vechi SRL · Iași", "subsol": "Pagina {n} din {total}"});
+    let p = call(&mut ws, &mm, "stamp", args.clone()).unwrap();
+    assert_eq!((p["applied"].as_bool(), p["pages"].as_u64()), (Some(false), Some(4)));
+    assert_eq!(p["summary"], "filigran, antet, subsol pe 4 pagini");
+    assert_eq!(call(&mut ws, &mm, "info", json!({"id": id})).unwrap()["version"], 1, "a preview changes nothing");
+    let mut a = args.clone();
+    a["apply"] = json!(true);
+    let r = call(&mut ws, &mm, "stamp", a).unwrap();
+    assert_eq!(r["version"], 2);
+    let out = bytes(&mut ws, &mm, &id, Some(2));
+    for p in 1..=4 {
+        assert!(kgb_pdf::overlay::has_overlay(&out, p), "page {p}");
+    }
+    let after: Vec<String> = serde_json::from_value(call(&mut ws, &mm, "text", json!({"id": id})).unwrap()).unwrap();
+    assert_eq!(after, before, "each page keeps exactly its own text");
+    let info = call(&mut ws, &mm, "info", json!({"id": id})).unwrap();
+    assert_eq!(info["rotations"], json!([0, 90, 180, 270]), "rotations unchanged");
+    // The overlay's own words: diacritics and the page numbers.
+    let o = kgb_pdf::overlay::Overlay { watermark: "CONFIDENȚIAL".into(), header: "Fier Vechi SRL · Iași".into(), footer: "Pagina {n} din {total}".into() };
+    let t = kgb_pdf::overlay::overlay_text(&[(595.0, 842.0), (842.0, 595.0)], &o).unwrap();
+    for w in ["CONFIDENȚIAL", "Iași", "Pagina 1 din 2", "Pagina 2 din 2"] {
+        assert!(t.contains(w), "{w} in {t}");
+    }
+    // The pages as shown are different now (also the one turned upside down).
+    for page in [1, 3] {
+        assert_ne!(thumb(&mut ws, 1, page), thumb(&mut ws, 2, page), "page {page} changed");
+    }
+    if let Ok(dir) = std::env::var("KGB_STAMP_PREVIEW") {
+        for page in 1..=4 {
+            let png = B64.decode(thumb(&mut ws, 2, page)).unwrap();
+            std::fs::write(std::path::Path::new(&dir).join(format!("stamp-{page}.png")), png).unwrap();
+        }
+    }
+    // Only chosen pages; bad input refused.
+    let r = call(&mut ws, &mm, "stamp", json!({"id": id, "based_on": 2, "pages": [2], "filigran": "ANULAT", "apply": true})).unwrap();
+    assert_eq!(r["summary"], "filigran pe 1 pagină");
+    assert!(call(&mut ws, &mm, "stamp", json!({"id": id, "based_on": 3})).unwrap_err().to_string().contains("filigranul, antetul sau subsolul"));
+    assert!(call(&mut ws, &mm, "stamp", json!({"id": id, "based_on": 3, "pages": [9], "antet": "x"})).unwrap_err().to_string().contains("nu există"));
+    assert!(call(&mut ws, &mm, "stamp", json!({"id": id, "based_on": 3, "antet": "a\nb"})).is_err());
+    assert!(call(&mut ws, &mm, "stamp", json!({"id": id, "based_on": 3, "antet": "#{panic()}"})).is_ok(), "typed text is data, not Typst code");
+}

@@ -3891,6 +3891,10 @@ dependencies = [
  "serde_json",
  "tempfile",
  "tracing",
+ "typst",
+ "typst-assets",
+ "typst-layout",
+ "typst-pdf",
  "uuid",
 ]
 

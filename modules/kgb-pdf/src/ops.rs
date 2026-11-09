@@ -63,7 +63,7 @@ fn inherited(doc: &Document, page: ObjectId, key: &[u8]) -> Option<Object> {
 
 /// Copies inherited page attributes onto each page, so a page stays correct
 /// when it is moved into another document or its parent changes.
-fn flatten_inherited(doc: &mut Document) {
+pub(crate) fn flatten_inherited(doc: &mut Document) {
     let pages: Vec<ObjectId> = doc.get_pages().values().copied().collect();
     for id in pages {
         let add: Vec<(&[u8], Object)> = [b"Resources".as_slice(), b"MediaBox", b"CropBox", b"Rotate"]

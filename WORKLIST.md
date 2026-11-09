@@ -152,6 +152,12 @@ Interdicții permanente: fără baze de date (D-005, D-018), fără schimbări d
 - [x] 7.4k-6 Parc auto și șoferi: documente care expiră (ITP, RCA, permise) și memento-uri — **făcut 9 nov. 2026:** în Business, tabul „Parc auto”: vehicule (număr, marcă, model, an, șofer obișnuit, scos din folosință) și șoferi (telefon, categorii), fiecare cu actele lui (tipul sugerat: ITP, RCA, CASCO, rovinietă, revizie, licență, tahograf…; permis, atestat, card tahograf, avize), numărul și data expirării; sus ce expiră în 30 de zile; memento-uri ca la parteneri (30 / 7 zile, în ziua expirării, apoi săptămânal 4 săptămâni), fiecare o dată; teste: Rust (fleet) + e2e fleet 6/6, business 28/28, deliveries 4/4
 - [ ] 7.4l Module din Cyber Office Studio (D-067, confirmat de proprietar pe 8 nov. 2026 pentru 5 module, în această ordine; analiza în `docs/ANALIZA_CYBER_OFFICE_STUDIO.md`):
   - [ ] 7.4l-1 PDF: unelte preluate una câte una (filigran, antet/subsol, ștampile, ascunderea datelor, formulare XFDF, comprimare, n-up, OCR), cu previzualizare înainte de salvare și versiuni; semnătura digitală refăcută separat (certificatele Windows), nu preluată
+    - [x] 7.4l-1a Filigran, antet și subsol (cu numerotarea paginilor {n}/{total}), pe toate paginile sau pe cele alese — **făcut 9 nov. 2026:** textul e așezat cu Typst și fonturile incluse (diacritice corecte, textul scris e dată, nu cod), pus peste fiecare pagină ca desen separat (conținutul și textul paginii rămân identice, verificate), urmează rotirea paginii, filigran semitransparent; previzualizare, apoi versiune nouă; teste: Rust (pagini rotite 0/90/180/270 randate și verificate vizual) + e2e pdf 24/24
+    - [ ] 7.4l-1b Ștampile și imagini puse pe pagină (o imagine sau o ștampilă text, cu poziția aleasă)
+    - [ ] 7.4l-1c Ascunderea datelor (redactare reală: textul de sub zonă e scos, nu doar acoperit)
+    - [ ] 7.4l-1d Comprimare și n-up (2 sau 4 pagini pe o foaie)
+    - [ ] 7.4l-1e Formulare PDF: completare și import/export XFDF
+    - [ ] 7.4l-1f OCR pe PDF-uri scanate (motorul OCR existent din Extragere)
   - [ ] 7.4l-2 Note: modulul complet (liste de bifat, Markdown, șabloane, note criptate) în locul celui demonstrativ, o notă = o înregistrare în nucleu
   - [ ] 7.4l-3 e-Factura (citire/scriere XML) și verificările CNP/CUI/IBAN
   - [ ] 7.4l-4 Foi de calcul: grilă cu formatare, completare automată, sortare/filtrare, grafice SVG, tabele pivot, lângă motorul de calcul existent (IronCalc, un singur motor)

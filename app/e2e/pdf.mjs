@@ -137,6 +137,31 @@ try {
   await p.until("document.querySelectorAll('.pdf-docs li .grow').length === 5", 10000);
   check("documentul extras apare în listă", (await docNames(p)).includes("factura - extras.pdf"), JSON.stringify(await docNames(p)));
 
+  // 7.4l-1a: watermark, header and page numbers over the invoice.
+  await openDoc(p, "factura.pdf");
+  await thumbsLoaded(p, 1);
+  await p.eval("[...document.querySelectorAll('.pdf-doc button')].find(b => b.textContent === 'Deselectează')?.click()");
+  await p.click("Filigran, antet, subsol…", ".pdf-doc button");
+  await p.until("!!document.querySelector('.pdf-stamp')", 3000);
+  await p.fill("input[aria-label='Filigranul']", "COPIE — NEPLĂTITĂ");
+  await p.fill("input[aria-label='Antetul']", "Fier Vechi SRL · Iași");
+  await p.click("numerotează paginile", ".pdf-stamp button");
+  check("„numerotează paginile” completează subsolul", (await p.eval("document.querySelector(\"input[aria-label='Subsolul']\").value")) === "Pagina {n} din {total}");
+  const inkBefore = await p.eval("(() => { const i = document.querySelector('.pdf-pages img'); return i ? i.src.length : 0; })()");
+  await p.eval("document.querySelector('.pdf-stamp button.primary').click()");
+  await p.until("!!document.querySelector('.dialog.wide canvas')", 15000);
+  await sleep(500);
+  const stampTitle = await p.eval("document.querySelector('.dialog.wide').innerText");
+  check("previzualizarea arată ce se pune și că textul paginilor s-a păstrat", stampTitle.includes("filigran, antet, subsol pe 1 pagină") && stampTitle.includes("textul lor s-au păstrat"), stampTitle.slice(0, 160));
+  await p.screenshot(join(shots, "02b-filigran.png"));
+  await p.click("Salvează ca versiune nouă", ".dialog button");
+  await p.until("!document.querySelector('.dialog.wide')", 10000);
+  await p.until("document.querySelector('.pdf-doc select')?.selectedOptions[0]?.textContent.startsWith('2 —')", 10000);
+  check("filigranul, antetul și subsolul au creat versiunea 2", (await versionLabel(p)).includes("filigran, antet, subsol"), await versionLabel(p));
+  await thumbsLoaded(p, 1);
+  const inkAfter = await p.eval("(() => { const i = document.querySelector('.pdf-pages img'); return i ? i.src.length : 0; })()");
+  check("miniatura paginii s-a schimbat", inkBefore > 0 && inkAfter > 0 && inkAfter !== inkBefore, `${inkBefore} → ${inkAfter}`);
+
   // Merge the invoice and the 4-page file.
   await p.eval(`(() => { for (const li of document.querySelectorAll('.pdf-docs li'))
     if (['factura.pdf','rotite-si-formate.pdf'].includes(li.querySelector('.grow').textContent)) li.querySelector('input').click(); return true; })()`);

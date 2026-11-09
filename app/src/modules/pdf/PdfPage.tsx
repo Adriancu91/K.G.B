@@ -92,6 +92,8 @@ export function PdfPage({ onError }: { onError: (e: string | null) => void }) {
   const [busy, setBusy] = useState(false);
   const [showAll, setShowAll] = useState(false);
   const [notice, setNotice] = useState<string | null>(null);
+  // Text over the pages (7.4l-1a).
+  const [stamp, setStamp] = useState<{ open: boolean; filigran: string; antet: string; subsol: string }>({ open: false, filigran: "", antet: "", subsol: "" });
 
   const refresh = useCallback(async () => {
     try {
@@ -314,12 +316,53 @@ export function PdfPage({ onError }: { onError: (e: string | null) => void }) {
               >
                 Extrage în document nou
               </button>
+              <button disabled={!editable || busy} onClick={() => setStamp({ ...stamp, open: !stamp.open })}>
+                Filigran, antet, subsol…
+              </button>
               {selected.length > 0 && (
                 <button className="link" onClick={() => setSelected([])}>
                   Deselectează
                 </button>
               )}
             </div>
+            {stamp.open && editable && (
+              <div className="card pdf-stamp">
+                <label>
+                  Filigran (pe diagonală, semitransparent)
+                  <input aria-label="Filigranul" maxLength={120} placeholder="de ex. COPIE sau CONFIDENȚIAL" value={stamp.filigran} onChange={(e) => setStamp({ ...stamp, filigran: e.target.value })} />
+                </label>
+                <label>
+                  Antet (sus, centrat)
+                  <input aria-label="Antetul" maxLength={120} value={stamp.antet} onChange={(e) => setStamp({ ...stamp, antet: e.target.value })} />
+                </label>
+                <label>
+                  Subsol (jos, centrat; {"{n}"} = numărul paginii, {"{total}"} = câte pagini sunt)
+                  <input aria-label="Subsolul" maxLength={120} value={stamp.subsol} onChange={(e) => setStamp({ ...stamp, subsol: e.target.value })} />
+                </label>
+                <div className="row wrap">
+                  <button className="link" onClick={() => setStamp({ ...stamp, subsol: "Pagina {n} din {total}" })}>
+                    numerotează paginile
+                  </button>
+                  <button
+                    className="primary"
+                    disabled={busy || !(stamp.filigran.trim() || stamp.antet.trim() || stamp.subsol.trim())}
+                    onClick={() =>
+                      void ask(selected.length ? "Text pe paginile selectate" : "Text pe toate paginile", "stamp", {
+                        id: doc.id,
+                        based_on: version,
+                        pages: selected,
+                        filigran: stamp.filigran,
+                        antet: stamp.antet,
+                        subsol: stamp.subsol,
+                      })
+                    }
+                  >
+                    {selected.length ? `Previzualizează pe ${pages(selected.length)}` : "Previzualizează pe toate paginile"}
+                  </button>
+                </div>
+                <p className="muted small">Textul paginilor rămâne neschimbat; rezultatul e o versiune nouă, originalul se păstrează.</p>
+              </div>
+            )}
 
             {big !== null && view && (
               <div className="pdf-big">

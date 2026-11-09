@@ -25,10 +25,13 @@
 //! - `delete_pages {id, based_on, pages, apply}` → preview or new version
 //! - `extract {id, version?, pages, name, apply}` → preview or new document
 //! - `merge {ids, name, apply}` → preview or new document
+//! - `stamp {id, based_on, pages?, filigran?, antet?, subsol?, apply}` →
+//!   watermark / header / footer ({n}, {total}) over the pages (7.4l-1a)
 //! - `restore {id, version}`, `export {id, version?, dest, overwrite}`, `delete {id}`
 
 pub mod check;
 pub mod ops;
+pub mod overlay;
 
 use std::path::PathBuf;
 
@@ -109,6 +112,26 @@ struct Edit {
     pages: Vec<u32>,
     #[serde(default)]
     angle: Option<i64>,
+    #[serde(default)]
+    apply: bool,
+}
+
+/// Text over the pages (7.4l-1a).
+#[derive(Deserialize)]
+#[serde(deny_unknown_fields)]
+struct Stamp {
+    id: Uuid,
+    based_on: u64,
+    /// Empty: every page.
+    #[serde(default)]
+    pages: Vec<u32>,
+    #[serde(default)]
+    filigran: String,
+    #[serde(default)]
+    antet: String,
+    /// May contain {n} and {total}.
+    #[serde(default)]
+    subsol: String,
     #[serde(default)]
     apply: bool,
 }
@@ -277,6 +300,29 @@ impl Module for Pdf {
                     "{} cu {angle}°",
                     plural(a.pages.len(), "pagină rotită", "pagini rotite")
                 );
+                if !a.apply {
+                    return Ok(preview(&out, n, summary));
+                }
+                let v = ctx.save_document(a.id, num, &out, &summary)?;
+                Ok(json!({"applied": true, "version": v.number, "pages": n, "summary": summary}))
+            }
+            "stamp" => {
+                let a: Stamp = args(a)?;
+                let (num, data) = intact(ctx, a.id, Some(a.based_on))?;
+                let texts = texts_of(&data)?;
+                let o = overlay::Overlay { watermark: a.filigran, header: a.antet, footer: a.subsol };
+                let out = overlay::apply(&data, &a.pages, &o).map_err(bad)?;
+                // The pages keep their own text exactly; the overlay is checked to be there.
+                let n = ops::verify(&out, &texts, None).map_err(bad)?;
+                let chosen: Vec<u32> = if a.pages.is_empty() { (1..=n as u32).collect() } else { a.pages.clone() };
+                if let Some(p) = chosen.iter().find(|p| !overlay::has_overlay(&out, **p)) {
+                    return Err(bad(format!("textul nu a ajuns pe pagina {p}")));
+                }
+                let what: Vec<&str> = [(!o.watermark.trim().is_empty(), "filigran"), (!o.header.trim().is_empty(), "antet"), (!o.footer.trim().is_empty(), "subsol")]
+                    .into_iter()
+                    .filter_map(|(on, w)| on.then_some(w))
+                    .collect();
+                let summary = format!("{} pe {}", what.join(", "), plural(chosen.len(), "pagină", "pagini"));
                 if !a.apply {
                     return Ok(preview(&out, n, summary));
                 }
