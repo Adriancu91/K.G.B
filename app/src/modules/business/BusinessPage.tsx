@@ -6,6 +6,7 @@ import { takeIntent } from "../../intent";
 import { api, message } from "../../api";
 import { InvoicesView } from "./invoices";
 import { OffersView } from "./offers";
+import { OrdersView } from "./orders";
 import { PurchasesView } from "./purchases";
 import { CashView } from "./cash";
 import { AgingView } from "./aging";
@@ -345,7 +346,7 @@ function InventoryForm(props: { stock: StockRow[]; warehouses: Warehouse[]; busy
 }
 
 export function BusinessPage({ onError }: { onError: (e: string | null) => void }) {
-  type Tab = "stoc" | "documente" | "receptie" | "iesire" | "transfer" | "inventar" | "produse" | "depozite" | "oferte" | "facturare" | "cheltuieli" | "casa" | "scadentar" | "rapoarte" | "audit";
+  type Tab = "stoc" | "documente" | "receptie" | "iesire" | "transfer" | "inventar" | "produse" | "depozite" | "oferte" | "comenzi" | "facturare" | "cheltuieli" | "casa" | "scadentar" | "rapoarte" | "audit";
   // A start-page tile may ask for a tab (7.4d).
   const [tab, setTab] = useState<Tab>(() => (takeIntent("kgb.business") as Tab | undefined) ?? "stoc");
   const [products, setProducts] = useState<Product[]>([]);
@@ -412,6 +413,7 @@ export function BusinessPage({ onError }: { onError: (e: string | null) => void 
             ["produse", `Produse (${products.length})`],
             ["depozite", `Depozite (${warehouses.length})`],
             ["oferte", "Oferte"],
+            ["comenzi", "Comenzi"],
             ["facturare", "Facturare"],
             ["cheltuieli", "Cheltuieli"],
             ["casa", "Casă și bancă"],
@@ -597,6 +599,7 @@ export function BusinessPage({ onError }: { onError: (e: string | null) => void 
       {tab === "rapoarte" && <BusinessReports onError={onError} />}
       {tab === "audit" && <AuditView onError={onError} />}
       {tab === "oferte" && <OffersView onError={onError} />}
+      {tab === "comenzi" && <OrdersView onError={onError} />}
       {tab === "facturare" && <InvoicesView products={products} warehouses={warehouses} onError={onError} onChanged={() => void refresh()} />}
 
       {tab === "produse" && (

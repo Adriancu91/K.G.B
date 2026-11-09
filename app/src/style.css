@@ -1567,3 +1567,28 @@ label > .suggest > input {
 .offers .tag.bad {
   color: var(--danger);
 }
+
+/* Etapa 7, step 7.4k-2: orders */
+.orders {
+  display: grid;
+  gap: 10px;
+}
+.orders .tag {
+  font-size: 0.8em;
+  padding: 1px 6px;
+  border: 1px solid currentColor;
+}
+.orders .tag.st-aprobata,
+.orders .tag.st-gata {
+  color: var(--ok);
+}
+.orders .tag.st-asteapta,
+.orders .tag.warn {
+  color: var(--warn-text);
+}
+.orders .tag.st-anulata {
+  color: var(--danger);
+}
+.warn-text {
+  color: var(--warn-text);
+}

@@ -34,6 +34,7 @@ pub mod invoices;
 pub mod matching;
 pub mod num;
 pub mod offers;
+pub mod orders;
 pub mod package;
 pub mod purchases;
 pub mod reports;
@@ -1023,6 +1024,10 @@ impl Module for Business {
             "offer_save" => self.offer_save(ctx, args(a)?),
             "offer_copy" => self.offer_copy(ctx, args(a)?),
             "offer_close" => self.offer_close(ctx, args(a)?),
+            // Step 7.4k-2: orders with approval.
+            "orders" => self.orders(ctx),
+            "order_save" => self.order_save(ctx, args(a)?),
+            "order_move" => self.order_move(ctx, args(a)?),
             "offer_pdf" => {
                 let a: InvoicePdf = args(a)?;
                 let pdf = self.offer_pdf(ctx, a.id)?;

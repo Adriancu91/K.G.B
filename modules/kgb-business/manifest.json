@@ -925,6 +925,110 @@
         "partener",
         "stare"
       ]
+    },
+    {
+      "collection": "comenzi",
+      "description": "comenzile de vânzare, cumpărare și transfer cu aprobare (7.4k-2): ciornă, așteaptă aprobare, aprobată, în livrare, gata, anulată; istoric cu motiv",
+      "schema": {
+        "fields": {
+          "numar": {
+            "type": "integer",
+            "required": true,
+            "min": 1
+          },
+          "tip": {
+            "type": "string",
+            "required": true,
+            "nullable": false,
+            "enum": [
+              "vanzare",
+              "cumparare",
+              "transfer"
+            ]
+          },
+          "data": {
+            "type": "string",
+            "required": true,
+            "nullable": false,
+            "max_len": 10
+          },
+          "partener": {
+            "type": "string",
+            "required": false,
+            "nullable": true,
+            "max_len": 36
+          },
+          "partener_nume": {
+            "type": "string",
+            "required": false,
+            "nullable": true,
+            "max_len": 200
+          },
+          "oferta": {
+            "type": "string",
+            "required": false,
+            "nullable": true,
+            "max_len": 36
+          },
+          "linii": {
+            "type": "array",
+            "required": true,
+            "nullable": false
+          },
+          "total_fara_tva": {
+            "type": "integer",
+            "required": true
+          },
+          "total_tva": {
+            "type": "integer",
+            "required": true
+          },
+          "total": {
+            "type": "integer",
+            "required": true
+          },
+          "stare": {
+            "type": "string",
+            "required": true,
+            "nullable": false,
+            "enum": [
+              "ciorna",
+              "asteapta",
+              "aprobata",
+              "livrare",
+              "gata",
+              "anulata"
+            ]
+          },
+          "istoric": {
+            "type": "array",
+            "required": true,
+            "nullable": false
+          },
+          "avertismente": {
+            "type": "array",
+            "required": false,
+            "nullable": true
+          },
+          "nota": {
+            "type": "string",
+            "required": false,
+            "nullable": true,
+            "max_len": 500
+          },
+          "creat_ms": {
+            "type": "integer",
+            "required": true,
+            "min": 0
+          }
+        },
+        "additional": false
+      },
+      "indexes": [
+        "partener",
+        "stare",
+        "oferta"
+      ]
     }
   ],
   "data_format": 1,

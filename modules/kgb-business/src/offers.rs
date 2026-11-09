@@ -39,6 +39,25 @@ pub(crate) struct OfferLine {
     cota_tva: i64,
 }
 
+impl OfferLine {
+    /// A line from stored values (an order made from an offer, 7.4k-2).
+    pub(crate) fn new(descriere: &str, um: &str, cantitate: &str, pret_unitar: &str, cota_tva: i64) -> OfferLine {
+        OfferLine { produs: None, descriere: Some(descriere.into()), um: Some(um.into()), cantitate: cantitate.into(), pret_unitar: pret_unitar.into(), cota_tva }
+    }
+    pub(crate) fn description(&self) -> &str {
+        self.descriere.as_deref().unwrap_or_default()
+    }
+    pub(crate) fn price_text(&self) -> &str {
+        &self.pret_unitar
+    }
+    pub(crate) fn quantity_text(&self) -> &str {
+        &self.cantitate
+    }
+    pub(crate) fn set_price(&mut self, p: &str) {
+        self.pret_unitar = p.into();
+    }
+}
+
 #[derive(Deserialize)]
 #[serde(deny_unknown_fields)]
 pub(crate) struct OfferSave {
@@ -100,7 +119,7 @@ pub fn shown_state(stare: &str, valabil_pana: &str, azi: &str) -> &'static str {
 }
 
 impl Business {
-    fn offer_lines(&self, ctx: &mut ModuleContext<'_>, linii: &[OfferLine]) -> CoreResult<(Vec<Value>, i64, i64)> {
+    pub(crate) fn offer_lines(&self, ctx: &mut ModuleContext<'_>, linii: &[OfferLine]) -> CoreResult<(Vec<Value>, i64, i64)> {
         let (_, rates) = self.settings(ctx)?;
         if linii.is_empty() || linii.len() > MAX_OFFER_LINES {
             return Err(bad("oferta", format!("are nevoie de 1–{MAX_OFFER_LINES} linii")));
