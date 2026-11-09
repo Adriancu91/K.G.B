@@ -46,6 +46,9 @@ pub const KINDS: &[(&str, &str)] = &[
     ("receptie", "fișă de recepție"),
     ("document", "documente de la șofer"),
     ("extras", "extras de cont"),
+    // 7.4m-6: an inventory counted in the warehouse, a photo of an expense receipt.
+    ("inventar", "inventar numărat"),
+    ("bon", "bon de cheltuială"),
 ];
 pub const MAX_FILES: usize = 6;
 pub const MAX_FILE_BYTES: usize = 8 * 1024 * 1024;
@@ -311,8 +314,12 @@ pub fn submit_with_lines(ws: &mut Workspace, from: &Phone, kind: &str, fields: s
     if !KINDS.iter().any(|(k, _)| *k == kind) {
         return Err(bad("tip necunoscut"));
     }
-    if !lines.is_empty() && kind != "receptie" {
-        return Err(bad("liniile sunt doar pentru fișa de recepție"));
+    let with_lines = kind == "receptie" || kind == "inventar";
+    if !lines.is_empty() && !with_lines {
+        return Err(bad("liniile sunt doar pentru fișa de recepție și pentru inventar"));
+    }
+    if kind == "inventar" && lines.is_empty() {
+        return Err(bad("inventarul are nevoie de cel puțin o linie: produsul și cât s-a numărat"));
     }
     if lines.len() > MAX_LINES {
         return Err(bad(format!("cel mult {MAX_LINES} linii")));
@@ -336,10 +343,15 @@ pub fn submit_with_lines(ws: &mut Workspace, from: &Phone, kind: &str, fields: s
             return Err(bad(format!("{label}: scrie categoria sau produsul")));
         }
         let produs = txt("produs", 36)?;
+        if kind == "inventar" && Uuid::parse_str(&produs).is_err() {
+            return Err(bad(format!("{label}: alege produsul din lista din Business (inventarul se face pe produse)")));
+        }
         let um = txt("um", 10)?;
+        // Counted zero is a real count; a received quantity is positive.
+        let min = if kind == "inventar" { 0 } else { 1 };
         let (brut, tara) = (txt("brut", 20)?, txt("tara", 20)?);
         let q = match (brut.is_empty(), tara.is_empty()) {
-            (true, true) => qty_thousandths(&txt("cantitate", 20)?).filter(|q| *q > 0).ok_or_else(|| bad(format!("{label}: cantitatea nu e un număr pozitiv")))?,
+            (true, true) => qty_thousandths(&txt("cantitate", 20)?).filter(|q| *q >= min).ok_or_else(|| bad(format!("{label}: cantitatea nu e un număr {}", if min == 0 { "(0 sau mai mult)" } else { "pozitiv" })))?,
             (false, false) => {
                 let b = qty_thousandths(&brut).ok_or_else(|| bad(format!("{label}: brutul nu e un număr")))?;
                 let t = qty_thousandths(&tara).ok_or_else(|| bad(format!("{label}: tara nu e un număr")))?;
@@ -375,6 +387,15 @@ pub fn submit_with_lines(ws: &mut Workspace, from: &Phone, kind: &str, fields: s
     }
     if kind == "extras" && uploads.is_empty() {
         return Err(bad("alege fișierul extrasului"));
+    }
+    if kind == "bon" {
+        if !uploads.iter().any(|u| u.mime.starts_with("image/")) {
+            return Err(bad("fotografiază bonul"));
+        }
+        let suma = clean.get("suma").and_then(Value::as_str).unwrap_or_default();
+        if qty_thousandths(suma).is_none_or(|v| v <= 0) {
+            return Err(bad("scrie suma de pe bon (de ex. 125,50)"));
+        }
     }
     let mut files_out = Vec::new();
     for u in uploads {

@@ -43,7 +43,7 @@ interface Phone {
 }
 interface Received {
   id: string;
-  tip: "receptie" | "document" | "extras";
+  tip: "receptie" | "document" | "extras" | "inventar" | "bon";
   telefon_nume: string;
   membru_nume: string;
   campuri: Record<string, string>;
@@ -78,7 +78,63 @@ interface Account {
   tip: string;
 }
 
-const KIND: Record<Received["tip"], string> = { receptie: "Fișă de recepție", document: "Documente de la șofer", extras: "Extras de cont" };
+const KIND: Record<Received["tip"], string> = {
+  receptie: "Fișă de recepție",
+  document: "Documente de la șofer",
+  extras: "Extras de cont",
+  inventar: "Inventar numărat",
+  bon: "Bon de cheltuială",
+};
+
+const todayIso = () => {
+  const d = new Date();
+  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
+};
+
+/** An expense receipt from the phone, recorded as a payment in Business (7.4m-6). */
+function ReceiptToBusiness({ x, accounts, onDone, onError }: { x: Received; accounts: Account[]; onDone: (msg: string) => void; onError: (e: string | null) => void }) {
+  const [cont, setCont] = useState("");
+  const [suma, setSuma] = useState(x.campuri.suma ?? "");
+  const [data, setData] = useState(/^\d{4}-\d{2}-\d{2}$/.test(x.campuri.data ?? "") ? (x.campuri.data as string) : todayIso());
+  const chosen = cont || accounts[0]?.id || "";
+  const what = [x.campuri.furnizor, x.campuri.ce, x.campuri.plata].filter(Boolean).join(", ");
+  return (
+    <div className="row wrap receipt-to-business">
+      <select aria-label="Contul plății" value={chosen} onChange={(e) => setCont(e.target.value)}>
+        {accounts.length === 0 && <option value="">niciun cont în Business</option>}
+        {accounts.map((a) => (
+          <option key={a.id} value={a.id}>
+            {a.nume} ({a.tip === "casa" ? "casă" : "bancă"})
+          </option>
+        ))}
+      </select>
+      <input aria-label="Suma plății" size={10} value={suma} onChange={(e) => setSuma(e.target.value)} />
+      <input aria-label="Data plății" type="date" value={data} onChange={(e) => setData(e.target.value)} />
+      <button
+        disabled={!chosen || !suma.trim()}
+        onClick={() =>
+          void (async () => {
+            try {
+              await api.moduleCall("kgb.business", "payment_save", {
+                cont: chosen,
+                data,
+                sens: "plata",
+                suma,
+                explicatie: `Bon de pe telefon (${x.membru_nume})${what ? `: ${what}` : ""}`.slice(0, 200),
+              });
+              await invoke("phone_done", { id: x.id, gata: true });
+              onDone(`Plata de ${suma} lei a fost înregistrată în Business; bonul e marcat rezolvat.`);
+            } catch (e) {
+              onError(message(e));
+            }
+          })()
+        }
+      >
+        Înregistrează plata în Business
+      </button>
+    </div>
+  );
+}
 const FIELD: Record<string, string> = { furnizor: "Furnizor", document: "Aviz / factură", vehicul: "Vehicul", observatii: "Observații", sofer: "Șofer", nota: "Notă", banca: "Banca" };
 const when = (ms: number) => {
   const d = new Date(ms);
@@ -156,7 +212,8 @@ function ReceptionLines({ x, business, onDone, onError }: { x: Received; busines
     );
   }, [open, onError]);
   if (lines.length === 0) return null;
-  const ready = wh && pick.every((p) => p) && price.every((p) => p.trim());
+  const inventory = x.tip === "inventar";
+  const ready = wh && pick.every((p) => p) && (inventory || price.every((p) => p.trim()));
   return (
     <>
       <table className="audit reception-lines">
@@ -183,7 +240,7 @@ function ReceptionLines({ x, business, onDone, onError }: { x: Received; busines
       </table>
       {business && !x.procesat && !open && (
         <button className="primary" onClick={() => setOpen(true)}>
-          Fă recepția în Business…
+          {inventory ? "Fă inventarul în Business…" : "Fă recepția în Business…"}
         </button>
       )}
       {open && (
@@ -212,7 +269,9 @@ function ReceptionLines({ x, business, onDone, onError }: { x: Received; busines
                   </option>
                 ))}
               </select>
-              <input aria-label={`Prețul liniei ${n + 1}`} placeholder="Preț unitar (lei)" size={12} value={price[n]} onChange={(e) => setPrice(price.map((p, j) => (j === n ? e.target.value : p)))} />
+              {!inventory && (
+                <input aria-label={`Prețul liniei ${n + 1}`} placeholder="Preț unitar (lei)" size={12} value={price[n]} onChange={(e) => setPrice(price.map((p, j) => (j === n ? e.target.value : p)))} />
+              )}
             </div>
           ))}
           <div className="row">
@@ -222,8 +281,21 @@ function ReceptionLines({ x, business, onDone, onError }: { x: Received; busines
               onClick={() =>
                 void (async () => {
                   try {
-                    const d = new Date();
-                    const iso = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
+                    const iso = todayIso();
+                    if (inventory) {
+                      const res = await api.moduleCall<{ linii?: Array<{ nume: string; diferenta: string }> }>("kgb.business", "inventory", {
+                        depozit: wh,
+                        numar: `Inventar telefon ${new Date(x.creat_ms).toLocaleDateString("ro-RO")}`,
+                        data: iso,
+                        nota: `De pe telefon (${x.membru_nume})${x.campuri.observatii ? `: ${x.campuri.observatii}` : ""}`,
+                        linii: lines.map((l, n) => ({ produs: pick[n], cantitate_numarata: plain(l.cantitate) })),
+                      });
+                      await invoke("phone_done", { id: x.id, gata: true });
+                      setOpen(false);
+                      const diffs = (res.linii ?? []).filter((d) => d.diferenta !== "0").map((d) => `${d.nume} ${d.diferenta.startsWith("-") ? "" : "+"}${d.diferenta}`);
+                      onDone(`Inventarul a fost înregistrat în Business: ${diffs.length ? `diferențe ${diffs.join(", ")}` : "fără diferențe"}; fișa e marcată rezolvată.`);
+                      return;
+                    }
                     await api.moduleCall("kgb.business", "receive", {
                       depozit: wh,
                       numar: x.campuri.document || `Telefon ${new Date(x.creat_ms).toLocaleDateString("ro-RO")}`,
@@ -241,11 +313,15 @@ function ReceptionLines({ x, business, onDone, onError }: { x: Received; busines
                 })()
               }
             >
-              Înregistrează recepția
+              {inventory ? "Înregistrează inventarul" : "Înregistrează recepția"}
             </button>
             <button onClick={() => setOpen(false)}>Renunță</button>
           </div>
-          <p className="muted small">Produsul se alege din Business pentru fiecare linie (cel recunoscut pe telefon e deja ales); prețurile se scriu aici, nu pe telefon.</p>
+          <p className="muted small">
+            {inventory
+              ? "Business compară cantitățile numărate cu stocul din depozitul ales și înregistrează diferențele."
+              : "Produsul se alege din Business pentru fiecare linie (cel recunoscut pe telefon e deja ales); prețurile se scriu aici, nu pe telefon."}
+          </p>
         </div>
       )}
     </>
@@ -256,6 +332,7 @@ export function PhonePage({ modules, onError }: { modules: ModulesReply; onError
   const [r, setR] = useState<Reply | null>(null);
   const [who, setWho] = useState<Record<string, string>>({});
   const [accounts, setAccounts] = useState<Account[]>([]);
+  const [allAccounts, setAllAccounts] = useState<Account[]>([]);
   const [acc, setAcc] = useState<Record<string, string>>({});
   const [notice, setNotice] = useState<string | null>(null);
   const [showDone, setShowDone] = useState(false);
@@ -275,7 +352,14 @@ export function PhonePage({ modules, onError }: { modules: ModulesReply; onError
     return () => clearInterval(t);
   }, [load]);
   useEffect(() => {
-    if (business) void api.moduleCall<Account[]>("kgb.business", "accounts").then((a) => setAccounts(a.filter((x) => x.tip === "banca")), () => setAccounts([]));
+    if (business)
+      void api.moduleCall<Account[]>("kgb.business", "accounts").then(
+        (a) => {
+          setAccounts(a.filter((x) => x.tip === "banca"));
+          setAllAccounts(a);
+        },
+        () => setAccounts([]),
+      );
   }, [business]);
   const act = async (fn: () => Promise<unknown>, done?: string) => {
     try {
@@ -420,6 +504,9 @@ export function PhonePage({ modules, onError }: { modules: ModulesReply; onError
               ))}
             </div>
             <ReceptionLines x={x} business={business} onDone={(m) => void load().then(() => setNotice(m))} onError={onError} />
+            {x.tip === "bon" && !x.procesat && business && (
+              <ReceiptToBusiness x={x} accounts={allAccounts} onDone={(m) => void load().then(() => setNotice(m))} onError={onError} />
+            )}
             {x.tip === "extras" && !x.procesat && x.fisiere[0] && !/\.csv$/i.test(x.fisiere[0].nume) && (
               <p className="muted small">Extrasul e un {x.fisiere[0].nume.split(".").pop()?.toUpperCase()}: îl deschizi și îl citești de aici. În Business se importă doar extrase CSV (din internet banking: „Export CSV”).</p>
             )}

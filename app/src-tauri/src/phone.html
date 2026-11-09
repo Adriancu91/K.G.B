@@ -61,6 +61,8 @@
     <button data-go="receptie"><b>Fișă de recepție</b><br><span class="muted">marfă primită: furnizor, aviz, observații, poze</span></button>
     <button data-go="document"><b>Documente de la șofer</b><br><span class="muted">fotografiază avizul, CMR-ul, bonul de cântar</span></button>
     <button data-go="extras"><b>Extras de cont</b><br><span class="muted">PDF-ul sau fișierul CSV din aplicația băncii</span></button>
+    <button data-go="inventar"><b>Inventar numărat</b><br><span class="muted">numeri în depozit: produsul și cât ai găsit</span></button>
+    <button data-go="bon"><b>Bon de cheltuială</b><br><span class="muted">fotografiază bonul: motorină, piese, consumabile</span></button>
     <p id="sent" class="ok"></p>
     <p id="where" class="muted"></p>
     <details id="spare" hidden>
@@ -95,6 +97,8 @@ const show = (id) => { for (const s of ["pair", "wait", "revoked", "menu", "form
 const FORMS = {
   receptie: { title: "Fișă de recepție", files: "Poze generale (aviz, încărcătura) — opțional", accept: "image/*", lines: true, fields: [["furnizor", "Furnizor"], ["document", "Aviz / factură (număr)"], ["vehicul", "Vehicul"], ["observatii", "Observații", true]] },
   document: { title: "Documente de la șofer", files: "Poze cu documentele", accept: "image/*", fields: [["sofer", "Șofer"], ["vehicul", "Vehicul"], ["nota", "Notă", true]] },
+  inventar: { title: "Inventar numărat", files: "Poze — opțional", accept: "image/*", lines: true, inventory: true, fields: [["depozit", "Depozitul / locul numărat"], ["observatii", "Observații", true]] },
+  bon: { title: "Bon de cheltuială", files: "Poza bonului", accept: "image/*", fields: [["furnizor", "De unde (magazin, benzinărie)"], ["suma", "Suma (lei)", false, "decimal"], ["data", "Data bonului", false, "date"], ["ce", "Ce s-a cumpărat"], ["plata", "Plătit cu (numerar / card firmă / card personal)"], ["nota", "Notă", true]] },
   extras: { title: "Extras de cont", files: "Fișierul extrasului (PDF, CSV sau Excel)", accept: ".pdf,.csv,.xlsx,.xls,application/pdf,text/csv,text/plain,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel", capture: false, fields: [["banca", "Banca / contul"], ["nota", "Notă", true]] },
 };
 let kind = "", chosen = [];
@@ -187,11 +191,13 @@ function open(k) {
   const f = FORMS[k];
   $("formTitle").textContent = f.title;
   $("fields").innerHTML = "";
-  for (const [name, label, long] of f.fields) {
+  for (const [name, label, long, type] of f.fields) {
     const l = document.createElement("label");
     l.textContent = label;
     const i = document.createElement(long ? "textarea" : "input");
     i.name = name; i.maxLength = 1000; if (long) i.rows = 3;
+    if (type === "decimal") i.inputMode = "decimal";
+    if (type === "date") { i.type = "date"; i.value = new Date().toISOString().slice(0, 10); }
     l.appendChild(i);
     $("fields").appendChild(l);
   }
@@ -251,7 +257,12 @@ $("send").onclick = async () => {
       if (l.photo) { v.foto = fisiere.length; fisiere.push({ nume: l.photo.name, mime: l.photo.type, date: await b64(l.photo) }); }
       linii.push(v);
     }
-    if (FORMS[kind].lines && linii.length === 0) throw new Error("Adaugă cel puțin o linie: ce s-a primit și cât.");
+    if (FORMS[kind].lines && linii.length === 0) throw new Error(FORMS[kind].inventory ? "Adaugă cel puțin o linie: produsul și cât ai numărat." : "Adaugă cel puțin o linie: ce s-a primit și cât.");
+    if (FORMS[kind].inventory) {
+      const n = linii.findIndex((v) => !v.produs);
+      if (n >= 0) throw new Error(`Linia ${n + 1}: alege produsul din listă (inventarul se face pe produsele din Business).`);
+    }
+    if (kind === "bon" && !chosen.length) throw new Error("Fotografiază bonul.");
     await api("/m/api/trimite", { tip: kind, campuri, fisiere, linii });
     show("menu");
     $("sent").textContent = `Trimis la PC (${FORMS[kind].title.toLowerCase()}).`;
@@ -294,7 +305,7 @@ function addLine() {
       <label>Unitate <select data-um>${UNITS.map((u) => `<option>${u}</option>`).join("")}</select></label>
       <label><span>Cântărit</span> <select data-mode><option value="q">nu, doar cantitatea</option><option value="w">da: brut și tară</option></select></label>
     </div>
-    <label data-qbox>Cantitate <input data-q inputmode="decimal" placeholder="0"></label>
+    <label data-qbox><span data-qlabel>Cantitate</span> <input data-q inputmode="decimal" placeholder="0"></label>
     <div class="two" data-wbox hidden>
       <label>Brut <input data-b inputmode="decimal" placeholder="0"></label>
       <label>Tară <input data-t inputmode="decimal" placeholder="0"></label>
@@ -304,6 +315,10 @@ function addLine() {
     <div data-thumb></div>`;
   const q = (sel) => box.querySelector(sel);
   const line = { box, photo: null };
+  if (FORMS[kind] && FORMS[kind].inventory) {
+    q("[data-qlabel]").textContent = "Cât ai numărat";
+    q("[data-cat]").placeholder = "alege produsul din listă";
+  }
   const update = () => {
     const w = q("[data-mode]").value === "w";
     q("[data-qbox]").hidden = w;

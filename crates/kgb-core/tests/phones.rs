@@ -87,3 +87,36 @@ fn reception_sheet_with_lines() {
     assert_eq!(phones::qty_thousandths("1234.5"), Some(1_234_500));
     assert_eq!(phones::fmt_thousandths(1_234_500), "1.234,5");
 }
+
+/// Step 7.4m-6: an inventory counted on the phone (products of Business,
+/// zero allowed) and a photographed expense receipt (photo and sum needed).
+#[test]
+fn inventory_and_expense_receipt() {
+    let t = tempfile::tempdir().unwrap();
+    let mut ws = Workspace::create(&t.path().join("ws"), "T").unwrap();
+    let (id, token) = phones::pair(&mut ws, "Telefon depozit").unwrap();
+    phones::approve(&mut ws, id, "Ion").unwrap();
+    let p = phones::by_token(&ws, &token).unwrap().unwrap();
+    let head = |v: serde_json::Value| v.as_object().unwrap().clone();
+    let prod = uuid::Uuid::now_v7().to_string();
+    let lines = vec![
+        json!({"categorie": "Fier vechi", "produs": prod, "um": "kg", "cantitate": "1.200"}),
+        json!({"categorie": "Cupru", "produs": uuid::Uuid::now_v7().to_string(), "um": "kg", "cantitate": "0"}),
+    ];
+    let sid = phones::submit_with_lines(&mut ws, &p, "inventar", head(json!({"depozit": "Curte"})), lines, vec![]).unwrap();
+    let inbox = phones::inbox(&ws).unwrap();
+    let inv = inbox.iter().find(|x| x["id"] == json!(sid)).unwrap();
+    assert_eq!(inv["tip"], "inventar");
+    assert_eq!((inv["linii"][0]["cantitate_text"].as_str(), inv["linii"][1]["cantitate"].as_i64()), (Some("1.200"), Some(0)));
+    let err = |r: kgb_core::CoreResult<uuid::Uuid>| r.unwrap_err().to_string();
+    assert!(err(phones::submit_with_lines(&mut ws, &p, "inventar", head(json!({"depozit": "Curte"})), vec![], vec![])).contains("cel puțin o linie"));
+    assert!(err(phones::submit_with_lines(&mut ws, &p, "inventar", head(json!({})), vec![json!({"categorie": "Ceva", "cantitate": "3"})], vec![])).contains("lista din Business"));
+
+    let bon = Upload { name: "bon.jpg".into(), mime: "image/jpeg".into(), data: vec![0xFF, 0xD8, 9] };
+    let ok = phones::submit(&mut ws, &p, "bon", head(json!({"furnizor": "Benzinăria X", "suma": "250,40", "ce": "motorină"})), vec![bon]).unwrap();
+    assert!(phones::inbox(&ws).unwrap().iter().any(|x| x["id"] == json!(ok) && x["campuri"]["suma"] == "250,40"));
+    let bon2 = || Upload { name: "bon.jpg".into(), mime: "image/jpeg".into(), data: vec![0xFF, 0xD8, 9] };
+    assert!(err(phones::submit(&mut ws, &p, "bon", head(json!({"suma": "10"})), vec![])).contains("fotografiază"));
+    assert!(err(phones::submit(&mut ws, &p, "bon", head(json!({"suma": "zece"})), vec![bon2()])).contains("suma"));
+    assert!(err(phones::submit(&mut ws, &p, "bon", head(json!({"ce": "x"})), vec![bon2()])).contains("suma"));
+}

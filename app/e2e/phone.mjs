@@ -144,6 +144,37 @@ try {
   check("recepția e în stocul din Business: 4.250 kg fier, 125,5 kg cupru", q("Fier vechi") === "4.250" && q("Cupru") === "125,5", `${q("Fier vechi")} / ${q("Cupru")}`);
   await p.screenshot(join(shots, "03-receptie-linii.png"));
 
+  // 7.4m-6: an inventory counted on the phone, then a photographed receipt.
+  const inv = await phone("/m/api/trimite", {
+    tip: "inventar",
+    campuri: { depozit: "Curte" },
+    fisiere: [],
+    linii: [
+      { categorie: "Fier vechi", produs: prod.id, um: "kg", cantitate: "4.200" },
+      { categorie: "Cupru", produs: cu.id, um: "kg", cantitate: "125,5" },
+    ],
+  });
+  check("telefonul trimite un inventar numărat", inv.status === 200, JSON.stringify(inv.json));
+  check("un inventar fără produs din listă e refuzat", (await phone("/m/api/trimite", { tip: "inventar", campuri: {}, fisiere: [], linii: [{ categorie: "Ceva", cantitate: "1" }] })).status === 400);
+  await p.until("[...document.querySelectorAll('.phone-inbox button')].some(b => b.innerText.startsWith('Fă inventarul în Business'))", 8000);
+  await p.click("Fă inventarul în Business", ".phone-inbox button");
+  await p.until("[...document.querySelectorAll('.reception-to-business button')].some(b => b.innerText === 'Înregistrează inventarul' && !b.disabled)", 5000);
+  await p.click("Înregistrează inventarul", ".reception-to-business button");
+  await p.until("document.querySelector('.phone-page').innerText.includes('Inventarul a fost înregistrat în Business')", 8000);
+  const invMsg = await p.eval("[...document.querySelectorAll('.phone-page p, .phone-page div')].map(e => e.innerText).find(t => t.startsWith('Inventarul a fost')) ?? ''");
+  const stock2 = await biz("stock", {});
+  const q2 = (name) => stock2.find((r) => r.nume === name)?.cantitate_text;
+  check("inventarul ajunge în Business: diferența la fier, stocul corectat", invMsg.includes("Fier vechi -50") && q2("Fier vechi") === "4.200" && q2("Cupru") === "125,5", `${invMsg} / ${q2("Fier vechi")}`);
+
+  const bon = await phone("/m/api/trimite", { tip: "bon", campuri: { furnizor: "Benzinăria X", suma: "250,40", data: "2026-11-09", ce: "motorină" }, fisiere: [{ nume: "bon.png", mime: "image/png", date: PNG }] });
+  check("telefonul trimite poza unui bon de cheltuială, cu suma", bon.status === 200, JSON.stringify(bon.json));
+  check("un bon fără poză e refuzat", (await phone("/m/api/trimite", { tip: "bon", campuri: { suma: "10" }, fisiere: [] })).status === 400);
+  await p.until("[...document.querySelectorAll('.phone-inbox button')].some(b => b.innerText === 'Înregistrează plata în Business')", 8000);
+  await p.click("Înregistrează plata în Business", ".phone-inbox button");
+  await p.until("document.querySelector('.phone-page').innerText.includes('Plata de 250,40 lei a fost înregistrată în Business')", 8000);
+  const pays = await biz("payments", {});
+  check("bonul devine o plată în Business, cu explicația", JSON.stringify(pays).includes("Benzinăria X") && JSON.stringify(pays).includes("motorină"), JSON.stringify(pays).slice(0, 300));
+
   // 7.4m-3: a PDF statement from the phone is shown on the PC.
   const pdf = [
     "%PDF-1.4",
