@@ -29,6 +29,7 @@
 pub mod aging;
 pub mod audit;
 pub mod cash;
+pub mod deliveries;
 pub mod efactura;
 pub mod invoices;
 pub mod matching;
@@ -1047,6 +1048,10 @@ impl Module for Business {
             "holds" => self.holds(ctx),
             "hold_save" => self.hold_save(ctx, args(a)?),
             "hold_release" => self.hold_release(ctx, args(a)?),
+            // Step 7.4k-4: tracked deliveries.
+            "deliveries" => self.deliveries(ctx),
+            "delivery_save" => self.delivery_save(ctx, args(a)?),
+            "delivery_step" => self.delivery_step(ctx, args(a)?),
             "offer_pdf" => {
                 let a: InvoicePdf = args(a)?;
                 let pdf = self.offer_pdf(ctx, a.id)?;

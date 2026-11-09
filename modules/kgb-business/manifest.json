@@ -1095,6 +1095,85 @@
         "comanda",
         "activa"
       ]
+    },
+    {
+      "collection": "livrari",
+      "description": "livrările urmărite (7.4k-4): pregătire, încărcat, în drum, livrat, confirmat sau anulată; câmpuri obligatorii pe etapă; cantitatea confirmată de client; istoric",
+      "schema": {
+        "fields": {
+          "numar": {
+            "type": "integer",
+            "required": true,
+            "min": 1
+          },
+          "comanda": {
+            "type": "string",
+            "required": false,
+            "nullable": true,
+            "max_len": 36
+          },
+          "destinatar": {
+            "type": "string",
+            "required": false,
+            "nullable": true,
+            "max_len": 200
+          },
+          "adresa": {
+            "type": "string",
+            "required": true,
+            "nullable": false,
+            "max_len": 300
+          },
+          "data": {
+            "type": "string",
+            "required": true,
+            "nullable": false,
+            "max_len": 10
+          },
+          "linii": {
+            "type": "array",
+            "required": true,
+            "nullable": false
+          },
+          "etapa": {
+            "type": "string",
+            "required": true,
+            "nullable": false,
+            "enum": [
+              "pregatire",
+              "incarcat",
+              "in_drum",
+              "livrat",
+              "confirmat",
+              "anulata"
+            ]
+          },
+          "campuri": {
+            "type": "object",
+            "required": true,
+            "nullable": false
+          },
+          "istoric": {
+            "type": "array",
+            "required": true,
+            "nullable": false
+          },
+          "diferente": {
+            "type": "bool",
+            "required": true
+          },
+          "creat_ms": {
+            "type": "integer",
+            "required": true,
+            "min": 0
+          }
+        },
+        "additional": false
+      },
+      "indexes": [
+        "comanda",
+        "etapa"
+      ]
     }
   ],
   "data_format": 1,

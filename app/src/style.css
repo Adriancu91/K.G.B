@@ -1617,3 +1617,33 @@ label > .suggest > input {
 .holds .tag.bad {
   color: var(--danger);
 }
+
+/* Etapa 7, step 7.4k-4: deliveries */
+.deliveries {
+  display: grid;
+  gap: 10px;
+}
+.deliveries .tag {
+  font-size: 0.8em;
+  padding: 1px 6px;
+  border: 1px solid currentColor;
+}
+.deliveries .tag.st-confirmat,
+.deliveries .tag.st-livrat {
+  color: var(--ok);
+}
+.deliveries .tag.st-anulata {
+  color: var(--danger);
+}
+.deliveries .tag.warn {
+  color: var(--warn-text);
+}
+.delivery-step {
+  display: grid;
+  gap: 8px;
+  max-width: 600px;
+}
+.delivery-step label {
+  display: grid;
+  gap: 4px;
+}
