@@ -55,6 +55,8 @@ pub const KINDS: &[(&str, &str)] = &[
     ("livrare", "etapă de livrare"),
     // 7.4m-6d: "I finished this task" (marked done on the PC).
     ("task", "task terminat"),
+    // 7.4m-7: the team leader's daily report (present, extra hours).
+    ("pontaj_echipa", "raport de prezență"),
 ];
 
 /// The stages a driver reports from the phone, and the field each needs.
@@ -337,7 +339,25 @@ pub fn submit(ws: &mut Workspace, from: &Phone, kind: &str, fields: serde_json::
 /// `{categorie, produs?, cantitate, um?, brut?, tara?, foto?}` where `foto` is
 /// the index of its photo among `uploads`; with gross and tare the quantity
 /// must be gross − tare.
-pub fn submit_with_lines(ws: &mut Workspace, from: &Phone, kind: &str, fields: serde_json::Map<String, Value>, lines: Vec<Value>, uploads: Vec<Upload>) -> CoreResult<Uuid> {
+pub fn submit_with_lines(ws: &mut Workspace, from: &Phone, kind: &str, fields: serde_json::Map<String, Value>, mut lines: Vec<Value>, uploads: Vec<Upload>) -> CoreResult<Uuid> {
+    // The team leader's report: one line per worker (7.4m-7).
+    let mut team_lines = Vec::new();
+    if kind == "pontaj_echipa" {
+        if lines.is_empty() || lines.len() > 200 {
+            return Err(bad("raportul are 1–200 de muncitori"));
+        }
+        for (n, l) in lines.iter().enumerate() {
+            let id = l["angajat"].as_str().filter(|x| Uuid::parse_str(x).is_ok()).ok_or_else(|| bad(format!("rândul {}: muncitorul nu e ales", n + 1)))?;
+            let nume: String = l["nume"].as_str().unwrap_or_default().trim().chars().take(100).collect();
+            let prezent = l["prezent"].as_bool().ok_or_else(|| bad(format!("rândul {}: prezent sau absent", n + 1)))?;
+            let extra = l["extra"].as_i64().unwrap_or(0);
+            if !(-12..=12).contains(&extra) {
+                return Err(bad(format!("{nume}: orele extra sunt între −12 și +12")));
+            }
+            team_lines.push(json!({"angajat": id, "nume": nume, "prezent": prezent, "extra": if prezent { extra } else { 0 }}));
+        }
+        lines = Vec::new();
+    }
     if from.stare != "aprobat" {
         return Err(bad("nu e aprobat pe PC"));
     }
@@ -345,7 +365,7 @@ pub fn submit_with_lines(ws: &mut Workspace, from: &Phone, kind: &str, fields: s
         return Err(bad("tip necunoscut"));
     }
     let with_lines = kind == "receptie" || kind == "inventar";
-    if !lines.is_empty() && !with_lines {
+    if !lines.is_empty() && !with_lines && kind != "pontaj_echipa" {
         return Err(bad("liniile sunt doar pentru fișa de recepție și pentru inventar"));
     }
     if kind == "inventar" && lines.is_empty() {
@@ -445,6 +465,12 @@ pub fn submit_with_lines(ws: &mut Workspace, from: &Phone, kind: &str, fields: s
             return Err(bad(format!("scrie {label}")));
         }
     }
+    if kind == "pontaj_echipa" {
+        let field = |k: &str| clean.get(k).and_then(Value::as_str).unwrap_or_default().to_string();
+        if Uuid::parse_str(&field("punct")).is_err() || !iso_day(&field("data")) {
+            return Err(bad("raportul are nevoie de punctul de lucru și de data zilei"));
+        }
+    }
     if kind == "task" {
         let field = |k: &str| clean.get(k).and_then(Value::as_str).unwrap_or_default().to_string();
         if Uuid::parse_str(&field("task")).is_err() || field("titlu").is_empty() {
@@ -496,7 +522,7 @@ pub fn submit_with_lines(ws: &mut Workspace, from: &Phone, kind: &str, fields: s
         .collect();
     let mut f = Fields::new();
     f.insert("tip".into(), json!(kind));
-    f.insert("linii".into(), json!(lines_out));
+    f.insert("linii".into(), if kind == "pontaj_echipa" { json!(team_lines) } else { json!(lines_out) });
     f.insert("telefon".into(), json!(from.id.to_string()));
     f.insert("telefon_nume".into(), json!(from.nume));
     f.insert("membru_nume".into(), json!(from.membru_nume));

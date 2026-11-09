@@ -177,3 +177,27 @@ fn task_done_from_phone() {
     assert!(phones::submit(&mut ws, &p, "task", f(json!({"task": "x", "titlu": "T"})), vec![]).is_err());
     assert!(phones::submit(&mut ws, &p, "task", f(json!({"task": uuid::Uuid::now_v7().to_string()})), vec![]).is_err());
 }
+
+/// Step 7.4m-7: the team leader's daily report (present, extra hours).
+#[test]
+fn team_report_from_phone() {
+    let t = tempfile::tempdir().unwrap();
+    let mut ws = Workspace::create(&t.path().join("ws"), "T").unwrap();
+    let (id, token) = phones::pair(&mut ws, "Telefon șef").unwrap();
+    phones::approve(&mut ws, id, "Ion Pop").unwrap();
+    let p = phones::by_token(&ws, &token).unwrap().unwrap();
+    let head = |v: serde_json::Value| v.as_object().unwrap().clone();
+    let site = uuid::Uuid::now_v7().to_string();
+    let (a, b) = (uuid::Uuid::now_v7().to_string(), uuid::Uuid::now_v7().to_string());
+    let sid = phones::submit_with_lines(&mut ws, &p, "pontaj_echipa", head(json!({"punct": site, "punct_nume": "Curte", "data": "2026-11-09"})),
+        vec![json!({"angajat": a, "nume": "Ankit", "prezent": true, "extra": 2}), json!({"angajat": b, "nume": "Tofiq", "prezent": false, "extra": 3})], vec![]).unwrap();
+    let inbox = phones::inbox(&ws).unwrap();
+    let r = inbox.iter().find(|x| x["id"] == json!(sid)).unwrap();
+    assert_eq!(r["linii"][0]["extra"], 2);
+    assert_eq!(r["linii"][1]["extra"], 0, "absent: no extra hours");
+    let mut err = |f: serde_json::Value, l: Vec<serde_json::Value>| phones::submit_with_lines(&mut ws, &p, "pontaj_echipa", head(f), l, vec![]).unwrap_err().to_string();
+    assert!(err(json!({"punct": site, "data": "2026-11-09"}), vec![]).contains("1–200"));
+    assert!(err(json!({"punct": site, "data": "2026-11-09"}), vec![json!({"angajat": a, "prezent": true, "extra": 20})]).contains("−12"));
+    assert!(err(json!({"data": "2026-11-09"}), vec![json!({"angajat": a, "prezent": true})]).contains("punctul de lucru"));
+    assert!(err(json!({"punct": site, "data": "2026-11-09"}), vec![json!({"angajat": "x", "prezent": true})]).contains("ales"));
+}

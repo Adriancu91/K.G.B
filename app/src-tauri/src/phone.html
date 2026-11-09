@@ -23,6 +23,15 @@
   .error { color: var(--bad); }
   .ok { color: var(--ok); }
   .thumbs { display: flex; flex-wrap: wrap; gap: 6px; }
+  .crew { display: grid; gap: 6px; }
+  .crew .worker { display: grid; grid-template-columns: auto 1fr auto auto auto; gap: 8px; align-items: center; padding: 8px; border: 2px solid; }
+  .crew .worker.absent { border-color: #c62828; background: rgba(198, 40, 40, .08); }
+  .crew .worker.present { border-color: #2e7d32; background: rgba(46, 125, 50, .08); }
+  .crew .worker.extra { border-color: #1a56c4; background: rgba(26, 86, 196, .10); }
+  .crew .worker.less { border-color: #d97706; background: rgba(217, 119, 6, .10); }
+  .crew .worker input[type=checkbox] { width: 26px; height: 26px; }
+  .crew .worker button { min-width: 44px; padding: 8px 0; font-size: 20px; }
+  .crew .worker .hours { min-width: 64px; text-align: center; font-weight: 600; }
   .chat-list { display: grid; gap: 6px; max-height: 50vh; overflow-y: auto; }
   .chat-list .msg { border: 1px solid var(--line); padding: 6px 8px; }
   .thumbs img { width: 72px; height: 72px; object-fit: cover; border: 1px solid var(--line); }
@@ -67,6 +76,7 @@
     <button id="goTasks"><b>Taskurile mele</b><br><span class="muted">ce am de făcut azi și ce a întârziat</span></button>
     <button id="goChat"><b>Mesajele echipei</b><br><span class="muted">citești și răspunzi</span></button>
     <button id="goTrips"><b>Livrările mele</b><br><span class="muted">șofer: am plecat, am livrat, poza avizului semnat</span></button>
+    <button id="goCrew"><b>Pontajul echipei</b><br><span class="muted">șef de echipă: cine a fost prezent și orele extra, la birou</span></button>
     <button id="goClock"><b>Pontaj</b><br><span class="muted">am intrat / am ieșit — ora o declari tu, fără locație</span></button>
     <button data-go="bon"><b>Bon de cheltuială</b><br><span class="muted">fotografiază bonul: motorină, piese, consumabile</span></button>
     <p id="sent" class="ok"></p>
@@ -101,6 +111,18 @@
     <button class="primary" id="chatSend">Trimite</button>
     <p id="chatMsg" class="error"></p>
     <button id="chatBack">Înapoi</button>
+  </section>
+
+  <section id="crew" class="card" hidden>
+    <h2>Pontajul echipei</h2>
+    <label>Punctul de lucru <select id="crewSite"></select></label>
+    <label>Data <input id="crewDay" type="date"></label>
+    <p class="muted">Bifează cine a fost prezent; cu − și + pui orele extra (sau scazi ore). Verde: prezent, albastru: ore suplimentare, portocaliu: ore scăzute, roșu: absent.</p>
+    <div id="crewList" class="crew"></div>
+    <p id="crewSum" class="muted"></p>
+    <button class="primary" id="crewSend">Trimite la birou</button>
+    <p id="crewMsg" class="error"></p>
+    <button id="crewBack">Înapoi</button>
   </section>
 
   <section id="clock" class="card" hidden>
@@ -138,7 +160,7 @@
 const KEY = "kgb.phone.token";
 const store = { get() { try { return localStorage.getItem(KEY) || ""; } catch { return ""; } }, set(v) { try { localStorage.setItem(KEY, v); } catch {} }, clear() { try { localStorage.removeItem(KEY); } catch {} } };
 const $ = (id) => document.getElementById(id);
-const show = (id) => { for (const s of ["pair", "wait", "revoked", "menu", "form", "clock", "trips", "tasks", "chat"]) $(s).hidden = s !== id; };
+const show = (id) => { for (const s of ["pair", "wait", "revoked", "menu", "form", "clock", "trips", "tasks", "chat", "crew"]) $(s).hidden = s !== id; };
 const FORMS = {
   receptie: { title: "Fișă de recepție", files: "Poze generale (aviz, încărcătura) — opțional", accept: "image/*", lines: true, fields: [["furnizor", "Furnizor"], ["document", "Aviz / factură (număr)"], ["vehicul", "Vehicul"], ["observatii", "Observații", true]] },
   document: { title: "Documente de la șofer", files: "Poze cu documentele", accept: "image/*", fields: [["sofer", "Șofer"], ["vehicul", "Vehicul"], ["nota", "Notă", true]] },
@@ -362,6 +384,64 @@ async function loadChat() {
   } catch (e) { $("chatMsg").textContent = e.message; }
 }
 $("goChat").onclick = () => { show("chat"); loadChat(); };
+
+// The team leader's daily report (7.4m-7).
+let crewSites = [];
+const people = (p, a) => `${p === 1 ? "1 prezent" : `${p} prezenți`}, ${a === 1 ? "1 absent" : `${a} absenți`}`;
+let crew = [];
+function crewRow(w) {
+  const cls = !w.prezent ? "absent" : w.extra > 0 ? "extra" : w.extra < 0 ? "less" : "present";
+  w.el.className = `worker ${cls}`;
+  w.el.dataset.state = cls;
+  w.el.querySelector("[data-hours]").textContent = !w.prezent ? "absent" : `${w.extra >= 0 ? "+" : "−"}${Math.abs(w.extra)} ore`;
+  for (const b of w.el.querySelectorAll("button")) b.disabled = !w.prezent;
+  const p = crew.filter((x) => x.prezent).length;
+  $("crewSum").textContent = people(p, crew.length - p);
+}
+function crewShow() {
+  const site = crewSites.find((x) => x.id === $("crewSite").value);
+  $("crewList").innerHTML = "";
+  crew = (site ? site.muncitori : []).map((m) => ({ id: m.id, nume: m.nume, prezent: false, extra: 0 }));
+  if (!crew.length) $("crewList").innerHTML = "<p class='muted'>Punctul de lucru nu are muncitori trecuți (se adaugă la birou, în Echipă).</p>";
+  for (const w of crew) {
+    w.el = document.createElement("div");
+    w.el.innerHTML = `<input type="checkbox" aria-label="Prezent ${esc(w.nume)}"><b>${esc(w.nume)}</b><button type="button" data-minus aria-label="Mai puține ore ${esc(w.nume)}">−</button><span class="hours" data-hours></span><button type="button" data-plus aria-label="Ore extra ${esc(w.nume)}">+</button>`;
+    w.el.dataset.worker = w.nume;
+    w.el.querySelector("input").onchange = (e) => { w.prezent = e.target.checked; if (!w.prezent) w.extra = 0; crewRow(w); };
+    w.el.querySelector("[data-minus]").onclick = () => { if (w.extra > -12) w.extra--; crewRow(w); };
+    w.el.querySelector("[data-plus]").onclick = () => { if (w.extra < 12) w.extra++; crewRow(w); };
+    $("crewList").appendChild(w.el);
+    crewRow(w);
+  }
+}
+async function loadCrew() {
+  $("crewMsg").textContent = "";
+  $("crewDay").value = isoToday();
+  try {
+    const r = await api("/m/api/echipa");
+    crewSites = r.puncte;
+    $("crewSite").innerHTML = crewSites.map((x) => `<option value="${esc(x.id)}">${esc(x.nume)}</option>`).join("");
+    if (!crewSites.length) $("crewMsg").textContent = "Nu ești trecut ca șef de echipă la niciun punct de lucru (se face la birou, în Echipă → Puncte de lucru).";
+    crewShow();
+  } catch (e) { $("crewMsg").textContent = e.message; }
+}
+$("crewSite").onchange = crewShow;
+$("goCrew").onclick = () => { show("crew"); loadCrew(); };
+$("crewBack").onclick = () => show("menu");
+$("crewSend").onclick = async () => {
+  const site = crewSites.find((x) => x.id === $("crewSite").value);
+  if (!site || !crew.length) return;
+  $("crewSend").disabled = true;
+  $("crewMsg").textContent = "";
+  try {
+    const linii = crew.map((w) => ({ angajat: w.id, nume: w.nume, prezent: w.prezent, extra: w.extra }));
+    await api("/m/api/trimite", { tip: "pontaj_echipa", campuri: { punct: site.id, punct_nume: site.nume, data: $("crewDay").value }, fisiere: [], linii });
+    const p = crew.filter((x) => x.prezent).length;
+    $("sent").textContent = `Raportul (${site.nume}, ${$("crewDay").value.split("-").reverse().join(".")}) a ajuns la birou: ${people(p, crew.length - p)}.`;
+    show("menu");
+  } catch (e) { $("crewMsg").textContent = e.message; }
+  finally { $("crewSend").disabled = false; }
+};
 $("chatBack").onclick = () => show("menu");
 $("chatSend").onclick = async () => {
   const text = $("chatText").value.trim();

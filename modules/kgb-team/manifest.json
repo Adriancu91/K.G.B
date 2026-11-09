@@ -214,6 +214,48 @@
       "indexes": [
         "angajat"
       ]
+    },
+    {
+      "collection": "puncte",
+      "description": "punctele de lucru (7.4m-7): numele, șeful de echipă, ora de început și muncitorii; raportul de prezență al șefului se trece în pontaj",
+      "schema": {
+        "fields": {
+          "nume": {
+            "type": "string",
+            "required": true,
+            "nullable": false,
+            "max_len": 100
+          },
+          "sef": {
+            "type": "string",
+            "required": false,
+            "nullable": true,
+            "max_len": 100
+          },
+          "inceput": {
+            "type": "string",
+            "required": true,
+            "nullable": false,
+            "max_len": 5
+          },
+          "angajati": {
+            "type": "array",
+            "required": true,
+            "nullable": false
+          },
+          "activ": {
+            "type": "bool",
+            "required": true
+          },
+          "creat_ms": {
+            "type": "integer",
+            "required": true,
+            "min": 0
+          }
+        },
+        "additional": false
+      },
+      "indexes": []
     }
   ],
   "events": {

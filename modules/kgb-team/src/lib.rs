@@ -16,6 +16,8 @@
 //! locations (D-064). The data is personal: the module is reached only by
 //! roles given access to it (Etapa 6).
 
+pub mod sites;
+
 use std::collections::BTreeMap;
 use std::path::PathBuf;
 
@@ -590,6 +592,10 @@ impl Module for Team {
                 Ok(json!(v))
             }
             "angajat_save" => self.save_employee(ctx, args(command, a)?),
+            // Work sites and the team leader's daily report (7.4m-7).
+            "puncte" => self.sites(ctx),
+            "punct_save" => self.save_site(ctx, args(command, a)?),
+            "raport_zi" => self.record_report(ctx, args(command, a)?),
             "ture" => {
                 let mut v: Vec<Value> = ctx.scan(SHIFTS, |_| true)?.iter().map(view).collect();
                 v.sort_by_key(|e| e["inceput"].as_str().unwrap_or("").to_string());

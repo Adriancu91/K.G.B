@@ -255,6 +255,29 @@ try {
   check("pontajul e în Echipă: 07:58–16:30, 30 min pauză (8 h 2 min lucrate)", dayText.includes("07:58") && dayText.includes("16:30") && dayText.includes('"lucrat_min":482'), dayText.slice(0, 300));
   check("și dispare din „Pontaj de pe telefon”", await p.eval("!document.querySelector('.phone-timesheet')"));
 
+  // 7.4m-7: the team leader's attendance report, with colours, into the timesheet.
+  const team = (command, args = {}) => invoke(p, "module_call", { id: "kgb.team", command, args });
+  const w = {};
+  for (const n of ["Ankit", "Tahir", "Tofiq"]) w[n] = (await team("angajat_save", { nume: n })).id;
+  await team("punct_save", { nume: "Curte Iași", sef: "Proprietar", inceput: "07:00", angajati: [w.Ankit, w.Tahir, w.Tofiq] });
+  await team("punct_save", { nume: "Șantier Bacău", sef: "Alt Șef", angajati: [w.Tofiq] });
+  const sites = (await phone("/m/api/echipa")).json?.puncte ?? [];
+  check("șeful vede doar punctul lui de lucru, cu muncitorii", sites.length === 1 && sites[0].nume === "Curte Iași" && sites[0].muncitori.length === 3, JSON.stringify(sites));
+  const crew = await phone("/m/api/trimite", { tip: "pontaj_echipa", campuri: { punct: sites[0]?.id, punct_nume: "Curte Iași", data: "2026-11-10" }, fisiere: [], linii: [
+    { angajat: w.Ankit, nume: "Ankit", prezent: true, extra: 2 },
+    { angajat: w.Tahir, nume: "Tahir", prezent: true, extra: 0 },
+    { angajat: w.Tofiq, nume: "Tofiq", prezent: false, extra: 0 },
+  ] });
+  check("raportul zilei ajunge la birou", crew.status === 200, JSON.stringify(crew.json));
+  await p.until("!!document.querySelector('.crew-report')", 8000);
+  const colours = await p.eval("Object.fromEntries([...document.querySelectorAll('.crew-line')].map(l => [l.dataset.worker, l.className.replace('crew-line ', '') + ' · ' + l.innerText]))");
+  check("la birou: Ankit albastru (+2), Tahir verde (+0), Tofiq roșu (absent)", colours.Ankit?.startsWith("extra") && colours.Ankit.includes("+2 ore extra") && colours.Tahir?.startsWith("present") && colours.Tahir.includes("+0 ore extra") && colours.Tofiq?.startsWith("absent"), JSON.stringify(colours));
+  await p.screenshot(join(shots, "05-raport-prezenta.png"));
+  await p.click("Trece în pontaj", ".crew-report button");
+  await p.until("document.querySelector('.phone-page').innerText.includes('Raportul a fost trecut în pontaj')", 8000);
+  const crewDays = JSON.stringify(await team("pontaj", { luna: "2026-11" }));
+  check("în pontaj: Ankit 07:00–17:00 (10 h), Tahir 07:00–15:00, Tofiq nimic", crewDays.includes('"iesire":"17:00"') && crewDays.includes('"lucrat_min":600') && crewDays.includes('"iesire":"15:00"') && !crewDays.includes(w.Tofiq), crewDays.slice(0, 200));
+
   // 7.4m-3: a PDF statement from the phone is shown on the PC.
   const pdf = [
     "%PDF-1.4",

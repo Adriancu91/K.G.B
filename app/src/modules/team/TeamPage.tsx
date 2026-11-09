@@ -4,6 +4,7 @@
 import { save } from "@tauri-apps/plugin-dialog";
 import { useCallback, useEffect, useState } from "react";
 import { api, message } from "../../api";
+import { SitesView } from "./sites";
 
 const ID = "kgb.team";
 const KINDS: Array<[string, string]> = [
@@ -68,7 +69,7 @@ const today = () => {
 };
 
 export function TeamPage({ onError }: { onError: (e: string | null) => void }) {
-  const [tab, setTab] = useState<"pontaj" | "concedii" | "raport" | "angajati" | "ture">("pontaj");
+  const [tab, setTab] = useState<"pontaj" | "concedii" | "raport" | "angajati" | "ture" | "puncte">("pontaj");
   const [luna, setLuna] = useState(today().slice(0, 7));
   const [emps, setEmps] = useState<Emp[]>([]);
   const [shifts, setShifts] = useState<Shift[]>([]);
@@ -122,6 +123,7 @@ export function TeamPage({ onError }: { onError: (e: string | null) => void }) {
             ["raport", "Raport lunar"],
             ["angajati", "Angajați"],
             ["ture", "Ture"],
+            ["puncte", "Puncte de lucru"],
           ] as const
         ).map(([k, l]) => (
           <button key={k} className={tab === k ? "active" : ""} onClick={() => setTab(k)}>
@@ -380,6 +382,8 @@ export function TeamPage({ onError }: { onError: (e: string | null) => void }) {
           </form>
         </>
       )}
+
+      {tab === "puncte" && <SitesView emps={emps} onError={onError} />}
 
       {tab === "ture" && (
         <>

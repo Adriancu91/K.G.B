@@ -1704,3 +1704,10 @@ label > .suggest > input {
   display: grid;
   gap: 4px;
 }
+
+/* Etapa 7, step 7.4m-7: the team leader's attendance report */
+.crew-line { padding: 4px 8px; margin: 2px 0; border-left: 4px solid; }
+.crew-line.present { border-color: #2e7d32; background: rgba(46, 125, 50, 0.08); }
+.crew-line.extra { border-color: #1a56c4; background: rgba(26, 86, 196, 0.1); }
+.crew-line.less { border-color: #d97706; background: rgba(217, 119, 6, 0.1); }
+.crew-line.absent { border-color: #c62828; background: rgba(198, 40, 40, 0.08); }

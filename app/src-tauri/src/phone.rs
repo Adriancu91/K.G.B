@@ -303,7 +303,7 @@ async fn handle(req: Request<Incoming>, session: Arc<Mutex<Option<Session>>>) ->
     if method == Method::GET && path == "/m/api/ping" {
         return Ok(json_reply(StatusCode::OK, json!({"kgb": true})));
     }
-    if method != Method::POST && !(method == Method::GET && ["/m/api/eu", "/m/api/produse", "/m/api/livrari", "/m/api/taskuri", "/m/api/mesaje"].contains(&path.as_str())) {
+    if method != Method::POST && !(method == Method::GET && ["/m/api/eu", "/m/api/produse", "/m/api/livrari", "/m/api/taskuri", "/m/api/mesaje", "/m/api/echipa"].contains(&path.as_str())) {
         return Ok(err(StatusCode::NOT_FOUND, "nu există"));
     }
     let body: Value = if method == Method::POST {
@@ -426,6 +426,23 @@ async fn handle(req: Request<Incoming>, session: Arc<Mutex<Option<Session>>>) ->
                     }
                 }
                 json_reply(StatusCode::OK, json!({"taskuri": items}))
+            }
+            _ => err(StatusCode::UNAUTHORIZED, "telefonul nu e aprobat"),
+        }),
+        // The work sites whose team leader is the phone's person, with their
+        // workers (7.4m-7): names and daily norms only.
+        "/m/api/echipa" => with(&mut |s| match phones::by_token(&s.ws, &token) {
+            Ok(Some(p)) if p.stare == "aprobat" => {
+                let me = p.membru_nume.trim().to_lowercase();
+                let list = s.mm.call(&mut s.ws, None, "kgb.team", "puncte", json!({})).unwrap_or(json!([]));
+                let items: Vec<Value> = list
+                    .as_array()
+                    .into_iter()
+                    .flatten()
+                    .filter(|x| x["activ"] != json!(false) && !me.is_empty() && x["sef"].as_str().is_some_and(|n| n.trim().to_lowercase() == me))
+                    .map(|x| json!({"id": x["id"], "nume": x["nume"], "muncitori": x["muncitori"]}))
+                    .collect();
+                json_reply(StatusCode::OK, json!({"puncte": items}))
             }
             _ => err(StatusCode::UNAUTHORIZED, "telefonul nu e aprobat"),
         }),

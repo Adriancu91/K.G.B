@@ -43,7 +43,7 @@ interface Phone {
 }
 interface Received {
   id: string;
-  tip: "receptie" | "document" | "extras" | "inventar" | "bon" | "pontaj" | "livrare" | "task";
+  tip: "receptie" | "document" | "extras" | "inventar" | "bon" | "pontaj" | "livrare" | "task" | "pontaj_echipa";
   telefon_nume: string;
   membru_nume: string;
   campuri: Record<string, string>;
@@ -87,7 +87,61 @@ const KIND: Record<Received["tip"], string> = {
   pontaj: "Pontaj",
   livrare: "Etapă de livrare",
   task: "Task terminat",
+  pontaj_echipa: "Raport de prezență",
 };
+
+interface CrewLine {
+  angajat: string;
+  nume: string;
+  prezent: boolean;
+  extra: number;
+}
+
+/** The team leader's daily report, with colours, recorded in the timesheet (7.4m-7). */
+function CrewReport({ x, onDone, onError }: { x: Received; onDone: (msg: string) => void; onError: (e: string | null) => void }) {
+  const lines = (x.linii ?? []) as unknown as CrewLine[];
+  const state = (l: CrewLine) => (!l.prezent ? "absent" : l.extra > 0 ? "extra" : l.extra < 0 ? "less" : "present");
+  const label = (l: CrewLine) => (!l.prezent ? "absent" : `prezent ${l.extra >= 0 ? "+" : "−"}${Math.abs(l.extra)} ore extra`);
+  const present = lines.filter((l) => l.prezent).length;
+  return (
+    <div className="crew-report">
+      <p>
+        {x.campuri.punct_nume} · {(x.campuri.data ?? "").split("-").reverse().join(".")} · {present === 1 ? "1 prezent" : `${present} prezenți`}, {lines.length - present === 1 ? "1 absent" : `${lines.length - present} absenți`}
+      </p>
+      <ul className="plain">
+        {lines.map((l) => (
+          <li key={l.angajat} className={`crew-line ${state(l)}`} data-worker={l.nume}>
+            <strong>{l.nume}</strong> {label(l)}
+          </li>
+        ))}
+      </ul>
+      {!x.procesat && (
+        <button
+          onClick={() =>
+            void (async () => {
+              try {
+                const r = await api.moduleCall<{ pontati: number; absenti: number; deja_pontati: string[] }>("kgb.team", "raport_zi", {
+                  punct: x.campuri.punct,
+                  data: x.campuri.data,
+                  de_la: x.membru_nume,
+                  linii: lines.map((l) => ({ angajat: l.angajat, nume: l.nume, prezent: l.prezent, extra: l.extra })),
+                });
+                await invoke("phone_done", { id: x.id, gata: true });
+                onDone(
+                  `Raportul a fost trecut în pontaj: ${r.pontati} zile pontate, ${r.absenti} absenți${r.deja_pontati.length ? `; deja pontați, lăsați neschimbați: ${r.deja_pontati.join(", ")}` : ""}.`,
+                );
+              } catch (e) {
+                onError(message(e));
+              }
+            })()
+          }
+        >
+          Trece în pontaj
+        </button>
+      )}
+    </div>
+  );
+}
 
 /** "I finished this task" from the phone, marked done in the planner (7.4m-6d). */
 function TaskDone({ x, onDone, onError }: { x: Received; onDone: (msg: string) => void; onError: (e: string | null) => void }) {
@@ -676,7 +730,7 @@ export function PhonePage({ modules, onError }: { modules: ModulesReply; onError
                 {x.procesat ? "redeschide" : "rezolvat"}
               </button>
             </div>
-            {Object.entries(x.campuri).map(([k, v]) => (
+            {Object.entries(x.campuri).filter(([k]) => !["punct", "livrare", "task"].includes(k)).map(([k, v]) => (
               <div key={k} className="small">
                 <span className="muted">{FIELD[k] ?? k}:</span> {v}
               </div>
@@ -686,7 +740,8 @@ export function PhonePage({ modules, onError }: { modules: ModulesReply; onError
                 <FileView key={f.id} f={f} />
               ))}
             </div>
-            <ReceptionLines x={x} business={business} onDone={(m) => void load().then(() => setNotice(m))} onError={onError} />
+            {(x.tip === "receptie" || x.tip === "inventar") && <ReceptionLines x={x} business={business} onDone={(m) => void load().then(() => setNotice(m))} onError={onError} />}
+            {x.tip === "pontaj_echipa" && <CrewReport x={x} onDone={(m) => void load().then(() => setNotice(m))} onError={onError} />}
             {x.tip === "task" && !x.procesat && <TaskDone x={x} onDone={(m) => void load().then(() => setNotice(m))} onError={onError} />}
             {x.tip === "livrare" && !x.procesat && business && <StageToBusiness x={x} onDone={(m) => void load().then(() => setNotice(m))} onError={onError} />}
             {x.tip === "bon" && !x.procesat && business && (
