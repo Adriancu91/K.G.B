@@ -1711,7 +1711,7 @@ fn main() {
         })
         .manage(print::PrintJobs::default())
         .invoke_handler({
-            let handler = tauri::generate_handler![
+            let handler: Box<dyn Fn(tauri::ipc::Invoke) -> bool + Send + Sync> = Box::new(tauri::generate_handler![
             app_info,
             get_settings,
             save_settings,
@@ -1798,7 +1798,7 @@ fn main() {
             print::print_pdf,
             print::print_job_take,
             print::print_job_ready
-            ];
+            ]);
             // The hidden print windows (D-081) may call only their two commands: no modules, files or dialogs.
             move |invoke| {
                 if invoke.message.webview().label().starts_with(print::LABEL)

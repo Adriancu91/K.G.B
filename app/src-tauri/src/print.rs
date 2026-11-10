@@ -77,7 +77,13 @@ pub async fn print_pdf(app: AppHandle, snapshot: Value, paper: Paper) -> Result<
         .0
         .lock()
         .map_err(|_| "tipărirea nu este disponibilă")?
-        .insert(id.clone(), Job { payload: Some(snapshot), ready: Some(tx) });
+        .insert(
+            id.clone(),
+            Job {
+                payload: Some(snapshot),
+                ready: Some(tx),
+            },
+        );
     let out = run(&app, &label, rx, &paper).await;
     if let Some(w) = app.get_webview_window(&label) {
         let _ = w.destroy();
@@ -95,13 +101,17 @@ async fn run(
     paper: &Paper,
 ) -> Result<String, String> {
     let id = &label[LABEL.len()..];
-    let window = WebviewWindowBuilder::new(app, label, WebviewUrl::App(format!("cos-sheets.html#print={id}").into()))
-        .title("K.G.B. — tipărire")
-        .visible(false)
-        .skip_taskbar(true)
-        .inner_size(900.0, 1200.0)
-        .build()
-        .map_err(|e| format!("fereastra de tipărire nu a pornit: {e}"))?;
+    let window = WebviewWindowBuilder::new(
+        app,
+        label,
+        WebviewUrl::App(format!("cos-sheets.html#print={id}").into()),
+    )
+    .title("K.G.B. — tipărire")
+    .visible(false)
+    .skip_taskbar(true)
+    .inner_size(900.0, 1200.0)
+    .build()
+    .map_err(|e| format!("fereastra de tipărire nu a pornit: {e}"))?;
     match tokio::time::timeout(TIMEOUT, ready).await {
         Ok(Ok(Ok(()))) => {}
         Ok(Ok(Err(e))) => return Err(format!("pagina de tipărit nu s-a putut pregăti: {e}")),
@@ -217,7 +227,11 @@ fn pdf_stream(
 
 /// The hidden window takes its snapshot, once.
 #[tauri::command]
-pub fn print_job_take(window: tauri::WebviewWindow, jobs: tauri::State<'_, PrintJobs>, id: String) -> Result<Value, String> {
+pub fn print_job_take(
+    window: tauri::WebviewWindow,
+    jobs: tauri::State<'_, PrintJobs>,
+    id: String,
+) -> Result<Value, String> {
     if window.label() != format!("{LABEL}{id}") {
         return Err("lucrarea nu este a acestei ferestre".into());
     }
