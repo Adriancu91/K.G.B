@@ -81,7 +81,7 @@ try {
   check("știrile din ambele fluxuri, cele mai noi întâi", items[0][0] === "Cea mai nouă" && items[1][0] === "Ședință la primărie & consiliu" && items[2][0] === "Știre mai veche", JSON.stringify(items));
   check("fiecare cu sursa și ora", items[0][1].startsWith("Test Atom ·") && items[1][1].startsWith("Test RSS ·") && !items[1][1].includes("fără oră"), items.map((i) => i[1]).join(" | "));
   const text = await p.eval("document.querySelectorAll('.news-item')[1].innerText");
-  check("rezumatul e text simplu, nimic din HTML-ul fluxului nu rulează", text.includes("Consiliul se reunește azi.") && !text.includes("<") && (await p.eval("document.title")) !== "PWNED", text.replace(/\s+/g, " ").slice(0, 120));
+  check("rezumatul e text simplu, nimic din HTML-ul fluxului nu rulează", text.includes("Consiliul se reunește azi.") && !text.includes("<") && !text.includes("PWNED") && (await p.eval("document.title")) !== "PWNED", text.replace(/\s+/g, " ").slice(0, 120));
   const errs = await p.eval("[...document.querySelectorAll('.news .warn')].map(e => e.innerText).join(' | ')");
   check("fluxul stricat e spus pe nume, celelalte merg", errs.includes("Flux stricat") && /RSS sau Atom/.test(errs), errs);
   await p.screenshot(join(shots, "01-stiri.png"));
@@ -95,7 +95,7 @@ try {
   check("știrea păstrată apare la „Păstrate”", keptList.length === 1 && keptList[0].startsWith("Ședință"), JSON.stringify(keptList));
 
   // Only links of the items shown open; read again only after 30 minutes.
-  const refused = await invoke("news_open", { url: "https://evil.example/" }).then(() => "deschis", (e) => String(e));
+  const refused = await p.eval(`window.__TAURI_INTERNALS__.invoke("news_open", { url: "https://evil.example/" }).then(() => "deschis", (e) => String(e))`);
   check("o legătură care nu e a unei știri afișate nu se deschide", refused.includes("nu e a unei știri afișate"), refused);
   const before = hits;
   await invoke("news_feed", {});

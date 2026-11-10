@@ -2429,7 +2429,9 @@
   "Pornește sursa ANAF…": "Switch on the ANAF source…",
   "Pornești sursa ANAF?": "Switch on the ANAF source?",
   "Pornește și caută": "Switch on and search",
-  "„Caută la ANAF” folosește serviciul web public și gratuit al ANAF. Se trimit doar CUI-ul și data; răspunsul completează datele firmei. O poți opri oricând din „Surse externe”.": "“Search at ANAF” uses the free public web service of ANAF. Only the CUI and the date are sent; the answer fills in the firm's data. You can switch it off any time in “External sources”."
+  "„Caută la ANAF” folosește serviciul web public și gratuit al ANAF. Se trimit doar CUI-ul și data; răspunsul completează datele firmei. O poți opri oricând din „Surse externe”.": "“Search at ANAF” uses the free public web service of ANAF. Only the CUI and the date are sent; the answer fills in the firm's data. You can switch it off any time in “External sources”.",
+  "English": "English",
+  "Aceeași alegere ca butoanele RO / EN de sub navigare; se păstrează pe acest calculator.": "The same choice as the RO / EN buttons under the navigation; kept on this computer."
  },
  "templates": {
   "Completat de la ANAF (date pentru {0}): {1}. Verifică și completează restul de mână.": "Filled in from ANAF (data for {0}): {1}. Check and fill in the rest manually.",

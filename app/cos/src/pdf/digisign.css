@@ -7,6 +7,8 @@
 .print-dlg {
   width: 520px; max-width: calc(100% - 32px); background: var(--panel); color: var(--text);
   border: 1px solid var(--border); border-radius: 10px; padding: 16px 20px; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+  /* Într-o fereastră mică (sau în cadrul din K.G.B.) fereastra nu iese din ecran: se derulează înăuntru, iar butoanele de jos rămân la vedere. */
+  box-sizing: border-box; max-height: calc(100vh - 24px); overflow-y: auto;
 }
 .print-dlg h3 { margin: 0 0 12px; font-size: 16px; }
 .print-row { display: flex; gap: 12px; padding: 8px 0; border-top: 1px solid var(--border); font-size: 13px; }
@@ -29,7 +31,7 @@
 .about-dlg { max-width: 460px; }
 .about-dlg p { margin: 6px 0; }
 .about-trial { font-weight: 600; }
-.print-actions { display: flex; justify-content: flex-end; gap: 8px; }
+.print-actions { display: flex; justify-content: flex-end; gap: 8px; position: sticky; bottom: -16px; margin-bottom: -16px; padding: 8px 0 16px; background: var(--panel); }
 .print-actions button { padding: 6px 14px; border: 1px solid var(--border); border-radius: 6px; background: var(--bg); color: inherit; cursor: pointer; font: inherit; }
 .print-actions button.primary { background: var(--accent); border-color: var(--accent); color: #fff; }
 .print-actions button:disabled { opacity: 0.5; cursor: default; }

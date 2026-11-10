@@ -201,5 +201,11 @@ Interdicții permanente: fără baze de date (D-005, D-018), fără schimbări d
 - [ ] 7.5 InfoNews: RSS/Atom doar din sursele aprobate, cu sursă, oră și link
 - [ ] 7.6 Piață, partea 1: listă de urmărire, cotații manuale/CSV cu sursă și oră, grafic, alerte; plus panoul „Cotații” pe Acasă (mutat aici din 7.4e)
 - [ ] 🔒 7.7 Piață, partea 2: cotații automate de la un furnizor ales de proprietar (licență, cost)
+- [ ] 7.9 Cerut de proprietar (10 nov. 2026): mai multe tipuri de firme, șabloane pe categorii, dosare de avize și autorizații
+  - [ ] 7.9a Catalog de proceduri din surse oficiale (D-088): avize, autorizații, aprobări (construcții, ISU, mediu, ape, DSV, DSP, ONRC, primărie, ANAF, ARR, ITM…), fiecare cu instituția, temeiul legal, documentele dosarului, pașii, taxele, termenul și sursele oficiale datate; în „Permise și autorizații” se adaugă dintr-o listă („Din catalog…”), apoi rămân ale firmei (se pot corecta); avertismentul „verifică la instituție” rămâne; primul lot ~19 proceduri, apoi altele
+  - [ ] 7.9b Dosarul de depus: din procedură, dosarul cu lista de verificare, cererea completată din datele firmei, opisul (lista documentelor, numerotate) și „Exportă dosarul” într-un folder ales (documentele atașate + opis PDF + cerere)
+  - [ ] 7.9c Profilurile de activitate propun și procedurile potrivite (HoReCa → DSV, DSP, ISU, primărie…), pe lângă module și modele
+  - [ ] 7.9d Mai multe modele de documente, pe categorii (administrativ, comercial, HR, tehnic, juridic simplu, avize): cereri către instituții, împuterniciri, declarații pe propria răspundere, notificări, somații de plată, procese-verbale; categoriile vizibile în „Documente și modele”; mai multe șabloane de foi de calcul pe categorii
+  - [ ] 7.9e Module noi pentru tipuri de firme, câte unul pe rând (împărțite cu sesiunea COS): Programări (cabinete, servicii), Contracte și abonamente (servicii), Mentenanța echipamentelor (producție, HoReCa, transport), Situații de lucrări (construcții), Rețete și costuri (HoReCa, producție); fiecare intră în profilurile potrivite
 - [ ] 7.8 Raport Etapa 7 (`docs/ETAPA7_RAPORT.md`)
 - [ ] 🔒 7.9 Poarta Etapei 7

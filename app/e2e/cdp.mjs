@@ -4,7 +4,14 @@
 // The app must be started with
 //   WEBVIEW2_ADDITIONAL_BROWSER_ARGUMENTS=--remote-debugging-port=<port>
 // so WebView2 exposes the page on 127.0.0.1 only.
-import { writeFileSync } from "node:fs";
+import { mkdtempSync, writeFileSync } from "node:fs";
+import { tmpdir } from "node:os";
+import { join } from "node:path";
+
+// Every test's app gets its own WebView2 folder (the env is passed on with `...process.env`): with the K.G.B.
+// installed on this computer open, a test's window would otherwise join its WebView2 (no debugging port), and
+// its storage (language, signing window) is the person's own. Removed by Windows' temp cleanup.
+if (!process.env.WEBVIEW2_USER_DATA_FOLDER) process.env.WEBVIEW2_USER_DATA_FOLDER = mkdtempSync(join(tmpdir(), "kgb-e2e-wv2-"));
 
 export async function connect(port = 9333, timeoutMs = 15000) {
   const deadline = Date.now() + timeoutMs;

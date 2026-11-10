@@ -28,17 +28,43 @@ pub struct Item {
 
 /// HTML (or any markup) reduced to plain text: tags dropped, entities decoded, spaces folded.
 pub fn plain(s: &str) -> String {
-    let mut out = String::with_capacity(s.len());
+    // What a script or a style holds is not text of the item.
+    let mut src = s.to_string();
+    for tag in ["script", "style"] {
+        loop {
+            let low = src.to_ascii_lowercase();
+            let Some(i) = low.find(&format!("<{tag}")) else { break };
+            let end = low[i..]
+                .find(&format!("</{tag}"))
+                .and_then(|j| low[i + j..].find('>').map(|k| i + j + k + 1));
+            src.replace_range(i..end.unwrap_or(src.len()), " ");
+        }
+    }
+    // Inline tags join their text; the others (paragraphs, breaks…) separate it.
+    const INLINE: [&str; 9] = ["b", "i", "u", "a", "em", "strong", "span", "small", "code"];
+    let mut out = String::with_capacity(src.len());
+    let mut tag = String::new();
     let mut in_tag = false;
-    for c in s.chars() {
+    for c in src.chars() {
         match c {
             '<' => {
                 in_tag = true;
-                out.push(' ');
+                tag.clear();
             }
-            '>' if in_tag => in_tag = false,
-            _ if !in_tag => out.push(c),
-            _ => {}
+            '>' if in_tag => {
+                in_tag = false;
+                let name: String = tag
+                    .trim_start_matches('/')
+                    .chars()
+                    .take_while(char::is_ascii_alphanumeric)
+                    .collect::<String>()
+                    .to_ascii_lowercase();
+                if !INLINE.contains(&name.as_str()) {
+                    out.push(' ');
+                }
+            }
+            _ if in_tag => tag.push(c),
+            _ => out.push(c),
         }
     }
     let decoded = decode_entities(&out);
@@ -344,7 +370,7 @@ mod tests {
         assert_eq!(v[0].titlu, "Ședința de & azi");
         assert_eq!(v[0].link, "https://example.ro/a?x=1");
         assert_eq!(v[0].ms, iso_ms("2026-11-10T11:05:00Z").unwrap());
-        assert!(v[0].rezumat.starts_with("Text important & scurt"), "{}", v[0].rezumat);
+        assert_eq!(v[0].rezumat, "Text important & scurt", "the script's text is not kept");
         assert!(!v[0].rezumat.contains('<'));
         assert_eq!(v[0].sursa, "Sursa test");
         assert_eq!(v[1].link, "", "a non-web link is dropped");

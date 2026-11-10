@@ -2,6 +2,7 @@
 import { invoke } from "@tauri-apps/api/core";
 import { useEffect, useState, type FormEvent } from "react";
 import { api, message, type AppInfo, type Density, type Settings, type SettingsReply, type Theme } from "../api";
+import { setLang, useLang } from "../i18n/lang";
 
 export const SHORTCUTS: Array<[string, string]> = [
   ["Ctrl + B", "ascunde / arată panoul lateral"],
@@ -56,6 +57,7 @@ export function SettingsPage(props: {
   onError: (e: string | null) => void;
 }) {
   const s = props.reply.settings;
+  const lang = useLang();
   const [owner, setOwner] = useState(props.info.owner?.display_name ?? "");
   const [wsName, setWsName] = useState(props.info.workspace?.name ?? "");
 
@@ -120,8 +122,12 @@ export function SettingsPage(props: {
         <small className="muted">Profilul decide ce module activate apar în panoul lateral (alegi din Catalog).</small>
       </div>
       <div className="field">
-        <label>Limbă</label>
-        <span>Română (singura disponibilă acum)</span>
+        <label htmlFor="limba">Limbă</label>
+        <select id="limba" value={lang} onChange={(e) => setLang(e.target.value as "ro" | "en")}>
+          <option value="ro">Română</option>
+          <option value="en">English</option>
+        </select>
+        <small className="muted">Aceeași alegere ca butoanele RO / EN de sub navigare; se păstrează pe acest calculator.</small>
       </div>
 
       <h2>Identitate</h2>
