@@ -88,7 +88,8 @@ try {
 
   // The chart, on a real time axis: „Tot” shows the whole year.
   await clickText(p, "Tot", ".market-detail");
-  await p.until("!!document.querySelector('.market-chart path')", 8000);
+  // „Tot” reloads the quotes: wait for the whole year, not the 3 months shown before.
+  await p.until("document.querySelectorAll('.market-chart circle').length > 250", 8000).catch(() => {});
   const points = await p.eval("document.querySelectorAll('.market-chart circle').length");
   check("graficul are toate cotațiile (axa de timp reală)", points > 250, `${points} puncte`);
 

@@ -1435,6 +1435,11 @@
   "f": "pages/SettingsPage.tsx"
  },
  {
+  "ro": "Română",
+  "en": "Romanian",
+  "f": "pages/SettingsPage.tsx"
+ },
+ {
   "ro": "oprită",
   "en": "off",
   "f": "pages/SourcesPage.tsx"
@@ -1478,6 +1483,11 @@
   "ro": "numele fișierului",
   "en": "file name",
   "f": "crates/kgb-core/src/files.rs"
+ },
+ {
+  "ro": "cuvânt ",
+  "en": "word ",
+  "f": "crates/kgb-core/src/news.rs"
  },
  {
   "ro": "Expiră azi: {0} — {1}",
