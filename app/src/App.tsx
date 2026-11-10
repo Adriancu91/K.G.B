@@ -91,19 +91,32 @@ export function App() {
     })();
   }, [loadModules, loadSettings]);
 
+  // Saves go one after another, each with the version the previous one left: two quick changes (hide a
+  // panel, then "Revino la implicit") must not both send the same old version and get a conflict.
+  const savedVersion = useRef<number | null>(null);
+  const saving = useRef<Promise<void>>(Promise.resolve());
+  useEffect(() => {
+    savedVersion.current = settings?.version ?? null;
+  }, [settings?.version]);
   const saveSettings = useCallback(
-    async (next: Settings) => {
-      if (!settings) return;
-      setSettings({ ...settings, settings: next });
-      try {
-        const version = await api.saveSettings(next, settings.version);
-        setSettings({ ...settings, settings: next, version });
-        setError(null);
-      } catch (e) {
-        setError(message(e));
-        await loadSettings();
-      }
-      if (next.profile !== settings.settings.profile) await loadModules();
+    (next: Settings): Promise<void> => {
+      if (!settings) return Promise.resolve();
+      const profileChanged = next.profile !== settings.settings.profile;
+      setSettings((s) => (s ? { ...s, settings: next } : s));
+      const run = saving.current.then(async () => {
+        try {
+          const version = await api.saveSettings(next, savedVersion.current ?? settings.version);
+          savedVersion.current = version;
+          setSettings((s) => (s ? { ...s, settings: next, version } : s));
+          setError(null);
+        } catch (e) {
+          setError(message(e));
+          await loadSettings();
+        }
+        if (profileChanged) await loadModules();
+      });
+      saving.current = run.catch(() => {});
+      return run;
     },
     [settings, loadSettings, loadModules],
   );

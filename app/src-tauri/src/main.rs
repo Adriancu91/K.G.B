@@ -1475,6 +1475,11 @@ fn chat_delete(app: State<AppState>, id: uuid::Uuid) -> CmdResult<()> {
 /// At most 3 separate pop-ups; more become one summary (no burst on screen).
 fn desktop_notify(handle: &tauri::AppHandle, new: &[NotificationView]) {
     use tauri_plugin_notification::NotificationExt as _;
+    // The end-to-end tests set this: their reminders stay in the app's notification centre and do not
+    // pop up on the screen of the person using this computer.
+    if std::env::var_os("KGB_NO_DESKTOP_NOTIFY").is_some_and(|v| v == "1") {
+        return;
+    }
     let show = |title: &str, body: &str| {
         if let Err(e) = handle.notification().builder().title(title).body(body).show() {
             tracing::warn!("desktop notification failed: {e}");
