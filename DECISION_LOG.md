@@ -428,3 +428,16 @@ Deciziile DECIS se schimbă doar cu aprobarea explicită a proprietarului (Maste
 - **Schimbarea:** `connect-src 'self' ipc: http://ipc.localhost`. `'self'` e doar originea aplicației, adică fișierele din bundle.
 - **Rămâne interzis:** rețeaua (fără `http:`/`https:` și fără wildcard în `connect-src`), `eval` (fără `'unsafe-eval'`). Restul CSP-ului e neschimbat. Testul `app/e2e/cos-efactura.mjs` verifică din pagină că `fetch("https://example.com")` e refuzat și că un fișier din bundle se citește.
 - `printPdf.ts` își păstrează fontul `?inline` (merge; nu se schimbă fără motiv). Fereastra ascunsă `print-*` (D-081) are același CSP, dar nu are `kgbHost`, deci nu câștigă nimic.
+
+### D-084 — Tipărirea pe hârtie din ferestrele COS: prin fereastra ascunsă și dialogul Windows
+- **Data:** 10 nov. 2026 · **Statut:** DECIS — acord COS + K.G.B. (D-074); completează D-081
+- **De ce:** în cadru, `window.print()` (puntea de până acum) avea patru probleme, văzute pe build-ul release:
+  1. deschidea previzualizarea browserului (`edge://print/`), **în engleză**, nu în română;
+  2. fereastra aplicației rămânea **blocată** cât era deschisă (nici după închiderea ei nu mai răspundea);
+  3. browserul tipărea pe fiecare foaie **titlul paginii și adresa** (`tauri.localhost`) — exact ce au reclamat testerii la COS („fără numele fișierului deasupra”, TESTAT-DE-OAMENI §3);
+  4. **antetul, subsolul și numerotarea** documentului (fereastra „Tipărire” a COS) nu ajungeau la imprimantă.
+- **Cum:** cadrul face același PDF ca „Export PDF” (D-081, cu antetul, subsolul și numerotarea puse cu pdf-lib); comanda `print_paper` îl dă unei ferestre ascunse `print-*`, care îi desenează paginile (pdf.js, 200 dpi, fără margini); dialogul de tipărire al Windows (`PrintDlgW`, în limba sistemului) alege imprimanta, copiile și paginile; WebView2 tipărește cu `Print` (ICoreWebView2_16) și `ShouldPrintHeaderAndFooter = false`. **Renunță** în dialog = nu se tipărește nimic; fereastra ascunsă se închide în orice caz.
+- **Limite:** pregătirea paginilor are tot 30 s (D-081); dialogul e al omului, fără limită; predarea către coada imprimantei are 180 s.
+- **Paznicul** din `main.rs` rămâne același: fereastra `print-*` cheamă doar `print_job_take` și `print_job_ready`; dialogul și tipărirea pornesc din comanda ferestrei principale.
+- **Testele nu tipăresc niciodată:** `print_paper` are calea `to_pdf`, aleasă din pagină (nu din mediu): sare peste dialog și întoarce PDF-ul a ceea ce ar primi imprimanta (`PrintToPdfStream`). e2e `cos-print.mjs` o folosește.
+- **Biblioteci:** nimic nou; `windows-sys` (aceeași versiune, din Cargo.lock) primește feature-urile `Win32_UI_Controls_Dialogs`, `Win32_Graphics_Gdi`, `Win32_System_Memory`; `webview2-com` 0.39.1 neschimbat.

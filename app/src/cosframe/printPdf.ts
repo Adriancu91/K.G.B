@@ -125,6 +125,9 @@ export function safeUrl(v: string, origin: string): boolean {
   const t = v.trim();
   if (!t || t.startsWith("#")) return true;
   if (/^(data|blob):/i.test(t)) return /^data:(image|font)\//i.test(t) || /^blob:/i.test(t);
+  // The cells' anchors of Sheets › Aspect pagină (COS PageLayout CELL_LINK): they become the PDF's link areas that
+  // let a click on the page write in that cell. `.invalid` never resolves, and the hidden window follows no link.
+  if (/^https:\/\/cell\.invalid\/[A-Z]{1,3}\d{1,7}$/i.test(t)) return true;
   if (/^[a-z][a-z0-9+.-]*:/i.test(t)) return t.startsWith(origin + "/");
   return !t.startsWith("//");
 }
@@ -311,3 +314,51 @@ function row(p: PDFPage, font: PDFFont, text: string, num: string, numAt: string
   });
 }
 
+
+/** How many pages a PDF has (the range offered in Windows' print dialog, D-084). */
+export async function pageCount(pdf: Uint8Array): Promise<number> {
+  return (await PDFDocument.load(pdf)).getPageCount();
+}
+
+/**
+ * Paper (D-084): the hidden window draws the pages of the finished PDF (the same as Export PDF, with the
+ * document's header, footer and numbers), one picture per sheet of paper, no margins (the pages have theirs).
+ * 200 dpi pictures, each released once drawn into a PNG, so a long document does not fill the memory.
+ */
+export async function showPdf(b64: string): Promise<void> {
+  const [pdfjs, { default: workerUrl }] = await Promise.all([import("pdfjs-dist"), import("pdfjs-dist/build/pdf.worker.min.mjs?url")]);
+  pdfjs.GlobalWorkerOptions.workerSrc ||= workerUrl;
+  const task = pdfjs.getDocument({ data: dataBytes(`data:,${b64}`) });
+  try {
+    const doc = await task.promise;
+    const first = (await doc.getPage(1)).getViewport({ scale: 1 });
+    const mm = (pt: number) => (pt / 72) * 25.4;
+    const [w, h] = [mm(first.width), mm(first.height)];
+    const css = document.createElement("style");
+    css.textContent = `@page { size: ${w}mm ${h}mm; margin: 0 }
+      html, body { margin: 0; padding: 0; background: #fff }
+      img.sheet { display: block; width: ${w}mm; height: ${h - 0.3}mm; break-after: page }
+      img.sheet:last-child { break-after: auto }`;
+    document.head.appendChild(css);
+    document.body.replaceChildren();
+    for (let i = 1; i <= doc.numPages; i++) {
+      const page = await doc.getPage(i);
+      const viewport = page.getViewport({ scale: 200 / 72 });
+      const canvas = document.createElement("canvas");
+      canvas.width = Math.round(viewport.width);
+      canvas.height = Math.round(viewport.height);
+      await page.render({ canvas, viewport }).promise;
+      const blob = await new Promise<Blob | null>((r) => canvas.toBlob(r, "image/png"));
+      canvas.width = canvas.height = 0;
+      if (!blob) throw new Error(`pagina ${i} nu s-a putut desena`);
+      const img = document.createElement("img");
+      img.className = "sheet";
+      img.src = URL.createObjectURL(blob);
+      await img.decode();
+      document.body.appendChild(img);
+      page.cleanup();
+    }
+  } finally {
+    await task.destroy();
+  }
+}

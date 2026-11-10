@@ -16,6 +16,7 @@ const host: KgbHost = {
   lang: () => currentLang(),
   onLang: (f) => onLang(f),
   printPdf: (snapshot, paper) => invoke<string>("print_pdf", { snapshot, paper }),
+  printPaper: (pdf, paper, pages) => invoke("print_paper", { pdf, paper, pages, toPdf: false }),
 };
 (window as Window & { kgbHost?: KgbHost }).kgbHost = host;
 

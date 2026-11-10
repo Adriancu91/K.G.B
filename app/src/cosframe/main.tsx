@@ -11,7 +11,7 @@ import { AskHost } from "../../cos/src/ask";
 import { setLang } from "../../cos/src/i18n";
 import { ScreenshotHost } from "../../cos/src/screenshot";
 import { SketchHost } from "../../cos/src/sketch";
-import { showSnapshot, type Snapshot } from "./printPdf";
+import { showPdf, showSnapshot, type Snapshot } from "./printPdf";
 import { DOCS, NOTES, SHEETS, installCosBridge, openDocument, setNotesReadOnly, type KgbHost } from "../modules/sheets/cosBridge";
 import "../../cos/src/styles.css";
 import "../../cos/src/theme.css";
@@ -93,6 +93,27 @@ function Frame() {
   );
 }
 
+async function fixViewports(): Promise<void> {
+  const [pdfjs, { default: workerUrl }, { viewportCompat }] = await Promise.all([
+    import("pdfjs-dist"),
+    import("pdfjs-dist/build/pdf.worker.min.mjs?url"),
+    import("../modules/pdf/pdfjs"),
+  ]);
+  pdfjs.GlobalWorkerOptions.workerSrc ||= workerUrl;
+  const tiny =
+    "%PDF-1.4\n1 0 obj<</Type/Catalog/Pages 2 0 R>>endobj\n2 0 obj<</Type/Pages/Kids[3 0 R]/Count 1>>endobj\n" +
+    "3 0 obj<</Type/Page/Parent 2 0 R/MediaBox[0 0 10 10]>>endobj\ntrailer<</Root 1 0 R>>\n%%EOF";
+  const task = pdfjs.getDocument({ data: new TextEncoder().encode(tiny) });
+  try {
+    const doc = await task.promise;
+    viewportCompat((await doc.getPage(1)).getViewport({ scale: 1 }));
+  } catch {
+    /* the page keeps working; only clicking a cell on the page would not */
+  } finally {
+    void task.destroy();
+  }
+}
+
 const printJob = hash.get("print");
 const root = createRoot(document.getElementById("root")!);
 if (printJob) {
@@ -101,8 +122,10 @@ if (printJob) {
   void (async () => {
     const { invoke } = await import("@tauri-apps/api/core");
     try {
-      const shot = await invoke<Snapshot>("print_job_take", { id: printJob });
-      await showSnapshot(shot);
+      const shot = await invoke<Snapshot | { pdf: string }>("print_job_take", { id: printJob });
+      // Paper (D-084): the finished PDF, drawn page by page; otherwise the document's snapshot (D-081).
+      if ("pdf" in shot) await showPdf(shot.pdf);
+      else await showSnapshot(shot);
       await invoke("print_job_ready", { id: printJob, error: null });
     } catch (e) {
       await invoke("print_job_ready", { id: printJob, error: String(e) }).catch(() => {});
@@ -112,6 +135,11 @@ if (printJob) {
   root.render(<p className="frame-error">Fereastra se deschide doar din aplicația K.G.B.</p>);
 } else {
   installCosBridge(host, notes ? NOTES : docs ? DOCS : SHEETS);
+  // pdf.js 6 no longer has PageViewport.convertToViewportRectangle, which the COS code (pdf.js 4) still uses
+  // (Sheets › Aspect pagină: clicking a cell on the page). The frame is its own document, with its own pdf.js,
+  // and the class is not exported: a viewport of a one-page PDF made here gives it, once, a moment after the
+  // window is up (viewportCompat, the PDF page's fix); the document and its worker are closed right after.
+  if (!notes && !docs) window.setTimeout(() => void fixViewports(), 1500);
   if (readOnly) {
     setNotesReadOnly(true);
     // Typing, pasting and dropping into the open note are stopped before they change it.

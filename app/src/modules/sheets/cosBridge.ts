@@ -14,7 +14,7 @@ import { api as cos } from "../../../cos/src/api";
 import type { ExportFormat, FileKind, OpenedFile, Settings } from "../../../cos/src/api";
 import { FORMATS } from "../../../cos/src/web/disk";
 import type { PagePrint } from "../../../cos/src/api";
-import { snapshot, stamp, type Paper, type Snapshot } from "../../cosframe/printPdf";
+import { pageCount, snapshot, stamp, type Paper, type Snapshot } from "../../cosframe/printPdf";
 
 /** What differs between the copied windows (Sheets, Docs): their module, their own format and its words. */
 export interface BridgeKind {
@@ -87,6 +87,8 @@ export interface KgbHost {
   onLang(f: (l: "ro" | "en") => void): () => void;
   /** The PDF of a snapshot of the window, made in a hidden window of the app (D-081), as base64. */
   printPdf(snapshot: Snapshot, paper: Paper): Promise<string>;
+  /** Prints a finished PDF (base64) on paper, through Windows' print dialog (D-084); `printed` false = cancelled. */
+  printPaper(pdf: string, paper: Paper, pages: number): Promise<{ printed: boolean; pdf?: string }>;
 }
 let kgb: KgbHost;
 const open: KgbHost["open"] = (o) => kgb.open(o);
@@ -226,9 +228,12 @@ export function installCosBridge(host: KgbHost, kind: BridgeKind = SHEETS): void
       await kgb.moduleCall(cfg.id, "export_file", { dest, data: b64(req.data) });
       return { path: dest };
     },
-    print: async () => {
-      window.print();
-      return true;
+    // Paper (D-084): the same pages as Export PDF, then Windows' print dialog. window.print() opened the browser's
+    // own preview, in English, blocking the app and printing the page's title and address on every sheet.
+    print: async (page?: PagePrint) => {
+      const { snapshot: shot, paper } = await snapshot(document, page);
+      const pdf = await stamp(unb64(await kgb.printPdf(shot, paper)), page);
+      return (await kgb.printPaper(b64(pdf), paper, await pageCount(pdf))).printed;
     },
     // The pages as PDF (preview, Page layout, Export PDF), as COS's printToPDF made them (D-081).
     docPdfBytes: async (page?: PagePrint) => {

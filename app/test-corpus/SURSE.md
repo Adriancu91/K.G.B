@@ -110,3 +110,4 @@ Fișiere publice de test, doar date (nu se rulează nimic). Licența Apache POI:
 | odt/tdf152015.odt | LibreOffice core | https://raw.githubusercontent.com/LibreOffice/core/master/sw/qa/extras/odfimport/data/tdf152015.odt |
 | odt/tdf167774.odt | LibreOffice core | https://raw.githubusercontent.com/LibreOffice/core/master/sw/qa/extras/odfimport/data/tdf167774.odt |
 | odt/tdf89802.fodt | LibreOffice core | https://raw.githubusercontent.com/LibreOffice/core/master/sw/qa/extras/odfimport/data/tdf89802.fodt |
+| odp/math.odp | LibreOffice core | https://raw.githubusercontent.com/LibreOffice/core/master/sd/qa/unit/data/odp/math.odp |

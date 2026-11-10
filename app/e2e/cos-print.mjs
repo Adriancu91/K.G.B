@@ -135,6 +135,50 @@ try {
   check("Sheets: Aspect pagină arată paginile foii", /\d+ pagin/.test(count) && !err, count || err);
   await sleep(500);
   check("Sheets: paginile sunt desenate", (await fr(p, "document.querySelectorAll('.sh-layout-pages canvas').length")) >= 1);
+  // Writing straight on the page (7.4l-4b): the cells' link areas reach the PDF (printPdf keeps the cell anchors)
+  // and are read back with pdf.js 6 (viewportCompat in the frame); a click on A1 opens its box, with its text.
+  const cells = await fr(p, "Number(document.querySelector('.sh-layout-pages canvas')?.dataset.cells ?? 0)");
+  check("Sheets: Aspect pagină găsește celulele pe pagină", cells >= 1, `${cells} celule`);
+  let a1 = "";
+  const pos = await fr(p, "(() => { const r = document.querySelector('.sh-layout-pages canvas').getBoundingClientRect(); return { x: r.left, y: r.top, w: r.width, h: r.height }; })()");
+  const frameAt = await p.eval("(() => { const r = document.querySelector('.cos-frame iframe').getBoundingClientRect(); return { x: r.left, y: r.top }; })()");
+  for (let i = 1; i <= 40 && !a1; i++) {
+    // Down the page's top-left corner, where A1 is, until the box opens on it.
+    const x = frameAt.x + pos.x + pos.w * (0.04 + 0.006 * i);
+    const y = frameAt.y + pos.y + pos.h * (0.03 + 0.004 * i);
+    for (const type of ["mousePressed", "mouseReleased"]) await p.send("Input.dispatchMouseEvent", { type, x, y, button: "left", clickCount: 1 });
+    await sleep(150);
+    a1 = (await fr(p, "document.querySelector('.sh-layout-edit .sh-layout-cellname')?.textContent ?? ''")) ?? "";
+  }
+  const a1text = await fr(p, "document.querySelector('.sh-layout-edit input')?.value ?? ''");
+  check("Sheets: un clic pe pagină deschide caseta celulei, cu textul ei", a1 === "A1" && a1text === "Total vanzari", `${a1 || "(nicio casetă)"} = ${a1text}`);
+
+  // Paper (D-084): „Tipărește…” goes through the hidden window and Windows' print dialog. The test never prints:
+  // the page replaces printPaper with its test path (to_pdf), which returns what the printer would get.
+  await p.eval(`(() => { window.__paper = null; window.kgbHost.printPaper = (pdf, paper, pages) =>
+    window.__TAURI_INTERNALS__.invoke("print_paper", { pdf, paper, pages, toPdf: true }).then((r) => { window.__paper = { pages, pdf: r.pdf, printed: r.printed }; return r; }); return true; })()`);
+  await fr(p, "[...document.querySelectorAll('button')].find(b => b.textContent.trim() === '▦ Normal')?.click(), true");
+  await sleep(400);
+  await fr(p, "document.querySelector('.sheet-wrap')?.focus(), true");
+  await p.send("Input.dispatchKeyEvent", { type: "rawKeyDown", key: "p", code: "KeyP", windowsVirtualKeyCode: 80, modifiers: 2 });
+  await p.send("Input.dispatchKeyEvent", { type: "keyUp", key: "p", code: "KeyP", windowsVirtualKeyCode: 80, modifiers: 2 });
+  await frUntil(p, "!!document.querySelector('[role=dialog][aria-label=\"Tipărire\"]')", 8000);
+  await fr(p, "[...document.querySelectorAll('[role=dialog][aria-label=\"Tipărire\"] button')].find(b => b.textContent.trim() === 'Tipărește…')?.click(), true");
+  const tp = Date.now();
+  let paper = null;
+  while (!paper && Date.now() - tp < 60000) {
+    paper = await p.eval("window.__paper");
+    if (!paper) await sleep(300);
+  }
+  check("Sheets: „Tipărește…” trece prin fereastra ascunsă (calea de test, fără imprimantă)", !!paper?.printed, paper ? `${paper.pages} pagini în ${Date.now() - tp} ms` : "nimic");
+  if (paper?.pdf) {
+    const bytes = Buffer.from(paper.pdf, "base64");
+    writeFileSync(join(shots, "sheets-hartie.pdf"), bytes);
+    const n = (bytes.toString("latin1").match(/\/Type\s*\/Page[^s]/g) ?? []).length;
+    check("Sheets: hârtia are tot atâtea pagini cât PDF-ul documentului", bytes.subarray(0, 5).toString("latin1") === "%PDF-" && n === paper.pages, `${n} / ${paper.pages}`);
+  }
+  await sleep(1000);
+  check("Sheets: fereastra ascunsă de tipărire s-a închis", (await printWindows()) === 0);
   await p.screenshot(join(shots, "01-print.png"));
 
   p.close();
