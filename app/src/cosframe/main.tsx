@@ -12,7 +12,7 @@ import { setLang } from "../../cos/src/i18n";
 import { ScreenshotHost } from "../../cos/src/screenshot";
 import { SketchHost } from "../../cos/src/sketch";
 import { showSnapshot, type Snapshot } from "./printPdf";
-import { DOCS, NOTES, SHEETS, installCosBridge, openDocument, type KgbHost } from "../modules/sheets/cosBridge";
+import { DOCS, NOTES, SHEETS, installCosBridge, openDocument, setNotesReadOnly, type KgbHost } from "../modules/sheets/cosBridge";
 import "../../cos/src/styles.css";
 import "../../cos/src/theme.css";
 
@@ -20,6 +20,9 @@ const hash = new URLSearchParams(location.hash.slice(1));
 const app = hash.get("app");
 const docs = app === "docs";
 const notes = app === "notes";
+// The person's role may only read the notes (7.4l-2b-rem): a band says so, the note cannot be typed into
+// and nothing is saved; the list, the search and the notebooks can still be browsed.
+const readOnly = notes && hash.get("citire") === "1";
 type CosWindow = ComponentType<{ initial: OpenedFile | null; onConsumed(): void }>;
 // One lazy() per window, each with its own import(): the bundler works out what to load before a window
 // (its code and its stylesheet) per import() call; a single import() picked by a condition got only the
@@ -59,6 +62,30 @@ function Frame() {
       <Suspense fallback={<p className="frame-wait">Se pregătește fereastra…</p>}>
         <Window initial={initial} onConsumed={() => setInitial(null)} />
       </Suspense>
+      {readOnly && (
+        <p
+          className="frame-readonly"
+          role="status"
+          style={{
+            position: "fixed",
+            left: "50%",
+            bottom: 40,
+            transform: "translateX(-50%)",
+            margin: 0,
+            padding: "6px 14px",
+            borderRadius: 8,
+            border: "1px solid var(--accent)",
+            background: "var(--panel)",
+            color: "var(--text)",
+            boxShadow: "0 2px 8px rgba(0, 0, 0, 0.15)",
+            fontSize: 13,
+            zIndex: 1000,
+            pointerEvents: "none",
+          }}
+        >
+          Rolul tău poate doar citi notele: ce schimbi aici nu se salvează.
+        </p>
+      )}
       <AskHost />
       <ScreenshotHost />
       <SketchHost />
@@ -85,6 +112,14 @@ if (printJob) {
   root.render(<p className="frame-error">Fereastra se deschide doar din aplicația K.G.B.</p>);
 } else {
   installCosBridge(host, notes ? NOTES : docs ? DOCS : SHEETS);
+  if (readOnly) {
+    setNotesReadOnly(true);
+    // Typing, pasting and dropping into the open note are stopped before they change it.
+    const stop = (e: Event) => {
+      if ((e.target as Element | null)?.closest?.(".notes-main")) e.preventDefault();
+    };
+    for (const ev of ["beforeinput", "paste", "drop"]) document.addEventListener(ev, stop, true);
+  }
   // The window's shortcuts (Ctrl+S, Ctrl+O, Ctrl+Z…) work only in the application "in front" (COS active.ts);
   // in this frame the window is always in front.
   setCurrentModule(notes ? "note" : docs ? "doc" : "sheets");

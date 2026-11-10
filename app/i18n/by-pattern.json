@@ -1530,6 +1530,11 @@
   "f": "modules/kgb-docs/src/lib.rs"
  },
  {
+  "ro": "Notiță",
+  "en": "Note",
+  "f": "modules/kgb-notes/src/remind.rs"
+ },
+ {
   "ro": "PDF-ul nu se poate afișa",
   "en": "The PDF cannot be displayed",
   "f": "modules/kgb-pdf/src/lib.rs"

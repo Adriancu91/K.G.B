@@ -5,10 +5,21 @@
 // The window reaches the core through the host the app lends it.
 import "../../components/cosHost";
 
-export function NotesPage(_: { onError: (e: string | null) => void }) {
+// A role that may only read the module (D-056) opens the window for reading (7.4l-2b-rem).
+export function NotesPage({
+  access,
+}: {
+  onError: (e: string | null) => void;
+  access?: string;
+}) {
+  const readOnly = access === "citire";
   return (
     <section className="notes-window">
-      <iframe title="Note" src="cos-sheets.html#app=notes" />
+      <iframe
+        key={String(readOnly)}
+        title="Note"
+        src={`cos-sheets.html#app=notes${readOnly ? "&citire=1" : ""}`}
+      />
     </section>
   );
 }
