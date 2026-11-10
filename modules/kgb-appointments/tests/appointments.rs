@@ -19,7 +19,8 @@ fn setup() -> (tempfile::TempDir, Workspace, ModuleManager) {
     let tmp = tempfile::tempdir().unwrap();
     let mut ws = Workspace::create(&tmp.path().join("ws"), "T").unwrap();
     let mm = ModuleManager::new(vec![Box::new(Appointments::new())], CORE_VERSION).unwrap();
-    mm.enable(&mut ws, ID, &["storage.own".into(), "notify.send".into()]).unwrap();
+    mm.enable(&mut ws, ID, &["storage.own".into(), "notify.send".into()])
+        .unwrap();
     (tmp, ws, mm)
 }
 
@@ -38,46 +39,139 @@ const TUE: &str = "2030-01-01";
 fn free_times_overlaps_and_hours() {
     let (_t, mut ws, mm) = setup();
     let dr = doctor(&mut ws, &mm);
-    let sv = call(&mut ws, &mm, "serviciu_save", json!({"nume": "Consultație", "durata": 30, "pret": 15000, "resurse": [dr["id"]]})).unwrap();
+    let sv = call(
+        &mut ws,
+        &mm,
+        "serviciu_save",
+        json!({"nume": "Consultație", "durata": 30, "pret": 15000, "resurse": [dr["id"]]}),
+    )
+    .unwrap();
 
-    let free = |ws: &mut Workspace| call(ws, &mm, "libere", json!({"data": TUE, "serviciu": sv["id"]})).unwrap()[0]["ore"].clone();
+    let free = |ws: &mut Workspace| {
+        call(ws, &mm, "libere", json!({"data": TUE, "serviciu": sv["id"]})).unwrap()[0]["ore"].clone()
+    };
     let f = free(&mut ws);
     let f: Vec<&str> = f.as_array().unwrap().iter().map(|v| v.as_str().unwrap()).collect();
     assert_eq!(f.first(), Some(&"08:00"));
-    assert!(f.contains(&"11:30") && !f.contains(&"11:35"), "30 minutes fit until 12:00, not after");
+    assert!(
+        f.contains(&"11:30") && !f.contains(&"11:35"),
+        "30 minutes fit until 12:00, not after"
+    );
     assert!(!f.contains(&"12:00") && f.contains(&"13:00") && f.contains(&"16:30") && !f.contains(&"16:35"));
 
-    let a = call(&mut ws, &mm, "programare_save", json!({"start": format!("{TUE}T09:00"), "resursa": dr["id"], "serviciu": sv["id"],
-        "client": "Popescu Maria", "telefon": "0722 000 111"})).unwrap();
+    let a = call(
+        &mut ws,
+        &mm,
+        "programare_save",
+        json!({"start": format!("{TUE}T09:00"), "resursa": dr["id"], "serviciu": sv["id"],
+        "client": "Popescu Maria", "telefon": "0722 000 111"}),
+    )
+    .unwrap();
     assert_eq!(a["sfarsit"], "09:30");
-    let e = call(&mut ws, &mm, "programare_save", json!({"start": format!("{TUE}T09:15"), "resursa": dr["id"], "serviciu": sv["id"], "client": "Ion"})).unwrap_err();
+    let e = call(
+        &mut ws,
+        &mm,
+        "programare_save",
+        json!({"start": format!("{TUE}T09:15"), "resursa": dr["id"], "serviciu": sv["id"], "client": "Ion"}),
+    )
+    .unwrap_err();
     assert!(e.to_string().contains("are deja o programare"), "{e}");
     let f = free(&mut ws);
-    assert!(!f.as_array().unwrap().contains(&json!("09:00")) && !f.as_array().unwrap().contains(&json!("08:45")) && f.as_array().unwrap().contains(&json!("09:30")));
+    assert!(
+        !f.as_array().unwrap().contains(&json!("09:00"))
+            && !f.as_array().unwrap().contains(&json!("08:45"))
+            && f.as_array().unwrap().contains(&json!("09:30"))
+    );
 
     // Outside the hours (lunch break, a day off, the weekend): only when the person confirms.
-    for start in [format!("{TUE}T12:10"), "2030-01-04T09:00".to_string(), "2030-01-05T09:00".to_string()] {
-        let e = call(&mut ws, &mm, "programare_save", json!({"start": start, "resursa": dr["id"], "durata": 20, "client": "Urgent"})).unwrap_err();
+    for start in [
+        format!("{TUE}T12:10"),
+        "2030-01-04T09:00".to_string(),
+        "2030-01-05T09:00".to_string(),
+    ] {
+        let e = call(
+            &mut ws,
+            &mm,
+            "programare_save",
+            json!({"start": start, "resursa": dr["id"], "durata": 20, "client": "Urgent"}),
+        )
+        .unwrap_err();
         assert!(e.to_string().contains("în afara programului"), "{e}");
     }
     call(&mut ws, &mm, "programare_save", json!({"start": format!("{TUE}T12:10"), "resursa": dr["id"], "durata": 20, "client": "Urgent", "in_afara_programului": true})).unwrap();
-    assert!(call(&mut ws, &mm, "libere", json!({"data": "2030-01-04", "serviciu": sv["id"]})).unwrap()[0]["ore"].as_array().unwrap().is_empty());
+    assert!(
+        call(
+            &mut ws,
+            &mm,
+            "libere",
+            json!({"data": "2030-01-04", "serviciu": sv["id"]})
+        )
+        .unwrap()[0]["ore"]
+            .as_array()
+            .unwrap()
+            .is_empty()
+    );
     assert!(call(&mut ws, &mm, "programare_save", json!({"start": format!("{TUE}T23:50"), "resursa": dr["id"], "durata": 30, "client": "X", "in_afara_programului": true})).is_err(), "not into the next day");
 
     // A cancelled appointment frees its time; bringing it back is refused if the time was given meanwhile.
     let day = call(&mut ws, &mm, "zi", json!({"data": TUE})).unwrap();
-    let first = day["programari"].as_array().unwrap().iter().find(|p| p["ora"] == "09:00").unwrap().clone();
-    call(&mut ws, &mm, "programare_stare", json!({"id": first["id"], "version": first["version"], "stare": "anulat"})).unwrap();
-    call(&mut ws, &mm, "programare_save", json!({"start": format!("{TUE}T09:00"), "resursa": dr["id"], "serviciu": sv["id"], "client": "Altcineva"})).unwrap();
-    let again = call(&mut ws, &mm, "zi", json!({"data": TUE})).unwrap()["programari"].as_array().unwrap().iter().find(|p| p["id"] == first["id"]).unwrap().clone();
-    let e = call(&mut ws, &mm, "programare_stare", json!({"id": again["id"], "version": again["version"], "stare": "programat"})).unwrap_err();
+    let first = day["programari"]
+        .as_array()
+        .unwrap()
+        .iter()
+        .find(|p| p["ora"] == "09:00")
+        .unwrap()
+        .clone();
+    call(
+        &mut ws,
+        &mm,
+        "programare_stare",
+        json!({"id": first["id"], "version": first["version"], "stare": "anulat"}),
+    )
+    .unwrap();
+    call(
+        &mut ws,
+        &mm,
+        "programare_save",
+        json!({"start": format!("{TUE}T09:00"), "resursa": dr["id"], "serviciu": sv["id"], "client": "Altcineva"}),
+    )
+    .unwrap();
+    let again = call(&mut ws, &mm, "zi", json!({"data": TUE})).unwrap()["programari"]
+        .as_array()
+        .unwrap()
+        .iter()
+        .find(|p| p["id"] == first["id"])
+        .unwrap()
+        .clone();
+    let e = call(
+        &mut ws,
+        &mm,
+        "programare_stare",
+        json!({"id": again["id"], "version": again["version"], "stare": "programat"}),
+    )
+    .unwrap_err();
     assert!(e.to_string().contains("dată altcuiva"), "{e}");
-    assert!(call(&mut ws, &mm, "programare_stare", json!({"id": again["id"], "version": again["version"], "stare": "plecat"})).is_err());
+    assert!(
+        call(
+            &mut ws,
+            &mm,
+            "programare_stare",
+            json!({"id": again["id"], "version": again["version"], "stare": "plecat"})
+        )
+        .is_err()
+    );
 
     // The client's history.
     let h = call(&mut ws, &mm, "cauta", json!({"text": "popescu"})).unwrap();
     assert_eq!(h.as_array().unwrap().len(), 1);
-    assert_eq!(call(&mut ws, &mm, "cauta", json!({"text": "0722000"})).unwrap().as_array().unwrap().len(), 1);
+    assert_eq!(
+        call(&mut ws, &mm, "cauta", json!({"text": "0722000"}))
+            .unwrap()
+            .as_array()
+            .unwrap()
+            .len(),
+        1
+    );
 }
 
 #[test]
@@ -98,20 +192,48 @@ fn an_overlap_made_on_two_pcs_is_shown() {
         f.insert("stare".into(), json!("programat"));
         f.insert("creat_ms".into(), json!(1));
         ws.store_mut()
-            .write(vec![Write::put(&format!("mod.{ID}.{APPOINTMENTS}"), Uuid::now_v7(), f).expect(0)])
+            .write(vec![
+                Write::put(&format!("mod.{ID}.{APPOINTMENTS}"), Uuid::now_v7(), f).expect(0),
+            ])
             .unwrap();
     }
-    call(&mut ws, &mm, "programare_save", json!({"start": format!("{TUE}T11:00"), "resursa": dr["id"], "durata": 30, "client": "Fără grijă"})).unwrap();
+    call(
+        &mut ws,
+        &mm,
+        "programare_save",
+        json!({"start": format!("{TUE}T11:00"), "resursa": dr["id"], "durata": 30, "client": "Fără grijă"}),
+    )
+    .unwrap();
     let day = call(&mut ws, &mm, "zi", json!({"data": TUE})).unwrap();
     let marks: Vec<(String, bool)> = day["programari"]
         .as_array()
         .unwrap()
         .iter()
-        .map(|p| (p["client"].as_str().unwrap().to_string(), p["suprapusa"].as_bool().unwrap()))
+        .map(|p| {
+            (
+                p["client"].as_str().unwrap().to_string(),
+                p["suprapusa"].as_bool().unwrap(),
+            )
+        })
         .collect();
-    assert_eq!(marks, [("Recepția 1".into(), true), ("Recepția 2".into(), true), ("Fără grijă".into(), false)]);
+    assert_eq!(
+        marks,
+        [
+            ("Recepția 1".into(), true),
+            ("Recepția 2".into(), true),
+            ("Fără grijă".into(), false)
+        ]
+    );
     let week = call(&mut ws, &mm, "saptamana", json!({"de_la": "2029-12-31"})).unwrap();
-    assert_eq!(week["programari"].as_array().unwrap().iter().filter(|p| p["suprapusa"] == true).count(), 2);
+    assert_eq!(
+        week["programari"]
+            .as_array()
+            .unwrap()
+            .iter()
+            .filter(|p| p["suprapusa"] == true)
+            .count(),
+        2
+    );
 }
 
 #[test]
@@ -121,9 +243,19 @@ fn reminders_without_names_once_a_day() {
     let (today, minute) = local_now();
     let date = |d: i64| kgb_appointments::date_of(d);
     // Two tomorrow (whatever weekday: outside the hours is confirmed), one today unconfirmed.
-    for (d, h, who) in [(today + 1, "09:00", "Ana Pop"), (today + 1, "10:00", "Ion Pop"), (today, "23:00", "Seara Tarziu")] {
-        call(&mut ws, &mm, "programare_save", json!({"start": format!("{}T{h}", date(d)), "resursa": dr["id"], "durata": 30,
-            "client": who, "telefon": "0700 123 456", "in_afara_programului": true})).unwrap();
+    for (d, h, who) in [
+        (today + 1, "09:00", "Ana Pop"),
+        (today + 1, "10:00", "Ion Pop"),
+        (today, "23:00", "Seara Tarziu"),
+    ] {
+        call(
+            &mut ws,
+            &mm,
+            "programare_save",
+            json!({"start": format!("{}T{h}", date(d)), "resursa": dr["id"], "durata": 30,
+            "client": who, "telefon": "0700 123 456", "in_afara_programului": true}),
+        )
+        .unwrap();
     }
     let n = mm.remind_all(&mut ws, &date(today)).unwrap();
     let titles: Vec<&str> = n.iter().map(|x| x.titlu.as_str()).collect();
@@ -132,7 +264,10 @@ fn reminders_without_names_once_a_day() {
         assert!(titles.contains(&"Azi: o programare neconfirmată"), "{titles:?}");
     }
     for x in &n {
-        assert!(!x.titlu.contains("Pop") && !x.text.contains("Pop") && !x.text.contains("0700"), "no names or phones in a notice");
+        assert!(
+            !x.titlu.contains("Pop") && !x.text.contains("Pop") && !x.text.contains("0700"),
+            "no names or phones in a notice"
+        );
     }
     assert!(mm.remind_all(&mut ws, &date(today)).unwrap().is_empty(), "once a day");
     assert!(notifications::list(&ws, false, usize::MAX).unwrap().len() <= 2);

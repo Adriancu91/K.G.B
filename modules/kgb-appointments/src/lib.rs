@@ -150,7 +150,10 @@ pub fn local_now() -> (i64, u32) {
             t
         };
         let d = format!("{:04}-{:02}-{:02}", t.wYear, t.wMonth, t.wDay);
-        (day_number(&d).unwrap_or(0), u32::from(t.wHour) * 60 + u32::from(t.wMinute))
+        (
+            day_number(&d).unwrap_or(0),
+            u32::from(t.wHour) * 60 + u32::from(t.wMinute),
+        )
     }
     #[cfg(not(windows))]
     {
@@ -186,7 +189,12 @@ fn intervals(list: &[Value]) -> CoreResult<Vec<(u32, u32)>> {
 /// The hours of a resource on a day: none on a day off or a day without intervals.
 fn hours_on(res: &RecordState, day: i64) -> Vec<(u32, u32)> {
     let date = json!(date_of(day));
-    if res.fields.get("libere").and_then(Value::as_array).is_some_and(|l| l.contains(&date)) {
+    if res
+        .fields
+        .get("libere")
+        .and_then(Value::as_array)
+        .is_some_and(|l| l.contains(&date))
+    {
         return Vec::new();
     }
     res.fields
@@ -310,7 +318,9 @@ fn yes() -> bool {
 
 impl Appointments {
     fn live(&self, ctx: &mut ModuleContext<'_>, c: &str, id: Uuid, what: &str) -> CoreResult<RecordState> {
-        ctx.get(c, id)?.filter(|r| !r.deleted).ok_or_else(|| bad(what, "nu mai există"))
+        ctx.get(c, id)?
+            .filter(|r| !r.deleted)
+            .ok_or_else(|| bad(what, "nu mai există"))
     }
 
     fn all(&self, ctx: &mut ModuleContext<'_>, c: &str) -> CoreResult<Vec<RecordState>> {
@@ -333,11 +343,23 @@ impl Appointments {
         let mut program = Map::new();
         for (k, v) in &a.program {
             if !matches!(k.as_str(), "1" | "2" | "3" | "4" | "5" | "6" | "7") {
-                return Err(bad("programul", format!("ziua „{k}” nu există (1 = luni … 7 = duminică)")));
+                return Err(bad(
+                    "programul",
+                    format!("ziua „{k}” nu există (1 = luni … 7 = duminică)"),
+                ));
             }
-            let list = v.as_array().ok_or_else(|| bad("programul", "fiecare zi are o listă de intervale"))?;
+            let list = v
+                .as_array()
+                .ok_or_else(|| bad("programul", "fiecare zi are o listă de intervale"))?;
             let iv = intervals(list)?;
-            program.insert(k.clone(), json!(iv.iter().map(|(x, y)| format!("{}-{}", hhmm(*x), hhmm(*y))).collect::<Vec<_>>()));
+            program.insert(
+                k.clone(),
+                json!(
+                    iv.iter()
+                        .map(|(x, y)| format!("{}-{}", hhmm(*x), hhmm(*y)))
+                        .collect::<Vec<_>>()
+                ),
+            );
         }
         let mut libere = Vec::new();
         for d in &a.libere {
@@ -348,7 +370,10 @@ impl Appointments {
             return Err(bad("resursa", "prea multe zile libere sau o notă prea lungă"));
         }
         let (id, expect) = match a.id {
-            Some(id) => (id, a.version.unwrap_or(self.live(ctx, RESOURCES, id, "resursa")?.version)),
+            Some(id) => (
+                id,
+                a.version.unwrap_or(self.live(ctx, RESOURCES, id, "resursa")?.version),
+            ),
             None => (Uuid::now_v7(), 0),
         };
         let mut f = Fields::new();
@@ -377,14 +402,20 @@ impl Appointments {
             self.live(ctx, RESOURCES, *r, "resursa serviciului")?;
         }
         let (id, expect) = match a.id {
-            Some(id) => (id, a.version.unwrap_or(self.live(ctx, SERVICES, id, "serviciul")?.version)),
+            Some(id) => (
+                id,
+                a.version.unwrap_or(self.live(ctx, SERVICES, id, "serviciul")?.version),
+            ),
             None => (Uuid::now_v7(), 0),
         };
         let mut f = Fields::new();
         f.insert("nume".into(), json!(nume));
         f.insert("durata".into(), json!(a.durata));
         f.insert("pret".into(), json!(a.pret));
-        f.insert("resurse".into(), json!(a.resurse.iter().map(Uuid::to_string).collect::<Vec<_>>()));
+        f.insert(
+            "resurse".into(),
+            json!(a.resurse.iter().map(Uuid::to_string).collect::<Vec<_>>()),
+        );
         ctx.write(vec![Write::put(SERVICES, id, f).expect(expect)])?;
         Ok(json!({"id": id}))
     }
@@ -398,13 +429,18 @@ impl Appointments {
             .filter_map(|r| split_start(&s(r, "start")).map(|(d, m)| (d, m, r)))
             .filter(|(d, _, r)| *d >= from && *d <= to && res.is_none_or(|x| s(r, "resursa") == x.to_string()))
             .collect();
-        picked.sort_by(|a, b| (a.0, a.1).cmp(&(b.0, b.1)));
+        picked.sort_by_key(|a| (a.0, a.1));
         let mut out = Vec::new();
         for (d, m, r) in &picked {
             let end = m + i(r, "durata") as u32;
             let overlap = active(r)
                 && picked.iter().any(|(d2, m2, r2)| {
-                    r2.id != r.id && d2 == d && active(r2) && s(r2, "resursa") == s(r, "resursa") && *m2 < end && m2 + i(r2, "durata") as u32 > *m
+                    r2.id != r.id
+                        && d2 == d
+                        && active(r2)
+                        && s(r2, "resursa") == s(r, "resursa")
+                        && *m2 < end
+                        && m2 + i(r2, "durata") as u32 > *m
                 });
             out.push(json!({
                 "id": r.id, "version": r.version, "start": s(r, "start"), "data": date_of(*d), "ora": hhmm(*m), "sfarsit": hhmm(end),
@@ -431,13 +467,23 @@ impl Appointments {
         out
     }
 
-    fn taken(&self, ctx: &mut ModuleContext<'_>, res: Uuid, day: i64, except: Option<Uuid>) -> CoreResult<Vec<(u32, u32)>> {
+    fn taken(
+        &self,
+        ctx: &mut ModuleContext<'_>,
+        res: Uuid,
+        day: i64,
+        except: Option<Uuid>,
+    ) -> CoreResult<Vec<(u32, u32)>> {
         let key = json!(res.to_string());
         Ok(ctx
             .scan(APPOINTMENTS, |r| !r.deleted && r.fields.get("resursa") == Some(&key))?
             .iter()
             .filter(|r| active(r) && Some(r.id) != except)
-            .filter_map(|r| split_start(&s(r, "start")).filter(|(d, _)| *d == day).map(|(_, m)| (m, m + i(r, "durata") as u32)))
+            .filter_map(|r| {
+                split_start(&s(r, "start"))
+                    .filter(|(d, _)| *d == day)
+                    .map(|(_, m)| (m, m + i(r, "durata") as u32))
+            })
             .collect())
     }
 
@@ -475,22 +521,37 @@ impl Appointments {
     }
 
     fn appointment_save(&self, ctx: &mut ModuleContext<'_>, a: AppointmentSave) -> CoreResult<Value> {
-        let (day, m) = split_start(&a.start).ok_or_else(|| bad("începutul", format!("„{}” nu e o dată și o oră", a.start)))?;
+        let (day, m) =
+            split_start(&a.start).ok_or_else(|| bad("începutul", format!("„{}” nu e o dată și o oră", a.start)))?;
         let res = self.live(ctx, RESOURCES, a.resursa, "resursa")?;
         if res.fields.get("activa") != Some(&json!(true)) {
-            return Err(bad("resursa", format!("„{}” nu mai primește programări", s(&res, "nume"))));
+            return Err(bad(
+                "resursa",
+                format!("„{}” nu mai primește programări", s(&res, "nume")),
+            ));
         }
         let service = match a.serviciu {
             Some(id) => Some(self.live(ctx, SERVICES, id, "serviciul")?),
             None => None,
         };
         if let Some(sv) = &service {
-            let allowed = sv.fields.get("resurse").and_then(Value::as_array).cloned().unwrap_or_default();
+            let allowed = sv
+                .fields
+                .get("resurse")
+                .and_then(Value::as_array)
+                .cloned()
+                .unwrap_or_default();
             if !allowed.is_empty() && !allowed.contains(&json!(a.resursa.to_string())) {
-                return Err(bad("serviciul", format!("„{}” nu se face la „{}”", s(sv, "nume"), s(&res, "nume"))));
+                return Err(bad(
+                    "serviciul",
+                    format!("„{}” nu se face la „{}”", s(sv, "nume"), s(&res, "nume")),
+                ));
             }
         }
-        let length = a.durata.or_else(|| service.as_ref().map(|sv| i(sv, "durata") as u32)).unwrap_or(30);
+        let length = a
+            .durata
+            .or_else(|| service.as_ref().map(|sv| i(sv, "durata") as u32))
+            .unwrap_or(30);
         if !(5..=600).contains(&length) {
             return Err(bad("durata", "e între 5 și 600 de minute"));
         }
@@ -498,8 +559,15 @@ impl Appointments {
             return Err(bad("programarea", "se termină în ziua următoare"));
         }
         let client = a.client.trim().to_string();
-        if client.is_empty() || client.chars().count() > 200 || a.telefon.chars().count() > 40 || a.nota.chars().count() > 1000 {
-            return Err(bad("clientul", "numele are 1–200 de caractere, telefonul cel mult 40, nota cel mult 1000"));
+        if client.is_empty()
+            || client.chars().count() > 200
+            || a.telefon.chars().count() > 40
+            || a.nota.chars().count() > 1000
+        {
+            return Err(bad(
+                "clientul",
+                "numele are 1–200 de caractere, telefonul cel mult 40, nota cel mult 1000",
+            ));
         }
         let now = local_now();
         let (id, expect, state, created) = match a.id {
@@ -509,9 +577,17 @@ impl Appointments {
                     && (d0, m0) <= now
                     && s(&old, "start") != start_text(day, m)
                 {
-                    return Err(bad("programarea", "a început deja: nu se mai mută, i se schimbă doar starea"));
+                    return Err(bad(
+                        "programarea",
+                        "a început deja: nu se mai mută, i se schimbă doar starea",
+                    ));
                 }
-                (id, a.version.unwrap_or(old.version), s(&old, "stare"), i(&old, "creat_ms"))
+                (
+                    id,
+                    a.version.unwrap_or(old.version),
+                    s(&old, "stare"),
+                    i(&old, "creat_ms"),
+                )
             }
             None => (Uuid::now_v7(), 0, "programat".to_string(), now_ms() as i64),
         };
@@ -519,20 +595,44 @@ impl Appointments {
         if !within && !a.in_afara_programului {
             return Err(bad(
                 "programarea",
-                format!("{} {}–{} e în afara programului pentru „{}”; confirmă dacă vrei totuși", date_of(day), hhmm(m), hhmm(m + length), s(&res, "nume")),
+                format!(
+                    "{} {}–{} e în afara programului pentru „{}”; confirmă dacă vrei totuși",
+                    date_of(day),
+                    hhmm(m),
+                    hhmm(m + length),
+                    s(&res, "nume")
+                ),
             ));
         }
-        if self.taken(ctx, a.resursa, day, Some(id))?.iter().any(|(x, y)| m < *y && m + length > *x) {
-            return Err(bad("programarea", format!("„{}” are deja o programare între {} și {}", s(&res, "nume"), hhmm(m), hhmm(m + length))));
+        if self
+            .taken(ctx, a.resursa, day, Some(id))?
+            .iter()
+            .any(|(x, y)| m < *y && m + length > *x)
+        {
+            return Err(bad(
+                "programarea",
+                format!(
+                    "„{}” are deja o programare între {} și {}",
+                    s(&res, "nume"),
+                    hhmm(m),
+                    hhmm(m + length)
+                ),
+            ));
         }
         let mut f = Fields::new();
         f.insert("start".into(), json!(start_text(day, m)));
         f.insert("durata".into(), json!(length));
         f.insert("resursa".into(), json!(a.resursa.to_string()));
-        f.insert("serviciu".into(), json!(a.serviciu.map(|x| x.to_string()).unwrap_or_default()));
+        f.insert(
+            "serviciu".into(),
+            json!(a.serviciu.map(|x| x.to_string()).unwrap_or_default()),
+        );
         f.insert("client".into(), json!(client));
         f.insert("telefon".into(), json!(a.telefon.trim()));
-        f.insert("partener".into(), json!(a.partener.map(|x| x.to_string()).unwrap_or_default()));
+        f.insert(
+            "partener".into(),
+            json!(a.partener.map(|x| x.to_string()).unwrap_or_default()),
+        );
         f.insert("nota".into(), json!(a.nota.trim()));
         f.insert("stare".into(), json!(state));
         f.insert("creat_ms".into(), json!(created));
@@ -543,7 +643,10 @@ impl Appointments {
 
     fn appointment_state(&self, ctx: &mut ModuleContext<'_>, a: StateSet) -> CoreResult<Value> {
         if !STATES.contains(&a.stare.as_str()) {
-            return Err(bad("starea", format!("„{}” nu e una dintre {}", a.stare, STATES.join(", "))));
+            return Err(bad(
+                "starea",
+                format!("„{}” nu e una dintre {}", a.stare, STATES.join(", ")),
+            ));
         }
         let old = self.live(ctx, APPOINTMENTS, a.id, "programarea")?;
         // Back to an active state: it must not overlap what was booked meanwhile.
@@ -552,7 +655,11 @@ impl Appointments {
             && let (Ok(res), Some((d, m))) = (s(&old, "resursa").parse::<Uuid>(), split_start(&s(&old, "start")))
         {
             let end = m + i(&old, "durata") as u32;
-            if self.taken(ctx, res, d, Some(a.id))?.iter().any(|(x, y)| m < *y && end > *x) {
+            if self
+                .taken(ctx, res, d, Some(a.id))?
+                .iter()
+                .any(|(x, y)| m < *y && end > *x)
+            {
                 return Err(bad("programarea", "între timp ora a fost dată altcuiva"));
             }
         }
@@ -578,11 +685,18 @@ impl Appointments {
         let mut hits: Vec<RecordState> = self
             .all(ctx, APPOINTMENTS)?
             .into_iter()
-            .filter(|r| fold(&s(r, "client")).contains(&q) || s(r, "telefon").replace(' ', "").contains(&q.replace(' ', "")))
+            .filter(|r| {
+                fold(&s(r, "client")).contains(&q) || s(r, "telefon").replace(' ', "").contains(&q.replace(' ', ""))
+            })
             .collect();
         hits.sort_by_key(|r| std::cmp::Reverse(s(r, "start")));
-        Ok(json!(hits.iter().take(100).map(|r| json!({"id": r.id, "start": s(r, "start"), "client": s(r, "client"),
-            "resursa": s(r, "resursa"), "serviciu": s(r, "serviciu"), "stare": s(r, "stare")})).collect::<Vec<_>>()))
+        Ok(json!(
+            hits.iter()
+                .take(100)
+                .map(|r| json!({"id": r.id, "start": s(r, "start"), "client": s(r, "client"),
+            "resursa": s(r, "resursa"), "serviciu": s(r, "serviciu"), "stare": s(r, "stare")}))
+                .collect::<Vec<_>>()
+        ))
     }
 
     /// Tomorrow's count (once a day), and in the morning today's unconfirmed ones; no names, no phones.
@@ -597,18 +711,35 @@ impl Appointments {
                 *by_day.entry((d, s(&r, "stare") == "programat")).or_default() += 1;
             }
         }
-        let tomorrow = by_day.get(&(t + 1, true)).copied().unwrap_or(0) + by_day.get(&(t + 1, false)).copied().unwrap_or(0);
+        let tomorrow =
+            by_day.get(&(t + 1, true)).copied().unwrap_or(0) + by_day.get(&(t + 1, false)).copied().unwrap_or(0);
         let key = format!("maine:{}", date_of(t + 1));
         if tomorrow > 0 && !ctx.notify_key_used(&key)? {
-            let text = if tomorrow == 1 { "Mâine: o programare".to_string() } else { format!("Mâine: {tomorrow} programări") };
-            ctx.notify(&Notice::new(text, "Vezi lista în Programări.").level(Level::Info).key(key))?;
+            let text = if tomorrow == 1 {
+                "Mâine: o programare".to_string()
+            } else {
+                format!("Mâine: {tomorrow} programări")
+            };
+            ctx.notify(
+                &Notice::new(text, "Vezi lista în Programări.")
+                    .level(Level::Info)
+                    .key(key),
+            )?;
         }
         let (now_day, now_min) = local_now();
         let unconfirmed = by_day.get(&(t, true)).copied().unwrap_or(0);
         let key = format!("azi:{}", date_of(t));
         if now_day == t && now_min >= MORNING * 60 && unconfirmed > 0 && !ctx.notify_key_used(&key)? {
-            let text = if unconfirmed == 1 { "Azi: o programare neconfirmată".to_string() } else { format!("Azi: {unconfirmed} programări neconfirmate") };
-            ctx.notify(&Notice::new(text, "Confirmă-le sau anulează-le în Programări.").level(Level::Atentie).key(key))?;
+            let text = if unconfirmed == 1 {
+                "Azi: o programare neconfirmată".to_string()
+            } else {
+                format!("Azi: {unconfirmed} programări neconfirmate")
+            };
+            ctx.notify(
+                &Notice::new(text, "Confirmă-le sau anulează-le în Programări.")
+                    .level(Level::Atentie)
+                    .key(key),
+            )?;
         }
         Ok(())
     }
@@ -641,7 +772,12 @@ impl Module for Appointments {
                     .filter(|r| active(r) && split_start(&s(r, "start")).is_some_and(|(d, _)| d >= today))
                     .count();
                 if ahead > 0 {
-                    return Err(bad("resursa", format!("are {ahead} programări de azi încolo: mută-le sau anulează-le întâi, sau marcheaz-o inactivă")));
+                    return Err(bad(
+                        "resursa",
+                        format!(
+                            "are {ahead} programări de azi încolo: mută-le sau anulează-le întâi, sau marcheaz-o inactivă"
+                        ),
+                    ));
                 }
                 ctx.write(vec![Write::delete(RESOURCES, a.id).expect(a.version)])?;
                 Ok(json!({"deleted": a.id}))
@@ -649,8 +785,14 @@ impl Module for Appointments {
             "servicii" => {
                 let mut l = self.all(ctx, SERVICES)?;
                 l.sort_by_key(|r| s(r, "nume").to_lowercase());
-                Ok(json!(l.iter().map(|r| json!({"id": r.id, "version": r.version, "nume": s(r, "nume"), "durata": i(r, "durata"),
-                    "pret": i(r, "pret"), "resurse": r.fields.get("resurse")})).collect::<Vec<_>>()))
+                Ok(json!(
+                    l.iter()
+                        .map(
+                            |r| json!({"id": r.id, "version": r.version, "nume": s(r, "nume"), "durata": i(r, "durata"),
+                    "pret": i(r, "pret"), "resurse": r.fields.get("resurse")})
+                        )
+                        .collect::<Vec<_>>()
+                ))
             }
             "serviciu_save" => self.service_save(ctx, args(command, a)?),
             "serviciu_delete" => {
@@ -660,7 +802,8 @@ impl Module for Appointments {
             }
             "zi" => {
                 let a: Day = args(command, a)?;
-                let d = day_number(&a.data).ok_or_else(|| bad("data", format!("„{}” nu e o dată AAAA-LL-ZZ", a.data)))?;
+                let d =
+                    day_number(&a.data).ok_or_else(|| bad("data", format!("„{}” nu e o dată AAAA-LL-ZZ", a.data)))?;
                 let hours: Vec<Value> = self
                     .all(ctx, RESOURCES)?
                     .iter()
@@ -668,12 +811,17 @@ impl Module for Appointments {
                     .map(|r| json!({"resursa": r.id, "nume": s(r, "nume"), "activa": r.fields.get("activa") == Some(&json!(true)),
                         "program": hours_on(r, d).iter().map(|(x, y)| format!("{}-{}", hhmm(*x), hhmm(*y))).collect::<Vec<_>>()}))
                     .collect();
-                Ok(json!({"data": date_of(d), "zi_saptamana": weekday(d), "resurse": hours, "programari": self.on_days(ctx, d, d, a.resursa)?}))
+                Ok(
+                    json!({"data": date_of(d), "zi_saptamana": weekday(d), "resurse": hours, "programari": self.on_days(ctx, d, d, a.resursa)?}),
+                )
             }
             "saptamana" => {
                 let a: Week = args(command, a)?;
-                let d = day_number(&a.de_la).ok_or_else(|| bad("data", format!("„{}” nu e o dată AAAA-LL-ZZ", a.de_la)))?;
-                Ok(json!({"de_la": date_of(d), "pana_la": date_of(d + 6), "programari": self.on_days(ctx, d, d + 6, a.resursa)?}))
+                let d =
+                    day_number(&a.de_la).ok_or_else(|| bad("data", format!("„{}” nu e o dată AAAA-LL-ZZ", a.de_la)))?;
+                Ok(
+                    json!({"de_la": date_of(d), "pana_la": date_of(d + 6), "programari": self.on_days(ctx, d, d + 6, a.resursa)?}),
+                )
             }
             "libere" => self.free(ctx, args(command, a)?),
             "programare_save" => self.appointment_save(ctx, args(command, a)?),
@@ -695,7 +843,10 @@ mod tests {
         assert_eq!(day_number("2026-02-29"), None);
         assert_eq!(weekday(day_number("2026-11-10").unwrap()), 2, "a Tuesday");
         assert_eq!(weekday(day_number("2026-11-15").unwrap()), 7, "a Sunday");
-        assert_eq!(split_start("2026-11-10T08:30"), Some((day_number("2026-11-10").unwrap(), 510)));
+        assert_eq!(
+            split_start("2026-11-10T08:30"),
+            Some((day_number("2026-11-10").unwrap(), 510))
+        );
         assert_eq!(split_start("2026-11-10 24:00"), None);
         assert!(intervals(&[json!("13:00-17:00"), json!("08:00-12:00")]).is_ok());
         assert!(intervals(&[json!("08:00-12:00"), json!("11:00-13:00")]).is_err());
