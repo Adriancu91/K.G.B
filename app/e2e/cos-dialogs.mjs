@@ -106,7 +106,7 @@ try {
   await fr(p, "document.querySelector('.sheet-wrap')?.focus(), true");
   await p.send("Input.dispatchKeyEvent", { type: "rawKeyDown", key: "p", code: "KeyP", windowsVirtualKeyCode: 80, modifiers: 2 });
   await p.send("Input.dispatchKeyEvent", { type: "keyUp", key: "p", code: "KeyP", windowsVirtualKeyCode: 80, modifiers: 2 });
-  await verify(p, "Sheets › Tipărire", "[role=dialog][aria-label='Tipărire']", ["Renunță", "Închide"], "02-sheets-tiparire.png");
+  await verify(p, "Sheets › Tipărire", "[role=dialog][aria-label='Tipărire']", ["Anulează", "Renunță", "Închide"], "02-sheets-tiparire.png");
   await p.click("Închide foaia de calcul");
   await p.until("!document.querySelector('.cos-frame')", 5000);
 
@@ -116,7 +116,8 @@ try {
   await p.eval("[...document.querySelectorAll('button')].find(b => b.textContent.trim().startsWith('Document nou')).click()");
   await p.until("!!document.querySelector('.cos-frame iframe')", 5000);
   await frWait(p, "!!document.querySelector('.ProseMirror')", 30000);
-  check("Docs: butonul „Șabloane” se găsește", await button(p, "Șabloane"));
+  // In Docs the gallery opens from „Din șablon…” (Pornire / Fișier).
+  check("Docs: butonul „Din șablon…” se găsește", await button(p, "Din șablon…"));
   await verify(p, "Docs › Șabloane", "[role=dialog].tpl-dlg", ["Închide", "Renunță"], "03-docs-sabloane.png");
   p.close();
 } catch (e) {
