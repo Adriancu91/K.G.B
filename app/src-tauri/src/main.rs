@@ -1801,6 +1801,7 @@ fn main() {
             collect_files,
             purge_leftovers,
             print::print_pdf,
+            print::print_paper,
             print::print_job_take,
             print::print_job_ready
             ]);

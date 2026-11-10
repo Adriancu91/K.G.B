@@ -9,7 +9,7 @@
 // Usage: node app/e2e/cos-sheets-import.mjs <path-to-kgb-app.exe> <screenshot-dir>
 // Uses a throw-away data folder (KGB_DATA_DIR), never the user's real data.
 import { spawn, execFileSync } from "node:child_process";
-import { existsSync, mkdirSync, mkdtempSync, rmSync } from "node:fs";
+import { existsSync, mkdirSync, mkdtempSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join, resolve } from "node:path";
 import { connect, sleep } from "./cdp.mjs";
@@ -186,6 +186,30 @@ try {
   const t1 = [await cell(p, 0, 0), await cell(p, 1, 1), await cell(p, 1, 2), await cell(p, 1, 3)];
   check("Tabel 1: cap, cod 007, 1.234,56, data", t1.join("|") === "Produs|007|1.234,56|28.10.2026" && (await bold(p, 0, 0)), t1.join(" | "));
   await p.screenshot(join(shots, "02-tabele-docx.png"));
+
+  // OCR „Din imagine…” (D-075): a picture of a small table, drawn here, read with the language data that ship
+  // with the app (tessdata/, nothing downloaded) into cells.
+  const png = await p.eval(`(() => { const c = document.createElement('canvas'); c.width = 900; c.height = 330; const g = c.getContext('2d');
+    g.fillStyle = '#fff'; g.fillRect(0, 0, c.width, c.height); g.fillStyle = '#000'; g.font = '48px Arial';
+    [['Produs', 'Cantitate'], ['Ciment', '12'], ['Nisip', '30']].forEach(([a, b], i) => { g.fillText(a, 40, 80 + i * 100); g.fillText(b, 520, 80 + i * 100); });
+    return c.toDataURL('image/png').split(',')[1]; })()`);
+  const picture = join(data, "tabel-poza.png");
+  writeFileSync(picture, Buffer.from(png, "base64"));
+  await pick(p, picture);
+  await fr(p, "[...document.querySelectorAll('button')].find(b => b.textContent.trim() === 'Date')?.click(), true");
+  await sleep(400);
+  for (let i = 0; i < 25 && !(await fr(p, "[...document.querySelectorAll('button.ribbon-menu-item')].some(b => b.textContent.trim() === 'Din imagine…')")); i++) await sleep(200);
+  await fr(p, "[...document.querySelectorAll('button.ribbon-menu-item')].find(b => b.textContent.trim() === 'Din imagine…')?.click(), true");
+  const t3 = Date.now();
+  let ocrDone = false;
+  while (!ocrDone && Date.now() - t3 < 90000) {
+    await passDiscard(p);
+    ocrDone = await fr(p, "(() => { const t = document.querySelector('.sheet-wrap')?.innerText ?? ''; return /Ciment/.test(t) && /Cantitate/.test(t) && /\\b12\\b/.test(t) && /\\b30\\b/.test(t); })()");
+    if (!ocrDone) await sleep(500);
+  }
+  const ocrStatus = await fr(p, "document.body.innerText.match(/(Importat din tabel-poza[^\\n]*|Textul din imagine nu a putut[^\\n]*)/)?.[0] ?? ''");
+  check(`OCR „Din imagine…” citește tabelul din poză (${Math.round((Date.now() - t3) / 1000)} s, fără internet)`, ocrDone, ocrStatus);
+  await p.screenshot(join(shots, "03-din-imagine.png"));
 
   // In English the two windows have no Romanian left (only the file's own data, in the preview).
   await p.eval("[...document.querySelectorAll('aside button')].find(b => b.textContent.trim() === 'EN')?.click()");

@@ -11,7 +11,7 @@ import { AskHost } from "../../cos/src/ask";
 import { setLang } from "../../cos/src/i18n";
 import { ScreenshotHost } from "../../cos/src/screenshot";
 import { SketchHost } from "../../cos/src/sketch";
-import { showSnapshot, type Snapshot } from "./printPdf";
+import { showPdf, showSnapshot, type Snapshot } from "./printPdf";
 import { DOCS, NOTES, SHEETS, installCosBridge, openDocument, setNotesReadOnly, type KgbHost } from "../modules/sheets/cosBridge";
 import "../../cos/src/styles.css";
 import "../../cos/src/theme.css";
@@ -122,8 +122,10 @@ if (printJob) {
   void (async () => {
     const { invoke } = await import("@tauri-apps/api/core");
     try {
-      const shot = await invoke<Snapshot>("print_job_take", { id: printJob });
-      await showSnapshot(shot);
+      const shot = await invoke<Snapshot | { pdf: string }>("print_job_take", { id: printJob });
+      // Paper (D-084): the finished PDF, drawn page by page; otherwise the document's snapshot (D-081).
+      if ("pdf" in shot) await showPdf(shot.pdf);
+      else await showSnapshot(shot);
       await invoke("print_job_ready", { id: printJob, error: null });
     } catch (e) {
       await invoke("print_job_ready", { id: printJob, error: String(e) }).catch(() => {});

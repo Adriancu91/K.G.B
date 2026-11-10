@@ -152,6 +152,33 @@ try {
   }
   const a1text = await fr(p, "document.querySelector('.sh-layout-edit input')?.value ?? ''");
   check("Sheets: un clic pe pagină deschide caseta celulei, cu textul ei", a1 === "A1" && a1text === "Total vanzari", `${a1 || "(nicio casetă)"} = ${a1text}`);
+
+  // Paper (D-084): „Tipărește…” goes through the hidden window and Windows' print dialog. The test never prints:
+  // the page replaces printPaper with its test path (to_pdf), which returns what the printer would get.
+  await p.eval(`(() => { window.__paper = null; window.kgbHost.printPaper = (pdf, paper, pages) =>
+    window.__TAURI_INTERNALS__.invoke("print_paper", { pdf, paper, pages, toPdf: true }).then((r) => { window.__paper = { pages, pdf: r.pdf, printed: r.printed }; return r; }); return true; })()`);
+  await fr(p, "[...document.querySelectorAll('button')].find(b => b.textContent.trim() === '▦ Normal')?.click(), true");
+  await sleep(400);
+  await fr(p, "document.querySelector('.sheet-wrap')?.focus(), true");
+  await p.send("Input.dispatchKeyEvent", { type: "rawKeyDown", key: "p", code: "KeyP", windowsVirtualKeyCode: 80, modifiers: 2 });
+  await p.send("Input.dispatchKeyEvent", { type: "keyUp", key: "p", code: "KeyP", windowsVirtualKeyCode: 80, modifiers: 2 });
+  await frUntil(p, "!!document.querySelector('[role=dialog][aria-label=\"Tipărire\"]')", 8000);
+  await fr(p, "[...document.querySelectorAll('[role=dialog][aria-label=\"Tipărire\"] button')].find(b => b.textContent.trim() === 'Tipărește…')?.click(), true");
+  const tp = Date.now();
+  let paper = null;
+  while (!paper && Date.now() - tp < 60000) {
+    paper = await p.eval("window.__paper");
+    if (!paper) await sleep(300);
+  }
+  check("Sheets: „Tipărește…” trece prin fereastra ascunsă (calea de test, fără imprimantă)", !!paper?.printed, paper ? `${paper.pages} pagini în ${Date.now() - tp} ms` : "nimic");
+  if (paper?.pdf) {
+    const bytes = Buffer.from(paper.pdf, "base64");
+    writeFileSync(join(shots, "sheets-hartie.pdf"), bytes);
+    const n = (bytes.toString("latin1").match(/\/Type\s*\/Page[^s]/g) ?? []).length;
+    check("Sheets: hârtia are tot atâtea pagini cât PDF-ul documentului", bytes.subarray(0, 5).toString("latin1") === "%PDF-" && n === paper.pages, `${n} / ${paper.pages}`);
+  }
+  await sleep(1000);
+  check("Sheets: fereastra ascunsă de tipărire s-a închis", (await printWindows()) === 0);
   await p.screenshot(join(shots, "01-print.png"));
 
   p.close();
