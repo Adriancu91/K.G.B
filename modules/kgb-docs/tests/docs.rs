@@ -349,3 +349,24 @@ fn bomb_docx() -> Vec<u8> {
     let big = vec![b'a'; 210 * 1024 * 1024];
     zip_of(&[("word/document.xml", b"<w:document/>"), ("word/media/x.bin", &big)])
 }
+
+/// 7.4l-5b: „Folosește în editor” reads a .docx model as it is (with its {{fields}}), changes nothing, and refuses a
+/// PDF model.
+#[test]
+fn a_docx_model_is_read_as_it_is_for_the_editor() {
+    let (_tmp, mut ws, mm) = setup();
+    let list = call(&mut ws, &mm, "models", json!({})).unwrap();
+    let docx = list.as_array().unwrap().iter().find(|m| m["format"] == "docx").unwrap();
+    let r = call(&mut ws, &mm, "model_read", json!({"id": docx["id"]})).unwrap();
+    assert_eq!(r["name"], format!("{}.docx", docx["nume"].as_str().unwrap()));
+    let data = B64.decode(r["data"].as_str().unwrap()).unwrap();
+    assert_eq!(&data[..2], b"PK", "a .docx (ZIP)");
+    assert!(fill::text(&data).unwrap().contains("{{"), "the fields stay in the copy");
+    // The model is unchanged: same version afterwards.
+    let again = call(&mut ws, &mm, "models", json!({})).unwrap();
+    let same = again.as_array().unwrap().iter().find(|m| m["id"] == docx["id"]).unwrap();
+    assert_eq!(same["versiune"], docx["versiune"]);
+    let pdf = list.as_array().unwrap().iter().find(|m| m["format"] == "pdf").unwrap();
+    let e = call(&mut ws, &mm, "model_read", json!({"id": pdf["id"]})).unwrap_err().to_string();
+    assert!(e.contains("doar modelele .docx"), "{e}");
+}

@@ -7,6 +7,7 @@ import { AnafLookup, fullAddress } from "../../components/AnafLookup";
 import { open, save } from "@tauri-apps/plugin-dialog";
 import { api, message } from "../../api";
 import { FormsView } from "./forms";
+import { setIntent } from "../../intent";
 
 const ID = "kgb.docs";
 const CATEGORY: Record<string, string> = {
@@ -170,7 +171,7 @@ function GenerateDialog(props: {
   );
 }
 
-export function DocsPage({ onError }: { onError: (e: string | null) => void }) {
+export function DocsPage({ onError, onOpen }: { onError: (e: string | null) => void; onOpen?: (page: string) => void }) {
   const [tab, setTab] = useState<"modele" | "generate" | "formulare" | "firma">("modele");
   const [models, setModels] = useState<Model[]>([]);
   const [generated, setGenerated] = useState<Generated[]>([]);
@@ -280,6 +281,28 @@ export function DocsPage({ onError }: { onError: (e: string | null) => void }) {
                         <button className="primary" disabled={busy} onClick={() => setFilling(m)}>
                           Completează…
                         </button>
+                        {m.format !== "pdf" && onOpen && (
+                          <button
+                            disabled={busy}
+                            title="O copie a modelului (cu câmpurile {{…}}) ca document nou în Documente text, deschisă în editor; modelul rămâne neschimbat"
+                            onClick={() =>
+                              void run(async () => {
+                                // 7.4l-5b (D-080): the page reads the model from kgb.docs and saves a copy in kgb.write;
+                                // the two modules do not call each other.
+                                const r = await api.moduleCall<{ name: string; data: string }>(ID, "model_read", { id: m.id });
+                                const w = await api.moduleCall<{ document: { id: string } }>("kgb.write", "save_new_doc", {
+                                  name: r.name,
+                                  data: r.data,
+                                  summary: `Din modelul „${m.nume}”`,
+                                });
+                                setIntent("kgb.write", `doc=${w.document.id}`);
+                                onOpen("kgb.write");
+                              })
+                            }
+                          >
+                            Folosește în editor
+                          </button>
+                        )}
                         {m.sursa === "importat" && (
                           <>
                             <select
