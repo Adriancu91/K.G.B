@@ -1,0 +1,1647 @@
+[
+ {
+  "ro": "Acasă",
+  "en": "Home",
+  "f": "App.tsx"
+ },
+ {
+  "ro": "Parteneri",
+  "en": "Partners",
+  "f": "App.tsx"
+ },
+ {
+  "ro": "Telefon",
+  "en": "Phone",
+  "f": "App.tsx"
+ },
+ {
+  "ro": "Setări",
+  "en": "Settings",
+  "f": "App.tsx"
+ },
+ {
+  "ro": "Se încarcă…",
+  "en": "Loading…",
+  "f": "App.tsx"
+ },
+ {
+  "ro": "Limba",
+  "en": "Language",
+  "f": "App.tsx"
+ },
+ {
+  "ro": "Interfața în română",
+  "en": "Romanian interface",
+  "f": "App.tsx"
+ },
+ {
+  "ro": "Renunță",
+  "en": "Cancel",
+  "f": "components/Confirm.tsx"
+ },
+ {
+  "ro": "Atenție",
+  "en": "Warning",
+  "f": "components/Notifications.tsx"
+ },
+ {
+  "ro": "Partener nou",
+  "en": "New partner",
+  "f": "components/QuickSearch.tsx"
+ },
+ {
+  "ro": "acțiune",
+  "en": "action",
+  "f": "components/QuickSearch.tsx"
+ },
+ {
+  "ro": "pagină",
+  "en": "page",
+  "f": "components/QuickSearch.tsx"
+ },
+ {
+  "ro": "Nimic găsit.",
+  "en": "Nothing found.",
+  "f": "components/QuickSearch.tsx"
+ },
+ {
+  "ro": "Se deschide",
+  "en": "Opening",
+  "f": "cosframe/main.tsx"
+ },
+ {
+  "ro": "De plătit",
+  "en": "To pay",
+  "f": "modules/business/aging.tsx"
+ },
+ {
+  "ro": "Scadența",
+  "en": "Due date",
+  "f": "modules/business/aging.tsx"
+ },
+ {
+  "ro": "Zile de întârziere",
+  "en": "Days overdue",
+  "f": "modules/business/aging.tsx"
+ },
+ {
+  "ro": "Fișa partenerului",
+  "en": "Partner ledger",
+  "f": "modules/business/aging.tsx"
+ },
+ {
+  "ro": "Data",
+  "en": "Date",
+  "f": "modules/business/aging.tsx"
+ },
+ {
+  "ro": "Rezultat",
+  "en": "Result",
+  "f": "modules/business/audit.tsx"
+ },
+ {
+  "ro": "Recepție",
+  "en": "Receipt",
+  "f": "modules/business/BusinessPage.tsx"
+ },
+ {
+  "ro": "Depozit",
+  "en": "Warehouse",
+  "f": "modules/business/BusinessPage.tsx"
+ },
+ {
+  "ro": "Furnizor",
+  "en": "Supplier",
+  "f": "modules/business/BusinessPage.tsx"
+ },
+ {
+  "ro": "Scoate",
+  "en": "Remove",
+  "f": "modules/business/BusinessPage.tsx"
+ },
+ {
+  "ro": "Produs",
+  "en": "Product",
+  "f": "modules/business/BusinessPage.tsx"
+ },
+ {
+  "ro": "Scriptic",
+  "en": "Book",
+  "f": "modules/business/BusinessPage.tsx"
+ },
+ {
+  "ro": "Oferte",
+  "en": "Offers",
+  "f": "modules/business/BusinessPage.tsx"
+ },
+ {
+  "ro": "Comenzi",
+  "en": "Orders",
+  "f": "modules/business/BusinessPage.tsx"
+ },
+ {
+  "ro": "Cheltuieli",
+  "en": "Expenses",
+  "f": "modules/business/BusinessPage.tsx"
+ },
+ {
+  "ro": "Scadențar",
+  "en": "Aging",
+  "f": "modules/business/BusinessPage.tsx"
+ },
+ {
+  "ro": "Rapoarte",
+  "en": "Reports",
+  "f": "modules/business/BusinessPage.tsx"
+ },
+ {
+  "ro": "Cod",
+  "en": "Code",
+  "f": "modules/business/BusinessPage.tsx"
+ },
+ {
+  "ro": "Rezervat",
+  "en": "Reserved",
+  "f": "modules/business/BusinessPage.tsx"
+ },
+ {
+  "ro": "Blocat",
+  "en": "Blocked",
+  "f": "modules/business/BusinessPage.tsx"
+ },
+ {
+  "ro": "Liber",
+  "en": "Free",
+  "f": "modules/business/BusinessPage.tsx"
+ },
+ {
+  "ro": "Tip",
+  "en": "Type",
+  "f": "modules/business/BusinessPage.tsx"
+ },
+ {
+  "ro": "Număr",
+  "en": "Number",
+  "f": "modules/business/BusinessPage.tsx"
+ },
+ {
+  "ro": "Partener",
+  "en": "Partner",
+  "f": "modules/business/BusinessPage.tsx"
+ },
+ {
+  "ro": "Recepția",
+  "en": "Receipt",
+  "f": "modules/business/BusinessPage.tsx"
+ },
+ {
+  "ro": "Nume",
+  "en": "Name",
+  "f": "modules/business/BusinessPage.tsx"
+ },
+ {
+  "ro": "Cod de bare",
+  "en": "Barcode",
+  "f": "modules/business/BusinessPage.tsx"
+ },
+ {
+  "ro": "Încasare",
+  "en": "Collection",
+  "f": "modules/business/cash.tsx"
+ },
+ {
+  "ro": "Plată",
+  "en": "Payment",
+  "f": "modules/business/cash.tsx"
+ },
+ {
+  "ro": "factură",
+  "en": "invoice",
+  "f": "modules/business/cash.tsx"
+ },
+ {
+  "ro": "Plata",
+  "en": "Payment",
+  "f": "modules/business/cash.tsx"
+ },
+ {
+  "ro": "plată",
+  "en": "payment",
+  "f": "modules/business/cash.tsx"
+ },
+ {
+  "ro": "Înregistrează",
+  "en": "Record",
+  "f": "modules/business/cash.tsx"
+ },
+ {
+  "ro": "Detalii",
+  "en": "Details",
+  "f": "modules/business/cash.tsx"
+ },
+ {
+  "ro": "Leagă",
+  "en": "Link",
+  "f": "modules/business/cash.tsx"
+ },
+ {
+  "ro": "Șoferul",
+  "en": "Driver",
+  "f": "modules/business/deliveries.tsx"
+ },
+ {
+  "ro": "Destinatar",
+  "en": "Recipient",
+  "f": "modules/business/deliveries.tsx"
+ },
+ {
+  "ro": "Adresa",
+  "en": "Address",
+  "f": "modules/business/deliveries.tsx"
+ },
+ {
+  "ro": "diferențe",
+  "en": "differences",
+  "f": "modules/business/deliveries.tsx"
+ },
+ {
+  "ro": "Anulează…",
+  "en": "Cancel…",
+  "f": "modules/business/deliveries.tsx"
+ },
+ {
+  "ro": "Salvează",
+  "en": "Save",
+  "f": "modules/business/deliveries.tsx"
+ },
+ {
+  "ro": "Motivul anulării",
+  "en": "Cancellation reason",
+  "f": "modules/business/deliveries.tsx"
+ },
+ {
+  "ro": "— fără comandă —",
+  "en": "— no order —",
+  "f": "modules/business/deliveries.tsx"
+ },
+ {
+  "ro": "Destinatarul",
+  "en": "Consignee",
+  "f": "modules/business/deliveries.tsx"
+ },
+ {
+  "ro": "Rovinietă",
+  "en": "Road toll vignette",
+  "f": "modules/business/fleet.tsx"
+ },
+ {
+  "ro": "Trusă medicală",
+  "en": "First aid kit",
+  "f": "modules/business/fleet.tsx"
+ },
+ {
+  "ro": "expirat de {0} zile",
+  "en": "expired {0} days ago",
+  "f": "modules/business/fleet.tsx"
+ },
+ {
+  "ro": "expiră azi",
+  "en": "expires today",
+  "f": "modules/business/fleet.tsx"
+ },
+ {
+  "ro": "Când",
+  "en": "When",
+  "f": "modules/business/fleet.tsx"
+ },
+ {
+  "ro": "șofer",
+  "en": "driver",
+  "f": "modules/business/fleet.tsx"
+ },
+ {
+  "ro": "Vehicule",
+  "en": "Vehicles",
+  "f": "modules/business/fleet.tsx"
+ },
+ {
+  "ro": "șofer:",
+  "en": "driver:",
+  "f": "modules/business/fleet.tsx"
+ },
+ {
+  "ro": "Vehicul nou",
+  "en": "New vehicle",
+  "f": "modules/business/fleet.tsx"
+ },
+ {
+  "ro": "Numărul de înmatriculare",
+  "en": "License plate",
+  "f": "modules/business/fleet.tsx"
+ },
+ {
+  "ro": "Șoferi",
+  "en": "Drivers",
+  "f": "modules/business/fleet.tsx"
+ },
+ {
+  "ro": "Șofer nou",
+  "en": "New driver",
+  "f": "modules/business/fleet.tsx"
+ },
+ {
+  "ro": "Numele șoferului",
+  "en": "Driver name",
+  "f": "modules/business/fleet.tsx"
+ },
+ {
+  "ro": "Numele",
+  "en": "Name",
+  "f": "modules/business/fleet.tsx"
+ },
+ {
+  "ro": "Tipul",
+  "en": "Type",
+  "f": "modules/business/holds.tsx"
+ },
+ {
+  "ro": "Comanda",
+  "en": "Order",
+  "f": "modules/business/holds.tsx"
+ },
+ {
+  "ro": "Motivul blocării",
+  "en": "Reason for blocking",
+  "f": "modules/business/holds.tsx"
+ },
+ {
+  "ro": "Rezervă",
+  "en": "Reserve",
+  "f": "modules/business/holds.tsx"
+ },
+ {
+  "ro": "Motivul (opțional)",
+  "en": "Reason (optional)",
+  "f": "modules/business/holds.tsx"
+ },
+ {
+  "ro": "Eliberează",
+  "en": "Release",
+  "f": "modules/business/holds.tsx"
+ },
+ {
+  "ro": "Factura",
+  "en": "Invoice",
+  "f": "modules/business/invoices.tsx"
+ },
+ {
+  "ro": "Seria",
+  "en": "Series",
+  "f": "modules/business/invoices.tsx"
+ },
+ {
+  "ro": "Data facturii",
+  "en": "Invoice date",
+  "f": "modules/business/invoices.tsx"
+ },
+ {
+  "ro": "Adresă",
+  "en": "Address",
+  "f": "modules/business/invoices.tsx"
+ },
+ {
+  "ro": "Primul număr",
+  "en": "First number",
+  "f": "modules/business/invoices.tsx"
+ },
+ {
+  "ro": "Valabilă până la",
+  "en": "Valid until",
+  "f": "modules/business/offers.tsx"
+ },
+ {
+  "ro": "Stare",
+  "en": "Status",
+  "f": "modules/business/offers.tsx"
+ },
+ {
+  "ro": "Respinsă…",
+  "en": "Rejected…",
+  "f": "modules/business/offers.tsx"
+ },
+ {
+  "ro": "Închide…",
+  "en": "Close…",
+  "f": "modules/business/offers.tsx"
+ },
+ {
+  "ro": "Copiază",
+  "en": "Copy",
+  "f": "modules/business/offers.tsx"
+ },
+ {
+  "ro": "Închide oferta",
+  "en": "Close the offer",
+  "f": "modules/business/offers.tsx"
+ },
+ {
+  "ro": "Motivul",
+  "en": "Reason",
+  "f": "modules/business/offers.tsx"
+ },
+ {
+  "ro": "Ofertă nouă",
+  "en": "New offer",
+  "f": "modules/business/offers.tsx"
+ },
+ {
+  "ro": "Descriere",
+  "en": "Description",
+  "f": "modules/business/offers.tsx"
+ },
+ {
+  "ro": "Notă",
+  "en": "Note",
+  "f": "modules/business/offers.tsx"
+ },
+ {
+  "ro": "vânzare",
+  "en": "sale",
+  "f": "modules/business/orders.tsx"
+ },
+ {
+  "ro": "Trimite la aprobare",
+  "en": "Send for approval",
+  "f": "modules/business/orders.tsx"
+ },
+ {
+  "ro": "Aprobă",
+  "en": "Approve",
+  "f": "modules/business/orders.tsx"
+ },
+ {
+  "ro": "Gata",
+  "en": "Done",
+  "f": "modules/business/orders.tsx"
+ },
+ {
+  "ro": "Respinge (înapoi la ciornă)",
+  "en": "Reject (back to draft)",
+  "f": "modules/business/orders.tsx"
+ },
+ {
+  "ro": "Comandă nouă",
+  "en": "New order",
+  "f": "modules/business/orders.tsx"
+ },
+ {
+  "ro": " Atenție: {0}.",
+  "en": " Warning: {0}.",
+  "f": "modules/business/orders.tsx"
+ },
+ {
+  "ro": "Data comenzii",
+  "en": "Order date",
+  "f": "modules/business/orders.tsx"
+ },
+ {
+  "ro": "Factură",
+  "en": "Invoice",
+  "f": "modules/business/purchases.tsx"
+ },
+ {
+  "ro": "Alt document",
+  "en": "Other document",
+  "f": "modules/business/purchases.tsx"
+ },
+ {
+  "ro": "fișier",
+  "en": "file",
+  "f": "modules/business/purchases.tsx"
+ },
+ {
+  "ro": "Fără TVA",
+  "en": "Excl. VAT",
+  "f": "modules/business/purchases.tsx"
+ },
+ {
+  "ro": "Total fără TVA",
+  "en": "Total excl. VAT",
+  "f": "modules/business/purchases.tsx"
+ },
+ {
+  "ro": "Total de plată",
+  "en": "Total payable",
+  "f": "modules/business/purchases.tsx"
+ },
+ {
+  "ro": "Rezumat",
+  "en": "Summary",
+  "f": "modules/business/reports.tsx"
+ },
+ {
+  "ro": "Stoc",
+  "en": "Stock",
+  "f": "modules/business/reports.tsx"
+ },
+ {
+  "ro": "De la",
+  "en": "From",
+  "f": "modules/business/reports.tsx"
+ },
+ {
+  "ro": "Raport de la",
+  "en": "Report from",
+  "f": "modules/business/reports.tsx"
+ },
+ {
+  "ro": "Până la",
+  "en": "To",
+  "f": "modules/business/reports.tsx"
+ },
+ {
+  "ro": "Raport până la",
+  "en": "Report to",
+  "f": "modules/business/reports.tsx"
+ },
+ {
+  "ro": "Istoric",
+  "en": "History",
+  "f": "modules/calc/CalcPage.tsx"
+ },
+ {
+  "ro": "Conversie",
+  "en": "Convert",
+  "f": "modules/calc/CalcPage.tsx"
+ },
+ {
+  "ro": "Categoria",
+  "en": "Category",
+  "f": "modules/calc/CalcPage.tsx"
+ },
+ {
+  "ro": "Valoarea",
+  "en": "Value",
+  "f": "modules/calc/CalcPage.tsx"
+ },
+ {
+  "ro": "în",
+  "en": "in",
+  "f": "modules/calc/CalcPage.tsx"
+ },
+ {
+  "ro": "Calculează",
+  "en": "Calculate",
+  "f": "modules/calc/CalcPage.tsx"
+ },
+ {
+  "ro": "Prețul",
+  "en": "Price",
+  "f": "modules/calc/CalcPage.tsx"
+ },
+ {
+  "ro": "Zile",
+  "en": "Days",
+  "f": "modules/calc/CalcPage.tsx"
+ },
+ {
+  "ro": "Tehnice",
+  "en": "Technical",
+  "f": "modules/docs/DocsPage.tsx"
+ },
+ {
+  "ro": "Altele",
+  "en": "Other",
+  "f": "modules/docs/DocsPage.tsx"
+ },
+ {
+  "ro": "lipsește",
+  "en": "missing",
+  "f": "modules/docs/DocsPage.tsx"
+ },
+ {
+  "ro": "Versiunea",
+  "en": "Version",
+  "f": "modules/docs/DocsPage.tsx"
+ },
+ {
+  "ro": "câmpuri:",
+  "en": "fields:",
+  "f": "modules/docs/DocsPage.tsx"
+ },
+ {
+  "ro": "Completează…",
+  "en": "Fill in…",
+  "f": "modules/docs/DocsPage.tsx"
+ },
+ {
+  "ro": "Exportă",
+  "en": "Export",
+  "f": "modules/docs/DocsPage.tsx"
+ },
+ {
+  "ro": "Șterge {0}",
+  "en": "Delete {0}",
+  "f": "modules/docs/DocsPage.tsx"
+ },
+ {
+  "ro": "Șterge",
+  "en": "Delete",
+  "f": "modules/docs/DocsPage.tsx"
+ },
+ {
+  "ro": "Dată",
+  "en": "Date",
+  "f": "modules/docs/forms.tsx"
+ },
+ {
+  "ro": "Listă",
+  "en": "List",
+  "f": "modules/docs/forms.tsx"
+ },
+ {
+  "ro": "Câmpuri",
+  "en": "Fields",
+  "f": "modules/docs/forms.tsx"
+ },
+ {
+  "ro": "Eticheta",
+  "en": "Label",
+  "f": "modules/docs/forms.tsx"
+ },
+ {
+  "ro": "+ Adaugă un câmp",
+  "en": "+ Add a field",
+  "f": "modules/docs/forms.tsx"
+ },
+ {
+  "ro": "— alege —",
+  "en": "— choose —",
+  "f": "modules/docs/forms.tsx"
+ },
+ {
+  "ro": "Modifică",
+  "en": "Modify",
+  "f": "modules/docs/forms.tsx"
+ },
+ {
+  "ro": "Șterge răspunsul",
+  "en": "Delete reply",
+  "f": "modules/docs/forms.tsx"
+ },
+ {
+  "ro": "Facturi",
+  "en": "Invoices",
+  "f": "modules/extract/ExtractPage.tsx"
+ },
+ {
+  "ro": "Șters: {0}",
+  "en": "Deleted: {0}",
+  "f": "modules/extract/ExtractPage.tsx"
+ },
+ {
+  "ro": "Documente",
+  "en": "Documents",
+  "f": "modules/extract/ExtractPage.tsx"
+ },
+ {
+  "ro": "Șterge documentul",
+  "en": "Delete the document",
+  "f": "modules/extract/ExtractPage.tsx"
+ },
+ {
+  "ro": "Câmp",
+  "en": "Field",
+  "f": "modules/extract/ExtractPage.tsx"
+ },
+ {
+  "ro": "Valoare",
+  "en": "Value",
+  "f": "modules/extract/ExtractPage.tsx"
+ },
+ {
+  "ro": "Sursa",
+  "en": "Source",
+  "f": "modules/extract/ExtractPage.tsx"
+ },
+ {
+  "ro": "Adaugă",
+  "en": "Add",
+  "f": "modules/notes/NotesPage.tsx"
+ },
+ {
+  "ro": "Editează",
+  "en": "Edit",
+  "f": "modules/notes/NotesPage.tsx"
+ },
+ {
+  "ro": "Ușoară (calitate foarte bună)",
+  "en": "Light (very good quality)",
+  "f": "modules/pdf/compress.ts"
+ },
+ {
+  "ro": "Medie (bună pentru e-mail)",
+  "en": "Medium (good for e-mail)",
+  "f": "modules/pdf/compress.ts"
+ },
+ {
+  "ro": "Puternică (cel mai mic fișier)",
+  "en": "Strong (smallest file)",
+  "f": "modules/pdf/compress.ts"
+ },
+ {
+  "ro": "PDF-ul e protejat (criptat): îl poți citi, căuta, tipări și completa formularele. ",
+  "en": "The PDF is protected (encrypted): you can read, search, print it and fill in forms. ",
+  "f": "modules/pdf/edit.ts"
+ },
+ {
+  "ro": "Ca să-i modifici paginile (rotire, ștergere, semnătură…), apasă „Elimină parola”.",
+  "en": "To change its pages (rotate, delete, signature…), press “Remove password”.",
+  "f": "modules/pdf/edit.ts"
+ },
+ {
+  "ro": "Golește formularul",
+  "en": "Reset form",
+  "f": "modules/pdf/Form.tsx"
+ },
+ {
+  "ro": "PDF-ul nu are câmpuri de completat.",
+  "en": "The PDF has no fillable fields.",
+  "f": "modules/pdf/formdata.ts"
+ },
+ {
+  "ro": "Da",
+  "en": "Yes",
+  "f": "modules/pdf/formdata.ts"
+ },
+ {
+  "ro": "Fișier",
+  "en": "File",
+  "f": "modules/pdf/formdata.ts"
+ },
+ {
+  "ro": "Fișierul .fdf e prea adânc",
+  "en": "The .fdf file is nested too deeply",
+  "f": "modules/pdf/formdata.ts"
+ },
+ {
+  "ro": "Se pot pune 2, 4, 6, 9 sau 16 pagini pe foaie.",
+  "en": "2, 4, 6, 9 or 16 pages can be put on a sheet.",
+  "f": "modules/pdf/nup.ts"
+ },
+ {
+  "ro": "Posterul se face pe cel mult 64 de foi.",
+  "en": "The poster is made on at most 64 sheets.",
+  "f": "modules/pdf/nup.ts"
+ },
+ {
+  "ro": "Pagina aleasă nu există.",
+  "en": "The chosen page does not exist.",
+  "f": "modules/pdf/nup.ts"
+ },
+ {
+  "ro": "1 pagină",
+  "en": "1 page",
+  "f": "modules/pdf/PdfPage.tsx"
+ },
+ {
+  "ro": "fără imagine",
+  "en": "not image",
+  "f": "modules/pdf/PdfPage.tsx"
+ },
+ {
+  "ro": "Pagina {0}",
+  "en": "Page {0}",
+  "f": "modules/pdf/PdfPage.tsx"
+ },
+ {
+  "ro": "Ștampilă…",
+  "en": "Stamp…",
+  "f": "modules/pdf/PdfPage.tsx"
+ },
+ {
+  "ro": "Deselectează",
+  "en": "Deselect",
+  "f": "modules/pdf/PdfPage.tsx"
+ },
+ {
+  "ro": "Pagina {n} din {total}",
+  "en": "Page {n} of {total}",
+  "f": "modules/pdf/PdfPage.tsx"
+ },
+ {
+  "ro": "Pagini",
+  "en": "Pages",
+  "f": "modules/pdf/PdfPage.tsx"
+ },
+ {
+  "ro": "Deschide pagina",
+  "en": "Open page",
+  "f": "modules/pdf/PdfPage.tsx"
+ },
+ {
+  "ro": "Caută",
+  "en": "Search",
+  "f": "modules/pdf/Redact.tsx"
+ },
+ {
+  "ro": "Ștampilă",
+  "en": "Stamp",
+  "f": "modules/pdf/StampDialog.tsx"
+ },
+ {
+  "ro": "Imaginea nu s-a putut citi. Încearcă un fișier PNG sau JPG.",
+  "en": "The image could not be read. Try a PNG or JPG file.",
+  "f": "modules/pdf/StampDialog.tsx"
+ },
+ {
+  "ro": "Previzualizarea ștampilei",
+  "en": "Stamp preview",
+  "f": "modules/pdf/StampDialog.tsx"
+ },
+ {
+  "ro": "Se pregătește imaginea…",
+  "en": "Preparing the picture…",
+  "f": "modules/pdf/StampDialog.tsx"
+ },
+ {
+  "ro": "Scoate fundalul (hârtia)",
+  "en": "Remove the background (paper)",
+  "f": "modules/pdf/StampDialog.tsx"
+ },
+ {
+  "ro": "Mai mult: scoate și umbrele sau hârtia mai închisă; mai puțin: păstrează și cerneala foarte deschisă",
+  "en": "More: also removes shadows or darker paper; less: also keeps very light ink",
+  "f": "modules/pdf/StampDialog.tsx"
+ },
+ {
+  "ro": "Toleranță",
+  "en": "Tolerance",
+  "f": "modules/pdf/StampDialog.tsx"
+ },
+ {
+  "ro": "Toleranța fundalului",
+  "en": "Background tolerance",
+  "f": "modules/pdf/StampDialog.tsx"
+ },
+ {
+  "ro": "Numele ștampilei",
+  "en": "Stamp name",
+  "f": "modules/pdf/StampDialog.tsx"
+ },
+ {
+  "ro": "Salvează ștampila",
+  "en": "Save stamp",
+  "f": "modules/pdf/StampDialog.tsx"
+ },
+ {
+  "ro": "PLĂTIT",
+  "en": "PAID",
+  "f": "modules/pdf/Stamps.tsx"
+ },
+ {
+  "ro": "CONFIDENȚIAL",
+  "en": "CONFIDENTIAL",
+  "f": "modules/pdf/Stamps.tsx"
+ },
+ {
+  "ro": "Roșu",
+  "en": "Red",
+  "f": "modules/pdf/Stamps.tsx"
+ },
+ {
+  "ro": "Albastru",
+  "en": "Blue",
+  "f": "modules/pdf/Stamps.tsx"
+ },
+ {
+  "ro": "Verde",
+  "en": "Green",
+  "f": "modules/pdf/Stamps.tsx"
+ },
+ {
+  "ro": "Negru",
+  "en": "Black",
+  "f": "modules/pdf/Stamps.tsx"
+ },
+ {
+  "ro": "Culoarea {0}",
+  "en": "Color {0}",
+  "f": "modules/pdf/Stamps.tsx"
+ },
+ {
+  "ro": "Opacitatea ștampilei",
+  "en": "Stamp opacity",
+  "f": "modules/pdf/Stamps.tsx"
+ },
+ {
+  "ro": "Pune",
+  "en": "Apply",
+  "f": "modules/pdf/Stamps.tsx"
+ },
+ {
+  "ro": "Ștampilele mele",
+  "en": "My stamps",
+  "f": "modules/pdf/Stamps.tsx"
+ },
+ {
+  "ro": "rânduri",
+  "en": "rows",
+  "f": "modules/pdf/Tools.tsx"
+ },
+ {
+  "ro": "Comprimă pozele",
+  "en": "Compress pictures",
+  "f": "modules/pdf/Tools.tsx"
+ },
+ {
+  "ro": "Fișierul nu e XFDF (comentarii PDF exportate din Cyber Office Studio sau din alt program).",
+  "en": "The file is not XFDF (PDF comments exported from Cyber Office Studio or another program).",
+  "f": "modules/pdf/xfdf.ts"
+ },
+ {
+  "ro": "Construcții",
+  "en": "Construction",
+  "f": "modules/permits/PermitsPage.tsx"
+ },
+ {
+  "ro": "Mediu",
+  "en": "Medium",
+  "f": "modules/permits/PermitsPage.tsx"
+ },
+ {
+  "ro": "Titlu",
+  "en": "Title",
+  "f": "modules/permits/PermitsPage.tsx"
+ },
+ {
+  "ro": "Pașii",
+  "en": "Steps",
+  "f": "modules/permits/PermitsPage.tsx"
+ },
+ {
+  "ro": "+ sursă",
+  "en": "+ source",
+  "f": "modules/permits/PermitsPage.tsx"
+ },
+ {
+  "ro": "(opțional)",
+  "en": "(optional)",
+  "f": "modules/permits/PermitsPage.tsx"
+ },
+ {
+  "ro": "Dosare",
+  "en": "Folders",
+  "f": "modules/permits/PermitsPage.tsx"
+ },
+ {
+  "ro": "Dosar",
+  "en": "Folder",
+  "f": "modules/permits/PermitsPage.tsx"
+ },
+ {
+  "ro": "Dosar nou",
+  "en": "New folder",
+  "f": "modules/permits/PermitsPage.tsx"
+ },
+ {
+  "ro": "Deschide dosarul",
+  "en": "Open folder",
+  "f": "modules/permits/PermitsPage.tsx"
+ },
+ {
+  "ro": "Zilnic",
+  "en": "Daily",
+  "f": "modules/planner/PlannerPage.tsx"
+ },
+ {
+  "ro": "Săptămânal",
+  "en": "Weekly",
+  "f": "modules/planner/PlannerPage.tsx"
+ },
+ {
+  "ro": "Lunar",
+  "en": "Monthly",
+  "f": "modules/planner/PlannerPage.tsx"
+ },
+ {
+  "ro": "Anual",
+  "en": "Yearly",
+  "f": "modules/planner/PlannerPage.tsx"
+ },
+ {
+  "ro": "De făcut",
+  "en": "To Do",
+  "f": "modules/planner/PlannerPage.tsx"
+ },
+ {
+  "ro": "În lucru",
+  "en": "In progress",
+  "f": "modules/planner/PlannerPage.tsx"
+ },
+ {
+  "ro": "Normală",
+  "en": "Normal",
+  "f": "modules/planner/PlannerPage.tsx"
+ },
+ {
+  "ro": "Se repetă",
+  "en": "Repeats",
+  "f": "modules/planner/PlannerPage.tsx"
+ },
+ {
+  "ro": "Nu se repetă",
+  "en": "Does not repeat",
+  "f": "modules/planner/PlannerPage.tsx"
+ },
+ {
+  "ro": "până la",
+  "en": "to",
+  "f": "modules/planner/PlannerPage.tsx"
+ },
+ {
+  "ro": "Se repetă: {0}",
+  "en": "Repeats: {0}",
+  "f": "modules/planner/PlannerPage.tsx"
+ },
+ {
+  "ro": "Întârziate:",
+  "en": "Overdue:",
+  "f": "modules/planner/PlannerPage.tsx"
+ },
+ {
+  "ro": "Vedere",
+  "en": "View",
+  "f": "modules/planner/PlannerPage.tsx"
+ },
+ {
+  "ro": "Arhivează",
+  "en": "Archive",
+  "f": "modules/planner/PlannerPage.tsx"
+ },
+ {
+  "ro": "Întârziate",
+  "en": "Overdue",
+  "f": "modules/planner/reports.tsx"
+ },
+ {
+  "ro": "Tabel CSV",
+  "en": "CSV table",
+  "f": "modules/planner/reports.tsx"
+ },
+ {
+  "ro": "Persoană",
+  "en": "Person",
+  "f": "modules/planner/reports.tsx"
+ },
+ {
+  "ro": "Joi",
+  "en": "Thursday",
+  "f": "modules/planner/views.tsx"
+ },
+ {
+  "ro": "Înapoi",
+  "en": "Back",
+  "f": "modules/planner/views.tsx"
+ },
+ {
+  "ro": "Înainte",
+  "en": "Forward",
+  "f": "modules/planner/views.tsx"
+ },
+ {
+  "ro": "Conținutul celulei",
+  "en": "Cell contents",
+  "f": "modules/sheets/SheetsPage.tsx"
+ },
+ {
+  "ro": "Doar citire",
+  "en": "Read only",
+  "f": "modules/sheets/SheetsPage.tsx"
+ },
+ {
+  "ro": "Tabel",
+  "en": "Table",
+  "f": "modules/sheets/SheetsPage.tsx"
+ },
+ {
+  "ro": "Folosește",
+  "en": "Use",
+  "f": "modules/sheets/SheetsPage.tsx"
+ },
+ {
+  "ro": "Închide",
+  "en": "Close",
+  "f": "modules/sheets/SheetsPage.tsx"
+ },
+ {
+  "ro": "Foaie de calcul",
+  "en": "Spreadsheet",
+  "f": "modules/sheets/SheetsPage.tsx"
+ },
+ {
+  "ro": "Luna",
+  "en": "Month",
+  "f": "modules/team/TeamPage.tsx"
+ },
+ {
+  "ro": "Ziua",
+  "en": "Day",
+  "f": "modules/team/TeamPage.tsx"
+ },
+ {
+  "ro": "Cerere de concediu",
+  "en": "Leave request",
+  "f": "modules/team/TeamPage.tsx"
+ },
+ {
+  "ro": "Ore lucrate",
+  "en": "Hours worked",
+  "f": "modules/team/TeamPage.tsx"
+ },
+ {
+  "ro": "Ore suplimentare",
+  "en": "Overtime",
+  "f": "modules/team/TeamPage.tsx"
+ },
+ {
+  "ro": "Angajat nou",
+  "en": "New employee",
+  "f": "modules/team/TeamPage.tsx"
+ },
+ {
+  "ro": "Salvat pe calculator: {0}",
+  "en": "Saved on this computer: {0}",
+  "f": "modules/write/WritePage.tsx"
+ },
+ {
+  "ro": "Document nou",
+  "en": "New document",
+  "f": "modules/write/WritePage.tsx"
+ },
+ {
+  "ro": "Eu",
+  "en": "Me",
+  "f": "pages/ChatPage.tsx"
+ },
+ {
+  "ro": "Trimite",
+  "en": "Send",
+  "f": "pages/ChatPage.tsx"
+ },
+ {
+  "ro": "Modul",
+  "en": "Mode",
+  "f": "pages/ConflictsPage.tsx"
+ },
+ {
+  "ro": "Ce",
+  "en": "What",
+  "f": "pages/ConflictsPage.tsx"
+ },
+ {
+  "ro": "Organizația",
+  "en": "Organization",
+  "f": "pages/ConflictsPage.tsx"
+ },
+ {
+  "ro": "Verifică",
+  "en": "Check",
+  "f": "pages/DataPage.tsx"
+ },
+ {
+  "ro": "Restaurează…",
+  "en": "Restore…",
+  "f": "pages/DataPage.tsx"
+ },
+ {
+  "ro": "Deschide",
+  "en": "Open",
+  "f": "pages/DataPage.tsx"
+ },
+ {
+  "ro": "Șterge definitiv",
+  "en": "Delete permanently",
+  "f": "pages/DataPage.tsx"
+ },
+ {
+  "ro": "Copiat",
+  "en": "Copied",
+  "f": "pages/Devices.tsx"
+ },
+ {
+  "ro": "Valabilă",
+  "en": "Valid",
+  "f": "pages/Devices.tsx"
+ },
+ {
+  "ro": "Pentru",
+  "en": "For",
+  "f": "pages/Devices.tsx"
+ },
+ {
+  "ro": "Raport",
+  "en": "Report",
+  "f": "pages/DiagnosticsPage.tsx"
+ },
+ {
+  "ro": "Acțiune",
+  "en": "Action",
+  "f": "pages/DiagnosticsPage.tsx"
+ },
+ {
+  "ro": "Bani",
+  "en": "Money",
+  "f": "pages/Home.tsx"
+ },
+ {
+  "ro": "și",
+  "en": "and",
+  "f": "pages/Home.tsx"
+ },
+ {
+  "ro": "Deschide „",
+  "en": "Open „",
+  "f": "pages/Home.tsx"
+ },
+ {
+  "ro": "încă",
+  "en": "still",
+  "f": "pages/Home.tsx"
+ },
+ {
+  "ro": "Bancă",
+  "en": "Bank",
+  "f": "pages/Home.tsx"
+ },
+ {
+  "ro": "De plătit: {0}",
+  "en": "To pay: {0}",
+  "f": "pages/Home.tsx"
+ },
+ {
+  "ro": "Bună dimineața",
+  "en": "Good morning",
+  "f": "pages/Home.tsx"
+ },
+ {
+  "ro": "Bună ziua",
+  "en": "Good afternoon",
+  "f": "pages/Home.tsx"
+ },
+ {
+  "ro": "Bună seara",
+  "en": "Good evening",
+  "f": "pages/Home.tsx"
+ },
+ {
+  "ro": "+ Factură",
+  "en": "+ Invoice",
+  "f": "pages/Home.tsx"
+ },
+ {
+  "ro": "Ascunde",
+  "en": "Hide",
+  "f": "pages/Home.tsx"
+ },
+ {
+  "ro": "pornită",
+  "en": "on",
+  "f": "pages/NetPanel.tsx"
+ },
+ {
+  "ro": "Redenumește",
+  "en": "Rename",
+  "f": "pages/OrgPage.tsx"
+ },
+ {
+  "ro": "România",
+  "en": "Romania",
+  "f": "pages/PartnersPage.tsx"
+ },
+ {
+  "ro": "Denumire",
+  "en": "Name",
+  "f": "pages/PartnersPage.tsx"
+ },
+ {
+  "ro": "Localitate",
+  "en": "Town",
+  "f": "pages/PartnersPage.tsx"
+ },
+ {
+  "ro": "Județ",
+  "en": "County",
+  "f": "pages/PartnersPage.tsx"
+ },
+ {
+  "ro": "Țara",
+  "en": "Country",
+  "f": "pages/PartnersPage.tsx"
+ },
+ {
+  "ro": "Numele câmpului {0}",
+  "en": "Field name {0}",
+  "f": "pages/PartnersPage.tsx"
+ },
+ {
+  "ro": "+ câmp",
+  "en": "+ field",
+  "f": "pages/PartnersPage.tsx"
+ },
+ {
+  "ro": "Note",
+  "en": "Notes",
+  "f": "pages/PartnersPage.tsx"
+ },
+ {
+  "ro": "Tabele",
+  "en": "Tables",
+  "f": "pages/PartnersPage.tsx"
+ },
+ {
+  "ro": "rândul",
+  "en": "row",
+  "f": "pages/PartnersPage.tsx"
+ },
+ {
+  "ro": "Pauză (min)",
+  "en": "Break (min)",
+  "f": "pages/PhonePage.tsx"
+ },
+ {
+  "ro": "Vehicul",
+  "en": "Vehicle",
+  "f": "pages/PhonePage.tsx"
+ },
+ {
+  "ro": "Observații",
+  "en": "Remarks",
+  "f": "pages/PhonePage.tsx"
+ },
+ {
+  "ro": "Șofer",
+  "en": "Driver",
+  "f": "pages/PhonePage.tsx"
+ },
+ {
+  "ro": "Poză",
+  "en": "Picture",
+  "f": "pages/PhonePage.tsx"
+ },
+ {
+  "ro": "Preț unitar (lei)",
+  "en": "Unit price (lei)",
+  "f": "pages/PhonePage.tsx"
+ },
+ {
+  "ro": "Cod nou",
+  "en": "New code",
+  "f": "pages/PhonePage.tsx"
+ },
+ {
+  "ro": "Contul bancar",
+  "en": "Bank account",
+  "f": "pages/PhonePage.tsx"
+ },
+ {
+  "ro": "Aspect",
+  "en": "Layout",
+  "f": "pages/SettingsPage.tsx"
+ },
+ {
+  "ro": "Temă",
+  "en": "Theme",
+  "f": "pages/SettingsPage.tsx"
+ },
+ {
+  "ro": "Densitate",
+  "en": "Density",
+  "f": "pages/SettingsPage.tsx"
+ },
+ {
+  "ro": "Limbă",
+  "en": "Language",
+  "f": "pages/SettingsPage.tsx"
+ },
+ {
+  "ro": "oprită",
+  "en": "off",
+  "f": "pages/SourcesPage.tsx"
+ },
+ {
+  "ro": "Licența",
+  "en": "License",
+  "f": "pages/SourcesPage.tsx"
+ },
+ {
+  "ro": "Licență transport",
+  "en": "Transport license",
+  "f": "app/src-tauri/src/main.rs"
+ },
+ {
+  "ro": "alege orașul",
+  "en": "choose city",
+  "f": "app/src-tauri/src/main.rs"
+ },
+ {
+  "ro": "limba poate fi doar ro sau en",
+  "en": "the language can only be ro or en",
+  "f": "app/src-tauri/src/main.rs"
+ },
+ {
+  "ro": "ștearsă",
+  "en": "deleted",
+  "f": "crates/kgb-core/src/conflicts.rs"
+ },
+ {
+  "ro": "numele fișierului",
+  "en": "file name",
+  "f": "crates/kgb-core/src/files.rs"
+ },
+ {
+  "ro": "Expiră azi: {0} — {1}",
+  "en": "Expires today: {0} — {1}",
+  "f": "crates/kgb-core/src/partners.rs"
+ },
+ {
+  "ro": "tip necunoscut „{0}”",
+  "en": "unknown type „{0}”",
+  "f": "crates/kgb-core/src/registry.rs"
+ },
+ {
+  "ro": "Chitanța {0} ",
+  "en": "Receipt {0} ",
+  "f": "modules/kgb-business/src/audit.rs"
+ },
+ {
+  "ro": "Factură emisă",
+  "en": "Issued invoice",
+  "f": "modules/kgb-business/src/audit.rs"
+ },
+ {
+  "ro": "legătura",
+  "en": "the link",
+  "f": "modules/kgb-business/src/cash.rs"
+ },
+ {
+  "ro": "Chitanța {0} {1}",
+  "en": "Receipt {0} {1}",
+  "f": "modules/kgb-business/src/cash.rs"
+ },
+ {
+  "ro": "lipsește: {0}",
+  "en": "missing: {0}",
+  "f": "modules/kgb-business/src/deliveries.rs"
+ },
+ {
+  "ro": "Stornează factura {0} {1}",
+  "en": "Reverse invoice {0} {1}",
+  "f": "modules/kgb-business/src/invoices.rs"
+ },
+ {
+  "ro": "FACTURĂ",
+  "en": "INVOICE",
+  "f": "modules/kgb-business/src/invoices.rs"
+ },
+ {
+  "ro": "de încasat",
+  "en": "receivable",
+  "f": "modules/kgb-business/src/package.rs"
+ },
+ {
+  "ro": "de plătit",
+  "en": "payable",
+  "f": "modules/kgb-business/src/package.rs"
+ },
+ {
+  "ro": "rândul {0}: {1}",
+  "en": "row {0}: {1}",
+  "f": "modules/kgb-business/src/purchases.rs"
+ },
+ {
+  "ro": "Cheltuieli fără TVA",
+  "en": "Expenses excl. VAT",
+  "f": "modules/kgb-business/src/reports.rs"
+ },
+ {
+  "ro": "Temperatură",
+  "en": "Temperature",
+  "f": "modules/kgb-calc/src/units.rs"
+ },
+ {
+  "ro": "Contract de prestări servicii",
+  "en": "Service agreement",
+  "f": "modules/kgb-docs/src/lib.rs"
+ },
+ {
+  "ro": "Adeverință de salariat",
+  "en": "Employment certificate",
+  "f": "modules/kgb-docs/src/lib.rs"
+ },
+ {
+  "ro": "Proces-verbal de recepție",
+  "en": "Goods receipt report",
+  "f": "modules/kgb-docs/src/lib.rs"
+ },
+ {
+  "ro": "PDF-ul nu se poate afișa",
+  "en": "The PDF cannot be displayed",
+  "f": "modules/kgb-pdf/src/lib.rs"
+ },
+ {
+  "ro": "roșu",
+  "en": "red",
+  "f": "modules/kgb-pdf/src/stamp.rs"
+ },
+ {
+  "ro": "Termen depășit",
+  "en": "Deadline passed",
+  "f": "modules/kgb-permits/src/lib.rs"
+ },
+ {
+  "ro": "Următorul: {0}",
+  "en": "Next: {0}",
+  "f": "modules/kgb-planner/src/lib.rs"
+ },
+ {
+  "ro": "Întârziat",
+  "en": "Overdue",
+  "f": "modules/kgb-planner/src/lib.rs"
+ },
+ {
+  "ro": "formulă",
+  "en": "formula",
+  "f": "modules/kgb-sheets/src/lib.rs"
+ },
+ {
+  "ro": "Contabilitate primară",
+  "en": "Primary accounting",
+  "f": "modules/kgb-sheets/src/templates.rs"
+ },
+ {
+  "ro": "Listă de inventariere",
+  "en": "Stocktaking list",
+  "f": "modules/kgb-sheets/src/templates.rs"
+ },
+ {
+  "ro": "Diferență",
+  "en": "Difference",
+  "f": "modules/kgb-sheets/src/templates.rs"
+ },
+ {
+  "ro": "Utilități",
+  "en": "Utilities",
+  "f": "modules/kgb-sheets/src/templates.rs"
+ },
+ {
+  "ro": "Număr:",
+  "en": "Number:",
+  "f": "modules/kgb-sheets/src/templates.rs"
+ },
+ {
+  "ro": "Preț unitar",
+  "en": "Unit price",
+  "f": "modules/kgb-sheets/src/templates.rs"
+ },
+ {
+  "ro": "Sold inițial",
+  "en": "Opening balance",
+  "f": "modules/kgb-sheets/src/templates.rs"
+ },
+ {
+  "ro": "Încasări",
+  "en": "Collections",
+  "f": "modules/kgb-sheets/src/templates.rs"
+ },
+ {
+  "ro": "Plăți",
+  "en": "Payments",
+  "f": "modules/kgb-sheets/src/templates.rs"
+ },
+ {
+  "ro": "Chitanța 1",
+  "en": "Receipt 1",
+  "f": "modules/kgb-sheets/src/templates.rs"
+ },
+ {
+  "ro": "Chitanța 2",
+  "en": "Receipt 2",
+  "f": "modules/kgb-sheets/src/templates.rs"
+ },
+ {
+  "ro": "Chitanța 3",
+  "en": "Receipt 3",
+  "f": "modules/kgb-sheets/src/templates.rs"
+ },
+ {
+  "ro": "Total de plată (lei)",
+  "en": "Total to pay (lei)",
+  "f": "modules/kgb-sheets/src/templates.rs"
+ },
+ {
+  "ro": "Sold la început",
+  "en": "Opening balance",
+  "f": "modules/kgb-sheets/src/templates.rs"
+ }
+]
