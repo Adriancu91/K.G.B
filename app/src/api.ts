@@ -28,6 +28,8 @@ export interface Settings {
   layout: Layout;
   /** Start page panels (Etapa 4, D-047). */
   home: { panels: HomePanel[]; amanate: Record<string, string>; vreme?: string };
+  /** Requests to the internet the person asks for (D-086); in an organization only an administrator changes it. */
+  internet?: boolean;
 }
 
 export interface Profile {

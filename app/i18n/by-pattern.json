@@ -1425,6 +1425,16 @@
   "f": "pages/SourcesPage.tsx"
  },
  {
+  "ro": "Fișierul: {0}",
+  "en": "File: {0}",
+  "f": "app/src-tauri/src/feedback.rs"
+ },
+ {
+  "ro": "(fără)",
+  "en": "(none)",
+  "f": "app/src-tauri/src/feedback.rs"
+ },
+ {
   "ro": "Licență transport",
   "en": "Transport license",
   "f": "app/src-tauri/src/main.rs"

@@ -403,7 +403,62 @@ fn get_settings(app: State<AppState>) -> CmdResult<SettingsReply> {
 #[tauri::command]
 fn save_settings(app: State<AppState>, settings: Settings, version: u64) -> CmdResult<u64> {
     with_session(&app, |s| {
+        // D-086: in an organization, only an administrator turns the internet requests on or off.
+        if settings::load(s.ws.store())?.settings.internet != settings.internet {
+            org::require_admin(s.ws.store(), Some(&s.device.fingerprint()), "accesul la internet")?;
+        }
         settings::save(s.ws.store_mut(), &settings, version, &known_profiles())
+    })
+}
+
+#[derive(Serialize)]
+struct NetReply {
+    status: u16,
+    content_type: String,
+    url: String,
+    /// The answer, as base64.
+    data: String,
+}
+
+/// A request the person asked for (D-086): „Din web…” (`page`, GET, 10 MB; http:// only after the person confirmed)
+/// or a signature's time stamp (`timestamp`, POST of the request, 1 MB; http:// allowed, the answer is signed and
+/// checked). Only with Settings › Internet on. The log keeps the host and the path, never the query.
+#[tauri::command]
+async fn net_fetch(app: State<'_, AppState>, url: String, purpose: String, body: Option<String>, http: bool) -> CmdResult<NetReply> {
+    use base64::Engine as _;
+    use kgb_net::web::{Purpose, for_log, user_fetch};
+    let (on, in_org) = with_session(&app, |s| {
+        Ok((settings::load(s.ws.store())?.settings.internet, org::organization(s.ws.store())?.is_some()))
+    })?;
+    if !on {
+        return Err(if in_org {
+            "Cererile către internet sunt oprite de administratorul organizației (Setări → Internet).".into()
+        } else {
+            "Cererile către internet sunt oprite din Setări → Internet.".into()
+        });
+    }
+    let purpose = match purpose.as_str() {
+        "page" => Purpose::Page,
+        "timestamp" => Purpose::Timestamp,
+        _ => return Err("cererea către internet nu e cunoscută".into()),
+    };
+    let body = match body {
+        Some(b) => Some(base64::engine::general_purpose::STANDARD.decode(b).map_err(|_| "cererea nu a ajuns întreagă".to_string())?),
+        None => None,
+    };
+    // Tests only, from the environment (never from a page): the small server the e2e starts on 127.0.0.1.
+    let loopback = std::env::var("KGB_TEST_NET_LOOPBACK").as_deref() == Ok("1");
+    let r = user_fetch(&url, purpose, body, http || purpose == Purpose::Timestamp, loopback).await;
+    match &r {
+        Ok(f) => tracing::info!("internet, la cererea omului ({purpose:?}): {} → {} · {} octeți", for_log(&url), f.status, f.data.len()),
+        Err(e) => tracing::info!("internet, la cererea omului ({purpose:?}): {} → refuzat: {e}", for_log(&url)),
+    }
+    let f = r?;
+    Ok(NetReply {
+        status: f.status,
+        content_type: f.content_type,
+        url: f.final_url,
+        data: base64::engine::general_purpose::STANDARD.encode(f.data),
     })
 }
 
@@ -1804,6 +1859,7 @@ fn main() {
             purge_leftovers,
             print::print_pdf,
             print::print_paper,
+            net_fetch,
             print::print_job_take,
             print::print_job_ready,
             wincert::wincert_list,

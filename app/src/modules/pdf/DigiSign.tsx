@@ -13,6 +13,17 @@ import { readSignatures } from "../../../cos/src/pdf/signatures";
 import { verifySignature } from "../../../cos/src/pdf/verifySig";
 import "../../../cos/src/pdf/digisign.css";
 
+/** RFC 3161 time stamps at `url`, through the core (D-086); http:// is allowed, the answer is signed and checked. */
+function tsaClient(url: string) {
+  return async (req: Uint8Array): Promise<Uint8Array> => {
+    let bin = "";
+    for (const b of req) bin += String.fromCharCode(b);
+    const r = await invoke<{ status: number; data: string }>("net_fetch", { url, purpose: "timestamp", body: btoa(bin), http: true });
+    if (r.status >= 400) throw new Error(`Serverul de marcă temporală a răspuns cu eroarea ${r.status}.`);
+    return Uint8Array.from(atob(r.data), (c) => c.charCodeAt(0));
+  };
+}
+
 const b64 = (b: Uint8Array) => {
   let s = "";
   for (let i = 0; i < b.length; i += 0x8000) s += String.fromCharCode(...b.subarray(i, i + 0x8000));
@@ -53,7 +64,6 @@ export async function signedPdf(
   r: SignRequest,
   place?: { page: number; x: number; y: number; w: number; h: number; rot: number },
 ): Promise<Uint8Array> {
-  if (r.tsa) throw new Error("Marca temporală nu e încă disponibilă în K.G.B.: semnează fără ea.");
   const appearance = place ? sigAppearance(r.id.owner.name, new Date(), r.reason, place.w, place.h, place.rot) : r.appearance;
   return signPdf(bytes, r.id, {
     field: r.field || undefined,
@@ -62,6 +72,8 @@ export async function signedPdf(
     ...(appearance ? { appearance } : {}),
     ...(place ? { place: { page: place.page, x: place.x, y: place.y, w: place.w, h: place.h } } : {}),
     ...(r.certify ? { certify: r.certify } : {}),
+    // The time stamp (D-086): the request goes through the core to the server the person wrote.
+    ...(r.tsa ? { tsa: tsaClient(r.tsa) } : {}),
   });
 }
 

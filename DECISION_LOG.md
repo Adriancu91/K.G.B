@@ -449,3 +449,16 @@ Deciziile DECIS se schimbă doar cu aprobarea explicită a proprietarului (Maste
 - **Teste:** `KGB_TEST_WINCERT=<.pfx>|<parolă>` folosește certificatul din fișier în locul magazinului (cheia doar în memorie, nimic scris în Windows), ca `SUITE_TEST_WINCERT` din COS. Cine poate pune variabile de mediu procesului are deja contul utilizatorului; calea nu ocolește nimic. e2e `pdf-sign.mjs` face certificatul de test cu openssl.
 - **Încă nu:** marca temporală (RFC 3161) cere un apel de rețea către serverul ales de utilizator — decizie separată; până atunci fereastra spune că nu e disponibilă. Proba cu stickul real al proprietarului: 🔒 7.4l-0c-token.
 - **Biblioteci:** nimic nou.
+
+### D-086 — Cereri către internet doar la cererea omului, prin nucleu
+- **Data:** 10 nov. 2026 · **Statut:** DECIS — acord COS + K.G.B. (D-074); completează D-062 și D-083
+- **Ce:** „Din web…” din foile de calcul (și ce mai cere codul COS prin `webGet`: formulele cu adresă, pozele din celule, previzualizarea legăturilor din Note) și marca temporală (RFC 3161) a semnăturii PDF. Pagina și cadrul nu au acces la rețea (D-083 rămâne `'self'`): totul trece prin comanda `net_fetch`, cu clientul existent din `crates/kgb-net/src/web.rs` (reqwest 0.13, rustls, certificatele Windows), funcția nouă `user_fetch`. Nicio bibliotecă nouă (`url` era deja în arbore, aceeași versiune).
+- **Reguli:**
+  - doar https:// și http://; http:// la „Din web” doar după ce omul confirmă (fereastra spune „legătură necriptată”); la marca temporală http:// e permis (răspunsul e semnat și verificat);
+  - fără nume / parolă în adresă, fără cookie-uri, fără proxy de sistem (`no_proxy`), un User-Agent fix al aplicației;
+  - nicio adresă a acestui PC sau a rețelei locale (loopback, private, link-local, CGNAT 100.64/10, ULA fc00::/7, fe80::/10, multicast, NAT64 etc.): IP-urile scrise direct sunt refuzate înainte de conectare, numele sunt verificate **după** răspunsul DNS, în resolverul dat lui reqwest (fără fereastră între verificare și conectare); fiecare redirecționare e verificată la fel, cel mult 5;
+  - „Din web”: GET, cel mult 10 MB; marca temporală: POST `application/timestamp-query`, răspuns cel mult 1 MB; 20 s;
+  - fiecare site nou e întrebat o dată pe fereastră („Fereastra vrea să citească de pe internet, de la …. Permiți?”), ca un fișier deschis să nu poată ieși pe internet fără știrea omului;
+  - jurnalul păstrează gazda și calea, **fără** query string (poate avea chei), mărimea și rezultatul.
+- **Setări › Internet:** pornit implicit (orice cerere pornește doar din acțiunea omului); într-o organizație îl schimbă doar administratorul; oprit, mesajul spune cine l-a oprit.
+- **Teste:** regulile de adresă în Rust (`kgb-net`: adresele locale, adresele scrise, serverul de test pe 127.0.0.1 pornit din test, limitele, redirecționările, POST-ul mărcii temporale). Localhost se deschide doar cu `KGB_TEST_NET_LOOPBACK=1` din mediul procesului, **niciodată** dintr-o opțiune a paginii (o pagină compromisă ar ajunge altfel la serviciile de pe 127.0.0.1). e2e `cos-web.mjs` folosește un server de test pe 127.0.0.1.

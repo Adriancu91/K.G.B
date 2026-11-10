@@ -17,6 +17,7 @@ const host: KgbHost = {
   onLang: (f) => onLang(f),
   printPdf: (snapshot, paper) => invoke<string>("print_pdf", { snapshot, paper }),
   printPaper: (pdf, paper, pages) => invoke("print_paper", { pdf, paper, pages, toPdf: false }),
+  netFetch: (url, purpose, body, http) => invoke("net_fetch", { url, purpose, body: body ?? null, http: !!http }),
 };
 (window as Window & { kgbHost?: KgbHost }).kgbHost = host;
 

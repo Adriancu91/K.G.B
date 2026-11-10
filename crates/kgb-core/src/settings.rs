@@ -178,6 +178,14 @@ pub struct Settings {
     /// Start page panels (schema 2).
     #[serde(default)]
     pub home: Home,
+    /// Requests to the internet that the person asks for (D-086: „Din web…”, the time stamp of a signature).
+    /// On by default: nothing goes out on its own. In an organization only an administrator changes it.
+    #[serde(default = "yes")]
+    pub internet: bool,
+}
+
+fn yes() -> bool {
+    true
 }
 
 impl Default for Settings {
@@ -189,6 +197,7 @@ impl Default for Settings {
             profile: "birou".into(),
             layout: Layout::default(),
             home: Home::default(),
+            internet: true,
         }
     }
 }
