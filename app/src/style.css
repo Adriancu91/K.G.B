@@ -1813,3 +1813,50 @@ main:has(> .notes-window) {
 /* The catalog of procedures (7.9a). */
 .catalog-list { list-style: none; padding: 0; display: flex; flex-direction: column; gap: var(--gap); max-height: 60vh; overflow-y: auto; }
 .catalog-list .card { padding: 10px 12px; }
+
+/* Programări (7.9e): the day of every resource side by side; an appointment's colour follows its state, an
+   overlapping one (two PCs offline) is red and says so in words. */
+.appt-day {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 12px;
+  margin: 8px 0 16px;
+}
+.appt-col {
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 8px;
+  background: var(--panel);
+}
+.appt-col h4 {
+  margin: 0;
+}
+.appt {
+  border-left: 4px solid var(--accent);
+  border-radius: 6px;
+  padding: 6px 8px;
+  margin: 6px 0;
+  background: var(--bg);
+}
+.appt-confirmat {
+  border-left-color: #2e7d32;
+}
+.appt-venit {
+  border-left-color: #6a1b9a;
+}
+.appt-anulat,
+.appt-neprezentat {
+  border-left-color: var(--muted);
+  opacity: 0.6;
+}
+.appt-overlap,
+tr.appt-overlap td {
+  border-left-color: #c62828;
+  background: rgba(198, 40, 40, 0.08);
+}
+.appt-overlap-text {
+  color: #c62828;
+}
+.appt-free button {
+  padding: 2px 6px;
+}
