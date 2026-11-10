@@ -3,7 +3,7 @@
 // (app/cos/src/styles.css, theme.css) stay apart from the app's. The app opens it as
 // `cos-sheets.html#doc=<id>` / `#new` (Sheets) or `#app=docs&doc=<id>` / `#app=docs&new` (Docs) and lends
 // it the core through `window.kgbHost` (see modules/sheets/SheetsPage, modules/write/WritePage).
-import { StrictMode, Suspense, lazy, useEffect, useState } from "react";
+import { StrictMode, Suspense, lazy, useEffect, useState, type ComponentType } from "react";
 import { createRoot } from "react-dom/client";
 import type { OpenedFile } from "../../cos/src/api";
 import { setCurrentModule } from "../../cos/src/active";
@@ -12,14 +12,22 @@ import { setLang } from "../../cos/src/i18n";
 import { ScreenshotHost } from "../../cos/src/screenshot";
 import { SketchHost } from "../../cos/src/sketch";
 import { showSnapshot, type Snapshot } from "./printPdf";
-import { DOCS, SHEETS, installCosBridge, openDocument, type KgbHost } from "../modules/sheets/cosBridge";
+import { DOCS, NOTES, SHEETS, installCosBridge, openDocument, type KgbHost } from "../modules/sheets/cosBridge";
 import "../../cos/src/styles.css";
 import "../../cos/src/theme.css";
 
 const hash = new URLSearchParams(location.hash.slice(1));
-const docs = hash.get("app") === "docs";
-const Window = lazy(() => (docs ? import("../../cos/src/docs/Docs") : import("../../cos/src/sheets/Sheets")));
-const what = docs ? "documentul" : "registrul";
+const app = hash.get("app");
+const docs = app === "docs";
+const notes = app === "notes";
+type CosWindow = ComponentType<{ initial: OpenedFile | null; onConsumed(): void }>;
+const Window = lazy(
+  () =>
+    (notes ? import("../../cos/src/notes/Notes") : docs ? import("../../cos/src/docs/Docs") : import("../../cos/src/sheets/Sheets")) as Promise<{
+      default: CosWindow;
+    }>,
+);
+const what = notes ? "caietul" : docs ? "documentul" : "registrul";
 
 const host = (window.parent as Window & { kgbHost?: KgbHost }).kgbHost;
 
@@ -73,10 +81,10 @@ if (printJob) {
 } else if (!host) {
   root.render(<p className="frame-error">Fereastra se deschide doar din aplicația K.G.B.</p>);
 } else {
-  installCosBridge(host, docs ? DOCS : SHEETS);
+  installCosBridge(host, notes ? NOTES : docs ? DOCS : SHEETS);
   // The window's shortcuts (Ctrl+S, Ctrl+O, Ctrl+Z…) work only in the application "in front" (COS active.ts);
   // in this frame the window is always in front.
-  setCurrentModule(docs ? "doc" : "sheets");
+  setCurrentModule(notes ? "note" : docs ? "doc" : "sheets");
   // The window speaks the app's language (RO / EN) and changes with it.
   setLang(host.lang());
   host.onLang(setLang);

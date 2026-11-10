@@ -1778,3 +1778,15 @@ label > .suggest > input {
   background: var(--accent, #5b5bd6);
   color: #fff;
 }
+
+/* The Notes window of Cyber Office Studio (7.4l-2c), filling the page. */
+.notes-window {
+  display: flex;
+  height: calc(100vh - 120px);
+  min-height: 400px;
+}
+.notes-window iframe {
+  flex: 1;
+  width: 100%;
+  border: 0;
+}

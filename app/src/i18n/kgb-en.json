@@ -2270,7 +2270,23 @@
   "Profil:": "Profile:",
   "Profil": "Profile",
   "Modul": "Module",
-  "facturi restante": "overdue invoices"
+  "facturi restante": "overdue invoices",
+  "Salvat din fereastra Note": "Saved from the Notes window",
+  "Caietul de note: notițe cu text, liste de bifat, poze, secțiuni și caiete, coș, căutare. Fiecare notă se păstrează separat, deci se sincronizează între PC-uri fără să se piardă ce ai scris pe celălalt.": "The notebook: notes with text, checklists, pictures, sections and notebooks, trash, search. Every note is kept on its own, so it syncs between PCs without losing what you wrote on the other one.",
+  "notițele ferestrei Note: o notiță pe înregistrare (fără pozele mari), data ultimei schimbări, coșul, locul în listă": "the notes of the Notes window: one note per record (without the large pictures), the date of the last change, the trash, the place in the list",
+  "caietul: secțiunile, culorile, grupurile, caietele și harta pozelor păstrate ca fișiere": "the notebook: sections, colours, groups, notebooks and the map of pictures kept as files",
+  "Notele, caietele și pozele lor rămân salvate în spațiul de lucru și reapar când modulul este activat din nou.": "Notes, notebooks and their pictures stay saved in the workspace and come back when the module is enabled again.",
+  "caietul de notițe": "the notebook",
+  "o poză a notițelor nu se poate citi": "a picture of the notes cannot be read",
+  "caietul nu este JSON valid": "the notebook is not valid JSON",
+  "caietul nu are forma așteptată": "the notebook does not have the expected shape",
+  "caietul nu are formatul „suite-notes”, versiunea 1": "the notebook is not in the \"suite-notes\" format, version 1",
+  "caietul nu are lista de notițe": "the notebook has no list of notes",
+  "o notiță nu are id": "a note has no id",
+  "felul atașamentului nu este acceptat (pdf, webm, bin)": "this kind of attachment is not accepted (pdf, webm, bin)",
+  "atașamentul nu a ajuns întreg": "the attachment did not arrive whole",
+  "atașamentul nu există": "the attachment does not exist",
+  "Note": "Notes"
  },
  "templates": {
   "Completat de la ANAF (date pentru {0}): {1}. Verifică și completează restul de mână.": "Filled in from ANAF (data for {0}): {1}. Check and fill in the rest manually.",
@@ -2765,7 +2781,10 @@
   "tipărirea nu a pornit: {0}": "printing did not start: {0}",
   "PDF-ul nu s-a putut citi ({0})": "the PDF could not be read ({0})",
   "PDF-ul nu s-a putut face: {0}": "the PDF could not be made: {0}",
-  "Registru facturi ({0})": "Invoice register ({0})"
+  "Registru facturi ({0})": "Invoice register ({0})",
+  "notița „{0}” are peste {1} MB fără poze": "the note \"{0}\" is over {1} MB without pictures",
+  "notița {0}: păstrată varianta mai nouă, de pe alt PC": "note {0}: the newer version, from another PC, was kept",
+  "notița {0}: schimbată în ambele locuri, păstrată varianta din fereastră (mai nouă)": "note {0}: changed in both places, the window's (newer) version was kept"
  },
  "skip": [
   "Escape",

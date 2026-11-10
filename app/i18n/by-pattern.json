@@ -730,16 +730,6 @@
   "f": "modules/extract/ExtractPage.tsx"
  },
  {
-  "ro": "Adaugă",
-  "en": "Add",
-  "f": "modules/notes/NotesPage.tsx"
- },
- {
-  "ro": "Editează",
-  "en": "Edit",
-  "f": "modules/notes/NotesPage.tsx"
- },
- {
   "ro": "Ușoară (calitate foarte bună)",
   "en": "Light (very good quality)",
   "f": "modules/pdf/compress.ts"
@@ -1347,11 +1337,6 @@
  {
   "ro": "+ câmp",
   "en": "+ field",
-  "f": "pages/PartnersPage.tsx"
- },
- {
-  "ro": "Note",
-  "en": "Notes",
   "f": "pages/PartnersPage.tsx"
  },
  {
