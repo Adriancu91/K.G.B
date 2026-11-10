@@ -117,7 +117,10 @@ fn ps_error_text(stderr: &str) -> String {
         while let Some(i) = s.find("_x") {
             dec.push_str(&s[..i]);
             let tail = &s[i + 2..];
-            match (tail.get(..4).and_then(|h| u32::from_str_radix(h, 16).ok()), tail.get(4..5)) {
+            match (
+                tail.get(..4).and_then(|h| u32::from_str_radix(h, 16).ok()),
+                tail.get(4..5),
+            ) {
                 (Some(c), Some("_")) => {
                     dec.extend(char::from_u32(c));
                     s = &tail[5..];
@@ -157,7 +160,13 @@ fn run_ps(script: &str, limit: Duration) -> Result<String, String> {
     const CREATE_NO_WINDOW: u32 = 0x0800_0000;
     let utf16: Vec<u8> = script.encode_utf16().flat_map(u16::to_le_bytes).collect();
     let mut child = Command::new("powershell.exe")
-        .args(["-NoProfile", "-NonInteractive", "-ExecutionPolicy", "Bypass", "-EncodedCommand"])
+        .args([
+            "-NoProfile",
+            "-NonInteractive",
+            "-ExecutionPolicy",
+            "Bypass",
+            "-EncodedCommand",
+        ])
         .arg(B64.encode(utf16))
         .stdin(Stdio::null())
         .stdout(Stdio::piped())
@@ -195,7 +204,11 @@ fn run_ps(script: &str, limit: Duration) -> Result<String, String> {
     let stderr = e.join().unwrap_or_default();
     if !status.success() {
         let m = ps_error_text(&stderr);
-        return Err(if m.is_empty() { "Sistemul nu a putut folosi certificatul.".into() } else { m });
+        return Err(if m.is_empty() {
+            "Sistemul nu a putut folosi certificatul.".into()
+        } else {
+            m
+        });
     }
     Ok(stdout.trim().to_string())
 }
@@ -223,7 +236,9 @@ pub async fn wincert_sign(thumb: String, data: String, ec: bool) -> Result<Strin
     if thumb.len() != 40 || !thumb.bytes().all(|b| b.is_ascii_hexdigit()) {
         return Err("Certificat necunoscut.".into());
     }
-    let bytes = B64.decode(data.as_bytes()).map_err(|_| "Datele de semnat nu au ajuns întregi.".to_string())?;
+    let bytes = B64
+        .decode(data.as_bytes())
+        .map_err(|_| "Datele de semnat nu au ajuns întregi.".to_string())?;
     if bytes.is_empty() || bytes.len() > 64 * 1024 {
         return Err("Datele de semnat nu sunt bune.".into());
     }
@@ -232,7 +247,9 @@ pub async fn wincert_sign(thumb: String, data: String, ec: bool) -> Result<Strin
     let out = tauri::async_runtime::spawn_blocking(move || run_ps(&script, Duration::from_secs(180)))
         .await
         .map_err(|_| "Sistemul nu a putut folosi certificatul.".to_string())??;
-    let sig = B64.decode(out.as_bytes()).map_err(|_| "Semnătura nu a venit întreagă.".to_string())?;
+    let sig = B64
+        .decode(out.as_bytes())
+        .map_err(|_| "Semnătura nu a venit întreagă.".to_string())?;
     Ok(B64.encode(sig))
 }
 
@@ -243,21 +260,31 @@ mod tests {
     #[test]
     fn errors_of_powershell_are_read_from_clixml() {
         let x = "#< CLIXML\r\n<Objs><S S=\"Error\">Certificatul nu mai e pe calculator (tokenul e scos?)._x000D__x000A_</S><S S=\"Error\">At line:5 char:1_x000D__x000A_</S></Objs>";
-        assert_eq!(ps_error_text(x), "Certificatul nu mai e pe calculator (tokenul e scos?).");
+        assert_eq!(
+            ps_error_text(x),
+            "Certificatul nu mai e pe calculator (tokenul e scos?)."
+        );
         assert_eq!(ps_error_text("At line:1\n+ foo\nCeva clar"), "Ceva clar");
     }
 
     #[test]
     fn the_sign_script_takes_only_the_checked_values() {
         let s = sign_script("AB".repeat(20).as_str(), "AAEC", true);
-        assert!(s.contains("'ABABABABABABABABABABABABABABABABABABABAB'") && s.contains("'AAEC'") && s.contains("GetECDsaPrivateKey"));
+        assert!(
+            s.contains("'ABABABABABABABABABABABABABABABABABABABAB'")
+                && s.contains("'AAEC'")
+                && s.contains("GetECDsaPrivateKey")
+        );
         let r = sign_script("AB".repeat(20).as_str(), "AAEC", false);
         assert!(r.contains("RSASignaturePadding]::Pkcs1"));
     }
 
     #[test]
     fn a_chain_of_one_is_a_list() {
-        let c: WinCert = serde_json::from_str(r#"{"thumb":"a","name":"n","issuer":"i","from":"f","to":"t","ec":false,"der":"d","chain":"x"}"#).unwrap();
+        let c: WinCert = serde_json::from_str(
+            r#"{"thumb":"a","name":"n","issuer":"i","from":"f","to":"t","ec":false,"der":"d","chain":"x"}"#,
+        )
+        .unwrap();
         assert_eq!(c.chain, vec!["x".to_string()]);
     }
 }

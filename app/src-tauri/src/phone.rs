@@ -108,7 +108,10 @@ pub fn supervise(session: Arc<Mutex<Option<Session>>>) {
         .spawn(move || {
             let mut last_error = String::new();
             loop {
-                let on = session.lock().ok().and_then(|g| g.as_ref().map(|s| phones::service_on(&s.ws).unwrap_or(false)));
+                let on = session
+                    .lock()
+                    .ok()
+                    .and_then(|g| g.as_ref().map(|s| phones::service_on(&s.ws).unwrap_or(false)));
                 let on = on.unwrap_or(false);
                 let mut problem = String::new();
                 if on {
@@ -137,7 +140,9 @@ pub fn supervise(session: Arc<Mutex<Option<Session>>>) {
                 {
                     let fp = s.device.fingerprint();
                     let name = std::env::var("COMPUTERNAME").unwrap_or_else(|_| "PC".into());
-                    let known = phones::hosts(&s.ws, None).map(|h| h.iter().any(|h| h.dispozitiv == fp)).unwrap_or(false);
+                    let known = phones::hosts(&s.ws, None)
+                        .map(|h| h.iter().any(|h| h.dispozitiv == fp))
+                        .unwrap_or(false);
                     // A PC that never served writes nothing.
                     if serving || known {
                         let _ = phones::publish_host(&mut s.ws, &fp, &name, &here, serving);
@@ -166,7 +171,11 @@ pub fn new_code() -> String {
     let n = u64::from_le_bytes(raw) % 100_000_000;
     let code = format!("{:04}-{:04}", n / 10_000, n % 10_000);
     if let Ok(mut c) = CODE.lock() {
-        *c = Some(Code { code: code.clone(), made: Instant::now(), wrong: 0 });
+        *c = Some(Code {
+            code: code.clone(),
+            made: Instant::now(),
+            wrong: 0,
+        });
     }
     code
 }
@@ -220,7 +229,9 @@ pub fn start(session: Arc<Mutex<Option<Session>>>) -> Result<String, String> {
     // Stopping closes the listener and every open connection (no keep-alive left behind).
     let (tx, mut rx) = tokio::sync::watch::channel(false);
     tauri::async_runtime::spawn(async move {
-        let Ok(listener) = tokio::net::TcpListener::from_std(listener) else { return };
+        let Ok(listener) = tokio::net::TcpListener::from_std(listener) else {
+            return;
+        };
         loop {
             tokio::select! {
                 _ = rx.changed() => break,
@@ -246,7 +257,10 @@ pub fn start(session: Arc<Mutex<Option<Session>>>) -> Result<String, String> {
         }
     });
     if let Ok(mut r) = RUNNING.lock() {
-        *r = Some(Running { stop: tx, address: address.clone() });
+        *r = Some(Running {
+            stop: tx,
+            address: address.clone(),
+        });
     }
     Ok(address)
 }
@@ -272,10 +286,18 @@ fn err(status: StatusCode, msg: &str) -> Response<Full<Bytes>> {
     json_reply(status, json!({"eroare": msg}))
 }
 
-async fn handle(req: Request<Incoming>, session: Arc<Mutex<Option<Session>>>) -> Result<Response<Full<Bytes>>, Infallible> {
+async fn handle(
+    req: Request<Incoming>,
+    session: Arc<Mutex<Option<Session>>>,
+) -> Result<Response<Full<Bytes>>, Infallible> {
     let path = req.uri().path().to_string();
     let method = req.method().clone();
-    let token = req.headers().get("x-kgb-token").and_then(|v| v.to_str().ok()).unwrap_or_default().to_string();
+    let token = req
+        .headers()
+        .get("x-kgb-token")
+        .and_then(|v| v.to_str().ok())
+        .unwrap_or_default()
+        .to_string();
     // ?azi=AAAA-LL-ZZ: the phone's today, for its tasks.
     let azi: String = req
         .uri()
@@ -295,15 +317,32 @@ async fn handle(req: Request<Incoming>, session: Arc<Mutex<Option<Session>>>) ->
     if method == Method::OPTIONS && path.starts_with("/m/api/") {
         let mut r = reply(StatusCode::NO_CONTENT, "text/plain", Bytes::new());
         let h = r.headers_mut();
-        h.insert("Access-Control-Allow-Methods", hyper::header::HeaderValue::from_static("GET, POST"));
-        h.insert("Access-Control-Allow-Headers", hyper::header::HeaderValue::from_static("content-type, x-kgb-token"));
+        h.insert(
+            "Access-Control-Allow-Methods",
+            hyper::header::HeaderValue::from_static("GET, POST"),
+        );
+        h.insert(
+            "Access-Control-Allow-Headers",
+            hyper::header::HeaderValue::from_static("content-type, x-kgb-token"),
+        );
         h.insert("Access-Control-Max-Age", hyper::header::HeaderValue::from_static("600"));
         return Ok(r);
     }
     if method == Method::GET && path == "/m/api/ping" {
         return Ok(json_reply(StatusCode::OK, json!({"kgb": true})));
     }
-    if method != Method::POST && !(method == Method::GET && ["/m/api/eu", "/m/api/produse", "/m/api/livrari", "/m/api/taskuri", "/m/api/mesaje", "/m/api/echipa"].contains(&path.as_str())) {
+    if method != Method::POST
+        && !(method == Method::GET
+            && [
+                "/m/api/eu",
+                "/m/api/produse",
+                "/m/api/livrari",
+                "/m/api/taskuri",
+                "/m/api/mesaje",
+                "/m/api/echipa",
+            ]
+            .contains(&path.as_str()))
+    {
         return Ok(err(StatusCode::NOT_FOUND, "nu există"));
     }
     let body: Value = if method == Method::POST {
@@ -319,7 +358,10 @@ async fn handle(req: Request<Incoming>, session: Arc<Mutex<Option<Session>>>) ->
         match session.lock() {
             Ok(mut g) => match g.as_mut() {
                 Some(s) => f(s),
-                None => err(StatusCode::SERVICE_UNAVAILABLE, "K.G.B. nu are spațiul de lucru deschis"),
+                None => err(
+                    StatusCode::SERVICE_UNAVAILABLE,
+                    "K.G.B. nu are spațiul de lucru deschis",
+                ),
             },
             Err(_) => err(StatusCode::INTERNAL_SERVER_ERROR, "eroare internă"),
         }
@@ -329,7 +371,10 @@ async fn handle(req: Request<Incoming>, session: Arc<Mutex<Option<Session>>>) ->
             let code = body["cod"].as_str().unwrap_or_default();
             let name = body["nume"].as_str().unwrap_or_default().to_string();
             if !check_code(code) {
-                err(StatusCode::FORBIDDEN, "codul nu e bun sau a expirat; cere unul nou pe PC (pagina Telefon)")
+                err(
+                    StatusCode::FORBIDDEN,
+                    "codul nu e bun sau a expirat; cere unul nou pe PC (pagina Telefon)",
+                )
             } else {
                 with(&mut |s| match phones::pair(&mut s.ws, &name) {
                     Ok((_, token)) => json_reply(StatusCode::OK, json!({"token": token})),
@@ -343,7 +388,11 @@ async fn handle(req: Request<Incoming>, session: Arc<Mutex<Option<Session>>>) ->
                 // Where else the page answers: the other PCs that serve it.
                 let fp = s.device.fingerprint();
                 let mut adrese: Vec<String> = Vec::new();
-                for h in phones::hosts(&s.ws, Some(&fp)).unwrap_or_default().into_iter().filter(|h| h.pornit) {
+                for h in phones::hosts(&s.ws, Some(&fp))
+                    .unwrap_or_default()
+                    .into_iter()
+                    .filter(|h| h.pornit)
+                {
                     for a in h.adrese {
                         if !adrese.contains(&a) {
                             adrese.push(a);
@@ -360,7 +409,9 @@ async fn handle(req: Request<Incoming>, session: Arc<Mutex<Option<Session>>>) ->
         // The products of Business, for the reception sheet (7.4m-5); names and units only.
         "/m/api/produse" => with(&mut |s| match phones::by_token(&s.ws, &token) {
             Ok(Some(p)) if p.stare == "aprobat" => {
-                let list = s.mm.call(&mut s.ws, None, "kgb.business", "products", json!({})).unwrap_or(json!([]));
+                let list =
+                    s.mm.call(&mut s.ws, None, "kgb.business", "products", json!({}))
+                        .unwrap_or(json!([]));
                 let items: Vec<Value> = list
                     .as_array()
                     .into_iter()
@@ -377,7 +428,9 @@ async fn handle(req: Request<Incoming>, session: Arc<Mutex<Option<Session>>>) ->
         "/m/api/livrari" => with(&mut |s| match phones::by_token(&s.ws, &token) {
             Ok(Some(p)) if p.stare == "aprobat" => {
                 let me = p.membru_nume.trim().to_lowercase();
-                let list = s.mm.call(&mut s.ws, None, "kgb.business", "deliveries", json!({})).unwrap_or(json!([]));
+                let list =
+                    s.mm.call(&mut s.ws, None, "kgb.business", "deliveries", json!({}))
+                        .unwrap_or(json!([]));
                 let items: Vec<Value> = list
                     .as_array()
                     .into_iter()
@@ -405,7 +458,9 @@ async fn handle(req: Request<Incoming>, session: Arc<Mutex<Option<Session>>>) ->
         "/m/api/taskuri" => with(&mut |s| match phones::by_token(&s.ws, &token) {
             Ok(Some(p)) if p.stare == "aprobat" => {
                 let me = p.membru_nume.trim().to_lowercase();
-                let people = s.mm.call(&mut s.ws, None, "kgb.planner", "persons", json!({})).unwrap_or(json!([]));
+                let people =
+                    s.mm.call(&mut s.ws, None, "kgb.planner", "persons", json!({}))
+                        .unwrap_or(json!([]));
                 let ids: Vec<String> = people
                     .as_array()
                     .into_iter()
@@ -420,8 +475,15 @@ async fn handle(req: Request<Incoming>, session: Arc<Mutex<Option<Session>>>) ->
                         f["azi"] = json!(azi);
                         f["pana_la"] = json!(azi);
                     }
-                    let list = s.mm.call(&mut s.ws, None, "kgb.planner", "tasks", f).unwrap_or(json!([]));
-                    for t in list.as_array().into_iter().flatten().filter(|t| t["stare"] != json!("gata")) {
+                    let list =
+                        s.mm.call(&mut s.ws, None, "kgb.planner", "tasks", f)
+                            .unwrap_or(json!([]));
+                    for t in list
+                        .as_array()
+                        .into_iter()
+                        .flatten()
+                        .filter(|t| t["stare"] != json!("gata"))
+                    {
                         items.push(json!({"id": t["id"], "titlu": t["titlu"], "termen": t["termen"], "intarziat": t["intarziat"], "stare": t["stare"]}));
                     }
                 }
@@ -434,12 +496,18 @@ async fn handle(req: Request<Incoming>, session: Arc<Mutex<Option<Session>>>) ->
         "/m/api/echipa" => with(&mut |s| match phones::by_token(&s.ws, &token) {
             Ok(Some(p)) if p.stare == "aprobat" => {
                 let me = p.membru_nume.trim().to_lowercase();
-                let list = s.mm.call(&mut s.ws, None, "kgb.team", "puncte", json!({})).unwrap_or(json!([]));
+                let list =
+                    s.mm.call(&mut s.ws, None, "kgb.team", "puncte", json!({}))
+                        .unwrap_or(json!([]));
                 let items: Vec<Value> = list
                     .as_array()
                     .into_iter()
                     .flatten()
-                    .filter(|x| x["activ"] != json!(false) && !me.is_empty() && x["sef"].as_str().is_some_and(|n| n.trim().to_lowercase() == me))
+                    .filter(|x| {
+                        x["activ"] != json!(false)
+                            && !me.is_empty()
+                            && x["sef"].as_str().is_some_and(|n| n.trim().to_lowercase() == me)
+                    })
                     .map(|x| json!({"id": x["id"], "nume": x["nume"], "muncitori": x["muncitori"]}))
                     .collect();
                 json_reply(StatusCode::OK, json!({"puncte": items}))
@@ -448,17 +516,19 @@ async fn handle(req: Request<Incoming>, session: Arc<Mutex<Option<Session>>>) ->
         }),
         // The team's messages (7.4m-6d): the last 30, and an answer from
         // the phone's person (written on this PC, marked „(telefon)”).
-        "/m/api/mesaje" => with(&mut |s| match phones::by_token(&s.ws, &token) {
-            Ok(Some(p)) if p.stare == "aprobat" => {
-                let list = kgb_core::chat::list(s.ws.store(), 30).unwrap_or_default();
-                let items: Vec<Value> = list
+        "/m/api/mesaje" => {
+            with(&mut |s| match phones::by_token(&s.ws, &token) {
+                Ok(Some(p)) if p.stare == "aprobat" => {
+                    let list = kgb_core::chat::list(s.ws.store(), 30).unwrap_or_default();
+                    let items: Vec<Value> = list
                     .iter()
                     .map(|m| json!({"autor": m.autor, "text": m.text, "voce": m.voce.is_some(), "creat_ms": m.creat_ms}))
                     .collect();
-                json_reply(StatusCode::OK, json!({"mesaje": items}))
-            }
-            _ => err(StatusCode::UNAUTHORIZED, "telefonul nu e aprobat"),
-        }),
+                    json_reply(StatusCode::OK, json!({"mesaje": items}))
+                }
+                _ => err(StatusCode::UNAUTHORIZED, "telefonul nu e aprobat"),
+            })
+        }
         "/m/api/mesaj" => {
             let text = body["text"].as_str().unwrap_or_default().to_string();
             with(&mut |s| match phones::by_token(&s.ws, &token) {
@@ -478,7 +548,12 @@ async fn handle(req: Request<Incoming>, session: Arc<Mutex<Option<Session>>>) ->
             let fields = body["campuri"].as_object().cloned().unwrap_or_default();
             let mut uploads = Vec::new();
             let mut bad_file = None;
-            for f in body["fisiere"].as_array().into_iter().flatten().take(phones::MAX_FILES + phones::MAX_LINES + 1) {
+            for f in body["fisiere"]
+                .as_array()
+                .into_iter()
+                .flatten()
+                .take(phones::MAX_FILES + phones::MAX_LINES + 1)
+            {
                 match base64::engine::general_purpose::STANDARD.decode(f["date"].as_str().unwrap_or_default()) {
                     Ok(data) => uploads.push(phones::Upload {
                         name: f["nume"].as_str().unwrap_or("fisier").chars().take(100).collect(),
@@ -495,7 +570,14 @@ async fn handle(req: Request<Incoming>, session: Arc<Mutex<Option<Session>>>) ->
                 let fields = Some(fields);
                 let mut fields = fields;
                 with(&mut |s| match phones::by_token(&s.ws, &token) {
-                    Ok(Some(p)) => match phones::submit_with_lines(&mut s.ws, &p, &kind, fields.take().unwrap_or_default(), lines.take().unwrap_or_default(), uploads.take().unwrap_or_default()) {
+                    Ok(Some(p)) => match phones::submit_with_lines(
+                        &mut s.ws,
+                        &p,
+                        &kind,
+                        fields.take().unwrap_or_default(),
+                        lines.take().unwrap_or_default(),
+                        uploads.take().unwrap_or_default(),
+                    ) {
                         Ok(id) => json_reply(StatusCode::OK, json!({"id": id})),
                         Err(e) => err(StatusCode::BAD_REQUEST, &e.to_string()),
                     },

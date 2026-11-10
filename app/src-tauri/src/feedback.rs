@@ -49,8 +49,8 @@ fn capture(wv: &tauri::webview::PlatformWebview, tx: oneshot::Sender<Result<Vec<
     use webview2_com::CapturePreviewCompletedHandler;
     use webview2_com::Microsoft::Web::WebView2::Win32::COREWEBVIEW2_CAPTURE_PREVIEW_IMAGE_FORMAT_PNG;
     use windows::Win32::Foundation::HGLOBAL;
-    use windows::Win32::System::Com::StructuredStorage::CreateStreamOnHGlobal;
     use windows::Win32::System::Com::STREAM_SEEK_SET;
+    use windows::Win32::System::Com::StructuredStorage::CreateStreamOnHGlobal;
 
     let e = |e: windows::core::Error| e.message().to_string();
     // SAFETY: COM calls on the webview's own thread (with_webview); the stream lives until the handler ran.
@@ -60,7 +60,8 @@ fn capture(wv: &tauri::webview::PlatformWebview, tx: oneshot::Sender<Result<Vec<
         let held = stream.clone();
         let handler = CapturePreviewCompletedHandler::create(Box::new(move |hr| {
             let out = hr.map_err(|e| e.message().to_string()).and_then(|()| {
-                held.Seek(0, STREAM_SEEK_SET, None).map_err(|e| e.message().to_string())?;
+                held.Seek(0, STREAM_SEEK_SET, None)
+                    .map_err(|e| e.message().to_string())?;
                 crate::print::read_all(&held)
             });
             let _ = tx.send(out);
@@ -115,7 +116,9 @@ pub fn feedback_save(
     }
     let png = match png.filter(|p| !p.is_empty()) {
         Some(p) => {
-            let b = B64.decode(p.as_bytes()).map_err(|_| "poza nu a ajuns întreagă".to_string())?;
+            let b = B64
+                .decode(p.as_bytes())
+                .map_err(|_| "poza nu a ajuns întreagă".to_string())?;
             if b.len() > MAX_PNG || !b.starts_with(b"\x89PNG\r\n\x1a\n") {
                 return Err("poza nu e bună".into());
             }
@@ -134,10 +137,21 @@ pub fn feedback_save(
         format!("Data: {}", one(&date)),
         format!("Versiunea K.G.B.: {}", env!("CARGO_PKG_VERSION")),
         format!("Pagina: {}", one(&module)),
-        format!("Fișierul: {}", if file.trim().is_empty() { "(niciunul)".into() } else { one(&file) }),
+        format!(
+            "Fișierul: {}",
+            if file.trim().is_empty() {
+                "(niciunul)".into()
+            } else {
+                one(&file)
+            }
+        ),
         format!(
             "Captura: {}",
-            if png.is_some() { format!("Observație {stamp}.png") } else { "(fără)".into() }
+            if png.is_some() {
+                format!("Observație {stamp}.png")
+            } else {
+                "(fără)".into()
+            }
         ),
         String::new(),
         text.replace("\r\n", "\n").replace('\n', "\r\n"),

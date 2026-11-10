@@ -19,10 +19,17 @@ pub struct NowPlaying {
 /// ("Spotify.exe" → "Spotify", "Microsoft.ZuneMusic_8wekyb3d8bbwe!Microsoft.ZuneMusic" → "ZuneMusic").
 pub fn app_name(id: &str) -> String {
     let base = id.rsplit(['!', '\\']).next().unwrap_or(id);
-    let base = base.strip_suffix(".exe").or_else(|| base.strip_suffix(".EXE")).unwrap_or(base);
+    let base = base
+        .strip_suffix(".exe")
+        .or_else(|| base.strip_suffix(".EXE"))
+        .unwrap_or(base);
     let base = base.rsplit('.').next().unwrap_or(base);
     let base = base.split('_').next().unwrap_or(base);
-    if base.is_empty() { id.to_string() } else { base.to_string() }
+    if base.is_empty() {
+        id.to_string()
+    } else {
+        base.to_string()
+    }
 }
 
 #[cfg(windows)]
@@ -91,7 +98,10 @@ mod tests {
     #[test]
     fn player_names() {
         assert_eq!(app_name("Spotify.exe"), "Spotify");
-        assert_eq!(app_name("Microsoft.ZuneMusic_8wekyb3d8bbwe!Microsoft.ZuneMusic"), "ZuneMusic");
+        assert_eq!(
+            app_name("Microsoft.ZuneMusic_8wekyb3d8bbwe!Microsoft.ZuneMusic"),
+            "ZuneMusic"
+        );
         assert_eq!(app_name("MSEdge"), "MSEdge");
         assert_eq!(app_name("C:\\Program Files\\VLC\\vlc.exe"), "vlc");
     }

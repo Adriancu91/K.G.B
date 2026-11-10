@@ -40,7 +40,10 @@ fn ro() -> String {
 
 impl Default for Prefs {
     fn default() -> Self {
-        Prefs { langa_ceas: true, limba: ro() }
+        Prefs {
+            langa_ceas: true,
+            limba: ro(),
+        }
     }
 }
 
@@ -49,7 +52,10 @@ fn prefs_path(root: &Path) -> PathBuf {
 }
 
 pub fn load(root: &Path) -> Prefs {
-    std::fs::read(prefs_path(root)).ok().and_then(|b| serde_json::from_slice(&b).ok()).unwrap_or_default()
+    std::fs::read(prefs_path(root))
+        .ok()
+        .and_then(|b| serde_json::from_slice(&b).ok())
+        .unwrap_or_default()
 }
 
 pub fn save(root: &Path, p: &Prefs) -> Result<(), String> {
@@ -61,13 +67,19 @@ pub fn save(root: &Path, p: &Prefs) -> Result<(), String> {
 /// The name of the entry in the user's „Run” list. Automated tests (with
 /// their own data folder) use another name, so they never touch the real one.
 fn run_value() -> &'static str {
-    if std::env::var_os("KGB_DATA_DIR").is_some() { "K.G.B. (test)" } else { "K.G.B." }
+    if std::env::var_os("KGB_DATA_DIR").is_some() {
+        "K.G.B. (test)"
+    } else {
+        "K.G.B."
+    }
 }
 
 #[cfg(windows)]
 mod reg {
     use windows_sys::Win32::Foundation::ERROR_SUCCESS;
-    use windows_sys::Win32::System::Registry::{HKEY_CURRENT_USER, RRF_RT_REG_SZ, REG_SZ, RegDeleteKeyValueW, RegGetValueW, RegSetKeyValueW};
+    use windows_sys::Win32::System::Registry::{
+        HKEY_CURRENT_USER, REG_SZ, RRF_RT_REG_SZ, RegDeleteKeyValueW, RegGetValueW, RegSetKeyValueW,
+    };
 
     const RUN: &str = "Software\\Microsoft\\Windows\\CurrentVersion\\Run";
 
@@ -81,7 +93,15 @@ mod reg {
         let mut len = (buf.len() * 2) as u32;
         // SAFETY: the buffers live for the call; `len` is their size in bytes.
         let r = unsafe {
-            RegGetValueW(HKEY_CURRENT_USER, key.as_ptr(), val.as_ptr(), RRF_RT_REG_SZ, std::ptr::null_mut(), buf.as_mut_ptr().cast(), &mut len)
+            RegGetValueW(
+                HKEY_CURRENT_USER,
+                key.as_ptr(),
+                val.as_ptr(),
+                RRF_RT_REG_SZ,
+                std::ptr::null_mut(),
+                buf.as_mut_ptr().cast(),
+                &mut len,
+            )
         };
         if r != ERROR_SUCCESS {
             return None;
@@ -93,8 +113,21 @@ mod reg {
     pub fn set(name: &str, command: &str) -> Result<(), String> {
         let (key, val, data) = (wide(RUN), wide(name), wide(command));
         // SAFETY: as above; the data is a NUL-terminated UTF-16 string.
-        let r = unsafe { RegSetKeyValueW(HKEY_CURRENT_USER, key.as_ptr(), val.as_ptr(), REG_SZ, data.as_ptr().cast(), (data.len() * 2) as u32) };
-        if r == ERROR_SUCCESS { Ok(()) } else { Err(format!("Windows a refuzat (cod {r})")) }
+        let r = unsafe {
+            RegSetKeyValueW(
+                HKEY_CURRENT_USER,
+                key.as_ptr(),
+                val.as_ptr(),
+                REG_SZ,
+                data.as_ptr().cast(),
+                (data.len() * 2) as u32,
+            )
+        };
+        if r == ERROR_SUCCESS {
+            Ok(())
+        } else {
+            Err(format!("Windows a refuzat (cod {r})"))
+        }
     }
 
     pub fn delete(name: &str) -> Result<(), String> {
@@ -102,7 +135,11 @@ mod reg {
         // SAFETY: as above.
         let r = unsafe { RegDeleteKeyValueW(HKEY_CURRENT_USER, key.as_ptr(), val.as_ptr()) };
         // Already missing is fine.
-        if r == ERROR_SUCCESS || r == 2 { Ok(()) } else { Err(format!("Windows a refuzat (cod {r})")) }
+        if r == ERROR_SUCCESS || r == 2 {
+            Ok(())
+        } else {
+            Err(format!("Windows a refuzat (cod {r})"))
+        }
     }
 }
 
@@ -152,13 +189,16 @@ pub fn started_hidden() -> bool {
 /// start asks.
 #[cfg(windows)]
 pub fn single_instance(root: &Path, show: impl Fn() + Send + 'static) -> bool {
+    use std::hash::{Hash, Hasher};
     use windows_sys::Win32::Foundation::{ERROR_ALREADY_EXISTS, GetLastError};
     use windows_sys::Win32::System::Threading::{CreateEventW, INFINITE, SetEvent, WaitForSingleObject};
-    use std::hash::{Hash, Hasher};
     // Fixed keys: the same folder gives the same name in every start.
     let mut h = std::hash::DefaultHasher::new();
     root.to_string_lossy().to_lowercase().hash(&mut h);
-    let name: Vec<u16> = format!("Local\\KGB-arata-{:016x}", h.finish()).encode_utf16().chain(std::iter::once(0)).collect();
+    let name: Vec<u16> = format!("Local\\KGB-arata-{:016x}", h.finish())
+        .encode_utf16()
+        .chain(std::iter::once(0))
+        .collect();
     // SAFETY: a named auto-reset event; the name lives for the call.
     let ev = unsafe { CreateEventW(std::ptr::null(), 0, 0, name.as_ptr()) };
     if ev.is_null() {
@@ -173,10 +213,12 @@ pub fn single_instance(root: &Path, show: impl Fn() + Send + 'static) -> bool {
     let ev = ev as usize;
     std::thread::Builder::new()
         .name("kgb-arata".into())
-        .spawn(move || loop {
-            // SAFETY: the handle stays open for the life of the process.
-            unsafe { WaitForSingleObject(ev as _, INFINITE) };
-            show();
+        .spawn(move || {
+            loop {
+                // SAFETY: the handle stays open for the life of the process.
+                unsafe { WaitForSingleObject(ev as _, INFINITE) };
+                show();
+            }
         })
         .is_ok()
 }

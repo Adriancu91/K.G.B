@@ -14,9 +14,9 @@
 //!   ask once whether K.G.B. may receive on the network (the firewall).
 
 use std::net::{Ipv4Addr, SocketAddr, SocketAddrV4, UdpSocket};
+use std::sync::Arc;
 use std::sync::Mutex;
 use std::sync::atomic::{AtomicBool, Ordering};
-use std::sync::Arc;
 use std::time::Duration;
 
 use socket2::{Domain, Protocol, Socket, Type};
@@ -29,7 +29,9 @@ static STOP: Mutex<Option<Arc<AtomicBool>>> = Mutex::new(None);
 
 /// Starts answering `name` with this PC's LAN address (no-op if running).
 pub fn start(name: &'static str) -> Result<(), String> {
-    let Ok(mut g) = STOP.lock() else { return Err("eroare internă".into()) };
+    let Ok(mut g) = STOP.lock() else {
+        return Err("eroare internă".into());
+    };
     if g.is_some() {
         return Ok(());
     }
@@ -72,7 +74,9 @@ fn open() -> std::io::Result<UdpSocket> {
 fn serve(sock: UdpSocket, name: &str, stop: &AtomicBool) {
     let mut buf = [0u8; 1500];
     while !stop.load(Ordering::Relaxed) {
-        let Ok((n, from)) = sock.recv_from(&mut buf) else { continue };
+        let Ok((n, from)) = sock.recv_from(&mut buf) else {
+            continue;
+        };
         let Some(q) = asked(&buf[..n], name) else { continue };
         let ip = lan_v4();
         if ip.is_unspecified() || ip.is_loopback() {
@@ -82,7 +86,11 @@ fn serve(sock: UdpSocket, name: &str, stop: &AtomicBool) {
         // to itself; a QU question wants it to itself; otherwise to the group.
         let legacy = from.port() != PORT;
         let reply = answer(name, ip, legacy.then_some(&q));
-        let to = if legacy || q.unicast { from } else { SocketAddr::from(SocketAddrV4::new(GROUP, PORT)) };
+        let to = if legacy || q.unicast {
+            from
+        } else {
+            SocketAddr::from(SocketAddrV4::new(GROUP, PORT))
+        };
         let _ = sock.send_to(&reply, to);
     }
 }
@@ -136,7 +144,11 @@ pub fn asked(p: &[u8], name: &str) -> Option<Question> {
         let class = u16::from_be_bytes([*p.get(after + 2)?, *p.get(after + 3)?]);
         pos = after + 4;
         if n == name && (qtype == 1 || qtype == 255) && class & 0x7FFF == 1 {
-            return Some(Question { id, qtype, unicast: class & 0x8000 != 0 });
+            return Some(Question {
+                id,
+                qtype,
+                unicast: class & 0x8000 != 0,
+            });
         }
     }
     None
@@ -186,10 +198,20 @@ mod tests {
     #[test]
     fn answers_only_its_name() {
         let q = asked(&query("KGB.local", 1, 1), "kgb.local").unwrap();
-        assert_eq!(q, Question { id: 0x1234, qtype: 1, unicast: false });
+        assert_eq!(
+            q,
+            Question {
+                id: 0x1234,
+                qtype: 1,
+                unicast: false
+            }
+        );
         assert!(asked(&query("kgb.local", 1, 0x8001), "kgb.local").unwrap().unicast);
         assert!(asked(&query("kgb.local", 255, 1), "kgb.local").is_some());
-        assert!(asked(&query("kgb.local", 28, 1), "kgb.local").is_none(), "AAAA: not answered");
+        assert!(
+            asked(&query("kgb.local", 28, 1), "kgb.local").is_none(),
+            "AAAA: not answered"
+        );
         assert!(asked(&query("alt.local", 1, 1), "kgb.local").is_none());
         let mut resp = query("kgb.local", 1, 1);
         resp[2] = 0x84;
@@ -214,7 +236,11 @@ mod tests {
         assert_eq!(&a[..12], &[0, 0, 0x84, 0, 0, 0, 0, 1, 0, 0, 0, 0]);
         assert_eq!(&a[a.len() - 4..], &[192, 168, 1, 20]);
         assert_eq!(read_name(&a, 12).unwrap().0, "kgb.local");
-        let q = Question { id: 7, qtype: 1, unicast: false };
+        let q = Question {
+            id: 7,
+            qtype: 1,
+            unicast: false,
+        };
         let l = answer("kgb.local", ip, Some(&q));
         assert_eq!(&l[..6], &[0, 7, 0x84, 0, 0, 1]);
         assert_eq!(&l[l.len() - 4..], &[192, 168, 1, 20]);

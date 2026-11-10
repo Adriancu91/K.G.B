@@ -6,13 +6,13 @@
 use std::path::{Path, PathBuf};
 use std::sync::{Arc, Mutex};
 
-mod external;
 mod desktop;
+mod external;
+mod feedback;
 mod mdns;
 mod media;
 mod net;
 mod phone;
-mod feedback;
 mod print;
 mod wincert;
 use std::time::Instant;
@@ -380,7 +380,11 @@ fn home_for_role(s: &Session) -> Result<settings::Home, CoreError> {
         Some(c) => c.role.admin,
         None => true,
     };
-    Ok(if admin { settings::Home::for_admin() } else { settings::Home::for_staff() })
+    Ok(if admin {
+        settings::Home::for_admin()
+    } else {
+        settings::Home::for_staff()
+    })
 }
 
 #[tauri::command]
@@ -424,11 +428,20 @@ struct NetReply {
 /// or a signature's time stamp (`timestamp`, POST of the request, 1 MB; http:// allowed, the answer is signed and
 /// checked). Only with Settings › Internet on. The log keeps the host and the path, never the query.
 #[tauri::command]
-async fn net_fetch(app: State<'_, AppState>, url: String, purpose: String, body: Option<String>, http: bool) -> CmdResult<NetReply> {
+async fn net_fetch(
+    app: State<'_, AppState>,
+    url: String,
+    purpose: String,
+    body: Option<String>,
+    http: bool,
+) -> CmdResult<NetReply> {
     use base64::Engine as _;
     use kgb_net::web::{Purpose, for_log, user_fetch};
     let (on, in_org) = with_session(&app, |s| {
-        Ok((settings::load(s.ws.store())?.settings.internet, org::organization(s.ws.store())?.is_some()))
+        Ok((
+            settings::load(s.ws.store())?.settings.internet,
+            org::organization(s.ws.store())?.is_some(),
+        ))
     })?;
     if !on {
         return Err(if in_org {
@@ -443,15 +456,27 @@ async fn net_fetch(app: State<'_, AppState>, url: String, purpose: String, body:
         _ => return Err("cererea către internet nu e cunoscută".into()),
     };
     let body = match body {
-        Some(b) => Some(base64::engine::general_purpose::STANDARD.decode(b).map_err(|_| "cererea nu a ajuns întreagă".to_string())?),
+        Some(b) => Some(
+            base64::engine::general_purpose::STANDARD
+                .decode(b)
+                .map_err(|_| "cererea nu a ajuns întreagă".to_string())?,
+        ),
         None => None,
     };
     // Tests only, from the environment (never from a page): the small server the e2e starts on 127.0.0.1.
     let loopback = std::env::var("KGB_TEST_NET_LOOPBACK").as_deref() == Ok("1");
     let r = user_fetch(&url, purpose, body, http || purpose == Purpose::Timestamp, loopback).await;
     match &r {
-        Ok(f) => tracing::info!("internet, la cererea omului ({purpose:?}): {} → {} · {} octeți", for_log(&url), f.status, f.data.len()),
-        Err(e) => tracing::info!("internet, la cererea omului ({purpose:?}): {} → refuzat: {e}", for_log(&url)),
+        Ok(f) => tracing::info!(
+            "internet, la cererea omului ({purpose:?}): {} → {} · {} octeți",
+            for_log(&url),
+            f.status,
+            f.data.len()
+        ),
+        Err(e) => tracing::info!(
+            "internet, la cererea omului ({purpose:?}): {} → refuzat: {e}",
+            for_log(&url)
+        ),
     }
     let f = r?;
     Ok(NetReply {
@@ -709,7 +734,13 @@ fn sources_list(app: State<AppState>) -> CmdResult<SourcesReply> {
             }
             if kgb_core::weather::source(s.ws.store())?.is_none() {
                 kgb_core::weather::ensure_source(s.ws.store_mut())?;
-                modules::audit(&mut s.ws, "core.sources", "sursa MET Norway adăugată (oprită)", "ok", "")?;
+                modules::audit(
+                    &mut s.ws,
+                    "core.sources",
+                    "sursa MET Norway adăugată (oprită)",
+                    "ok",
+                    "",
+                )?;
             }
         }
         Ok(SourcesReply {
@@ -792,7 +823,10 @@ fn partners_list(app: State<AppState>, cauta: String, inactivi: bool, azi: Strin
     with_session(&app, |s| {
         let fp = s.device.fingerprint();
         if !partners_readable(s.ws.store(), &fp)? {
-            return Err(CoreError::invalid("agenda de parteneri", "acest PC nu aparține nimănui din organizație"));
+            return Err(CoreError::invalid(
+                "agenda de parteneri",
+                "acest PC nu aparține nimănui din organizație",
+            ));
         }
         let items = if cauta.trim().is_empty() {
             kgb_core::partners::list(s.ws.store(), inactivi)?
@@ -811,11 +845,20 @@ fn partners_list(app: State<AppState>, cauta: String, inactivi: bool, azi: Strin
 fn partner_save(app: State<AppState>, partner: kgb_core::partners::Partner) -> CmdResult<uuid::Uuid> {
     with_session(&app, |s| {
         if !partners_writable(s.ws.store(), &s.device.fingerprint())? {
-            return Err(CoreError::invalid("agenda de parteneri", "rolul tău nu poate modifica agenda"));
+            return Err(CoreError::invalid(
+                "agenda de parteneri",
+                "rolul tău nu poate modifica agenda",
+            ));
         }
         let name = partner.denumire.clone();
         let id = kgb_core::partners::save(s.ws.store_mut(), partner)?;
-        modules::audit(&mut s.ws, kgb_core::partners::PARTNERS_SOURCE, "fișă salvată", "ok", &name)?;
+        modules::audit(
+            &mut s.ws,
+            kgb_core::partners::PARTNERS_SOURCE,
+            "fișă salvată",
+            "ok",
+            &name,
+        )?;
         Ok(id)
     })
 }
@@ -834,10 +877,20 @@ fn partner_remember(
         if !partners_writable(s.ws.store(), &s.device.fingerprint())? {
             return Ok(None);
         }
-        let sursa = if ["document", "business"].contains(&sursa.as_str()) { sursa } else { "manual".into() };
+        let sursa = if ["document", "business"].contains(&sursa.as_str()) {
+            sursa
+        } else {
+            "manual".into()
+        };
         let r = kgb_core::partners::remember(s.ws.store_mut(), partner, &sursa, &azi)?;
         if r.noua || !r.completate.is_empty() {
-            modules::audit(&mut s.ws, "core.partners", "fișă completată dintr-un formular", "ok", "")?;
+            modules::audit(
+                &mut s.ws,
+                "core.partners",
+                "fișă completată dintr-un formular",
+                "ok",
+                "",
+            )?;
         }
         Ok(Some(r))
     })
@@ -846,11 +899,25 @@ fn partner_remember(
 /// The partner import model (step 7.4j): an XLSX with the columns and one example row.
 #[tauri::command]
 fn partners_import_model(dest: String) -> CmdResult<()> {
-    let head: Vec<String> = kgb_core::partners::IMPORT_COLUMNS.iter().map(|c| c.to_string()).collect();
-    let mut example = vec![String::new(); head.len()];
-    for (i, v) in ["Exemplu Client SRL", "client", "RO14399840", "J12/345/2001", "Str. Exemplu 1", "Cluj-Napoca", "Cluj", "România", "0264 000 000", "office@exemplu.ro"]
+    let head: Vec<String> = kgb_core::partners::IMPORT_COLUMNS
         .iter()
-        .enumerate()
+        .map(|c| c.to_string())
+        .collect();
+    let mut example = vec![String::new(); head.len()];
+    for (i, v) in [
+        "Exemplu Client SRL",
+        "client",
+        "RO14399840",
+        "J12/345/2001",
+        "Str. Exemplu 1",
+        "Cluj-Napoca",
+        "Cluj",
+        "România",
+        "0264 000 000",
+        "office@exemplu.ro",
+    ]
+    .iter()
+    .enumerate()
     {
         example[i] = v.to_string();
     }
@@ -858,7 +925,8 @@ fn partners_import_model(dest: String) -> CmdResult<()> {
     extra.push("Licență transport".into());
     let mut ex2 = example.clone();
     ex2.push("LT-1234".into());
-    let bytes = kgb_sheets::convert::text_table_xlsx("Parteneri", &[extra, ex2]).map_err(|e| format!("modelul nu s-a putut face: {e}"))?;
+    let bytes = kgb_sheets::convert::text_table_xlsx("Parteneri", &[extra, ex2])
+        .map_err(|e| format!("modelul nu s-a putut face: {e}"))?;
     std::fs::write(&dest, bytes).map_err(|e| format!("nu s-a putut salva: {e}"))?;
     Ok(())
 }
@@ -870,14 +938,31 @@ fn partners_import(app: State<AppState>, path: String, azi: String) -> CmdResult
     if data.len() > 20 * 1024 * 1024 {
         return Err("fișierul e prea mare (cel mult 20 MB)".into());
     }
-    let name = std::path::Path::new(&path).file_name().map(|n| n.to_string_lossy().into_owned()).unwrap_or_default();
+    let name = std::path::Path::new(&path)
+        .file_name()
+        .map(|n| n.to_string_lossy().into_owned())
+        .unwrap_or_default();
     let rows = kgb_sheets::convert::first_sheet_rows(&data, &name)?;
     with_session(&app, |s| {
         if !partners_writable(s.ws.store(), &s.device.fingerprint())? {
-            return Err(CoreError::invalid("agenda de parteneri", "rolul tău nu poate modifica agenda"));
+            return Err(CoreError::invalid(
+                "agenda de parteneri",
+                "rolul tău nu poate modifica agenda",
+            ));
         }
         let r = kgb_core::partners::import_rows(s.ws.store_mut(), &rows, &azi)?;
-        modules::audit(&mut s.ws, "core.partners", "import parteneri", "ok", &format!("{} noi, {} completați, {} erori", r.adaugate, r.completate, r.erori.len()))?;
+        modules::audit(
+            &mut s.ws,
+            "core.partners",
+            "import parteneri",
+            "ok",
+            &format!(
+                "{} noi, {} completați, {} erori",
+                r.adaugate,
+                r.completate,
+                r.erori.len()
+            ),
+        )?;
         Ok(r)
     })
 }
@@ -886,7 +971,10 @@ fn partners_import(app: State<AppState>, path: String, azi: String) -> CmdResult
 fn partner_set_active(app: State<AppState>, id: uuid::Uuid, active: bool) -> CmdResult<()> {
     with_session(&app, |s| {
         if !partners_writable(s.ws.store(), &s.device.fingerprint())? {
-            return Err(CoreError::invalid("agenda de parteneri", "rolul tău nu poate modifica agenda"));
+            return Err(CoreError::invalid(
+                "agenda de parteneri",
+                "rolul tău nu poate modifica agenda",
+            ));
         }
         kgb_core::partners::set_active(s.ws.store_mut(), id, active)
     })
@@ -1020,7 +1108,10 @@ struct RatesReply {
 #[tauri::command]
 async fn fx_rates(app: State<'_, AppState>) -> CmdResult<RatesReply> {
     with_session(&app, |s| kgb_core::fx::usable(s.ws.store()).map(|_| ()))?;
-    Ok(RatesReply { curs: external::rates().await?, sursa: kgb_core::fx::BNR_CREDIT })
+    Ok(RatesReply {
+        curs: external::rates().await?,
+        sursa: kgb_core::fx::BNR_CREDIT,
+    })
 }
 
 #[derive(Serialize)]
@@ -1039,7 +1130,10 @@ async fn weather_today(app: State<'_, AppState>, azi: String, offset_min: i64) -
     if town.is_empty() {
         return Err("alege orașul".into());
     }
-    Ok(WeatherReply { vreme: external::today(&town, &azi, offset_min).await?, sursa: kgb_core::weather::MET_CREDIT })
+    Ok(WeatherReply {
+        vreme: external::today(&town, &azi, offset_min).await?,
+        sursa: kgb_core::weather::MET_CREDIT,
+    })
 }
 
 /// The towns the weather panel offers: (key, name).
@@ -1057,7 +1151,9 @@ async fn media_now() -> CmdResult<Option<media::NowPlaying>> {
 /// Play/pause, next or previous on that player.
 #[tauri::command]
 async fn media_control(action: String) -> CmdResult<bool> {
-    tauri::async_runtime::spawn_blocking(move || media::control(&action)).await.map_err(err)?
+    tauri::async_runtime::spawn_blocking(move || media::control(&action))
+        .await
+        .map_err(err)?
 }
 
 /// When the last ANAF request left (the service allows one per second).
@@ -1073,23 +1169,31 @@ async fn anaf_lookup(app: State<'_, AppState>, cui: String, azi: String) -> CmdR
     })?;
     // At most one request per second, from this PC.
     let wait = {
-        let mut last = ANAF_LAST.lock().map_err(|_| "starea aplicației este blocată".to_string())?;
+        let mut last = ANAF_LAST
+            .lock()
+            .map_err(|_| "starea aplicației este blocată".to_string())?;
         let now = std::time::Instant::now();
         let gap = std::time::Duration::from_millis(kgb_core::anaf::MIN_INTERVAL_MS);
-        let wait = last.map(|t| gap.saturating_sub(now.duration_since(t))).unwrap_or_default();
+        let wait = last
+            .map(|t| gap.saturating_sub(now.duration_since(t)))
+            .unwrap_or_default();
         *last = Some(now + wait);
         wait
     };
     if !wait.is_zero() {
         std::thread::sleep(wait);
     }
-    let (status, answer) = kgb_net::web::post_json(kgb_core::anaf::ANAF_URL, body).await.map_err(|e| format!("ANAF: {e}; completează de mână"))?;
+    let (status, answer) = kgb_net::web::post_json(kgb_core::anaf::ANAF_URL, body)
+        .await
+        .map_err(|e| format!("ANAF: {e}; completează de mână"))?;
     let audit = |what: &str, outcome: &str| {
         let _ = with_session(&app, |s| modules::audit(&mut s.ws, "core.sources", what, outcome, ""));
     };
     if status != 200 {
         audit("căutare ANAF", "eroare");
-        return Err(format!("ANAF: serviciul a răspuns cu codul HTTP {status}; încearcă mai târziu sau completează de mână"));
+        return Err(format!(
+            "ANAF: serviciul a răspuns cu codul HTTP {status}; încearcă mai târziu sau completează de mână"
+        ));
     }
     let (found, _) = kgb_core::anaf::parse(&answer).map_err(|e| e.to_string())?;
     audit("căutare ANAF după CUI", "ok");
@@ -1165,8 +1269,10 @@ fn reminders_tick(app: State<AppState>, handle: tauri::AppHandle, azi: String) -
             tracing::warn!("daily backup failed: {e}");
         }
         let fp = s.device.fingerprint();
-        let before: std::collections::BTreeSet<uuid::Uuid> =
-            notifications::list(&s.ws, false, usize::MAX)?.into_iter().map(|n| n.id).collect();
+        let before: std::collections::BTreeSet<uuid::Uuid> = notifications::list(&s.ws, false, usize::MAX)?
+            .into_iter()
+            .map(|n| n.id)
+            .collect();
         // Partner documents that expire (D-066), for people who can see the directory.
         if partners_readable(s.ws.store(), &fp)? {
             kgb_core::partners::remind(&mut s.ws, &azi)?;
@@ -1210,7 +1316,11 @@ fn team_overview(app: State<AppState>) -> CmdResult<TeamReply> {
         let admin = organizatie && org::require_admin(s.ws.store(), Some(&fp), "").is_ok();
         Ok(TeamReply {
             admin,
-            carduri: if admin { kgb_core::presence::all(s.ws.store())? } else { vec![] },
+            carduri: if admin {
+                kgb_core::presence::all(s.ws.store())?
+            } else {
+                vec![]
+            },
             eu: kgb_core::presence::mine(s.ws.store(), &fp)?,
             culori: kgb_core::presence::COLORS,
             organizatie,
@@ -1226,7 +1336,14 @@ fn team_set_mine(app: State<AppState>, lucrez: String, culoare: String) -> CmdRe
         let Some(c) = org::current(s.ws.store(), &fp)? else {
             return Err(CoreError::invalid("echipa", "acest PC nu e într-o organizație"));
         };
-        kgb_core::presence::set_mine(s.ws.store_mut(), &fp, &c.member.id.to_string(), &c.member.name, &lucrez, &culoare)
+        kgb_core::presence::set_mine(
+            s.ws.store_mut(),
+            &fp,
+            &c.member.id.to_string(),
+            &c.member.name,
+            &lucrez,
+            &culoare,
+        )
     })
 }
 
@@ -1262,7 +1379,11 @@ fn phone_admin(s: &Session) -> Result<(), CoreError> {
 fn phone_status(app: State<AppState>) -> CmdResult<PhoneReply> {
     with_session(&app, |s| {
         let persoane = if org::organization(s.ws.store())?.is_some() {
-            org::members(s.ws.store(), false)?.into_iter().filter(|m| m.active).map(|m| m.name).collect()
+            org::members(s.ws.store(), false)?
+                .into_iter()
+                .filter(|m| m.active)
+                .map(|m| m.name)
+                .collect()
         } else {
             vec![my_name(s)?]
         };
@@ -1348,14 +1469,22 @@ fn phone_file(app: State<AppState>, id: uuid::Uuid) -> CmdResult<PhoneFile> {
     use base64::Engine as _;
     with_session(&app, |s| {
         let (nume, bytes) = kgb_core::phones::file(&s.ws, id)?;
-        Ok(PhoneFile { nume, data: base64::engine::general_purpose::STANDARD.encode(bytes) })
+        Ok(PhoneFile {
+            nume,
+            data: base64::engine::general_purpose::STANDARD.encode(bytes),
+        })
     })
 }
 
 /// A bank statement received from a phone, imported into Business (the
 /// person on this PC needs the right to write in Business).
 #[tauri::command]
-fn phone_import_statement(app: State<AppState>, id: uuid::Uuid, fisier: uuid::Uuid, cont: uuid::Uuid) -> CmdResult<Value> {
+fn phone_import_statement(
+    app: State<AppState>,
+    id: uuid::Uuid,
+    fisier: uuid::Uuid,
+    cont: uuid::Uuid,
+) -> CmdResult<Value> {
     use base64::Engine as _;
     with_session(&app, |s| {
         let (nume, bytes) = kgb_core::phones::file(&s.ws, fisier)?;
@@ -1384,7 +1513,11 @@ struct DesktopReply {
 
 #[tauri::command]
 fn desktop_get(app: State<AppState>) -> CmdResult<DesktopReply> {
-    Ok(DesktopReply { cu_windows: desktop::autostart(), langa_ceas: desktop::load(&app.root).langa_ceas, comanda: desktop::autostart_command() })
+    Ok(DesktopReply {
+        cu_windows: desktop::autostart(),
+        langa_ceas: desktop::load(&app.root).langa_ceas,
+        comanda: desktop::autostart_command(),
+    })
 }
 
 /// Preferences of this PC (not of the workspace): any person using it may
@@ -1392,7 +1525,10 @@ fn desktop_get(app: State<AppState>) -> CmdResult<DesktopReply> {
 #[tauri::command]
 fn desktop_set(app: State<AppState>, cu_windows: bool, langa_ceas: bool) -> CmdResult<DesktopReply> {
     desktop::set_autostart(cu_windows).map_err(|e| format!("Pornirea cu Windows nu s-a putut schimba: {e}"))?;
-    let prefs = desktop::Prefs { langa_ceas, ..desktop::load(&app.root) };
+    let prefs = desktop::Prefs {
+        langa_ceas,
+        ..desktop::load(&app.root)
+    };
     desktop::save(&app.root, &prefs).map_err(|e| format!("Preferințele acestui PC nu s-au salvat: {e}"))?;
     tracing::info!(cu_windows, langa_ceas, "desktop preferences saved");
     desktop_get(app)
@@ -1409,7 +1545,10 @@ fn lang_set(app: State<AppState>, limba: String) -> CmdResult<String> {
     if limba != "ro" && limba != "en" {
         return Err("limba poate fi doar ro sau en".into());
     }
-    let prefs = desktop::Prefs { limba, ..desktop::load(&app.root) };
+    let prefs = desktop::Prefs {
+        limba,
+        ..desktop::load(&app.root)
+    };
     desktop::save(&app.root, &prefs).map_err(|e| format!("Limba nu s-a salvat: {e}"))?;
     Ok(prefs.limba)
 }
@@ -1429,7 +1568,10 @@ fn tray(app: &tauri::App) -> tauri::Result<()> {
     let open = MenuItem::with_id(app, "deschide", "Deschide K.G.B.", true, None::<&str>)?;
     let quit = MenuItem::with_id(app, "iesire", "Ieșire", true, None::<&str>)?;
     let menu = Menu::with_items(app, &[&open, &quit])?;
-    let mut b = TrayIconBuilder::with_id("kgb").tooltip("K.G.B.").menu(&menu).show_menu_on_left_click(false);
+    let mut b = TrayIconBuilder::with_id("kgb")
+        .tooltip("K.G.B.")
+        .menu(&menu)
+        .show_menu_on_left_click(false);
     if let Some(icon) = app.default_window_icon() {
         b = b.icon(icon.clone());
     }
@@ -1439,7 +1581,12 @@ fn tray(app: &tauri::App) -> tauri::Result<()> {
         _ => {}
     })
     .on_tray_icon_event(|t, e| {
-        if let TrayIconEvent::Click { button: MouseButton::Left, button_state: MouseButtonState::Up, .. } = e {
+        if let TrayIconEvent::Click {
+            button: MouseButton::Left,
+            button_state: MouseButtonState::Up,
+            ..
+        } = e
+        {
             show_main(t.app_handle());
         }
     })
@@ -1457,7 +1604,9 @@ fn my_name(s: &Session) -> Result<String, CoreError> {
     if let Some(c) = org::current(s.ws.store(), &s.device.fingerprint())? {
         return Ok(c.member.name);
     }
-    Ok(identity::owner(s.ws.store())?.map(|o| o.display_name).unwrap_or_else(|| "Proprietar".into()))
+    Ok(identity::owner(s.ws.store())?
+        .map(|o| o.display_name)
+        .unwrap_or_else(|| "Proprietar".into()))
 }
 
 #[derive(Serialize)]

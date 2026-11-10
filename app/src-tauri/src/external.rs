@@ -25,7 +25,12 @@ static WEATHER: Mutex<Option<HashMap<String, Cached>>> = Mutex::new(None);
 pub fn http_date(s: &str) -> Option<SystemTime> {
     let mut it = s.split_whitespace().skip(1);
     let d: u64 = it.next()?.parse().ok()?;
-    let m = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"].iter().position(|x| Some(*x) == it.clone().next())? as u64 + 1;
+    let m = [
+        "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec",
+    ]
+    .iter()
+    .position(|x| Some(*x) == it.clone().next())? as u64
+        + 1;
     it.next();
     let y: i64 = it.next()?.parse().ok()?;
     let mut hms = it.next()?.split(':').map(|x| x.parse::<u64>().ok());
@@ -48,9 +53,13 @@ pub async fn rates() -> Result<fx::Day, String> {
     {
         return Ok(day.clone());
     }
-    let a = kgb_net::web::get(fx::BNR_URL, concat!("KGB/", env!("CARGO_PKG_VERSION"), " github.com/Adriancu91/K.G.B"), None)
-        .await
-        .map_err(|e| format!("cursul BNR: {e}"))?;
+    let a = kgb_net::web::get(
+        fx::BNR_URL,
+        concat!("KGB/", env!("CARGO_PKG_VERSION"), " github.com/Adriancu91/K.G.B"),
+        None,
+    )
+    .await
+    .map_err(|e| format!("cursul BNR: {e}"))?;
     if a.status != 200 {
         return Err(format!("cursul BNR: serverul a răspuns cu codul {}", a.status));
     }
@@ -65,14 +74,20 @@ pub async fn today(town: &str, azi: &str, offset_min: i64) -> Result<weather::To
     let url = weather::url_for(town).map_err(|e| e.to_string())?;
     let now = SystemTime::now();
     let (cached_body, lm) = {
-        let g = WEATHER.lock().map_err(|_| "starea aplicației este blocată".to_string())?;
+        let g = WEATHER
+            .lock()
+            .map_err(|_| "starea aplicației este blocată".to_string())?;
         match g.as_ref().and_then(|m| m.get(town)) {
-            Some(c) if now < c.not_before => return weather::parse(&c.body, town, azi, offset_min).map_err(|e| e.to_string()),
+            Some(c) if now < c.not_before => {
+                return weather::parse(&c.body, town, azi, offset_min).map_err(|e| e.to_string());
+            }
             Some(c) => (Some(c.body.clone()), c.last_modified.clone()),
             None => (None, None),
         }
     };
-    let a = kgb_net::web::get(&url, weather::USER_AGENT, lm.as_deref()).await.map_err(|e| format!("vremea: {e}"))?;
+    let a = kgb_net::web::get(&url, weather::USER_AGENT, lm.as_deref())
+        .await
+        .map_err(|e| format!("vremea: {e}"))?;
     let body = match (a.status, cached_body) {
         (200 | 203, _) => a.body,
         (304, Some(b)) => b,
@@ -80,12 +95,20 @@ pub async fn today(town: &str, azi: &str, offset_min: i64) -> Result<weather::To
         (s, _) => return Err(format!("vremea: serverul a răspuns cu codul {s}")),
     };
     let min_next = now + Duration::from_secs(weather::MIN_REFRESH_SECS);
-    let not_before = a.expires.as_deref().and_then(http_date).map_or(min_next, |e| e.max(min_next));
+    let not_before = a
+        .expires
+        .as_deref()
+        .and_then(http_date)
+        .map_or(min_next, |e| e.max(min_next));
     let t = weather::parse(&body, town, azi, offset_min).map_err(|e| e.to_string())?;
     if let Ok(mut g) = WEATHER.lock() {
         g.get_or_insert_with(HashMap::new).insert(
             town.to_string(),
-            Cached { not_before, last_modified: a.last_modified.or(lm), body },
+            Cached {
+                not_before,
+                last_modified: a.last_modified.or(lm),
+                body,
+            },
         );
     }
     Ok(t)
