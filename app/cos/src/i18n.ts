@@ -179,6 +179,8 @@ const EN_VALUES = new Set([...Object.values(EN), ...Object.values(EN_IMAGES), ..
 export function addExtra(list: readonly Extra[]) {
   const n = EXTRA_PATTERNS.length;
   addExtraData(list);
+  // Textele exacte ale gazdei au întâietate față de dicționarele COS: în K.G.B. „Birou” e un profil (Office), nu o categorie de pictograme (Desk).
+  for (const { data } of list) for (const [k, v] of Object.entries(data.dict ?? {})) { HOST[k] = v; const b = bare(k); if (b && b !== k && !(b in HOST)) HOST[b] = bare(v) || v.trim(); }
   PATTERNS.push(...EXTRA_PATTERNS.slice(n));
   for (const { data } of list) for (const v of Object.values(data.dict ?? {})) EN_VALUES.add(v);
 }
@@ -205,7 +207,9 @@ let modCtx: Record<string, string> | null = null;
 /** Ultima variantă: dicționarele zonelor, unite (un buton „Nou” din meniul Fișier e tradus doar în dicționarul ferestrelor). */
 const ZONES_ALL: Record<string, string> = {};
 for (const [, d] of CONTEXTS) for (const [k, v] of Object.entries(d)) if (!(k in ZONES_ALL)) ZONES_ALL[k] = v;
-const look = (k: string): string | undefined => ctx?.[k] ?? modCtx?.[k] ?? EN[k] ?? COMMON_EXTRA[k] ?? ALL_EXTRA[k] ?? ZONES_ALL[k];
+/** Dicționarul exact al aplicației gazdă (addExtra), căutat primul; gol în Cyber Office Studio. */
+const HOST: Record<string, string> = {};
+const look = (k: string): string | undefined => HOST[k] ?? ctx?.[k] ?? modCtx?.[k] ?? EN[k] ?? COMMON_EXTRA[k] ?? ALL_EXTRA[k] ?? ZONES_ALL[k];
 const ctxOf = (el: Element | null) => (el && CONTEXTS.find(([sel]) => el.closest(sel))?.[1]) || null;
 const modOf = (el: Element | null) => { const m = (el?.closest('.module-pane') as HTMLElement | null)?.dataset.module; return (m && MOD_EXTRA[m]) || null; };
 

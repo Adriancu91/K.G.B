@@ -132,6 +132,19 @@ for (const x of list) {
   miss.push(x);
 }
 fs.writeFileSync("i18n/missing.json", JSON.stringify(miss, null, 1));
+// What was translated without an exact entry (by the COS dictionaries' patterns or by pieces): these
+// are the ones to read, since a pattern can split a word („Stocare” → „Stockhas”). Listed apart.
+const exact = (s) => s in kgb.dict || s.trim() in kgb.dict;
+const byPattern = [];
+for (const x of list) {
+  if (skip.has(x.s) || exact(x.s) || (x.t && x.s in (kgb.templates ?? {}))) continue;
+  // A template is tried with sample values, as above.
+  const probe = x.t ? x.s.replace(/{(d+)}/g, (_, n) => (n === "0" ? "3" : "raport.docx")) : x.s;
+  const r = translateAny(probe);
+  if (r !== null && r !== probe) byPattern.push({ ro: probe, en: r, f: x.f[0] });
+}
+fs.writeFileSync("i18n/by-pattern.json", JSON.stringify(byPattern, null, 1));
+console.log("traduse fără intrare exactă (de citit, i18n/by-pattern.json):", byPattern.length);
 console.log("texte:", list.length, "· fără traducere:", miss.length);
 for (const m of miss.slice(0, 30)) console.log("  ", m.f[0], "·", m.s.slice(0, 90));
 process.exit(miss.length ? 1 : 0);

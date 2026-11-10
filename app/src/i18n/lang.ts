@@ -7,7 +7,6 @@
 // lost) and is shared by every K.G.B. on the computer. localStorage stays only as a hint for the first paint.
 import { useEffect, useState } from "react";
 import { invoke } from "@tauri-apps/api/core";
-import kgbEn from "./kgb-en.json";
 
 export type Lang = "ro" | "en";
 const KEY = "kgb.lang";
@@ -24,8 +23,9 @@ function stored(): Lang {
 let lang: Lang = stored();
 let translator: Promise<typeof import("../../cos/src/i18n")> | null = null;
 const load = () =>
-  (translator ??= import("../../cos/src/i18n").then((m) => {
-    m.addExtra([{ group: "kgb", modules: null, data: kgbEn }]);
+  // The translator and the app's dictionary come together, only when English is chosen.
+  (translator ??= Promise.all([import("../../cos/src/i18n"), import("./kgb-en.json")]).then(([m, kgbEn]) => {
+    m.addExtra([{ group: "kgb", modules: null, data: kgbEn.default }]);
     return m;
   }));
 
