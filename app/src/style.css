@@ -1763,3 +1763,18 @@ label > .suggest > input {
 .pdf-stamp-bar {
   margin: 6px 0;
 }
+
+/* RO / EN under the navigation (7.4l-0f): the whole window, and the COS windows, change language. */
+.lang-switch {
+  display: flex;
+  gap: 4px;
+  padding: 8px 12px;
+}
+.lang-switch button {
+  padding: 2px 10px;
+  font-size: 12px;
+}
+.lang-switch button.on {
+  background: var(--accent, #5b5bd6);
+  color: #fff;
+}

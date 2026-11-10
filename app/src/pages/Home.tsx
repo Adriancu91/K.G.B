@@ -11,6 +11,7 @@ import { invoke } from "@tauri-apps/api/core";
 import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState, type KeyboardEvent, type PointerEvent as ReactPointerEvent } from "react";
 import { api, message, type AppInfo, type HomePanel, type ModulesReply, type NotificationView, type Settings } from "../api";
 import { setIntent } from "../intent";
+import { useLang } from "../i18n/lang";
 
 const TITLES: Record<string, string> = {
   bani: "Bani",
@@ -524,6 +525,8 @@ export function Home(props: {
   onOpen: (id: string) => void;
   onError: (e: string | null) => void;
 }) {
+  // The date in the language of the window (7.4l-0f); the workspace name is the user's and is not translated.
+  const lang = useLang();
   const { panels, amanate } = props.settings.home;
   const [data, reloadNotes] = useData(props.modules, props.onError);
   const canvas = useRef<HTMLDivElement>(null);
@@ -665,7 +668,8 @@ export function Home(props: {
           </strong>
           <span className="muted">
             {" "}
-            · {new Date().toLocaleDateString("ro-RO", { weekday: "long", day: "numeric", month: "long", year: "numeric" })} · {props.info.workspace?.name}
+            · {new Date().toLocaleDateString(lang === "en" ? "en-GB" : "ro-RO", { weekday: "long", day: "numeric", month: "long", year: "numeric" })} ·{" "}
+            <span className="no-i18n">{props.info.workspace?.name}</span>
           </span>
         </div>
         <span className={`tag ${lateCount ? "bad" : "ok"}`}>{lateCount ? `${lateCount} întârziate` : "nimic întârziat"}</span>

@@ -1334,9 +1334,26 @@ fn desktop_get(app: State<AppState>) -> CmdResult<DesktopReply> {
 #[tauri::command]
 fn desktop_set(app: State<AppState>, cu_windows: bool, langa_ceas: bool) -> CmdResult<DesktopReply> {
     desktop::set_autostart(cu_windows).map_err(|e| format!("Pornirea cu Windows nu s-a putut schimba: {e}"))?;
-    desktop::save(&app.root, &desktop::Prefs { langa_ceas }).map_err(|e| format!("Preferințele acestui PC nu s-au salvat: {e}"))?;
+    let prefs = desktop::Prefs { langa_ceas, ..desktop::load(&app.root) };
+    desktop::save(&app.root, &prefs).map_err(|e| format!("Preferințele acestui PC nu s-au salvat: {e}"))?;
     tracing::info!(cu_windows, langa_ceas, "desktop preferences saved");
     desktop_get(app)
+}
+
+/// The language of the window on this PC (7.4l-0f).
+#[tauri::command]
+fn lang_get(app: State<AppState>) -> String {
+    desktop::load(&app.root).limba
+}
+
+#[tauri::command]
+fn lang_set(app: State<AppState>, limba: String) -> CmdResult<String> {
+    if limba != "ro" && limba != "en" {
+        return Err("limba poate fi doar ro sau en".into());
+    }
+    let prefs = desktop::Prefs { limba, ..desktop::load(&app.root) };
+    desktop::save(&app.root, &prefs).map_err(|e| format!("Limba nu s-a salvat: {e}"))?;
+    Ok(prefs.limba)
 }
 
 fn show_main(app: &tauri::AppHandle) {
@@ -1725,6 +1742,8 @@ fn main() {
             phone_import_statement,
             desktop_get,
             desktop_set,
+            lang_get,
+            lang_set,
             team_overview,
             team_set_mine,
             chat_list,

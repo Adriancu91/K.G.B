@@ -23,15 +23,24 @@ pub struct Prefs {
     /// Closing the window keeps K.G.B. running next to the clock.
     #[serde(default = "yes")]
     pub langa_ceas: bool,
+    /// The language of the window on this PC: "ro" or "en" (7.4l-0f). Kept here, not in the
+    /// WebView's storage, which reaches the disk only some time later and is shared by every
+    /// K.G.B. on the computer.
+    #[serde(default = "ro")]
+    pub limba: String,
 }
 
 fn yes() -> bool {
     true
 }
 
+fn ro() -> String {
+    "ro".into()
+}
+
 impl Default for Prefs {
     fn default() -> Self {
-        Prefs { langa_ceas: true }
+        Prefs { langa_ceas: true, limba: ro() }
     }
 }
 

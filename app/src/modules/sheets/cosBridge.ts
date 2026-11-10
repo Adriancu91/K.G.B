@@ -62,6 +62,9 @@ export interface KgbHost {
   importFileWith<T>(id: string, path: string, command: string, args: Record<string, unknown>): Promise<T>;
   open(o: { multiple: false; filters: DialogFilter[] }): Promise<string | string[] | null>;
   save(o: { defaultPath: string; filters: DialogFilter[] }): Promise<string | null>;
+  /** The app's language (RO / EN) and its changes: the window follows it. */
+  lang(): "ro" | "en";
+  onLang(f: (l: "ro" | "en") => void): () => void;
 }
 let kgb: KgbHost;
 const open: KgbHost["open"] = (o) => kgb.open(o);

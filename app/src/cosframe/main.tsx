@@ -8,6 +8,7 @@ import { createRoot } from "react-dom/client";
 import type { OpenedFile } from "../../cos/src/api";
 import { setCurrentModule } from "../../cos/src/active";
 import { AskHost } from "../../cos/src/ask";
+import { setLang } from "../../cos/src/i18n";
 import { ScreenshotHost } from "../../cos/src/screenshot";
 import { SketchHost } from "../../cos/src/sketch";
 import { DOCS, SHEETS, installCosBridge, openDocument, type KgbHost } from "../modules/sheets/cosBridge";
@@ -61,6 +62,9 @@ if (!host) {
   // The window's shortcuts (Ctrl+S, Ctrl+O, Ctrl+Z…) work only in the application "in front" (COS active.ts);
   // in this frame the window is always in front.
   setCurrentModule(docs ? "doc" : "sheets");
+  // The window speaks the app's language (RO / EN) and changes with it.
+  setLang(host.lang());
+  host.onLang(setLang);
   root.render(
     <StrictMode>
       <Frame />
