@@ -2266,7 +2266,10 @@
   "tipărirea în PDF există doar pe Windows": "printing to PDF exists only on Windows",
   "lucrarea nu este a acestei ferestre": "the job does not belong to this window",
   "lucrarea de tipărit nu există sau a fost deja luată": "the print job does not exist or was already taken",
-  "PDF-ul nu s-a putut face": "the PDF could not be made"
+  "PDF-ul nu s-a putut face": "the PDF could not be made",
+  "Profil:": "Profile:",
+  "Profil": "Profile",
+  "Modul": "Module"
  },
  "templates": {
   "Completat de la ANAF (date pentru {0}): {1}. Verifică și completează restul de mână.": "Filled in from ANAF (data for {0}): {1}. Check and fill in the rest manually.",

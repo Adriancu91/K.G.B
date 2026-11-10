@@ -1195,11 +1195,6 @@
   "f": "pages/ChatPage.tsx"
  },
  {
-  "ro": "Modul",
-  "en": "Mode",
-  "f": "pages/ConflictsPage.tsx"
- },
- {
   "ro": "Ce",
   "en": "What",
   "f": "pages/ConflictsPage.tsx"
