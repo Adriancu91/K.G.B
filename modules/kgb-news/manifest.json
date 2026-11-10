@@ -1,0 +1,40 @@
+{
+  "manifest_format": 1,
+  "id": "kgb.news",
+  "name": "Știri",
+  "description": "Știrile din fluxurile RSS / Atom aprobate în „Surse externe”: fiecare cu sursa, ora și legătura. Doar sursele pe care le aprobi tu; nimic nu se citește din alte locuri. Poți păstra o știre ca s-o găsești mai târziu.",
+  "version": "0.1.0",
+  "core": ">=0.1.0, <0.2.0",
+  "status": "beta",
+  "permissions": [
+    "storage.own"
+  ],
+  "services": [
+    "storage",
+    "log"
+  ],
+  "data_types": [
+    {
+      "collection": "pastrate",
+      "description": "știrile păstrate: titlul, legătura, ora, sursa, rezumatul, când a fost păstrată",
+      "schema": {
+        "fields": {
+          "titlu": { "type": "string", "required": true, "max_len": 300 },
+          "link": { "type": "string", "required": true, "max_len": 2000 },
+          "ms": { "type": "integer", "required": true },
+          "sursa": { "type": "string", "required": true, "max_len": 200 },
+          "rezumat": { "type": "string", "required": true, "max_len": 600 },
+          "pastrat_ms": { "type": "integer", "required": true, "min": 0 }
+        },
+        "additional": false
+      }
+    }
+  ],
+  "events": {
+    "emits": [],
+    "listens": []
+  },
+  "data_format": 1,
+  "migrations": [],
+  "on_disable": "Știrile păstrate rămân în spațiul de lucru și reapar când modulul este activat din nou."
+}

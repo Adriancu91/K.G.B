@@ -81,7 +81,10 @@ pub const TOWNS: &[(&str, &str, &str, &str)] = &[
 
 /// The request address for a town key, or why not.
 pub fn url_for(town: &str) -> CoreResult<String> {
-    let (_, _, lat, lon) = TOWNS.iter().find(|t| t.0 == town).ok_or_else(|| bad(format!("orașul „{town}” nu e în listă")))?;
+    let (_, _, lat, lon) = TOWNS
+        .iter()
+        .find(|t| t.0 == town)
+        .ok_or_else(|| bad(format!("orașul „{town}” nu e în listă")))?;
     Ok(format!("{MET_BASE}?lat={lat}&lon={lon}"))
 }
 
@@ -116,9 +119,27 @@ pub fn sky(code: &str) -> String {
         "partlycloudy" => "parțial noros",
         "cloudy" => "înnorat",
         "fog" => "ceață",
-        "lightrain" => if showers { "averse slabe de ploaie" } else { "ploaie slabă" },
-        "rain" => if showers { "averse de ploaie" } else { "ploaie" },
-        "heavyrain" => if showers { "averse puternice" } else { "ploaie puternică" },
+        "lightrain" => {
+            if showers {
+                "averse slabe de ploaie"
+            } else {
+                "ploaie slabă"
+            }
+        }
+        "rain" => {
+            if showers {
+                "averse de ploaie"
+            } else {
+                "ploaie"
+            }
+        }
+        "heavyrain" => {
+            if showers {
+                "averse puternice"
+            } else {
+                "ploaie puternică"
+            }
+        }
         "lightsleet" | "sleet" | "heavysleet" => "lapoviță",
         "lightsnow" => "ninsoare slabă",
         "snow" => "ninsoare",
@@ -137,7 +158,10 @@ fn num(v: &Value) -> Option<f64> {
 /// `offset_min` the PC's offset from UTC, to know which hours are "today".
 pub fn parse(json: &str, town: &str, azi: &str, offset_min: i64) -> CoreResult<Today> {
     let v: Value = serde_json::from_str(json).map_err(|_| bad("răspunsul nu e JSON"))?;
-    let series = v["properties"]["timeseries"].as_array().filter(|a| !a.is_empty()).ok_or_else(|| bad("răspunsul nu are prognoza"))?;
+    let series = v["properties"]["timeseries"]
+        .as_array()
+        .filter(|a| !a.is_empty())
+        .ok_or_else(|| bad("răspunsul nu are prognoza"))?;
     let first = &series[0]["data"];
     let det = &first["instant"]["details"];
     let temperatura = num(&det["air_temperature"]).ok_or_else(|| bad("lipsește temperatura"))?;
@@ -164,7 +188,10 @@ pub fn parse(json: &str, town: &str, azi: &str, offset_min: i64) -> CoreResult<T
         minima: lo,
         maxima: hi,
         precipitatii_6h: num(&first["next_6_hours"]["details"]["precipitation_amount"]).unwrap_or(0.0),
-        actualizat: v["properties"]["meta"]["updated_at"].as_str().unwrap_or_default().to_string(),
+        actualizat: v["properties"]["meta"]["updated_at"]
+            .as_str()
+            .unwrap_or_default()
+            .to_string(),
     })
 }
 
@@ -242,7 +269,9 @@ pub fn ensure_source(store: &mut Store) -> CoreResult<Uuid> {
 pub fn usable(store: &Store) -> CoreResult<Source> {
     match source(store)? {
         Some(s) if s.activa => Ok(s),
-        Some(_) => Err(bad("sursa de vreme (MET Norway) e oprită; o poți porni din „Surse externe”, după ce citești termenii")),
+        Some(_) => Err(bad(
+            "sursa de vreme (MET Norway) e oprită; o poți porni din „Surse externe”, după ce citești termenii",
+        )),
         None => Err(bad("sursa de vreme nu e în „Surse externe”")),
     }
 }

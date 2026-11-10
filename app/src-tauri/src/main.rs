@@ -72,6 +72,7 @@ fn builtin_modules() -> Vec<Box<dyn Module>> {
         Box::new(kgb_team::Team::new()),
         Box::new(kgb_calc::Calc::new()),
         Box::new(kgb_write::Write::new()),
+        Box::new(kgb_news::News::new()),
     ]
 }
 
@@ -91,7 +92,10 @@ mod activity_tests {
     /// Every module an activity proposes is a module of this app.
     #[test]
     fn activities_propose_only_built_in_modules() {
-        let ids: Vec<String> = super::builtin_modules().iter().map(|m| m.manifest().id.clone()).collect();
+        let ids: Vec<String> = super::builtin_modules()
+            .iter()
+            .map(|m| m.manifest().id.clone())
+            .collect();
         for a in kgb_core::activities::ACTIVITIES {
             for m in a.modules {
                 assert!(ids.iter().any(|i| i == m), "{}: modulul {m} nu există", a.id);
@@ -1157,6 +1161,65 @@ async fn weather_today(app: State<'_, AppState>, azi: String, offset_min: i64) -
     })
 }
 
+#[derive(Serialize)]
+struct NewsReply {
+    stiri: Vec<kgb_core::news::Item>,
+    /// Feeds that could not be read: the source's name and why.
+    erori: Vec<(String, String)>,
+    /// How many approved RSS sources there are.
+    surse: usize,
+}
+
+/// InfoNews (7.5): the items of the RSS sources approved and switched on in „Surse externe” (D-062), newest
+/// first. No other address is read.
+#[tauri::command]
+async fn news_feed(app: State<'_, AppState>) -> CmdResult<NewsReply> {
+    let sources = with_session(&app, |s| kgb_core::sources::active(s.ws.store(), Some("rss")))?;
+    let mut stiri = Vec::new();
+    let mut erori = Vec::new();
+    for src in &sources {
+        match external::feed(&src.nume, &src.url).await {
+            Ok(mut v) => stiri.append(&mut v),
+            Err(e) => erori.push((src.nume.clone(), e)),
+        }
+    }
+    stiri.sort_by_key(|i| std::cmp::Reverse(i.ms));
+    stiri.truncate(300);
+    if let Ok(mut g) = external::NEWS_LINKS.lock() {
+        *g = Some(
+            stiri
+                .iter()
+                .filter(|i| !i.link.is_empty())
+                .map(|i| i.link.clone())
+                .collect(),
+        );
+    }
+    Ok(NewsReply {
+        stiri,
+        erori,
+        surse: sources.len(),
+    })
+}
+
+/// Opens the page of an item in the browser of the computer: only a link of the items last shown.
+#[tauri::command]
+fn news_open(url: String) -> CmdResult<()> {
+    let known = external::NEWS_LINKS
+        .lock()
+        .ok()
+        .and_then(|g| g.as_ref().map(|s| s.contains(&url)))
+        .unwrap_or(false);
+    let lower = url.to_ascii_lowercase();
+    if !known || !(lower.starts_with("https://") || lower.starts_with("http://")) {
+        return Err("legătura nu e a unei știri afișate".into());
+    }
+    std::process::Command::new("explorer.exe")
+        .arg(&url)
+        .spawn()
+        .map(|_| ())
+        .map_err(|e| format!("legătura nu s-a putut deschide: {e}"))
+}
+
 /// The towns the weather panel offers: (key, name).
 #[tauri::command]
 fn weather_towns() -> Vec<(&'static str, &'static str)> {
@@ -2037,7 +2100,9 @@ fn main() {
             feedback::feedback_capture,
             feedback::feedback_save,
             feedback::feedback_open_dir,
-            activities_list
+            activities_list,
+            news_feed,
+            news_open
             ]);
             // The hidden print windows (D-081) may call only their two commands: no modules, files or dialogs.
             move |invoke| {

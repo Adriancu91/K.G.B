@@ -3742,6 +3742,7 @@ dependencies = [
  "kgb-docs",
  "kgb-extract",
  "kgb-net",
+ "kgb-news",
  "kgb-notes",
  "kgb-pdf",
  "kgb-permits",
@@ -3803,6 +3804,7 @@ dependencies = [
  "ed25519-dalek",
  "getrandom 0.4.3",
  "kgb-store",
+ "quick-xml 0.42.0",
  "semver",
  "serde",
  "serde_json",
@@ -3867,6 +3869,18 @@ dependencies = [
  "tokio",
  "tracing",
  "url",
+ "uuid",
+]
+
+[[package]]
+name = "kgb-news"
+version = "0.1.0"
+dependencies = [
+ "kgb-core",
+ "kgb-store",
+ "serde",
+ "serde_json",
+ "tempfile",
  "uuid",
 ]
 

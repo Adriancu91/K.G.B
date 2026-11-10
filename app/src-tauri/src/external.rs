@@ -114,6 +114,45 @@ pub async fn today(town: &str, azi: &str, offset_min: i64) -> Result<weather::To
     Ok(t)
 }
 
+/// InfoNews (7.5): one feed is asked again at most every 30 minutes, with `If-Modified-Since`.
+const NEWS_EVERY: Duration = Duration::from_secs(30 * 60);
+/// Per feed address: when it was read, its `Last-Modified`, its text.
+type FeedCache = HashMap<String, (Instant, Option<String>, String)>;
+static NEWS: Mutex<Option<FeedCache>> = Mutex::new(None);
+/// The links of the items last shown: only these are opened in the browser (`news_open`).
+pub static NEWS_LINKS: Mutex<Option<std::collections::HashSet<String>>> = Mutex::new(None);
+
+/// The items of one approved feed (its name and address from the register), from memory when recent.
+pub async fn feed(name: &str, url: &str) -> Result<Vec<kgb_core::news::Item>, String> {
+    let (cached, lm) = {
+        let g = NEWS.lock().map_err(|_| "starea aplicației este blocată".to_string())?;
+        match g.as_ref().and_then(|m| m.get(url)) {
+            Some((at, _, body)) if at.elapsed() < NEWS_EVERY => {
+                return kgb_core::news::parse(body, name);
+            }
+            Some((_, lm, body)) => (Some(body.clone()), lm.clone()),
+            None => (None, None),
+        }
+    };
+    let a = kgb_net::web::get(
+        url,
+        concat!("KGB/", env!("CARGO_PKG_VERSION"), " github.com/Adriancu91/K.G.B"),
+        lm.as_deref(),
+    )
+    .await?;
+    let body = match (a.status, cached) {
+        (200 | 203, _) => a.body,
+        (304, Some(b)) => b,
+        (s, _) => return Err(format!("serverul a răspuns cu codul {s}")),
+    };
+    let items = kgb_core::news::parse(&body, name)?;
+    if let Ok(mut g) = NEWS.lock() {
+        g.get_or_insert_with(HashMap::new)
+            .insert(url.to_string(), (Instant::now(), a.last_modified.or(lm), body));
+    }
+    Ok(items)
+}
+
 #[cfg(test)]
 mod tests {
     use super::http_date;

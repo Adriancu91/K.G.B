@@ -32,7 +32,6 @@ fn bad(detail: impl Into<String>) -> CoreError {
     CoreError::invalid("partenerul", detail)
 }
 
-
 /// Romanian CUI/CIF check digit (one rule for the app, 7.4m-2: crate::ids).
 pub use crate::ids::cui_valid;
 
@@ -158,7 +157,10 @@ fn from(r: &RecordState) -> Partner {
     f.remove("actualizat_ms");
     let mut p: Partner = serde_json::from_value(Value::Object(f)).unwrap_or_else(|e| {
         tracing::warn!("partner card {} unreadable: {e}", r.id);
-        Partner { denumire: "(fișă ilizibilă)".into(), ..Partner::default() }
+        Partner {
+            denumire: "(fișă ilizibilă)".into(),
+            ..Partner::default()
+        }
     });
     p.id = Some(r.id);
     p.version = r.version;
@@ -175,7 +177,10 @@ fn fields(p: &Partner) -> CoreResult<Fields> {
     // Stored without spaces anywhere (7.4m-2), as the check reads it.
     c.cui = crate::ids::cui_clean(&p.cui);
     if !c.cui.is_empty() && !cui_valid(&c.cui) {
-        return Err(bad(format!("CUI-ul „{}” nu e valid (cifra de control nu se potrivește)", c.cui)));
+        return Err(bad(format!(
+            "CUI-ul „{}” nu e valid (cifra de control nu se potrivește)",
+            c.cui
+        )));
     }
     for (what, v, max) in [
         ("nr. Registrul Comerțului", &mut c.nr_reg_com, 40),
@@ -198,13 +203,15 @@ fn fields(p: &Partner) -> CoreResult<Fields> {
     if c.puncte_lucru.len() > 50 || c.documente.len() > 100 || c.campuri.len() > 100 {
         return Err(bad("prea multe puncte de lucru, documente sau câmpuri"));
     }
-    c.puncte_lucru.retain(|w| !w.denumire.trim().is_empty() || !w.adresa.trim().is_empty());
+    c.puncte_lucru
+        .retain(|w| !w.denumire.trim().is_empty() || !w.adresa.trim().is_empty());
     for w in &mut c.puncte_lucru {
         w.denumire = text("punctul de lucru", &w.denumire, 200)?;
         w.adresa = text("adresa punctului de lucru", &w.adresa, 300)?;
         w.contact = text("contactul punctului de lucru", &w.contact, 200)?;
     }
-    c.documente.retain(|d| !d.tip.trim().is_empty() || !d.numar.trim().is_empty());
+    c.documente
+        .retain(|d| !d.tip.trim().is_empty() || !d.numar.trim().is_empty());
     for d in &mut c.documente {
         d.tip = text("tipul documentului", &d.tip, 120)?;
         if d.tip.is_empty() {
@@ -262,7 +269,11 @@ pub fn save(store: &mut Store, p: Partner) -> CoreResult<Uuid> {
     {
         return Err(bad(format!("CUI-ul există deja la „{}”", dup.denumire)));
     }
-    store.write(vec![Write::put(PARTNERS_COLLECTION, id, f).expect(if p.id.is_some() { p.version } else { 0 })])?;
+    store.write(vec![Write::put(PARTNERS_COLLECTION, id, f).expect(if p.id.is_some() {
+        p.version
+    } else {
+        0
+    })])?;
     Ok(id)
 }
 
@@ -295,7 +306,10 @@ pub fn remember(store: &mut Store, input: Partner, sursa: &str, azi: &str) -> Co
     let found = all
         .iter()
         .find(|o| !digits.is_empty() && cui_digits(&o.cui) == digits)
-        .or_else(|| all.iter().find(|o| fold(o.denumire.trim()) == name && (digits.is_empty() || o.cui.trim().is_empty())))
+        .or_else(|| {
+            all.iter()
+                .find(|o| fold(o.denumire.trim()) == name && (digits.is_empty() || o.cui.trim().is_empty()))
+        })
         .cloned();
     let mark = json!({"sursa": sursa, "data": azi});
     let Some(mut card) = found else {
@@ -303,17 +317,29 @@ pub fn remember(store: &mut Store, input: Partner, sursa: &str, azi: &str) -> Co
         p.id = None;
         p.version = 0;
         p.activ = Some(true);
-        let filled: Vec<String> = base_values(&p).into_iter().filter(|(_, v)| !v.trim().is_empty()).map(|(k, _)| k.to_string()).collect();
+        let filled: Vec<String> = base_values(&p)
+            .into_iter()
+            .filter(|(_, v)| !v.trim().is_empty())
+            .map(|(k, _)| k.to_string())
+            .collect();
         for k in &filled {
             p.surse.insert(k.clone(), mark.clone());
         }
         let id = save(store, p)?;
-        return Ok(Remembered { id, noua: true, completate: filled, diferite: vec![] });
+        return Ok(Remembered {
+            id,
+            noua: true,
+            completate: filled,
+            diferite: vec![],
+        });
     };
     let mut done = Vec::new();
     let mut differ = Vec::new();
     {
-        let new_vals = base_values(&input).into_iter().map(|(k, v)| (k, v.trim().to_string())).collect::<Vec<_>>();
+        let new_vals = base_values(&input)
+            .into_iter()
+            .map(|(k, v)| (k, v.trim().to_string()))
+            .collect::<Vec<_>>();
         for (k, v) in new_vals {
             if v.is_empty() {
                 continue;
@@ -328,8 +354,16 @@ pub fn remember(store: &mut Store, input: Partner, sursa: &str, azi: &str) -> Co
             }
         }
     }
-    for f in input.campuri.into_iter().filter(|f| !f.nume.trim().is_empty() && !f.valoare.trim().is_empty()) {
-        match card.campuri.iter_mut().find(|c| fold(c.nume.trim()) == fold(f.nume.trim())) {
+    for f in input
+        .campuri
+        .into_iter()
+        .filter(|f| !f.nume.trim().is_empty() && !f.valoare.trim().is_empty())
+    {
+        match card
+            .campuri
+            .iter_mut()
+            .find(|c| fold(c.nume.trim()) == fold(f.nume.trim()))
+        {
             Some(c) if c.valoare.trim().is_empty() => {
                 c.valoare = f.valoare.trim().to_string();
                 done.push(f.nume.trim().to_string());
@@ -338,12 +372,21 @@ pub fn remember(store: &mut Store, input: Partner, sursa: &str, azi: &str) -> Co
             Some(_) => {}
             None => {
                 done.push(f.nume.trim().to_string());
-                card.campuri.push(ExtraField { nume: f.nume.trim().into(), valoare: f.valoare.trim().into() });
+                card.campuri.push(ExtraField {
+                    nume: f.nume.trim().into(),
+                    valoare: f.valoare.trim().into(),
+                });
             }
         }
     }
-    for w in input.puncte_lucru.into_iter().filter(|w| !(w.denumire.trim().is_empty() && w.adresa.trim().is_empty())) {
-        let same = |o: &WorkPoint| fold(o.adresa.trim()) == fold(w.adresa.trim()) && fold(o.denumire.trim()) == fold(w.denumire.trim());
+    for w in input
+        .puncte_lucru
+        .into_iter()
+        .filter(|w| !(w.denumire.trim().is_empty() && w.adresa.trim().is_empty()))
+    {
+        let same = |o: &WorkPoint| {
+            fold(o.adresa.trim()) == fold(w.adresa.trim()) && fold(o.denumire.trim()) == fold(w.denumire.trim())
+        };
         if !card.puncte_lucru.iter().any(same) {
             card.puncte_lucru.push(w);
             done.push("puncte_lucru".into());
@@ -353,7 +396,12 @@ pub fn remember(store: &mut Store, input: Partner, sursa: &str, azi: &str) -> Co
     if !done.is_empty() {
         save(store, card)?;
     }
-    Ok(Remembered { id, noua: false, completate: done, diferite: differ })
+    Ok(Remembered {
+        id,
+        noua: false,
+        completate: done,
+        diferite: differ,
+    })
 }
 
 fn base_values(p: &Partner) -> Vec<(&'static str, String)> {
@@ -399,7 +447,9 @@ pub fn set_active(store: &mut Store, id: Uuid, active: bool) -> CoreResult<()> {
 }
 
 fn words(s: &str) -> impl Iterator<Item = String> + '_ {
-    s.split(|c: char| !c.is_alphanumeric()).filter(|w| !w.is_empty()).map(fold)
+    s.split(|c: char| !c.is_alphanumeric())
+        .filter(|w| !w.is_empty())
+        .map(fold)
 }
 
 /// Lowercase without Romanian diacritics, for matching.
@@ -434,9 +484,16 @@ pub fn search(store: &Store, query: &str, limit: usize) -> CoreResult<Vec<Partne
                 1
             } else if !qd.is_empty() && qd.len() >= 2 && cui_digits(&p.cui).starts_with(&qd) {
                 2
-            } else if [&p.nr_reg_com, &p.sediu, &p.localitate, &p.email, &p.telefon, &p.reprezentant]
-                .iter()
-                .any(|v| fold(v).starts_with(&q) || words(v).any(|w| w.starts_with(&q)))
+            } else if [
+                &p.nr_reg_com,
+                &p.sediu,
+                &p.localitate,
+                &p.email,
+                &p.telefon,
+                &p.reprezentant,
+            ]
+            .iter()
+            .any(|v| fold(v).starts_with(&q) || words(v).any(|w| w.starts_with(&q)))
                 || p.campuri.iter().any(|f| fold(&f.valoare).starts_with(&q))
                 || p.puncte_lucru.iter().any(|w| fold(&w.denumire).starts_with(&q))
             {
@@ -447,7 +504,10 @@ pub fn search(store: &Store, query: &str, limit: usize) -> CoreResult<Vec<Partne
             Some((score, p))
         })
         .collect();
-    scored.sort_by(|a, b| a.0.cmp(&b.0).then(a.1.denumire.to_lowercase().cmp(&b.1.denumire.to_lowercase())));
+    scored.sort_by(|a, b| {
+        a.0.cmp(&b.0)
+            .then(a.1.denumire.to_lowercase().cmp(&b.1.denumire.to_lowercase()))
+    });
     Ok(scored.into_iter().take(limit).map(|(_, p)| p).collect())
 }
 
@@ -520,7 +580,15 @@ pub fn remind(ws: &mut Workspace, today: &str) -> CoreResult<usize> {
             n if n < 0 => format!("Expirat: {} — {}", x.tip, x.denumire),
             n => format!("Expiră în {n} zile: {} — {}", x.tip, x.denumire),
         };
-        let text = format!("{}{} · data {date}", x.tip, if x.numar.is_empty() { String::new() } else { format!(" nr. {}", x.numar) });
+        let text = format!(
+            "{}{} · data {date}",
+            x.tip,
+            if x.numar.is_empty() {
+                String::new()
+            } else {
+                format!(" nr. {}", x.numar)
+            }
+        );
         let (_, new) = notifications::send(ws, PARTNERS_SOURCE, &Notice::new(title, text).level(level).key(key))?;
         if new {
             sent += 1;
@@ -531,8 +599,21 @@ pub fn remind(ws: &mut Workspace, today: &str) -> CoreResult<usize> {
 
 /// Columns of the partner import model (step 7.4j), in order.
 pub const IMPORT_COLUMNS: &[&str] = &[
-    "Denumire", "Tip", "CUI", "Nr. Reg. Com.", "Sediu", "Localitate", "Județ", "Țara",
-    "Telefon", "E-mail", "IBAN", "Banca", "Reprezentant", "Funcția reprezentantului", "Note",
+    "Denumire",
+    "Tip",
+    "CUI",
+    "Nr. Reg. Com.",
+    "Sediu",
+    "Localitate",
+    "Județ",
+    "Țara",
+    "Telefon",
+    "E-mail",
+    "IBAN",
+    "Banca",
+    "Reprezentant",
+    "Funcția reprezentantului",
+    "Note",
 ];
 
 /// What an import did.
@@ -568,7 +649,11 @@ pub fn import_rows(store: &mut Store, rows: &[Vec<String>], azi: &str) -> CoreRe
         if row.iter().all(|c| c.trim().is_empty()) {
             continue;
         }
-        let mut p = Partner { tip: "ambele".into(), activ: Some(true), ..Partner::default() };
+        let mut p = Partner {
+            tip: "ambele".into(),
+            activ: Some(true),
+            ..Partner::default()
+        };
         for (c, cell) in row.iter().enumerate() {
             let v = cell.trim().to_string();
             if v.is_empty() {
@@ -601,7 +686,10 @@ pub fn import_rows(store: &mut Store, rows: &[Vec<String>], azi: &str) -> CoreRe
                 Some(14) => p.note = v,
                 _ => {
                     if let Some(name) = head.get(c).map(|h| h.trim()).filter(|h| !h.is_empty()) {
-                        p.campuri.push(ExtraField { nume: name.to_string(), valoare: v });
+                        p.campuri.push(ExtraField {
+                            nume: name.to_string(),
+                            valoare: v,
+                        });
                     }
                 }
             }

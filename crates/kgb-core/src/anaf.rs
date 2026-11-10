@@ -71,9 +71,13 @@ pub fn request_body(cuis: &[&str], azi: &str) -> CoreResult<String> {
     let mut items = Vec::with_capacity(cuis.len());
     for c in cuis {
         if !cui_valid(c) {
-            return Err(bad(format!("CUI-ul „{c}” nu e valid (cifra de control nu se potrivește)")));
+            return Err(bad(format!(
+                "CUI-ul „{c}” nu e valid (cifra de control nu se potrivește)"
+            )));
         }
-        let n: u64 = cui_digits(c).parse().map_err(|_| bad(format!("CUI-ul „{c}” nu e un număr")))?;
+        let n: u64 = cui_digits(c)
+            .parse()
+            .map_err(|_| bad(format!("CUI-ul „{c}” nu e un număr")))?;
         items.push(json!({"cui": n, "data": azi}));
     }
     Ok(Value::Array(items).to_string())
@@ -121,14 +125,24 @@ fn street(a: &Value, p: &str) -> String {
 
 /// Reads the service's answer. Returns the companies found and the CUIs not found.
 pub fn parse(answer: &str) -> CoreResult<(Vec<Company>, Vec<String>)> {
-    let v: Value = serde_json::from_str(answer).map_err(|_| bad("răspunsul nu e JSON (serviciul poate fi indisponibil)"))?;
+    let v: Value =
+        serde_json::from_str(answer).map_err(|_| bad("răspunsul nu e JSON (serviciul poate fi indisponibil)"))?;
     if let Some(cod) = v["cod"].as_i64()
         && cod != 200
     {
         let msg = st(&v, "message");
-        return Err(bad(format!("serviciul a răspuns cu codul {cod}{}", if msg.is_empty() { String::new() } else { format!(": {msg}") })));
+        return Err(bad(format!(
+            "serviciul a răspuns cu codul {cod}{}",
+            if msg.is_empty() {
+                String::new()
+            } else {
+                format!(": {msg}")
+            }
+        )));
     }
-    let found = v["found"].as_array().ok_or_else(|| bad("răspunsul nu are lista „found”"))?;
+    let found = v["found"]
+        .as_array()
+        .ok_or_else(|| bad("răspunsul nu are lista „found”"))?;
     let mut out = Vec::with_capacity(found.len());
     for f in found {
         let g = &f["date_generale"];
@@ -225,7 +239,9 @@ pub fn ensure_source(store: &mut Store) -> CoreResult<Uuid> {
 pub fn usable(store: &Store) -> CoreResult<Source> {
     match source(store)? {
         Some(s) if s.activa => Ok(s),
-        Some(_) => Err(bad("sursa ANAF e oprită; o poți porni din „Surse externe” (sau completezi de mână)")),
+        Some(_) => Err(bad(
+            "sursa ANAF e oprită; o poți porni din „Surse externe” (sau completezi de mână)",
+        )),
         None => Err(bad("sursa ANAF nu e în „Surse externe”")),
     }
 }

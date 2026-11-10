@@ -54,7 +54,12 @@ pub struct Card {
 /// „Ana Maria Pop” → „AP”; „ion” → „I”.
 pub fn initials(name: &str) -> String {
     let words: Vec<&str> = name.split_whitespace().collect();
-    let pick = |w: &str| w.chars().next().map(|c| c.to_uppercase().collect::<String>()).unwrap_or_default();
+    let pick = |w: &str| {
+        w.chars()
+            .next()
+            .map(|c| c.to_uppercase().collect::<String>())
+            .unwrap_or_default()
+    };
     match words.as_slice() {
         [] => "?".into(),
         [one] => pick(one),
@@ -80,18 +85,32 @@ fn from(r: &RecordState, now: u64) -> Card {
 
 /// This device's own card, if written yet.
 pub fn mine(store: &Store, fingerprint: &str) -> CoreResult<Option<Card>> {
-    Ok(store.get(PRESENCE_COLLECTION, id_of(fingerprint))?.map(|r| from(&r, now_ms())))
+    Ok(store
+        .get(PRESENCE_COLLECTION, id_of(fingerprint))?
+        .map(|r| from(&r, now_ms())))
 }
 
 /// Every card on this PC, active first, then by name.
 pub fn all(store: &Store) -> CoreResult<Vec<Card>> {
     let now = now_ms();
-    let mut v: Vec<Card> = store.scan(PRESENCE_COLLECTION, |_| true)?.iter().map(|r| from(r, now)).collect();
+    let mut v: Vec<Card> = store
+        .scan(PRESENCE_COLLECTION, |_| true)?
+        .iter()
+        .map(|r| from(r, now))
+        .collect();
     v.sort_by_key(|c| (!c.activ, c.nume.to_lowercase()));
     Ok(v)
 }
 
-fn write(store: &mut Store, fingerprint: &str, membru: &str, nume: &str, culoare: &str, lucrez: &str, vazut_ms: u64) -> CoreResult<()> {
+fn write(
+    store: &mut Store,
+    fingerprint: &str,
+    membru: &str,
+    nume: &str,
+    culoare: &str,
+    lucrez: &str,
+    vazut_ms: u64,
+) -> CoreResult<()> {
     let id = id_of(fingerprint);
     let version = store.get(PRESENCE_COLLECTION, id)?.map_or(0, |r| r.version);
     let mut f = Fields::new();
@@ -118,13 +137,22 @@ pub fn beat(store: &mut Store, fingerprint: &str, membru: &str, nume: &str) -> C
     {
         return Ok(false);
     }
-    let (culoare, lucrez) = cur.map(|c| (c.culoare, c.lucrez)).unwrap_or_else(|| (COLORS[0].to_string(), String::new()));
+    let (culoare, lucrez) = cur
+        .map(|c| (c.culoare, c.lucrez))
+        .unwrap_or_else(|| (COLORS[0].to_string(), String::new()));
     write(store, fingerprint, membru, nume, &culoare, &lucrez, now)?;
     Ok(true)
 }
 
 /// What the member writes about themselves: „la ce lucrez” and a colour.
-pub fn set_mine(store: &mut Store, fingerprint: &str, membru: &str, nume: &str, lucrez: &str, culoare: &str) -> CoreResult<()> {
+pub fn set_mine(
+    store: &mut Store,
+    fingerprint: &str,
+    membru: &str,
+    nume: &str,
+    lucrez: &str,
+    culoare: &str,
+) -> CoreResult<()> {
     let lucrez = lucrez.trim();
     if lucrez.chars().count() > WORK_MAX {
         return Err(bad(format!("„la ce lucrez” are mai mult de {WORK_MAX} de caractere")));

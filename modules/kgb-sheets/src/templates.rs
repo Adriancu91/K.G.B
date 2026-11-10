@@ -170,6 +170,19 @@ fn build(id: &str, results: Option<&HashMap<Key, String>>) -> Result<Vec<u8>, St
         "inventar" => inventar(&mut w, &f),
         _ => return Err(format!("șablonul „{id}” nu există")),
     }
+    // The warning of the models stays with the workbook, on a sheet of its own: it is not printed with the
+    // invoice or the budget (said by the owner, 10 nov. 2026: it came out on the printed page).
+    let about = wb.add_worksheet();
+    about.set_name("Despre model").expect("valid name");
+    about.set_column_width(0, 100).expect("col");
+    let info = TEMPLATES.iter().find(|t| t.id == id);
+    about
+        .write_string_with_format(0, 0, info.map_or("Model", |t| t.name), &f.title)
+        .expect("valid cell");
+    about.write_string_with_format(2, 0, NOTE, &f.note).expect("valid cell");
+    if let Some(t) = info {
+        about.write_string_with_format(4, 0, t.how, &f.plain).expect("valid cell");
+    }
     wb.save_to_buffer().map_err(|e| e.to_string())
 }
 
@@ -180,7 +193,6 @@ fn buget(w: &mut W<'_>, f: &Formats) {
         w.ws.set_column_width(c, 14).expect("col");
     }
     w.text(0, 0, "Buget lunar", &f.title);
-    w.text(1, 0, NOTE, &f.note);
     for (c, h) in ["Categorie", "Planificat", "Realizat", "Diferență", "% realizat"]
         .iter()
         .enumerate()
@@ -253,7 +265,6 @@ fn factura(w: &mut W<'_>, f: &Formats) {
         w.ws.set_column_width(c, wd).expect("col");
     }
     w.text(0, 0, "FACTURĂ", &f.title);
-    w.text(1, 0, NOTE, &f.note);
     for (r, label, val) in [
         (3u32, "Furnizor:", "Denumire SRL, CUI RO…, adresă"),
         (4, "Client:", "Denumire client, CUI, adresă"),
@@ -310,7 +321,6 @@ fn registru(w: &mut W<'_>, f: &Formats) {
         w.ws.set_column_width(c, wd).expect("col");
     }
     w.text(0, 0, "Registru de casă", &f.title);
-    w.text(1, 0, NOTE, &f.note);
     w.text(2, 0, "Sold inițial", &f.bold);
     w.num(2, 3, 1000.0, &f.money);
     for (c, h) in ["Data", "Document", "Explicație", "Încasări", "Plăți", "Sold"]
@@ -367,7 +377,6 @@ fn cost_km(w: &mut W<'_>, f: &Formats) {
     w.ws.set_column_width(0, 34).expect("col");
     w.ws.set_column_width(1, 14).expect("col");
     w.text(0, 0, "Cost pe kilometru", &f.title);
-    w.text(1, 0, NOTE, &f.note);
     let inputs: [(&str, f64); 5] = [
         ("Distanță (km)", 450.0),
         ("Consum (litri la 100 km)", 7.5),
@@ -400,7 +409,6 @@ fn rate(w: &mut W<'_>, f: &Formats) {
         w.ws.set_column_width(c, wd).expect("col");
     }
     w.text(0, 0, "Rate credit (rată constantă)", &f.title);
-    w.text(1, 0, NOTE, &f.note);
     w.text(3, 0, "Suma împrumutată (lei)", &f.bold);
     w.num(3, 1, 50000.0, &f.money);
     w.text(4, 0, "Dobânda anuală", &f.bold);
@@ -467,7 +475,6 @@ fn deviz(w: &mut W<'_>, f: &Formats) {
     w.ws.set_name("Deviz").expect("valid name");
     widths(w, &[6.0, 36.0, 8.0, 11.0, 13.0, 15.0]);
     w.text(0, 0, "DEVIZ DE LUCRĂRI", &f.title);
-    w.text(1, 0, NOTE, &f.note);
     for (r, label, val) in [(3u32, "Beneficiar:", "Denumire, CUI"), (4, "Lucrarea:", "Descriere, adresă"), (5, "Data:", "zz.ll.aaaa")] {
         w.text(r, 0, label, &f.bold);
         w.text(r, 1, val, &f.plain);
@@ -511,7 +518,6 @@ fn centralizator(w: &mut W<'_>, f: &Formats) {
     w.ws.set_name("Centralizator").expect("valid name");
     widths(w, &[28.0, 14.0, 14.0, 14.0, 14.0, 15.0, 10.0]);
     w.text(0, 0, "CENTRALIZATOR DE CHELTUIELI", &f.title);
-    w.text(1, 0, NOTE, &f.note);
     heads(w, 3, &["Obiect", "Materiale", "Manoperă", "Utilaje", "Transport", "Total", "Pondere"], f);
     let rows: [(&str, [f64; 4]); 3] = [
         ("Fundație", [12000.0, 8000.0, 3000.0, 1000.0]),
@@ -541,7 +547,6 @@ fn situatie(w: &mut W<'_>, f: &Formats) {
     w.ws.set_name("Situație de plată").expect("valid name");
     widths(w, &[30.0, 7.0, 12.0, 12.0, 12.0, 12.0, 15.0, 15.0, 12.0]);
     w.text(0, 0, "SITUAȚIE DE PLATĂ", &f.title);
-    w.text(1, 0, NOTE, &f.note);
     for (r, label, val) in [(3u32, "Beneficiar / contract:", "Denumire, nr. contract"), (4, "Perioada:", "zz.ll.aaaa – zz.ll.aaaa")] {
         w.text(r, 0, label, &f.bold);
         w.text(r, 2, val, &f.plain);
@@ -588,7 +593,6 @@ fn inventar(w: &mut W<'_>, f: &Formats) {
     w.ws.set_name("Inventar").expect("valid name");
     widths(w, &[6.0, 28.0, 7.0, 12.0, 12.0, 12.0, 14.0, 14.0, 12.0, 14.0, 12.0]);
     w.text(0, 0, "LISTĂ DE INVENTARIERE", &f.title);
-    w.text(1, 0, NOTE, &f.note);
     for (r, label, val) in [(2u32, "Gestiunea:", "Depozit"), (3, "Data inventarierii:", "zz.ll.aaaa")] {
         w.text(r, 0, label, &f.bold);
         w.text(r, 2, val, &f.plain);

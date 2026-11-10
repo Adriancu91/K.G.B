@@ -204,12 +204,21 @@ fn daily_backups_once_a_day_last_14_kept() {
     let manual = backup::create(&mut ws, &root, Reason::Manual, "").unwrap();
     let before = backup::create(&mut ws, &root, Reason::BeforeMigration, "m").unwrap();
     assert!(backup::daily_if_due(&mut ws, &root, "2026-11-01").unwrap().is_some());
-    assert!(backup::daily_if_due(&mut ws, &root, "2026-11-01").unwrap().is_none(), "once a day");
+    assert!(
+        backup::daily_if_due(&mut ws, &root, "2026-11-01").unwrap().is_none(),
+        "once a day"
+    );
     for d in 2..=20 {
-        backup::daily_if_due(&mut ws, &root, &format!("2026-11-{d:02}")).unwrap().unwrap();
+        backup::daily_if_due(&mut ws, &root, &format!("2026-11-{d:02}"))
+            .unwrap()
+            .unwrap();
     }
     let all = backup::list(&root, ws.manifest().id).unwrap();
-    let days: Vec<&str> = all.iter().filter(|b| b.meta.reason == Reason::Daily).map(|b| b.meta.detail.as_str()).collect();
+    let days: Vec<&str> = all
+        .iter()
+        .filter(|b| b.meta.reason == Reason::Daily)
+        .map(|b| b.meta.detail.as_str())
+        .collect();
     assert_eq!(days.len(), backup::KEEP_DAILY);
     assert_eq!(days.first(), Some(&"2026-11-20"));
     assert_eq!(days.last(), Some(&"2026-11-07"));

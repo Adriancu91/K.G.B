@@ -287,3 +287,14 @@ fn stock_count() {
     assert_eq!(g(&mut ws, "K7"), "");
     assert_eq!(g(&mut ws, "K8"), "plus");
 }
+
+/// The models' warning is on a sheet of its own, not on the sheet that is printed (owner, 10 nov. 2026).
+#[test]
+fn the_warning_is_not_on_the_printed_sheet() {
+    let (_t, mut ws, mm) = setup();
+    for (t, sheet) in [("factura", "Factură"), ("buget-lunar", "Buget"), ("deviz", "Deviz")] {
+        let id = use_t(&mut ws, &mm, t);
+        assert_eq!(get(&mut ws, &mm, &id, sheet, "A2"), "", "{t}: row 2 of the printed sheet");
+        assert!(get(&mut ws, &mm, &id, "Despre model", "A3").contains("orientativ"), "{t}");
+    }
+}

@@ -2397,7 +2397,39 @@
   "Agricultură": "Agriculture",
   "HoReCa": "HoReCa",
   "Servicii": "Services",
-  "Transport": "Transport"
+  "Transport": "Transport",
+  "fără oră": "no time",
+  "Știrile vin doar din sursele RSS / Atom aprobate și pornite în „Surse externe”, fiecare cu sursa, ora și legătura. Nimic nu se citește din alte locuri.": "The news comes only from the RSS / Atom sources approved and switched on in “External sources”, each with its source, time and link. Nothing is read from anywhere else.",
+  "Știri (": "News (",
+  "Păstrate (": "Kept (",
+  "Toate sursele": "All sources",
+  "Caută în știri": "Search the news",
+  "Caută în titluri și rezumate…": "Search titles and summaries…",
+  "Nicio sursă RSS nu e aprobată și pornită.": "No RSS source is approved and switched on.",
+  "Adaugă una în „Surse externe”": "Add one in “External sources”",
+  "Păstrată": "Kept",
+  "Păstrează": "Keep",
+  "Uită": "Forget",
+  "Nicio știre de arătat.": "No news to show.",
+  "Deschide în browser": "Open in the browser",
+  "legătura nu e a unei știri afișate": "the link is not one of the news shown",
+  "fluxul are o declarație DOCTYPE, care nu se acceptă": "the feed has a DOCTYPE declaration, which is not accepted",
+  "nu e un flux RSS sau Atom": "not an RSS or Atom feed",
+  "Știri": "News",
+  "Știrile din fluxurile RSS / Atom aprobate în „Surse externe”: fiecare cu sursa, ora și legătura. Doar sursele pe care le aprobi tu; nimic nu se citește din alte locuri. Poți păstra o știre ca s-o găsești mai târziu.": "The news of the RSS / Atom feeds approved in “External sources”: each with its source, time and link. Only the sources you approve; nothing is read from anywhere else. You can keep a news item to find it later.",
+  "știrile păstrate: titlul, legătura, ora, sursa, rezumatul, când a fost păstrată": "the kept news: title, link, time, source, summary, when it was kept",
+  "Știrile păstrate rămân în spațiul de lucru și reapar când modulul este activat din nou.": "The kept news stays in the workspace and comes back when the module is enabled again.",
+  "știrea": "the news item",
+  "nu are titlu": "it has no title",
+  "legătura nu e o adresă web": "the link is not a web address",
+  "nu s-a păstrat": "it was not kept",
+  "fluxul e prea mare": "the feed is too large",
+  "modulul Știri": "the News module",
+  "Sursa ANAF o poate porni doar un administrator, din „Surse externe”.": "Only an administrator can switch on the ANAF source, in “External sources”.",
+  "Pornește sursa ANAF…": "Switch on the ANAF source…",
+  "Pornești sursa ANAF?": "Switch on the ANAF source?",
+  "Pornește și caută": "Switch on and search",
+  "„Caută la ANAF” folosește serviciul web public și gratuit al ANAF. Se trimit doar CUI-ul și data; răspunsul completează datele firmei. O poți opri oricând din „Surse externe”.": "“Search at ANAF” uses the free public web service of ANAF. Only the CUI and the date are sent; the answer fills in the firm's data. You can switch it off any time in “External sources”."
  },
  "templates": {
   "Completat de la ANAF (date pentru {0}): {1}. Verifică și completează restul de mână.": "Filled in from ANAF (data for {0}): {1}. Check and fill in the rest manually.",
@@ -2930,7 +2962,13 @@
   "observația nu s-a putut scrie: {0}": "the note could not be written: {0}",
   "poza nu s-a putut scrie: {0}": "the picture could not be written: {0}",
   "dosarul nu s-a putut deschide: {0}": "the folder could not be opened: {0}",
-  "Activează {0}": "Enable {0}"
+  "Activează {0}": "Enable {0}",
+  "serverul a răspuns cu codul {0}": "the server answered with code {0}",
+  "legătura nu s-a putut deschide: {0}": "the link could not be opened: {0}",
+  "sunt deja {0} știri păstrate; uită câteva întâi": "{0} news items are already kept; forget some first",
+  "fluxul nu e XML valid ({0})": "the feed is not valid XML ({0})",
+  "Condiții verificate: {0}": "Terms checked: {0}",
+  "Licență: {0}": "Licence: {0}"
  },
  "skip": [
   "rețeaua locală",
@@ -3031,6 +3069,10 @@
   "{0}: modulul {1} nu există",
   "{0} de două ori",
   "{0}: un modul de două ori",
-  "{0}: modelul {1} nu e inclus"
+  "{0}: modelul {1} nu e inclus",
+  "><channel><title>Știri</title>\n<item><title>Ședința de &amp; azi</title><link>https://example.ro/a?x=1</link>\n<pubDate>Tue, 10 Nov 2026 13:05:00 +0200</pubDate>\n<description><![CDATA[<p>Text <b>important</b> &amp; scurt</p><script>alert(1)</script>]]></description></item>\n<item><title>Fără legătură bună</title><link>javascript:alert(1)</link><pubDate>10 Nov 2026 11:00 GMT</pubDate></item>\n<item><title></title><link>https://example.ro/gol</link></item>\n</channel></rss>",
+  "Ședința de & azi",
+  "nu e xml <",
+  "știre păstrată"
  ]
 }

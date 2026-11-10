@@ -68,7 +68,20 @@ impl Default for Layout {
 /// Panels the start page can show (Etapa 4, D-047; the control centre of
 /// step 7.4d added `bani`, `cifre` and `rezolvat`). A page pinned to the
 /// start page is a panel `fix:<page id>`.
-pub const HOME_PANELS: &[&str] = &["azi", "notificari", "documente", "module", "despre", "bani", "cifre", "rezolvat", "alerta", "curs", "vreme", "media"];
+pub const HOME_PANELS: &[&str] = &[
+    "azi",
+    "notificari",
+    "documente",
+    "module",
+    "despre",
+    "bani",
+    "cifre",
+    "rezolvat",
+    "alerta",
+    "curs",
+    "vreme",
+    "media",
+];
 /// Prefix of a page pinned to the start page.
 pub const PINNED_PREFIX: &str = "fix:";
 /// Horizontal position and width are in thousandths of the page width, so a
@@ -107,7 +120,13 @@ pub struct Home {
 }
 
 fn panel(id: &str, x: u16, y: u32, w: u16, h: u16) -> Panel {
-    Panel { id: id.into(), x, y, w, h }
+    Panel {
+        id: id.into(),
+        x,
+        y,
+        w,
+        h,
+    }
 }
 
 impl Home {
@@ -159,11 +178,20 @@ impl Default for Home {
 
 fn valid_day(d: &str) -> bool {
     let b = d.as_bytes();
-    b.len() == 10 && b[4] == b'-' && b[7] == b'-' && d.chars().enumerate().all(|(i, c)| i == 4 || i == 7 || c.is_ascii_digit())
+    b.len() == 10
+        && b[4] == b'-'
+        && b[7] == b'-'
+        && d.chars()
+            .enumerate()
+            .all(|(i, c)| i == 4 || i == 7 || c.is_ascii_digit())
 }
 
 fn valid_page_id(id: &str) -> bool {
-    !id.is_empty() && id.len() <= 64 && id.chars().all(|c| c.is_ascii_lowercase() || c.is_ascii_digit() || matches!(c, '.' | '-' | '_'))
+    !id.is_empty()
+        && id.len() <= 64
+        && id
+            .chars()
+            .all(|c| c.is_ascii_lowercase() || c.is_ascii_digit() || matches!(c, '.' | '-' | '_'))
 }
 
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
@@ -220,7 +248,8 @@ impl Settings {
         let bad = |d: String| Err(CoreError::invalid("ecranul de start", d));
         let mut seen = std::collections::BTreeSet::new();
         for p in &self.home.panels {
-            let known = HOME_PANELS.contains(&p.id.as_str()) || p.id.strip_prefix(PINNED_PREFIX).is_some_and(valid_page_id);
+            let known =
+                HOME_PANELS.contains(&p.id.as_str()) || p.id.strip_prefix(PINNED_PREFIX).is_some_and(valid_page_id);
             if !known {
                 return bad(format!("panoul „{}” nu există", p.id));
             }
@@ -246,7 +275,10 @@ impl Settings {
             }
         }
         if !self.activitate.is_empty() && crate::activities::find(&self.activitate).is_none() {
-            return Err(CoreError::invalid("tipul de activitate", format!("„{}” nu există", self.activitate)));
+            return Err(CoreError::invalid(
+                "tipul de activitate",
+                format!("„{}” nu există", self.activitate),
+            ));
         }
         if !known_profiles.contains(&self.profile.as_str()) {
             return Err(CoreError::invalid(
@@ -314,7 +346,11 @@ fn grid_to_free(home: &Value) -> Value {
             row_y += row_h;
             row_h = 0;
         }
-        let width = if col + w == 3 { HOME_WIDTH - col * COL } else { w * COL - 10 };
+        let width = if col + w == 3 {
+            HOME_WIDTH - col * COL
+        } else {
+            w * COL - 10
+        };
         out.push(serde_json::json!({
             "id": p["id"], "x": col * COL, "y": row_y, "w": width, "h": h * ROW - 12,
         }));

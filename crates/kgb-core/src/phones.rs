@@ -60,7 +60,10 @@ pub const KINDS: &[(&str, &str)] = &[
 ];
 
 /// The stages a driver reports from the phone, and the field each needs.
-pub const DRIVER_STAGES: &[(&str, &str, &str)] = &[("in_drum", "aviz", "numărul avizului"), ("livrat", "primit_de", "cine a primit marfa")];
+pub const DRIVER_STAGES: &[(&str, &str, &str)] = &[
+    ("in_drum", "aviz", "numărul avizului"),
+    ("livrat", "primit_de", "cine a primit marfa"),
+];
 
 /// A time of day "HH:MM" (00:00–23:59).
 fn clock(t: &str) -> bool {
@@ -78,7 +81,9 @@ fn iso_day(t: &str) -> bool {
     b.len() == 10
         && b[4] == b'-'
         && b[7] == b'-'
-        && b.iter().enumerate().all(|(i, c)| i == 4 || i == 7 || c.is_ascii_digit())
+        && b.iter()
+            .enumerate()
+            .all(|(i, c)| i == 4 || i == 7 || c.is_ascii_digit())
         && t[5..7].parse::<u8>().is_ok_and(|m| (1..=12).contains(&m))
         && t[8..].parse::<u8>().is_ok_and(|d| (1..=31).contains(&d))
 }
@@ -108,14 +113,29 @@ pub struct Phone {
 fn phone(r: &RecordState) -> Phone {
     let s = |k: &str| r.fields.get(k).and_then(Value::as_str).unwrap_or_default().to_string();
     let n = |k: &str| r.fields.get(k).and_then(Value::as_u64).unwrap_or(0);
-    Phone { id: r.id, nume: s("nume"), stare: s("stare"), membru_nume: s("membru_nume"), creat_ms: n("creat_ms"), vazut_ms: n("vazut_ms"), version: r.version }
+    Phone {
+        id: r.id,
+        nume: s("nume"),
+        stare: s("stare"),
+        membru_nume: s("membru_nume"),
+        creat_ms: n("creat_ms"),
+        vazut_ms: n("vazut_ms"),
+        version: r.version,
+    }
 }
 
 pub fn list(ws: &Workspace) -> CoreResult<Vec<Phone>> {
-    let mut v: Vec<Phone> = ws.store().scan(PHONES_COLLECTION, |_| true)?.iter().map(phone).collect();
+    let mut v: Vec<Phone> = ws
+        .store()
+        .scan(PHONES_COLLECTION, |_| true)?
+        .iter()
+        .map(phone)
+        .collect();
     for p in &mut v {
         if let Some(r) = ws.store().get(SEEN_COLLECTION, p.id)? {
-            p.vazut_ms = p.vazut_ms.max(r.fields.get("vazut_ms").and_then(Value::as_u64).unwrap_or(0));
+            p.vazut_ms = p
+                .vazut_ms
+                .max(r.fields.get("vazut_ms").and_then(Value::as_u64).unwrap_or(0));
         }
     }
     v.sort_by_key(|p| std::cmp::Reverse(p.creat_ms));
@@ -140,7 +160,8 @@ pub fn pair(ws: &mut Workspace, name: &str) -> CoreResult<(Uuid, String)> {
     f.insert("creat_ms".into(), json!(now_ms()));
     f.insert("vazut_ms".into(), json!(now_ms()));
     let id = Uuid::now_v7();
-    ws.store_mut().write(vec![Write::put(PHONES_COLLECTION, id, f).expect(0)])?;
+    ws.store_mut()
+        .write(vec![Write::put(PHONES_COLLECTION, id, f).expect(0)])?;
     Ok((id, token))
 }
 
@@ -157,7 +178,8 @@ pub fn approve(ws: &mut Workspace, id: Uuid, member: &str) -> CoreResult<()> {
     let mut f = r.fields.clone();
     f.insert("stare".into(), json!("aprobat"));
     f.insert("membru_nume".into(), json!(member));
-    ws.store_mut().write(vec![Write::put(PHONES_COLLECTION, id, f).expect(r.version)])?;
+    ws.store_mut()
+        .write(vec![Write::put(PHONES_COLLECTION, id, f).expect(r.version)])?;
     Ok(())
 }
 
@@ -165,7 +187,8 @@ pub fn revoke(ws: &mut Workspace, id: Uuid) -> CoreResult<()> {
     let r = ws.store().get(PHONES_COLLECTION, id)?.ok_or_else(|| bad("nu există"))?;
     let mut f = r.fields.clone();
     f.insert("stare".into(), json!("revocat"));
-    ws.store_mut().write(vec![Write::put(PHONES_COLLECTION, id, f).expect(r.version)])?;
+    ws.store_mut()
+        .write(vec![Write::put(PHONES_COLLECTION, id, f).expect(r.version)])?;
     Ok(())
 }
 
@@ -175,25 +198,38 @@ pub fn by_token(ws: &Workspace, token: &str) -> CoreResult<Option<Phone>> {
         return Ok(None);
     }
     let h = json!(hash(token));
-    Ok(ws.store().scan(PHONES_COLLECTION, |r| r.fields.get("token") == Some(&h))?.first().map(phone))
+    Ok(ws
+        .store()
+        .scan(PHONES_COLLECTION, |r| r.fields.get("token") == Some(&h))?
+        .first()
+        .map(phone))
 }
 
 /// Marks a phone as seen now by this PC (at most once a minute; local).
 pub fn seen(ws: &mut Workspace, id: Uuid) -> CoreResult<()> {
     let r = ws.store().get(SEEN_COLLECTION, id)?;
-    let last = r.as_ref().and_then(|r| r.fields.get("vazut_ms")).and_then(Value::as_u64).unwrap_or(0);
+    let last = r
+        .as_ref()
+        .and_then(|r| r.fields.get("vazut_ms"))
+        .and_then(Value::as_u64)
+        .unwrap_or(0);
     if now_ms().saturating_sub(last) < 60_000 {
         return Ok(());
     }
     let mut f = Fields::new();
     f.insert("vazut_ms".into(), json!(now_ms()));
-    ws.store_mut().write(vec![Write::put(SEEN_COLLECTION, id, f).expect(r.map_or(0, |r| r.version))])?;
+    ws.store_mut().write(vec![
+        Write::put(SEEN_COLLECTION, id, f).expect(r.map_or(0, |r| r.version)),
+    ])?;
     Ok(())
 }
 
 /// Whether the phone page is switched on (for the whole organization).
 pub fn service_on(ws: &Workspace) -> CoreResult<bool> {
-    Ok(ws.store().get(SERVICE_COLLECTION, SERVICE_ID)?.is_some_and(|r| r.fields.get("pornit") == Some(&json!(true))))
+    Ok(ws
+        .store()
+        .get(SERVICE_COLLECTION, SERVICE_ID)?
+        .is_some_and(|r| r.fields.get("pornit") == Some(&json!(true))))
 }
 
 /// Switches the phone page on or off on every PC (the caller checks that an
@@ -206,7 +242,9 @@ pub fn set_service(ws: &mut Workspace, on: bool) -> CoreResult<()> {
     let mut f = Fields::new();
     f.insert("pornit".into(), json!(on));
     f.insert("schimbat_ms".into(), json!(now_ms()));
-    ws.store_mut().write(vec![Write::put(SERVICE_COLLECTION, SERVICE_ID, f).expect(r.map_or(0, |r| r.version))])?;
+    ws.store_mut().write(vec![
+        Write::put(SERVICE_COLLECTION, SERVICE_ID, f).expect(r.map_or(0, |r| r.version)),
+    ])?;
     Ok(())
 }
 
@@ -233,7 +271,13 @@ pub fn host_written_by_itself(fields: &Fields, author_fingerprint: &str) -> bool
 
 /// Publishes this PC's card; written only when something changed, so it
 /// does not make a change every time the page is checked.
-pub fn publish_host(ws: &mut Workspace, fingerprint: &str, name: &str, addresses: &[String], on: bool) -> CoreResult<bool> {
+pub fn publish_host(
+    ws: &mut Workspace,
+    fingerprint: &str,
+    name: &str,
+    addresses: &[String],
+    on: bool,
+) -> CoreResult<bool> {
     let id = host_id(fingerprint);
     let r = ws.store().get(HOSTS_COLLECTION, id)?;
     let mut f = Fields::new();
@@ -242,13 +286,17 @@ pub fn publish_host(ws: &mut Workspace, fingerprint: &str, name: &str, addresses
     f.insert("adrese".into(), json!(addresses.iter().take(4).collect::<Vec<_>>()));
     f.insert("pornit".into(), json!(on));
     if let Some(r) = &r {
-        let same = ["dispozitiv", "nume", "adrese", "pornit"].iter().all(|k| r.fields.get(*k) == f.get(*k));
+        let same = ["dispozitiv", "nume", "adrese", "pornit"]
+            .iter()
+            .all(|k| r.fields.get(*k) == f.get(*k));
         if same {
             return Ok(false);
         }
     }
     f.insert("ts_ms".into(), json!(now_ms()));
-    ws.store_mut().write(vec![Write::put(HOSTS_COLLECTION, id, f).expect(r.map_or(0, |r| r.version))])?;
+    ws.store_mut().write(vec![
+        Write::put(HOSTS_COLLECTION, id, f).expect(r.map_or(0, |r| r.version)),
+    ])?;
     Ok(true)
 }
 
@@ -263,7 +311,15 @@ pub fn hosts(ws: &Workspace, me: Option<&str>) -> CoreResult<Vec<Host>> {
             Host {
                 dispozitiv: s("dispozitiv"),
                 nume: s("nume"),
-                adrese: r.fields.get("adrese").and_then(Value::as_array).into_iter().flatten().filter_map(Value::as_str).map(String::from).collect(),
+                adrese: r
+                    .fields
+                    .get("adrese")
+                    .and_then(Value::as_array)
+                    .into_iter()
+                    .flatten()
+                    .filter_map(Value::as_str)
+                    .map(String::from)
+                    .collect(),
                 pornit: r.fields.get("pornit") == Some(&json!(true)),
                 ts_ms: r.fields.get("ts_ms").and_then(Value::as_u64).unwrap_or(0),
             }
@@ -301,7 +357,12 @@ pub fn qty_thousandths(t: &str) -> Option<i64> {
         t
     };
     let (w, f) = norm.split_once('.').unwrap_or((&norm, ""));
-    if w.is_empty() || !w.bytes().all(|b| b.is_ascii_digit()) || f.len() > 3 || !f.bytes().all(|b| b.is_ascii_digit()) || w.len() > 12 {
+    if w.is_empty()
+        || !w.bytes().all(|b| b.is_ascii_digit())
+        || f.len() > 3
+        || !f.bytes().all(|b| b.is_ascii_digit())
+        || w.len() > 12
+    {
         return None;
     }
     let mut frac = f.to_string();
@@ -331,7 +392,13 @@ pub fn fmt_thousandths(v: i64) -> String {
 }
 
 /// What an approved phone sends: a kind, text fields, files.
-pub fn submit(ws: &mut Workspace, from: &Phone, kind: &str, fields: serde_json::Map<String, Value>, uploads: Vec<Upload>) -> CoreResult<Uuid> {
+pub fn submit(
+    ws: &mut Workspace,
+    from: &Phone,
+    kind: &str,
+    fields: serde_json::Map<String, Value>,
+    uploads: Vec<Upload>,
+) -> CoreResult<Uuid> {
     submit_with_lines(ws, from, kind, fields, Vec::new(), uploads)
 }
 
@@ -339,7 +406,14 @@ pub fn submit(ws: &mut Workspace, from: &Phone, kind: &str, fields: serde_json::
 /// `{categorie, produs?, cantitate, um?, brut?, tara?, foto?}` where `foto` is
 /// the index of its photo among `uploads`; with gross and tare the quantity
 /// must be gross − tare.
-pub fn submit_with_lines(ws: &mut Workspace, from: &Phone, kind: &str, fields: serde_json::Map<String, Value>, mut lines: Vec<Value>, uploads: Vec<Upload>) -> CoreResult<Uuid> {
+pub fn submit_with_lines(
+    ws: &mut Workspace,
+    from: &Phone,
+    kind: &str,
+    fields: serde_json::Map<String, Value>,
+    mut lines: Vec<Value>,
+    uploads: Vec<Upload>,
+) -> CoreResult<Uuid> {
     // The team leader's report: one line per worker (7.4m-7).
     let mut team_lines = Vec::new();
     if kind == "pontaj_echipa" {
@@ -347,14 +421,27 @@ pub fn submit_with_lines(ws: &mut Workspace, from: &Phone, kind: &str, fields: s
             return Err(bad("raportul are 1–200 de muncitori"));
         }
         for (n, l) in lines.iter().enumerate() {
-            let id = l["angajat"].as_str().filter(|x| Uuid::parse_str(x).is_ok()).ok_or_else(|| bad(format!("rândul {}: muncitorul nu e ales", n + 1)))?;
-            let nume: String = l["nume"].as_str().unwrap_or_default().trim().chars().take(100).collect();
-            let prezent = l["prezent"].as_bool().ok_or_else(|| bad(format!("rândul {}: prezent sau absent", n + 1)))?;
+            let id = l["angajat"]
+                .as_str()
+                .filter(|x| Uuid::parse_str(x).is_ok())
+                .ok_or_else(|| bad(format!("rândul {}: muncitorul nu e ales", n + 1)))?;
+            let nume: String = l["nume"]
+                .as_str()
+                .unwrap_or_default()
+                .trim()
+                .chars()
+                .take(100)
+                .collect();
+            let prezent = l["prezent"]
+                .as_bool()
+                .ok_or_else(|| bad(format!("rândul {}: prezent sau absent", n + 1)))?;
             let extra = l["extra"].as_i64().unwrap_or(0);
             if !(-12..=12).contains(&extra) {
                 return Err(bad(format!("{nume}: orele extra sunt între −12 și +12")));
             }
-            team_lines.push(json!({"angajat": id, "nume": nume, "prezent": prezent, "extra": if prezent { extra } else { 0 }}));
+            team_lines.push(
+                json!({"angajat": id, "nume": nume, "prezent": prezent, "extra": if prezent { extra } else { 0 }}),
+            );
         }
         lines = Vec::new();
     }
@@ -369,7 +456,9 @@ pub fn submit_with_lines(ws: &mut Workspace, from: &Phone, kind: &str, fields: s
         return Err(bad("liniile sunt doar pentru fișa de recepție și pentru inventar"));
     }
     if kind == "inventar" && lines.is_empty() {
-        return Err(bad("inventarul are nevoie de cel puțin o linie: produsul și cât s-a numărat"));
+        return Err(bad(
+            "inventarul are nevoie de cel puțin o linie: produsul și cât s-a numărat",
+        ));
     }
     if lines.len() > MAX_LINES {
         return Err(bad(format!("cel mult {MAX_LINES} linii")));
@@ -394,14 +483,23 @@ pub fn submit_with_lines(ws: &mut Workspace, from: &Phone, kind: &str, fields: s
         }
         let produs = txt("produs", 36)?;
         if kind == "inventar" && Uuid::parse_str(&produs).is_err() {
-            return Err(bad(format!("{label}: alege produsul din lista din Business (inventarul se face pe produse)")));
+            return Err(bad(format!(
+                "{label}: alege produsul din lista din Business (inventarul se face pe produse)"
+            )));
         }
         let um = txt("um", 10)?;
         // Counted zero is a real count; a received quantity is positive.
         let min = if kind == "inventar" { 0 } else { 1 };
         let (brut, tara) = (txt("brut", 20)?, txt("tara", 20)?);
         let q = match (brut.is_empty(), tara.is_empty()) {
-            (true, true) => qty_thousandths(&txt("cantitate", 20)?).filter(|q| *q >= min).ok_or_else(|| bad(format!("{label}: cantitatea nu e un număr {}", if min == 0 { "(0 sau mai mult)" } else { "pozitiv" })))?,
+            (true, true) => qty_thousandths(&txt("cantitate", 20)?)
+                .filter(|q| *q >= min)
+                .ok_or_else(|| {
+                    bad(format!(
+                        "{label}: cantitatea nu e un număr {}",
+                        if min == 0 { "(0 sau mai mult)" } else { "pozitiv" }
+                    ))
+                })?,
             (false, false) => {
                 let b = qty_thousandths(&brut).ok_or_else(|| bad(format!("{label}: brutul nu e un număr")))?;
                 let t = qty_thousandths(&tara).ok_or_else(|| bad(format!("{label}: tara nu e un număr")))?;
@@ -414,7 +512,10 @@ pub fn submit_with_lines(ws: &mut Workspace, from: &Phone, kind: &str, fields: s
         };
         let foto = match &l["foto"] {
             Value::Number(x) => {
-                let i = x.as_u64().filter(|i| (*i as usize) < uploads.len()).ok_or_else(|| bad(format!("{label}: poza nu există")))?;
+                let i = x
+                    .as_u64()
+                    .filter(|i| (*i as usize) < uploads.len())
+                    .ok_or_else(|| bad(format!("{label}: poza nu există")))?;
                 Some(i as usize)
             }
             _ => None,
@@ -522,7 +623,14 @@ pub fn submit_with_lines(ws: &mut Workspace, from: &Phone, kind: &str, fields: s
         .collect();
     let mut f = Fields::new();
     f.insert("tip".into(), json!(kind));
-    f.insert("linii".into(), if kind == "pontaj_echipa" { json!(team_lines) } else { json!(lines_out) });
+    f.insert(
+        "linii".into(),
+        if kind == "pontaj_echipa" {
+            json!(team_lines)
+        } else {
+            json!(lines_out)
+        },
+    );
     f.insert("telefon".into(), json!(from.id.to_string()));
     f.insert("telefon_nume".into(), json!(from.nume));
     f.insert("membru_nume".into(), json!(from.membru_nume));
@@ -531,7 +639,8 @@ pub fn submit_with_lines(ws: &mut Workspace, from: &Phone, kind: &str, fields: s
     f.insert("procesat".into(), json!(false));
     f.insert("creat_ms".into(), json!(now_ms()));
     let id = Uuid::now_v7();
-    ws.store_mut().write(vec![Write::put(INBOX_COLLECTION, id, f).expect(0)])?;
+    ws.store_mut()
+        .write(vec![Write::put(INBOX_COLLECTION, id, f).expect(0)])?;
     Ok(id)
 }
 
@@ -553,7 +662,8 @@ pub fn mark_done(ws: &mut Workspace, id: Uuid, done: bool) -> CoreResult<()> {
     let r = ws.store().get(INBOX_COLLECTION, id)?.ok_or_else(|| bad("nu există"))?;
     let mut f = r.fields.clone();
     f.insert("procesat".into(), json!(done));
-    ws.store_mut().write(vec![Write::put(INBOX_COLLECTION, id, f).expect(r.version)])?;
+    ws.store_mut()
+        .write(vec![Write::put(INBOX_COLLECTION, id, f).expect(r.version)])?;
     Ok(())
 }
 

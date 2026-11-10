@@ -46,7 +46,13 @@ use crate::workspace::now_ms;
 const DOMAIN: &[u8] = b"KGB-SYNC1\n";
 
 /// Organization tables: accepted only from administrators.
-const ORG_TABLES: &[&str] = &["core.org", "core.roles", "core.members", "core.sources", crate::phones::SERVICE_COLLECTION];
+const ORG_TABLES: &[&str] = &[
+    "core.org",
+    "core.roles",
+    "core.members",
+    "core.sources",
+    crate::phones::SERVICE_COLLECTION,
+];
 
 fn bad(detail: impl Into<String>) -> CoreError {
     CoreError::invalid("sincronizarea", detail)
@@ -399,7 +405,13 @@ pub fn apply(store: &mut Store, dev: &DeviceIdentity, resp: &Value) -> CoreResul
             then.is_admin(author)
                 || (then.member_of(author).is_some()
                     && op.state.fields.get("stare").and_then(Value::as_str) == Some("asteapta")
-                    && op.state.fields.get("membru_nume").and_then(Value::as_str).unwrap_or_default().is_empty())
+                    && op
+                        .state
+                        .fields
+                        .get("membru_nume")
+                        .and_then(Value::as_str)
+                        .unwrap_or_default()
+                        .is_empty())
         } else if inbox_op(op) {
             then.member_of(author).is_some()
         } else if org_table(coll) {

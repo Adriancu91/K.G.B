@@ -132,7 +132,13 @@ fn newer_schema_is_refused() {
 #[test]
 fn home_panels_saved_migrated_and_checked() {
     use kgb_core::settings::{Home, Panel};
-    let p = |id: &str, x: u16, y: u32, w: u16, h: u16| Panel { id: id.into(), x, y, w, h };
+    let p = |id: &str, x: u16, y: u32, w: u16, h: u16| Panel {
+        id: id.into(),
+        x,
+        y,
+        w,
+        h,
+    };
     let tmp = tempfile::tempdir().unwrap();
     let mut w = ws(&tmp);
     raw_put(
@@ -154,7 +160,13 @@ fn home_panels_saved_migrated_and_checked() {
     );
     let l = settings::load(w.store()).unwrap();
     assert!(l.migrated);
-    let got: Vec<(String, u16, u32, u16, u16)> = l.settings.home.panels.iter().map(|q| (q.id.clone(), q.x, q.y, q.w, q.h)).collect();
+    let got: Vec<(String, u16, u32, u16, u16)> = l
+        .settings
+        .home
+        .panels
+        .iter()
+        .map(|q| (q.id.clone(), q.x, q.y, q.w, q.h))
+        .collect();
     assert_eq!(
         got,
         [
@@ -166,7 +178,11 @@ fn home_panels_saved_migrated_and_checked() {
     l.settings.validate(PROFILES).unwrap();
 
     let mut s = l.settings.clone();
-    s.home.panels = vec![p("notificari", 100, 40, 900, 300), p("azi", 0, 400, 300, 200), p("fix:kgb.business", 400, 400, 300, 120)];
+    s.home.panels = vec![
+        p("notificari", 100, 40, 900, 300),
+        p("azi", 0, 400, 300, 200),
+        p("fix:kgb.business", 400, 400, 300, 120),
+    ];
     s.home.amanate.insert("factura:12".into(), "2026-11-15".into());
     let v = settings::save(w.store_mut(), &s, l.version, PROFILES).unwrap();
     let back = settings::load(w.store()).unwrap();
@@ -185,7 +201,10 @@ fn home_panels_saved_migrated_and_checked() {
     ] {
         let mut b = s.clone();
         b.home.panels = bad;
-        assert!(matches!(settings::save(w.store_mut(), &b, v, PROFILES), Err(CoreError::Invalid { .. })));
+        assert!(matches!(
+            settings::save(w.store_mut(), &b, v, PROFILES),
+            Err(CoreError::Invalid { .. })
+        ));
     }
     let mut b = s.clone();
     b.home.amanate.insert("x".into(), "mâine".into());

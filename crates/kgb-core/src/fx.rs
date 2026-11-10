@@ -64,7 +64,11 @@ fn attr(tag: &str, name: &str) -> Option<String> {
 /// "4.9771" → 49771 (exactly four decimals, as BNR publishes).
 fn ten_thousandths(t: &str) -> Option<i64> {
     let (whole, frac) = t.split_once('.').unwrap_or((t, ""));
-    if whole.is_empty() || !whole.bytes().all(|b| b.is_ascii_digit()) || frac.len() > 4 || !frac.bytes().all(|b| b.is_ascii_digit()) {
+    if whole.is_empty()
+        || !whole.bytes().all(|b| b.is_ascii_digit())
+        || frac.len() > 4
+        || !frac.bytes().all(|b| b.is_ascii_digit())
+    {
         return None;
     }
     let mut f = frac.to_string();
@@ -76,7 +80,9 @@ fn ten_thousandths(t: &str) -> Option<i64> {
 
 /// Reads the BNR XML: the last `<Cube date="…">` and its `<Rate>` elements.
 pub fn parse(xml: &str) -> CoreResult<Day> {
-    let cube = xml.rfind("<Cube ").ok_or_else(|| bad("fișierul nu are cursul zilei (<Cube>)"))?;
+    let cube = xml
+        .rfind("<Cube ")
+        .ok_or_else(|| bad("fișierul nu are cursul zilei (<Cube>)"))?;
     let rest = &xml[cube..];
     let head_end = rest.find('>').ok_or_else(|| bad("fișier stricat"))?;
     let data = attr(&rest[..head_end], "date").ok_or_else(|| bad("cursul nu are dată"))?;

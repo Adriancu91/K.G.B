@@ -40,10 +40,20 @@ const ANSWER: &str = r#"{
 fn request_body_follows_the_documentation() {
     let b: Value = serde_json::from_str(&anaf::request_body(&["RO14399840"], "2026-11-08").unwrap()).unwrap();
     assert_eq!(b, serde_json::json!([{"cui": 14399840, "data": "2026-11-08"}]));
-    assert!(anaf::request_body(&["14399841"], "2026-11-08").unwrap_err().to_string().contains("cifra de control"));
+    assert!(
+        anaf::request_body(&["14399841"], "2026-11-08")
+            .unwrap_err()
+            .to_string()
+            .contains("cifra de control")
+    );
     assert!(anaf::request_body(&[], "2026-11-08").is_err());
     let many = vec!["14399840"; 101];
-    assert!(anaf::request_body(&many, "2026-11-08").unwrap_err().to_string().contains("100"));
+    assert!(
+        anaf::request_body(&many, "2026-11-08")
+            .unwrap_err()
+            .to_string()
+            .contains("100")
+    );
     assert_eq!(anaf::MIN_INTERVAL_MS, 1000, "one request per second");
 }
 
@@ -56,7 +66,10 @@ fn answer_is_read() {
     assert_eq!(c.denumire, "FIRMA DE TEST SRL");
     assert_eq!(c.nr_reg_com, "J12/345/2001");
     assert_eq!(c.sediu, "Str. Fabricii, nr. 1, Et. 2");
-    assert_eq!((c.localitate.as_str(), c.judet.as_str(), c.cod_postal.as_str()), ("Mun. Cluj-Napoca", "CLUJ", "400001"));
+    assert_eq!(
+        (c.localitate.as_str(), c.judet.as_str(), c.cod_postal.as_str()),
+        ("Mun. Cluj-Napoca", "CLUJ", "400001")
+    );
     assert_eq!(c.telefon, "0264000000");
     assert!(c.platitor_tva && c.e_factura && !c.tva_la_incasare && !c.inactiv && !c.radiat);
     assert_eq!(c.cod_caen, "4941");
@@ -68,7 +81,12 @@ fn answer_is_read() {
     assert_eq!(f[0].sediu, "MUN. CLUJ-NAPOCA, STR. FABRICII, NR.1");
 
     // Errors from the service and answers that are not JSON are explained.
-    assert!(anaf::parse(r#"{"cod":500,"message":"eroare"}"#).unwrap_err().to_string().contains("500"));
+    assert!(
+        anaf::parse(r#"{"cod":500,"message":"eroare"}"#)
+            .unwrap_err()
+            .to_string()
+            .contains("500")
+    );
     assert!(anaf::parse("<html>").unwrap_err().to_string().contains("JSON"));
     let (f, nf) = anaf::parse(r#"{"cod":200,"found":[],"notFound":[1]}"#).unwrap();
     assert!(f.is_empty() && nf == ["1"]);
@@ -86,7 +104,10 @@ fn source_is_added_switched_off_once() {
     assert_eq!(all.len(), 1);
     let s = &all[0];
     assert!(!s.activa, "K.G.B. never switches a source on by itself (D-063)");
-    assert!(sources::missing_for_activation(s).is_empty(), "filled in: terms, licence, date");
+    assert!(
+        sources::missing_for_activation(s).is_empty(),
+        "filled in: terms, licence, date"
+    );
     assert!(anaf::usable(ws.store()).unwrap_err().to_string().contains("oprită"));
     sources::set_active(ws.store_mut(), id, true, "Proprietar").unwrap();
     assert_eq!(anaf::usable(ws.store()).unwrap().id, id);

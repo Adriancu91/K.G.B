@@ -96,12 +96,20 @@ pub fn send(ws: &mut Workspace, autor: &str, device: &str, text: &str) -> CoreRe
     f.insert("text".into(), json!(text));
     f.insert("creat_ms".into(), json!(now_ms()));
     let id = Uuid::now_v7();
-    ws.store_mut().write(vec![Write::put(CHAT_COLLECTION, id, f).expect(0)])?;
+    ws.store_mut()
+        .write(vec![Write::put(CHAT_COLLECTION, id, f).expect(0)])?;
     Ok(id)
 }
 
 /// A voice message: the recording (`data`, of type `mime`) and its length.
-pub fn send_voice(ws: &mut Workspace, autor: &str, device: &str, data: &[u8], mime: &str, durata_ms: u64) -> CoreResult<Uuid> {
+pub fn send_voice(
+    ws: &mut Workspace,
+    autor: &str,
+    device: &str,
+    data: &[u8],
+    mime: &str,
+    durata_ms: u64,
+) -> CoreResult<Uuid> {
     let autor = author(autor)?;
     let mime = mime.split(';').next().unwrap_or(mime).trim();
     if !MIMES.contains(&mime) {
@@ -124,14 +132,19 @@ pub fn send_voice(ws: &mut Workspace, autor: &str, device: &str, data: &[u8], mi
     f.insert("tip_audio".into(), json!(mime));
     f.insert("creat_ms".into(), json!(now_ms()));
     let id = Uuid::now_v7();
-    ws.store_mut().write(vec![Write::put(CHAT_COLLECTION, id, f).expect(0)])?;
+    ws.store_mut()
+        .write(vec![Write::put(CHAT_COLLECTION, id, f).expect(0)])?;
     Ok(id)
 }
 
 /// The recording of a voice message, when its bytes are on this PC
 /// (`None` while they are still on their way from another PC).
 pub fn voice(ws: &Workspace, id: Uuid) -> CoreResult<Option<(String, Vec<u8>)>> {
-    let m = ws.store().get(CHAT_COLLECTION, id)?.map(|r| from(&r)).ok_or_else(|| bad("nu există"))?;
+    let m = ws
+        .store()
+        .get(CHAT_COLLECTION, id)?
+        .map(|r| from(&r))
+        .ok_or_else(|| bad("nu există"))?;
     let file = m.voce.ok_or_else(|| bad("nu e un mesaj vocal"))?;
     match files::get(ws, CHAT_MODULE, file) {
         Ok((_, bytes)) => Ok(Some((m.tip_audio, bytes))),
@@ -147,7 +160,8 @@ pub fn delete(ws: &mut Workspace, device: &str, id: Uuid) -> CoreResult<()> {
     if m.dispozitiv != device {
         return Err(bad("doar autorul își poate șterge mesajul"));
     }
-    ws.store_mut().write(vec![Write::delete(CHAT_COLLECTION, id).expect(r.version)])?;
+    ws.store_mut()
+        .write(vec![Write::delete(CHAT_COLLECTION, id).expect(r.version)])?;
     if let Some(file) = m.voce {
         let _ = files::delete(ws, CHAT_MODULE, file);
     }
@@ -163,7 +177,10 @@ pub fn notify(ws: &mut Workspace, device: &str) -> CoreResult<usize> {
             continue;
         }
         let (title, text) = if m.voce.is_some() {
-            (format!("Mesaj vocal de la {}", m.autor), format!("{} secunde", m.durata_ms.div_ceil(1000)))
+            (
+                format!("Mesaj vocal de la {}", m.autor),
+                format!("{} secunde", m.durata_ms.div_ceil(1000)),
+            )
         } else {
             let t: String = m.text.chars().take(140).collect();
             (format!("Mesaj de la {}", m.autor), t)

@@ -40,10 +40,7 @@ pub const PERMISSIONS: &[(&str, &str)] = &[
         "partners.read",
         "citește agenda de parteneri (clienți și furnizori) ca să propună și să completeze datele lor",
     ),
-    (
-        "partners.write",
-        "adaugă sau completează fișe în agenda de parteneri",
-    ),
+    ("partners.write", "adaugă sau completează fișe în agenda de parteneri"),
     (
         "sources.read",
         "citește sursele externe aprobate în registrul de surse (doar cele active, cu condițiile lor de folosire)",
@@ -51,7 +48,9 @@ pub const PERMISSIONS: &[(&str, &str)] = &[
 ];
 
 /// Core services a module may use.
-pub const SERVICES: &[&str] = &["storage", "settings", "identity", "files", "notify", "sources", "partners", "log"];
+pub const SERVICES: &[&str] = &[
+    "storage", "settings", "identity", "files", "notify", "sources", "partners", "log",
+];
 
 /// Which service each permission belongs to (a permission needs its service).
 fn service_of(permission: &str) -> &'static str {

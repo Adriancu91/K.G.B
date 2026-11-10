@@ -7,6 +7,8 @@ license.workspace = true
 description = "K.G.B. core services (no UI): workspace, settings, identity, modules, permissions, logging."
 
 [dependencies]
+# InfoNews (7.5): RSS / Atom feeds; the same version the modules already use (Cargo.lock).
+quick-xml = "0.42.0"
 kgb-store.workspace = true
 serde.workspace = true
 serde_json.workspace = true
