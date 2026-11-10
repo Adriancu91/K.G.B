@@ -70,6 +70,11 @@
   "f": "cosframe/main.tsx"
  },
  {
+  "ro": "Pagina ",
+  "en": "Page ",
+  "f": "cosframe/printPdf.ts"
+ },
+ {
   "ro": "De plătit",
   "en": "To pay",
   "f": "modules/business/aging.tsx"
@@ -1188,11 +1193,6 @@
   "ro": "Trimite",
   "en": "Send",
   "f": "pages/ChatPage.tsx"
- },
- {
-  "ro": "Modul",
-  "en": "Mode",
-  "f": "pages/ConflictsPage.tsx"
  },
  {
   "ro": "Ce",

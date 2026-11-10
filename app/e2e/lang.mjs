@@ -31,7 +31,7 @@ const check = (name, ok, detail = "") => {
 // Romanian left on screen: the letters, or frequent words. Text the user writes (fields, editors) and the
 // names of the user's own files are not ours, so they are skipped.
 const SCAN = `(() => {
-  const RO = /[ăâîșțşţĂÂÎȘȚŞŢ]|\\b(și|sau|pentru|după|fără|din|nu|este|sunt|aici|alege|apasă|fișier|fișierul|pagina|salvează|deschide|închide|șterge|adaugă|caută|nou|nouă|toate|documentul|modulul|versiunea)\\b/i;
+  const RO = /[ăâîșțşţĂÂÎȘȚŞŢ]|\\b(și|sau|pentru|după|fără|din|nu|este|sunt|aici|alege|apasă|fișier|fișierul|pagina|salvează|deschide|închide|șterge|adaugă|caută|nou|nouă|toate|documentul|modulul|versiunea|Profil|Modul|Stoc|Furnizor|(?<!e-)Factura|Facturi|Cantitate|Pret|Gestiune|Depozit|Termen|Activeaza|Inchide|Salveaza|Sterge|Adauga|Plata|Plati|Incasare)\\b/i;
   const skip = 'input, textarea, select, [contenteditable="true"], .no-i18n, .pdf-docs, .ProseMirror, code, pre';
   const out = new Set();
   const w = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);

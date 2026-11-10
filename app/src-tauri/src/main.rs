@@ -12,6 +12,7 @@ mod mdns;
 mod media;
 mod net;
 mod phone;
+mod print;
 use std::time::Instant;
 
 use kgb_core::identity::{self, DeviceIdentity};
@@ -1708,7 +1709,9 @@ fn main() {
                 }
             }
         })
-        .invoke_handler(tauri::generate_handler![
+        .manage(print::PrintJobs::default())
+        .invoke_handler({
+            let handler: Box<dyn Fn(tauri::ipc::Invoke) -> bool + Send + Sync> = Box::new(tauri::generate_handler![
             app_info,
             get_settings,
             save_settings,
@@ -1791,8 +1794,22 @@ fn main() {
             open_workspace,
             compact_now,
             collect_files,
-            purge_leftovers
-        ])
+            purge_leftovers,
+            print::print_pdf,
+            print::print_job_take,
+            print::print_job_ready
+            ]);
+            // The hidden print windows (D-081) may call only their two commands: no modules, files or dialogs.
+            move |invoke| {
+                if invoke.message.webview().label().starts_with(print::LABEL)
+                    && !print::allowed(invoke.message.command())
+                {
+                    invoke.resolver.reject("comanda nu este permisă ferestrei de tipărire");
+                    return true;
+                }
+                handler(invoke)
+            }
+        })
         .run(tauri::generate_context!())
         .expect("K.G.B. could not start the window");
 }
