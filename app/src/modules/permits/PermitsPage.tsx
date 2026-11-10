@@ -6,6 +6,7 @@
 import { open, save } from "@tauri-apps/plugin-dialog";
 import { useCallback, useEffect, useState } from "react";
 import { api, message } from "../../api";
+import { CatalogDialog } from "./CatalogDialog";
 
 const ID = "kgb.permits";
 
@@ -360,6 +361,8 @@ export function PermitsPage({ onError }: { onError: (e: string | null) => void }
   const [editing, setEditing] = useState<Draft | null>(null);
   const [selected, setSelected] = useState<string | null>(null);
   const [nc, setNc] = useState({ titlu: "", procedura: "", client: "", deschis: today(), termen: "" });
+  const [catalog, setCatalog] = useState(false);
+  const [added, setAdded] = useState<string | null>(null);
 
   const load = useCallback(async () => {
     try {
@@ -470,9 +473,23 @@ export function PermitsPage({ onError }: { onError: (e: string | null) => void }
                 </tbody>
               </table>
             )}
-            <button className="primary" onClick={() => setEditing(blank())}>
-              Procedură nouă
-            </button>
+            <div className="row wrap">
+              <button className="primary" onClick={() => setCatalog(true)}>
+                Din catalog…
+              </button>
+              <button onClick={() => setEditing(blank())}>Procedură nouă</button>
+              {added && <span className="muted">Adăugată: {added}. O găsești în listă și poți deschide un dosar pe ea.</span>}
+            </div>
+            {catalog && (
+              <CatalogDialog
+                domains={DOMAINS}
+                onClose={() => setCatalog(false)}
+                onAdded={(t) => {
+                  setAdded(t);
+                  void load();
+                }}
+              />
+            )}
           </>
         ))}
 

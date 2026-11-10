@@ -213,3 +213,32 @@ fn case_files_checklist_files_and_reminders() {
         false
     );
 }
+
+/// 7.9a (D-088): every procedure of the catalog can be added (it fits the module's rules), comes back with its
+/// sources dated and verified, and is shown as added afterwards.
+#[test]
+fn every_catalog_procedure_can_be_added() {
+    let (_t, mut ws, mm) = setup();
+    let list = call(&mm, &mut ws, "catalog", json!({}));
+    let keys: Vec<String> = list
+        .as_array()
+        .unwrap()
+        .iter()
+        .map(|e| e["cheie"].as_str().unwrap().to_string())
+        .collect();
+    assert!(keys.len() >= 19, "{} proceduri în catalog", keys.len());
+    for k in &keys {
+        call(&mm, &mut ws, "catalog_adauga", json!({"cheie": k}));
+    }
+    let procs = call(&mm, &mut ws, "proceduri", json!({"azi": "2026-11-10"}));
+    assert_eq!(procs.as_array().unwrap().len(), keys.len());
+    for p in procs.as_array().unwrap() {
+        assert_eq!(p["stare_verificare"], "verificata", "{}", p["titlu"]);
+    }
+    let again = call(&mm, &mut ws, "catalog", json!({}));
+    assert!(again.as_array().unwrap().iter().all(|e| e["adaugata"] == true));
+    assert!(
+        mm.call(&mut ws, None, ID, "catalog_adauga", json!({"cheie": "nu-exista"}))
+            .is_err()
+    );
+}

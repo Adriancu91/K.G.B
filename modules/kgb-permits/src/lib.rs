@@ -19,6 +19,8 @@
 //!   `dosar_stare {id, version, stare}`, `dosar_fisier {id, version, name, data}`,
 //!   `fisier_salveaza {fisier, dest, overwrite?}`, `dosar_delete {id, version}`
 
+pub mod catalog;
+
 use std::collections::BTreeMap;
 use std::path::PathBuf;
 
@@ -615,6 +617,83 @@ impl Module for Permits {
                 self.procedures(ctx, t.azi.as_deref())
             }
             "procedura_save" => self.save_procedure(ctx, args(command, a)?),
+            // The catalog of procedures from official sources (7.9a, D-088): what it offers, and adding one.
+            "catalog" => {
+                let have: Vec<String> = ctx
+                    .scan(PROCEDURES, |_| true)?
+                    .iter()
+                    .filter_map(|r| r.fields.get("titlu").and_then(Value::as_str).map(str::to_lowercase))
+                    .collect();
+                Ok(json!(
+                    catalog::entries()
+                        .iter()
+                        .map(|e| json!({
+                            "cheie": e.cheie, "titlu": e.titlu, "domeniu": e.domeniu, "institutie": e.institutie,
+                            "descriere": e.descriere, "activitati": e.activitati, "documente": e.documente.len(),
+                            "pasi": e.pasi.len(), "surse": e.surse, "verificat": catalog::checked(e),
+                            "adaugata": have.contains(&e.titlu.to_lowercase()),
+                        }))
+                        .collect::<Vec<_>>()
+                ))
+            }
+            "catalog_adauga" => {
+                #[derive(Deserialize)]
+                #[serde(deny_unknown_fields)]
+                struct Key {
+                    cheie: String,
+                }
+                let k: Key = args(command, a)?;
+                let e = catalog::find(&k.cheie).ok_or_else(|| bad("procedura", "nu e în catalog"))?;
+                let descriere = if e.temei_legal.trim().is_empty() {
+                    e.descriere.clone()
+                } else {
+                    format!(
+                        "{}
+
+Temei legal: {}",
+                        e.descriere.trim(),
+                        e.temei_legal.trim()
+                    )
+                };
+                let p = ProcedureIn {
+                    id: None,
+                    version: 0,
+                    titlu: e.titlu.clone(),
+                    domeniu: e.domeniu.clone(),
+                    institutie: e.institutie.clone(),
+                    descriere: descriere.chars().take(4000).collect(),
+                    conditii: e
+                        .conditii
+                        .iter()
+                        .map(|c| Condition {
+                            text: c.text.clone(),
+                            obligatoriu: c.obligatoriu,
+                        })
+                        .collect(),
+                    documente: e
+                        .documente
+                        .iter()
+                        .map(|d| Document {
+                            nume: d.nume.clone(),
+                            obligatoriu: d.obligatoriu,
+                            nota: d.nota.clone(),
+                        })
+                        .collect(),
+                    pasi: e.pasi.clone(),
+                    taxe: e.taxe.clone(),
+                    termen_legal: e.termen_legal.clone(),
+                    surse: e
+                        .surse
+                        .iter()
+                        .map(|s| SourceRef {
+                            titlu: s.titlu.clone(),
+                            url: s.url.clone(),
+                            verificat: s.verificat.clone(),
+                        })
+                        .collect(),
+                };
+                self.save_procedure(ctx, p)
+            }
             "procedura_delete" => {
                 let a: ById = args(command, a)?;
                 let id = a.id.to_string();

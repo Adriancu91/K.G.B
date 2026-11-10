@@ -2431,7 +2431,24 @@
   "Pornește și caută": "Switch on and search",
   "„Caută la ANAF” folosește serviciul web public și gratuit al ANAF. Se trimit doar CUI-ul și data; răspunsul completează datele firmei. O poți opri oricând din „Surse externe”.": "“Search at ANAF” uses the free public web service of ANAF. Only the CUI and the date are sent; the answer fills in the firm's data. You can switch it off any time in “External sources”.",
   "English": "English",
-  "Aceeași alegere ca butoanele RO / EN de sub navigare; se păstrează pe acest calculator.": "The same choice as the RO / EN buttons under the navigation; kept on this computer."
+  "Aceeași alegere ca butoanele RO / EN de sub navigare; se păstrează pe acest calculator.": "The same choice as the RO / EN buttons under the navigation; kept on this computer.",
+  "Proceduri din catalog": "Procedures from the catalog",
+  "Luate din paginile oficiale ale instituțiilor și din legislatie.just.ro, cu data verificării. Procedurile se schimbă: verifică la instituție înainte de depunere. O procedură adăugată devine a firmei tale și o poți corecta.": "Taken from the official pages of the institutions and from legislatie.just.ro, with the day they were checked. Procedures change: check with the institution before filing. A procedure you add becomes your firm's and you can correct it.",
+  "Toate domeniile": "All domains",
+  "Caută în catalog": "Search the catalog",
+  "Caută: autorizație, ISU, DSV…": "Search: permit, fire, food safety…",
+  "adăugată": "added",
+  "pași · surse verificate la": "steps · sources checked on",
+  "Ascunde detaliile": "Hide the details",
+  "Detalii și surse": "Details and sources",
+  "Nicio procedură pentru alegerea de acum.": "No procedure for the current choice.",
+  "Din catalog…": "From the catalog…",
+  "Adăugată:": "Added:",
+  ". O găsești în listă și poți deschide un dosar pe ea.": ". You find it in the list and can open a case file on it.",
+  "nu e în catalog": "is not in the catalog",
+  "doar pentru": "only for",
+  "Adaugă": "Add",
+  "documente,": "documents,"
  },
  "templates": {
   "Completat de la ANAF (date pentru {0}): {1}. Verifică și completează restul de mână.": "Filled in from ANAF (data for {0}): {1}. Check and fill in the rest manually.",
@@ -3075,6 +3092,21 @@
   "><channel><title>Știri</title>\n<item><title>Ședința de &amp; azi</title><link>https://example.ro/a?x=1</link>\n<pubDate>Tue, 10 Nov 2026 13:05:00 +0200</pubDate>\n<description><![CDATA[<p>Text <b>important</b> &amp; scurt</p><script>alert(1)</script>]]></description></item>\n<item><title>Fără legătură bună</title><link>javascript:alert(1)</link><pubDate>10 Nov 2026 11:00 GMT</pubDate></item>\n<item><title></title><link>https://example.ro/gol</link></item>\n</channel></rss>",
   "Ședința de & azi",
   "nu e xml <",
-  "știre păstrată"
+  "știre păstrată",
+  "{0}: instituția",
+  "{0}: fără surse",
+  "{0}: sursa {1} nu e oficială",
+  "{0}: data verificării {1}",
+  "{0}: activitățile",
+  "{0}: instituția e prea lungă",
+  "{0}: prea multe surse sau condiții",
+  "{0}: termenul legal are {1} caractere",
+  "{0}: taxele",
+  "{0}: descrierea",
+  "{0}: titlul",
+  "{0}: domeniul {1}",
+  "{0}: prea multe",
+  "{0}: un document",
+  "{0}: un pas"
  ]
 }
