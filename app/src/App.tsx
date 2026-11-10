@@ -2,6 +2,7 @@
 // modules, resizable and collapsible; main area; status bar; shortcuts.
 import { useCallback, useEffect, useRef, useState, type ComponentType, type PointerEvent as ReactPointerEvent } from "react";
 import { api, message, type AppInfo, type ModulesReply, type Settings, type SettingsReply } from "./api";
+import { FeedbackButton } from "./components/FeedbackButton";
 import { NotesPage } from "./modules/notes/NotesPage";
 import { PdfPage } from "./modules/pdf/PdfPage";
 import { SheetsPage } from "./modules/sheets/SheetsPage";
@@ -256,6 +257,7 @@ export function App() {
                 </button>
               ))}
             </div>
+            <FeedbackButton where={current.label} />
           </>
         )}
         {!collapsed && <div className="resizer" onPointerDown={startDrag} title="Trage pentru a redimensiona" />}

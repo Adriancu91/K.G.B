@@ -12,6 +12,7 @@ mod mdns;
 mod media;
 mod net;
 mod phone;
+mod feedback;
 mod print;
 mod wincert;
 use std::time::Instant;
@@ -1806,7 +1807,10 @@ fn main() {
             print::print_job_take,
             print::print_job_ready,
             wincert::wincert_list,
-            wincert::wincert_sign
+            wincert::wincert_sign,
+            feedback::feedback_capture,
+            feedback::feedback_save,
+            feedback::feedback_open_dir
             ]);
             // The hidden print windows (D-081) may call only their two commands: no modules, files or dialogs.
             move |invoke| {

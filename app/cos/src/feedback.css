@@ -1,0 +1,10 @@
+/* Copiat neschimbat din Cyber Office Studio (D-071): regulile ferestrei „Trimite o observație” din src/styles.css.
+   Fereastra folosește și .print-overlay / .print-dlg / .print-actions din src/pdf/digisign.css. */
+.ask-msg { margin: 0 0 14px; font-size: 13.5px; line-height: 1.45; white-space: pre-line; }
+.feedback-btn { margin-bottom: 8px; }
+.feedback-dlg { width: min(520px, 92vw); }
+.feedback-text { width: 100%; box-sizing: border-box; resize: vertical; font: inherit; font-size: 13.5px; padding: 8px; border-radius: 6px; border: 1px solid var(--border, #ccc); background: var(--bg, #fff); color: inherit; }
+.feedback-where { margin: 8px 0; font-size: 12.5px; opacity: 0.8; }
+.feedback-pic { display: flex; align-items: center; gap: 8px; font-size: 13px; margin-bottom: 12px; }
+.feedback-pic img { max-width: 160px; max-height: 90px; border: 1px solid var(--border, #ccc); border-radius: 4px; margin-left: auto; }
+.feedback-done { overflow-wrap: anywhere; }

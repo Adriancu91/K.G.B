@@ -2329,7 +2329,15 @@
   "Certificatul nu mai e pe calculator (tokenul e scos?).": "The certificate is no longer on this computer (is the token removed?).",
   "Certificatele de pe calculator se pot folosi doar pe Windows.": "The certificates of this computer can only be used on Windows.",
   "Certificat necunoscut.": "Unknown certificate.",
-  "Dreptunghiul e prea mic pentru semnătură. Apasă din nou și trage unul mai mare.": "The rectangle is too small for a signature. Press again and draw a larger one."
+  "Dreptunghiul e prea mic pentru semnătură. Apasă din nou și trage unul mai mare.": "The rectangle is too small for a signature. Press again and draw a larger one.",
+  "dosarul Documente nu a fost găsit": "the Documents folder was not found",
+  "data observației nu e bună": "the date of the note is not valid",
+  "observația e goală": "the note is empty",
+  "observația e prea lungă": "the note is too long",
+  "poza nu a ajuns întreagă": "the picture did not arrive whole",
+  "poza nu e bună": "the picture is not valid",
+  "💬 Trimite o observație": "💬 Send feedback",
+  "Scrii ce nu merge; se salvează pe calculator, cu o poză a ferestrei, ca să le trimiți tu": "Write what does not work; it is saved on this computer, with a picture of the window, for you to send"
  },
  "templates": {
   "Completat de la ANAF (date pentru {0}): {1}. Verifică și completează restul de mână.": "Filled in from ANAF (data for {0}): {1}. Check and fill in the rest manually.",
@@ -2845,7 +2853,12 @@
   "textul „{0}” scos de pe pagina {1}": "the text “{0}” removed from page {1}",
   "{0} semnături digitale": "{0} digital signatures",
   "{0} din {1} valabile": "{0} of {1} valid",
-  "semnat digital de {0}": "digitally signed by {0}"
+  "semnat digital de {0}": "digitally signed by {0}",
+  "poza ferestrei nu s-a putut face: {0}": "the picture of the window could not be taken: {0}",
+  "dosarul observațiilor nu s-a putut face: {0}": "the folder of the notes could not be made: {0}",
+  "observația nu s-a putut scrie: {0}": "the note could not be written: {0}",
+  "poza nu s-a putut scrie: {0}": "the picture could not be written: {0}",
+  "dosarul nu s-a putut deschide: {0}": "the folder could not be opened: {0}"
  },
  "skip": [
   "Sector ",
@@ -2937,6 +2950,9 @@
   "incasari-si-plati.csv",
   "=IF(ROUND(F{0}-F{1},2)=0,\"corect\",\"DIFERENȚĂ\")",
   "{0}\n$c = $null\nforeach ($x in (Get-SuiteCerts)) { if ($x.Thumbprint -eq '{1}') { $c = $x; break } }\nif (-not $c) { throw 'Certificatul nu mai e pe calculator (tokenul e scos?).' }\n$data = [Convert]::FromBase64String('{2}')\n$h = [System.Security.Cryptography.HashAlgorithmName]::SHA256\n{3}\n[Convert]::ToBase64String($sig)\n",
-  "#< CLIXML\\r\n<Objs><S S=\"Error\">Certificatul nu mai e pe calculator (tokenul e scos?)._x000D__x000A_</S><S S=\"Error\">At line:5 char:1_x000D__x000A_</S></Objs>"
+  "#< CLIXML\\r\n<Objs><S S=\"Error\">Certificatul nu mai e pe calculator (tokenul e scos?)._x000D__x000A_</S><S S=\"Error\">At line:5 char:1_x000D__x000A_</S></Objs>",
+  "Observație {0}",
+  "Observație K.G.B.",
+  "Observație {0}.png"
  ]
 }

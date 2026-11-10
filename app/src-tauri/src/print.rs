@@ -494,7 +494,7 @@ fn pdf_stream(
 }
 
 #[cfg(windows)]
-fn read_all(st: &windows::Win32::System::Com::IStream) -> Result<Vec<u8>, String> {
+pub(crate) fn read_all(st: &windows::Win32::System::Com::IStream) -> Result<Vec<u8>, String> {
     let mut out = Vec::new();
     let mut buf = vec![0u8; 64 * 1024];
     loop {
