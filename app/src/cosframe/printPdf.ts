@@ -9,7 +9,8 @@
 //    (main.cjs: headerFooter, firstPage, evenPage, sections), since WebView2 has no such templates.
 import { PDFDict, PDFDocument, PDFHexString, PDFName, PDFString, rgb, type PDFFont, type PDFPage } from "pdf-lib";
 import fontkit from "@pdf-lib/fontkit";
-import regularUrl from "pdfjs-dist/standard_fonts/LiberationSans-Regular.ttf?url";
+// Inlined: the app's content policy lets the page fetch nothing (connect-src is only the IPC).
+import regularFont from "pdfjs-dist/standard_fonts/LiberationSans-Regular.ttf?inline";
 import type { PagePrint } from "../../cos/src/api";
 
 export interface Snapshot {
@@ -31,12 +32,18 @@ export interface Paper {
 
 // ---------- 1) the picture of the document ----------
 
-const toDataUrl = (blob: Blob) =>
+const blobPicture = (src: string) =>
   new Promise<string>((ok, fail) => {
-    const r = new FileReader();
-    r.onload = () => ok(String(r.result));
-    r.onerror = () => fail(r.error);
-    r.readAsDataURL(blob);
+    const i = new Image();
+    i.onload = () => {
+      const c = document.createElement("canvas");
+      c.width = i.naturalWidth;
+      c.height = i.naturalHeight;
+      c.getContext("2d")?.drawImage(i, 0, 0);
+      ok(c.toDataURL("image/png"));
+    };
+    i.onerror = () => fail(new Error("picture"));
+    i.src = src;
   });
 
 /** The paper and margins of the document's own `@page` rule (Docs writes one), else A4 with 20 mm. */
@@ -88,12 +95,10 @@ export async function snapshot(doc: Document, page?: PagePrint): Promise<{ snaps
     c.replaceWith(img);
   });
   // blob: pictures belong to the frame's document: they travel as data:.
+  // (through a canvas: the content policy allows no fetch)
   for (const img of clone.querySelectorAll<HTMLImageElement>("img[src^='blob:']")) {
-    try {
-      img.src = await toDataUrl(await (await fetch(img.src)).blob());
-    } catch {
-      img.removeAttribute("src");
-    }
+    img.src = await blobPicture(img.src).catch(() => "");
+    if (!img.src) img.removeAttribute("src");
   }
   const styles = [...doc.querySelectorAll("style")].map((s) => s.textContent ?? "");
   const links = [...doc.querySelectorAll<HTMLLinkElement>("link[rel='stylesheet']")]
@@ -227,7 +232,8 @@ function secPages(doc: PDFDocument, n: number): number[] {
   return of;
 }
 
-let fontBytes: Promise<ArrayBuffer> | null = null;
+let fontBytes: Uint8Array | null = null;
+const dataBytes = (url: string) => Uint8Array.from(atob(url.slice(url.indexOf(",") + 1)), (c) => c.charCodeAt(0));
 
 /** Draws the header, footer and numbers on every page, as COS's templates did (9 px, grey, 20 mm from the sides). */
 export async function stamp(pdf: Uint8Array, page?: Extra): Promise<Uint8Array> {
@@ -250,8 +256,8 @@ export async function stamp(pdf: Uint8Array, page?: Extra): Promise<Uint8Array> 
     return marks ? doc.save() : pdf;
   }
   doc.registerFontkit(fontkit);
-  fontBytes ??= fetch(regularUrl).then((r) => r.arrayBuffer());
-  const font = await doc.embedFont(await fontBytes, { subset: true });
+  fontBytes ??= dataBytes(regularFont);
+  const font = await doc.embedFont(fontBytes, { subset: true });
   const image = logo ? await (logo.startsWith("data:image/png") ? doc.embedPng(logo) : doc.embedJpg(logo)) : null;
   const at = /^[tb][lcr]$/.test(page.numAt ?? "") ? (page.numAt as string) : "br";
   const tokens: string[] = NUM_TOKENS[page.numStyle ?? ""] ?? ["Pagina ", "P", " din ", "T"];

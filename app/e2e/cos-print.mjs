@@ -82,17 +82,14 @@ try {
     `(() => { const ed = document.querySelector('.ProseMirror').editor; const para = Array.from({ length: 140 }, (_, i) => '<p>Rândul ' + (i + 1) + ' al contractului de vânzare, cu ș, ț, ă, î și â.</p>').join(''); ed.commands.setContent('<h1>Contract de vânzare</h1>' + para); return true; })()`,
   );
   await sleep(800);
-  // What a hostile document could carry: none of it may run in the hidden window.
-  await fr(
-    p,
-    `(() => { const box = document.createElement('div');
-      box.innerHTML = '<img src="x" onerror="document.body.textContent=\\'PWNED-IMG\\'">'
-        + '<svg width="10" height="10"><a><set attributeName="href" to="javascript:document.body.textContent=\\'PWNED-SVG\\'"/><text y="9">.</text></a></svg>'
-        + '<iframe src="https://example.com/"></iframe><object data="https://example.com/x.swf"></object>';
-      // innerHTML leaves the script inert here; in the snapshot it is a real <script> element.
-      box.innerHTML += '<script>document.body.textContent='PWNED-SCRIPT'</script>';
-      document.body.appendChild(box); return true; })()`,
-  );
+  // What a hostile document could carry: none of it may run in the hidden window. (innerHTML leaves the
+  // script inert here; in the snapshot it is a real <script> element.)
+  const HOSTILE =
+    `<img src="x" onerror="document.body.textContent='PWNED-IMG'">` +
+    `<svg width="10" height="10"><a><set attributeName="href" to="javascript:document.body.textContent='PWNED-SVG'"/><text y="9">.</text></a></svg>` +
+    '<iframe src="https://example.com/"></iframe><object data="https://example.com/x.swf"></object>' +
+    "<script>document.body.textContent='PWNED-SCRIPT'</script>";
+  await fr(p, `(() => { const box = document.createElement('div'); box.innerHTML = ${JSON.stringify(HOSTILE)}; document.body.appendChild(box); return true; })()`);
   const settings = { header: "Antet de test KGB", footer: "Subsol de test", numbers: true, numAt: "bc" };
   const t0 = Date.now();
   const { bytes, pages } = await pdfOf(p, settings);

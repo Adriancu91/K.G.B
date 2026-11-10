@@ -2269,7 +2269,8 @@
   "PDF-ul nu s-a putut face": "the PDF could not be made",
   "Profil:": "Profile:",
   "Profil": "Profile",
-  "Modul": "Module"
+  "Modul": "Module",
+  "facturi restante": "overdue invoices"
  },
  "templates": {
   "Completat de la ANAF (date pentru {0}): {1}. Verifică și completează restul de mână.": "Filled in from ANAF (data for {0}): {1}. Check and fill in the rest manually.",
@@ -2763,7 +2764,8 @@
   "pagina de tipărit nu s-a putut pregăti: {0}": "the print page could not be prepared: {0}",
   "tipărirea nu a pornit: {0}": "printing did not start: {0}",
   "PDF-ul nu s-a putut citi ({0})": "the PDF could not be read ({0})",
-  "PDF-ul nu s-a putut face: {0}": "the PDF could not be made: {0}"
+  "PDF-ul nu s-a putut face: {0}": "the PDF could not be made: {0}",
+  "Registru facturi ({0})": "Invoice register ({0})"
  },
  "skip": [
   "Escape",
