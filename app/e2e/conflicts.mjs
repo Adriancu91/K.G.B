@@ -13,6 +13,12 @@ import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { connect, sleep } from "./cdp.mjs";
 
+// The demo commands of kgb.notes (the Note page is the COS Notes window since 7.4l-2c).
+const demoNotes = (p) =>
+  p.eval(`window.__TAURI_INTERNALS__.invoke("module_call", {id: "kgb.notes", command: "list", args: {}}).then(l => l.map(n => n.text))`);
+const demoAdd = (p, text) =>
+  p.eval(`window.__TAURI_INTERNALS__.invoke("module_call", ${JSON.stringify({ id: "kgb.notes", command: "add", args: { text } })}).then(() => "ok", (e) => String(e))`);
+
 const [exe, shots] = process.argv.slice(2);
 if (!exe || !shots) {
   console.error("usage: node conflicts.mjs <kgb-app.exe> <screenshot-dir>");
@@ -43,21 +49,19 @@ function stop(p) {
   p.close();
   execFileSync("taskkill", ["/F", "/T", "/PID", String(proc.pid)], { stdio: "ignore" });
 }
-const noteTexts = (p) => p.eval("[...document.querySelectorAll('.list li')].map(l => l.innerText)");
+const noteTexts = (p) => demoNotes(p);
 
 try {
   let p = await start();
   await p.click("Catalog module", "nav .nav");
-  const card = "[...document.querySelectorAll('.card')].find(c => c.querySelector('h3')?.innerText === 'Note (demonstrativ)')";
+  const card = "[...document.querySelectorAll('.card')].find(c => c.querySelector('h3')?.innerText === 'Note')";
   await p.until(`!!${card}`);
   await p.eval(`${card}.querySelector('button').click()`);
   await sleep(200);
   await p.click("Acordă și activează");
   await p.until("[...document.querySelectorAll('nav .nav')].some(e => e.textContent.includes('Note'))");
-  await p.click("Note (demonstrativ)", "nav .nav");
-  await p.fill("input[aria-label='Notă nouă']", "Nota de test");
-  await p.click("Adaugă");
-  await p.until("[...document.querySelectorAll('.list li')].some(l => l.innerText.includes('Nota de test'))");
+  await demoAdd(p, "Nota de test");
+  await p.until(`window.__TAURI_INTERNALS__.invoke("module_call", {id: "kgb.notes", command: "list", args: {}}).then(l => l.some(n => n.text.includes("Nota de test")))`);
   await p.click("Dispozitive și sincronizare", "nav .nav");
   await p.until("!!document.querySelector('.conflicts-page')");
   check("fără sincronizare: niciun conflict", (await p.eval("document.querySelector('.conflicts-page').innerText")).includes("Niciun conflict"));
@@ -76,8 +80,7 @@ try {
   await p.click("Păstrează venit");
   await p.until("document.querySelector('.conflicts-page').innerText.includes('Niciun conflict')", 5000);
   check("după alegere conflictul dispare", true);
-  await p.click("Note (demonstrativ)", "nav .nav");
-  await p.until("document.querySelectorAll('.list li').length > 0");
+  await p.until(`window.__TAURI_INTERNALS__.invoke("module_call", {id: "kgb.notes", command: "list", args: {}}).then(l => l.length > 0)`);
   const notes = await noteTexts(p);
   check("nota are valoarea aleasă", notes.some((n) => n.includes("Versiunea de pe celălalt PC")) && !notes.some((n) => n.includes("acest PC")), notes.join(" | "));
   await p.screenshot(join(shots, "02-ales.png"));
