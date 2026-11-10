@@ -13,6 +13,7 @@ import { FormPanel } from "./Form";
 import { StampsPanel } from "./Stamps";
 import { extractStamps, pageSize, placeCentre, StampPage, stampMark, stampMarks, type Armed, type Mark } from "./StampEdit";
 import { TextEditPage } from "./TextEditPage";
+import { DigiSignPanel, signaturesOf, signedPdf, type SigState, type SignRequest } from "./DigiSign";
 
 const ID = "kgb.pdf";
 const THUMBS_AT_ONCE = 60;
@@ -123,6 +124,11 @@ export function PdfPage({ onError }: { onError: (e: string | null) => void }) {
   const markId = useRef(1);
   // Editing the text on click (7.4l-0b), on the big page.
   const [textEdit, setTextEdit] = useState(false);
+  // The digital signature (7.4l-0c): the bytes of the version as stored, its signatures, the window, the place being picked.
+  const [full, setFull] = useState<Uint8Array | null>(null);
+  const [sigs, setSigs] = useState<SigState | null>(null);
+  const [signOpen, setSignOpen] = useState(false);
+  const [sigPick, setSigPick] = useState<SignRequest | null>(null);
 
   const refresh = useCallback(async () => {
     try {
@@ -153,9 +159,17 @@ export function PdfPage({ onError }: { onError: (e: string | null) => void }) {
         setArmed(null);
         setSelMark(null);
         setEditMark(null);
+        setFull(null);
+        setSigs(null);
+        setSigPick(null);
         const r = await api.moduleCall<{ data: string }>(ID, "read", { id, version: i.version });
         try {
           let bytes = fromBase64(r.data);
+          setFull(bytes.slice());
+          signaturesOf(bytes).then(
+            (s) => setSigs(s.count ? s : null),
+            () => setSigs(null),
+          );
           let found: Mark[] = [];
           // Stamps put earlier come back as editable stamps; the page is shown without them (they sit on top).
           const ex = i.status === "intact" ? await extractStamps(bytes).catch(() => null) : null;
@@ -254,6 +268,23 @@ export function PdfPage({ onError }: { onError: (e: string | null) => void }) {
     });
 
   const marksDirty = JSON.stringify(marks) !== savedMarks;
+  const saveSigned = (out: Uint8Array, r: SignRequest) =>
+    ask("Semnătura digitală", "save_edit", {
+      id: current,
+      based_on: version,
+      data: toB64(out),
+      summary: `semnat digital de ${r.id.owner.name}`,
+      same_text_pages: Array.from({ length: view?.numPages ?? 0 }, (_, i) => i + 1),
+    });
+  const onSigBox = (x: number, y: number, w: number, h: number) =>
+    void run(async () => {
+      const r = sigPick;
+      setSigPick(null);
+      if (!r || !full || !view || big === null) return;
+      if (w < 30 || h < 12) throw new Error("Dreptunghiul e prea mic pentru semnătură. Apasă din nou și trage unul mai mare.");
+      const rot = ((((await view.getPage(big)).rotate % 360) + 360) % 360) as number;
+      await saveSigned(await signedPdf(full, r, { page: big, x, y, w, h, rot }), r);
+    });
   const saveStamps = async () => {
     if (!base || !current || version === null) return;
     try {
@@ -291,6 +322,7 @@ export function PdfPage({ onError }: { onError: (e: string | null) => void }) {
       const t = e.target;
       const typing = t instanceof HTMLInputElement || t instanceof HTMLTextAreaElement || t instanceof HTMLSelectElement;
       if (e.key === "Escape" && armed) setArmed(null);
+      else if (e.key === "Escape" && sigPick) setSigPick(null);
       else if (!typing && selMark !== null && editMark === null && (e.key === "Delete" || e.key === "Backspace")) {
         e.preventDefault();
         setMarks((all) => all.filter((m) => m.id !== selMark));
@@ -386,6 +418,34 @@ export function PdfPage({ onError }: { onError: (e: string | null) => void }) {
               </button>
             </header>
             {info.reason && <p className="warn">{info.reason}</p>}
+            {sigs && (
+              <p className={sigs.valid === sigs.count ? "muted" : "warn"} data-testid="pdf-sigs">
+                {sigs.count === 1 ? "Semnat digital" : `${sigs.count} semnături digitale`}
+                {sigs.names.length ? ` (${sigs.names.join(", ")})` : ""}:{" "}
+                {sigs.valid === sigs.count ? (sigs.count === 1 ? "valabilă" : "valabile") : `${sigs.valid} din ${sigs.count} valabile`}.
+                {editable && " Orice schimbare face o versiune nouă în care semnătura nu mai e valabilă; versiunea semnată rămâne."}
+              </p>
+            )}
+            {sigPick && <p className="warn">Trage pe pagină dreptunghiul în care apare semnătura (Esc = renunți).</p>}
+            {signOpen && full && (
+              <DigiSignPanel
+                bytes={full}
+                sigs={sigs}
+                onClose={() => setSignOpen(false)}
+                onSign={async (r) => {
+                  if (r.pick) {
+                    setSignOpen(false);
+                    setTextEdit(false);
+                    setSigPick(r);
+                    if (big === null) setBig(selected[0] ?? 1);
+                    return;
+                  }
+                  const out = await signedPdf(full, r);
+                  setSignOpen(false);
+                  await saveSigned(out, r);
+                }}
+              />
+            )}
             {!isCurrent && <p className="muted">Vezi o versiune mai veche: modificările se fac doar pe versiunea curentă.</p>}
             {viewError && <p className="error">Afișarea nu a reușit: {viewError}</p>}
 
@@ -432,6 +492,13 @@ export function PdfPage({ onError }: { onError: (e: string | null) => void }) {
               </button>
               <button disabled={!editable || busy} onClick={() => setFormOpen(!formOpen)}>
                 Formular…
+              </button>
+              <button
+                disabled={!editable || busy || !full || marksDirty}
+                title={marksDirty ? "Salvează întâi ștampilele (sau renunță la schimbări)" : "Semnătura digitală cu un certificat: de pe calculator, de pe token sau un ID digital făcut aici"}
+                onClick={() => setSignOpen(true)}
+              >
+                Semnează digital…
               </button>
               {selected.length > 0 && (
                 <button className="link" onClick={() => setSelected([])}>
@@ -547,7 +614,7 @@ export function PdfPage({ onError }: { onError: (e: string | null) => void }) {
                   )}
                   {textEdit && editable && base && <span className="muted small">Fiecare schimbare se previzualizează și devine o versiune nouă.</span>}
                 </div>
-                {editable && base && textEdit && !marksDirty ? (
+                {editable && base && textEdit && !marksDirty && !sigPick ? (
                   <TextEditPage
                     doc={view}
                     page={big}
@@ -587,6 +654,7 @@ export function PdfPage({ onError }: { onError: (e: string | null) => void }) {
                     }}
                     onSelect={setSelMark}
                     onEdit={setEditMark}
+                    {...(sigPick ? { onSigBox } : {})}
                   />
                 ) : (
                   <Canvas doc={view} page={big} width={720} />

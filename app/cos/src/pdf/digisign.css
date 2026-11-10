@@ -1,0 +1,39 @@
+/* Copiat neschimbat din Cyber Office Studio (D-071): regulile ferestrei „Semnează digital” din src/styles.css și src/pdf/pdf.css. */
+/* Culorile COS --border / --text sunt aici cele K.G.B. (--line / --fg). */
+.print-overlay { --border: var(--line); --text: var(--fg); }
+.print-overlay { position: fixed; inset: 0; z-index: 50; background: rgba(0, 0, 0, 0.35); display: flex; align-items: center; justify-content: center; }
+/* Îmbinare → e-mailuri cu PDF atașat: fereastra nu intră în PDF-ul exemplarelor. */
+@media print { .print-overlay.merge-pdf-busy { display: none !important; } }
+.print-dlg {
+  width: 520px; max-width: calc(100% - 32px); background: var(--panel); color: var(--text);
+  border: 1px solid var(--border); border-radius: 10px; padding: 16px 20px; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+}
+.print-dlg h3 { margin: 0 0 12px; font-size: 16px; }
+.print-row { display: flex; gap: 12px; padding: 8px 0; border-top: 1px solid var(--border); font-size: 13px; }
+.print-label { width: 90px; flex-shrink: 0; color: var(--muted); }
+.print-opts { display: flex; flex-direction: column; gap: 6px; align-items: flex-start; }
+.print-opts label { display: flex; align-items: center; gap: 6px; }
+.print-area { width: 90px; padding: 2px 6px; border: 1px solid var(--border); border-radius: 5px; background: var(--bg); color: inherit; font: inherit; }
+.print-area.bad { border-color: #d32f2f; }
+.print-hf { width: 260px; max-width: 100%; padding: 2px 6px; border: 1px solid var(--border); border-radius: 5px; background: var(--bg); color: inherit; font: inherit; }
+.print-fields { font-size: 12px; opacity: .85; display: flex; gap: 6px; flex-wrap: wrap; align-items: center; }
+.print-opts button.link { border: 0; background: none; color: var(--accent); padding: 0; cursor: pointer; font: inherit; }
+.print-info { margin: 8px 0; padding: 8px 10px; border-radius: 6px; background: var(--bg); font-size: 13px; }
+.tbl-swatches { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; margin: 8px 0; }
+.tbl-swatch { display: grid; grid-template-columns: 1fr; padding: 4px; border: 2px solid var(--border); border-radius: 6px; background: var(--bg); color: inherit; cursor: pointer; font: inherit; }
+.tbl-swatch.on { border-color: var(--accent); }
+.tbl-swatch span { height: 7px; border-bottom: 1px solid var(--border); }
+.tbl-swatch small { margin-top: 3px; font-size: 11px; }
+.nav-about { margin: 2px 8px; padding: 3px 8px; border: none; background: none; color: var(--muted, inherit); font: inherit; font-size: 12px; text-align: left; cursor: pointer; border-radius: 6px; opacity: 0.8; }
+.nav-about:hover { background: var(--hover, rgba(127,127,127,.15)); opacity: 1; }
+.about-dlg { max-width: 460px; }
+.about-dlg p { margin: 6px 0; }
+.about-trial { font-weight: 600; }
+.print-actions { display: flex; justify-content: flex-end; gap: 8px; }
+.print-actions button { padding: 6px 14px; border: 1px solid var(--border); border-radius: 6px; background: var(--bg); color: inherit; cursor: pointer; font: inherit; }
+.print-actions button.primary { background: var(--accent); border-color: var(--accent); color: #fff; }
+.print-actions button:disabled { opacity: 0.5; cursor: default; }
+.pdf-extract { width: 380px; }
+.pdf-extract-row { display: flex; align-items: center; gap: 8px; margin: 12px 0; font-size: 13px; }
+.pdf-extract-row input { flex: 1; padding: 5px 8px; border: 1px solid var(--border); border-radius: 6px; background: var(--bg); color: var(--text); font: inherit; }
+.pdf-extract-row input[type=checkbox], .pdf-extract-row input[type=radio], .pdf-extract-row input.pdf-split-num { flex: none; }

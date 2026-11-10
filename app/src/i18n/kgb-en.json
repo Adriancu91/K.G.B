@@ -2309,7 +2309,27 @@
   "Fiecare schimbare se previzualizează și devine o versiune nouă.": "Every change is previewed and becomes a new version.",
   "Editarea textului": "Text editing",
   "Pagina s-a schimbat între timp: deschide-o din nou.": "The page changed in the meantime: open it again.",
-  "✎ Editează text": "✎ Edit text"
+  "✎ Editează text": "✎ Edit text",
+  "Marca temporală nu e încă disponibilă în K.G.B.: semnează fără ea.": "Timestamping is not available in K.G.B. yet: sign without it.",
+  "Semnătura digitală": "Digital signature",
+  "Semnat digital": "Digitally signed",
+  "Orice schimbare face o versiune nouă în care semnătura nu mai e valabilă; versiunea semnată rămâne.": "Any change makes a new version in which the signature is no longer valid; the signed version stays.",
+  "Trage pe pagină dreptunghiul în care apare semnătura (Esc = renunți).": "Draw on the page the rectangle where the signature appears (Esc = cancel).",
+  "Semnătura digitală cu un certificat: de pe calculator, de pe token sau un ID digital făcut aici": "Digital signature with a certificate: from this computer, from a token or a digital ID made here",
+  "Semnează digital…": "Sign digitally…",
+  "valabilă": "valid",
+  "valabile": "valid",
+  "Certificatul nu a răspuns la timp (PIN-ul nu a fost scris?).": "The certificate did not answer in time (was the PIN not typed?).",
+  "Sistemul nu a putut citi certificatele.": "The system could not read the certificates.",
+  "Lista certificatelor nu se poate citi.": "The list of certificates cannot be read.",
+  "Datele de semnat nu au ajuns întregi.": "The data to sign did not arrive whole.",
+  "Datele de semnat nu sunt bune.": "The data to sign is not valid.",
+  "Semnătura nu a venit întreagă.": "The signature did not come back whole.",
+  "Sistemul nu a putut folosi certificatul.": "The system could not use the certificate.",
+  "Certificatul nu mai e pe calculator (tokenul e scos?).": "The certificate is no longer on this computer (is the token removed?).",
+  "Certificatele de pe calculator se pot folosi doar pe Windows.": "The certificates of this computer can only be used on Windows.",
+  "Certificat necunoscut.": "Unknown certificate.",
+  "Dreptunghiul e prea mic pentru semnătură. Apasă din nou și trage unul mai mare.": "The rectangle is too small for a signature. Press again and draw a larger one."
  },
  "templates": {
   "Completat de la ANAF (date pentru {0}): {1}. Verifică și completează restul de mână.": "Filled in from ANAF (data for {0}): {1}. Check and fill in the rest manually.",
@@ -2822,7 +2842,10 @@
   "notița {0}: păstrată varianta mai nouă, de pe alt PC": "note {0}: the newer version, from another PC, was kept",
   "notița {0}: schimbată în ambele locuri, păstrată varianta din fereastră (mai nouă)": "note {0}: changed in both places, the window's (newer) version was kept",
   "textul „{0}” schimbat pe pagina {1}": "the text “{0}” changed on page {1}",
-  "textul „{0}” scos de pe pagina {1}": "the text “{0}” removed from page {1}"
+  "textul „{0}” scos de pe pagina {1}": "the text “{0}” removed from page {1}",
+  "{0} semnături digitale": "{0} digital signatures",
+  "{0} din {1} valabile": "{0} of {1} valid",
+  "semnat digital de {0}": "digitally signed by {0}"
  },
  "skip": [
   "Sector ",
@@ -2912,6 +2935,8 @@
   "Timișoara",
   "Zalău",
   "incasari-si-plati.csv",
-  "=IF(ROUND(F{0}-F{1},2)=0,\"corect\",\"DIFERENȚĂ\")"
+  "=IF(ROUND(F{0}-F{1},2)=0,\"corect\",\"DIFERENȚĂ\")",
+  "{0}\n$c = $null\nforeach ($x in (Get-SuiteCerts)) { if ($x.Thumbprint -eq '{1}') { $c = $x; break } }\nif (-not $c) { throw 'Certificatul nu mai e pe calculator (tokenul e scos?).' }\n$data = [Convert]::FromBase64String('{2}')\n$h = [System.Security.Cryptography.HashAlgorithmName]::SHA256\n{3}\n[Convert]::ToBase64String($sig)\n",
+  "#< CLIXML\\r\n<Objs><S S=\"Error\">Certificatul nu mai e pe calculator (tokenul e scos?)._x000D__x000A_</S><S S=\"Error\">At line:5 char:1_x000D__x000A_</S></Objs>"
  ]
 }

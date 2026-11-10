@@ -13,6 +13,7 @@ mod media;
 mod net;
 mod phone;
 mod print;
+mod wincert;
 use std::time::Instant;
 
 use kgb_core::identity::{self, DeviceIdentity};
@@ -1803,7 +1804,9 @@ fn main() {
             print::print_pdf,
             print::print_paper,
             print::print_job_take,
-            print::print_job_ready
+            print::print_job_ready,
+            wincert::wincert_list,
+            wincert::wincert_sign
             ]);
             // The hidden print windows (D-081) may call only their two commands: no modules, files or dialogs.
             move |invoke| {

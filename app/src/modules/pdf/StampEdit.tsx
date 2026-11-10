@@ -70,6 +70,8 @@ export function StampPage(props: {
   onRemove(id: number): void;
   onSelect(id: number | null): void;
   onEdit(id: number | null): void;
+  /** The place of a new visible digital signature (7.4l-0c): a rectangle drawn on the page, in page points from the top left. */
+  onSigBox?(x: number, y: number, w: number, h: number): void;
 }) {
   const ref = useRef<HTMLCanvasElement>(null);
   const [size, setSize] = useState<{ w: number; h: number } | null>(null);
@@ -100,10 +102,10 @@ export function StampPage(props: {
           zoom={zoom}
           pw={size.w}
           ph={size.h}
-          tool={props.armed ? "stamp" : null}
+          tool={props.onSigBox ? "sigbox" : props.armed ? "stamp" : null}
           selected={props.selected}
           onPlace={(x: number, y: number) => props.onPlace(x, y, size)}
-          onPlaceRect={() => undefined}
+          onPlaceRect={(x: number, y: number, w: number, h: number) => props.onSigBox?.(x, y, w, h)}
           onPlaceDraw={() => undefined}
           onChange={props.onChange}
           onRemove={props.onRemove}

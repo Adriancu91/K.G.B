@@ -24,3 +24,7 @@ aceeași structură de foldere ca în COS (`src/notes/…`, `src/docs/…`, `src
   neschimbate (`hooks.mjs` leagă `node_modules/pdfjs-dist` de aici de pachetul aplicației, pentru fonturile citite după cale).
   K.G.B. are pdf.js 6, fără `convertToViewportRectangle`: `app/src/modules/pdf/pdfjs.ts` (`viewportCompat`) o pune înapoi.
   K.G.B. le folosește în `app/src/modules/pdf/TextEditPage.tsx`.
+- Semnătura digitală (7.4l-0c, D-085): `src/pdf/{SignDigital.tsx,digisign,pfx,signatures,verifySig}.ts` neschimbate, cu `src/pdf/digisign.css`
+  (regulile ferestrei din `styles.css` și `pdf.css`). Testele `pdf-digisign`, `pdf-digisign-incr`, `pdf-pfx`, `pdf-verifysig` trec; în
+  `pdf-digisign-incr` un singur rând schimbat: pdf.js 6 închide documentul prin `loadingTask.destroy()`. K.G.B. le folosește în
+  `app/src/modules/pdf/DigiSign.tsx`.
