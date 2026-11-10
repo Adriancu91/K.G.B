@@ -9,6 +9,9 @@ import { fromBase64 } from "./pdfjs";
 import { bookletPdf, nUpPdf, NUP_GRID, posterPdf } from "./nup";
 import { compressPdf, LEVELS, sizeText } from "./compress";
 import { OPTIMIZE_DEFAULT, optimizePdf } from "./optimize";
+// 7.4l-1f (D-075): the searchable PDF of COS (ocrPdf.ts, textlayer.ts, ocr.ts, unchanged), with the language data in
+// the app (tessdata/), nothing downloaded.
+import { OCR_LANGS, ocrLang, setOcrLang, stopOcr } from "../../../cos/src/pdf/ocr";
 
 const toB64 = (b: Uint8Array) => {
   let s = "";
@@ -32,6 +35,8 @@ export function ToolsPanel(props: {
   const [level, setLevel] = useState(1);
   const [opt, setOpt] = useState(OPTIMIZE_DEFAULT);
   const [working, setWorking] = useState<string | null>(null);
+  const [lang, setLang] = useState(ocrLang());
+  const [ocrStatus, setOcrStatus] = useState<string | null>(null);
   const base = props.name.replace(/\.pdf$/i, "");
   const all = Array.from({ length: props.pages }, (_, i) => i + 1);
 
@@ -147,6 +152,55 @@ export function ToolsPanel(props: {
           Optimizează
         </button>
       </div>
+      <h4>Text din scanări (OCR)</h4>
+      <div className="row wrap">
+        <select
+          aria-label="Limba textului"
+          value={lang}
+          onChange={(e) => {
+            setOcrLang(e.target.value);
+            setLang(e.target.value);
+          }}
+        >
+          {OCR_LANGS.map(([k, label]) => (
+            <option key={k} value={k}>
+              {label}
+            </option>
+          ))}
+        </select>
+        <button
+          disabled={props.busy || !!working}
+          title="Paginile scanate (fără text) se citesc pe calculator, fără internet; textul recunoscut se pune invizibil peste poză, deci merg căutarea și copierea. Paginile care au deja text rămân neatinse."
+          onClick={() =>
+            void run("OCR", async (b) => {
+              // The pages that already have text must stay exactly as they were: the module checks it.
+              const texts = await api.moduleCall<string[]>("kgb.pdf", "text", { id: props.docId, version: props.version });
+              const kept = texts.flatMap((t, i) => (t.replace(/s/g, "").length > 20 ? [i + 1] : []));
+              try {
+                const { ocrPdf } = await import("../../../cos/src/pdf/ocrPdf");
+                const r = await ocrPdf(b, setOcrStatus);
+                if (!r.words) {
+                  props.onError(r.skipped ? "Toate paginile au deja text: nu e nimic de recunoscut." : "Nu s-a găsit niciun text în paginile scanate.");
+                  return;
+                }
+                await props.ask("PDF căutabil", "save_edit", {
+                  id: props.docId,
+                  based_on: props.version,
+                  data: toB64(r.bytes),
+                  summary: `text recunoscut (OCR) pe ${r.pages} ${r.pages === 1 ? "pagină" : "pagini"}, ${r.words} cuvinte`,
+                  same_text_pages: kept,
+                });
+              } finally {
+                setOcrStatus(null);
+                await stopOcr();
+              }
+            })
+          }
+        >
+          Fă PDF-ul căutabil
+        </button>
+      </div>
+      {ocrStatus && <p className="muted small" role="status">{ocrStatus}</p>}
       {working && <p className="muted small">Se lucrează ({working})…</p>}
       <p className="muted small">Uneltele din Cyber Office Studio. Paginile pe foaie, broșura și posterul fac un document nou; comprimarea și optimizarea, o versiune nouă.</p>
     </div>

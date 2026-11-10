@@ -960,6 +960,11 @@
   "f": "modules/pdf/Tools.tsx"
  },
  {
+  "ro": "Limba textului",
+  "en": "Text language",
+  "f": "modules/pdf/Tools.tsx"
+ },
+ {
   "ro": "Fișierul nu e XFDF (comentarii PDF exportate din Cyber Office Studio sau din alt program).",
   "en": "The file is not XFDF (PDF comments exported from Cyber Office Studio or another program).",
   "f": "modules/pdf/xfdf.ts"
