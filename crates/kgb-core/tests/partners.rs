@@ -51,6 +51,14 @@ fn cards_search_and_duplicates() {
     a.campuri = vec![ExtraField { nume: "Cod client intern".into(), valoare: "C-0042".into() }];
     let id = partners::save(ws.store_mut(), a).unwrap();
     partners::save(ws.store_mut(), card("Alfa Construct SA", "")).unwrap();
+    // 7.4m-2: the CUI is stored without spaces anywhere; a wrong IBAN is kept (the page warns), without spaces.
+    let mut spaced = card("Beta Distribuție SRL", " ro 185 472 90 ");
+    spaced.iban = "RO49 AAAA 1B31 0075 9384 0001".into();
+    let bid = partners::save(ws.store_mut(), spaced).unwrap();
+    let b = partners::get(ws.store(), bid).unwrap();
+    assert_eq!(b.cui, "RO18547290");
+    assert_eq!(b.iban, "RO49AAAA1B31007593840001");
+    assert!(!kgb_core::ids::iban_valid(&b.iban));
 
     // Refused input.
     assert!(partners::save(ws.store_mut(), card("Copie", "14399840")).unwrap_err().to_string().contains("există deja"));
@@ -85,7 +93,7 @@ fn cards_search_and_duplicates() {
     // Hidden cards leave suggestions but stay in the full list.
     partners::set_active(ws.store_mut(), id, false).unwrap();
     assert!(names_in(&ws, "Tra").is_empty());
-    assert_eq!(partners::list(ws.store(), true).unwrap().len(), 2);
+    assert_eq!(partners::list(ws.store(), true).unwrap().len(), 3);
 }
 
 fn names_in(ws: &Workspace, q: &str) -> Vec<String> {

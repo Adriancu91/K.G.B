@@ -7,6 +7,8 @@ import { useCallback, useEffect, useState } from "react";
 import { message } from "../api";
 import { takeIntent } from "../intent";
 import { AnafLookup, type AnafCompany } from "../components/AnafLookup";
+// The IBAN check of the spreadsheet window (=VALIDIBAN), the same rule as the core's (kgb_core::ids, 7.4m-2).
+import { validIban } from "../../cos/src/sheets/ids";
 
 interface WorkPoint {
   denumire: string;
@@ -155,6 +157,11 @@ function Editor({ start, onSave, onCancel }: { start: Partner; onSave: (p: Partn
             {l}
             <input value={String(p[k] ?? "")} onChange={(e) => upBase(k, e.target.value)} aria-label={l} required={k === "denumire"} />
             {(p.surse[k as string] as { sursa?: string } | undefined)?.sursa === "anaf" && <span className="small muted">de la ANAF</span>}
+            {k === "iban" && p.iban.trim() !== "" && !validIban(p.iban) && (
+              <span className="small warn" role="status">
+                IBAN-ul pare greșit (cifrele de control nu se potrivesc). Fișa se salvează oricum.
+              </span>
+            )}
           </label>
         ))}
       </div>

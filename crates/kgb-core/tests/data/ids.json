@@ -1,0 +1,250 @@
+{
+  "note": "Coduri inventate (CNP-urile nu sunt ale nimanui), cu rezultatul regulilor din cos/src/sheets/ids.ts; verificate de crates/kgb-core/tests/ids.rs si app/cos/tests/kgb-ids-parity.test.mjs.",
+  "rows": [
+    {
+      "kind": "cui",
+      "code": "14399840",
+      "valid": true
+    },
+    {
+      "kind": "cui",
+      "code": "RO14399840",
+      "valid": true
+    },
+    {
+      "kind": "cui",
+      "code": "ro 14399840",
+      "valid": true
+    },
+    {
+      "kind": "cui",
+      "code": " RO 143 998 40 ",
+      "valid": true
+    },
+    {
+      "kind": "cui",
+      "code": "18547290",
+      "valid": true
+    },
+    {
+      "kind": "cui",
+      "code": "RO18547290",
+      "valid": true
+    },
+    {
+      "kind": "cui",
+      "code": "12345674",
+      "valid": true
+    },
+    {
+      "kind": "cui",
+      "code": "987654328",
+      "valid": true
+    },
+    {
+      "kind": "cui",
+      "code": "14399841",
+      "valid": false
+    },
+    {
+      "kind": "cui",
+      "code": "RO18547291",
+      "valid": false
+    },
+    {
+      "kind": "cui",
+      "code": "ABC",
+      "valid": false
+    },
+    {
+      "kind": "cui",
+      "code": "1",
+      "valid": false
+    },
+    {
+      "kind": "cui",
+      "code": "00",
+      "valid": true
+    },
+    {
+      "kind": "cui",
+      "code": "RO",
+      "valid": false
+    },
+    {
+      "kind": "cui",
+      "code": "12345678901",
+      "valid": false
+    },
+    {
+      "kind": "cui",
+      "code": "1439984O",
+      "valid": false
+    },
+    {
+      "kind": "cui",
+      "code": "RO-14399840",
+      "valid": false
+    },
+    {
+      "kind": "iban",
+      "code": "RO49AAAA1B31007593840000",
+      "valid": true
+    },
+    {
+      "kind": "iban",
+      "code": "RO49 AAAA 1B31 0075 9384 0000",
+      "valid": true
+    },
+    {
+      "kind": "iban",
+      "code": "ro49aaaa1b31007593840000",
+      "valid": true
+    },
+    {
+      "kind": "iban",
+      "code": "RO49AAAA1B31007593840001",
+      "valid": false
+    },
+    {
+      "kind": "iban",
+      "code": "RO49AAAA1B3100759384000",
+      "valid": false
+    },
+    {
+      "kind": "iban",
+      "code": "GB82WEST12345698765432",
+      "valid": true
+    },
+    {
+      "kind": "iban",
+      "code": "DE89370400440532013000",
+      "valid": true
+    },
+    {
+      "kind": "iban",
+      "code": "DE89370400440532013001",
+      "valid": false
+    },
+    {
+      "kind": "iban",
+      "code": "RO",
+      "valid": false
+    },
+    {
+      "kind": "iban",
+      "code": "",
+      "valid": false
+    },
+    {
+      "kind": "iban",
+      "code": "XX00",
+      "valid": false
+    },
+    {
+      "kind": "iban",
+      "code": "RO49AAAA1B3100759384000Ă",
+      "valid": false
+    },
+    {
+      "kind": "cnp",
+      "code": "1900101123457",
+      "valid": true
+    },
+    {
+      "kind": "cnp",
+      "code": "2900229041232",
+      "valid": false
+    },
+    {
+      "kind": "cnp",
+      "code": "5000229041230",
+      "valid": true
+    },
+    {
+      "kind": "cnp",
+      "code": "6001231700019",
+      "valid": true
+    },
+    {
+      "kind": "cnp",
+      "code": "7001015200117",
+      "valid": true
+    },
+    {
+      "kind": "cnp",
+      "code": "1800129123453",
+      "valid": true
+    },
+    {
+      "kind": "cnp",
+      "code": "5191231999990",
+      "valid": false
+    },
+    {
+      "kind": "cnp",
+      "code": "1900101123458",
+      "valid": false
+    },
+    {
+      "kind": "cnp",
+      "code": "2900229041233",
+      "valid": false
+    },
+    {
+      "kind": "cnp",
+      "code": "5000229041231",
+      "valid": false
+    },
+    {
+      "kind": "cnp",
+      "code": "1900131123453",
+      "valid": true
+    },
+    {
+      "kind": "cnp",
+      "code": "1901301123455",
+      "valid": false
+    },
+    {
+      "kind": "cnp",
+      "code": "1900101493451",
+      "valid": false
+    },
+    {
+      "kind": "cnp",
+      "code": "1900101003458",
+      "valid": false
+    },
+    {
+      "kind": "cnp",
+      "code": "1000229041233",
+      "valid": false
+    },
+    {
+      "kind": "cnp",
+      "code": "0900101123456",
+      "valid": false
+    },
+    {
+      "kind": "cnp",
+      "code": "19001011234",
+      "valid": false
+    },
+    {
+      "kind": "cnp",
+      "code": "190010112345X",
+      "valid": false
+    },
+    {
+      "kind": "cnp",
+      "code": "8000230123451",
+      "valid": true
+    },
+    {
+      "kind": "cnp",
+      "code": "8000232123455",
+      "valid": false
+    }
+  ]
+}
