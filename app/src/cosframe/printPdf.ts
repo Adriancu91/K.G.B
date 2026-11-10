@@ -125,6 +125,9 @@ export function safeUrl(v: string, origin: string): boolean {
   const t = v.trim();
   if (!t || t.startsWith("#")) return true;
   if (/^(data|blob):/i.test(t)) return /^data:(image|font)\//i.test(t) || /^blob:/i.test(t);
+  // The cells' anchors of Sheets › Aspect pagină (COS PageLayout CELL_LINK): they become the PDF's link areas that
+  // let a click on the page write in that cell. `.invalid` never resolves, and the hidden window follows no link.
+  if (/^https:\/\/cell\.invalid\/[A-Z]{1,3}\d{1,7}$/i.test(t)) return true;
   if (/^[a-z][a-z0-9+.-]*:/i.test(t)) return t.startsWith(origin + "/");
   return !t.startsWith("//");
 }

@@ -160,10 +160,13 @@ try {
   const tp = Date.now();
   await p.eval(`window.__TAURI_INTERNALS__.invoke("module_import_file_with", { id: "kgb.sheets", path: ${JSON.stringify(file("19-lung.csv"))}, command: "peek", args: {} }).then(r => r.data.length)`);
   console.log(`      (nucleul predă fișierul de 11,6 MB în ${Math.round((Date.now() - tp) / 100) / 10} s)`);
+  // In K.G.B. the status line „Importat din …” is soon replaced by the cell count, so the count is what is awaited:
+  // 200.001 rows × 6 columns.
   const t0 = Date.now();
-  await importText(p, "19-lung.csv", undefined, 240000);
-  const big = (await bodyText(p)).match(/Importat din[^\n]*/)?.[0] ?? "";
-  check(`fișier mare (200.001 rânduri) adus în ${Math.round((Date.now() - t0) / 1000)} s`, /200001 rânduri, 6 coloane/.test(big), big);
+  const bigShown = await openDialog(p, file("19-lung.csv"), ["Import CSV"], DLG);
+  if (bigShown) await dlgButton(p, "Încarcă");
+  const bigDone = await frWait(p, "/1200006 celule/.test(document.body.innerText)", 240000);
+  check(`fișier mare (200.001 rânduri, 1.200.006 celule) adus în ${Math.round((Date.now() - t0) / 1000)} s`, !!bigDone);
 
   await openDialog(p, file("12-bara.txt"), ["Import CSV"], DLG);
   await dlgButton(p, "Renunță");

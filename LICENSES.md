@@ -130,6 +130,7 @@ Verificat automat de `cargo-deny` în CI pe workspace-ul rădăcină (`Cargo.tom
 | npm `utif2` 4.1.0 | MIT | fereastra Sheets: poze .tiff (Din imagine) (D-077, acord COS + K.G.B.) | 7.5-1 |
 | npm `@tiptap/core`, `@tiptap/react`, `@tiptap/pm`, `@tiptap/extension-underline` 2.27.3 (+ `prosemirror-*`) | MIT | fereastra Sheets: tabelele legate de Docs (D-077, acord COS + K.G.B.) | 7.5-1 |
 | npm `tesseract.js` 7.0.0 | Apache-2.0 | fereastra Sheets: Din imagine (OCR), D-075 | 7.5-1 |
+| npm `@tesseract.js-data/ron`, `eng`, `hun`, `deu`, `fra` 1.0.0 (pachetele: MIT; datele tessdata `4.0.0_best_int` din proiectul Tesseract: Apache-2.0) | MIT + Apache-2.0 | datele de limbă pentru OCR, puse în aplicație la `tessdata/<limba>.traineddata.gz` (cam 1–2 MB fiecare); nimic descărcat la rulare (D-075) | 7.4l-4b |
 | npm `@tiptap/starter-kit` și extensiile `color`, `font-family`, `highlight`, `image`, `placeholder`, `table`, `table-cell`, `table-header`, `table-row`, `text-align`, `text-style` 2.27.3 (+ `tippy.js` 6.3.7, `@popperjs/core` 2.11.8) | MIT | fereastra Docs din Cyber Office Studio: editorul de text (D-080, acord COS + K.G.B.) | 7.4l-5a |
 | npm `docx` 9.12.0 | MIT | fereastra Docs: exportul .docx (D-080, acord COS + K.G.B.); înainte doar la dezvoltare, pentru un test Sheets | 7.4l-5a |
 | `libheif-js` (LGPL-3.0) | — | **neinclus**: LGPL cere decizie separată (D-071); vite îl înlocuiește cu `src/cosframe/noHeic.ts`, iar pozele .heic sunt refuzate cu mesaj | 7.5-1 |
