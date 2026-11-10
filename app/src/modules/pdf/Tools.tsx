@@ -154,6 +154,35 @@ export function ToolsPanel(props: {
       </div>
       <h4>Text din scanări (OCR)</h4>
       <div className="row wrap">
+        <button
+          disabled={props.busy || !!working}
+          title="Paginile scanate sau fotografiate cu telefonul (cele selectate, altfel toate) devin ca o fotocopie bună: îndreptate, fundal alb fără umbre, text negru. Fă asta înainte de „Fă PDF-ul căutabil”: textul se recunoaște mai bine."
+          onClick={() =>
+            void run("curățare", async (b) => {
+              // 7.4l-0d: COS's enhance.ts, unchanged. Pages with real text are left as they are (the module checks it).
+              const pick = props.selected.length ? props.selected : all;
+              const texts = await api.moduleCall<string[]>("kgb.pdf", "text", { id: props.docId, version: props.version });
+              const kept = all.filter((n) => !pick.includes(n) || (texts[n - 1] ?? "").replace(/s/g, "").length > 20);
+              const { enhancePages } = await import("../../../cos/src/pdf/enhance");
+              const r = await enhancePages(b, pick);
+              if (!r.done) {
+                props.onError(r.skipped ? "Paginile alese au text adevărat (nu sunt scanări sau poze), deci nu au nevoie de curățare." : "Nu e nicio pagină de curățat.");
+                return;
+              }
+              await props.ask("Scanare curățată", "save_edit", {
+                id: props.docId,
+                based_on: props.version,
+                data: toB64(r.data),
+                summary: `scanare curățată: ${r.done} din ${all.length} pagini, ${r.straightened} îndreptate`,
+                same_text_pages: kept,
+              });
+            })
+          }
+        >
+          Curăță scanarea
+        </button>
+      </div>
+      <div className="row wrap">
         <select
           aria-label="Limba textului"
           value={lang}

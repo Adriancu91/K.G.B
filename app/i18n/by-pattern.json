@@ -960,6 +960,16 @@
   "f": "modules/pdf/Tools.tsx"
  },
  {
+  "ro": "Nu e nicio pagină de curățat.",
+  "en": "There is no page to clean up.",
+  "f": "modules/pdf/Tools.tsx"
+ },
+ {
+  "ro": "Curăță scanarea",
+  "en": "Enhance Scan",
+  "f": "modules/pdf/Tools.tsx"
+ },
+ {
   "ro": "Limba textului",
   "en": "Text language",
   "f": "modules/pdf/Tools.tsx"
