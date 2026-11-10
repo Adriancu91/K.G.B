@@ -32,21 +32,9 @@ fn bad(detail: impl Into<String>) -> CoreError {
     CoreError::invalid("partenerul", detail)
 }
 
-/// Romanian CUI/CIF check digit (with or without the `RO` prefix).
-pub fn cui_valid(cui: &str) -> bool {
-    let t = cui.trim().to_uppercase();
-    let t = t.strip_prefix("RO").unwrap_or(&t).trim();
-    if !(2..=10).contains(&t.len()) || !t.chars().all(|c| c.is_ascii_digit()) {
-        return false;
-    }
-    let digits: Vec<u32> = t.chars().filter_map(|c| c.to_digit(10)).collect();
-    let (body, control) = digits.split_at(digits.len() - 1);
-    let key = [7, 5, 3, 2, 1, 7, 5, 3, 2];
-    let pad = 9 - body.len();
-    let sum: u32 = body.iter().enumerate().map(|(k, d)| d * key[pad + k]).sum();
-    let c = (sum * 10) % 11;
-    (if c == 10 { 0 } else { c }) == control[0]
-}
+
+/// Romanian CUI/CIF check digit (one rule for the app, 7.4m-2: crate::ids).
+pub use crate::ids::cui_valid;
 
 /// The CUI without `RO` and spaces (for comparing and searching).
 pub fn cui_digits(cui: &str) -> String {
@@ -184,7 +172,8 @@ fn fields(p: &Partner) -> CoreResult<Fields> {
     if !["client", "furnizor", "ambele"].contains(&c.tip.as_str()) {
         return Err(bad("tipul trebuie să fie client, furnizor sau ambele"));
     }
-    c.cui = p.cui.trim().to_uppercase().replace(' ', "");
+    // Stored without spaces anywhere (7.4m-2), as the check reads it.
+    c.cui = crate::ids::cui_clean(&p.cui);
     if !c.cui.is_empty() && !cui_valid(&c.cui) {
         return Err(bad(format!("CUI-ul „{}” nu e valid (cifra de control nu se potrivește)", c.cui)));
     }
@@ -204,7 +193,8 @@ fn fields(p: &Partner) -> CoreResult<Fields> {
     ] {
         *v = text(what, v, max)?;
     }
-    c.iban = c.iban.to_uppercase().replace(' ', "");
+    // Stored without spaces; a wrong IBAN is not refused (older cards), the page warns (crate::ids::iban_valid).
+    c.iban = crate::ids::compact(&c.iban);
     if c.puncte_lucru.len() > 50 || c.documente.len() > 100 || c.campuri.len() > 100 {
         return Err(bad("prea multe puncte de lucru, documente sau câmpuri"));
     }

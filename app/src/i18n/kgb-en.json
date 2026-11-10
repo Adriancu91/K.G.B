@@ -25,6 +25,7 @@
   "Rolul tău poate doar citi în acest modul": "Your role can only read in this module",
   "Rolul tău poate doar citi notele: ce schimbi aici nu se salvează.": "Your role can only read the notes: what you change here is not saved.",
   "Rolul tău poate doar citi notele.": "Your role can only read the notes.",
+  "IBAN-ul pare greșit (cifrele de control nu se potrivesc). Fișa se salvează oricum.": "The IBAN looks wrong (the check digits do not match). The card is saved anyway.",
   "Scoate de pe Acasă": "Remove from Home",
   "Se pornește K.G.B.…": "K.G.B. is starting…",
   "Surse externe": "External sources",

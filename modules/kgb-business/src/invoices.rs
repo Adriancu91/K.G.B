@@ -49,21 +49,9 @@ pub const COMPANY: [(&str, &str); 8] = [
 /// Default VAT rates (D-052): to be confirmed by the owner or an accountant.
 pub const DEFAULT_RATES: [i64; 3] = [21, 11, 0];
 
-/// Romanian CUI/CIF check digit (with or without „RO”).
-pub fn cui_valid(cui: &str) -> bool {
-    let t = cui.trim().to_uppercase();
-    let t = t.strip_prefix("RO").unwrap_or(&t).trim();
-    if !(2..=10).contains(&t.len()) || !t.chars().all(|c| c.is_ascii_digit()) {
-        return false;
-    }
-    let digits: Vec<u32> = t.chars().filter_map(|c| c.to_digit(10)).collect();
-    let (body, control) = digits.split_at(digits.len() - 1);
-    let key = [7, 5, 3, 2, 1, 7, 5, 3, 2];
-    let pad = 9 - body.len();
-    let sum: u32 = body.iter().enumerate().map(|(k, d)| d * key[pad + k]).sum();
-    let c = (sum * 10) % 11;
-    (if c == 10 { 0 } else { c }) == control[0]
-}
+
+/// Romanian CUI/CIF check digit: the app's one rule (kgb_core::ids, 7.4m-2).
+pub use kgb_core::ids::cui_valid;
 
 #[derive(Deserialize)]
 #[serde(deny_unknown_fields)]

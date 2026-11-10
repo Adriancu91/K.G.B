@@ -162,7 +162,9 @@ pub fn date(s: &str) -> Option<(String, String)> {
     None
 }
 
-/// The Romanian fiscal code's control digit (key 753217532).
+/// A CUI read from a document: the text around it may carry dots or other marks ("RO 18.547.290"), so only the
+/// digits after "RO" are kept and an all-zero code is refused; the check digit is the app's one rule
+/// (kgb_core::ids, 7.4m-2).
 pub fn cui_valid(cui: &str) -> bool {
     let digits: String = cui
         .trim()
@@ -170,19 +172,7 @@ pub fn cui_valid(cui: &str) -> bool {
         .chars()
         .filter(char::is_ascii_digit)
         .collect();
-    if !(2..=10).contains(&digits.len()) || digits.chars().all(|c| c == '0') {
-        return false;
-    }
-    let (body, control) = digits.split_at(digits.len() - 1);
-    let key = b"753217532";
-    let padded = format!("{body:0>9}");
-    let sum: u32 = padded
-        .bytes()
-        .zip(key)
-        .map(|(d, k)| u32::from(d - b'0') * u32::from(k - b'0'))
-        .sum();
-    let c = (sum * 10) % 11 % 10;
-    control.parse::<u32>() == Ok(c)
+    !digits.chars().all(|c| c == '0') && kgb_core::ids::cui_valid(&digits)
 }
 
 fn field(

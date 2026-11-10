@@ -16,6 +16,7 @@ pub mod error;
 pub mod files;
 pub mod fx;
 pub mod identity;
+pub mod ids;
 pub mod invites;
 pub mod log;
 pub mod manifest;
