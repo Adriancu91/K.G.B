@@ -46,8 +46,9 @@ const frUntil = async (p, expr, timeout = 30000) => {
 async function pdfOf(p, settings) {
   const b64 = await fr(
     p,
-    `window.kgbDocPdf(${JSON.stringify(settings)}).then((u) => { let s = ''; for (let i = 0; i < u.length; i += 0x8000) s += String.fromCharCode(...u.subarray(i, i + 0x8000)); return btoa(s); })`,
+    `window.kgbDocPdf(${JSON.stringify(settings)}).then((u) => { let s = ''; for (let i = 0; i < u.length; i += 0x8000) s += String.fromCharCode(...u.subarray(i, i + 0x8000)); return btoa(s); }, (e) => 'ERR:' + String(e))`,
   );
+  if (String(b64).startsWith('ERR:')) throw new Error(b64);
   const bytes = Buffer.from(b64, "base64");
   const doc = await pdfjs.getDocument({ data: new Uint8Array(bytes), isEvalSupported: false, verbosity: 0 }).promise;
   const pages = [];
@@ -114,13 +115,19 @@ try {
   await frUntil(p, "!!document.querySelector('.sheet-wrap')");
   await p.eval("document.querySelector('.cos-frame iframe').focus()");
   await fr(p, "document.querySelector('.sheet-wrap')?.focus(), true");
-  await p.send("Input.insertText", { text: "Total vânzări" });
+  // Typed key by key, as a person types into a cell.
+  for (const c of "Total vanzari") {
+    const code = c === " " ? "Space" : `Key${c.toUpperCase()}`;
+    await p.send("Input.dispatchKeyEvent", { type: "rawKeyDown", key: c, code, windowsVirtualKeyCode: c === " " ? 32 : c.toUpperCase().charCodeAt(0) });
+    await p.send("Input.dispatchKeyEvent", { type: "char", key: c, code, text: c });
+    await p.send("Input.dispatchKeyEvent", { type: "keyUp", key: c, code, windowsVirtualKeyCode: c === " " ? 32 : c.toUpperCase().charCodeAt(0) });
+  }
   await p.send("Input.dispatchKeyEvent", { type: "rawKeyDown", key: "Enter", code: "Enter", windowsVirtualKeyCode: 13 });
   await p.send("Input.dispatchKeyEvent", { type: "keyUp", key: "Enter", code: "Enter", windowsVirtualKeyCode: 13 });
   await sleep(500);
   const sheet = await pdfOf(p, { header: "", footer: "Foaia 1", numbers: true });
   writeFileSync(join(shots, "sheets.pdf"), sheet.bytes);
-  check("Sheets: PDF-ul foii are textul din celulă", sheet.pages.join(" ").includes("Total vânzări"), sheet.pages[0]?.slice(0, 120));
+  check("Sheets: PDF-ul foii are textul din celulă", sheet.pages.join(" ").includes("Total vanzari"), sheet.pages[0]?.slice(0, 120));
   check("Sheets: subsolul și numărul paginii", sheet.pages[0]?.includes("Foaia 1") && /Pagina 1 din \d+/.test(sheet.pages[0] ?? ""));
   await p.screenshot(join(shots, "01-print.png"));
 

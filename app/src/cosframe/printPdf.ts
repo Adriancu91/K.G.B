@@ -176,14 +176,19 @@ export async function showSnapshot(s: Snapshot): Promise<void> {
   }
   document.body.className = safeClass(s.bodyClass);
   document.body.replaceChildren(clean(s.body, origin));
-  await Promise.all([
+  // A hidden window never scrolls: lazy pictures would never load.
+  for (const i of document.images) i.loading = "eager";
+  // Each wait has its limit: a picture or font that never answers must not hold the job (30 s in print.rs).
+  const atMost = <T,>(w: Promise<T>, ms: number) => Promise.race([w, new Promise<void>((ok) => setTimeout(ok, ms))]);
+  await atMost(Promise.all([
     ...[...document.querySelectorAll<HTMLLinkElement>("link[rel='stylesheet']")].map(
       (l) => new Promise<void>((ok) => (l.sheet ? ok() : ((l.onload = () => ok()), (l.onerror = () => ok())))),
     ),
     ...[...document.images].map((i) => (i.complete ? Promise.resolve() : new Promise<void>((ok) => ((i.onload = () => ok()), (i.onerror = () => ok()))))),
-  ]);
-  await document.fonts.ready;
-  await new Promise((r) => requestAnimationFrame(() => requestAnimationFrame(r)));
+  ]), 8000);
+  await atMost(document.fonts.ready, 4000);
+  // (a timer, not requestAnimationFrame: a hidden window may never paint a frame)
+  await new Promise((r) => setTimeout(r, 150));
 }
 
 // ---------- 3) the header, the footer and the page numbers ----------
