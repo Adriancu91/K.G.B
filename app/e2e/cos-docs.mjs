@@ -153,8 +153,47 @@ try {
   check("„În .docx” face versiunea 2, verificată de nucleu", true);
   const docx2 = Buffer.from((await call(p, "read", { id: imp.id })).data, "base64");
   check("versiunea 2 e un .docx (arhivă zip)", docx2[0] === 0x50 && docx2[1] === 0x4b);
+  // 7.4l-5b, importMany: Revizuire › „Combină mai multe .docx…” with the original copy (chosen in the system
+  // dialog, replaced here in the page): the difference against the document now shows as a tracked change.
+  await p.eval(`(() => { window.kgbHost.open = async (o) => o.multiple ? [${JSON.stringify(join(corpus, "52288.docx"))}] : null; return true; })()`);
+  await fr(p, "[...document.querySelectorAll('button, [role=tab]')].find(b => b.textContent.trim() === 'Revizuire')?.click(), true");
+  await sleep(400);
+  await fr(p, "document.querySelector('[data-testid=docs-combine-many]')?.click(), true");
+  const combined = await frUntil(p, "document.querySelectorAll('.ProseMirror .doc-ins, .ProseMirror .doc-del').length", 20000).catch(() => 0);
+  check("„Combină mai multe .docx” aduce fișierul ales și arată diferența ca modificare urmărită", combined > 0, `${combined} marcaje`);
   await p.screenshot(join(shots, "02-docx.png"));
   check("nicio eroare în cadru (.docx)", (await frameErrors(p)) === "[]", await frameErrors(p));
+  await closeFrame(p);
+
+  // 7.4l-5b: „Folosește în editor” on a model of Documente și modele: a copy (with its {{fields}}) becomes a new
+  // document of Documente text and opens in the window; the model stays as it was.
+  await go(p, "Catalog module");
+  const dcard = "[...document.querySelectorAll('.card')].find(c => c.innerText.includes('Documente și modele'))";
+  await p.eval(`${dcard}.querySelector('button').click()`);
+  await sleep(300);
+  await p.click("Acordă și activează");
+  await p.until("[...document.querySelectorAll('nav .nav')].some(e => e.textContent.includes('Documente și modele'))", 8000);
+  await go(p, "Documente și modele");
+  await p.until("[...document.querySelectorAll('button')].some(b => b.textContent.trim() === 'Folosește în editor')", 10000);
+  const models = await p.eval(`window.__TAURI_INTERNALS__.invoke("module_call", { id: "kgb.docs", command: "models", args: {} })`);
+  const first = models.find((m) => m.format !== "pdf");
+  const before = (await call(p, "list")).length;
+  await p.eval(
+    `(() => { const card = [...document.querySelectorAll('button')].filter(b => b.textContent.trim() === 'Folosește în editor')[0]; card.click(); return true; })()`,
+  );
+  await p.until("!!document.querySelector('.cos-frame iframe')", 15000);
+  await frUntil(p, "(document.querySelector('.ProseMirror')?.innerText ?? '').includes('{{')", 25000).catch(() => false);
+  const copyText = await editorText(p);
+  check("„Folosește în editor” deschide copia modelului în fereastra de documente, cu câmpurile {{…}}", copyText.includes("{{"), copyText.slice(0, 80));
+  const after = await call(p, "list");
+  check(
+    "copia e un document nou în Documente text, cu numele modelului",
+    after.length === before + 1 && after.some((d) => d.name === `${first.nume}.docx`),
+    after.map((d) => d.name).join(" | "),
+  );
+  const same = (await p.eval(`window.__TAURI_INTERNALS__.invoke("module_call", { id: "kgb.docs", command: "models", args: {} })`)).find((m) => m.id === first.id);
+  check("modelul rămâne neschimbat", same.versiune === first.versiune);
+  await p.screenshot(join(shots, "03-din-model.png"));
   await closeFrame(p);
 
   p.close();

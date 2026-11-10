@@ -591,6 +591,25 @@ impl Module for Docs {
                 ctx.write(vec![Write::put(MODELS, a.id, f).expect(m.version)])?;
                 Ok(json!({"id": a.id}))
             }
+            // „Folosește în editor” (7.4l-5b, D-080): the model's .docx as it is (with its {{fields}}), for the page
+            // to save a copy as a new document of kgb.write. Only reading: the model stays as it is.
+            "model_read" => {
+                let a: ById = args(a)?;
+                let m = ctx
+                    .get(MODELS, a.id)?
+                    .filter(|r| !r.deleted)
+                    .ok_or_else(|| bad("modelul nu mai există"))?;
+                if format_of(&m) != "docx" {
+                    return Err(bad("doar modelele .docx se deschid în editorul de documente"));
+                }
+                let (_, data) = ctx.read_document(uuid_of(&m, "document")?, None)?;
+                let name: String = s(&m, "nume")
+                    .chars()
+                    .map(|c| if "\\/:*?\"<>|".contains(c) || c.is_control() { '-' } else { c })
+                    .collect();
+                let name = if name.trim().is_empty() { "Model".to_string() } else { name.trim().to_string() };
+                Ok(json!({"name": format!("{name}.docx"), "data": B64.encode(&data)}))
+            }
             "model_import" => {
                 let a: ModelImport = args(a)?;
                 if !CATEGORIES.contains(&a.categorie.as_str()) {

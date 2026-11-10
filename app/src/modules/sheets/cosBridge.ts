@@ -80,7 +80,7 @@ export interface KgbHost {
   moduleCall<T>(id: string, command: string, args?: Record<string, unknown>): Promise<T>;
   importFile<T>(id: string, path: string): Promise<T>;
   importFileWith<T>(id: string, path: string, command: string, args: Record<string, unknown>): Promise<T>;
-  open(o: { multiple: false; filters: DialogFilter[] }): Promise<string | string[] | null>;
+  open(o: { multiple: boolean; filters: DialogFilter[] }): Promise<string | string[] | null>;
   save(o: { defaultPath: string; filters: DialogFilter[] }): Promise<string | null>;
   /** The app's language (RO / EN) and its changes: the window follows it. */
   lang(): "ro" | "en";
@@ -93,6 +93,8 @@ export interface KgbHost {
 let kgb: KgbHost;
 const open: KgbHost["open"] = (o) => kgb.open(o);
 const save: KgbHost["save"] = (o) => kgb.save(o);
+/** The most files brought at once by importMany. */
+const MANY = 20;
 const PREFIX = "kgb:";
 const SETTINGS_KEY = "kgb.cos.settings";
 
@@ -256,7 +258,19 @@ export function installCosBridge(host: KgbHost, kind: BridgeKind = SHEETS): void
     // The document window: sending by e-mail and bringing several files at once are not there yet.
     composeMail: unsupported("Trimiterea pe e-mail"),
     openMail: unsupported("Deschiderea unui e-mail"),
-    importMany: unsupported("Aducerea mai multor fișiere deodată"),
+    // Several files at once (Docs › Combină mai multe .docx, 7.4l-5b): the system dialog with several chosen, each
+    // read once through the core (peek), nothing kept. At most MANY, as the window reads them all in memory.
+    importMany: async (format: ExportFormat) => {
+      const picked = await open({ multiple: true, filters: filtersOf(format) });
+      const paths = (Array.isArray(picked) ? picked : picked ? [picked] : []).slice(0, MANY);
+      const out = [];
+      for (const path of paths) {
+        const r = await kgb.importFileWith<{ name: string; data: string }>(cfg.id, path, "peek", {});
+        const data = unb64(r.data);
+        out.push({ path: r.name, data, size: data.length });
+      }
+      return out;
+    },
     // The notebook of the Notes window, kept note by note in kgb.notes (7.4l-2b).
     loadNotes: async () => {
       const r = await kgb.moduleCall<{ content: string; seen: unknown; empty: boolean }>("kgb.notes", "notebook_load", {});

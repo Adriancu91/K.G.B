@@ -7,6 +7,7 @@ import { api, message } from "../../api";
 import { Confirm } from "../../components/Confirm";
 // The document window runs in its own frame; this lends it the core.
 import "../../components/cosHost";
+import { takeIntent } from "../../intent";
 
 const ID = "kgb.write";
 
@@ -41,6 +42,15 @@ export function WritePage({ onError }: { onError: (e: string | null) => void }) 
   const [toDelete, setToDelete] = useState<Doc | null>(null);
   // The document shown in the window: "doc=<id>" or "new"; null = the window is closed.
   const [frame, setFrame] = useState<string | null>(null);
+  // „Folosește în editor” on a model (7.4l-5b): the copy just saved here opens in the window.
+  useEffect(() => {
+    const want = takeIntent("kgb.write");
+    const id = want?.startsWith("doc=") ? want.slice(4) : "";
+    if (/^[0-9a-f-]{36}$/i.test(id)) {
+      setCurrent(id);
+      setFrame(`app=docs&doc=${id}`);
+    }
+  }, []);
 
   const refresh = useCallback(async () => {
     try {
