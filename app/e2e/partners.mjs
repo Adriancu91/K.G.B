@@ -78,10 +78,17 @@ try {
   const err = await p.eval("document.querySelector('.partner-editor .error').innerText");
   check("un CUI greșit e refuzat", err.includes("cifra de control"), err);
 
-  await setValue(p, "input[aria-label='CUI']", "RO14399840");
+  // 7.4m-2: the CUI with spaces is accepted and stored without them; a wrong IBAN is warned about, not refused.
+  await setValue(p, "input[aria-label='CUI']", "RO 1439 9840");
+  await setValue(p, "input[aria-label='IBAN']", "RO49 AAAA 1B31 0075 9384 0001");
+  const ibanWarn = await p
+    .until("(document.querySelector('.partner-editor .warn')?.innerText ?? '').includes('IBAN-ul pare greșit')", 5000)
+    .then(() => true, () => false);
+  check("un IBAN greșit primește avertizare în fișă", ibanWarn);
   await p.click("Salvează fișa");
   await p.until("!!document.querySelector('.partners-table')", 5000);
   check("fișa apare în listă", (await pageText(p)).includes("Transport Ștefănescu SRL"));
+  check("CUI-ul scris cu spații e păstrat fără ele, iar fișa cu IBAN greșit se salvează", (await pageText(p)).includes("RO14399840"));
   const warn = await p.eval("document.querySelector('.partners-page .warn')?.innerText ?? ''");
   check("documentul care expiră apare în avertizare", warn.includes("Licență de transport") && warn.includes("în 10 zile"), warn);
 

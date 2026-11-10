@@ -8,7 +8,10 @@
 
 /// The code without whitespace (anywhere), upper-case.
 pub fn compact(code: &str) -> String {
-    code.chars().filter(|c| !c.is_whitespace()).collect::<String>().to_uppercase()
+    code.chars()
+        .filter(|c| !c.is_whitespace())
+        .collect::<String>()
+        .to_uppercase()
 }
 
 /// CUI / CIF: 2–10 digits, with or without `RO` in front (and spaces anywhere), the last one the check digit
@@ -50,14 +53,22 @@ pub fn iban_valid(code: &str) -> bool {
     }
     let mut rest: u32 = 0;
     for &c in b[4..].iter().chain(&b[..4]) {
-        let v = if c.is_ascii_digit() { u32::from(c - b'0') } else { u32::from(c - b'A') + 10 };
-        rest = if v >= 10 { (rest * 100 + v) % 97 } else { (rest * 10 + v) % 97 };
+        let v = if c.is_ascii_digit() {
+            u32::from(c - b'0')
+        } else {
+            u32::from(c - b'A') + 10
+        };
+        rest = if v >= 10 {
+            (rest * 100 + v) % 97
+        } else {
+            (rest * 10 + v) % 97
+        };
     }
     rest == 1
 }
 
 fn leap(y: u32) -> bool {
-    (y % 4 == 0 && y % 100 != 0) || y % 400 == 0
+    (y.is_multiple_of(4) && !y.is_multiple_of(100)) || y.is_multiple_of(400)
 }
 
 /// CNP: 13 digits, the first 1–9, a possible month and day (for 1–6 the century is known, so 29 February

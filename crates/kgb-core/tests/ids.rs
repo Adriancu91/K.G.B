@@ -12,7 +12,11 @@ fn the_core_agrees_with_the_window_on_every_shared_code() {
     assert!(rows.len() >= 40);
     let mut wrong = Vec::new();
     for r in rows {
-        let (kind, code, want) = (r["kind"].as_str().unwrap(), r["code"].as_str().unwrap(), r["valid"].as_bool().unwrap());
+        let (kind, code, want) = (
+            r["kind"].as_str().unwrap(),
+            r["code"].as_str().unwrap(),
+            r["valid"].as_bool().unwrap(),
+        );
         let got = match kind {
             "cui" => cui_valid(code),
             "iban" => iban_valid(code),
@@ -21,13 +25,23 @@ fn the_core_agrees_with_the_window_on_every_shared_code() {
         };
         if got != want {
             // The CNPs of the list are made up; still, only the kind and the position are printed.
-            wrong.push(format!("{kind} #{}: {got} != {want}", rows.iter().position(|x| x == r).unwrap()));
+            wrong.push(format!(
+                "{kind} #{}: {got} != {want}",
+                rows.iter().position(|x| x == r).unwrap()
+            ));
         }
     }
     assert!(wrong.is_empty(), "{wrong:?}");
     for kind in ["cui", "iban", "cnp"] {
-        let of: Vec<bool> = rows.iter().filter(|r| r["kind"] == kind).map(|r| r["valid"].as_bool().unwrap()).collect();
-        assert!(of.contains(&true) && of.contains(&false), "{kind}: both good and wrong codes");
+        let of: Vec<bool> = rows
+            .iter()
+            .filter(|r| r["kind"] == kind)
+            .map(|r| r["valid"].as_bool().unwrap())
+            .collect();
+        assert!(
+            of.contains(&true) && of.contains(&false),
+            "{kind}: both good and wrong codes"
+        );
     }
 }
 
