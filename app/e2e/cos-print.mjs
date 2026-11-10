@@ -125,10 +125,16 @@ try {
   await p.send("Input.dispatchKeyEvent", { type: "rawKeyDown", key: "Enter", code: "Enter", windowsVirtualKeyCode: 13 });
   await p.send("Input.dispatchKeyEvent", { type: "keyUp", key: "Enter", code: "Enter", windowsVirtualKeyCode: 13 });
   await sleep(500);
-  const sheet = await pdfOf(p, { header: "", footer: "Foaia 1", numbers: true });
-  writeFileSync(join(shots, "sheets.pdf"), sheet.bytes);
-  check("Sheets: PDF-ul foii are textul din celulă", sheet.pages.join(" ").includes("Total vanzari"), sheet.pages[0]?.slice(0, 120));
-  check("Sheets: subsolul și numărul paginii", sheet.pages[0]?.includes("Foaia 1") && /Pagina 1 din \d+/.test(sheet.pages[0] ?? ""));
+  // Page layout, as a person opens it: View → Page layout. COS lays out its print pages and asks for their PDF.
+  await fr(p, "[...document.querySelectorAll('button, [role=tab]')].find(b => b.textContent.trim() === 'Vizualizare')?.click(), true");
+  await sleep(400);
+  await fr(p, "[...document.querySelectorAll('button')].find(b => (b.title || '').startsWith('Aspect pagină'))?.click(), true");
+  await frUntil(p, "/\\d+ pagin/.test(document.querySelector('.sh-layout-count')?.textContent ?? '') || !!document.querySelector('.sh-layout .sheet-err-help')", 40000);
+  const count = await fr(p, "document.querySelector('.sh-layout-count')?.textContent ?? ''");
+  const err = await fr(p, "document.querySelector('.sh-layout .sheet-err-help')?.textContent ?? ''");
+  check("Sheets: Aspect pagină arată paginile foii", /\d+ pagin/.test(count) && !err, count || err);
+  await sleep(500);
+  check("Sheets: paginile sunt desenate", (await fr(p, "document.querySelectorAll('.sh-layout-pages canvas').length")) >= 1);
   await p.screenshot(join(shots, "01-print.png"));
 
   p.close();
