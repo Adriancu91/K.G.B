@@ -107,6 +107,35 @@ try {
   const now = await notebook(p);
   check("nota de pe celălalt PC nu se pierde la salvarea ferestrei", now.notes.some((n) => n.id === "alt-pc-1"), now.notes.map((n) => n.title || n.body.slice(0, 20)).join(" | "));
   check("nota din fereastră are tot textul", now.notes.some((n) => /lapte, pâine, ouă și cafea/.test(n.body)));
+  // The window looks as in COS: its stylesheet is loaded (the list on the left of the note, the drawn layer
+  // under the writing field placed over it, so the text shows once) and it fills the page's height.
+  const look = JSON.parse(
+    await fr(
+      p,
+      `JSON.stringify((() => {
+        const side = document.querySelector('.notes-side')?.getBoundingClientRect();
+        const main = document.querySelector('.notes-main')?.getBoundingClientRect();
+        const live = document.querySelector('.note-live');
+        const ed = document.querySelector('.editor')?.getBoundingClientRect();
+        return { side: side && { r: side.right, h: side.height }, main: main && { l: main.left },
+          live: live ? getComputedStyle(live).position : null, editor: ed ? ed.height : 0, inner: window.innerHeight };
+      })())`,
+    ),
+  );
+  const outer = await p.eval(
+    "(() => { const f = document.querySelector('.notes-window iframe').getBoundingClientRect(); return { top: f.top, h: f.height, vh: window.innerHeight }; })()",
+  );
+  check(
+    "lista notițelor e în stânga notei (stilurile Notelor sunt încărcate)",
+    !!look.side && !!look.main && look.side.r <= look.main.l + 1 && look.side.h > 200,
+    JSON.stringify(look),
+  );
+  check("textul notei apare o singură dată (stratul desenat stă sub câmpul de scris)", look.live === "absolute", String(look.live));
+  check(
+    "fereastra umple înălțimea paginii",
+    outer.top + outer.h >= outer.vh - 60 && look.editor >= look.inner - 2,
+    `${JSON.stringify(outer)} editor ${look.editor}/${look.inner}`,
+  );
   await p.screenshot(join(shots, "01-note.png"));
   check("nicio eroare în fereastră", (await fr(p, "JSON.stringify(window.__errs ?? [])")) === "[]", await fr(p, "JSON.stringify(window.__errs ?? [])"));
   p.close();

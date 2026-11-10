@@ -21,12 +21,15 @@ const app = hash.get("app");
 const docs = app === "docs";
 const notes = app === "notes";
 type CosWindow = ComponentType<{ initial: OpenedFile | null; onConsumed(): void }>;
-const Window = lazy(
-  () =>
-    (notes ? import("../../cos/src/notes/Notes") : docs ? import("../../cos/src/docs/Docs") : import("../../cos/src/sheets/Sheets")) as Promise<{
-      default: CosWindow;
-    }>,
-);
+// One lazy() per window, each with its own import(): the bundler works out what to load before a window
+// (its code and its stylesheet) per import() call; a single import() picked by a condition got only the
+// Sheets list, so the Notes stylesheet was never loaded.
+type Loaded = Promise<{ default: CosWindow }>;
+const Window = notes
+  ? lazy(() => import("../../cos/src/notes/Notes") as Loaded)
+  : docs
+    ? lazy(() => import("../../cos/src/docs/Docs") as Loaded)
+    : lazy(() => import("../../cos/src/sheets/Sheets") as Loaded);
 const what = notes ? "caietul" : docs ? "documentul" : "registrul";
 
 const host = (window.parent as Window & { kgbHost?: KgbHost }).kgbHost;
