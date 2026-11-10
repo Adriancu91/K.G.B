@@ -405,3 +405,10 @@ Deciziile DECIS se schimbă doar cu aprobarea explicită a proprietarului (Maste
 - Nu e o schimbare de arhitectură: e un modul adăugat pe calea obișnuită (crate în `modules/`, înregistrat în `src-tauri` și în catalog), pentru „Editorul de documente” deja ales de proprietar (7.4l-5). În catalog apare ca beta până trece poarta.
 - „Folosește în editor” la un model: fereastra citește modelul din `kgb.docs` și salvează o copie ca document nou în `kgb.write`; modulele nu se cheamă între ele.
 - Înregistrarea în `src-tauri` și în catalog o face sesiunea COS pe ramura `kgb/cos-docs`, verificată la poartă de K.G.B.
+
+### D-081 — PDF-ul paginilor din ferestrele Sheets și Docs, printr-o fereastră ascunsă
+- **Data:** 10 nov. 2026 · **Statut:** DECIS — acord COS + K.G.B. (D-074); arhitectura e la K.G.B. (D-073)
+- În COS, PDF-ul paginilor (previzualizare, antet și subsol, numerotare) îl face Electron (`printToPDF`); în K.G.B. îl face WebView2 (`PrintToPdfStream`) într-o fereastră Tauri ascunsă, cu eticheta ei, care încarcă doar pagina aplicației și se închide după fiecare lucrare (limită de 30 s).
+- Fereastra ascunsă nu primește module și nici date: doar o „fotografie” a documentului (HTML curățat: fără scripturi, fără `on*`, fără iframe sau object, fără adrese externe; imagini doar `data:`, `blob:` sau din aplicație), dată o singură dată prin `print_job_take`, apoi `print_job_ready`; capabilitatea ei are doar aceste două comenzi; CSP-ul aplicației rămâne același.
+- Antetul, subsolul și numerotarea se pun apoi în cadru cu pdf-lib (D-072); salvarea pe disc trece prin `export_file`, ca orice export.
+- `webview2-com` 0.39.1 (deja adus de Tauri, aceeași versiune) folosit direct; nicio bibliotecă nouă. Lucrul îl face sesiunea COS pe ramura `kgb/cos-print`, cu poarta K.G.B.
