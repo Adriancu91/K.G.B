@@ -152,6 +152,23 @@ export function SettingsPage(props: {
         </small>
       </div>
 
+      <h2>Internet</h2>
+      <div className="field">
+        <label>
+          <input
+            type="checkbox"
+            checked={s.internet !== false}
+            onChange={(e) => void props.onSave({ ...s, internet: e.target.checked })}
+          />{" "}
+          Permite cereri către internet făcute de tine
+        </label>
+        <small className="muted">
+          Doar când le ceri: „Din web…” în foile de calcul și marca temporală la semnătura PDF. Aplicația nu trimite
+          nimic singură și nu ajunge la calculatoarele din rețeaua firmei. Într-o organizație, doar administratorul
+          schimbă setarea.
+        </small>
+      </div>
+
       <h2>Pe acest PC</h2>
       <ThisPc onError={props.onError} />
 

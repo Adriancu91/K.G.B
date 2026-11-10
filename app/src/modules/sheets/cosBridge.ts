@@ -89,10 +89,14 @@ export interface KgbHost {
   printPdf(snapshot: Snapshot, paper: Paper): Promise<string>;
   /** Prints a finished PDF (base64) on paper, through Windows' print dialog (D-084); `printed` false = cancelled. */
   printPaper(pdf: string, paper: Paper, pages: number): Promise<{ printed: boolean; pdf?: string }>;
+  /** A request to the internet the person asked for (D-086), through the core; the answer as base64. */
+  netFetch(url: string, purpose: "page" | "timestamp", body?: string, http?: boolean): Promise<{ status: number; content_type: string; url: string; data: string }>;
 }
 let kgb: KgbHost;
 const open: KgbHost["open"] = (o) => kgb.open(o);
 const save: KgbHost["save"] = (o) => kgb.save(o);
+/** The sites the person let this window read from (D-086), for as long as it is open. */
+const webAllowed = new Set<string>();
 /** The most files brought at once by importMany. */
 const MANY = 20;
 const PREFIX = "kgb:";
@@ -251,7 +255,33 @@ export function installCosBridge(host: KgbHost, kind: BridgeKind = SHEETS): void
       await kgb.moduleCall(cfg.id, "export_file", { dest, data: b64(data) });
       return { path: dest };
     },
-    webGet: unsupported("Aducerea de date de pe internet"),
+    // The internet, only at the person's request (D-086): „Din web…”, pictures and data asked by a formula, link
+    // previews. Every new site is asked about once per window (a file opened from elsewhere cannot reach out
+    // unnoticed), an http:// address says it is not encrypted; the core checks the rest (no local network).
+    webGet: async (url: string) => {
+      const u = new URL(url);
+      const plain = u.protocol === "http:";
+      if (!webAllowed.has(u.host)) {
+        const { askYes } = await import("../../../cos/src/ask");
+        const yes = await askYes(
+          plain
+            ? `Fereastra vrea să citească de pe internet, de la ${u.host}, printr-o legătură necriptată (http://). Permiți?`
+            : `Fereastra vrea să citească de pe internet, de la ${u.host}. Permiți?`,
+          "Permite",
+        );
+        if (!yes) throw new Error("Cererea către internet a fost oprită.");
+        webAllowed.add(u.host);
+      }
+      const r = await kgb.netFetch(url, "page", undefined, plain);
+      if (r.status >= 400) throw new Error(`Pagina a răspuns cu eroarea ${r.status}.`);
+      return { data: unb64(r.data), type: r.content_type, url: r.url };
+    },
+    // A signature's time stamp (RFC 3161), at the server the person wrote; the answer is signed and checked.
+    tsaStamp: async (url: string, req: Uint8Array) => {
+      const r = await kgb.netFetch(url, "timestamp", b64(req), true);
+      if (r.status >= 400) throw new Error(`Serverul de marcă temporală a răspuns cu eroarea ${r.status}.`);
+      return unb64(r.data);
+    },
     pickFolder: async () => null,
     listTables: async () => [],
     writeToFolder: unsupported("Scrierea într-un dosar"),
