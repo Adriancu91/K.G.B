@@ -2254,7 +2254,19 @@
   "Masă": "Mass",
   "Ofertă comercială": "Commercial offer",
   "Registru de casă": "Cash book",
-  "Birou": "Office"
+  "Birou": "Office",
+  "comanda nu este permisă ferestrei de tipărire": "the command is not allowed for the print window",
+  "documentul este prea mare pentru tipărire": "the document is too large to print",
+  "tipărirea nu este disponibilă": "printing is not available",
+  "K.G.B. — tipărire": "K.G.B. — printing",
+  "pagina de tipărit s-a închis": "the print page closed",
+  "tipărirea a durat prea mult și a fost oprită": "printing took too long and was stopped",
+  "WebView2 nu a întors niciun PDF": "WebView2 returned no PDF",
+  "PDF-ul este prea mare": "the PDF is too large",
+  "tipărirea în PDF există doar pe Windows": "printing to PDF exists only on Windows",
+  "lucrarea nu este a acestei ferestre": "the job does not belong to this window",
+  "lucrarea de tipărit nu există sau a fost deja luată": "the print job does not exist or was already taken",
+  "PDF-ul nu s-a putut face": "the PDF could not be made"
  },
  "templates": {
   "Completat de la ANAF (date pentru {0}): {1}. Verifică și completează restul de mână.": "Filled in from ANAF (data for {0}): {1}. Check and fill in the rest manually.",
@@ -2743,7 +2755,12 @@
   "numele {0} nu poate fi anunțat în rețea ({1})": "the name {0} cannot be announced on the network ({1})",
   "comenzile media ale Windows nu răspund ({0})": "the Windows media controls are not responding ({0})",
   "portul {0} nu poate fi deschis ({1}); poate e folosit de alt program": "port {0} cannot be opened ({1}); it may be used by another program",
-  "cursul BNR: {0}": "BNR exchange rate: {0}"
+  "cursul BNR: {0}": "BNR exchange rate: {0}",
+  "fereastra de tipărire nu a pornit: {0}": "the print window did not start: {0}",
+  "pagina de tipărit nu s-a putut pregăti: {0}": "the print page could not be prepared: {0}",
+  "tipărirea nu a pornit: {0}": "printing did not start: {0}",
+  "PDF-ul nu s-a putut citi ({0})": "the PDF could not be read ({0})",
+  "PDF-ul nu s-a putut face: {0}": "the PDF could not be made: {0}"
  },
  "skip": [
   "Escape",

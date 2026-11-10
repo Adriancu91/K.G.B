@@ -133,5 +133,6 @@ Verificat automat de `cargo-deny` în CI pe workspace-ul rădăcină (`Cargo.tom
 | npm `@tiptap/starter-kit` și extensiile `color`, `font-family`, `highlight`, `image`, `placeholder`, `table`, `table-cell`, `table-header`, `table-row`, `text-align`, `text-style` 2.27.3 (+ `tippy.js` 6.3.7, `@popperjs/core` 2.11.8) | MIT | fereastra Docs din Cyber Office Studio: editorul de text (D-080, acord COS + K.G.B.) | 7.4l-5a |
 | npm `docx` 9.12.0 | MIT | fereastra Docs: exportul .docx (D-080, acord COS + K.G.B.); înainte doar la dezvoltare, pentru un test Sheets | 7.4l-5a |
 | `libheif-js` (LGPL-3.0) | — | **neinclus**: LGPL cere decizie separată (D-071); vite îl înlocuiește cu `src/cosframe/noHeic.ts`, iar pozele .heic sunt refuzate cu mesaj | 7.5-1 |
+| `webview2-com` 0.39.1 (+ `webview2-com-sys`, `webview2-com-macros`), `windows` 0.62.2 cu funcția `Win32_System_Com` | MIT | PDF-ul paginilor ferestrelor COS cu PrintToPdfStream din WebView2 (D-081); aceleași versiuni pe care le aduc deja Tauri / wry (Cargo.lock), folosite direct; nimic descărcat în plus | 7.4l-5b |
 
 Restul dependențelor (Tauri, React, Vite, serde, uuid, blake3) sunt cele din S1 și S3, deja în acest registru.
