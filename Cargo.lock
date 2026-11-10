@@ -3873,6 +3873,8 @@ dependencies = [
 name = "kgb-notes"
 version = "0.1.0"
 dependencies = [
+ "base64 0.22.1",
+ "blake3",
  "kgb-core",
  "kgb-store",
  "serde",

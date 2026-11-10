@@ -54,6 +54,19 @@ export const DOCS: BridgeKind = {
   save: "save_doc",
   saveNew: "save_new_doc",
 };
+export const NOTES: BridgeKind = {
+  id: "kgb.notes",
+  kind: "note",
+  own: "snote",
+  office: [],
+  label: "Note",
+  savedNote: "Salvat din fereastra Note",
+  newNote: "Note",
+  save: "notebook_save",
+  saveNew: "notebook_save",
+};
+/** What the Notes window read from the core (7.4l-2b): its next save may delete only what it saw. */
+let notesSeen: unknown = {};
 let cfg: BridgeKind = SHEETS;
 
 type DialogFilter = { name: string; extensions: string[] };
@@ -234,5 +247,19 @@ export function installCosBridge(host: KgbHost, kind: BridgeKind = SHEETS): void
     composeMail: unsupported("Trimiterea pe e-mail"),
     openMail: unsupported("Deschiderea unui e-mail"),
     importMany: unsupported("Aducerea mai multor fișiere deodată"),
+    // The notebook of the Notes window, kept note by note in kgb.notes (7.4l-2b).
+    loadNotes: async () => {
+      const r = await kgb.moduleCall<{ content: string; seen: unknown; empty: boolean }>("kgb.notes", "notebook_load", {});
+      notesSeen = r.seen;
+      return { path: "kgb:notes", content: r.empty ? null : r.content };
+    },
+    saveNotes: async (content: string) => {
+      const r = await kgb.moduleCall<{ seen: unknown }>("kgb.notes", "notebook_save", { content, seen: notesSeen });
+      notesSeen = r.seen;
+      return { path: "kgb:notes" };
+    },
+    addAttachment: async (data: Uint8Array, ext?: "pdf" | "webm" | "bin") =>
+      (await kgb.moduleCall<{ id: string }>("kgb.notes", "attachment_add", { data: b64(data), ext: ext ?? "bin" })).id,
+    readAttachment: async (id: string) => unb64((await kgb.moduleCall<{ data: string }>("kgb.notes", "attachment_read", { id })).data),
   });
 }

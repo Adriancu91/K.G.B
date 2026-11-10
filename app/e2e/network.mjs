@@ -15,6 +15,12 @@ import { tmpdir } from "node:os";
 import { dirname, join } from "node:path";
 import { connect, sleep } from "./cdp.mjs";
 
+// The demo commands of kgb.notes (the Note page is the COS Notes window since 7.4l-2c).
+const demoNotes = (p) =>
+  p.eval(`window.__TAURI_INTERNALS__.invoke("module_call", {id: "kgb.notes", command: "list", args: {}}).then(l => l.map(n => n.text))`);
+const demoAdd = (p, text) =>
+  p.eval(`window.__TAURI_INTERNALS__.invoke("module_call", ${JSON.stringify({ id: "kgb.notes", command: "add", args: { text } })}).then(() => "ok", (e) => String(e))`);
+
 const [exe, shots] = process.argv.slice(2);
 if (!exe || !shots) {
   console.error("usage: node network.mjs <kgb-app.exe> <screenshot-dir>");
@@ -60,16 +66,14 @@ try {
   const p = await start();
   // Notes, and a note on A.
   await p.click("Catalog module", "nav .nav");
-  const card = "[...document.querySelectorAll('.card')].find(c => c.querySelector('h3')?.innerText === 'Note (demonstrativ)')";
+  const card = "[...document.querySelectorAll('.card')].find(c => c.querySelector('h3')?.innerText === 'Note')";
   await p.until(`!!${card}`);
   await p.eval(`${card}.querySelector('button').click()`);
   await sleep(200);
   await p.click("Acordă și activează");
   await p.until("[...document.querySelectorAll('nav .nav')].some(e => e.textContent.includes('Note'))");
-  await p.click("Note (demonstrativ)", "nav .nav");
-  await p.fill("input[aria-label='Notă nouă']", "Notă de pe PC-ul A");
-  await p.click("Adaugă");
-  await p.until("[...document.querySelectorAll('.list li')].some(l => l.innerText.includes('PC-ul A'))");
+  await demoAdd(p, "Notă de pe PC-ul A");
+  await p.until(`window.__TAURI_INTERNALS__.invoke("module_call", {id: "kgb.notes", command: "list", args: {}}).then(l => l.some(n => n.text.includes("PC-ul A")))`);
 
   // Organization: the network starts by itself.
   await p.click("Dispozitive și sincronizare", "nav .nav");
@@ -133,8 +137,7 @@ try {
   await sleep(200);
   await p.eval("document.querySelectorAll('textarea').forEach(t => { if (t.value.startsWith('KGB-')) t.value = '(codul conține adresele de rețea ale laptopului; ascuns în captură)'; })");
   await p.screenshot(join(shots, "01-retea.png"));
-  await p.click("Note (demonstrativ)", "nav .nav");
-  await p.until("[...document.querySelectorAll('.list li')].some(l => l.innerText.includes('PC-ul B'))", 5000);
+  await p.until(`window.__TAURI_INTERNALS__.invoke("module_call", {id: "kgb.notes", command: "list", args: {}}).then(l => l.some(n => n.text.includes("PC-ul B")))`, 5000);
   check("nota scrisă pe PC-ul B apare în aplicație", true);
 
   // PC B goes away: the app says so, and stays usable meanwhile.

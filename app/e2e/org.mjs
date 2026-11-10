@@ -12,6 +12,12 @@ import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { connect, sleep } from "./cdp.mjs";
 
+// The demo commands of kgb.notes (the Note page is the COS Notes window since 7.4l-2c).
+const demoNotes = (p) =>
+  p.eval(`window.__TAURI_INTERNALS__.invoke("module_call", {id: "kgb.notes", command: "list", args: {}}).then(l => l.map(n => n.text))`);
+const demoAdd = (p, text) =>
+  p.eval(`window.__TAURI_INTERNALS__.invoke("module_call", ${JSON.stringify({ id: "kgb.notes", command: "add", args: { text } })}).then(() => "ok", (e) => String(e))`);
+
 const [exe, shots] = process.argv.slice(2);
 if (!exe || !shots) {
   console.error("usage: node org.mjs <kgb-app.exe> <screenshot-dir>");
@@ -60,7 +66,7 @@ async function enable(p, name) {
 
 try {
   let p = await start();
-  await enable(p, "Note (demonstrativ)");
+  await enable(p, "Note");
   await enable(p, "Business");
 
   await p.click("Organizație", "nav .nav");
@@ -100,13 +106,10 @@ try {
   // The relay choice in the network panel is this PC's own setting, not the organization's.
   check("pagina organizației nu mai permite schimbări", (await p.eval("[...document.querySelectorAll('.org-page select, .org-page form')].filter(e => !e.closest('.net-panel')).length")) === 0);
 
-  await p.click("Note (demonstrativ)", "nav .nav");
-  await p.until("!!document.querySelector(\"input[aria-label='Notă nouă']\")");
+  await p.eval("[...document.querySelectorAll('nav .nav')].find(e => e.textContent.trim().startsWith('Note')).click()");
+  await p.until("(document.querySelector('.page-head')?.innerText ?? '').includes('Note')", 5000);
   check("antetul spune „doar citire”", (await p.eval("document.querySelector('.page-head').innerText")).includes("doar citire"));
-  await p.fill("input[aria-label='Notă nouă']", "nu ar trebui salvată");
-  await p.click("Adaugă");
-  await p.until("!!document.querySelector('.error')", 5000);
-  const err = await p.eval("document.querySelector('.error').innerText");
+  const err = await demoAdd(p, "nu ar trebui salvată");
   check("scrierea e refuzată cu motivul", err.includes("poate doar citi"), err);
   await p.screenshot(join(shots, "02-doar-citire.png"));
 

@@ -1,0 +1,407 @@
+/* Copiat neschimbat din Cyber Office Studio (D-071); vezi app/cos/README.md. */
+/* Notițe v2: lista din stânga (cu căutare) și notița deschisă în dreapta. */
+.notes-wrap { flex: 1; min-height: 0; display: flex; }
+.notes-side { width: 290px; flex: none; display: flex; flex-direction: column; border-right: 1px solid var(--border); background: var(--panel); }
+.notes-search { padding: 10px; border-bottom: 1px solid var(--border); }
+.notes-search input {
+  width: 100%; box-sizing: border-box; padding: 7px 10px; border: 1px solid var(--border); border-radius: 8px;
+  background: var(--bg); color: var(--text); font: inherit; outline: none;
+}
+.notes-search input:focus { border-color: var(--accent); }
+.notes-sort-row { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 6px; }
+/* Fiecare listă cât textul ales (nu tăiat cu „…” când coloana e îngustă); dacă nu încap, butonul Grilă trece pe rândul următor. */
+.notes-search select.notes-sort { flex: 1 0 auto; field-sizing: content; min-width: 0; max-width: 100%; font-size: 12px; }
+.notes-search select.notes-sort.on { border-color: var(--accent); background: var(--accent-soft); }
+.notes-list { flex: 1; overflow-y: auto; padding: 6px; }
+.notes-item {
+  display: flex; flex-direction: column; gap: 2px; width: 100%; text-align: left; padding: 8px 10px; margin-bottom: 2px;
+  border: 1px solid transparent; border-radius: 8px; background: transparent; color: var(--text); font: inherit; cursor: pointer;
+}
+.notes-item:hover { background: var(--hover); }
+.notes-item.active { background: var(--accent-soft); border-color: var(--accent); }
+.notes-item-title { font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.notes-item-text { font-size: 12.5px; color: var(--muted); display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.notes-item-date { font-size: 11px; color: var(--muted); }
+.notes-item mark { background: #fde68a; color: #1a1a2e; border-radius: 2px; }
+.notes-trash-head { display: flex; align-items: center; justify-content: space-between; gap: 6px; padding: 4px 4px 8px; font-size: 12px; }
+.notes-trash-item { cursor: default; }
+.notes-trash-actions { display: flex; gap: 6px; margin-top: 4px; }
+.notes-trash-actions button, .notes-trash-head button { font-size: 12px; padding: 2px 8px; }
+.notes-none { color: var(--muted); padding: 12px; font-size: 13px; }
+.notes-main { flex: 1; min-width: 0; display: flex; flex-direction: column; }
+/* ⛶ Ecran complet: doar notița, centrată, pe fundalul ei (sau al temei). */
+.notes-main:fullscreen { background-color: var(--bg); overflow-y: auto; align-items: center; padding: 24px 32px; }
+.notes-main:fullscreen > * { width: 100%; max-width: calc(860px * var(--nz, 1)); }
+.notes-error { padding: 8px 12px; background: #fee2e2; color: #7f1d1d; border-bottom: 1px solid #fca5a5; font-size: 13px; }
+
+/* Culorile notițelor (aceleași chei ca în store.ts), cu variantă pentru tema întunecată. */
+:root {
+  --note-rosu: #fde2e1; --note-portocaliu: #feead0; --note-galben: #fdf6c3; --note-verde: #dcf5dc;
+  --note-albastru: #dbeafe; --note-mov: #ede4fd; --note-gri: #e9e9ee;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) {
+    --note-rosu: #4a2427; --note-portocaliu: #4a3420; --note-galben: #45401c; --note-verde: #1f3d27;
+    --note-albastru: #1f2f4d; --note-mov: #33264f; --note-gri: #33333d;
+  }
+}
+:root[data-theme='dark'] {
+  --note-rosu: #4a2427; --note-portocaliu: #4a3420; --note-galben: #45401c; --note-verde: #1f3d27;
+  --note-albastru: #1f2f4d; --note-mov: #33264f; --note-gri: #33333d;
+}
+.toolbar button.on { border-color: var(--accent); background: var(--accent-soft); }
+.notes-colors { display: inline-flex; gap: 4px; align-items: center; padding: 0 4px; }
+.toolbar .notes-swatch {
+  width: 20px; height: 20px; padding: 0; border-radius: 50%; border: 1px solid var(--border); cursor: pointer;
+}
+.toolbar .notes-swatch.none { background: linear-gradient(135deg, var(--panel) 45%, #e11d48 45%, #e11d48 55%, var(--panel) 55%); }
+.toolbar .notes-swatch.on { outline: 2px solid var(--accent); outline-offset: 1px; }
+.notes-tags { display: flex; flex-wrap: wrap; gap: 4px; padding: 8px 10px; border-bottom: 1px solid var(--border); }
+.notes-tags button {
+  padding: 2px 8px; border: 1px solid var(--border); border-radius: 999px; background: var(--bg); color: var(--text);
+  font: inherit; font-size: 12px; cursor: pointer;
+}
+.notes-tags button span { color: var(--muted); }
+.notes-tags button.on { border-color: var(--accent); background: var(--accent-soft); }
+/* Grupurile de secțiuni: un dosar care strânge / desface secțiunile lui. */
+.notes-tags button.notes-sec-group { font-weight: 600; border-style: dashed; }
+.notes-tags button.notes-sec-group.has-on { border-color: var(--accent); }
+.notes-group { font-size: 11px; font-weight: 600; text-transform: uppercase; color: var(--muted); padding: 8px 10px 4px; }
+.notes-item.active[style] { border-color: var(--accent); }
+/* .notes-toolbar e acum panglica (fără rânduri rupte). */
+.notes-toolbar .toolbar-file { white-space: nowrap; }
+
+/* Pozele notiței, sub text; click = mărită pe tot ecranul. */
+.note-images { display: flex; flex-wrap: wrap; gap: 8px; padding: 8px 16px 16px; }
+.note-image { position: relative; margin: 0; }
+.note-image img { display: block; max-width: 220px; max-height: 160px; border-radius: 6px; border: 1px solid var(--border); cursor: zoom-in; object-fit: cover; }
+.note-image button { position: absolute; top: 4px; right: 4px; width: 22px; height: 22px; padding: 0; border: 0; border-radius: 50%; background: rgba(0, 0, 0, 0.6); color: #fff; cursor: pointer; font-size: 12px; line-height: 22px; opacity: 0; }
+.note-image.picked img { outline: 3px solid var(--accent); outline-offset: 1px; }
+.note-image:hover button, .note-image button:focus { opacity: 1; }
+.note-image button.copy-text { top: auto; bottom: 4px; left: 4px; right: auto; width: auto; padding: 0 8px; border-radius: 11px; }
+.note-zoom { cursor: zoom-out; }
+.note-zoom img { max-width: 92vw; max-height: 92vh; border-radius: 6px; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4); }
+
+/* Mementoul notiței: rândul de sub titlu și semnul din listă (roșu când a trecut). */
+.note-find { display: flex; align-items: center; gap: 6px; padding: 8px 16px 0; font-size: 13px; }
+.note-find input { width: 220px; padding: 4px 8px; border: 1px solid var(--accent); border-radius: 6px; background: var(--bg); color: var(--text); font: inherit; }
+.note-remind { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; padding: 4px 16px 8px; font-size: 13px; }
+.note-remind input, .note-remind button { padding: 3px 8px; border: 1px solid var(--border); border-radius: 6px; background: var(--panel); color: var(--text); font: inherit; cursor: pointer; }
+.notes-item-remind { display: block; font-size: 11px; color: var(--accent); }
+.notes-item-remind.late { color: #d32f2f; }
+
+/* Legăturile [[...]] și „Menționată în”, sub textul notiței. */
+.note-links { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; padding: 6px 16px; font-size: 12px; border-top: 1px dashed var(--border); }
+.note-links button { padding: 2px 8px; border: 1px solid var(--border); border-radius: 12px; background: var(--panel); color: var(--accent); cursor: pointer; font: inherit; }
+.note-previews { display: flex; flex-wrap: wrap; gap: 8px; padding: 6px 16px; }
+.note-preview { position: relative; display: flex; width: min(340px, 100%); border: 1px solid var(--border); border-left: 3px solid var(--accent); border-radius: 6px; background: var(--panel); }
+.note-preview .np-open { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px; padding: 6px 26px 6px 10px; border: 0; background: none; color: inherit; text-align: left; cursor: pointer; font: inherit; }
+.note-preview .np-site { font-size: 11px; color: var(--muted); }
+.note-preview .np-title { font-size: 13px; color: var(--accent); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.note-preview .np-desc { font-size: 12px; color: var(--muted); display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.note-preview .np-thumb { position: relative; flex: none; width: 96px; padding: 0; border: 0; border-radius: 5px 0 0 5px; overflow: hidden; background: var(--border); cursor: pointer; }
+.note-preview .np-thumb img { display: block; width: 100%; height: 100%; min-height: 64px; object-fit: cover; }
+.note-preview .np-play { position: absolute; inset: 0; margin: auto; width: 32px; height: 32px; border-radius: 50%; background: rgba(0, 0, 0, 0.6); color: #fff; font-size: 14px; line-height: 32px; text-align: center; }
+.note-preview .np-x { position: absolute; top: 2px; right: 2px; border: 0; background: none; color: var(--muted); cursor: pointer; }
+.note-links button.new { color: var(--muted); border-style: dashed; }
+
+/* PDF-urile atașate: butoane sub text; click deschide PDF-ul, ✕ îl scoate din notiță. */
+.note-files { display: flex; flex-wrap: wrap; gap: 6px; padding: 4px 16px 8px; }
+.note-file { display: inline-flex; border: 1px solid var(--border); border-radius: 6px; background: var(--panel); overflow: hidden; }
+.note-file button { border: 0; background: none; color: var(--text); font: inherit; font-size: 13px; padding: 4px 8px; cursor: pointer; }
+.note-file button:hover { background: var(--hover, rgba(127, 127, 127, 0.15)); }
+.note-file button + button { border-left: 1px solid var(--border); padding: 4px 6px; }
+
+/* Export PDF al notițelor: pagina de tipărit există doar cât se face PDF-ul și se vede doar la tipărire. */
+.notes-print { display: none; }
+@media print {
+  body.printing-notes > *:not(.notes-print) { display: none !important; }
+  body.printing-notes .notes-print { display: block; color: #000; background: #fff; font: 12pt/1.5 'Segoe UI', Arial, sans-serif; }
+  .notes-print article + article { break-before: page; page-break-before: always; }
+  .notes-print h1 { font-size: 20pt; margin: 0 0 2pt; }
+  .notes-print .np-date, .notes-print .np-files { color: #555; font-size: 10pt; margin: 0 0 10pt; }
+  .notes-print .np-body { white-space: pre-wrap; overflow-wrap: anywhere; margin-bottom: 10pt; }
+  .notes-print img { display: block; max-width: 100%; max-height: 22cm; margin: 0 0 10pt; break-inside: avoid; }
+}
+
+/* Desen de mână: foaia albă păstrează raportul 3:2 și încape în fereastră. */
+.note-draw { width: min(1000px, 94vw); display: flex; flex-direction: column; gap: 8px; }
+.note-draw canvas { width: 100%; aspect-ratio: 3 / 2; max-height: 70vh; object-fit: contain; background: #fff; border: 1px solid var(--border); border-radius: 6px; cursor: crosshair; touch-action: none; }
+.note-draw canvas.erasing { cursor: cell; }
+.note-draw canvas.lassoing { cursor: crosshair; }
+.note-draw-bar, .note-draw-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; }
+.note-draw-bar button, .note-draw-actions button { padding: 4px 10px; border: 1px solid var(--border); border-radius: 6px; background: var(--bg); color: var(--text); font: inherit; cursor: pointer; display: inline-flex; align-items: center; }
+.note-draw-bar button.on { border-color: var(--accent); box-shadow: 0 0 0 2px var(--accent); }
+.note-draw-bar button:disabled { opacity: 0.5; cursor: default; }
+.note-draw-bar .swatch { width: 26px; height: 26px; padding: 0; border-radius: 50%; }
+.note-draw-bar .dot { display: inline-block; border-radius: 50%; background: var(--text); }
+.note-draw-bar .sep { width: 1px; height: 22px; background: var(--border); margin: 0 4px; }
+.note-draw-actions .muted { flex: 1; font-size: 12px; }
+.note-draw-actions button.primary { background: var(--accent); border-color: var(--accent); color: #fff; }
+
+/* Notițe blocate cu parolă: câmpul de parolă în locul textului și fereastra de blocare. */
+.note-locked { display: flex; flex-direction: column; align-items: center; gap: 10px; padding: 48px 16px; }
+.note-locked-icon { font-size: 40px; }
+.note-locked p { margin: 0; }
+.note-locked input, .note-lock-dlg input { width: 260px; max-width: 100%; padding: 6px 10px; border: 1px solid var(--border); border-radius: 6px; background: var(--panel); color: var(--text); font: inherit; }
+.note-locked button, .note-lock-actions button { padding: 5px 14px; border: 1px solid var(--border); border-radius: 6px; background: var(--bg); color: var(--text); font: inherit; cursor: pointer; }
+.note-locked button.primary, .note-lock-actions button.primary { background: var(--accent); border-color: var(--accent); color: #fff; }
+.note-locked button:disabled, .note-lock-actions button:disabled { opacity: 0.5; cursor: default; }
+.note-pw-error { color: #dc2626; font-size: 13px; margin: 0; }
+.note-lock-dlg { width: 420px; max-width: 94vw; display: flex; flex-direction: column; gap: 8px; }
+.note-lock-dlg h3 { margin: 0; }
+.note-lock-actions { display: flex; justify-content: flex-end; gap: 8px; }
+
+/* Secțiunile caietului (ca în OneNote): rândul din stânga și alegerea secțiunii în bară. */
+.notes-tags input {
+  width: 130px; padding: 2px 8px; border: 1px solid var(--accent); border-radius: 999px; background: var(--bg); color: var(--text);
+  font: inherit; font-size: 12px;
+}
+.notes-toolbar select.notes-move { max-width: 180px; }
+.notes-toolbar select.notes-marks { max-width: 150px; }
+
+/* Zoom-ul textului (--nz vine din Notes.tsx): titlul, textul și lățimea coloanei cresc împreună. */
+.notes-main .note-title { font-size: calc(24px * var(--nz, 1)); max-width: calc(820px * var(--nz, 1)); }
+.notes-main .note-body { font-size: calc(15px * var(--nz, 1)); max-width: calc(820px * var(--nz, 1)); }
+
+.notes-sec-colors { display: inline-flex; gap: 3px; align-items: center; }
+.notes-sec-colors .notes-swatch { width: 16px; height: 16px; padding: 0; }
+
+/* 🏷 Rezumatul etichetelor. */
+.notes-summary { width: min(640px, 92vw); }
+.notes-summary-list { max-height: 60vh; overflow-y: auto; }
+.notes-summary h4 { margin: 12px 0 4px; font-size: 14px; }
+.notes-summary-list button { display: block; width: 100%; text-align: left; padding: 4px 8px; border: none; background: none; color: var(--text); font: inherit; font-size: 13px; border-radius: 6px; cursor: pointer; }
+.notes-summary-list button:hover { background: var(--accent-soft); }
+.note-draw-bar select.note-draw-paper { padding: 4px 8px; border: 1px solid var(--border); border-radius: 6px; background: var(--bg); color: var(--text); font: inherit; }
+
+/* Vederea Grilă (ca în Google Keep): lista ia tot locul, notițele sunt carduri în coloane; notița deschisă se ascunde până dai click pe un card. */
+.notes-search .notes-view { flex: none; font-size: 12px; padding: 2px 8px; border: 1px solid var(--border); border-radius: 6px; background: var(--bg); color: var(--text); cursor: pointer; }
+.notes-search .notes-view.on { border-color: var(--accent); background: var(--accent-soft); }
+.notes-wrap.board .notes-side { flex: 1; width: auto; border-right: none; }
+.notes-wrap.board .notes-main { display: none; }
+.notes-wrap.board .notes-search { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 10px; }
+.notes-wrap.board .notes-search input { flex: 1 1 320px; width: auto; max-width: 560px; }
+.notes-wrap.board .notes-sort-row { margin-top: 0; }
+.notes-wrap.board .notes-list { columns: 230px; column-gap: 12px; padding: 12px; }
+.notes-wrap.board .notes-group { column-span: all; }
+.notes-wrap.board .notes-item {
+  display: inline-flex; break-inside: avoid; margin-bottom: 12px; gap: 6px; padding: 10px 12px;
+  border: 1px solid var(--border); border-radius: 10px; background: var(--bg); box-shadow: 0 1px 2px rgba(0, 0, 0, 0.06);
+}
+.notes-wrap.board .notes-item:hover { box-shadow: 0 2px 8px rgba(0, 0, 0, 0.14); }
+.notes-wrap.board .notes-item-title { white-space: normal; }
+.notes-wrap.board .notes-item-text { display: block; white-space: pre-line; font-size: 13px; color: var(--text); -webkit-line-clamp: unset; }
+.notes-card-img { width: calc(100% + 24px); margin: -10px -12px 0; max-height: 180px; object-fit: cover; border-radius: 10px 10px 0 0; }
+
+/* 📖 Lectură: notița doar de citit, pe o coloană îngustă, cu literă mare. */
+.note-reader { flex: 1; min-height: 0; overflow-y: auto; display: flex; flex-direction: column; background: var(--bg); color: var(--text); }
+.note-reader.tone-sepia { background: #f4ecd8; color: #4a3b28; }
+.note-reader.tone-dark { background: #1e1e24; color: #e6e1d6; }
+.note-reader-bar { position: sticky; top: 0; display: flex; flex-wrap: wrap; gap: 6px; padding: 8px 12px; background: inherit; border-bottom: 1px solid rgba(127, 127, 127, 0.25); }
+.note-reader-bar button, .note-reader-bar select { padding: 4px 10px; border: 1px solid rgba(127, 127, 127, 0.4); border-radius: 6px; background: transparent; color: inherit; font: inherit; font-size: 13px; cursor: pointer; }
+.note-reader-bar select option { color: #1f2328; background: #fff; }
+.note-reader-bar button.on { border-color: var(--accent); box-shadow: 0 0 0 1px var(--accent); }
+.note-reader-page { width: 100%; max-width: 680px; box-sizing: border-box; margin: 0 auto; padding: 28px 24px 64px; font-family: Georgia, 'Times New Roman', serif; font-size: calc(20px * var(--nz, 1)); line-height: 1.6; }
+.note-reader.space-wide .note-reader-page { line-height: 2.1; letter-spacing: 0.04em; word-spacing: 0.12em; }
+.note-reader-page h1 { font-size: 1.5em; line-height: 1.3; margin: 0 0 0.8em; }
+.note-reader-page p { margin: 0 0 1em; white-space: pre-wrap; overflow-wrap: anywhere; }
+.note-image button.draw-on { right: 30px; }
+.note-image button.rotate { right: 56px; }
+.note-image button.crop { right: 82px; }
+/* ✂ Decupează poza */
+.note-crop { width: min(900px, 94vw); display: flex; flex-direction: column; gap: 8px; }
+.note-crop h3 { margin: 0; font-size: 15px; }
+.note-crop-area { position: relative; overflow: hidden; align-self: center; cursor: crosshair; touch-action: none; user-select: none; line-height: 0; }
+.note-crop-area img { display: block; max-width: 100%; max-height: 65vh; border-radius: 4px; }
+.note-crop-rect { position: absolute; border: 2px dashed #fff; outline: 1px solid rgba(0, 0, 0, 0.6); box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.45); pointer-events: none; }
+/* Mărimea pozelor în notiță: mici, mijlocii (implicit), mari (cât lățimea notiței). */
+.note-images select.note-image-size { flex-basis: 100%; width: max-content; max-width: 100%; padding: 2px 6px; font-size: 12px; border: 1px solid var(--border); border-radius: 6px; background: var(--bg); color: var(--text); }
+.note-images.size-s .note-image img { max-width: 120px; max-height: 90px; }
+.note-images.size-l .note-image { flex-basis: 100%; }
+.note-images.size-l .note-image img { max-width: 100%; max-height: 520px; object-fit: contain; }
+/* Foaia notiței: linii sau pătrățele sub text, la pasul rândurilor (15px × 1,6), care se mișcă odată cu textul. */
+.notes-main .note-body.paper-lines, .notes-main .note-body.paper-grid {
+  --rule: calc(24px * var(--nz, 1)); --rule-color: rgba(70, 120, 200, 0.28);
+  background-attachment: local; background-position: 0 8px; background-repeat: repeat;
+}
+.notes-main .note-body.paper-lines { background-image: linear-gradient(to bottom, transparent calc(100% - 1px), var(--rule-color) calc(100% - 1px)); background-size: 100% var(--rule); }
+.notes-main .note-body.paper-grid {
+  background-image: linear-gradient(to bottom, transparent calc(100% - 1px), var(--rule-color) calc(100% - 1px)), linear-gradient(to right, transparent calc(100% - 1px), var(--rule-color) calc(100% - 1px));
+  background-size: var(--rule) var(--rule); background-position: 0 8px, 24px 8px;
+}
+.notes-toolbar select.notes-paper { max-width: 160px; }
+.notes-toolbar select.notes-paper.on { border-color: var(--accent); }
+/* Tragerea notițelor în „Ordinea mea”: locul unde cade notița. */
+.notes-item.drop-on { outline: 2px dashed var(--accent); outline-offset: -2px; }
+/* 🎙 Înregistrările audio din notiță */
+.notes-toolbar button.notes-rec { color: #d32f2f; font-variant-numeric: tabular-nums; }
+.note-audio { align-items: center; }
+.note-audio-name { font-size: 13px; padding: 0 8px; white-space: nowrap; }
+.note-audio audio { height: 32px; max-width: 320px; }
+.notes-toolbar select.notes-tpl { max-width: 140px; }
+.notes-toolbar select.notes-bg { max-width: 130px; }
+.notes-toolbar select.notes-bg.on { border-color: var(--accent); }
+/* Formatarea cu semne (**aldin**, # Titlu, | tabel |) în Lectură și butoanele ei din bară. */
+.notes-format { display: inline-flex; gap: 2px; align-items: center; }
+.notes-format button { min-width: 28px; padding-left: 6px; padding-right: 6px; }
+.notes-format button mark { background: #fff176; color: #222; padding: 0 2px; }
+.notes-format select { max-width: 110px; }
+/* La ferestre înguste (treapta „wrap” a panglicii) listele își păstrează numele întreg („⭐ Semn pe rând…”, „📋 Din șablon…”):
+   limita comună de 96 px le tăia; dacă nu mai încap, panglica strânge un grup, ca în rest. */
+.notes-toolbar .ribbon-panel.wrap .ribbon-group select { max-width: 160px; }
+.note-reader-page h2 { font-size: 1.3em; line-height: 1.3; margin: 1em 0 0.5em; }
+.note-reader-page h3 { font-size: 1.15em; line-height: 1.3; margin: 1em 0 0.4em; }
+.note-reader-page h4 { font-size: 1em; line-height: 1.3; margin: 1em 0 0.3em; }
+.note-reader-page mark { background: #fff176; color: #222; padding: 0 2px; border-radius: 2px; }
+.note-reader-page table { border-collapse: collapse; margin: 0 0 1em; font-size: 0.85em; line-height: 1.4; max-width: 100%; display: block; overflow-x: auto; }
+.note-reader-page th, .note-reader-page td { border: 1px solid currentColor; border-color: rgba(127, 127, 127, 0.5); padding: 4px 10px; text-align: left; vertical-align: top; }
+.note-reader-page th { font-weight: 600; background: rgba(127, 127, 127, 0.12); }
+/* Subpagini în listă: mai la dreapta, cu o linie subțire în stânga. */
+.notes-item.sub { border-left: 2px solid color-mix(in srgb, var(--accent) 45%, transparent); }
+.notes-item.sub-1 { margin-left: 14px; width: calc(100% - 14px); }
+.notes-item.sub-2 { margin-left: 28px; width: calc(100% - 28px); }
+.notes-sub-mark { color: var(--muted); }
+.notes-kids { color: var(--muted); font-weight: normal; font-size: 11px; }
+
+/* Caietele: alegerea caietului deasupra secțiunilor. */
+.notes-books { display: flex; gap: 4px; padding: 8px 10px 0; align-items: center; }
+.notes-books select, .notes-books input {
+  flex: 1; min-width: 0; padding: 4px 8px; border: 1px solid var(--border); border-radius: 8px;
+  background: var(--bg); color: var(--text); font: inherit; font-size: 13px; font-weight: 600;
+}
+.notes-books input:focus { border-color: var(--accent); outline: none; }
+.notes-books button {
+  padding: 3px 8px; border: 1px solid var(--border); border-radius: 8px; background: var(--bg); color: var(--text);
+  font: inherit; font-size: 12px; cursor: pointer; white-space: nowrap;
+}
+.notes-books button:hover { border-color: var(--accent); }.notes-allbooks {
+  display: block; width: 100%; margin-top: 6px; padding: 4px 8px; border: 1px dashed var(--accent); border-radius: 8px;
+  background: var(--bg); color: var(--accent); font: inherit; font-size: 12px; cursor: pointer; text-align: left;
+}
+.notes-allbooks.on { border-style: solid; background: var(--accent-soft); color: var(--text); }.notes-book-colors { display: flex; flex-wrap: wrap; gap: 3px; padding: 6px 10px 0; }
+.notes-a11y { border: 1px solid var(--border, #ccc); border-radius: 8px; padding: 8px 10px; margin: 6px 0; font-size: 13px; max-height: 220px; overflow: auto; }
+.notes-a11y-head { display: flex; gap: 6px; align-items: center; }
+.notes-a11y-head b { flex: 1; }
+.notes-a11y ul { margin: 6px 0 0; padding-left: 16px; }
+.notes-a11y li { margin: 4px 0; }
+.notes-a11y li button { background: none; border: none; padding: 0; color: inherit; text-decoration: underline; cursor: pointer; font: inherit; text-align: left; }
+.notes-a11y li span { display: block; opacity: 0.75; }
+.notes-a11y li .notes-grammar-acts { display: flex; gap: 10px; opacity: 1; margin-top: 2px; }
+.notes-a11y-head button + button { margin-left: 4px; }
+
+/* Bara de tabel: apare cât timp cursorul e într-un tabel scris în notiță („| a | b |”). */
+.note-table-bar { display: flex; flex-wrap: wrap; align-items: center; gap: 4px; padding: 4px 0; font-size: 12px; }
+.note-table-bar button { padding: 2px 8px; border: 1px solid var(--border); border-radius: 6px; background: var(--bg); color: inherit; font: inherit; cursor: pointer; }
+.note-table-bar button:hover { background: var(--accent-soft); }
+.note-table-hint { margin-left: 6px; }
+
+/* Ecuațiile din Lectură ({ecuație:…}): desenul stă pe rând, la mijlocul textului; pe fundal întunecat se întoarce culoarea. */
+.note-reader .note-eq { vertical-align: middle; max-width: 100%; height: auto; }
+.note-reader.tone-dark .note-eq { filter: invert(1); }
+
+/* 📹 Video: camera într-un colț cât filmezi; clipul din notiță. */
+.notes-cam { position: fixed; right: 16px; bottom: 16px; width: 240px; border-radius: 8px; box-shadow: 0 4px 16px rgba(0,0,0,.35); z-index: 50; background: #000; }
+.note-video { max-width: 360px; max-height: 240px; border-radius: 6px; background: #000; }
+.note-draw-angle { min-width: 36px; text-align: center; font-variant-numeric: tabular-nums; }
+
+/* N1: navigarea pe coloane: Caiete + Secțiuni (verticale, colorate) | Pagini, cu ◀ care strânge coloana din stânga. */
+.notes-side { width: auto; flex-direction: row; }
+.notes-navcol { width: 190px; flex: none; display: flex; flex-direction: column; min-height: 0; overflow-y: auto; border-right: 1px solid var(--border); }
+.notes-pagecol { width: 290px; flex: none; display: flex; flex-direction: column; min-height: 0; position: relative; }
+.notes-side.nav-shut .notes-navcol { display: none; }
+.notes-navcol .notes-books { flex-wrap: wrap; }
+.notes-navcol .notes-books select { min-width: 0; flex: 1 1 100%; }
+.notes-navcol .notes-sections { flex-direction: column; flex-wrap: nowrap; align-items: stretch; border-bottom: 0; }
+.notes-navcol .notes-sections button { text-align: left; border-radius: 4px; display: flex; gap: 4px; }
+.notes-navcol .notes-sections button span { margin-left: auto; }
+.notes-navtoggle { position: absolute; top: 6px; left: 2px; z-index: 1; width: 18px; height: 24px; padding: 0; font-size: 10px; line-height: 1; border: 1px solid var(--border); background: var(--panel); }
+.notes-pagecol .notes-search { padding-left: 24px; }
+.notes-addpage { margin: 6px; padding: 6px 8px; text-align: left; border: 1px dashed var(--border); background: transparent; }
+.notes-addpage:hover { background: var(--hover); }
+.notes-wrap.board .notes-pagecol { flex: 1; width: auto; }
+/* 📌 Lipește pe margine: fereastra e îngustă, deci doar lista paginilor (mai îngustă) și notița. */
+.notes-wrap.docked:not(.board) .notes-navcol, .notes-wrap.docked:not(.board) .notes-navtoggle { display: none; }
+.notes-wrap.docked:not(.board) .notes-pagecol { width: 150px; }
+.notes-wrap.docked:not(.board) .notes-pagecol .notes-search { padding-left: 6px; }
+@media (max-width: 1000px) {
+  .notes-navcol { width: 150px; }
+  .notes-pagecol { width: 240px; }
+}
+/* Fila Desenare: grosimile stiloului ca puncte. */
+.notes-pen-dot { display: inline-block; border-radius: 50%; background: currentColor; vertical-align: middle; }
+/* Carduri: „Ia o notiță…” deasupra grilei și 📌 pe fiecare card (se vede la trecerea mouse-ului sau când e fixat). */
+.notes-take { column-span: all; display: flex; gap: 8px; align-items: flex-start; max-width: 600px; margin: 0 auto 14px; padding: 8px 12px;
+  border: 1px solid var(--border); border-radius: 8px; background: var(--panel); box-shadow: 0 1px 4px rgba(0, 0, 0, 0.12); }
+.notes-take textarea { flex: 1; resize: none; border: none; outline: none; background: transparent; color: var(--text); font: inherit; font-size: 14px; padding: 4px 0; }
+.notes-wrap.board .notes-item { position: relative; }
+.notes-card-pin { position: absolute; top: 6px; right: 6px; font-size: 14px; line-height: 1; padding: 3px; border-radius: 50%; opacity: 0; cursor: pointer; filter: grayscale(1); }
+.notes-wrap.board .notes-item:hover .notes-card-pin, .notes-card-pin:focus-visible { opacity: 0.75; }
+.notes-card-pin.on { opacity: 1 !important; filter: none; }
+.notes-card-pin:hover { background: rgba(0, 0, 0, 0.08); opacity: 1; }
+
+/* Tragerea unui element de bifat de căsuța lui. */
+.notes-main .note-body.note-drag { cursor: grabbing; }
+
+/* ▣ Pânza liberă: casete de text puse oriunde (Canvas.tsx). */
+.note-canvas { position: relative; flex: none; margin: 8px 0; border: 1px dashed var(--border); border-radius: 8px; overflow: auto;
+  background-image: radial-gradient(var(--border) 1px, transparent 1px); background-size: 20px 20px; }
+.note-canvas.readonly { border: none; background-image: none; overflow: visible; }
+.note-canvas-hint { position: absolute; left: 50%; top: 40%; transform: translate(-50%, -50%); margin: 0; color: var(--muted); font-size: 13px; pointer-events: none; }
+.note-box { position: absolute; box-sizing: border-box; background: var(--bg); border: 1px solid var(--border); border-radius: 6px; box-shadow: 0 1px 3px rgba(0, 0, 0, .12); }
+.note-box:focus-within { border-color: var(--accent); }
+.note-box.dragging { opacity: .85; box-shadow: 0 4px 12px rgba(0, 0, 0, .2); }
+.note-box-bar { display: flex; align-items: center; justify-content: space-between; height: 16px; padding: 0 4px; cursor: move; color: var(--muted); font-size: 11px;
+  background: var(--panel); border-radius: 6px 6px 0 0; user-select: none; touch-action: none; }
+.note-box-bar button { border: none; background: transparent; color: var(--muted); cursor: pointer; padding: 0 2px; font-size: 11px; line-height: 1; }
+.note-box-bar button:hover { color: var(--text); }
+.note-box textarea { display: block; width: 100%; box-sizing: border-box; border: none; outline: none; resize: none; padding: 6px 8px; background: transparent;
+  color: var(--text); font: inherit; font-size: 14px; line-height: 1.45; }
+.note-box-size { position: absolute; right: -3px; top: 16px; bottom: 0; width: 7px; cursor: ew-resize; touch-action: none; }
+.note-canvas.readonly .note-box { padding: 6px 10px; box-shadow: none; }
+.note-canvas.readonly .note-box p { margin: 0; white-space: pre-wrap; }
+.note-box > img { display: block; width: 100%; height: auto; pointer-events: none; }
+.note-canvas.readonly .note-box > img { margin-bottom: 4px; border-radius: 4px; }
+.note-box-draw { margin-left: auto; }
+.note-box.grouped { border-style: dashed; border-color: color-mix(in srgb, var(--accent) 55%, var(--border)); }
+.note-box.chosen { outline: 2px solid var(--accent); outline-offset: 1px; }
+.note-box-ungroup { margin-left: auto; }
+.note-box-ungroup + .note-box-draw { margin-left: 0; }
+.note-canvas-pick { position: sticky; top: 4px; left: 4px; z-index: 2; display: inline-flex; gap: 6px; align-items: center; margin: 4px; padding: 2px 6px;
+  background: var(--bg); border: 1px solid var(--border); border-radius: 6px; font-size: 12px; box-shadow: 0 1px 3px rgba(0, 0, 0, .12); }
+.note-canvas-pick button { font-size: 12px; }
+.note-paste-pics { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; margin: 6px 0; padding: 4px 8px; border: 1px solid var(--border); border-radius: 6px;
+  background: color-mix(in srgb, var(--accent) 8%, var(--bg)); font-size: 13px; }
+
+/* Notițe → 🗗 Fereastră separată: o notiță singură în fereastra ei (NoteSolo.tsx). */
+.note-solo { display: flex; flex-direction: column; gap: 6px; height: 100vh; box-sizing: border-box; padding: 8px 10px; background: var(--bg); color: var(--text); }
+.note-solo-bar { display: flex; align-items: center; gap: 8px; }
+.note-solo-bar button.on { border-color: var(--accent); background: var(--accent-soft); }
+.note-solo-status { font-size: 12px; opacity: 0.75; flex: 1; text-align: right; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.note-solo-title { font-size: 18px; font-weight: 600; border: none; border-bottom: 1px solid var(--border); background: transparent; color: inherit; padding: 4px 2px; outline: none; }
+.note-solo-body { flex: 1; resize: none; border: none; background: transparent; color: inherit; font: inherit; font-size: 15px; line-height: 1.5; padding: 4px 2px; outline: none; }
+.note-solo-hint { font-size: 11px; opacity: 0.6; }
+.note-solo-msg { padding: 16px; }
+
+/* Formatarea la vedere (LiveBody.tsx): textul formatat stă sub câmpul de scris, care arată doar cursorul și selecția. */
+/* Câmpul de scris rămâne de cel puțin ~5 rânduri, chiar când pânza liberă de sub el e foarte înaltă. */
+.note-body-wrap { position: relative; flex: 1; min-height: 140px; display: flex; flex-direction: column; }
+.note-live { position: absolute; box-sizing: border-box; margin: 0; border: 0; overflow: hidden; pointer-events: none; user-select: none;
+  white-space: pre-wrap; overflow-wrap: break-word; word-break: normal; color: var(--text); }
+.note-live .m { opacity: 0.4; }
+.note-live .eq { color: var(--accent); }
+.note-live .fit { position: relative; }
+.note-live .fit-in { position: absolute; left: 0; top: 0; white-space: pre; line-height: normal; transform-origin: 0 78%; }
+.note-live .fit-in::before { content: attr(data-t); }
+.note-live .fit.split { -webkit-text-fill-color: currentColor !important; -webkit-text-stroke-color: currentColor !important; }
+.note-live .fit.split .fit-in { display: none; }
+.note-live img.fit-in { object-fit: contain; }
+.notes-main .note-body.live, .note-solo-body.live { position: relative; color: transparent; caret-color: var(--text); }
+.notes-main .note-body.live::selection, .note-solo-body.live::selection { color: transparent; background: rgba(0, 120, 215, 0.3); }
+.notes-main .note-body.live::placeholder, .note-solo-body.live::placeholder { color: var(--muted); }
+/* ✎ Creion pe pânza liberă: stratul cu liniile scrise acum și butonul lui. */
+.note-canvas.inking { cursor: crosshair; touch-action: none; user-select: none; }
+.note-canvas-wet { position: absolute; left: 0; top: 0; z-index: 3; pointer-events: none; }
+.note-canvas-tools { position: sticky; top: 4px; float: right; z-index: 4; margin: 4px; }
+.note-canvas-tools button { font-size: 12px; padding: 2px 8px; border: 1px solid var(--border); border-radius: 6px; background: var(--bg); color: var(--text); cursor: pointer; }
+.note-canvas-tools button.on { background: color-mix(in srgb, var(--accent) 18%, var(--bg)); border-color: var(--accent); }
