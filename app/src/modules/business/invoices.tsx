@@ -6,6 +6,8 @@ import { SuggestInput, fullCardAddress, partyToCard, rememberPartner } from "../
 import { AnafLookup, fullAddress } from "../../components/AnafLookup";
 import { save } from "@tauri-apps/plugin-dialog";
 import { api, message } from "../../api";
+import { EfacturaPanel } from "./efactura";
+import type { IssuedInvoice } from "./efacturaMap";
 
 const ID = "kgb.business";
 
@@ -75,6 +77,8 @@ export function InvoicesView(props: { products: ProductLite[]; warehouses: Wareh
   const [busy, setBusy] = useState(false);
   const [formError, setFormError] = useState<string | null>(null);
   const [notice, setNotice] = useState<string | null>(null);
+  // The invoice whose e-Factura is being prepared (7.4m-3).
+  const [efactura, setEfactura] = useState<string | null>(null);
 
   const refresh = useCallback(async () => {
     try {
@@ -211,6 +215,9 @@ export function InvoicesView(props: { products: ProductLite[]; warehouses: Wareh
                   >
                     PDF…
                   </button>
+                  <button className="link" aria-label={`e-Factura pentru factura ${f.numar_text}`} onClick={() => setEfactura(efactura === f.id ? null : f.id)}>
+                    e-Factura…
+                  </button>
                   {!f.storno_de && !f.stornata && (
                     <button
                       className="danger-text"
@@ -232,6 +239,17 @@ export function InvoicesView(props: { products: ProductLite[]; warehouses: Wareh
             ))}
           </tbody>
         </table>
+      )}
+      {sub === "facturi" && efactura && invoices.some((f) => f.id === efactura) && (
+        <EfacturaPanel
+          key={efactura}
+          invoice={invoices.find((f) => f.id === efactura) as unknown as IssuedInvoice}
+          onClose={() => setEfactura(null)}
+          onDone={(t) => {
+            setEfactura(null);
+            setNotice(t);
+          }}
+        />
       )}
 
       {sub === "noua" &&

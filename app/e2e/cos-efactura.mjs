@@ -4,7 +4,9 @@
 // - „Export e-Factura (XML)”: the file written through the core (export_file) is read back by K.G.B.'s own
 //   reader (kgb.business, efactura.rs) with the same total, to the ban;
 // - „Factură PDF”: a PDF;
-// - =VALIDCUI / =VALIDIBAN / =VALIDCNP say TRUE / FALSE.
+// - =VALIDCUI / =VALIDIBAN / =VALIDCNP say TRUE / FALSE;
+// - 7.4m-3 (D-082): „e-Factura…” on an invoice issued in Business: the address pieces proposed, the file written
+//   by the COS code, checked by the module and read back with the same total.
 // Nothing is sent anywhere. The system's open / save dialogs are replaced in the page (window.kgbHost.open /
 // save), the single point the frame uses; the file still goes through the core. The CNPs are made up (a correct
 // check digit, no person) and no screenshot is taken after they are typed.
@@ -43,6 +45,7 @@ writeFileSync(
 );
 const outXml = join(files, "export.xml");
 const outPdf = join(files, "factura.pdf");
+const outIssued = join(files, "e-Factura KGB 1.xml");
 
 /** A made-up CNP with a correct check digit (the rule of cos/src/sheets/ids.ts). */
 const cnpOf = (body12) => {
@@ -187,6 +190,48 @@ try {
   formulas.forEach(([, , want], i) => check(`=VALID… ${names[i]} → ${want ? "ADEVĂRAT" : "FALS"}`, want ? isTrue(got[i]) : isFalse(got[i]), String(got[i])));
 
   check("nicio eroare în fereastră", (await fr(p, "JSON.stringify(window.__errs ?? [])")) === "[]", await fr(p, "JSON.stringify(window.__errs ?? [])"));
+
+  // 7.4m-3: an invoice issued in Business (made-up firms; the same sums as the invoice above), its e-Factura.
+  await p.click("Închide foaia de calcul").catch(() => {});
+  await sleep(300);
+  const biz = (command, args) => invoke(p, "module_call", { id: "kgb.business", command, args });
+  await biz("settings_save", { firma: { firma_nume: "Firma Noastră SRL", firma_cui: "RO" + cuiOk, firma_adresa: "Str. Memorandumului nr. 1, Cluj-Napoca, jud. Cluj, 400114", firma_iban: "RO49AAAA1B31007593840000" } });
+  const client = await biz("partner_save", { nume: "Client & Fiii SA", cui: "RO12345674", adresa: "Bd. Unirii nr. 10, Sector 3, București", tip: "client" });
+  const series = await biz("series_save", { cod: "KGB" });
+  const issued = await biz("invoice_issue", {
+    serie: series.id, partener: client.id, data: "2026-11-10",
+    linii: [
+      { descriere: "Laptop", um: "buc", cantitate: "2", pret_unitar: "3199,99", cota_tva: 21 },
+      { descriere: "Carte tehnică", um: "buc", cantitate: "3", pret_unitar: "45,50", cota_tva: 11 },
+      { descriere: "Montaj", um: "ore", cantitate: "1,5", pret_unitar: "120", cota_tva: 21 },
+    ],
+  });
+  check("factura emisă în Business: KGB 1, 8.113,30", issued.numar === "KGB 1" && issued.total_text === "8.113,30", JSON.stringify(issued));
+  await p.eval(`(() => { window.kgbHost.save = async () => ${JSON.stringify(outIssued)}; return true; })()`);
+  await go(p, "Business");
+  await p.until("!!document.querySelector('.business .sheet-tabs')", 8000);
+  await p.eval("[...document.querySelectorAll('.business .sheet-tabs button')].find(b => b.innerText.startsWith('Facturare')).click()");
+  await p.until("!!document.querySelector(\"button[aria-label='e-Factura pentru factura KGB 1']\")", 8000);
+  await p.eval("document.querySelector(\"button[aria-label='e-Factura pentru factura KGB 1']\").click()");
+  await p.until("!!document.querySelector('.efactura-panel')", 5000);
+  const place = await p.eval("[...document.querySelectorAll('.efactura-panel input')].map(i => i.getAttribute('aria-label') + '=' + i.value).join('|')");
+  check(
+    "adresele sunt propuse pe bucăți (București: Sector 3)",
+    place.includes("Furnizor: Localitatea (în București: Sector 1–6)=Cluj-Napoca") && place.includes("Client: Localitatea (în București: Sector 1–6)=Sector 3") && place.includes("Client: Județul=București"),
+    place,
+  );
+  check("nicio greșeală de completat", await p.eval("!document.querySelector('.efactura-errors')"));
+  await p.screenshot(join(shots, "03-efactura-emisa.png"));
+  await p.click("Salvează e-Factura (XML)…", ".efactura-panel button");
+  const wroteIssued = await until(() => existsSync(outIssued), 15000);
+  check("e-Factura facturii emise se scrie (verificată de modul)", wroteIssued);
+  await p.until("document.body.innerText.includes('a fost salvată')", 5000).catch(() => {});
+  if (wroteIssued) {
+    const ix = readFileSync(outIssued, "utf8");
+    check("XML: numărul KGB 1, totalul 8113.30", ix.includes("<cbc:ID>KGB 1</cbc:ID>") && /<cbc:PayableAmount currencyID="RON">8113.30</.test(ix));
+    const back = await invoke(p, "module_import_file_with", { id: "kgb.business", path: outIssued, command: "efactura_import", args: {} });
+    check("cititorul K.G.B. îl citește cu același total", back?.[0]?.ok === true && back[0].total_text === "8.113,30", JSON.stringify(back));
+  }
 
   // D-083: 'self' in connect-src reads the app's own files, but the network stays closed.
   const net = await p.eval('fetch("https://example.com").then(() => "deschis", (e) => "refuzat: " + e.message)');

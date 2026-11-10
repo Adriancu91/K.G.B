@@ -295,6 +295,16 @@
   "f": "modules/business/deliveries.tsx"
  },
  {
+  "ro": "Județul",
+  "en": "County",
+  "f": "modules/business/efactura.tsx"
+ },
+ {
+  "ro": "Închide",
+  "en": "Close",
+  "f": "modules/business/efactura.tsx"
+ },
+ {
   "ro": "Rovinietă",
   "en": "Road toll vignette",
   "f": "modules/business/fleet.tsx"
@@ -1122,11 +1132,6 @@
  {
   "ro": "Folosește",
   "en": "Use",
-  "f": "modules/sheets/SheetsPage.tsx"
- },
- {
-  "ro": "Închide",
-  "en": "Close",
   "f": "modules/sheets/SheetsPage.tsx"
  },
  {
