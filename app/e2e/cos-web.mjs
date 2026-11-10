@@ -95,8 +95,8 @@ try {
   check("pagina e adusă prin nucleu și are tabelul", !!tablesDlg);
   if (tablesDlg) {
     await frButton(p, "Încarcă", '[role=dialog][aria-label="Import tabele din document"]');
-    const got = await frWait(p, "/Ciment 40 kg/.test(document.querySelector('.sheet-wrap')?.innerText ?? '') && /32,50/.test(document.querySelector('.sheet-wrap')?.innerText ?? '')", 15000);
-    check("tabelul paginii ajunge în foaie (Ciment 40 kg, 32,50)", !!got);
+    const got = await frWait(p, "/Ciment 40 kg/.test(document.querySelector('.sheet-wrap')?.innerText ?? '') && /(^|\\s)32,5(\\s|$)/.test(document.querySelector('.sheet-wrap')?.innerText ?? '')", 15000);
+    check("tabelul paginii ajunge în foaie (Ciment 40 kg, 32,5 ca număr)", !!got);
   }
   const last = seen[seen.length - 1];
   check("o singură cerere GET, fără cookie-uri, cu numele aplicației", seen.length === 1 && last.method === "GET" && !last.cookie && /^K\.G\.B\.\//.test(last.agent), JSON.stringify(seen));
