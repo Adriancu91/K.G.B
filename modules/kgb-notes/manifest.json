@@ -1,11 +1,11 @@
 {
   "manifest_format": 1,
   "id": "kgb.notes",
-  "name": "Note (demonstrativ)",
-  "description": "Modul demonstrativ al Etapei 1: note scurte salvate în spațiul de lucru. Arată cum un modul folosește doar contractul nucleului.",
+  "name": "Note",
+  "description": "Caietul de note: notițe cu text, liste de bifat, poze, secțiuni și caiete, coș, căutare. Fiecare notă se păstrează separat, deci se sincronizează între PC-uri fără să se piardă ce ai scris pe celălalt.",
   "version": "0.1.0",
   "core": ">=0.1.0, <0.2.0",
-  "status": "experimental",
+  "status": "beta",
   "permissions": [
     "storage.own",
     "files.own"
@@ -91,5 +91,5 @@
   },
   "data_format": 1,
   "migrations": [],
-  "on_disable": "Notele rămân salvate în spațiul de lucru și reapar când modulul este activat din nou."
+  "on_disable": "Notele, caietele și pozele lor rămân salvate în spațiul de lucru și reapar când modulul este activat din nou."
 }

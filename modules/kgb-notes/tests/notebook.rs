@@ -232,3 +232,35 @@ fn oversized_notes_and_broken_notebooks_are_refused() {
         .is_err()
     );
 }
+
+/// The window keeps the `seen` of its last save (cosBridge.ts), not only the one of its load: its later
+/// saves delete what it deleted, drop the sections it dropped and report no false conflicts.
+#[test]
+fn the_window_saving_again_and_again_with_the_seen_of_its_last_save() {
+    let tmp = tempfile::tempdir().unwrap();
+    let (mut ws, mm) = enabled(&tmp);
+    let (_, mut seen) = load(&mut ws, &mm);
+    let mut book = json!({"format": "suite-notes", "version": 1,
+        "notes": [note("a", "A", "2026-11-10T10:00:00.000Z"), note("b", "B", "2026-11-10T10:00:00.000Z")],
+        "sections": ["Acasă", "Birou"]});
+    let rep = save(&mut ws, &mm, &book, &seen);
+    assert_eq!(rep["written"], 2);
+    seen = rep["seen"].clone();
+    // B changed twice in a row: written each time, never a conflict.
+    for (i, t) in ["2026-11-10T11:00:00.000Z", "2026-11-10T12:00:00.000Z"].iter().enumerate() {
+        book["notes"][1]["body"] = json!(format!("schimbarea {i}"));
+        book["notes"][1]["updated"] = json!(t);
+        let rep = save(&mut ws, &mm, &book, &seen);
+        assert_eq!((rep["written"].as_u64(), rep["conflicts"].as_u64()), (Some(1), Some(0)), "{rep}");
+        seen = rep["seen"].clone();
+    }
+    // A deleted and the section Birou dropped in the window: both gone from the core.
+    book["notes"].as_array_mut().unwrap().remove(0);
+    book["sections"] = json!(["Acasă"]);
+    let rep = save(&mut ws, &mm, &book, &seen);
+    assert_eq!(rep["deleted"], 1, "{rep}");
+    let (now, _) = load(&mut ws, &mm);
+    assert_eq!(titles(&now), vec!["B"]);
+    assert_eq!(now["sections"], json!(["Acasă"]));
+    assert_eq!(now["notes"][0]["body"], "schimbarea 1");
+}

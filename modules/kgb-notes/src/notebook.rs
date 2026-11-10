@@ -303,6 +303,11 @@ pub struct SaveReport {
     pub pictures_removed: usize,
     /// Pictures kept as files after the save.
     pub pictures: usize,
+    /// What the window holds now, for its next save: the notes it wrote or had unchanged at their stored
+    /// `updated_ms`; a note kept from another PC keeps the old value (so the next save still sees that
+    /// conflict); the notebook record's version, or the old one when it was merged (the window does not
+    /// have the merged lists until it loads again).
+    pub seen: SeenState,
 }
 
 /// The notebook from the window, written note by note (see the module's comment for the two-PC rules).
@@ -373,7 +378,9 @@ pub fn save(ctx: &mut ModuleContext<'_>, content: &str, seen: &SeenState) -> Cor
         match stored.remove(&id) {
             Some(s) if s.note == n && s.trashed == trashed => {
                 // Unchanged; only its place in the list may have moved.
+                report.seen.notes.insert(id.clone(), s.updated_ms);
                 if s.rec.fields.get("idx").and_then(Value::as_u64) != Some(idx as u64) {
+                    let updated_ms = s.updated_ms;
                     writes.push(
                         Write::put(PAGES, pid, page_fields(n, updated_ms, trashed, idx as u64)).expect(s.rec.version),
                     );
@@ -386,6 +393,9 @@ pub fn save(ctx: &mut ModuleContext<'_>, content: &str, seen: &SeenState) -> Cor
                     report.conflicts += 1;
                     ctx.log(&format!("notița {id}: păstrată varianta mai nouă, de pe alt PC"));
                     collect_used(&s.note, &mut used);
+                    if let Some(&ms) = seen.notes.get(&id) {
+                        report.seen.notes.insert(id.clone(), ms);
+                    }
                     continue;
                 }
                 if changed_here {
@@ -397,6 +407,7 @@ pub fn save(ctx: &mut ModuleContext<'_>, content: &str, seen: &SeenState) -> Cor
                 writes.push(
                     Write::put(PAGES, pid, page_fields(n, updated_ms, trashed, idx as u64)).expect(s.rec.version),
                 );
+                report.seen.notes.insert(id.clone(), updated_ms);
                 report.written += 1;
             }
             None => {
@@ -410,6 +421,7 @@ pub fn save(ctx: &mut ModuleContext<'_>, content: &str, seen: &SeenState) -> Cor
                     }
                     _ => writes.push(Write::put(PAGES, pid, page_fields(n, updated_ms, trashed, idx as u64)).expect(0)),
                 }
+                report.seen.notes.insert(id.clone(), updated_ms);
                 report.written += 1;
             }
         }
@@ -421,14 +433,18 @@ pub fn save(ctx: &mut ModuleContext<'_>, content: &str, seen: &SeenState) -> Cor
                 writes.push(Write::delete(PAGES, s.rec.id).expect(s.rec.version));
                 report.deleted += 1;
             }
-            _ => {
+            old => {
                 report.kept_from_elsewhere += 1;
                 collect_used(&s.note, &mut used);
+                if let Some(&ms) = old {
+                    report.seen.notes.insert(id.clone(), ms);
+                }
             }
         }
     }
     // The rest of the notebook: merged when it changed since the load.
-    let meta = if book.exists && book.version != seen.notebook_version {
+    let merged = book.exists && book.version != seen.notebook_version;
+    let meta = if merged {
         merge_meta(&book.meta, root)
     } else {
         root
@@ -460,6 +476,11 @@ pub fn save(ctx: &mut ModuleContext<'_>, content: &str, seen: &SeenState) -> Cor
     if !writes.is_empty() {
         ctx.write(writes)?;
     }
+    report.seen.notebook_version = if merged {
+        seen.notebook_version
+    } else {
+        stored_book(ctx)?.version
+    };
     for (_, f) in unused {
         if let Ok(id) = Uuid::parse_str(&f) {
             let _ = ctx.delete_file(id);
