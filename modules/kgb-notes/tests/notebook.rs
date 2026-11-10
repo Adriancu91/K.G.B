@@ -10,7 +10,7 @@ use serde_json::{Value, json};
 fn enabled(tmp: &tempfile::TempDir) -> (Workspace, ModuleManager) {
     let mut ws = Workspace::create(&tmp.path().join("ws"), "T").unwrap();
     let mm = ModuleManager::new(vec![Box::new(Notes::new()) as Box<dyn Module>], CORE_VERSION).unwrap();
-    mm.enable(&mut ws, ID, &["storage.own".to_string(), "files.own".to_string()])
+    mm.enable(&mut ws, ID, &["storage.own".to_string(), "files.own".to_string(), "notify.send".to_string()])
         .unwrap();
     (ws, mm)
 }

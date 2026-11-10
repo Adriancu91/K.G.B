@@ -23,6 +23,8 @@
   "Organizație": "Organization",
   "Pune un panou cu această pagină pe Acasă": "Add a panel with this page to Home",
   "Rolul tău poate doar citi în acest modul": "Your role can only read in this module",
+  "Rolul tău poate doar citi notele: ce schimbi aici nu se salvează.": "Your role can only read the notes: what you change here is not saved.",
+  "Rolul tău poate doar citi notele.": "Your role can only read the notes.",
   "Scoate de pe Acasă": "Remove from Home",
   "Se pornește K.G.B.…": "K.G.B. is starting…",
   "Surse externe": "External sources",
@@ -2291,6 +2293,7 @@
  "templates": {
   "Completat de la ANAF (date pentru {0}): {1}. Verifică și completează restul de mână.": "Filled in from ANAF (data for {0}): {1}. Check and fill in the rest manually.",
   "Marchează citit: {0}": "Mark as read: {0}",
+  "Memento: {0}": "Reminder: {0}",
   "Notificări: {0} necitite": "Notifications: {0} unread",
   "„{0}” a fost adăugat în agenda de parteneri": "\"{0}\" was added to the partner address book",
   "Agenda de parteneri nu a fost actualizată: {0}": "The partner address book was not updated: {0}",
@@ -2787,6 +2790,7 @@
   "notița {0}: schimbată în ambele locuri, păstrată varianta din fereastră (mai nouă)": "note {0}: changed in both places, the window's (newer) version was kept"
  },
  "skip": [
+  "var(--text)",
   "Escape",
   "Info",
   "Enter",

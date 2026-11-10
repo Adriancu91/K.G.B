@@ -1780,9 +1780,15 @@ label > .suggest > input {
 }
 
 /* The Notes window of Cyber Office Studio (7.4l-2c), filling the page. */
+/* The Notes window fills what is left of the page under its head, without a scrollbar of the page (7.4l-2b-rem). */
+main:has(> .notes-window) {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
 .notes-window {
   display: flex;
-  height: calc(100vh - 120px);
+  flex: 1;
   min-height: 400px;
 }
 .notes-window iframe {

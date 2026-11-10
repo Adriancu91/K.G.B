@@ -30,7 +30,8 @@ import { QuickSearch } from "./components/QuickSearch";
 import { setLang, useLang } from "./i18n/lang";
 
 /// Interfaces of the built-in modules, by module id.
-const MODULE_PAGES: Record<string, ComponentType<{ onError: (e: string | null) => void }>> = {
+// `access`: what the person's role may do in the module ("scriere" / "citire"), for pages that need it.
+const MODULE_PAGES: Record<string, ComponentType<{ onError: (e: string | null) => void; access?: string }>> = {
   "kgb.notes": NotesPage,
   "kgb.pdf": PdfPage,
   "kgb.sheets": SheetsPage,
@@ -308,7 +309,7 @@ export function App() {
         {page === "org" && <OrgPage onError={setError} onChanged={() => void loadModules()} />}
         {page === "diagnostics" && <DiagnosticsPage onError={setError} />}
         {page === "data" && <DataPage onError={setError} onSwitched={() => window.location.reload()} />}
-        {ModulePage && <ModulePage onError={setError} />}
+        {ModulePage && <ModulePage onError={setError} access={modules.access[page]} />}
         {!ModulePage && modules.modules.some((m) => m.id === page) && (
           <p className="muted">Acest modul nu are încă interfață.</p>
         )}

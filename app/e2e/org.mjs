@@ -97,6 +97,10 @@ try {
   await p.until("document.querySelector(\"select[aria-label='Contabil: kgb.notes']\").value === 'citire'");
   await p.screenshot(join(shots, "01-organizatie.png"));
 
+  // A note in the Notes window's notebook, written while Ana may still write (for the reading check below).
+  await p.eval(
+    `window.__TAURI_INTERNALS__.invoke("module_call", {id: "kgb.notes", command: "notebook_save", args: {content: JSON.stringify({format: "suite-notes", version: 1, notes: [{id: "citire-1", title: "De citit", body: "text vechi", created: "2026-11-10T09:00:00.000Z", updated: "2026-11-10T09:00:00.000Z"}]})}})`,
+  );
   // The last administrator cannot step down… but with Ion as admin, Ana can.
   await setSelect(p, "select[aria-label='Rolul lui Ana Test']", "Contabil");
   await p.until("document.querySelector('.org-current').innerText.includes('Contabil')", 5000);
@@ -111,6 +115,33 @@ try {
   check("antetul spune „doar citire”", (await p.eval("document.querySelector('.page-head').innerText")).includes("doar citire"));
   const err = await demoAdd(p, "nu ar trebui salvată");
   check("scrierea e refuzată cu motivul", err.includes("poate doar citi"), err);
+  // The Notes window opens for reading (7.4l-2b-rem): a band says so, and typing does not reach the note.
+  const fr = (expr) =>
+    p.eval(`(() => { const f = document.querySelector('.notes-window iframe'); if (!f?.contentDocument) return null;
+      return ((document) => (${expr}))(f.contentDocument); })()`);
+  const frWait = async (expr) => {
+    const end = Date.now() + 30000;
+    while (Date.now() < end) {
+      if (await fr(expr).catch(() => false)) return true;
+      await new Promise((r) => setTimeout(r, 200));
+    }
+    return false;
+  };
+  check(
+    "fereastra Note arată banda „doar citire”",
+    await frWait("(document.querySelector('.frame-readonly')?.innerText ?? '').includes('poate doar citi')"),
+  );
+  const typed = await frWait("!!document.querySelector('.note-body')");
+  check("nota se poate citi", typed && (await fr("document.body.innerText.includes('De citit')")));
+  if (typed) {
+    const before = await fr("document.querySelector('.note-body').value");
+    await p.eval("document.querySelector('.notes-window iframe').focus()");
+    await fr("(document.querySelector('.note-body').focus(), true)");
+    await p.send("Input.insertText", { text: "scris de un cititor" });
+    await new Promise((r) => setTimeout(r, 500));
+    const after = await fr("document.querySelector('.note-body').value");
+    check("textul scris nu intră în notă", after === before, JSON.stringify(after));
+  }
   await p.screenshot(join(shots, "02-doar-citire.png"));
 
   // Forced restart: everything stays.

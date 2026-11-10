@@ -12,6 +12,7 @@
 //! - `delete {id, version}` → `{deleted: id}` (logical delete; the store keeps it)
 
 pub mod notebook;
+pub mod remind;
 
 use kgb_core::manifest::Manifest;
 use kgb_core::modules::{Module, ModuleContext};
@@ -153,6 +154,11 @@ fn existing(ctx: &mut ModuleContext<'_>, id: Uuid) -> CoreResult<RecordState> {
 impl Module for Notes {
     fn manifest(&self) -> &Manifest {
         &self.manifest
+    }
+
+    /// The reminders of the Notes window (7.4l-2b-rem), on this PC's clock.
+    fn remind(&self, ctx: &mut ModuleContext<'_>, _today: &str) -> CoreResult<()> {
+        remind::send_due(ctx, now_ms() as i64, &remind::System).map(|_| ())
     }
 
     fn handle(&self, ctx: &mut ModuleContext<'_>, command: &str, a: Value) -> CoreResult<Value> {

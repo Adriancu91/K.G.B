@@ -67,6 +67,11 @@ export const NOTES: BridgeKind = {
 };
 /** What the Notes window read from the core (7.4l-2b): its next save may delete only what it saw. */
 let notesSeen: unknown = {};
+/** The person's role may only read the notes (7.4l-2b-rem): the window saves nothing (the core would refuse). */
+let notesReadOnly = false;
+export function setNotesReadOnly(v: boolean): void {
+  notesReadOnly = v;
+}
 let cfg: BridgeKind = SHEETS;
 
 type DialogFilter = { name: string; extensions: string[] };
@@ -254,12 +259,15 @@ export function installCosBridge(host: KgbHost, kind: BridgeKind = SHEETS): void
       return { path: "kgb:notes", content: r.empty ? null : r.content };
     },
     saveNotes: async (content: string) => {
+      if (notesReadOnly) return { path: "kgb:notes" };
       const r = await kgb.moduleCall<{ seen: unknown }>("kgb.notes", "notebook_save", { content, seen: notesSeen });
       notesSeen = r.seen;
       return { path: "kgb:notes" };
     },
-    addAttachment: async (data: Uint8Array, ext?: "pdf" | "webm" | "bin") =>
-      (await kgb.moduleCall<{ id: string }>("kgb.notes", "attachment_add", { data: b64(data), ext: ext ?? "bin" })).id,
+    addAttachment: async (data: Uint8Array, ext?: "pdf" | "webm" | "bin") => {
+      if (notesReadOnly) throw new Error("Rolul tău poate doar citi notele.");
+      return (await kgb.moduleCall<{ id: string }>("kgb.notes", "attachment_add", { data: b64(data), ext: ext ?? "bin" })).id;
+    },
     readAttachment: async (id: string) => unb64((await kgb.moduleCall<{ data: string }>("kgb.notes", "attachment_read", { id })).data),
   });
 }
