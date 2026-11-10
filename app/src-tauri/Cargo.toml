@@ -26,6 +26,7 @@ kgb-market.workspace = true
 kgb-team.workspace = true
 kgb-calc.workspace = true
 kgb-news.workspace = true
+kgb-appointments.workspace = true
 tracing.workspace = true
 # tray-icon: K.G.B. stays next to the clock (7.4m-3); the tray code was
 # already downloaded with Tauri at this version.

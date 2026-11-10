@@ -75,6 +75,111 @@
   "f": "cosframe/printPdf.ts"
  },
  {
+  "ro": "Luni",
+  "en": "Monday",
+  "f": "modules/appointments/AppointmentsPage.tsx"
+ },
+ {
+  "ro": "Marți",
+  "en": "Tuesday",
+  "f": "modules/appointments/AppointmentsPage.tsx"
+ },
+ {
+  "ro": "Miercuri",
+  "en": "Wednesday",
+  "f": "modules/appointments/AppointmentsPage.tsx"
+ },
+ {
+  "ro": "Joi",
+  "en": "Thursday",
+  "f": "modules/appointments/AppointmentsPage.tsx"
+ },
+ {
+  "ro": "Vineri",
+  "en": "Friday",
+  "f": "modules/appointments/AppointmentsPage.tsx"
+ },
+ {
+  "ro": "Sâmbătă",
+  "en": "Saturday",
+  "f": "modules/appointments/AppointmentsPage.tsx"
+ },
+ {
+  "ro": "Duminică",
+  "en": "Sunday",
+  "f": "modules/appointments/AppointmentsPage.tsx"
+ },
+ {
+  "ro": "Persoană",
+  "en": "Person",
+  "f": "modules/appointments/AppointmentsPage.tsx"
+ },
+ {
+  "ro": "Echipament",
+  "en": "Equipment",
+  "f": "modules/appointments/AppointmentsPage.tsx"
+ },
+ {
+  "ro": "Ziua",
+  "en": "Day",
+  "f": "modules/appointments/AppointmentsPage.tsx"
+ },
+ {
+  "ro": "Săptămâna",
+  "en": "Week",
+  "f": "modules/appointments/AppointmentsPage.tsx"
+ },
+ {
+  "ro": "Înapoi",
+  "en": "Back",
+  "f": "modules/appointments/AppointmentsPage.tsx"
+ },
+ {
+  "ro": "Data",
+  "en": "Date",
+  "f": "modules/appointments/AppointmentsPage.tsx"
+ },
+ {
+  "ro": "Înainte",
+  "en": "Forward",
+  "f": "modules/appointments/AppointmentsPage.tsx"
+ },
+ {
+  "ro": "Serviciul",
+  "en": "Service",
+  "f": "modules/appointments/AppointmentsPage.tsx"
+ },
+ {
+  "ro": "(fără serviciu)",
+  "en": "(without serviciu)",
+  "f": "modules/appointments/AppointmentsPage.tsx"
+ },
+ {
+  "ro": "Ora",
+  "en": "Time",
+  "f": "modules/appointments/AppointmentsPage.tsx"
+ },
+ {
+  "ro": "Notă",
+  "en": "Note",
+  "f": "modules/appointments/AppointmentsPage.tsx"
+ },
+ {
+  "ro": "fără program",
+  "en": "not program",
+  "f": "modules/appointments/AppointmentsPage.tsx"
+ },
+ {
+  "ro": " · inactivă",
+  "en": " · inactive",
+  "f": "modules/appointments/AppointmentsPage.tsx"
+ },
+ {
+  "ro": "Prețul serviciului",
+  "en": "Price serviciului",
+  "f": "modules/appointments/AppointmentsPage.tsx"
+ },
+ {
   "ro": "De plătit",
   "en": "To pay",
   "f": "modules/business/aging.tsx"
@@ -92,11 +197,6 @@
  {
   "ro": "Fișa partenerului",
   "en": "Partner ledger",
-  "f": "modules/business/aging.tsx"
- },
- {
-  "ro": "Data",
-  "en": "Date",
   "f": "modules/business/aging.tsx"
  },
  {
@@ -472,11 +572,6 @@
  {
   "ro": "Descriere",
   "en": "Description",
-  "f": "modules/business/offers.tsx"
- },
- {
-  "ro": "Notă",
-  "en": "Note",
   "f": "modules/business/offers.tsx"
  },
  {
@@ -1120,26 +1215,6 @@
   "f": "modules/planner/reports.tsx"
  },
  {
-  "ro": "Persoană",
-  "en": "Person",
-  "f": "modules/planner/reports.tsx"
- },
- {
-  "ro": "Joi",
-  "en": "Thursday",
-  "f": "modules/planner/views.tsx"
- },
- {
-  "ro": "Înapoi",
-  "en": "Back",
-  "f": "modules/planner/views.tsx"
- },
- {
-  "ro": "Înainte",
-  "en": "Forward",
-  "f": "modules/planner/views.tsx"
- },
- {
   "ro": "Conținutul celulei",
   "en": "Cell contents",
   "f": "modules/sheets/SheetsPage.tsx"
@@ -1167,11 +1242,6 @@
  {
   "ro": "Luna",
   "en": "Month",
-  "f": "modules/team/TeamPage.tsx"
- },
- {
-  "ro": "Ziua",
-  "en": "Day",
   "f": "modules/team/TeamPage.tsx"
  },
  {
