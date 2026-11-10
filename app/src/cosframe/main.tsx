@@ -11,6 +11,7 @@ import { AskHost } from "../../cos/src/ask";
 import { setLang } from "../../cos/src/i18n";
 import { ScreenshotHost } from "../../cos/src/screenshot";
 import { SketchHost } from "../../cos/src/sketch";
+import { showSnapshot, type Snapshot } from "./printPdf";
 import { DOCS, SHEETS, installCosBridge, openDocument, type KgbHost } from "../modules/sheets/cosBridge";
 import "../../cos/src/styles.css";
 import "../../cos/src/theme.css";
@@ -54,8 +55,22 @@ function Frame() {
   );
 }
 
+const printJob = hash.get("print");
 const root = createRoot(document.getElementById("root")!);
-if (!host) {
+if (printJob) {
+  // The hidden print window (D-081): it gets the cleaned snapshot once and says when it is laid out.
+  // It reaches nothing else of the app (src-tauri/src/print.rs).
+  void (async () => {
+    const { invoke } = await import("@tauri-apps/api/core");
+    try {
+      const shot = await invoke<Snapshot>("print_job_take", { id: printJob });
+      await showSnapshot(shot);
+      await invoke("print_job_ready", { id: printJob, error: null });
+    } catch (e) {
+      await invoke("print_job_ready", { id: printJob, error: String(e) }).catch(() => {});
+    }
+  })();
+} else if (!host) {
   root.render(<p className="frame-error">Fereastra se deschide doar din aplicația K.G.B.</p>);
 } else {
   installCosBridge(host, docs ? DOCS : SHEETS);

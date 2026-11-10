@@ -1,6 +1,7 @@
 // The windows of Cyber Office Studio (Sheets D-077, Docs D-080) run in their own frame
 // (cos-sheets.html) and reach the core through this host, which the app lends them on its own window.
 // Imported by every page that opens such a frame.
+import { invoke } from "@tauri-apps/api/core";
 import { open, save } from "@tauri-apps/plugin-dialog";
 import { api } from "../api";
 import { currentLang, onLang } from "../i18n/lang";
@@ -14,6 +15,7 @@ const host: KgbHost = {
   save: (o) => save(o),
   lang: () => currentLang(),
   onLang: (f) => onLang(f),
+  printPdf: (snapshot, paper) => invoke<string>("print_pdf", { snapshot, paper }),
 };
 (window as Window & { kgbHost?: KgbHost }).kgbHost = host;
 

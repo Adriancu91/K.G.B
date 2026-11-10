@@ -13,6 +13,8 @@
 import { api as cos } from "../../../cos/src/api";
 import type { ExportFormat, FileKind, OpenedFile, Settings } from "../../../cos/src/api";
 import { FORMATS } from "../../../cos/src/web/disk";
+import type { PagePrint } from "../../../cos/src/api";
+import { snapshot, stamp, type Paper, type Snapshot } from "../../cosframe/printPdf";
 
 /** What differs between the copied windows (Sheets, Docs): their module, their own format and its words. */
 export interface BridgeKind {
@@ -65,6 +67,8 @@ export interface KgbHost {
   /** The app's language (RO / EN) and its changes: the window follows it. */
   lang(): "ro" | "en";
   onLang(f: (l: "ro" | "en") => void): () => void;
+  /** The PDF of a snapshot of the window, made in a hidden window of the app (D-081), as base64. */
+  printPdf(snapshot: Snapshot, paper: Paper): Promise<string>;
 }
 let kgb: KgbHost;
 const open: KgbHost["open"] = (o) => kgb.open(o);
@@ -146,6 +150,8 @@ export function installCosBridge(host: KgbHost, kind: BridgeKind = SHEETS): void
   installed = true;
   kgb = host;
   cfg = kind;
+  // The pages as PDF, also for the end-to-end tests of printing (e2e/cos-print.mjs), which call it with page settings.
+  (window as Window & { kgbDocPdf?: (page?: PagePrint) => Promise<Uint8Array> }).kgbDocPdf = (page) => cos.docPdfBytes!(page);
   const base = { ...cos };
   Object.assign(cos, {
     // Small preferences of the window (zoom, last choices); the workbooks themselves are in the core.
@@ -205,6 +211,20 @@ export function installCosBridge(host: KgbHost, kind: BridgeKind = SHEETS): void
     print: async () => {
       window.print();
       return true;
+    },
+    // The pages as PDF (preview, Page layout, Export PDF), as COS's printToPDF made them (D-081).
+    docPdfBytes: async (page?: PagePrint) => {
+      const { snapshot: shot, paper } = await snapshot(document, page);
+      return stamp(unb64(await kgb.printPdf(shot, paper)), page);
+    },
+    exportPdf: async (suggestedName?: string, page?: PagePrint) => {
+      const { snapshot: shot, paper } = await snapshot(document, page);
+      const data = await stamp(unb64(await kgb.printPdf(shot, paper)), page);
+      const stem = (suggestedName ?? "").replace(/.[^.]+$/, "") || "Document";
+      const dest = await save({ defaultPath: `${stem}.pdf`, filters: filtersOf("pdf") });
+      if (!dest) return null;
+      await kgb.moduleCall(cfg.id, "export_file", { dest, data: b64(data) });
+      return { path: dest };
     },
     webGet: unsupported("Aducerea de date de pe internet"),
     pickFolder: async () => null,
