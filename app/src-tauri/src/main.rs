@@ -73,6 +73,7 @@ fn builtin_modules() -> Vec<Box<dyn Module>> {
         Box::new(kgb_calc::Calc::new()),
         Box::new(kgb_write::Write::new()),
         Box::new(kgb_news::News::new()),
+        Box::new(kgb_market::Market::new()),
     ]
 }
 

@@ -1,0 +1,18 @@
+[package]
+name = "kgb-market"
+version = "0.1.0"
+edition.workspace = true
+publish.workspace = true
+license.workspace = true
+description = "K.G.B. module: market watch list (part 1, step 7.6) — instruments, quotes typed in or imported from CSV with their source and time, alerts on the last quote. A record, not investment advice."
+
+[dependencies]
+kgb-core.workspace = true
+kgb-store.workspace = true
+serde.workspace = true
+serde_json.workspace = true
+uuid.workspace = true
+base64 = "0.22.1"
+
+[dev-dependencies]
+tempfile.workspace = true

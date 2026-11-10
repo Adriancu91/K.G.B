@@ -4,6 +4,7 @@ import { useCallback, useEffect, useRef, useState, type ComponentType, type Poin
 import { api, message, type AppInfo, type ModulesReply, type Settings, type SettingsReply } from "./api";
 import { FeedbackButton } from "./components/FeedbackButton";
 import { NotesPage } from "./modules/notes/NotesPage";
+import { MarketPage } from "./modules/market/MarketPage";
 import { PdfPage } from "./modules/pdf/PdfPage";
 import { SheetsPage } from "./modules/sheets/SheetsPage";
 import { WritePage } from "./modules/write/WritePage";
@@ -42,6 +43,7 @@ const MODULE_PAGES: Record<string, ComponentType<{ onError: (e: string | null) =
   "kgb.docs": DocsPage,
   "kgb.business": BusinessPage,
   "kgb.permits": PermitsPage,
+  "kgb.market": MarketPage,
   "kgb.team": TeamPage,
   "kgb.calc": CalcPage,
   "kgb.news": NewsPage,
