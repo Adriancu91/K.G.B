@@ -413,6 +413,15 @@ Deciziile DECIS se schimbă doar cu aprobarea explicită a proprietarului (Maste
 - Antetul, subsolul și numerotarea se pun apoi în cadru cu pdf-lib (D-072); salvarea pe disc trece prin `export_file`, ca orice export.
 - `webview2-com` 0.39.1 (deja adus de Tauri, aceeași versiune) folosit direct; nicio bibliotecă nouă. Lucrul îl face sesiunea COS pe ramura `kgb/cos-print`, cu poarta K.G.B.
 
+### D-082 — e-Factura pentru facturile emise în Business: doar fișierul, cu codul COS
+- **Data:** 10 nov. 2026 · **Statut:** DECIS — acord COS + K.G.B. (D-074); completează D-052 (care lăsase e-Factura emisă în afara pasului 5.3)
+- **Ce se adaugă:** la o factură emisă, butonul „e-Factura…” scrie fișierul XML (UBL 2.1, CIUS-RO) pe care proprietarul îl încarcă singur în SPV. **Nimic nu se trimite la ANAF / SPV** din aplicație; fără token-uri și fără certificate.
+- **Cu ce:** codul COS `cos/src/sheets/efacturaOut.ts`, neschimbat (aceleași verificări și același XML ca „Export e-Factura (XML)” din fereastra Sheets, testate în COS). Pagina traduce factura K.G.B. (`app/src/modules/business/efacturaMap.ts`); ce Business nu ține pe bucăți (stradă / localitate / județ, codurile unităților) e propus și se completează în fereastră.
+- **Verificat de modul:** înainte de scriere, `efactura_export` citește XML-ul cu cititorul K.G.B. (`efactura.rs::parse`) și cere numărul facturii, CUI-ul firmei și aceleași totaluri, la ban; altfel nu scrie nimic.
+- **Stornarea** iese ca factură (380) cu cantități și sume negative, cum o ține Business; `CreditNote` rămâne în afară (ca la import).
+- **TVA:** e-Factura calculează TVA-ul pe fiecare cotă; Business l-a rotunjit pe fiecare linie (D-049). Când cele două dau sume diferite (cazuri rare, cu multe linii mici), fișierul **nu se scrie**, cu motivul spus omului. Alinierea regulii de rotunjire din Business la standard e o decizie separată, cu contabilul.
+- **Rămâne limită:** validarea pe schema oficială XSD / Schematron CIUS-RO (7.4m-4).
+
 ### D-083 — Fereastra poate citi fișierele proprii ale aplicației (`connect-src 'self'`)
 - **Data:** 10 nov. 2026 · **Statut:** DECIS — acord COS + K.G.B. (D-074); completează D-038
 - **Motivul:** codul copiat din COS citește cu `fetch()` fișiere din bundle-ul aplicației, aduse cu `?url`: fonturi pentru PDF-uri, datele OCR. Fără `'self'` în `connect-src`, aceste citiri sunt refuzate (în e2e 7.4m-1, „Factură PDF” dădea „Failed to fetch”). Sunt 8 fișiere: `docs/PrintPreview.tsx`, `docs/rasterPrint.ts`, `notes/pdftext.ts`, `pdf/efactura.ts`, `pdf/ocr.ts`, `sheets/PageLayout.tsx`, `sheets/pdfImport.ts`, `sheets/pdfWords.ts`. A le schimba pe `?inline` ar fi încălcat „copiat neschimbat” (D-071) și ar fi umflat bundle-ul.

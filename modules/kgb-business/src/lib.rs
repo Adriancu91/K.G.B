@@ -307,6 +307,15 @@ struct InvoicePdf {
     dest: std::path::PathBuf,
 }
 
+/// e-Factura of an issued invoice (7.4m-3, D-082): the XML the page wrote, checked, then saved where the user chose.
+#[derive(Deserialize)]
+#[serde(deny_unknown_fields)]
+struct EfacturaExport {
+    id: Uuid,
+    dest: std::path::PathBuf,
+    xml: String,
+}
+
 #[derive(Deserialize, Default)]
 #[serde(deny_unknown_fields)]
 struct StockFilter {
@@ -1093,6 +1102,14 @@ impl Module for Business {
                 let a: FromDialog = args(a)?;
                 let data = base64_decode(&a.data)?;
                 self.import_extract(ctx, &a.name, &data)
+            }
+            "efactura_export" => {
+                let a: EfacturaExport = args(a)?;
+                let numar = self.efactura_check(ctx, a.id, &a.xml)?;
+                // The user confirmed replacing an existing file in the save dialog.
+                ctx.export_bytes(&a.dest, a.xml.as_bytes(), true)?;
+                ctx.log("e-Factura scrisă pentru o factură emisă");
+                Ok(json!({"numar": numar, "octeti": a.xml.len()}))
             }
             "invoice_pdf" => {
                 let a: InvoicePdf = args(a)?;

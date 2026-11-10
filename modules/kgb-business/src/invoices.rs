@@ -525,6 +525,41 @@ impl Business {
         Ok(json!(list))
     }
 
+    /// e-Factura of an issued invoice (7.4m-3, D-082): the page writes the XML with the COS code
+    /// (efacturaOut.ts); before the file is written it is read back with K.G.B.'s own reader (efactura.rs) and
+    /// must carry this invoice's number, the company's CUI and the same totals, to the ban. Only a file: nothing
+    /// is sent to ANAF / SPV. Returns the invoice number.
+    pub(crate) fn efactura_check(&self, ctx: &mut ModuleContext<'_>, id: Uuid, xml: &str) -> CoreResult<String> {
+        if xml.len() > 5 * 1024 * 1024 {
+            return Err(bad("e-Factura", "fișierul are mai mult de 5 MB"));
+        }
+        let inv = live(ctx, INVOICES, id, "factura")?;
+        let e = crate::efactura::parse(xml).map_err(|m| bad("e-Factura", m))?;
+        let numar = format!("{} {}", s(&inv, "serie"), i(&inv, "numar"));
+        let mut diff = Vec::new();
+        if e.numar.trim() != numar {
+            diff.push(format!("numărul „{}” în loc de „{numar}”", e.numar.trim()));
+        }
+        let firm = inv.fields["furnizor"]["firma_cui"].as_str().unwrap_or_default();
+        if kgb_core::partners::cui_digits(&e.furnizor_cui) != kgb_core::partners::cui_digits(firm) {
+            diff.push(format!("CUI-ul furnizorului „{}” în loc de „{firm}”", e.furnizor_cui.trim()));
+        }
+        for (what, got, key) in [
+            ("totalul fără TVA", e.total_fara_tva, "total_fara_tva"),
+            ("TVA-ul", e.tva, "total_tva"),
+            ("totalul", e.total, "total"),
+        ] {
+            let want = i(&inv, key);
+            if got != want {
+                diff.push(format!("{what} {} în loc de {}", num::fmt_money(got), num::fmt_money(want)));
+            }
+        }
+        if !diff.is_empty() {
+            return Err(bad("e-Factura", format!("nu se potrivește cu factura {numar}: {}", diff.join("; "))));
+        }
+        Ok(numar)
+    }
+
     /// The invoice as PDF (Typst, D-045), checked by reading it back.
     pub(crate) fn invoice_pdf(&self, ctx: &mut ModuleContext<'_>, id: Uuid) -> CoreResult<Vec<u8>> {
         let inv = live(ctx, INVOICES, id, "factura")?;
