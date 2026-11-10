@@ -2360,7 +2360,34 @@
   "poza nu a ajuns întreagă": "the picture did not arrive whole",
   "poza nu e bună": "the picture is not valid",
   "💬 Trimite o observație": "💬 Send feedback",
-  "Scrii ce nu merge; se salvează pe calculator, cu o poză a ferestrei, ca să le trimiți tu": "Write what does not work; it is saved on this computer, with a picture of the window, for you to send"
+  "Scrii ce nu merge; se salvează pe calculator, cu o poză a ferestrei, ca să le trimiți tu": "Write what does not work; it is saved on this computer, with a picture of the window, for you to send",
+  "Pentru activitatea ta (": "For your activity (",
+  "Ce face firma ta?": "What does your firm do?",
+  "Alege tipul de activitate: îți propunem modulele potrivite și modelele de documente cele mai folosite. Activezi doar ce bifezi; restul rămâne în Catalog, oricând.": "Choose the kind of activity: we suggest the modules that fit and the most used document models. You enable only what you tick; the rest stays in the Catalog, any time.",
+  "Tipul de activitate": "Kind of activity",
+  "Module pentru „": "Modules for “",
+  "Păstrează alegerea": "Keep the choice",
+  "Schimbă tipul de activitate…": "Change the kind of activity…",
+  "Alege după tipul de activitate…": "Choose by kind of activity…",
+  "Activitatea firmei: ": "The firm's activity: ",
+  "Magazin, distribuție, vânzare en-gros: stocuri, facturi, oferte, comenzi și livrări.": "Shop, distribution, wholesale: stock, invoices, offers, orders and deliveries.",
+  "Șantiere și echipe: pontaj pe puncte de lucru, autorizații, recepții, proiecte cu termene.": "Sites and crews: timesheets by work site, permits, acceptance reports, projects with deadlines.",
+  "Parc auto și șoferi cu actele care expiră, livrări urmărite, comenzi.": "Fleet and drivers with expiring documents, tracked deliveries, orders.",
+  "Restaurant, cafenea, pensiune: stocuri, pontaj pe ture, autorizații (DSV, ISU, mediu).": "Restaurant, café, guesthouse: stock, shift timesheets, permits (food safety, fire, environment).",
+  "Consultanță, IT, reparații, firme de servicii: oferte, contracte, facturi, proiecte.": "Consulting, IT, repairs, service firms: offers, contracts, invoices, projects.",
+  "Producție": "Manufacturing",
+  "Ateliere și fabrici: stocuri pe depozite, echipe în ture, autorizații, planificare.": "Workshops and factories: stock by warehouse, crews in shifts, permits, planning.",
+  "Ferme și asociații: stocuri, autorizații și termene, calcule și foi de calcul.": "Farms and associations: stock, permits and deadlines, calculations and spreadsheets.",
+  "Cabinete și clinici": "Practices and clinics",
+  "Cabinete medicale, de avocatură, contabilitate: programări, documente, echipa.": "Medical, law and accounting practices: appointments, documents, the team.",
+  "Birou și uz personal": "Office and personal use",
+  "Documente, PDF-uri, foi de calcul, note și planificare, fără evidența firmei.": "Documents, PDFs, spreadsheets, notes and planning, without the firm's records.",
+  "Comerț": "Trade",
+  "Construcții": "Construction",
+  "Agricultură": "Agriculture",
+  "HoReCa": "HoReCa",
+  "Servicii": "Services",
+  "Transport": "Transport"
  },
  "templates": {
   "Completat de la ANAF (date pentru {0}): {1}. Verifică și completează restul de mână.": "Filled in from ANAF (data for {0}): {1}. Check and fill in the rest manually.",
@@ -2890,7 +2917,8 @@
   "dosarul observațiilor nu s-a putut face: {0}": "the folder of the notes could not be made: {0}",
   "observația nu s-a putut scrie: {0}": "the note could not be written: {0}",
   "poza nu s-a putut scrie: {0}": "the picture could not be written: {0}",
-  "dosarul nu s-a putut deschide: {0}": "the folder could not be opened: {0}"
+  "dosarul nu s-a putut deschide: {0}": "the folder could not be opened: {0}",
+  "Activează {0}": "Enable {0}"
  },
  "skip": [
   "rețeaua locală",
@@ -2987,6 +3015,10 @@
   "#< CLIXML\\r\n<Objs><S S=\"Error\">Certificatul nu mai e pe calculator (tokenul e scos?)._x000D__x000A_</S><S S=\"Error\">At line:5 char:1_x000D__x000A_</S></Objs>",
   "Observație {0}",
   "Observație K.G.B.",
-  "Observație {0}.png"
+  "Observație {0}.png",
+  "{0}: modulul {1} nu există",
+  "{0} de două ori",
+  "{0}: un modul de două ori",
+  "{0}: modelul {1} nu e inclus"
  ]
 }

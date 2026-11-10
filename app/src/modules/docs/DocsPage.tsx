@@ -5,6 +5,7 @@ import { SuggestInput, cardToParty, fold, matches, partyOf, partyToCard, remembe
 import type { Partner } from "../../pages/PartnersPage";
 import { AnafLookup, fullAddress } from "../../components/AnafLookup";
 import { open, save } from "@tauri-apps/plugin-dialog";
+import { invoke } from "@tauri-apps/api/core";
 import { api, message } from "../../api";
 import { FormsView } from "./forms";
 import { setIntent } from "../../intent";
@@ -32,6 +33,8 @@ interface Model {
   format: "docx" | "pdf";
   versiune: number;
   campuri: Field[];
+  /** The key of a built-in model (empty for imported ones). */
+  cheie?: string;
 }
 interface Generated {
   id: string;
@@ -182,6 +185,17 @@ export function DocsPage({ onError, onOpen }: { onError: (e: string | null) => v
   const [notice, setNotice] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
   const [dialogError, setDialogError] = useState<string | null>(null);
+  // The kind of activity chosen in the Catalog (7.4n): its models are shown first.
+  const [activity, setActivity] = useState<{ name: string; models: string[] } | null>(null);
+  useEffect(() => {
+    void Promise.all([api.getSettings(), invoke<{ id: string; name: string; models: string[] }[]>("activities_list")]).then(
+      ([st, list]) => {
+        const a = list.find((x) => x.id === st.settings.activitate);
+        setActivity(a ? { name: a.name, models: a.models } : null);
+      },
+      () => setActivity(null),
+    );
+  }, []);
 
   const refresh = useCallback(async () => {
     try {
@@ -256,6 +270,22 @@ export function DocsPage({ onError, onOpen }: { onError: (e: string | null) => v
               Importă un model .docx…
             </button>
           </div>
+          {activity && (
+            <p className="docs-recommended" data-testid="docs-recommended">
+              Pentru activitatea ta ({activity.name}):{" "}
+              {activity.models
+                .map((k) => models.find((m) => m.cheie === k))
+                .filter((m): m is Model => !!m)
+                .map((m, i) => (
+                  <span key={m.id}>
+                    {i > 0 && " · "}
+                    <button className="link" disabled={busy} onClick={() => setFilling(m)}>
+                      {m.nume}
+                    </button>
+                  </span>
+                ))}
+            </p>
+          )}
           {Object.entries(CATEGORY).map(([cat, label]) => {
             const list = models.filter((m) => m.categorie === cat);
             if (list.length === 0) return null;

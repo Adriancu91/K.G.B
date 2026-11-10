@@ -182,6 +182,9 @@ pub struct Settings {
     /// On by default: nothing goes out on its own. In an organization only an administrator changes it.
     #[serde(default = "yes")]
     pub internet: bool,
+    /// The kind of activity chosen (7.4n, `activities::ACTIVITIES`); empty = none chosen.
+    #[serde(default)]
+    pub activitate: String,
 }
 
 fn yes() -> bool {
@@ -198,6 +201,7 @@ impl Default for Settings {
             layout: Layout::default(),
             home: Home::default(),
             internet: true,
+            activitate: String::new(),
         }
     }
 }
@@ -240,6 +244,9 @@ impl Settings {
             if k.is_empty() || k.len() > 200 || !valid_day(d) {
                 return bad("un element amânat nu are o cheie sau o dată validă".into());
             }
+        }
+        if !self.activitate.is_empty() && crate::activities::find(&self.activitate).is_none() {
+            return Err(CoreError::invalid("tipul de activitate", format!("„{}” nu există", self.activitate)));
         }
         if !known_profiles.contains(&self.profile.as_str()) {
             return Err(CoreError::invalid(

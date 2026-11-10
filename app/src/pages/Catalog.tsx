@@ -1,8 +1,10 @@
 // Module catalog: enable (after showing the permissions), disable (after a
 // confirmation that the data stays), show/hide in the active profile.
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { invoke } from "@tauri-apps/api/core";
 import { api, message, type ModulesReply, type ModuleView } from "../api";
 import { Confirm } from "../components/Confirm";
+import { ActivityPicker, type Activity } from "./ActivityPicker";
 
 const STATUS_LABEL: Record<ModuleView["status"], string> = {
   stable: "stabil",
@@ -16,8 +18,17 @@ export function Catalog(props: {
   profileName: string;
   onChanged: () => Promise<void>;
   onError: (e: string | null) => void;
+  /** The kind of activity chosen (7.4n) and how to keep a new choice (with its work profile). */
+  activity: string;
+  onActivity: (activity: string, profile: string) => Promise<void>;
 }) {
   const [enabling, setEnabling] = useState<ModuleView | null>(null);
+  const [picking, setPicking] = useState(false);
+  const [activities, setActivities] = useState<Activity[]>([]);
+  useEffect(() => {
+    invoke<Activity[]>("activities_list").then(setActivities, () => setActivities([]));
+  }, []);
+  const activityName = activities.find((a) => a.id === props.activity)?.name ?? "";
   const [disabling, setDisabling] = useState<ModuleView | null>(null);
 
   const run = async (f: () => Promise<unknown>) => {
@@ -35,6 +46,21 @@ export function Catalog(props: {
       <p className="muted">
         Modulele se activează doar după ce vezi ce permisiuni cer. Dezactivarea nu șterge datele unui modul.
       </p>
+      <div className="row wrap">
+        <button onClick={() => setPicking(true)}>{props.activity ? "Schimbă tipul de activitate…" : "Alege după tipul de activitate…"}</button>
+        {activityName && <span className="muted">Activitatea firmei: {activityName}</span>}
+      </div>
+      {picking && (
+        <ActivityPicker
+          modules={props.modules}
+          current={props.activity}
+          onClose={() => setPicking(false)}
+          onDone={async (a, profile) => {
+            await props.onActivity(a, profile);
+            await props.onChanged();
+          }}
+        />
+      )}
       <div className="cards">
         {props.modules.modules.map((m) => {
           const visible = !props.modules.hidden.includes(m.id);

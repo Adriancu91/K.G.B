@@ -1796,3 +1796,11 @@ main:has(> .notes-window) {
   width: 100%;
   border: 0;
 }
+
+/* Profiles by kind of activity (7.4n): the choices in the Catalog's window. */
+.activity-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: var(--gap); margin: 12px 0; }
+.activity { display: flex; flex-direction: column; align-items: flex-start; gap: 4px; text-align: left; padding: 10px 12px; border: 1px solid var(--line); background: var(--panel); color: var(--fg); border-radius: 6px; cursor: pointer; }
+.activity small { color: var(--muted); }
+.activity.on { border-color: var(--accent); box-shadow: inset 0 0 0 1px var(--accent); }
+.activity-modules { list-style: none; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 6px 16px; }
+.docs-recommended { margin: 4px 0 8px; }

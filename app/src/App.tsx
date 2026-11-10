@@ -310,7 +310,14 @@ export function App() {
           />
         )}
         {page === "catalog" && (
-          <Catalog modules={modules} profileName={profileName} onChanged={loadModules} onError={setError} />
+          <Catalog
+            modules={modules}
+            profileName={profileName}
+            onChanged={loadModules}
+            onError={setError}
+            activity={s.activitate ?? ""}
+            onActivity={(activitate, profile) => saveSettings({ ...s, activitate, profile })}
+          />
         )}
         {page === "settings" && (
           <SettingsPage reply={settings} info={info} onSave={saveSettings} onInfoChanged={loadInfo} onError={setError} />

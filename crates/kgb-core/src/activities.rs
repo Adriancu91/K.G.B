@@ -1,0 +1,118 @@
+//! Profiles by kind of activity (7.4n): for the activities frequent in Romania, the modules that fit, the work
+//! profile of the sidebar and the built-in document models that are most useful. Choosing one only proposes:
+//! the person sees every module with the permissions it asks for, ticks what they want and enables it; nothing
+//! is enabled on its own, and every module can still be enabled or disabled from the Catalog. The firm-specific
+//! modules (recycling, the owner's own ERP) are separate and are not part of these profiles.
+
+use serde::Serialize;
+
+#[derive(Clone, Copy, Debug, Serialize)]
+pub struct Activity {
+    pub id: &'static str,
+    pub name: &'static str,
+    pub description: &'static str,
+    /// The modules proposed, in the order they are shown.
+    pub modules: &'static [&'static str],
+    /// The work profile set with it (`modules::PROFILES`).
+    pub profile: &'static str,
+    /// The keys of the built-in models of „Documente și modele” shown first.
+    pub models: &'static [&'static str],
+}
+
+pub const ACTIVITIES: &[Activity] = &[
+    Activity {
+        id: "comert",
+        name: "Comerț",
+        description: "Magazin, distribuție, vânzare en-gros: stocuri, facturi, oferte, comenzi și livrări.",
+        modules: &["kgb.business", "kgb.docs", "kgb.pdf", "kgb.sheets", "kgb.extract", "kgb.planner", "kgb.calc"],
+        profile: "depozit",
+        models: &["pdf-nir", "pdf-oferta", "oferta", "pdf-contract-vanzare", "pdf-pv-predare-primire"],
+    },
+    Activity {
+        id: "constructii",
+        name: "Construcții",
+        description: "Șantiere și echipe: pontaj pe puncte de lucru, autorizații, recepții, proiecte cu termene.",
+        modules: &["kgb.business", "kgb.team", "kgb.permits", "kgb.planner", "kgb.docs", "kgb.pdf", "kgb.sheets", "kgb.write"],
+        profile: "proiecte",
+        models: &["pdf-pv-receptie", "pv-receptie", "contract-servicii", "pdf-oferta", "pdf-pv-predare-primire"],
+    },
+    Activity {
+        id: "transport",
+        name: "Transport",
+        description: "Parc auto și șoferi cu actele care expiră, livrări urmărite, comenzi.",
+        modules: &["kgb.business", "kgb.team", "kgb.permits", "kgb.docs", "kgb.pdf", "kgb.planner", "kgb.sheets"],
+        profile: "management",
+        models: &["contract-servicii", "pdf-pv-predare-primire", "pdf-imputernicire", "pdf-oferta"],
+    },
+    Activity {
+        id: "horeca",
+        name: "HoReCa",
+        description: "Restaurant, cafenea, pensiune: stocuri, pontaj pe ture, autorizații (DSV, ISU, mediu).",
+        modules: &["kgb.business", "kgb.team", "kgb.permits", "kgb.docs", "kgb.pdf", "kgb.sheets", "kgb.calc"],
+        profile: "depozit",
+        models: &["pdf-nir", "pdf-contract-inchiriere", "adeverinta-salariat", "pdf-decizie"],
+    },
+    Activity {
+        id: "servicii",
+        name: "Servicii",
+        description: "Consultanță, IT, reparații, firme de servicii: oferte, contracte, facturi, proiecte.",
+        modules: &["kgb.business", "kgb.docs", "kgb.write", "kgb.pdf", "kgb.planner", "kgb.notes", "kgb.calc"],
+        profile: "birou",
+        models: &["contract-servicii", "oferta", "pdf-oferta", "pdf-pv-receptie", "cerere"],
+    },
+    Activity {
+        id: "productie",
+        name: "Producție",
+        description: "Ateliere și fabrici: stocuri pe depozite, echipe în ture, autorizații, planificare.",
+        modules: &["kgb.business", "kgb.team", "kgb.planner", "kgb.permits", "kgb.docs", "kgb.sheets", "kgb.pdf", "kgb.calc"],
+        profile: "depozit",
+        models: &["pdf-nir", "pdf-pv-receptie", "pdf-decizie", "adeverinta-salariat"],
+    },
+    Activity {
+        id: "agricultura",
+        name: "Agricultură",
+        description: "Ferme și asociații: stocuri, autorizații și termene, calcule și foi de calcul.",
+        modules: &["kgb.business", "kgb.permits", "kgb.calc", "kgb.sheets", "kgb.docs", "kgb.pdf", "kgb.planner"],
+        profile: "management",
+        models: &["pdf-contract-vanzare", "pdf-contract-inchiriere", "pdf-nir", "cerere"],
+    },
+    Activity {
+        id: "cabinet",
+        name: "Cabinete și clinici",
+        description: "Cabinete medicale, de avocatură, contabilitate: programări, documente, echipa.",
+        modules: &["kgb.planner", "kgb.docs", "kgb.write", "kgb.pdf", "kgb.notes", "kgb.team", "kgb.business"],
+        profile: "birou",
+        models: &["contract-servicii", "cerere", "adeverinta-salariat", "pdf-imputernicire"],
+    },
+    Activity {
+        id: "birou",
+        name: "Birou și uz personal",
+        description: "Documente, PDF-uri, foi de calcul, note și planificare, fără evidența firmei.",
+        modules: &["kgb.notes", "kgb.pdf", "kgb.sheets", "kgb.write", "kgb.calc", "kgb.planner", "kgb.docs"],
+        profile: "personal",
+        models: &["cerere", "pdf-imputernicire", "pdf-contract-inchiriere"],
+    },
+];
+
+pub fn find(id: &str) -> Option<&'static Activity> {
+    ACTIVITIES.iter().find(|a| a.id == id)
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn every_activity_is_complete_and_uses_known_profiles() {
+        let profiles = crate::modules::profile_ids();
+        let mut ids = std::collections::BTreeSet::new();
+        for a in ACTIVITIES {
+            assert!(ids.insert(a.id), "{} de două ori", a.id);
+            assert!(!a.name.is_empty() && !a.description.is_empty() && !a.modules.is_empty() && !a.models.is_empty());
+            assert!(profiles.contains(&a.profile), "{}: profilul {}", a.id, a.profile);
+            let mut seen = std::collections::BTreeSet::new();
+            assert!(a.modules.iter().all(|m| seen.insert(*m)), "{}: un modul de două ori", a.id);
+        }
+        assert!(find("comert").is_some() && find("necunoscut").is_none());
+    }
+}

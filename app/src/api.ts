@@ -30,6 +30,8 @@ export interface Settings {
   home: { panels: HomePanel[]; amanate: Record<string, string>; vreme?: string };
   /** Requests to the internet the person asks for (D-086); in an organization only an administrator changes it. */
   internet?: boolean;
+  /** The kind of activity chosen (7.4n); empty = none. */
+  activitate?: string;
 }
 
 export interface Profile {

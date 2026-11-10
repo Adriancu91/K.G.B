@@ -391,7 +391,7 @@ impl Docs {
             .collect();
         Ok(json!({
             "id": r.id, "version": r.version, "nume": s(r, "nume"), "categorie": s(r, "categorie"),
-            "sursa": s(r, "sursa"), "document": doc, "versiune": v.number, "campuri": fields,
+            "sursa": s(r, "sursa"), "cheie": s(r, "cheie"), "document": doc, "versiune": v.number, "campuri": fields,
             "format": format_of(r),
         }))
     }
@@ -758,6 +758,20 @@ impl Module for Docs {
                 "modulul Documente",
                 format!("comandă necunoscută „{other}”"),
             )),
+        }
+    }
+}
+
+#[cfg(test)]
+mod activity_models {
+    /// The models the activity profiles recommend (kgb_core::activities, 7.4n) are built in here.
+    #[test]
+    fn every_recommended_model_is_built_in() {
+        let keys: Vec<&str> = super::BUILT_IN.iter().map(|m| m.0).chain(super::BUILT_IN_PDF.iter().map(|m| m.0)).collect();
+        for a in kgb_core::activities::ACTIVITIES {
+            for m in a.models {
+                assert!(keys.contains(m), "{}: modelul {m} nu e inclus", a.id);
+            }
         }
     }
 }

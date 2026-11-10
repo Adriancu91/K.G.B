@@ -79,6 +79,27 @@ fn known_profiles() -> Vec<&'static str> {
     modules::profile_ids()
 }
 
+/// The profiles by kind of activity (7.4n): what each one proposes. Enabling is done module by module, with the
+/// permissions the person sees and grants, through `enable_module`.
+#[tauri::command]
+fn activities_list() -> Vec<kgb_core::activities::Activity> {
+    kgb_core::activities::ACTIVITIES.to_vec()
+}
+
+#[cfg(test)]
+mod activity_tests {
+    /// Every module an activity proposes is a module of this app.
+    #[test]
+    fn activities_propose_only_built_in_modules() {
+        let ids: Vec<String> = super::builtin_modules().iter().map(|m| m.manifest().id.clone()).collect();
+        for a in kgb_core::activities::ACTIVITIES {
+            for m in a.modules {
+                assert!(ids.iter().any(|i| i == m), "{}: modulul {m} nu există", a.id);
+            }
+        }
+    }
+}
+
 /// Runs `f` with the open session, or explains why there is none.
 fn with_session<T>(app: &State<AppState>, f: impl FnOnce(&mut Session) -> Result<T, CoreError>) -> CmdResult<T> {
     let mut guard = app
@@ -2015,7 +2036,8 @@ fn main() {
             wincert::wincert_sign,
             feedback::feedback_capture,
             feedback::feedback_save,
-            feedback::feedback_open_dir
+            feedback::feedback_open_dir,
+            activities_list
             ]);
             // The hidden print windows (D-081) may call only their two commands: no modules, files or dialogs.
             move |invoke| {
