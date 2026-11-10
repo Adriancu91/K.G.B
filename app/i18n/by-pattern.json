@@ -610,11 +610,6 @@
   "f": "modules/calc/CalcPage.tsx"
  },
  {
-  "ro": "Prețul",
-  "en": "Price",
-  "f": "modules/calc/CalcPage.tsx"
- },
- {
   "ro": "Zile",
   "en": "Days",
   "f": "modules/calc/CalcPage.tsx"
@@ -738,6 +733,26 @@
   "ro": "Sursa",
   "en": "Source",
   "f": "modules/extract/ExtractPage.tsx"
+ },
+ {
+  "ro": "Acțiune",
+  "en": "Action",
+  "f": "modules/market/MarketPage.tsx"
+ },
+ {
+  "ro": "Fond",
+  "en": "First instance",
+  "f": "modules/market/MarketPage.tsx"
+ },
+ {
+  "ro": "Valută",
+  "en": "Currency",
+  "f": "modules/market/MarketPage.tsx"
+ },
+ {
+  "ro": "Altul",
+  "en": "Other",
+  "f": "modules/market/MarketPage.tsx"
  },
  {
   "ro": "Ușoară (calitate foarte bună)",
@@ -978,11 +993,6 @@
   "ro": "Fișierul nu e XFDF (comentarii PDF exportate din Cyber Office Studio sau din alt program).",
   "en": "The file is not XFDF (PDF comments exported from Cyber Office Studio or another program).",
   "f": "modules/pdf/xfdf.ts"
- },
- {
-  "ro": "Construcții",
-  "en": "Construction",
-  "f": "modules/permits/PermitsPage.tsx"
  },
  {
   "ro": "Mediu",
@@ -1255,11 +1265,6 @@
   "f": "pages/DiagnosticsPage.tsx"
  },
  {
-  "ro": "Acțiune",
-  "en": "Action",
-  "f": "pages/DiagnosticsPage.tsx"
- },
- {
   "ro": "Bani",
   "en": "Money",
   "f": "pages/Home.tsx"
@@ -1430,6 +1435,11 @@
   "f": "pages/SettingsPage.tsx"
  },
  {
+  "ro": "Română",
+  "en": "Romanian",
+  "f": "pages/SettingsPage.tsx"
+ },
+ {
   "ro": "oprită",
   "en": "off",
   "f": "pages/SourcesPage.tsx"
@@ -1473,6 +1483,11 @@
   "ro": "numele fișierului",
   "en": "file name",
   "f": "crates/kgb-core/src/files.rs"
+ },
+ {
+  "ro": "cuvânt ",
+  "en": "word ",
+  "f": "crates/kgb-core/src/news.rs"
  },
  {
   "ro": "Expiră azi: {0} — {1}",

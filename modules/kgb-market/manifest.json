@@ -1,0 +1,69 @@
+{
+  "manifest_format": 1,
+  "id": "kgb.market",
+  "name": "Piață",
+  "description": "Lista de urmărire: acțiuni, fonduri, valute, mărfuri, cu cotații scrise de mână sau aduse din CSV, fiecare cu sursa și ora ei, graficul lor și alerte când o cotație trece un prag. Evidență, nu sfaturi de investiții.",
+  "version": "0.1.0",
+  "core": ">=0.1.0, <0.2.0",
+  "status": "beta",
+  "permissions": [
+    "storage.own",
+    "notify.send"
+  ],
+  "services": [
+    "storage",
+    "notify",
+    "log"
+  ],
+  "data_types": [
+    {
+      "collection": "instruments",
+      "description": "ce se urmărește: simbolul, numele, felul, moneda, o notă",
+      "schema": {
+        "fields": {
+          "simbol": { "type": "string", "required": true, "max_len": 20 },
+          "nume": { "type": "string", "required": true, "max_len": 200 },
+          "fel": { "type": "string", "required": true, "enum": ["actiune", "fond", "valuta", "marfa", "altul"] },
+          "moneda": { "type": "string", "required": true, "max_len": 3 },
+          "nota": { "type": "string", "required": true, "max_len": 1000 },
+          "creat_ms": { "type": "integer", "required": true, "min": 0 }
+        },
+        "additional": false
+      }
+    },
+    {
+      "collection": "quotes",
+      "description": "cotațiile: instrumentul, momentul (ora României), prețul în zecimi de miimi, sursa",
+      "schema": {
+        "fields": {
+          "instrument": { "type": "string", "required": true, "max_len": 36 },
+          "moment": { "type": "string", "required": true, "max_len": 16 },
+          "pret": { "type": "integer", "required": true },
+          "sursa": { "type": "string", "required": true, "max_len": 200 },
+          "creat_ms": { "type": "integer", "required": true, "min": 0 }
+        },
+        "additional": false
+      }
+    },
+    {
+      "collection": "alerts",
+      "description": "alertele: instrumentul, peste sau sub, pragul, dacă e activă",
+      "schema": {
+        "fields": {
+          "instrument": { "type": "string", "required": true, "max_len": 36 },
+          "directie": { "type": "string", "required": true, "enum": ["peste", "sub"] },
+          "nivel": { "type": "integer", "required": true },
+          "activa": { "type": "bool", "required": true }
+        },
+        "additional": false
+      }
+    }
+  ],
+  "events": {
+    "emits": [],
+    "listens": []
+  },
+  "data_format": 1,
+  "migrations": [],
+  "on_disable": "Lista de urmărire, cotațiile și alertele rămân în spațiul de lucru și reapar când modulul este activat din nou."
+}

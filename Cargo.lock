@@ -3741,6 +3741,7 @@ dependencies = [
  "kgb-core",
  "kgb-docs",
  "kgb-extract",
+ "kgb-market",
  "kgb-net",
  "kgb-news",
  "kgb-notes",
@@ -3848,6 +3849,19 @@ dependencies = [
  "kgb-sheets",
  "kgb-store",
  "lopdf",
+ "serde",
+ "serde_json",
+ "tempfile",
+ "uuid",
+]
+
+[[package]]
+name = "kgb-market"
+version = "0.1.0"
+dependencies = [
+ "base64 0.22.1",
+ "kgb-core",
+ "kgb-store",
  "serde",
  "serde_json",
  "tempfile",

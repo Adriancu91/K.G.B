@@ -22,6 +22,7 @@ kgb-planner.workspace = true
 kgb-docs.workspace = true
 kgb-business.workspace = true
 kgb-permits.workspace = true
+kgb-market.workspace = true
 kgb-team.workspace = true
 kgb-calc.workspace = true
 kgb-news.workspace = true
