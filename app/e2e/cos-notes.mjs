@@ -28,7 +28,7 @@ const check = (name, ok, detail = "") => {
 };
 const start = () =>
   spawn(exe, [], {
-    env: { ...process.env, KGB_DATA_DIR: data, WEBVIEW2_ADDITIONAL_BROWSER_ARGUMENTS: `--remote-debugging-port=${PORT}` },
+    env: { ...process.env, KGB_DATA_DIR: data, KGB_NO_DESKTOP_NOTIFY: "1", WEBVIEW2_ADDITIONAL_BROWSER_ARGUMENTS: `--remote-debugging-port=${PORT}` },
     stdio: "ignore",
   });
 const stop = () => {
@@ -153,6 +153,21 @@ try {
   const text = await fr(p, "document.body.innerText");
   check("după repornire notele sunt în fereastră", /cafea/.test(text) && /De pe celălalt PC/.test(text));
   await p.screenshot(join(shots, "02-dupa-repornire.png"));
+
+  // 7.4l-2b-rem: a note with a reminder a minute ago is announced in the bell, once (the app's round of
+  // reminders; KGB_NO_DESKTOP_NOTIFY keeps the Windows notification off the screen).
+  const cur = await call(p, "notebook_load");
+  const withRem = JSON.parse(cur.content);
+  withRem.notes.push({ id: "memento-1", title: "Sună la bancă", body: "până la ora 12", created: "2026-11-10T09:00:00.000Z", updated: "2026-11-10T09:00:00.000Z", remind: new Date(Date.now() - 60000).toISOString() });
+  await call(p, "notebook_save", { content: JSON.stringify(withRem), seen: cur.seen });
+  const azi = new Date().toLocaleDateString("sv-SE");
+  const tick = () => p.eval(`window.__TAURI_INTERNALS__.invoke("reminders_tick", { azi: ${JSON.stringify(azi)} })`);
+  await tick();
+  const bell = async () => (await p.eval('window.__TAURI_INTERNALS__.invoke("notifications_list")')).items.filter((n) => n.titlu === "Memento: Sună la bancă");
+  const first = await bell();
+  check("memento-ul notei apare o dată în clopoțel", first.length === 1 && first[0].text === "până la ora 12", JSON.stringify(first));
+  await tick();
+  check("runda următoare nu-l mai repetă", (await bell()).length === 1);
   p.close();
   stop();
 } catch (e) {

@@ -412,3 +412,10 @@ Deciziile DECIS se schimbă doar cu aprobarea explicită a proprietarului (Maste
 - Fereastra ascunsă nu primește module și nici date: doar o „fotografie” a documentului (HTML curățat: fără scripturi, fără `on*`, fără iframe sau object, fără adrese externe; imagini doar `data:`, `blob:` sau din aplicație), dată o singură dată prin `print_job_take`, apoi `print_job_ready`; capabilitatea ei are doar aceste două comenzi; CSP-ul aplicației rămâne același.
 - Antetul, subsolul și numerotarea se pun apoi în cadru cu pdf-lib (D-072); salvarea pe disc trece prin `export_file`, ca orice export.
 - `webview2-com` 0.39.1 (deja adus de Tauri, aceeași versiune) folosit direct; nicio bibliotecă nouă. Lucrul îl face sesiunea COS pe ramura `kgb/cos-print`, cu poarta K.G.B.
+
+### D-083 — Fereastra poate citi fișierele proprii ale aplicației (`connect-src 'self'`)
+- **Data:** 10 nov. 2026 · **Statut:** DECIS — acord COS + K.G.B. (D-074); completează D-038
+- **Motivul:** codul copiat din COS citește cu `fetch()` fișiere din bundle-ul aplicației, aduse cu `?url`: fonturi pentru PDF-uri, datele OCR. Fără `'self'` în `connect-src`, aceste citiri sunt refuzate (în e2e 7.4m-1, „Factură PDF” dădea „Failed to fetch”). Sunt 8 fișiere: `docs/PrintPreview.tsx`, `docs/rasterPrint.ts`, `notes/pdftext.ts`, `pdf/efactura.ts`, `pdf/ocr.ts`, `sheets/PageLayout.tsx`, `sheets/pdfImport.ts`, `sheets/pdfWords.ts`. A le schimba pe `?inline` ar fi încălcat „copiat neschimbat” (D-071) și ar fi umflat bundle-ul.
+- **Schimbarea:** `connect-src 'self' ipc: http://ipc.localhost`. `'self'` e doar originea aplicației, adică fișierele din bundle.
+- **Rămâne interzis:** rețeaua (fără `http:`/`https:` și fără wildcard în `connect-src`), `eval` (fără `'unsafe-eval'`). Restul CSP-ului e neschimbat. Testul `app/e2e/cos-efactura.mjs` verifică din pagină că `fetch("https://example.com")` e refuzat și că un fișier din bundle se citește.
+- `printPdf.ts` își păstrează fontul `?inline` (merge; nu se schimbă fără motiv). Fereastra ascunsă `print-*` (D-081) are același CSP, dar nu are `kgbHost`, deci nu câștigă nimic.

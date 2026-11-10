@@ -187,6 +187,14 @@ try {
   formulas.forEach(([, , want], i) => check(`=VALID… ${names[i]} → ${want ? "ADEVĂRAT" : "FALS"}`, want ? isTrue(got[i]) : isFalse(got[i]), String(got[i])));
 
   check("nicio eroare în fereastră", (await fr(p, "JSON.stringify(window.__errs ?? [])")) === "[]", await fr(p, "JSON.stringify(window.__errs ?? [])"));
+
+  // D-083: 'self' in connect-src reads the app's own files, but the network stays closed.
+  const net = await p.eval('fetch("https://example.com").then(() => "deschis", (e) => "refuzat: " + e.message)');
+  check("rețeaua rămâne închisă (fetch https://example.com refuzat)", net.startsWith("refuzat"), net);
+  const own = await p.eval(
+    "(() => { const s = document.querySelector('script[src]')?.getAttribute('src'); return s ? fetch(s).then((r) => r.ok ? 'citit ' + s : 'stare ' + r.status, (e) => 'refuzat: ' + e.message) : 'fără script'; })()",
+  );
+  check("un fișier din aplicație se citește (connect-src 'self')", own.startsWith("citit"), own);
   p.close();
 } catch (e) {
   check("scenariul a rulat până la capăt", false, e.message);
