@@ -246,7 +246,7 @@ export function AppointmentsPage({ onError, access }: { onError: (e: string | nu
             <div key={f.resursa} className="row wrap appt-free" aria-label={`Ore libere: ${f.nume}`}>
               <span className="small">{f.nume}:</span>
               {f.ore.length === 0 && <span className="muted small">nicio oră liberă</span>}
-              {f.ore.slice(0, 60).map((o) => (
+              {f.ore.map((o) => (
                 <button
                   key={o}
                   className={form.ora === o && form.resursa === f.resursa ? "primary small" : "small"}
