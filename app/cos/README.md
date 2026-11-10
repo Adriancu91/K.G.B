@@ -19,3 +19,8 @@ aceeași structură de foldere ca în COS (`src/notes/…`, `src/docs/…`, `src
   K.G.B. le folosește în `app/src/modules/pdf/StampEdit.tsx`.
 - `hooks.mjs` găsește pachetele (pdf-lib…) din `app/node_modules` și când fișierul de intrare al testului stă în `%TEMP%`.
   Shim-ul creează dosarul fișierului de ieșire (de ex. `node_modules/.cache`).
+- Editarea textului la clic (7.4l-0b, D-078): `src/pdf/{TextEdit.tsx,paragraphs,replaceText,textRemove,find}.ts`, neschimbate,
+  cu `src/pdf/textedit.css` (regulile `.pdf-textedit` din `pdf.css`). Testele `pdf-paragraph-edit` și `pdf-replacetext` trec
+  neschimbate (`hooks.mjs` leagă `node_modules/pdfjs-dist` de aici de pachetul aplicației, pentru fonturile citite după cale).
+  K.G.B. are pdf.js 6, fără `convertToViewportRectangle`: `app/src/modules/pdf/pdfjs.ts` (`viewportCompat`) o pune înapoi.
+  K.G.B. le folosește în `app/src/modules/pdf/TextEditPage.tsx`.

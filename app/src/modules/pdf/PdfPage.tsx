@@ -12,6 +12,7 @@ import { ToolsPanel } from "./Tools";
 import { FormPanel } from "./Form";
 import { StampsPanel } from "./Stamps";
 import { extractStamps, pageSize, placeCentre, StampPage, stampMark, stampMarks, type Armed, type Mark } from "./StampEdit";
+import { TextEditPage } from "./TextEditPage";
 
 const ID = "kgb.pdf";
 const THUMBS_AT_ONCE = 60;
@@ -120,6 +121,8 @@ export function PdfPage({ onError }: { onError: (e: string | null) => void }) {
   const [selMark, setSelMark] = useState<number | null>(null);
   const [editMark, setEditMark] = useState<number | null>(null);
   const markId = useRef(1);
+  // Editing the text on click (7.4l-0b), on the big page.
+  const [textEdit, setTextEdit] = useState(false);
 
   const refresh = useCallback(async () => {
     try {
@@ -222,15 +225,18 @@ export function PdfPage({ onError }: { onError: (e: string | null) => void }) {
   const apply = () =>
     run(async () => {
       if (!preview) return;
-      const r = await api.moduleCall<{ version?: number; document?: Doc; summary: string }>(ID, preview.command, {
+      const r = await api.moduleCall<{ version?: number; document?: Doc; summary: string; pages?: number }>(ID, preview.command, {
         ...preview.args,
         apply: true,
       });
       setPreview(null);
       setNotice(r.document ? `Document nou: ${r.document.name} (${r.summary}).` : `Salvat ca versiunea ${r.version} (${r.summary}).`);
       await refresh();
+      // A new version of the same pages (text edited, stamps): the open page stays open, so editing goes on.
+      const keep = preview.command === "save_edit" && big !== null && r.pages !== undefined && big <= r.pages ? big : null;
       if (r.document) setCurrent(r.document.id);
       else if (current) await load(current, null);
+      if (keep !== null) setBig(keep);
     });
 
   const onExport = () =>
@@ -516,10 +522,50 @@ export function PdfPage({ onError }: { onError: (e: string | null) => void }) {
 
             {big !== null && view && (
               <div className="pdf-big">
-                <button className="link" onClick={() => setBig(null)}>
-                  ← Înapoi la pagini
-                </button>
-                {editable && base ? (
+                <div className="row wrap">
+                  <button className="link" onClick={() => setBig(null)}>
+                    ← Înapoi la pagini
+                  </button>
+                  {editable && base && (
+                    <button
+                      className={textEdit ? "primary" : ""}
+                      aria-pressed={textEdit}
+                      disabled={busy || marksDirty || armed !== null}
+                      title={
+                        marksDirty
+                          ? "Salvează întâi ștampilele (sau renunță la schimbări)"
+                          : "Editează text: dă clic pe un rând sau pe un paragraf din pagină, schimbă-l și apasă Enter (textul vechi se scoate din pagină). Delete îl șterge, Esc renunță, Alt+clic = doar rândul"
+                      }
+                      onClick={() => {
+                        setTextEdit(!textEdit);
+                        setSelMark(null);
+                        setEditMark(null);
+                      }}
+                    >
+                      ✎ Editează text
+                    </button>
+                  )}
+                  {textEdit && editable && base && <span className="muted small">Fiecare schimbare se previzualizează și devine o versiune nouă.</span>}
+                </div>
+                {editable && base && textEdit && !marksDirty ? (
+                  <TextEditPage
+                    doc={view}
+                    page={big}
+                    base={base}
+                    marks={marks}
+                    busy={busy}
+                    onError={onError}
+                    onEdited={(out, what) =>
+                      void ask("Editarea textului", "save_edit", {
+                        id: current,
+                        based_on: version,
+                        data: toB64(out),
+                        summary: what,
+                        same_text_pages: Array.from({ length: view.numPages }, (_, i) => i + 1).filter((p) => p !== big),
+                      })
+                    }
+                  />
+                ) : editable && base ? (
                   <StampPage
                     doc={view}
                     page={big}

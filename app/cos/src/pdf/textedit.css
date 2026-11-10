@@ -1,0 +1,33 @@
+/* Copiat neschimbat din Cyber Office Studio (D-071): regulile stratului „Editează text” din src/pdf/pdf.css. */
+.pdf-textedit { position: absolute; inset: 0; z-index: 5; cursor: text; }
+.pdf-textedit-hover { position: absolute; outline: 1.5px dashed #1c7ed6; background: rgba(28, 126, 214, 0.08); pointer-events: none; border-radius: 2px; }
+.pdf-textedit-box { position: absolute; display: flex; align-items: stretch; gap: 2px; z-index: 6; }
+.pdf-textedit-box input { box-sizing: border-box; min-width: 40px; padding: 0 2px; border: 1.5px solid #1c7ed6; border-radius: 2px; background: #fff; color: #000; font-family: Arial, 'Liberation Sans', sans-serif; outline: none; box-shadow: 0 2px 8px rgba(0,0,0,.2); }
+.pdf-textedit-box textarea { box-sizing: border-box; padding: 1px 2px; border: 1.5px solid #1c7ed6; border-radius: 2px; background: #fff; color: #000; font-family: Arial, 'Liberation Sans', sans-serif; outline: none; box-shadow: 0 2px 8px rgba(0,0,0,.2); resize: both; overflow: hidden; }
+.pdf-textedit-box.para { align-items: flex-start; }
+.pdf-textedit-box.para > button { height: 26px; }
+.pdf-textedit-box button { min-width: 26px; padding: 0 4px; font-size: 13px; }
+.pdf-textedit-img { position: absolute; outline: 1.5px dashed #e8590c; pointer-events: none; }
+.pdf-textedit-img.sel { outline: 2px solid #e8590c; background: rgba(232, 89, 12, 0.08); }
+.pdf-textedit-handle { position: absolute; width: 10px; height: 10px; margin: -5px; background: #fff; border: 2px solid #e8590c; border-radius: 2px; pointer-events: auto; box-sizing: border-box; }
+.pdf-textedit-handle.nw { left: 0; top: 0; cursor: nwse-resize; }
+.pdf-textedit-handle.se { right: 0; bottom: 0; cursor: nwse-resize; }
+.pdf-textedit-handle.ne { right: 0; top: 0; cursor: nesw-resize; }
+.pdf-textedit-handle.sw { left: 0; bottom: 0; cursor: nesw-resize; }
+.pdf-textedit-cropwrap { position: absolute; inset: 0; overflow: hidden; pointer-events: none; }
+.pdf-textedit-crop { position: absolute; box-sizing: border-box; border: 1.5px solid #fff; outline: 1px solid #222; box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.5); pointer-events: auto; cursor: move; }
+.pdf-textedit-chandle { position: absolute; width: 10px; height: 10px; margin: -5px; background: #fff; border: 1.5px solid #222; box-sizing: border-box; }
+.pdf-textedit-chandle.nw { left: 0; top: 0; cursor: nwse-resize; } .pdf-textedit-chandle.se { right: 0; bottom: 0; cursor: nwse-resize; }
+.pdf-textedit-chandle.ne { right: 0; top: 0; cursor: nesw-resize; } .pdf-textedit-chandle.sw { left: 0; bottom: 0; cursor: nesw-resize; }
+.pdf-textedit-chandle.n { left: 50%; top: 0; cursor: ns-resize; } .pdf-textedit-chandle.s { left: 50%; bottom: 0; cursor: ns-resize; }
+.pdf-textedit-chandle.e { right: 0; top: 50%; cursor: ew-resize; } .pdf-textedit-chandle.w { left: 0; top: 50%; cursor: ew-resize; }
+.pdf-textedit-imgbar { position: absolute; top: -26px; right: 0; display: flex; gap: 2px; pointer-events: auto; }
+.pdf-textedit-imgbar > button { min-width: 26px; padding: 0 4px; font-size: 13px; }
+.pdf-textedit-fmt { position: absolute; left: 0; bottom: 100%; margin-bottom: 4px; display: flex; gap: 2px; align-items: center; padding: 2px; background: #fff; border: 1px solid #c9d3df; border-radius: 4px; box-shadow: 0 2px 8px rgba(0,0,0,.18); white-space: nowrap; }
+.pdf-textedit-fmt input[type=color] { width: 28px; min-width: 28px; height: 24px; padding: 0; border: none; box-shadow: none; }
+.pdf-textedit-fmt select { height: 24px; font-size: 12px; }
+.pdf-textedit-fmt button.on { background: #d0e4fa; }
+.pdf-textedit-img.sel.shape { outline-style: dashed; }
+.pdf-textedit-imgcolor { position: relative; display: inline-flex; align-items: center; justify-content: center; min-width: 26px; padding: 0 4px; font-size: 13px; background: var(--panel, #fff); border: 1px solid var(--border, #c9ced6); border-radius: 4px; cursor: pointer; }
+.pdf-textedit-imgcolor input { position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; height: 100%; padding: 0; border: 0; }
+.pdf-textedit-shapelw { height: 24px; font-size: 12px; }

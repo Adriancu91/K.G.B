@@ -2297,7 +2297,13 @@
   "felul atașamentului nu este acceptat (pdf, webm, bin)": "this kind of attachment is not accepted (pdf, webm, bin)",
   "atașamentul nu a ajuns întreg": "the attachment did not arrive whole",
   "atașamentul nu există": "the attachment does not exist",
-  "Note": "Notes"
+  "Note": "Notes",
+  "Salvează întâi ștampilele (sau renunță la schimbări)": "Save the stamps first (or discard the changes)",
+  "Editează text: dă clic pe un rând sau pe un paragraf din pagină, schimbă-l și apasă Enter (textul vechi se scoate din pagină). Delete îl șterge, Esc renunță, Alt+clic = doar rândul": "Edit text: click a line or a paragraph on the page, change it and press Enter (the old text is taken out of the page). Delete removes it, Esc cancels, Alt+click = just the line",
+  "Fiecare schimbare se previzualizează și devine o versiune nouă.": "Every change is previewed and becomes a new version.",
+  "Editarea textului": "Text editing",
+  "Pagina s-a schimbat între timp: deschide-o din nou.": "The page changed in the meantime: open it again.",
+  "✎ Editează text": "✎ Edit text"
  },
  "templates": {
   "Completat de la ANAF (date pentru {0}): {1}. Verifică și completează restul de mână.": "Filled in from ANAF (data for {0}): {1}. Check and fill in the rest manually.",
@@ -2805,7 +2811,9 @@
   "Registru facturi ({0})": "Invoice register ({0})",
   "notița „{0}” are peste {1} MB fără poze": "the note \"{0}\" is over {1} MB without pictures",
   "notița {0}: păstrată varianta mai nouă, de pe alt PC": "note {0}: the newer version, from another PC, was kept",
-  "notița {0}: schimbată în ambele locuri, păstrată varianta din fereastră (mai nouă)": "note {0}: changed in both places, the window's (newer) version was kept"
+  "notița {0}: schimbată în ambele locuri, păstrată varianta din fereastră (mai nouă)": "note {0}: changed in both places, the window's (newer) version was kept",
+  "textul „{0}” schimbat pe pagina {1}": "the text “{0}” changed on page {1}",
+  "textul „{0}” scos de pe pagina {1}": "the text “{0}” removed from page {1}"
  },
  "skip": [
   "Sector ",

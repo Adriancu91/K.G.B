@@ -2,8 +2,20 @@
 // K.G.B. does not have. Node 24 reads TypeScript itself, so here `esbuild`'s `build` only writes a file that
 // re-exports the entry, extensionless imports resolve to `.ts`, and `.svg` files load as text.
 // Use (in app/cos/): node --import ./hooks.mjs tests/notes-pages.test.mjs
+import { existsSync, mkdirSync, symlinkSync } from "node:fs";
 import { createRequire, registerHooks } from "node:module";
 import { fileURLToPath, pathToFileURL } from "node:url";
+
+// Some tests read package files by path from their own folder (node_modules/pdfjs-dist/standard_fonts/…, as in
+// COS, where the packages sat next to the tests): the app's copy is linked here once (a junction, git-ignored).
+for (const pkg of ["pdfjs-dist"]) {
+  const link = fileURLToPath(new URL(`./node_modules/${pkg}`, import.meta.url));
+  const target = fileURLToPath(new URL(`../node_modules/${pkg}`, import.meta.url));
+  if (!existsSync(link) && existsSync(target)) {
+    mkdirSync(fileURLToPath(new URL("./node_modules/", import.meta.url)), { recursive: true });
+    symlinkSync(target, link, "junction");
+  }
+}
 
 const appRoot = new URL("../package.json", import.meta.url).href;
 const shim = new URL("./esbuild-shim.mjs", import.meta.url).href;

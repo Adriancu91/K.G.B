@@ -268,8 +268,9 @@ try {
   check("ștampila a creat versiunea 3", (await versionLabel(p)).includes("1 ștampilă"), await versionLabel(p));
 
   // Reopened: the saved stamp is editable again, with its text, and the page under it has no second copy.
-  await thumbsLoaded(p, 1);
-  await p.eval("document.querySelector('.pdf-pages .thumb').click()");
+  // (After a new version of the same pages the open page stays open, 7.4l-0b.)
+  await p.until("!!document.querySelector('.pdf-big .pdf-page-box canvas')", 10000);
+  check("după salvare pagina rămâne deschisă", !(await p.eval("!!document.querySelector('.pdf-pages')")));
   await p.until("document.querySelectorAll('.pdf-mark[data-mark=stamp]').length === 1", 10000);
   await sleep(800);
   const r4 = await rectOf(".pdf-mark[data-mark=stamp]");

@@ -14,7 +14,27 @@ export function fromBase64(b64: string): Uint8Array {
 }
 
 export async function openPdf(data: Uint8Array): Promise<PDFDocumentProxy> {
-  return getDocument({ data, useSystemFonts: false, verbosity: 0 }).promise;
+  const doc = await getDocument({ data, useSystemFonts: false, verbosity: 0 }).promise;
+  if (doc.numPages > 0) viewportCompat((await doc.getPage(1)).getViewport({ scale: 1 }));
+  return doc;
+}
+
+/**
+ * Adaptare K.G.B. (nu din COS): pdf.js 6 nu mai are `PageViewport.convertToViewportRectangle`, pe care codul copiat
+ * neschimbat din COS (pdf.js 4) îl folosește (TextEdit.tsx: rândurile paginii pentru „Editează text”). Metoda se pune
+ * înapoi pe clasa vederilor, o dată, cu aceeași socoteală ca în pdf.js 4: cele două colțuri trecute prin matricea vederii.
+ */
+export function viewportCompat(vp: object): void {
+  const proto = Object.getPrototypeOf(vp) as {
+    convertToViewportRectangle?: (r: number[]) => number[];
+    convertToViewportPoint(x: number, y: number): number[];
+  };
+  if (proto.convertToViewportRectangle) return;
+  proto.convertToViewportRectangle = function (this: typeof proto, r: number[]) {
+    const [x0, y0] = this.convertToViewportPoint(r[0]!, r[1]!);
+    const [x1, y1] = this.convertToViewportPoint(r[2]!, r[3]!);
+    return [x0!, y0!, x1!, y1!];
+  };
 }
 
 /** Draws page `n` (1-based) into `canvas`, `width` CSS pixels wide. */

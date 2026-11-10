@@ -156,7 +156,7 @@ Interdicții permanente: fără baze de date (D-005, D-018), fără schimbări d
       — 9 nov. 2026: codul COS copiat neschimbat în `app/cos/src/pdf/`, iar testele COS `pdf-stamp` (19) și `pdf-stampline` (4) trec.
       Pe pagina mare, ștampila se pune cu clic sau „pe toate paginile / paginile alese” la locul ales. Se mută, se mărește din colț, se schimbă cu dublu-clic (text, rând, culoare, opacitate) și se șterge cu Delete. Se salvează cu „Salvează ștampilele” sau Ctrl+S, ca versiune nouă după previzualizare. La redeschidere se poate schimba din nou.
       e2e `pdf.mjs` cu clicuri, trageri și taste adevărate.
-    - [ ] 7.4l-0b PDF: editarea textului la clic (textul vechi scos din pagină, culorile păstrate; COS `paragraphs.ts` / `textRemove.ts`)
+    - [x] 7.4l-0b PDF: editarea textului la clic (textul vechi scos din pagină, culorile păstrate; COS `paragraphs.ts` / `textRemove.ts`) — făcut: „✎ Editează text” pe pagina mare (stratul TextEdit din COS, neschimbat), rând / paragraf / ștergere, fiecare schimbare previzualizată și salvată ca versiune nouă, ștampilele păstrate, pagina rămâne deschisă; e2e pdf-edittext 12/12, pdf 52/52. Nu sunt încă: mutarea / decuparea imaginilor din același strat și fonturile calculatorului
     - [ ] 7.4l-0c PDF: semnătura digitală vizibilă unde alegi, cu certificatul de pe calculator / token (COS `digisign.ts`; PIN-ul îl introduce proprietarul)
     - [ ] 7.4l-0d OCR pe poze de telefon, cu poza curățată înainte (COS `enhance.ts`, `ocr.ts`; D-075)
     - [ ] 7.4l-0e Butonul „Trimite o observație” (captură + text, salvate local) în toată aplicația
