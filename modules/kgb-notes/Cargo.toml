@@ -4,7 +4,7 @@ version = "0.1.0"
 edition.workspace = true
 publish.workspace = true
 license.workspace = true
-description = "K.G.B. demonstration module: notes, built only through the module contract."
+description = "K.G.B. module: notes, kept note by note; the Notes window of Cyber Office Studio (7.4l-2b)."
 
 [dependencies]
 kgb-core.workspace = true
@@ -12,6 +12,9 @@ kgb-store.workspace = true
 serde.workspace = true
 serde_json.workspace = true
 uuid.workspace = true
+# The notebook of the COS Notes window (7.4l-2b): pictures stored once by hash, attachments as base64.
+blake3.workspace = true
+base64 = "0.22.1"
 
 [dev-dependencies]
 tempfile.workspace = true

@@ -14,7 +14,8 @@ fn mm() -> ModuleManager {
 fn enabled(tmp: &tempfile::TempDir) -> (Workspace, ModuleManager) {
     let mut ws = Workspace::create(&tmp.path().join("ws"), "T").unwrap();
     let mm = mm();
-    mm.enable(&mut ws, ID, &["storage.own".to_string()]).unwrap();
+    mm.enable(&mut ws, ID, &["storage.own".to_string(), "files.own".to_string()])
+        .unwrap();
     (ws, mm)
 }
 
@@ -136,7 +137,8 @@ fn gate_scenario_data_survives_disable_and_reopen() {
     {
         let mut ws = Workspace::create(&dir, "T").unwrap();
         let mm = mm();
-        mm.enable(&mut ws, ID, &["storage.own".to_string()]).unwrap();
+        mm.enable(&mut ws, ID, &["storage.own".to_string(), "files.own".to_string()])
+            .unwrap();
         add(&mut ws, &mm, "rămân");
         mm.disable(&mut ws, ID).unwrap();
         assert!(mm.call(&mut ws, None, ID, "list", json!({})).is_err());
@@ -145,6 +147,7 @@ fn gate_scenario_data_survives_disable_and_reopen() {
     let mm = mm();
     assert!(!mm.state(&ws, ID).unwrap().enabled, "disabled state persisted");
     assert_eq!(mm.list(&ws, true).unwrap()[0].records, 1);
-    mm.enable(&mut ws, ID, &["storage.own".to_string()]).unwrap();
+    mm.enable(&mut ws, ID, &["storage.own".to_string(), "files.own".to_string()])
+        .unwrap();
     assert_eq!(list(&mut ws, &mm)[0].text, "rămân");
 }

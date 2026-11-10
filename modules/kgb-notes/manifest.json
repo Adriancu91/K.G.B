@@ -7,11 +7,13 @@
   "core": ">=0.1.0, <0.2.0",
   "status": "experimental",
   "permissions": [
-    "storage.own"
+    "storage.own",
+    "files.own"
   ],
   "services": [
     "storage",
-    "log"
+    "log",
+    "files"
   ],
   "data_types": [
     {
@@ -33,6 +35,50 @@
             "type": "integer",
             "required": true,
             "min": 0
+          }
+        },
+        "additional": false
+      }
+    },
+    {
+      "collection": "pages",
+      "description": "notițele ferestrei Note: o notiță pe înregistrare (fără pozele mari), data ultimei schimbări, coșul, locul în listă",
+      "schema": {
+        "fields": {
+          "note": {
+            "type": "object",
+            "required": true
+          },
+          "updated_ms": {
+            "type": "integer",
+            "required": true,
+            "min": 0
+          },
+          "trashed": {
+            "type": "bool",
+            "required": true
+          },
+          "idx": {
+            "type": "integer",
+            "required": true,
+            "min": 0
+          }
+        },
+        "additional": false
+      }
+    },
+    {
+      "collection": "notebook",
+      "description": "caietul: secțiunile, culorile, grupurile, caietele și harta pozelor păstrate ca fișiere",
+      "schema": {
+        "fields": {
+          "meta": {
+            "type": "object",
+            "required": true
+          },
+          "images": {
+            "type": "object",
+            "required": true
           }
         },
         "additional": false

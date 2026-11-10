@@ -11,6 +11,8 @@
 //! - `update {id, version, text}` → the updated note (optimistic concurrency)
 //! - `delete {id, version}` → `{deleted: id}` (logical delete; the store keeps it)
 
+pub mod notebook;
+
 use kgb_core::manifest::Manifest;
 use kgb_core::modules::{Module, ModuleContext};
 use kgb_core::workspace::now_ms;
@@ -88,6 +90,27 @@ struct UpdateArgs {
 struct DeleteArgs {
     id: Uuid,
     version: u64,
+}
+
+#[derive(Deserialize)]
+#[serde(deny_unknown_fields)]
+struct NotebookSave {
+    content: String,
+    #[serde(default)]
+    seen: notebook::SeenState,
+}
+
+#[derive(Deserialize)]
+#[serde(deny_unknown_fields)]
+struct AttachmentAdd {
+    data: String,
+    ext: String,
+}
+
+#[derive(Deserialize)]
+#[serde(deny_unknown_fields)]
+struct AttachmentRead {
+    id: String,
 }
 
 fn args<T: for<'de> Deserialize<'de>>(command: &str, v: Value) -> CoreResult<T> {
@@ -169,6 +192,21 @@ impl Module for Notes {
                 ctx.write(vec![Write::delete(NOTES, id).expect(version)])?;
                 ctx.log("note deleted");
                 Ok(serde_json::json!({ "deleted": id }))
+            }
+            // The notebook of the Notes window copied from COS (7.4l-2b), see notebook.rs.
+            "notebook_load" => notebook::load(ctx),
+            "notebook_save" => {
+                let a: NotebookSave = args(command, a)?;
+                let report = notebook::save(ctx, &a.content, &a.seen)?;
+                to_json(&report)
+            }
+            "attachment_add" => {
+                let a: AttachmentAdd = args(command, a)?;
+                Ok(serde_json::json!({ "id": notebook::attachment_add(ctx, &a.data, &a.ext)? }))
+            }
+            "attachment_read" => {
+                let a: AttachmentRead = args(command, a)?;
+                Ok(serde_json::json!({ "data": notebook::attachment_read(ctx, &a.id)? }))
             }
             _ => Err(CoreError::invalid(
                 "modulul Note",
