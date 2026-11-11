@@ -13,6 +13,10 @@ const host: KgbHost = {
   importFileWith: (id, path, command, args) => api.importFileWith(id, path, command, args),
   open: (o) => open(o),
   save: (o) => save(o),
+  openFolder: async (title) => {
+    const d = await open({ directory: true, multiple: false, title });
+    return typeof d === "string" ? d : null;
+  },
   lang: () => currentLang(),
   onLang: (f) => onLang(f),
   printPdf: (snapshot, paper) => invoke<string>("print_pdf", { snapshot, paper }),
