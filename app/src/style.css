@@ -1876,6 +1876,13 @@ tr.vault-unsure td {
 .vault-unsure-text {
   color: #b45309;
 }
+.vault-dup {
+  color: #c62828;
+  font-weight: 600;
+}
+.vault-dup-maybe {
+  color: #b45309;
+}
 .vault-list td {
   vertical-align: top;
 }

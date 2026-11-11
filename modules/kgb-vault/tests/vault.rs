@@ -226,3 +226,52 @@ fn contracts_by_the_firms_role() {
     assert!(unknown.confidence < 75, "not knowing the side: to confirm");
     assert!(unknown.reason.contains("contract"), "{}", unknown.reason);
 }
+
+#[test]
+fn the_same_invoice_twice_is_shown() {
+    let (_t, mut ws, mm) = setup();
+    let xml = add(
+        &mut ws,
+        &mm,
+        "f12.xml",
+        "Facturi/f12.xml",
+        ubl("KGB 0012", "RO14399840", "RO18547290", "1210.00").as_bytes(),
+    );
+    assert!(xml["dublura_de"].is_null());
+    // The same invoice in another file (here: the same XML written with other spaces), then the same number with
+    // another total.
+    let twin = add(
+        &mut ws,
+        &mm,
+        "f12-copie.xml",
+        "Altele/f12-copie.xml",
+        ubl("KGB 12", "14399840", "RO18547290", "1210.00").as_bytes(),
+    );
+    assert_eq!(twin["exista"], false, "another file: kept");
+    assert_eq!(twin["dublura_de"]["id"], xml["id"]);
+    assert_eq!(twin["dublura_de"]["sigur"], true);
+    let other = add(
+        &mut ws,
+        &mm,
+        "f12-alta.xml",
+        "Altele/f12-alta.xml",
+        ubl("KGB12", "RO14399840", "RO18547290", "999.00").as_bytes(),
+    );
+    assert_eq!(
+        other["dublura_de"]["sigur"], false,
+        "same number, another total: possibly"
+    );
+    add(
+        &mut ws,
+        &mm,
+        "f13.xml",
+        "Facturi/f13.xml",
+        ubl("KGB 13", "RO14399840", "RO18547290", "1.00").as_bytes(),
+    );
+
+    let groups = call(&mut ws, &mm, "dubluri", json!({})).unwrap();
+    let g = groups.as_array().unwrap();
+    assert_eq!(g.len(), 1, "{groups}");
+    assert_eq!(g[0]["documente"].as_array().unwrap().len(), 3);
+    assert_eq!(g[0]["sigur"], false, "one of the three has another total");
+}
