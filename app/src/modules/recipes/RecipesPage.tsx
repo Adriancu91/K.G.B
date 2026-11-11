@@ -8,20 +8,21 @@ import { save } from "@tauri-apps/plugin-dialog";
 import { api, message } from "../../api";
 
 const ID = "kgb.recipes";
-/** Reg. (EU) 1169/2011, annex II: the 14 substances or products causing allergies or intolerances. */
-export const ALLERGENS: Array<[string, string]> = [
-  ["gluten", "Cereale care conțin gluten"],
+/** Reg. (EU) 1169/2011, annex II: the 14 substances or products causing allergies or intolerances (names checked on
+ *  the consolidated Romanian text, CELEX 02011R1169-20180101), with a hint where the annex lists what is meant. */
+export const ALLERGENS: Array<[string, string, string?]> = [
+  ["gluten", "Cereale care conțin gluten", "grâu (inclusiv spelt și khorasan), secară, orz, ovăz"],
   ["crustacee", "Crustacee și produse derivate"],
   ["oua", "Ouă și produse derivate"],
   ["peste", "Pește și produse derivate"],
   ["arahide", "Arahide și produse derivate"],
   ["soia", "Soia și produse derivate"],
   ["lapte", "Lapte și produse derivate (inclusiv lactoză)"],
-  ["fructe_coaja", "Fructe cu coajă"],
+  ["fructe_coaja", "Fructe cu coajă lemnoasă și produse derivate", "migdale, alune de pădure, nuci, caju, pecan, nuci de Brazilia, fistic, macadamia"],
   ["telina", "Țelină și produse derivate"],
   ["mustar", "Muștar și produse derivate"],
   ["susan", "Semințe de susan și produse derivate"],
-  ["sulfiti", "Dioxid de sulf și sulfiți"],
+  ["sulfiti", "Dioxid de sulf și sulfiți (peste 10 mg/kg sau 10 mg/l, exprimat ca SO2)"],
   ["lupin", "Lupin și produse derivate"],
   ["moluste", "Moluște și produse derivate"],
 ];
@@ -353,7 +354,7 @@ export function RecipesPage({ onError, access }: { onError: (e: string | null) =
                 <div data-testid="recipe-allergens">
                   <strong>Alergeni: </strong>
                   {c.alergeni.length ? <span>{allergenText(c.alergeni).join(", ")}</span> : <span>nebifat</span>}
-                  <span className="muted small"> (după ingredientele bifate de tine)</span>
+                  <span className="muted small"> (după ingredientele bifate de tine; Reg. (UE) nr. 1169/2011, anexa II)</span>
                 </div>
                 {c.avertismente.map((w, n) => (
                   <div key={n} className="mnt-state-curand small" data-testid="recipe-warning">
@@ -468,9 +469,9 @@ export function RecipesPage({ onError, access }: { onError: (e: string | null) =
               </label>
             </div>
             <fieldset className="recipe-allergens">
-              <legend className="small">Alergeni (Reg. UE 1169/2011, anexa II): bifează-i pe cei pe care îi conține</legend>
-              {ALLERGENS.map(([k, v]) => (
-                <label key={k} className="small">
+              <legend className="small">Alergeni (Reg. (UE) nr. 1169/2011, anexa II): bifează-i pe cei pe care îi conține</legend>
+              {ALLERGENS.map(([k, v, hint]) => (
+                <label key={k} className="small" title={hint}>
                   <input
                     type="checkbox"
                     aria-label={v}
