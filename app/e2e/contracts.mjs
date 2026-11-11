@@ -65,7 +65,8 @@ try {
   await enable(p, "Business");
   await biz(p, "settings_save", { firma: { firma_nume: "Noi SRL", firma_cui: "RO14399840", firma_adresa: "Iași" } });
   await biz(p, "series_save", { cod: "F" });
-  await biz(p, "partner_save", { nume: "Alfa Construct SRL", cui: "RO18547290", tip: "client" });
+  // In Business without „RO”, in the directory with it: the page compares them without it.
+  await biz(p, "partner_save", { nume: "Alfa Construct SRL", cui: "18547290", tip: "client" });
   await invoke(p, "partner_save", {
     partner: { version: 0, tip: "client", denumire: "Alfa Construct SRL", cui: "RO18547290", nr_reg_com: "", sediu: "", localitate: "", judet: "", tara: "", telefon: "", email: "", iban: "", banca: "", reprezentant: "", functie_reprezentant: "", platitor_tva: null, note: "", puncte_lucru: [], documente: [], campuri: [], surse: {}, activ: true },
   });

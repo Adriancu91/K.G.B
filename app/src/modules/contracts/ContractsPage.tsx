@@ -5,6 +5,7 @@
 // A read-only role sees everything and changes nothing (the core refuses anyway; the buttons say so first).
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { api, message } from "../../api";
+import { cuiKey, findBusinessPartner } from "./cui";
 
 const ID = "kgb.contracts";
 const BIZ = "kgb.business";
@@ -138,8 +139,6 @@ const toBani = (t: string) => {
   const n = Number(s.includes(",") ? s.replace(/\./g, "").replace(",", ".") : s);
   return Number.isFinite(n) ? Math.round(n * 100) : NaN;
 };
-const digits = (t: string | null | undefined) => (t ?? "").replace(/\D/g, "");
-const fold = (t: string) => t.toLowerCase().normalize("NFD").replace(/\p{M}/gu, "").replace(/\s+/g, " ").trim();
 const stateText = (s: string) => STATES.find(([k]) => k === s)?.[1] ?? s;
 const periodText = (p: string) => PERIODS.find(([k]) => k === p)?.[1] ?? p;
 
@@ -257,8 +256,8 @@ export function ContractsPage({ onError, access }: { onError: (e: string | null)
         api.moduleCall<{ cote_tva: number[]; confirmate: boolean }>(BIZ, "settings"),
       ]);
       if (!settings.confirmate || series.length === 0) throw new Error("În Business lipsesc datele firmei sau seria facturilor (fila „Setări facturare”).");
-      const cui = digits(detail.partener_cui);
-      const partner = (cui && partners.find((p) => digits(p.cui) === cui)) || partners.find((p) => fold(p.nume) === fold(first.partener_nume));
+      const cui = cuiKey(detail.partener_cui);
+      const partner = findBusinessPartner(partners, detail.partener_cui, first.partener_nume);
       if (!partner) throw new Error(`Adaugă partenerul în Business (${first.partener_nume}${cui ? `, CUI ${cui}` : ""}), apoi emite factura.`);
       const wrong = rows.find((r) => !settings.cote_tva.includes(r.tva));
       if (wrong) throw new Error(`Cota de TVA ${wrong.tva}% a liniei „${wrong.denumire}” nu e în lista din Business.`);
