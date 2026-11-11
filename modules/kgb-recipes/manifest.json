@@ -1,0 +1,67 @@
+{
+  "manifest_format": 1,
+  "id": "kgb.recipes",
+  "name": "Rețete și costuri",
+  "description": "Rețete și fișe tehnologice: ingredientele cu prețul și pierderea la curățare, semipreparatele, costul pe porție sau pe lot, prețul de vânzare propus din adaos și TVA, marja, alergenii (cei 14 din Reg. UE 1169/2011, anexa II, bifați de om) și lista de consum exportată.",
+  "version": "0.1.0",
+  "core": ">=0.1.0, <0.2.0",
+  "status": "beta",
+  "permissions": [
+    "storage.own",
+    "files.own"
+  ],
+  "services": [
+    "storage",
+    "files",
+    "log"
+  ],
+  "data_types": [
+    {
+      "collection": "ingrediente",
+      "description": "ingredientele: numele, unitatea, prețul fără TVA scris de om și data lui, furnizorul, pierderea la curățare, alergenii bifați",
+      "schema": {
+        "fields": {
+          "nume": { "type": "string", "required": true, "max_len": 120 },
+          "um": { "type": "string", "required": true, "enum": ["kg", "l", "buc"] },
+          "pret": { "type": "integer", "required": true, "min": 0 },
+          "pret_data": { "type": "string", "required": true, "max_len": 10 },
+          "furnizor_nume": { "type": "string", "required": true, "max_len": 200 },
+          "pierdere": { "type": "integer", "required": true, "min": 0, "max": 9000 },
+          "alergeni": { "type": "array", "required": true, "max_len": 14 },
+          "nota": { "type": "string", "required": true, "max_len": 1000 },
+          "activ": { "type": "bool", "required": true }
+        },
+        "additional": false
+      }
+    },
+    {
+      "collection": "retete",
+      "description": "rețetele: numele, felul, categoria, cât iese (lotul), liniile (ingrediente și semipreparate, cantitatea netă), adaosul, cota de TVA aleasă de om, prețul de vânzare, prepararea",
+      "schema": {
+        "fields": {
+          "nume": { "type": "string", "required": true, "max_len": 160 },
+          "fel": { "type": "string", "required": true, "enum": ["preparat", "produs", "semipreparat"] },
+          "categorie": { "type": "string", "required": true, "max_len": 80 },
+          "lot": { "type": "integer", "required": true, "min": 1, "max": 100000000 },
+          "unitate_lot": { "type": "string", "required": true, "max_len": 20 },
+          "linii": { "type": "array", "required": true, "max_len": 200 },
+          "randament_preparare": { "type": "integer", "required": true, "min": 0, "max": 50000 },
+          "adaos": { "type": "integer", "required": true, "min": 0, "max": 1000000 },
+          "tva": { "type": "integer", "required": true, "min": 0, "max": 100 },
+          "pret_vanzare": { "type": "integer", "required": true, "min": 0 },
+          "preparare": { "type": "string", "required": true, "max_len": 4000 },
+          "nota": { "type": "string", "required": true, "max_len": 1000 },
+          "activ": { "type": "bool", "required": true }
+        },
+        "additional": false
+      }
+    }
+  ],
+  "events": {
+    "emits": [],
+    "listens": []
+  },
+  "data_format": 1,
+  "migrations": [],
+  "on_disable": "Ingredientele și rețetele rămân în spațiul de lucru și reapar când modulul este activat din nou."
+}

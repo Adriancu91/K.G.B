@@ -1,6 +1,6 @@
 [workspace]
 resolver = "3"
-members = ["crates/kgb-store", "crates/kgb-core", "crates/kgb-net", "modules/kgb-notes", "modules/kgb-pdf", "modules/kgb-sheets", "modules/kgb-extract", "modules/kgb-planner", "modules/kgb-docs", "modules/kgb-business", "modules/kgb-permits", "modules/kgb-team", "modules/kgb-calc", "modules/kgb-write", "modules/kgb-news", "modules/kgb-market", "modules/kgb-appointments", "modules/kgb-contracts", "modules/kgb-vault", "modules/kgb-maintenance", "app/src-tauri"]
+members = ["crates/kgb-store", "crates/kgb-core", "crates/kgb-net", "modules/kgb-notes", "modules/kgb-pdf", "modules/kgb-sheets", "modules/kgb-extract", "modules/kgb-planner", "modules/kgb-docs", "modules/kgb-business", "modules/kgb-permits", "modules/kgb-team", "modules/kgb-calc", "modules/kgb-write", "modules/kgb-news", "modules/kgb-market", "modules/kgb-appointments", "modules/kgb-contracts", "modules/kgb-vault", "modules/kgb-maintenance", "modules/kgb-recipes", "app/src-tauri"]
 # Spike-urile Etapei 0 rămân proiecte independente, neatinse.
 exclude = ["spikes"]
 
@@ -30,6 +30,7 @@ kgb-appointments = { path = "modules/kgb-appointments" }
 kgb-contracts = { path = "modules/kgb-contracts" }
 kgb-vault = { path = "modules/kgb-vault" }
 kgb-maintenance = { path = "modules/kgb-maintenance" }
+kgb-recipes = { path = "modules/kgb-recipes" }
 kgb-write = { path = "modules/kgb-write" }
 blake3 = { version = "1.8.7", features = ["pure"] }
 crc32fast = "1.5.4"

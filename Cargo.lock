@@ -3743,6 +3743,7 @@ dependencies = [
  "kgb-core",
  "kgb-docs",
  "kgb-extract",
+ "kgb-maintenance",
  "kgb-market",
  "kgb-net",
  "kgb-news",
@@ -3991,6 +3992,18 @@ version = "0.1.0"
 dependencies = [
  "kgb-core",
  "kgb-sheets",
+ "kgb-store",
+ "serde",
+ "serde_json",
+ "tempfile",
+ "uuid",
+]
+
+[[package]]
+name = "kgb-recipes"
+version = "0.1.0"
+dependencies = [
+ "kgb-core",
  "kgb-store",
  "serde",
  "serde_json",
