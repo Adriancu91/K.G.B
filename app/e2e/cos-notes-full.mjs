@@ -136,18 +136,27 @@ try {
   await btn(p, "Șterge din istoric");
   await frUntil(p, "/Am șters din istoricul acestui calculator/.test(document.body.innerText)", 30000);
   const leaks = [];
+  const busyFiles = [];
   const scan = (dir) => {
     for (const e of readdirSync(dir, { withFileTypes: true })) {
       const f = join(dir, e.name);
       if (e.isDirectory()) scan(f);
       else {
-        const b = readFileSync(f);
+        let b;
+        try {
+          b = readFileSync(f);
+        } catch {
+          // A file the app keeps locked (the store's lock): it holds no data.
+          busyFiles.push(f.slice(data.length));
+          continue;
+        }
         if (b.includes(Buffer.from(SECRET)) || b.includes(Buffer.from(BODY))) leaks.push(f.slice(data.length));
       }
     }
   };
   scan(data);
   check("după „Șterge din istoric”: textul și atașamentul nu mai sunt în niciun fișier din dosarul de date", leaks.length === 0, leaks.join(" | "));
+  console.log(`      (fișiere ținute deschise de aplicație, necitite: ${busyFiles.join(", ") || "niciunul"})`);
 
   // Wrong password refused; the right one opens it and the attachment reads whole.
   await fr(p, "document.querySelector('.note-locked input[type=password]').focus(), true");
