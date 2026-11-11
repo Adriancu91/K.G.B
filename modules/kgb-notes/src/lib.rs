@@ -114,6 +114,13 @@ struct AttachmentRead {
     id: String,
 }
 
+#[derive(Deserialize)]
+#[serde(deny_unknown_fields)]
+struct ExportFile {
+    dest: std::path::PathBuf,
+    data: String,
+}
+
 fn args<T: for<'de> Deserialize<'de>>(command: &str, v: Value) -> CoreResult<T> {
     serde_json::from_value(v).map_err(|e| CoreError::invalid(format!("argumentele comenzii {command}"), e.to_string()))
 }
@@ -213,6 +220,12 @@ impl Module for Notes {
             "attachment_read" => {
                 let a: AttachmentRead = args(command, a)?;
                 Ok(serde_json::json!({ "data": notebook::attachment_read(ctx, &a.id)? }))
+            }
+            // The window's „Export .md / .html” and „Salvează o copie” of an attachment (the save dialog chose `dest`).
+            "export_file" => {
+                let a: ExportFile = args(command, a)?;
+                let n = notebook::export_file(ctx, &a.dest, &a.data)?;
+                Ok(serde_json::json!({ "path": a.dest, "bytes": n }))
             }
             "attachment_delete" => {
                 let a: AttachmentRead = args(command, a)?;

@@ -185,11 +185,6 @@
   "f": "modules/business/aging.tsx"
  },
  {
-  "ro": "Scadența",
-  "en": "Due date",
-  "f": "modules/business/aging.tsx"
- },
- {
   "ro": "Zile de întârziere",
   "en": "Days overdue",
   "f": "modules/business/aging.tsx"
@@ -332,11 +327,6 @@
  {
   "ro": "plată",
   "en": "payment",
-  "f": "modules/business/cash.tsx"
- },
- {
-  "ro": "Înregistrează",
-  "en": "Record",
   "f": "modules/business/cash.tsx"
  },
  {
@@ -627,11 +617,6 @@
  {
   "ro": "fișier",
   "en": "file",
-  "f": "modules/business/purchases.tsx"
- },
- {
-  "ro": "Fără TVA",
-  "en": "Excl. VAT",
   "f": "modules/business/purchases.tsx"
  },
  {
@@ -1378,6 +1363,11 @@
   "ro": "Angajat nou",
   "en": "New employee",
   "f": "modules/team/TeamPage.tsx"
+ },
+ {
+  "ro": "Documente și modele: {0}",
+  "en": "Documents and templates: {0}",
+  "f": "modules/vault/FirmProfile.tsx"
  },
  {
   "ro": "Salvat pe calculator: {0}",

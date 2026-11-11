@@ -292,3 +292,28 @@ fn the_window_saving_again_and_again_with_the_seen_of_its_last_save() {
     assert_eq!(now["sections"], json!(["Acasă"]));
     assert_eq!(now["notes"][0]["body"], "schimbarea 1");
 }
+
+/// The window's exports (Markdown, a copy of an attachment) go where the person chose.
+#[test]
+fn the_window_exports_a_file() {
+    let tmp = tempfile::tempdir().unwrap();
+    let mut ws = kgb_core::workspace::Workspace::create(&tmp.path().join("ws"), "T").unwrap();
+    let mm =
+        kgb_core::modules::ModuleManager::new(vec![Box::new(kgb_notes::Notes::new())], kgb_core::CORE_VERSION).unwrap();
+    mm.enable(
+        &mut ws,
+        ID,
+        &["storage.own".into(), "files.own".into(), "notify.send".into()],
+    )
+    .unwrap();
+    let dest = tmp.path().join("Notiță.md");
+    mm.call(
+        &mut ws,
+        None,
+        ID,
+        "export_file",
+        json!({"dest": dest, "data": "IyBUaXRsdQ=="}),
+    )
+    .unwrap();
+    assert_eq!(std::fs::read_to_string(&dest).unwrap(), "# Titlu");
+}
