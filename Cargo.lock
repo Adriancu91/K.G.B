@@ -3739,6 +3739,7 @@ dependencies = [
  "kgb-appointments",
  "kgb-business",
  "kgb-calc",
+ "kgb-contracts",
  "kgb-core",
  "kgb-docs",
  "kgb-extract",

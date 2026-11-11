@@ -665,11 +665,6 @@
   "f": "modules/business/reports.tsx"
  },
  {
-  "ro": "Până la",
-  "en": "To",
-  "f": "modules/business/reports.tsx"
- },
- {
   "ro": "Raport până la",
   "en": "Report to",
   "f": "modules/business/reports.tsx"
@@ -708,6 +703,46 @@
   "ro": "Zile",
   "en": "Days",
   "f": "modules/calc/CalcPage.tsx"
+ },
+ {
+  "ro": "până la {0}",
+  "en": "until {0}",
+  "f": "modules/contracts/ContractsPage.tsx"
+ },
+ {
+  "ro": " până la {0}",
+  "en": " until {0}",
+  "f": "modules/contracts/ContractsPage.tsx"
+ },
+ {
+  "ro": " · oprită",
+  "en": " · off",
+  "f": "modules/contracts/ContractsPage.tsx"
+ },
+ {
+  "ro": "Cantitatea",
+  "en": "Quantity",
+  "f": "modules/contracts/ContractsPage.tsx"
+ },
+ {
+  "ro": "Prețul fără TVA",
+  "en": "Price excl. VAT",
+  "f": "modules/contracts/ContractsPage.tsx"
+ },
+ {
+  "ro": "Partenerul",
+  "en": "Partner",
+  "f": "modules/contracts/ContractsPage.tsx"
+ },
+ {
+  "ro": "până la",
+  "en": "to",
+  "f": "modules/contracts/ContractsPage.tsx"
+ },
+ {
+  "ro": "Nota contractului",
+  "en": "Note contractului",
+  "f": "modules/contracts/ContractsPage.tsx"
  },
  {
   "ro": "Tehnice",
@@ -1180,11 +1215,6 @@
   "f": "modules/planner/PlannerPage.tsx"
  },
  {
-  "ro": "până la",
-  "en": "to",
-  "f": "modules/planner/PlannerPage.tsx"
- },
- {
   "ro": "Se repetă: {0}",
   "en": "Repeats: {0}",
   "f": "modules/planner/PlannerPage.tsx"
@@ -1628,6 +1658,11 @@
   "ro": "Temperatură",
   "en": "Temperature",
   "f": "modules/kgb-calc/src/units.rs"
+ },
+ {
+  "ro": "numărul",
+  "en": "number",
+  "f": "modules/kgb-contracts/src/lib.rs"
  },
  {
   "ro": "Contract de prestări servicii",
