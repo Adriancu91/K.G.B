@@ -1,0 +1,21 @@
+[package]
+name = "kgb-appointments"
+version = "0.1.0"
+edition.workspace = true
+publish.workspace = true
+license.workspace = true
+description = "K.G.B. module: appointments (step 7.9e) — people, rooms or equipment with their working hours, services with their length, appointments without overlaps, free times, states and reminders."
+
+[dependencies]
+kgb-core.workspace = true
+kgb-store.workspace = true
+serde.workspace = true
+serde_json.workspace = true
+uuid.workspace = true
+
+# The local time of day for the morning reminder (as the clock on the screen).
+[target."cfg(windows)".dependencies]
+windows-sys = { workspace = true, features = ["Win32_Foundation", "Win32_System_SystemInformation"] }
+
+[dev-dependencies]
+tempfile.workspace = true

@@ -1,0 +1,74 @@
+{
+  "manifest_format": 1,
+  "id": "kgb.appointments",
+  "name": "Programări",
+  "description": "Programările clienților pe oameni, săli sau echipamente, cu programul fiecăruia, pauza și zilele libere: orele libere găsite singure, fără suprapuneri, stări (programat, confirmat, venit, anulat, neprezentat) și memento pentru ziua de mâine.",
+  "version": "0.1.0",
+  "core": ">=0.1.0, <0.2.0",
+  "status": "beta",
+  "permissions": [
+    "storage.own",
+    "notify.send"
+  ],
+  "services": [
+    "storage",
+    "notify",
+    "log"
+  ],
+  "data_types": [
+    {
+      "collection": "resurse",
+      "description": "cine sau ce se programează: numele, felul, programul pe zilele săptămânii, zilele libere",
+      "schema": {
+        "fields": {
+          "nume": { "type": "string", "required": true, "max_len": 100 },
+          "fel": { "type": "string", "required": true, "enum": ["persoana", "loc", "echipament"] },
+          "program": { "type": "object", "required": true },
+          "libere": { "type": "array", "required": true, "max_len": 366 },
+          "activa": { "type": "bool", "required": true },
+          "nota": { "type": "string", "required": true, "max_len": 500 }
+        },
+        "additional": false
+      }
+    },
+    {
+      "collection": "servicii",
+      "description": "ce se programează: numele, durata, prețul, cine îl poate face",
+      "schema": {
+        "fields": {
+          "nume": { "type": "string", "required": true, "max_len": 120 },
+          "durata": { "type": "integer", "required": true, "min": 5, "max": 600 },
+          "pret": { "type": "integer", "required": true, "min": 0 },
+          "resurse": { "type": "array", "required": true, "max_len": 100 }
+        },
+        "additional": false
+      }
+    },
+    {
+      "collection": "programari",
+      "description": "programările: începutul (ora României), durata, resursa, serviciul, clientul, starea",
+      "schema": {
+        "fields": {
+          "start": { "type": "string", "required": true, "max_len": 16 },
+          "durata": { "type": "integer", "required": true, "min": 5, "max": 600 },
+          "resursa": { "type": "string", "required": true, "max_len": 36 },
+          "serviciu": { "type": "string", "required": true, "max_len": 36 },
+          "client": { "type": "string", "required": true, "max_len": 200 },
+          "telefon": { "type": "string", "required": true, "max_len": 40 },
+          "partener": { "type": "string", "required": true, "max_len": 36 },
+          "nota": { "type": "string", "required": true, "max_len": 1000 },
+          "stare": { "type": "string", "required": true, "enum": ["programat", "confirmat", "venit", "anulat", "neprezentat"] },
+          "creat_ms": { "type": "integer", "required": true, "min": 0 }
+        },
+        "additional": false
+      }
+    }
+  ],
+  "events": {
+    "emits": [],
+    "listens": []
+  },
+  "data_format": 1,
+  "migrations": [],
+  "on_disable": "Resursele, serviciile și programările rămân în spațiul de lucru și reapar când modulul este activat din nou."
+}

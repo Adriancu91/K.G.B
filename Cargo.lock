@@ -3736,6 +3736,7 @@ dependencies = [
  "http-body-util",
  "hyper",
  "hyper-util",
+ "kgb-appointments",
  "kgb-business",
  "kgb-calc",
  "kgb-core",
@@ -3764,6 +3765,19 @@ dependencies = [
  "uuid",
  "webview2-com",
  "windows",
+ "windows-sys 0.61.2",
+]
+
+[[package]]
+name = "kgb-appointments"
+version = "0.1.0"
+dependencies = [
+ "kgb-core",
+ "kgb-store",
+ "serde",
+ "serde_json",
+ "tempfile",
+ "uuid",
  "windows-sys 0.61.2",
 ]
 

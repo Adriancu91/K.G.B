@@ -92,6 +92,7 @@ pub const ACTIVITIES: &[Activity] = &[
         description: "Restaurant, cafenea, pensiune: stocuri, pontaj pe ture, autorizații (DSV, ISU, mediu).",
         modules: &[
             "kgb.business",
+            "kgb.appointments",
             "kgb.team",
             "kgb.permits",
             "kgb.docs",
@@ -113,6 +114,7 @@ pub const ACTIVITIES: &[Activity] = &[
         description: "Consultanță, IT, reparații, firme de servicii: oferte, contracte, facturi, proiecte.",
         modules: &[
             "kgb.business",
+            "kgb.appointments",
             "kgb.docs",
             "kgb.write",
             "kgb.pdf",
@@ -161,11 +163,11 @@ pub const ACTIVITIES: &[Activity] = &[
         name: "Cabinete și clinici",
         description: "Cabinete medicale, de avocatură, contabilitate: programări, documente, echipa.",
         modules: &[
+            "kgb.appointments",
             "kgb.planner",
             "kgb.docs",
             "kgb.write",
             "kgb.pdf",
-            "kgb.notes",
             "kgb.team",
             "kgb.business",
         ],
