@@ -2586,6 +2586,12 @@
   "Alege tipul de activitate: îți propunem modulele potrivite și modelele de documente cele mai folosite. Activezi doar ce bifezi; restul rămâne în Catalog, oricând.": "Choose the kind of activity: we suggest the modules that fit and the most used document models. You enable only what you tick; the rest stays in the Catalog, any time.",
   "Tipul de activitate": "Kind of activity",
   "Module pentru „": "Modules for “",
+  "Avize și autorizații pentru „": "Approvals and permits for “",
+  "Din catalogul de proceduri, cu sursele oficiale. Cele bifate se adaugă în „Permise și autorizații”, cu documentele și pașii lor; deschizi un dosar pe ele când e cazul. Verifică la instituție dacă ți se aplică.": "From the catalog of procedures, with the official sources. The ticked ones are added to “Permits and authorizations”, with their documents and steps; you open a case file on them when needed. Check with the institution whether they apply to you.",
+  "Dacă construiești sau amenajezi un spațiu": "If you build or fit out a space",
+  "Nu acum": "Not now",
+  "Adaugă 1 procedură": "Add 1 procedure",
+  "Adaugă {0} proceduri": "Add {0} procedures",
   "Păstrează alegerea": "Keep the choice",
   "Schimbă tipul de activitate…": "Change the kind of activity…",
   "Alege după tipul de activitate…": "Choose by kind of activity…",
@@ -2667,6 +2673,7 @@
   "Unde pun dosarul?": "Where do I put the dossier?"
  },
  "templates": {
+  "Adaugă {0} proceduri": "Add {0} procedures",
   "Completat de la ANAF (date pentru {0}): {1}. Verifică și completează restul de mână.": "Filled in from ANAF (data for {0}): {1}. Check and fill in the rest manually.",
   "Marchează citit: {0}": "Mark as read: {0}",
   "Memento: {0}": "Reminder: {0}",

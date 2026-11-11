@@ -1,6 +1,8 @@
 // 7.4n, end to end in the real window: profiles by kind of activity. In the Catalog the person picks „Comerț”; the
 // window lists the modules that fit, with what they ask for; one is unticked; only the ticked ones are enabled.
-// The choice is kept (with the „Depozit” work profile) and „Documente și modele” shows the trade models first.
+// 7.9c: „Permise și autorizații” being among them, the procedures of the catalog for commerce are then proposed
+// (the construction ones unticked) and only the ticked ones are added. The choice is kept (with the „Depozit” work
+// profile) and „Documente și modele” shows the trade models first.
 //
 // Usage: node app/e2e/activity.mjs <path-to-kgb-app.exe> <screenshot-dir>
 // Uses a throw-away data folder (KGB_DATA_DIR), never the user's real data.
@@ -53,10 +55,26 @@ try {
   const btn = await p.eval("document.querySelector('.dialog .dialog-actions .primary').textContent");
   await p.screenshot(join(shots, "01-alegere.png"));
   await p.click("Activează", ".dialog .dialog-actions button");
+  // 7.9c: „Permise și autorizații” is now on, so the procedures of the catalog for commerce are proposed.
+  await p.until("!!document.querySelector('#act-procs-title')", 30000);
+  const procs = await p.eval("[...document.querySelectorAll('.activity-procs li')].map(li => ({ t: li.querySelector('b').textContent, on: li.querySelector('input').checked }))");
+  const on = procs.filter((x) => x.on).map((x) => x.t);
+  check(
+    "apoi propune avizele pentru comerț: ISU, sanitar-veterinar, acordul de funcționare bifate",
+    on.some((t) => t.startsWith("Autorizație de securitate la incendiu")) && on.some((t) => t.includes("sanitar-veterinară")) && on.some((t) => t.startsWith("Acordul / autorizația de funcționare")),
+    on.join(" | "),
+  );
+  const buildOff = procs.filter((x) => /construire|urbanism/i.test(x.t));
+  check("cele de construcții sunt arătate, dar nebifate", buildOff.length >= 2 && buildOff.every((x) => !x.on), buildOff.map((x) => `${x.t}:${x.on}`).join(" | "));
+  await p.screenshot(join(shots, "01b-proceduri.png"));
+  await p.click("Adaugă", ".dialog .dialog-actions button");
+  await p.until("!document.querySelector('#act-procs-title')", 30000);
+  const added = await p.eval(`window.__TAURI_INTERNALS__.invoke("module_call", { id: "kgb.permits", command: "proceduri", args: { azi: "2026-11-11" } })`);
+  check("se adaugă exact cele bifate, ca proceduri ale firmei", added.length === on.length && added.every((x) => on.includes(x.titlu)), `${added.length} din ${on.length}`);
   await p.until("!document.querySelector('.activity-list')", 30000);
   await sleep(800);
   const after = await nav();
-  check("modulele bifate sunt activate", ["Business", "Documente și modele", "Documente PDF", "Foi de calcul", "Extragere date", "Planificator"].every((n) => after.some((l) => l.includes(n))), `${btn} → ${after.join(", ")}`);
+  check("modulele bifate sunt activate", ["Business", "Documente și modele", "Documente PDF", "Foi de calcul", "Extragere date", "Permise", "Planificator"].every((n) => after.some((l) => l.includes(n))), `${btn} → ${after.join(", ")}`);
   check("cel debifat a rămas dezactivat", !after.some((l) => l.includes("Calculator")), after.join(", "));
   const line = await p.eval("document.querySelector('section')?.innerText ?? ''");
   check("Catalogul spune activitatea aleasă", line.includes("Activitatea firmei: Comerț"));

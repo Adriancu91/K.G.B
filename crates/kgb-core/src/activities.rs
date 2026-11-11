@@ -1,8 +1,10 @@
 //! Profiles by kind of activity (7.4n): for the activities frequent in Romania, the modules that fit, the work
 //! profile of the sidebar and the built-in document models that are most useful. Choosing one only proposes:
 //! the person sees every module with the permissions it asks for, ticks what they want and enables it; nothing
-//! is enabled on its own, and every module can still be enabled or disabled from the Catalog. The firm-specific
-//! modules (recycling, the owner's own ERP) are separate and are not part of these profiles.
+//! is enabled on its own, and every module can still be enabled or disabled from the Catalog. When „Permise și
+//! autorizații” is on, the picker then proposes the procedures of the catalog (D-088) tagged with the activity
+//! (7.9c). The firm-specific modules (recycling, the owner's own ERP) are separate and are not part of these
+//! profiles.
 
 use serde::Serialize;
 
@@ -30,6 +32,7 @@ pub const ACTIVITIES: &[Activity] = &[
             "kgb.pdf",
             "kgb.sheets",
             "kgb.extract",
+            "kgb.permits",
             "kgb.planner",
             "kgb.calc",
         ],
@@ -171,6 +174,7 @@ pub const ACTIVITIES: &[Activity] = &[
             "kgb.write",
             "kgb.pdf",
             "kgb.team",
+            "kgb.permits",
             "kgb.business",
         ],
         profile: "birou",
