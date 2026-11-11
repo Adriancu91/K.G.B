@@ -501,7 +501,14 @@ Deciziile DECIS se schimbă doar cu aprobarea explicită a proprietarului (Maste
 
      Cheia de dublură e emitent_cui + serie + numar. Dacă data sau totalul diferă, apare „posibil dublură” și decide omul (7.10d).
 - **Deschis:** dacă linkul PDF de pe fgo.ro cere autentificare și ce se întâmplă la depășirea limitei. Se verifică doar pe mediul de test, cu un cont făcut de proprietar.
-
+- **Implementat (12 nov. 2026, 7.10c):** `app/src-tauri/src/invoicing.rs` + „Din programul de facturare online…” în depozit.
+  - Cheia stă sigilată cu DPAPI (`kgb_core::identity::seal`) în `facturare-online.json`, lângă date, pe acest PC. Pagina n-o mai primește înapoi.
+  - Adresa se construiește doar din `READS` (getstatus, print). Testul `invoicing_guard` pică dacă fișierul numește vreo cerere de scriere a API-ului.
+  - Semnătura e SHA-1, cu `sha1_smol`, care era deja în Cargo.lock.
+  - PDF-ul se aduce doar de pe https, de pe gazda fgo.ro.
+  - Cererile pleacă doar cu internetul pornit și cu o sursă „api” activă cu adresa programului.
+  - e2e `online-invoicing`, cu un server local care imită API-ul (`KGB_TEST_INVOICING_BASE`, doar din mediul testelor): 6/6.
+  - Proba cu contul real (sau de test) al proprietarului rămâne la el.
 
 ### D-090 — Notițele blocate cu parolă: ce se criptează, unde stă cheia și ce rămâne în urmă (7.4l-2)
 - **Data:** 11 nov. 2026 · **Statut:** DECIS (sesiunea COS și sesiunea K.G.B., D-074) · partea despre nucleu (`forget_history`) o adaugă sesiunea K.G.B.

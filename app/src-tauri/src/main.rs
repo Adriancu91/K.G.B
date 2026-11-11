@@ -9,6 +9,7 @@ use std::sync::{Arc, Mutex};
 mod desktop;
 mod external;
 mod feedback;
+mod invoicing;
 mod mdns;
 mod media;
 mod net;
@@ -92,6 +93,95 @@ fn known_profiles() -> Vec<&'static str> {
 #[tauri::command]
 fn activities_list() -> Vec<kgb_core::activities::Activity> {
     kgb_core::activities::ACTIVITIES.to_vec()
+}
+
+#[cfg(test)]
+mod invoicing_guard {
+    //! D-089: the online invoicing program is read only. This file must not even name a request of its API that
+    //! writes (emits, cancels, deletes, reverses, records a payment, an AWB or an article).
+    use super::invoicing;
+
+    #[test]
+    fn only_reading_requests_exist() {
+        let src = include_str!("invoicing.rs").to_lowercase();
+        // Written backwards here so that this test does not name them either.
+        for w in [
+            "eretime",
+            "eralune",
+            "eregrets",
+            "erantorts",
+            "erasacni",
+            "bwa",
+            "locitra",
+        ] {
+            let word: String = w.chars().rev().collect();
+            assert!(!src.contains(&word), "invoicing.rs names „{word}”");
+        }
+        for r in invoicing::READS {
+            assert!(
+                invoicing::endpoint("productie", r)
+                    .unwrap()
+                    .starts_with("https://api.fgo.ro/v1/factura/")
+            );
+        }
+        assert!(invoicing::endpoint("productie", "factura/x").is_err());
+        assert!(
+            invoicing::endpoint("test", "factura/print")
+                .unwrap()
+                .starts_with("https://api-testuat.fgo.ro/")
+        );
+    }
+
+    #[test]
+    fn the_signature_and_the_pdf_links() {
+        // SHA-1 of CUI + key + number, upper-case: sha1("28645181234567890123").
+        let h = invoicing::signature("2864518", "1234567890", "123");
+        assert_eq!(h.len(), 40);
+        assert_eq!(h, h.to_uppercase());
+        let mut d = sha1_smol::Sha1::new();
+        d.update(b"28645181234567890123");
+        assert_eq!(h, d.digest().to_string().to_uppercase());
+        assert!(invoicing::pdf_link_ok("https://fgo.ro/facturi/001_BV.pdf"));
+        assert!(invoicing::pdf_link_ok("https://static.fgo.ro/x.pdf"));
+        assert!(!invoicing::pdf_link_ok("http://fgo.ro/x.pdf"), "only https");
+        assert!(!invoicing::pdf_link_ok("https://fgo.ro.example.com/x.pdf"));
+        assert!(!invoicing::pdf_link_ok("https://evilfgo.ro/x.pdf"));
+        assert!(
+            !invoicing::pdf_link_ok("https://user@fgo.ro/x.pdf"),
+            "no user in the address"
+        );
+    }
+
+    #[test]
+    fn the_key_is_sealed_and_forgotten() {
+        let dir = tempfile::tempdir().unwrap();
+        assert!(!invoicing::status(dir.path()).configurat);
+        assert!(
+            invoicing::set(dir.path(), "14399841", "k", "", "productie").is_err(),
+            "a wrong CUI"
+        );
+        assert!(
+            invoicing::set(dir.path(), "14399840", "", "", "productie").is_err(),
+            "no key"
+        );
+        invoicing::set(
+            dir.path(),
+            "RO14399840",
+            "CHEIE-SECRETA-123",
+            "https://firma.ro",
+            "productie",
+        )
+        .unwrap();
+        let st = invoicing::status(dir.path());
+        assert!(st.configurat && st.cod_unic == "14399840" && st.mediu == "productie");
+        let on_disk = std::fs::read_to_string(dir.path().join("facturare-online.json")).unwrap();
+        assert!(
+            !on_disk.contains("CHEIE-SECRETA-123"),
+            "the key is not on the disk in clear"
+        );
+        invoicing::forget(dir.path()).unwrap();
+        assert!(!invoicing::status(dir.path()).configurat);
+    }
 }
 
 #[cfg(test)]
@@ -524,6 +614,78 @@ async fn net_fetch(
         url: f.final_url,
         data: base64::engine::general_purpose::STANDARD.encode(f.data),
     })
+}
+
+// ---------- the online invoicing program, read only (D-089, 7.10c) ----------
+
+/// Internet on (D-086) and the program approved as a source (D-062): an active „api” source whose address is
+/// the program's.
+fn invoicing_allowed(app: &State<'_, AppState>) -> CmdResult<()> {
+    let (on, in_org, approved) = with_session(app, |s| {
+        let approved = kgb_core::sources::active(s.ws.store(), Some("api"))?
+            .iter()
+            .any(|x| invoicing::program_address(&x.url));
+        Ok((
+            settings::load(s.ws.store())?.settings.internet,
+            org::organization(s.ws.store())?.is_some(),
+            approved,
+        ))
+    })?;
+    if !on {
+        return Err(if in_org {
+            "Cererile către internet sunt oprite de administratorul organizației (Setări → Internet).".into()
+        } else {
+            "Cererile către internet sunt oprite din Setări → Internet.".into()
+        });
+    }
+    if !approved {
+        return Err("Aprobă întâi programul de facturare online în „Surse externe” (tip API, adresa https://api.fgo.ro, cu termenii lui).".into());
+    }
+    Ok(())
+}
+
+#[tauri::command]
+fn invoicing_status(app: State<AppState>) -> invoicing::Status {
+    invoicing::status(&app.root)
+}
+
+/// The key is typed by the person and sealed for this PC; it never comes back to the page.
+#[tauri::command]
+fn invoicing_key_set(
+    app: State<AppState>,
+    cod_unic: String,
+    cheie: String,
+    platforma_url: String,
+    mediu: String,
+) -> CmdResult<invoicing::Status> {
+    let cheie = zeroize::Zeroizing::new(cheie);
+    invoicing::set(&app.root, &cod_unic, &cheie, &platforma_url, &mediu)?;
+    tracing::info!("programul de facturare online: cheia a fost pusă pe acest PC");
+    Ok(invoicing::status(&app.root))
+}
+
+#[tauri::command]
+fn invoicing_key_forget(app: State<AppState>) -> CmdResult<()> {
+    invoicing::forget(&app.root)?;
+    tracing::info!("programul de facturare online: cheia a fost ștearsă de pe acest PC");
+    Ok(())
+}
+
+/// Reads invoices of one series, at the person's click; the page hears `invoicing-progress` with the number read.
+#[tauri::command]
+async fn invoicing_read(
+    app: State<'_, AppState>,
+    handle: tauri::AppHandle,
+    serie: String,
+    de_la: u64,
+    pana_la: Option<u64>,
+) -> CmdResult<invoicing::Run> {
+    invoicing_allowed(&app)?;
+    let root = app.root.clone();
+    invoicing::read(&root, &serie, de_la, pana_la, |n| {
+        let _ = tauri::Emitter::emit(&handle, "invoicing-progress", n);
+    })
+    .await
 }
 
 #[tauri::command]
@@ -2193,6 +2355,10 @@ fn main() {
             print::print_pdf,
             print::print_paper,
             net_fetch,
+            invoicing_status,
+            invoicing_key_set,
+            invoicing_key_forget,
+            invoicing_read,
             print::print_job_take,
             print::print_job_ready,
             wincert::wincert_list,

@@ -247,6 +247,17 @@ pub fn register_this_device(store: &mut Store, dev: &DeviceIdentity, label: &str
     Ok(id)
 }
 
+/// Seals `data` for the current Windows user with DPAPI, bound to `entropy` (a constant naming the use), for a
+/// secret kept only on this PC: the device key here, the online invoicing program's key (D-089).
+pub fn seal(data: &[u8], entropy: &[u8]) -> std::io::Result<Vec<u8>> {
+    dpapi::protect(data, entropy)
+}
+
+/// Opens what [`seal`] sealed, on the same PC and for the same Windows user.
+pub fn unseal(data: &[u8], entropy: &[u8]) -> std::io::Result<Vec<u8>> {
+    dpapi::unprotect(data, entropy)
+}
+
 #[cfg(windows)]
 mod dpapi {
     //! Windows Data Protection API, scope: current Windows user.

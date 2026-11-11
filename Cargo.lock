@@ -3760,17 +3760,20 @@ dependencies = [
  "kgb-write",
  "serde",
  "serde_json",
+ "sha1_smol",
  "socket2",
  "tauri",
  "tauri-build",
  "tauri-plugin-dialog",
  "tauri-plugin-notification",
+ "tempfile",
  "tokio",
  "tracing",
  "uuid",
  "webview2-com",
  "windows",
  "windows-sys 0.61.2",
+ "zeroize",
 ]
 
 [[package]]

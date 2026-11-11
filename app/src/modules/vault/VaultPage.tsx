@@ -5,7 +5,8 @@
 // 7.10b: „Profilul firmei din acte” proposes the firm's data from its papers (FirmProfile.tsx); a purchase invoice
 // not yet in Business can be recorded there by the person, from a filled-in form (ToBusiness.tsx); a receipt
 // („Chitanțe, NIR, dispoziții”) can be recorded in Business's cash register the same way (ToCash.tsx), and the
-// lines of a purchase e-Factura as a reception in stock (ToStock.tsx).
+// lines of a purchase e-Factura as a reception in stock (ToStock.tsx). 7.10c: invoices read from the online
+// invoicing program, read only (OnlineInvoicing.tsx, D-089).
 import { useCallback, useEffect, useState } from "react";
 import { open, save } from "@tauri-apps/plugin-dialog";
 import { api, message } from "../../api";
@@ -14,6 +15,7 @@ import { FirmProfile } from "./FirmProfile";
 import { ToBusiness } from "./ToBusiness";
 import { ToCash } from "./ToCash";
 import { ToStock } from "./ToStock";
+import { OnlineInvoicing } from "./OnlineInvoicing";
 
 const ID = "kgb.vault";
 const BIZ = "kgb.business";
@@ -77,6 +79,7 @@ export function VaultPage({ onError, access, onOpen }: { onError: (e: string | n
 
   const [dupOnly, setDupOnly] = useState(false);
   const [profile, setProfile] = useState(false);
+  const [online, setOnline] = useState(false);
   const [bizOn, setBizOn] = useState(false);
   const [toBiz, setToBiz] = useState<string | null>(null);
   const [toCash, setToCash] = useState<string | null>(null);
@@ -236,7 +239,21 @@ export function VaultPage({ onError, access, onOpen }: { onError: (e: string | n
         <button type="button" disabled={busy} onClick={() => setProfile(true)}>
           Profilul firmei din acte…
         </button>
+        <button type="button" disabled={busy || readOnly} onClick={() => setOnline(true)}>
+          Din programul de facturare online…
+        </button>
       </form>
+      {online && (
+        <OnlineInvoicing
+          readOnly={readOnly}
+          onClose={() => setOnline(false)}
+          onAdded={(m) => {
+            setOnline(false);
+            setNotice(m);
+            void load();
+          }}
+        />
+      )}
       {profile && (
         <FirmProfile
           readOnly={readOnly}
