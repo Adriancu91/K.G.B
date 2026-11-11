@@ -1,6 +1,7 @@
-// 7.10a, end to end in the real window: „Depozitul de documente” — a folder with subfolders added at once, each
+// 7.10a / 7.10d, end to end in the real window: „Depozitul de documente” — a folder with subfolders added at once, each
 // document sorted (labour contract, company certificate, an e-Factura invoice, a scan by its folder's name), the
-// same file a second time not added again, the firm's CUI turning the invoice into a sale, a category confirmed.
+// same file a second time not added again, the firm's CUI turning the invoice into a sale, a category confirmed;
+// the same invoice in another file and in Business shown as a duplicate, another total as „posibil dublură”.
 //
 // Usage: node app/e2e/vault.mjs <path-to-kgb-app.exe> <screenshot-dir>
 // Uses a throw-away data folder (KGB_DATA_DIR) and a throw-away documents folder, never the user's real data.
@@ -80,13 +81,13 @@ try {
   await clickText(p, "Adaugă un folder…", ".vault");
   await p.until("document.querySelector('.vault [role=status]')?.innerText.includes('documente noi')", 20000);
   const note = await p.eval("document.querySelector('.vault [role=status]').innerText");
-  check("folderul: 4 documente noi, 1 era deja (copia), 1 sărit (.exe)", /4 documente noi/.test(note) && /1 erau deja/.test(note) && /1 fișiere sărite/.test(note), note);
+  check("folderul: 4 documente noi, unul era deja (copia), un fișier sărit (.exe)", /4 documente noi/.test(note) && /unul era deja/.test(note) && /un fișier sărit/.test(note), note);
   await p.until("document.querySelectorAll('[data-testid=vault-doc]').length === 4", 8000);
   const r = await rows(p);
   const cat = (part) => r.find((x) => x.t.includes(part))?.cat;
   check(
-    "sortate: contract de muncă, actele firmei, factură, autorizație (după folder)",
-    cat("cim popescu") === "contracte_munca" && cat("certificat constatator") === "identitate" && cat("KGB 12.xml") === "facturi_achizitie" && cat("scan ISU") === "autorizatii",
+    "sortate: contract de muncă, actele firmei, factură de vânzare (după folderul „emise”), autorizație (după folder)",
+    cat("cim popescu") === "contracte_munca" && cat("certificat constatator") === "identitate" && cat("KGB 12.xml") === "facturi_vanzare" && cat("scan ISU") === "autorizatii",
     JSON.stringify(r.map((x) => x.cat)),
   );
   check(
@@ -112,6 +113,47 @@ try {
   await p.until("document.querySelectorAll('[data-testid=vault-doc]').length === 1", 8000);
   const all = await invoke(p, "module_call", { id: "kgb.vault", command: "lista", args: {} });
   check("căutarea găsește după text; CNP-ul nu e păstrat în text", !JSON.stringify(all).includes("1960101123456") && !(await p.eval("document.body.innerText.includes('1960101123456')")));
+  await setValue(p, "input[aria-label='Caută în depozit']", "");
+
+  // 7.10d: the same invoice in another file (other spaces in the number), and a third one with another total.
+  const more = mkdtempSync(join(tmpdir(), "kgb-vault-more-"));
+  writeFileSync(join(more, "KGB 12 copie.xml"), ubl.replace("KGB 0012", "KGB12"));
+  writeFileSync(join(more, "KGB 12 alta.xml"), ubl.replace("KGB 0012", "KGB 12").replace("1210.00", "999.00"));
+  await p.eval(`window.__kgbE2eFolder = ${JSON.stringify(more)}`);
+  await clickText(p, "Adaugă un folder…", ".vault");
+  await p.until("document.querySelector('.vault [role=status]')?.innerText.includes('2 documente noi')", 20000);
+  rmSync(more, { recursive: true, force: true });
+  // Business: the same invoice issued there (series KGB from number 12, 1.000 + 21% VAT = 1.210,00).
+  await p.click("Catalog module", "nav .nav");
+  const biz = "[...document.querySelectorAll('.card')].find(c => c.querySelector('h3')?.innerText.trim() === 'Business')";
+  await p.until(`!!${biz}`, 8000);
+  await p.eval(`${biz}.querySelector('button').click()`);
+  await sleep(300);
+  await p.click("Acordă și activează");
+  await p.until("[...document.querySelectorAll('nav .nav')].some(e => e.textContent.trim() === 'Business')", 8000);
+  const b = (command, args) => invoke(p, "module_call", { id: "kgb.business", command, args });
+  await b("settings_save", { firma: { firma_nume: "Noi SRL", firma_cui: "RO14399840", firma_adresa: "Iași" } });
+  const series = await b("series_save", { cod: "KGB", primul_numar: 12 });
+  const client = await b("partner_save", { nume: "Alfa SRL", cui: "RO18547290", tip: "client" });
+  const issued = await b("invoice_issue", { serie: series.id, partener: client.id, data: "2026-11-05", linii: [{ descriere: "Servicii", cantitate: "1", pret_unitar: "1000", cota_tva: 21 }] });
+  check("în Business: factura KGB 12 emisă", issued.numar === "KGB 12" || String(issued.numar).includes("12"), JSON.stringify(issued).slice(0, 120));
+  await p.eval("[...document.querySelectorAll('nav .nav')].find(e => e.textContent.trim().startsWith('Depozitul de documente')).click()");
+  await p.until("!!document.querySelector('.vault')", 8000);
+  // The tab appears once the invoices of Business are read.
+  await p.until("[...document.querySelectorAll('.vault-cats button')].some(b => b.textContent.trim() === 'Dubluri')", 10000);
+  await clickText(p, "Dubluri", ".vault-cats");
+  await p.until("document.querySelectorAll('[data-testid=vault-doc]').length === 3", 10000);
+  const dups = await p.eval("[...document.querySelectorAll('[data-testid=vault-doc]')].map(r => ({ n: r.querySelector('strong').innerText, d: [...r.querySelectorAll('[data-testid=vault-dup]')].map(x => x.innerText.replace(/\\s+/g, ' ')) }))");
+  const of = (n) => dups.find((x) => x.n === n)?.d ?? [];
+  check(
+    "dublurile: factura și copia ei se văd una pe alta și în Business",
+    of("KGB 12.xml").some((t) => t.includes("există și în") && t.includes("KGB 12 copie.xml")) &&
+      of("KGB 12.xml").some((t) => t.includes("există și în") && t.includes("Business, factura emisă KGB 12")) &&
+      of("KGB 12 copie.xml").some((t) => t.includes("Business")),
+    JSON.stringify(dups),
+  );
+  check("același număr cu alt total: „posibil dublură”", of("KGB 12 alta.xml").length > 0 && of("KGB 12 alta.xml").every((t) => t.startsWith("posibil dublură")), JSON.stringify(of("KGB 12 alta.xml")));
+  await p.screenshot(join(shots, "02-dubluri.png"));
   p.close();
 } catch (e) {
   check("scenariul a rulat până la capăt", false, e.message);

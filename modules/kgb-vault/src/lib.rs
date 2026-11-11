@@ -228,6 +228,40 @@ impl Invoice {
     }
 }
 
+/// Issuer CUI, series, number.
+pub type InvoiceKey = (String, String, String);
+
+/// The key of an invoice (7.10d, D-089): issuer CUI + series + number. `None` without a number or an issuer.
+pub fn invoice_key(inv: &Invoice) -> Option<InvoiceKey> {
+    (!inv.numar.is_empty() && !inv.emitent_cui.is_empty())
+        .then(|| (inv.emitent_cui.clone(), inv.serie.clone(), inv.numar.clone()))
+}
+
+/// Whether two invoices with the same key are the same one: `true` when the date and the total agree (where both
+/// are known), `false` for „posibil dublură” (same number, another date or total).
+pub fn same_invoice(a: &Invoice, b: &Invoice) -> bool {
+    let date = a.data.is_empty() || b.data.is_empty() || a.data == b.data;
+    let total = a.total.is_none() || b.total.is_none() || a.total == b.total;
+    date && total
+}
+
+/// Groups of invoices sharing a key; each group says whether it is surely one invoice or only possibly.
+pub fn duplicate_groups<T: Clone>(items: &[(T, Invoice)]) -> Vec<(Vec<T>, bool)> {
+    let mut by: BTreeMap<InvoiceKey, Vec<&(T, Invoice)>> = BTreeMap::new();
+    for it in items {
+        if let Some(k) = invoice_key(&it.1) {
+            by.entry(k).or_default().push(it);
+        }
+    }
+    by.into_values()
+        .filter(|g| g.len() > 1)
+        .map(|g| {
+            let sure = g.iter().all(|x| same_invoice(&x.1, &g[0].1));
+            (g.iter().map(|x| x.0.clone()).collect(), sure)
+        })
+        .collect()
+}
+
 /// The text of an XML element's first occurrence after `from` (`<cbc:ID>…</cbc:ID>`, attributes allowed).
 fn xml_tag<'a>(xml: &'a str, tag: &str, from: usize) -> Option<(&'a str, usize)> {
     let open = format!("<{tag}");
@@ -485,16 +519,51 @@ pub fn sort(path: &str, text: &str, invoice: Option<&Invoice>, firm: &str) -> So
                 confidence: 90,
                 reason: "factură de la alt emitent (CUI-ul emitentului nu e al firmei)".into(),
             },
-            (true, _) => Sorting {
-                category: "facturi_achizitie",
-                confidence: 50,
-                reason: "factură; nu știu CUI-ul firmei, deci nici dacă e de vânzare sau de achiziție (Setări)".into(),
-            },
-            (false, true) => Sorting {
-                category: "facturi_achizitie",
-                confidence: 55,
-                reason: "factură fără CUI-ul emitentului citit".into(),
-            },
+            // Without the firm's CUI (or the issuer's), the folder's name proposes the side; still to confirm.
+            (true, _) | (false, true) => {
+                let no_firm = firm.is_empty();
+                match (side_by_folder(path), no_firm) {
+                    (Some((true, hint)), true) => Sorting {
+                        category: "facturi_vanzare",
+                        confidence: 50,
+                        reason: format!(
+                            "factură de vânzare după numele folderului („{hint}”); nu știu CUI-ul firmei (Setări)"
+                        ),
+                    },
+                    (Some((true, hint)), false) => Sorting {
+                        category: "facturi_vanzare",
+                        confidence: 50,
+                        reason: format!(
+                            "factură de vânzare după numele folderului („{hint}”); CUI-ul emitentului nu s-a putut citi"
+                        ),
+                    },
+                    (Some((false, hint)), true) => Sorting {
+                        category: "facturi_achizitie",
+                        confidence: 50,
+                        reason: format!(
+                            "factură de achiziție după numele folderului („{hint}”); nu știu CUI-ul firmei (Setări)"
+                        ),
+                    },
+                    (Some((false, hint)), false) => Sorting {
+                        category: "facturi_achizitie",
+                        confidence: 50,
+                        reason: format!(
+                            "factură de achiziție după numele folderului („{hint}”); CUI-ul emitentului nu s-a putut citi"
+                        ),
+                    },
+                    (None, true) => Sorting {
+                        category: "facturi_achizitie",
+                        confidence: 45,
+                        reason: "factură; nu știu CUI-ul firmei, deci nici dacă e de vânzare sau de achiziție (Setări)"
+                            .into(),
+                    },
+                    (None, false) => Sorting {
+                        category: "facturi_achizitie",
+                        confidence: 45,
+                        reason: "factură fără CUI-ul emitentului citit".into(),
+                    },
+                }
+            }
         };
     }
     let folded: String = fold(text).chars().take(30_000).collect();
@@ -585,6 +654,29 @@ pub fn sort(path: &str, text: &str, invoice: Option<&Invoice>, firm: &str) -> So
         confidence,
         reason: reason.chars().take(300).collect(),
     }
+}
+
+/// Sales (`true`) or purchases (`false`) from the names of the folders („Facturi/emise”, „Achiziții”), with the
+/// word found; the last folder that says it wins.
+fn side_by_folder(path: &str) -> Option<(bool, &'static str)> {
+    const SALES: [&str; 6] = ["emise", "vanzari", "vanzare", "iesire", "iesiri", "clienti"];
+    const PURCHASES: [&str; 7] = [
+        "primite",
+        "achizitii",
+        "achizitie",
+        "furnizori",
+        "intrare",
+        "intrari",
+        "cheltuieli",
+    ];
+    let words = words_of(path);
+    words.iter().rev().find_map(|w| {
+        SALES
+            .iter()
+            .find(|x| *x == w)
+            .map(|x| (true, *x))
+            .or_else(|| PURCHASES.iter().find(|x| *x == w).map(|x| (false, *x)))
+    })
 }
 
 /// Whether the firm (by its CUI) is the provider (`true`) or the beneficiary (`false`) of a contract: the role
@@ -756,6 +848,15 @@ impl Vault {
                 .take(300)
                 .collect();
         }
+        // The same invoice from another file (a PDF and its XML): kept, and named in the answer.
+        let twin = match invoice.as_ref().and_then(invoice_key) {
+            Some(k) => self
+                .all(ctx)?
+                .into_iter()
+                .find(|r| invoice_of(r).and_then(|i| invoice_key(&i)) == Some(k.clone()))
+                .map(|r| json!({"id": r.id, "nume": s(&r, "nume"), "sigur": invoice_of(&r).is_some_and(|i| same_invoice(&i, invoice.as_ref().expect("has a key")))})),
+            None => None,
+        };
         let doc = ctx.import_document(&name, &data)?;
         let id = Uuid::now_v7();
         let kept: String = hide_cnp(&text.chars().take(TEXT_KEPT + 200).collect::<String>())
@@ -782,7 +883,7 @@ impl Vault {
         ctx.log(&format!("document {id} adăugat în depozit ({})", sorting.category));
         Ok(
             json!({"exista": false, "id": id, "nume": name, "categorie": sorting.category, "incredere": sorting.confidence,
-                  "motiv": sorting.reason, "factura": invoice.as_ref().map(Invoice::to_json)}),
+                  "motiv": sorting.reason, "factura": invoice.as_ref().map(Invoice::to_json), "dublura_de": twin}),
         )
     }
 
@@ -806,6 +907,23 @@ impl Vault {
             .collect();
         l.sort_by_key(|r| (s(r, "categorie"), fold(&s(r, "cale")), fold(&s(r, "nume"))));
         Ok(json!(l.iter().map(view).collect::<Vec<_>>()))
+    }
+
+    /// The invoices of the vault found more than once (another file of the same invoice, or the same number with
+    /// another date or total).
+    fn duplicates(&self, ctx: &mut ModuleContext<'_>) -> CoreResult<Value> {
+        let all = self.all(ctx)?;
+        let items: Vec<(Uuid, Invoice)> = all.iter().filter_map(|r| invoice_of(r).map(|i| (r.id, i))).collect();
+        let groups = duplicate_groups(&items);
+        Ok(json!(
+            groups
+                .iter()
+                .map(|(ids, sure)| {
+                    let docs: Vec<Value> = all.iter().filter(|r| ids.contains(&r.id)).map(view).collect();
+                    json!({"sigur": sure, "documente": docs})
+                })
+                .collect::<Vec<_>>()
+        ))
     }
 
     fn summary(&self, ctx: &mut ModuleContext<'_>) -> CoreResult<Value> {
@@ -942,6 +1060,7 @@ impl Module for Vault {
             "adauga" => self.add(ctx, args(command, a)?),
             "lista" => self.list(ctx, args(command, a)?),
             "rezumat" => self.summary(ctx),
+            "dubluri" => self.duplicates(ctx),
             "confirma" => self.confirm(ctx, args(command, a)?),
             "factura_save" => self.invoice_save(ctx, args(command, a)?),
             "sterge" => {

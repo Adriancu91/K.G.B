@@ -5,8 +5,10 @@
 import { useCallback, useEffect, useState } from "react";
 import { open, save } from "@tauri-apps/plugin-dialog";
 import { api, message } from "../../api";
+import { fromIssued, fromPurchase, matchesOf, sameInvoice, type Inv, type Match } from "./match";
 
 const ID = "kgb.vault";
+const BIZ = "kgb.business";
 
 interface Invoice {
   emitent_cui?: string;
@@ -61,19 +63,50 @@ export function VaultPage({ onError, access }: { onError: (e: string | null) => 
   const [progress, setProgress] = useState<string | null>(null);
   const [notice, setNotice] = useState<string | null>(null);
 
+  const [dupOnly, setDupOnly] = useState(false);
+  const [twins, setTwins] = useState<Array<{ sigur: boolean; documente: Doc[] }>>([]);
+  const [others, setOthers] = useState<Array<{ inv: Inv; where: string }>>([]);
+
   const load = useCallback(async () => {
     try {
-      const [s, l] = await Promise.all([
+      const [s, l, d] = await Promise.all([
         api.moduleCall<Summary>(ID, "rezumat"),
-        api.moduleCall<Doc[]>(ID, "lista", { categorie: cat, text, de_confirmat: todo }),
+        api.moduleCall<Doc[]>(ID, "lista", { categorie: dupOnly ? "" : cat, text, de_confirmat: todo && !dupOnly }),
+        api.moduleCall<Array<{ sigur: boolean; documente: Doc[] }>>(ID, "dubluri"),
       ]);
       setSum(s);
       setDocs(l);
+      setTwins(d);
       setCui((c) => c || s.cui_firma);
+      // The invoices of Business (issued, and purchases with those from e-Factura), when it is enabled and readable.
+      const m = await api.listModules();
+      if (m.modules.some((x) => x.id === BIZ && x.enabled) && m.access[BIZ] !== "niciunul") {
+        const [issued, bought, settings] = await Promise.all([
+          api.moduleCall<Array<{ serie: string; numar: number; data: string; total: number; storno_de: string | null }>>(BIZ, "invoices"),
+          api.moduleCall<Array<{ furnizor_cui?: string | null; numar: string; data: string; total: number; storno_de: string | null }>>(BIZ, "purchases"),
+          api.moduleCall<{ firma: Array<{ camp: string; valoare: string }> }>(BIZ, "settings"),
+        ]);
+        const firm = settings.firma.find((f) => f.camp === "firma_cui")?.valoare ?? "";
+        setOthers([
+          ...issued.filter((x) => !x.storno_de).map((x) => ({ inv: fromIssued(x, firm), where: `Business, factura emisă ${x.serie} ${x.numar}` })),
+          ...bought.filter((x) => !x.storno_de).map((x) => ({ inv: fromPurchase(x), where: `Business, cheltuiala ${x.numar}` })),
+        ]);
+      } else setOthers([]);
     } catch (e) {
       onError(message(e));
     }
-  }, [cat, text, todo, onError]);
+  }, [cat, text, todo, dupOnly, onError]);
+
+  const asInv = (f: Invoice): Inv => ({ emitent_cui: f.emitent_cui ?? "", serie: f.serie ?? "", numar: f.numar ?? "", data: f.data ?? "", total: f.total ?? null });
+  /** Where else a document's invoice is: another file of the vault, or Business. */
+  const elsewhere = (d: Doc): Match[] => {
+    if (!d.factura?.numar) return [];
+    const inVault = twins
+      .filter((g) => g.documente.some((x) => x.id === d.id))
+      .flatMap((g) => g.documente.filter((x) => x.id !== d.id).map((x) => ({ where: `depozit, „${x.nume}”`, sure: !!x.factura && sameInvoice(asInv(d.factura!), asInv(x.factura)) })));
+    return [...inVault, ...matchesOf(asInv(d.factura), others)];
+  };
+  const shown = dupOnly ? docs.filter((d) => elsewhere(d).length > 0) : docs;
   useEffect(() => {
     void load();
   }, [load]);
@@ -108,12 +141,12 @@ export function VaultPage({ onError, access }: { onError: (e: string | null) => 
         failed.push(`${f.rel} (${message(e)})`);
       }
     }
-    const parts = [`${added} documente noi`];
-    if (there) parts.push(`${there} erau deja în depozit`);
-    if (skipped) parts.push(`${skipped} fișiere sărite (alt fel de fișier sau prea mari)`);
+    const parts = [added === 1 ? "un document nou" : `${added} documente noi`];
+    if (there) parts.push(there === 1 ? "unul era deja în depozit" : `${there} erau deja în depozit`);
+    if (skipped) parts.push(skipped === 1 ? "un fișier sărit (alt fel de fișier sau prea mare)" : `${skipped} fișiere sărite (alt fel de fișier sau prea mari)`);
     if (tooMany) parts.push("folderul are peste 3000 de fișiere: au intrat primele 3000, alege subfolderele rămase pe rând");
-    if (failed.length) parts.push(`${failed.length} nu s-au putut citi: ${failed.slice(0, 5).join("; ")}`);
-    setNotice(`${parts.join(" · ")}.`);
+    if (failed.length) parts.push(failed.length === 1 ? `unul nu s-a putut citi: ${failed[0]}` : `${failed.length} nu s-au putut citi: ${failed.slice(0, 5).join("; ")}`);
+    setNotice(parts.join(" · "));
   };
 
   const addFolder = () =>
@@ -156,7 +189,12 @@ export function VaultPage({ onError, access }: { onError: (e: string | null) => 
       )}
       {notice && !progress && (
         <p className="muted" role="status">
-          {notice}
+          {notice.split(" · ").map((part, n) => (
+            <span key={n}>
+              {n > 0 && " · "}
+              <span>{part}</span>
+            </span>
+          ))}
         </p>
       )}
 
@@ -179,18 +217,23 @@ export function VaultPage({ onError, access }: { onError: (e: string | null) => 
 
       {sum && (
         <div className="vault-cats" role="tablist" aria-label="Categoriile">
-          <button role="tab" aria-selected={!cat && !todo} className={!cat && !todo ? "active" : ""} onClick={() => (setCat(""), setTodo(false))}>
+          <button role="tab" aria-selected={!cat && !todo && !dupOnly} className={!cat && !todo && !dupOnly ? "active" : ""} onClick={() => (setCat(""), setTodo(false), setDupOnly(false))}>
             {`Toate (${sum.total})`}
           </button>
           {sum.de_confirmat > 0 && (
-            <button role="tab" aria-selected={todo} className={`vault-todo${todo ? " active" : ""}`} onClick={() => (setCat(""), setTodo(true))}>
+            <button role="tab" aria-selected={todo && !dupOnly} className={`vault-todo${todo && !dupOnly ? " active" : ""}`} onClick={() => (setCat(""), setTodo(true), setDupOnly(false))}>
               {`De confirmat (${sum.de_confirmat})`}
+            </button>
+          )}
+          {(twins.length > 0 || others.length > 0) && (
+            <button role="tab" aria-selected={dupOnly} className={`vault-todo${dupOnly ? " active" : ""}`} onClick={() => (setCat(""), setTodo(false), setDupOnly(true))}>
+              Dubluri
             </button>
           )}
           {sum.categorii
             .filter((c) => c.documente > 0)
             .map((c) => (
-              <button key={c.id} role="tab" aria-selected={cat === c.id} className={cat === c.id ? "active" : ""} data-cat={c.id} onClick={() => (setCat(c.id), setTodo(false))}>
+              <button key={c.id} role="tab" aria-selected={cat === c.id && !dupOnly} className={cat === c.id && !dupOnly ? "active" : ""} data-cat={c.id} onClick={() => (setCat(c.id), setTodo(false), setDupOnly(false))}>
                 {`${c.nume} (${c.documente})`}
               </button>
             ))}
@@ -200,12 +243,12 @@ export function VaultPage({ onError, access }: { onError: (e: string | null) => 
 
       <table className="audit vault-list">
         <tbody>
-          {docs.length === 0 && (
+          {shown.length === 0 && (
             <tr>
-              <td className="muted">{sum?.total ? "Niciun document aici." : "Depozitul e gol. Adaugă folderul cu documentele firmei."}</td>
+              <td className="muted">{dupOnly ? "Nicio factură găsită de două ori." : sum?.total ? "Niciun document aici." : "Depozitul e gol. Adaugă folderul cu documentele firmei."}</td>
             </tr>
           )}
-          {docs.map((d) => (
+          {shown.map((d) => (
             <tr key={d.id} data-testid="vault-doc" className={d.confirmata ? "" : "vault-unsure"}>
               <td>
                 <strong>{d.nume}</strong>
@@ -237,6 +280,12 @@ export function VaultPage({ onError, access }: { onError: (e: string | null) => 
                     {d.factura.data && <div>{ro(d.factura.data)}</div>}
                     {typeof d.factura.total === "number" && <div>{`${lei(d.factura.total)} lei`}</div>}
                     {d.factura.emitent_cui && <div className="muted">{`emitent CUI ${d.factura.emitent_cui}`}</div>}
+                    {elsewhere(d).map((m, n) => (
+                      <div key={n} className={m.sure ? "vault-dup" : "vault-dup vault-dup-maybe"} data-testid="vault-dup">
+                        <span>{m.sure ? "există și în:" : "posibil dublură:"}</span> <span>{m.where}</span>
+                        {!m.sure && <span className="small"> (altă dată sau alt total)</span>}
+                      </div>
+                    ))}
                   </div>
                 )}
               </td>
