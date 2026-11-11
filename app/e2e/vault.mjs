@@ -139,6 +139,8 @@ try {
   check("în Business: factura KGB 12 emisă", issued.numar === "KGB 12" || String(issued.numar).includes("12"), JSON.stringify(issued).slice(0, 120));
   await p.eval("[...document.querySelectorAll('nav .nav')].find(e => e.textContent.trim().startsWith('Depozitul de documente')).click()");
   await p.until("!!document.querySelector('.vault')", 8000);
+  // The tab appears once the invoices of Business are read.
+  await p.until("[...document.querySelectorAll('.vault-cats button')].some(b => b.textContent.trim() === 'Dubluri')", 10000);
   await clickText(p, "Dubluri", ".vault-cats");
   await p.until("document.querySelectorAll('[data-testid=vault-doc]').length === 3", 10000);
   const dups = await p.eval("[...document.querySelectorAll('[data-testid=vault-doc]')].map(r => ({ n: r.querySelector('strong').innerText, d: [...r.querySelectorAll('[data-testid=vault-dup]')].map(x => x.innerText.replace(/\\s+/g, ' ')) }))");
