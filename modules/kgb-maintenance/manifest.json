@@ -1,0 +1,108 @@
+{
+  "manifest_format": 1,
+  "id": "kgb.maintenance",
+  "name": "Mentenanța echipamentelor",
+  "description": "Utilajele, vehiculele, instalațiile și aparatele firmei: planuri periodice (revizii, verificări, calibrări) după zile sau după contor, intervențiile cu costul și orele de oprire, scadențele calculate (depășit, în curând) și memento-uri.",
+  "version": "0.1.0",
+  "core": ">=0.1.0, <0.2.0",
+  "status": "beta",
+  "permissions": [
+    "storage.own",
+    "notify.send",
+    "partners.read"
+  ],
+  "services": [
+    "storage",
+    "notify",
+    "partners",
+    "log"
+  ],
+  "data_types": [
+    {
+      "collection": "echipamente",
+      "description": "echipamentele: numele, codul de inventar, categoria, locul, producătorul, modelul, seria, garanția, contorul, starea",
+      "schema": {
+        "fields": {
+          "nume": { "type": "string", "required": true, "max_len": 120 },
+          "cod_inventar": { "type": "string", "required": true, "max_len": 40 },
+          "categorie": { "type": "string", "required": true, "enum": ["utilaj", "vehicul", "instalatie", "aparat", "it", "altul"] },
+          "loc": { "type": "string", "required": true, "max_len": 120 },
+          "producator": { "type": "string", "required": true, "max_len": 80 },
+          "model": { "type": "string", "required": true, "max_len": 80 },
+          "serie": { "type": "string", "required": true, "max_len": 80 },
+          "punere_functiune": { "type": "string", "required": true, "max_len": 10 },
+          "garantie_pana": { "type": "string", "required": true, "max_len": 10 },
+          "contor_unitate": { "type": "string", "required": true, "enum": ["", "ore", "km", "cicluri"] },
+          "responsabil": { "type": "string", "required": true, "max_len": 120 },
+          "stare": { "type": "string", "required": true, "enum": ["functional", "defect", "in_reparatie", "scos"] },
+          "nota": { "type": "string", "required": true, "max_len": 2000 },
+          "creat_ms": { "type": "integer", "required": true, "min": 0 }
+        },
+        "additional": false
+      }
+    },
+    {
+      "collection": "planuri",
+      "description": "ce se face periodic: denumirea, felul, la câte zile și/sau la cât contor, de când se numără, cine o face",
+      "schema": {
+        "fields": {
+          "echipament": { "type": "string", "required": true, "max_len": 36 },
+          "denumire": { "type": "string", "required": true, "max_len": 200 },
+          "fel": { "type": "string", "required": true, "enum": ["preventiv", "verificare_legala", "calibrare"] },
+          "la_zile": { "type": "integer", "required": true, "min": 0, "max": 3650 },
+          "la_contor": { "type": "integer", "required": true, "min": 0 },
+          "de_la": { "type": "string", "required": true, "max_len": 10 },
+          "de_la_contor": { "type": "integer", "required": true, "min": 0 },
+          "avertizare_zile": { "type": "integer", "required": true, "min": 0, "max": 90 },
+          "partener": { "type": "string", "required": true, "max_len": 36 },
+          "partener_nume": { "type": "string", "required": true, "max_len": 200 },
+          "activ": { "type": "bool", "required": true }
+        },
+        "additional": false
+      }
+    },
+    {
+      "collection": "interventii",
+      "description": "intervențiile: data, felul, ce s-a făcut, cine, costul fără TVA, contorul, orele de oprire, piesele, starea",
+      "schema": {
+        "fields": {
+          "echipament": { "type": "string", "required": true, "max_len": 36 },
+          "plan": { "type": "string", "required": true, "max_len": 36 },
+          "fel": { "type": "string", "required": true, "enum": ["planificata", "reparatie", "verificare"] },
+          "data": { "type": "string", "required": true, "max_len": 10 },
+          "descriere": { "type": "string", "required": true, "max_len": 2000 },
+          "cine": { "type": "string", "required": true, "max_len": 200 },
+          "partener": { "type": "string", "required": true, "max_len": 36 },
+          "cost": { "type": "integer", "required": true, "min": 0 },
+          "contor": { "type": "integer", "required": true, "min": -1 },
+          "oprire_ore": { "type": "integer", "required": true, "min": 0, "max": 10000 },
+          "piese": { "type": "string", "required": true, "max_len": 1000 },
+          "stare": { "type": "string", "required": true, "enum": ["programata", "facuta", "anulata"] },
+          "document": { "type": "string", "required": true, "max_len": 36 },
+          "creat_ms": { "type": "integer", "required": true, "min": 0 }
+        },
+        "additional": false
+      }
+    },
+    {
+      "collection": "citiri",
+      "description": "citirile contorului: echipamentul, data, valoarea",
+      "schema": {
+        "fields": {
+          "echipament": { "type": "string", "required": true, "max_len": 36 },
+          "data": { "type": "string", "required": true, "max_len": 10 },
+          "valoare": { "type": "integer", "required": true, "min": 0 },
+          "creat_ms": { "type": "integer", "required": true, "min": 0 }
+        },
+        "additional": false
+      }
+    }
+  ],
+  "events": {
+    "emits": [],
+    "listens": []
+  },
+  "data_format": 1,
+  "migrations": [],
+  "on_disable": "Echipamentele, planurile, intervențiile și citirile rămân în spațiul de lucru și reapar când modulul este activat din nou."
+}

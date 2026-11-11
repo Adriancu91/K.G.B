@@ -860,6 +860,61 @@
   "f": "modules/extract/ExtractPage.tsx"
  },
  {
+  "ro": "Vehicul",
+  "en": "Vehicle",
+  "f": "modules/maintenance/MaintenancePage.tsx"
+ },
+ {
+  "ro": "Aparat",
+  "en": "Camera",
+  "f": "modules/maintenance/MaintenancePage.tsx"
+ },
+ {
+  "ro": "Altul",
+  "en": "Other",
+  "f": "modules/maintenance/MaintenancePage.tsx"
+ },
+ {
+  "ro": "fără citire",
+  "en": "not citire",
+  "f": "modules/maintenance/MaintenancePage.tsx"
+ },
+ {
+  "ro": "Echipamente",
+  "en": "Equipment",
+  "f": "modules/maintenance/MaintenancePage.tsx"
+ },
+ {
+  "ro": "La câte zile",
+  "en": "Every (days)",
+  "f": "modules/maintenance/MaintenancePage.tsx"
+ },
+ {
+  "ro": "(fără plan)",
+  "en": "(without plan)",
+  "f": "modules/maintenance/MaintenancePage.tsx"
+ },
+ {
+  "ro": "Cine",
+  "en": "Who",
+  "f": "modules/maintenance/MaintenancePage.tsx"
+ },
+ {
+  "ro": "Locul",
+  "en": "Position",
+  "f": "modules/maintenance/MaintenancePage.tsx"
+ },
+ {
+  "ro": "fără contor",
+  "en": "not contor",
+  "f": "modules/maintenance/MaintenancePage.tsx"
+ },
+ {
+  "ro": "Anul",
+  "en": "Year",
+  "f": "modules/maintenance/MaintenancePage.tsx"
+ },
+ {
   "ro": "Acțiune",
   "en": "Action",
   "f": "modules/market/MarketPage.tsx"
@@ -872,11 +927,6 @@
  {
   "ro": "Valută",
   "en": "Currency",
-  "f": "modules/market/MarketPage.tsx"
- },
- {
-  "ro": "Altul",
-  "en": "Other",
   "f": "modules/market/MarketPage.tsx"
  },
  {
@@ -1482,11 +1532,6 @@
  {
   "ro": "Pauză (min)",
   "en": "Break (min)",
-  "f": "pages/PhonePage.tsx"
- },
- {
-  "ro": "Vehicul",
-  "en": "Vehicle",
   "f": "pages/PhonePage.tsx"
  },
  {

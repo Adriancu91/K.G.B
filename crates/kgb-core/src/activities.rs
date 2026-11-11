@@ -54,6 +54,7 @@ pub const ACTIVITIES: &[Activity] = &[
         modules: &[
             "kgb.business",
             "kgb.vault",
+            "kgb.maintenance",
             "kgb.team",
             "kgb.permits",
             "kgb.planner",
@@ -79,6 +80,7 @@ pub const ACTIVITIES: &[Activity] = &[
         modules: &[
             "kgb.business",
             "kgb.vault",
+            "kgb.maintenance",
             "kgb.contracts",
             "kgb.team",
             "kgb.permits",
@@ -102,6 +104,7 @@ pub const ACTIVITIES: &[Activity] = &[
         modules: &[
             "kgb.business",
             "kgb.vault",
+            "kgb.maintenance",
             "kgb.appointments",
             "kgb.team",
             "kgb.permits",
@@ -152,6 +155,7 @@ pub const ACTIVITIES: &[Activity] = &[
         modules: &[
             "kgb.business",
             "kgb.vault",
+            "kgb.maintenance",
             "kgb.team",
             "kgb.planner",
             "kgb.permits",
