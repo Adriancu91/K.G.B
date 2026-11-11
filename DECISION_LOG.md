@@ -478,7 +478,7 @@ Deciziile DECIS se schimbă doar cu aprobarea explicită a proprietarului (Maste
 - **Fără rețea în aplicație:** catalogul e în cod; actualizarea lui e un pas de lucru (cercetare din nou), nu o descărcare.
 
 ### D-089 — Programul de facturare online: citire factură cu factură, printr-o listă albă de cereri (7.10c)
-- **Data:** 11 nov. 2026 · **Statut:** PROPUS — de stabilit cu sesiunea COS (D-074); cercetarea făcută, implementarea nu
+- **Data:** 11 nov. 2026 · **Statut:** DECIS cu sesiunea COS (D-074), 11 nov. 2026; cercetarea făcută, implementarea nu
 - **Sursa:** documentația oficială FGO API v7.0 (api-testuat.fgo.ro/v1/testing.html, actualizată 25.03.2026); specificația PDF de pe același site dădea 404 la 11.11.2026.
 - **Ce oferă API-ul:** producție api.fgo.ro/v1, test api-testuat.fgo.ro/v1 (separate). Cere abonament PRO/PREMIUM; cheia privată vine din „Generează utilizator API”. Autentificarea: CodUnic, Hash (SHA-1, litere mari, din CUI + cheie + un câmp al cererii, la facturi numărul) și PlatformaUrl. **Nu există listare a facturilor emise** (nici filtre pe perioadă, nici pagini), ci doar citire după serie și număr: `factura/getstatus` (valoare, achitat) și `factura/print` (link PDF); `listfacturiasociate` e doar ENTERPRISE. Toate cererile sunt POST cu JSON, în afară de `GET nomenclator/*`. Limita e 1 cerere pe secundă.
 - **Riscul:** nu există utilizator API „doar citire”. Hash-ul pentru print e același ca pentru `anulare`/`stergere`/`stornare` pe aceeași factură, așa că cheia poate tot. Singura apărare e în K.G.B.
@@ -488,4 +488,16 @@ Deciziile DECIS se schimbă doar cu aprobarea explicită a proprietarului (Maste
   3. Cheia o scrie omul. E păstrată cu DPAPI doar pe PC-ul acela, nesincronizată, niciodată în jurnal sau în backup. Interfața spune că aceeași cheie poate anula sau șterge facturi, deci se ține ca o parolă.
   4. Internetul se folosește doar la acțiunea omului, prin nucleu (D-086). În interfață apare „programul de facturare online”, fără numele produsului.
   5. Prima cale propusă rămâne fără cheie: exportul din program (PDF sau XML e-Factura) pus în depozit.
+  6. Hash-ul (care conține cheia) se calculează doar în nucleu. Cheia nu trece niciodată prin pagină; pagina trimite doar CUI-ul, seria și numerele.
+  7. O rulare citește cel mult 500 de numere. „Până la primul care nu există” sare golurile mici (facturi șterse sau anulate) și se oprește după 5 numere lipsă la rând.
+  8. Pentru exportul fără cheie, depozitul recunoaște PDF-ul de factură și XML-ul e-Factura (UBL) și scoate aceleași câmpuri ca la citirea din program.
+  9. O factură are aceeași formă în depozit, oricum ar intra:
+     - `emitent_cui`: cheia CUI, fără RO și fără spații;
+     - `serie` și `numar`: cu majuscule, fără spații; numărul fără zerourile din față;
+     - `data`: AAAA-LL-ZZ;
+     - `total`: cu TVA, în bani;
+     - `sursa`: depozit / program online / e-Factura / Business;
+     - documentul: id + BLAKE3.
+
+     Cheia de dublură e emitent_cui + serie + numar. Dacă data sau totalul diferă, apare „posibil dublură” și decide omul (7.10d).
 - **Deschis:** dacă linkul PDF de pe fgo.ro cere autentificare și ce se întâmplă la depășirea limitei. Se verifică doar pe mediul de test, cu un cont făcut de proprietar.
