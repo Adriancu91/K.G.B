@@ -20,10 +20,10 @@ zip = { version = "9.4.1", default-features = false, features = ["deflate"] }
 quick-xml = "0.42.0"
 # PDF from the built-in models (D-045: Typst, chosen by the owner). The fonts
 # are built in so a document looks the same on any computer, in any year.
-typst = "=0.15.1"
-typst-pdf = "=0.15.1"
-typst-layout = "=0.15.1"
-typst-assets = { version = "=0.15.1", features = ["fonts"] }
+typst.workspace = true
+typst-pdf.workspace = true
+typst-layout.workspace = true
+typst-assets.workspace = true
 # Reading the generated PDF back for the check (already used by kgb.pdf).
 lopdf = "0.47.0"
 

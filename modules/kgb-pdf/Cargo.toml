@@ -17,10 +17,10 @@ hayro = { version = "0.9.0", features = ["embed-fonts"] }
 base64 = "0.22.1"
 # Text over the pages (7.4l-1a): laid out by Typst with the built-in fonts
 # (the same versions kgb-docs uses; nothing new downloaded).
-typst = "=0.15.1"
-typst-pdf = "=0.15.1"
-typst-layout = "=0.15.1"
-typst-assets = { version = "=0.15.1", features = ["fonts"] }
+typst.workspace = true
+typst-pdf.workspace = true
+typst-layout.workspace = true
+typst-assets.workspace = true
 
 [dev-dependencies]
 tempfile.workspace = true

@@ -1370,6 +1370,76 @@
   "f": "modules/vault/FirmProfile.tsx"
  },
  {
+  "ro": "Am adăugat {0} articole.",
+  "en": "Added {0} articole.",
+  "f": "modules/works/WorksPage.tsx"
+ },
+ {
+  "ro": "Numărul",
+  "en": "Number",
+  "f": "modules/works/WorksPage.tsx"
+ },
+ {
+  "ro": "Contractul",
+  "en": "Contract",
+  "f": "modules/works/WorksPage.tsx"
+ },
+ {
+  "ro": "Lucrarea",
+  "en": "Work",
+  "f": "modules/works/WorksPage.tsx"
+ },
+ {
+  "ro": "Șterge devizul",
+  "en": "Delete devizul",
+  "f": "modules/works/WorksPage.tsx"
+ },
+ {
+  "ro": "Denumire",
+  "en": "Name",
+  "f": "modules/works/WorksPage.tsx"
+ },
+ {
+  "ro": "Preț unitar",
+  "en": "Unit price",
+  "f": "modules/works/WorksPage.tsx"
+ },
+ {
+  "ro": "rândul {0}",
+  "en": "row {0}",
+  "f": "modules/works/WorksPage.tsx"
+ },
+ {
+  "ro": "Articolul suplimentat",
+  "en": "Article suplimentat",
+  "f": "modules/works/WorksPage.tsx"
+ },
+ {
+  "ro": "Perioada de la",
+  "en": "Period from",
+  "f": "modules/works/WorksPage.tsx"
+ },
+ {
+  "ro": "Deviz",
+  "en": "Estimate",
+  "f": "modules/works/WorksPage.tsx"
+ },
+ {
+  "ro": "Anterior",
+  "en": "Previous",
+  "f": "modules/works/WorksPage.tsx"
+ },
+ {
+  "ro": "Rest",
+  "en": "Remaining",
+  "f": "modules/works/WorksPage.tsx"
+ },
+ {
+  "ro": "Exportă .xlsx",
+  "en": "Export .xlsx",
+  "f": "modules/works/WorksPage.tsx"
+ },
+ {
   "ro": "Salvat pe calculator: {0}",
   "en": "Saved on this computer: {0}",
   "f": "modules/write/WritePage.tsx"
@@ -1507,11 +1577,6 @@
  {
   "ro": "România",
   "en": "Romania",
-  "f": "pages/PartnersPage.tsx"
- },
- {
-  "ro": "Denumire",
-  "en": "Name",
   "f": "pages/PartnersPage.tsx"
  },
  {
@@ -1760,11 +1825,6 @@
   "f": "modules/kgb-docs/src/lib.rs"
  },
  {
-  "ro": "Preț unitar",
-  "en": "Unit price",
-  "f": "modules/kgb-docs/src/lib.rs"
- },
- {
   "ro": "Suma datorată",
   "en": "Amount owed",
   "f": "modules/kgb-docs/src/lib.rs"
@@ -1893,5 +1953,15 @@
   "ro": "Taxe și impozite",
   "en": "Taxes and duties",
   "f": "modules/kgb-sheets/src/templates.rs"
+ },
+ {
+  "ro": "fără denumire",
+  "en": "not denumire",
+  "f": "modules/kgb-works/src/calc.rs"
+ },
+ {
+  "ro": "are mai mult de 1000 de rânduri",
+  "en": "has more than 1000 rows",
+  "f": "modules/kgb-works/src/lib.rs"
  }
 ]
