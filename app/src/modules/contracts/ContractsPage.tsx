@@ -299,7 +299,10 @@ export function ContractsPage({ onError, access }: { onError: (e: string | null)
             ["calendar", "Calendar"],
           ] as const
         ).map(([k, v]) => (
-          <button key={k} role="tab" aria-selected={tab === k} className={tab === k ? "active" : ""} onClick={() => setTab(k)}>
+          <button key={k} role="tab" aria-selected={tab === k} className={tab === k ? "active" : ""} onClick={() => {
+            setTab(k);
+            setNotice(null);
+          }}>
             {v}
           </button>
         ))}
