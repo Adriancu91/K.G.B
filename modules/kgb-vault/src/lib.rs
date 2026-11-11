@@ -41,6 +41,7 @@ pub const ID: &str = "kgb.vault";
 pub const DOCUMENTS: &str = "documente";
 pub const SETTINGS: &str = "setari";
 /// The categories, in display order, with their names on screen.
+pub mod contract;
 pub mod firm;
 
 pub const CATEGORIES: [(&str, &str); 11] = [
@@ -751,6 +752,12 @@ struct InvoiceSave {
 
 #[derive(Deserialize)]
 #[serde(deny_unknown_fields)]
+struct ById {
+    id: Uuid,
+}
+
+#[derive(Deserialize)]
+#[serde(deny_unknown_fields)]
 struct ByIdVersion {
     id: Uuid,
     version: u64,
@@ -940,7 +947,12 @@ impl Vault {
         docs.sort_by_key(|r| std::cmp::Reverse(i(r, "adaugat_ms")));
         for r in &docs {
             let f = firm::firm_from_text(&s(r, "text"));
-            for (camp, v) in [("nume", f.nume), ("cui", f.cui), ("reg_com", f.reg_com), ("adresa", f.adresa)] {
+            for (camp, v) in [
+                ("nume", f.nume),
+                ("cui", f.cui),
+                ("reg_com", f.reg_com),
+                ("adresa", f.adresa),
+            ] {
                 if v.is_empty() {
                     continue;
                 }
@@ -953,6 +965,27 @@ impl Vault {
         Ok(json!({
             "documente": docs.len(),
             "propuneri": found.iter().map(|(c, v, from)| json!({"camp": c, "valoare": v, "din": from})).collect::<Vec<_>>(),
+        }))
+    }
+
+    /// 7.10b: a contract of the vault read as a proposal for „Contracte și abonamente” (the page opens it there;
+    /// nothing is written in Contracts without the person).
+    fn contract_proposal(&self, ctx: &mut ModuleContext<'_>, id: Uuid) -> CoreResult<Value> {
+        let r = self.live(ctx, id)?;
+        let cat = s(&r, "categorie");
+        if !matches!(cat.as_str(), "contracte_clienti" | "contracte_furnizori") {
+            return Err(bad(
+                "documentul",
+                "nu e sortat ca un contract cu un client sau cu un furnizor",
+            ));
+        }
+        let (firm, _) = self.firm(ctx)?;
+        let c = contract::contract_from_text(&s(&r, "text"), &firm);
+        Ok(json!({
+            "document": s(&r, "nume"), "parte": if cat == "contracte_clienti" { "client" } else { "furnizor" },
+            "numar": c.numar, "data": c.data, "inceput": c.inceput, "sfarsit": c.sfarsit, "durata_luni": c.durata_luni,
+            "nedeterminata": c.nedeterminata, "prelungire_auto": c.prelungire_auto, "preaviz_zile": c.preaviz_zile,
+            "partener_cui": c.partener_cui, "partener_nume": c.partener_nume, "cui_firma_cunoscut": !firm.is_empty(),
         }))
     }
 
@@ -1092,6 +1125,10 @@ impl Module for Vault {
             "rezumat" => self.summary(ctx),
             "dubluri" => self.duplicates(ctx),
             "profil_firma" => self.firm_profile(ctx),
+            "contract_propunere" => {
+                let a: ById = args(command, a)?;
+                self.contract_proposal(ctx, a.id)
+            }
             "confirma" => self.confirm(ctx, args(command, a)?),
             "factura_save" => self.invoice_save(ctx, args(command, a)?),
             "sterge" => {
@@ -1140,7 +1177,11 @@ mod tests {
             "CNP •••••••••••••, tel 0722000111"
         );
         assert_eq!(hide_cnp("12345678901234"), "12345678901234", "14 digits are not a CNP");
-        assert_eq!(hide_cnp("Nr. ord. RC: J2002001234220"), "Nr. ord. RC: J2002001234220", "a trade register number");
+        assert_eq!(
+            hide_cnp("Nr. ord. RC: J2002001234220"),
+            "Nr. ord. RC: J2002001234220",
+            "a trade register number"
+        );
         assert_eq!(hide_cnp("CNP:1960101123456"), "CNP:•••••••••••••");
         assert_eq!(fold("Contract  Individual\nde MUNCĂ"), "contract individual de munca");
     }
