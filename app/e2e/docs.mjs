@@ -52,9 +52,9 @@ try {
   await p.click("Acordă și activează");
   await p.until("[...document.querySelectorAll('nav .nav')].some(e => e.textContent.includes('Documente și modele'))");
   await p.click("Documente și modele", "nav .nav");
-  await p.until("document.querySelectorAll('.model-card').length === 14", 10000);
+  await p.until("document.querySelectorAll('.model-card').length === 22", 10000);
   const cats = await p.eval("[...document.querySelectorAll('.docs h2')].map(h => h.innerText)");
-  check("14 modele incluse (5 Word, 9 PDF), pe categorii", JSON.stringify(cats) === JSON.stringify(["Administrative", "Comerciale", "Resurse umane", "Tehnice"]), JSON.stringify(cats));
+  check("22 de modele incluse (5 Word, 17 PDF), pe categorii", JSON.stringify(cats) === JSON.stringify(["Administrative", "Comerciale", "Resurse umane", "Tehnice", "Juridice", "Avize și autorizații"]), JSON.stringify(cats));
   await p.screenshot(join(shots, "01-modele.png"));
 
   // Company data.
@@ -70,7 +70,7 @@ try {
   check("datele firmei se salvează", true);
 
   // Generate a contract through the form.
-  await p.click("Modele (14)", ".sheet-tabs button");
+  await p.click("Modele (22)", ".sheet-tabs button");
   await p.eval("[...document.querySelectorAll('.model-card')].find(c => c.dataset.model === 'Contract de prestări servicii').querySelector('button.primary').click()");
   await p.until("!!document.querySelector('#gen-title')");
   const fromCompany = await p.eval("document.querySelector('.dialog fieldset')?.innerText ?? ''");
@@ -99,7 +99,7 @@ try {
   check("exportul .docx e un fișier Word", head === "PK" && gen[0].model_versiune === 1, `${gen[0].nume} · v${gen[0].model_versiune}`);
 
   // Step 4.8b: a PDF from a built-in Typst model.
-  await p.click("Modele (14)", ".sheet-tabs button");
+  await p.click("Modele (22)", ".sheet-tabs button");
   await p.eval("[...document.querySelectorAll('.model-card')].find(c => c.dataset.model === 'Ofertă comercială (PDF)').querySelector('button.primary').click()");
   await p.until("!!document.querySelector('#gen-title')");
   const pdfVals = { Număr: "7", Client: "Școala Gimnazială „Ion Creangă” Iași", Obiectul: "mentenanță", Valoarea: "1.673,14 lei", "Termen de livrare": "10 zile", "Condiții de plată": "ordin de plată", "Valabil până la": "30.11.2026" };
@@ -120,7 +120,7 @@ try {
   // The import button reloads the page itself; here the command was called directly, so reopen the page.
   await p.click("Acasă", "nav .nav");
   await p.click("Documente și modele", "nav .nav");
-  await p.until("document.querySelectorAll('.model-card').length === 15", 8000);
+  await p.until("document.querySelectorAll('.model-card').length === 23", 8000);
   check("un model Word propriu se importă la „Altele”", await p.eval("[...document.querySelectorAll('.docs h2')].some(h => h.innerText === 'Altele')"));
 
   // Step 4.9: a form with text, number and list fields; a bad answer is refused.
@@ -166,9 +166,9 @@ try {
   stop(p);
   p = await start();
   await p.click("Documente și modele", "nav .nav");
-  await p.until("document.querySelectorAll('.model-card').length === 15", 10000);
+  await p.until("document.querySelectorAll('.model-card').length === 23", 10000);
   const tabs = await p.eval("[...document.querySelectorAll('.sheet-tabs button')].map(b => b.innerText).join(' | ')");
-  check("după repornire: modelele și documentul generat sunt acolo", tabs.includes("Modele (15)") && tabs.includes("Documente generate (2)"), tabs);
+  check("după repornire: modelele și documentul generat sunt acolo", tabs.includes("Modele (23)") && tabs.includes("Documente generate (2)"), tabs);
   const after = await invoke(p, "module_call", { id: "kgb.docs", command: "forms", args: {} });
   check("după repornire: formularul și răspunsul sunt acolo", after.length === 1 && after[0].raspunsuri === 1);
   stop(p);

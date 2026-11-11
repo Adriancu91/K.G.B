@@ -89,6 +89,28 @@ pub const TEMPLATES: &[TemplateInfo] = &[
         description: "Cantitate scriptică și faptică, valori, diferențe pe cantitate și valoare, plus sau minus la inventar.",
         how: "Scrie cantitatea găsită la numărare și prețul; diferențele și constatarea se calculează.",
     },
+    // Step 7.9d: three more, for the team, the cash and buying.
+    TemplateInfo {
+        id: "pontaj",
+        name: "Pontaj lunar",
+        category: "Resurse umane",
+        description: "Orele lucrate pe zile pentru fiecare persoană, totalul lunii, zilele lucrate și orele peste norma lunii.",
+        how: "Scrie orele pe fiecare zi (CO, CM sau gol pentru zilele fără lucru) și norma lunii în ore; totalurile se calculează.",
+    },
+    TemplateInfo {
+        id: "flux-numerar",
+        name: "Flux de numerar pe 12 luni",
+        category: "Financiar",
+        description: "Încasări și plăți pe luni, fluxul net al fiecărei luni și soldul de numerar la sfârșitul ei, cu lunile pe minus marcate.",
+        how: "Scrie soldul de la început și sumele estimate pe luni; fluxul net și soldul curg singure.",
+    },
+    TemplateInfo {
+        id: "comparatie-oferte",
+        name: "Comparație de oferte",
+        category: "Achiziții",
+        description: "Trei furnizori pentru aceleași produse: valoarea fiecăruia pe linie, totalul, cea mai mică ofertă pe linie și cel mai ieftin furnizor.",
+        how: "Scrie cantitățile și prețurile unitare primite de la fiecare furnizor; valorile și alegerea se calculează.",
+    },
 ];
 
 pub const NOTE: &str = "Model orientativ generat de K.G.B. Verificați cifrele înainte de a le folosi oficial; nu înlocuiește un program de contabilitate autorizat.";
@@ -168,6 +190,9 @@ fn build(id: &str, results: Option<&HashMap<Key, String>>) -> Result<Vec<u8>, St
         "centralizator" => centralizator(&mut w, &f),
         "situatie-plata" => situatie(&mut w, &f),
         "inventar" => inventar(&mut w, &f),
+        "pontaj" => pontaj(&mut w, &f),
+        "flux-numerar" => flux(&mut w, &f),
+        "comparatie-oferte" => oferte(&mut w, &f),
         _ => return Err(format!("șablonul „{id}” nu există")),
     }
     // The warning of the models stays with the workbook, on a sheet of its own: it is not printed with the
@@ -629,6 +654,181 @@ fn inventar(w: &mut W<'_>, f: &Formats) {
     for (c, col) in [(6u16, "G"), (7, "H"), (9, "J")] {
         w.formula(25, c, &format!("=SUM({col}6:{col}25)"), &f.money_bold);
     }
+}
+
+/// Excel column letters for a 0-based column (A … Z, AA … AZ).
+fn col(c: u16) -> String {
+    let a = |n: u16| char::from(b'A' + n as u8);
+    if c < 26 {
+        a(c).to_string()
+    } else {
+        format!("{}{}", a(c / 26 - 1), a(c % 26))
+    }
+}
+
+fn widths_from(w: &mut W<'_>, first: u16, cols: &[f64]) {
+    for (i, wd) in cols.iter().enumerate() {
+        w.ws.set_column_width(first + i as u16, *wd).expect("col");
+    }
+}
+
+/// Pontaj: people in rows 6–20, days 1–31 in columns B–AF, then total hours (AG), days worked (AH) and the
+/// hours over the month's norm (AI, the norm in L3).
+fn pontaj(w: &mut W<'_>, f: &Formats) {
+    w.ws.set_name("Pontaj").expect("valid name");
+    w.ws.set_column_width(0, 24).expect("col");
+    for d in 1..=31u16 {
+        w.ws.set_column_width(d, 4.2).expect("col");
+    }
+    widths_from(w, 32, &[10.0, 11.0, 11.0]);
+    w.text(0, 0, "PONTAJ LUNAR", &f.title);
+    for (r, label, val) in [(2u32, "Luna:", "luna, anul"), (3, "Compartiment:", "")] {
+        w.text(r, 0, label, &f.bold);
+        w.text(r, 1, val, &f.plain);
+    }
+    w.text(2, 6, "Norma lunii (ore):", &f.bold);
+    w.num(2, 11, 168.0, &f.plain);
+    w.text(4, 0, "Nume și prenume", &f.head);
+    for d in 1..=31u16 {
+        w.num(4, d, f64::from(d), &f.head);
+    }
+    for (c, h) in [(32u16, "Total ore"), (33, "Zile lucrate"), (34, "Peste normă")] {
+        w.text(4, c, h, &f.head);
+    }
+    let people = ["Popescu Ion", "Ionescu Maria"];
+    for i in 0..15u32 {
+        let r = 5 + i;
+        let x = r + 1;
+        if let Some(n) = people.get(i as usize) {
+            w.text(r, 0, n, &f.plain);
+            for d in 1..=22u16 {
+                if d == 10 && i == 1 {
+                    w.text(r, d, "CO", &f.plain);
+                } else {
+                    w.num(r, d, 8.0, &f.plain);
+                }
+            }
+        }
+        w.formula(r, 32, &format!("=IF(A{x}=\"\",\"\",SUM(B{x}:AF{x}))"), &f.num);
+        w.formula(r, 33, &format!("=IF(A{x}=\"\",\"\",COUNTIF(B{x}:AF{x},\">0\"))"), &f.plain);
+        w.formula(r, 34, &format!("=IF(A{x}=\"\",\"\",MAX(0,AG{x}-$L$3))"), &f.num);
+    }
+    w.text(20, 0, "Total", &f.bold);
+    for c in 32..=34u16 {
+        let l = col(c);
+        w.formula(20, c, &format!("=SUM({l}6:{l}20)"), &f.money_bold);
+    }
+}
+
+/// Flux de numerar: months in columns B–M (total in N); receipts in rows 6–10, payments in 13–19, then the
+/// month's net flow (row 22), the balance at its end (23) and a warning when it goes below zero (24).
+fn flux(w: &mut W<'_>, f: &Formats) {
+    w.ws.set_name("Flux de numerar").expect("valid name");
+    w.ws.set_column_width(0, 28).expect("col");
+    widths_from(w, 1, &[12.0; 13]);
+    w.text(0, 0, "FLUX DE NUMERAR PE 12 LUNI", &f.title);
+    w.text(2, 0, "Sold la început:", &f.bold);
+    w.num(2, 1, 20000.0, &f.money);
+    w.text(4, 0, "Încasări", &f.head);
+    for m in 0..12u16 {
+        w.text(4, 1 + m, &format!("Luna {}", m + 1), &f.head);
+    }
+    w.text(4, 13, "Total", &f.head);
+    let ins: [(&str, f64); 2] = [("Vânzări încasate", 30000.0), ("Alte încasări", 0.0)];
+    let outs: [(&str, f64); 4] = [
+        ("Furnizori", 14000.0),
+        ("Salarii și contribuții", 9000.0),
+        ("Chirie și utilități", 3500.0),
+        ("Taxe și impozite", 2500.0),
+    ];
+    for i in 0..5u32 {
+        let r = 5 + i;
+        if let Some((n, v)) = ins.get(i as usize) {
+            w.text(r, 0, n, &f.plain);
+            for m in 0..12u16 {
+                w.num(r, 1 + m, *v, &f.money);
+            }
+        }
+        w.formula(r, 13, &format!("=SUM(B{0}:M{0})", r + 1), &f.money);
+    }
+    w.text(10, 0, "Total încasări", &f.bold);
+    w.text(11, 0, "Plăți", &f.head);
+    for i in 0..7u32 {
+        let r = 12 + i;
+        if let Some((n, v)) = outs.get(i as usize) {
+            w.text(r, 0, n, &f.plain);
+            for m in 0..12u16 {
+                w.num(r, 1 + m, *v, &f.money);
+            }
+        }
+        w.formula(r, 13, &format!("=SUM(B{0}:M{0})", r + 1), &f.money);
+    }
+    w.text(19, 0, "Total plăți", &f.bold);
+    w.text(21, 0, "Flux net al lunii", &f.bold);
+    w.text(22, 0, "Sold la sfârșitul lunii", &f.bold);
+    w.text(23, 0, "Atenție", &f.bold);
+    for m in 0..=12u16 {
+        let l = col(1 + m);
+        w.formula(10, 1 + m, &format!("=SUM({l}6:{l}10)"), &f.money_bold);
+        w.formula(19, 1 + m, &format!("=SUM({l}13:{l}19)"), &f.money_bold);
+        if m < 12 {
+            w.formula(21, 1 + m, &format!("={l}11-{l}20"), &f.money_bold);
+            let prev = if m == 0 { "$B$3".to_string() } else { format!("{}23", col(m)) };
+            w.formula(22, 1 + m, &format!("={prev}+{l}22"), &f.money_bold);
+            w.formula(23, 1 + m, &format!("=IF({l}23<0,\"sold negativ\",\"\")"), &f.plain);
+        }
+    }
+}
+
+/// Comparație de oferte: products in rows 6–20; three suppliers, each with the unit price (C, E, G) and the
+/// value (D, F, H); the lowest value of the line in I and its supplier in J; totals in row 21 and the cheapest
+/// supplier overall in row 22. The suppliers' names are in C3, E3 and G3.
+fn oferte(w: &mut W<'_>, f: &Formats) {
+    w.ws.set_name("Comparație oferte").expect("valid name");
+    widths(w, &[30.0, 10.0, 12.0, 13.0, 12.0, 13.0, 12.0, 13.0, 13.0, 16.0]);
+    w.text(0, 0, "COMPARAȚIE DE OFERTE", &f.title);
+    for (c, n) in [(2u16, "Furnizor A"), (4, "Furnizor B"), (6, "Furnizor C")] {
+        w.text(2, c, n, &f.bold);
+    }
+    w.text(3, 0, "Prețuri fără TVA", &f.note);
+    heads(
+        w,
+        4,
+        &["Produs / serviciu", "Cantitate", "Preț A", "Valoare A", "Preț B", "Valoare B", "Preț C", "Valoare C", "Cea mai mică", "Furnizor"],
+        f,
+    );
+    let rows: [(&str, f64, [f64; 3]); 3] = [
+        ("Hârtie A4, top", 50.0, [24.5, 23.9, 25.2]),
+        ("Toner imprimantă", 6.0, [310.0, 295.0, 289.0]),
+        ("Dosare plastic", 200.0, [1.9, 2.1, 1.85]),
+    ];
+    for i in 0..15u32 {
+        let r = 5 + i;
+        let x = r + 1;
+        if let Some((n, q, p)) = rows.get(i as usize) {
+            w.text(r, 0, n, &f.plain);
+            w.num(r, 1, *q, &f.num);
+            for (k, v) in p.iter().enumerate() {
+                w.num(r, 2 + 2 * k as u16, *v, &f.money);
+            }
+        }
+        for (k, pc) in ["C", "E", "G"].iter().enumerate() {
+            w.formula(r, 3 + 2 * k as u16, &format!("=IF({pc}{x}=\"\",\"\",ROUND(B{x}*{pc}{x},2))"), &f.money);
+        }
+        w.formula(r, 8, &format!("=IF(COUNT(D{x},F{x},H{x})=0,\"\",MIN(D{x},F{x},H{x}))"), &f.money);
+        w.formula(
+            r,
+            9,
+            &format!("=IF(I{x}=\"\",\"\",IF(D{x}=I{x},$C$3,IF(F{x}=I{x},$E$3,$G$3)))"),
+            &f.plain,
+        );
+    }
+    w.text(20, 0, "Total", &f.bold);
+    for (c, l) in [(3u16, "D"), (5, "F"), (7, "H"), (8, "I")] {
+        w.formula(20, c, &format!("=SUM({l}6:{l}20)"), &f.money_bold);
+    }
+    w.text(21, 0, "Cel mai ieftin pe total", &f.bold);
+    w.formula(21, 3, "=IF(MIN(D21,F21,H21)=D21,$C$3,IF(MIN(D21,F21,H21)=F21,$E$3,$G$3))", &f.bold);
 }
 
 fn evaluate(bytes: &[u8]) -> Result<HashMap<Key, String>, String> {

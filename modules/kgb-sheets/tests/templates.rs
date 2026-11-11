@@ -47,7 +47,7 @@ fn close(got: &str, want: f64) -> bool {
 }
 
 #[test]
-fn the_library_lists_nine_templates() {
+fn the_library_lists_twelve_templates() {
     let (_t, mut ws, mm) = setup();
     let l = call(&mut ws, &mm, "templates", json!({})).unwrap();
     let ids: Vec<&str> = l["templates"]
@@ -58,7 +58,20 @@ fn the_library_lists_nine_templates() {
         .collect();
     assert_eq!(
         ids,
-        ["buget-lunar", "factura", "registru-casa", "cost-km", "rate-credit", "deviz", "centralizator", "situatie-plata", "inventar"]
+        [
+            "buget-lunar",
+            "factura",
+            "registru-casa",
+            "cost-km",
+            "rate-credit",
+            "deviz",
+            "centralizator",
+            "situatie-plata",
+            "inventar",
+            "pontaj",
+            "flux-numerar",
+            "comparatie-oferte"
+        ]
     );
     assert!(l["note"].as_str().unwrap().contains("orientativ"));
     assert!(call(&mut ws, &mm, "use_template", json!({"template": "nu-exista"})).is_err());
@@ -297,4 +310,48 @@ fn the_warning_is_not_on_the_printed_sheet() {
         assert_eq!(get(&mut ws, &mm, &id, sheet, "A2"), "", "{t}: row 2 of the printed sheet");
         assert!(get(&mut ws, &mm, &id, "Despre model", "A3").contains("orientativ"), "{t}");
     }
+}
+
+/// 7.9d Pontaj: Popescu 22 days × 8 h = 176 h, 22 days, 8 h over the 168 h norm; Ionescu the same but „CO”
+/// on day 10: 168 h, 21 days, 0 over; totals 344 h, 43 days, 8 h.
+#[test]
+fn monthly_timesheet() {
+    let (_t, mut ws, mm) = setup();
+    let id = use_t(&mut ws, &mm, "pontaj");
+    for (cell, want) in [("AG6", 176.0), ("AH6", 22.0), ("AI6", 8.0), ("AG7", 168.0), ("AH7", 21.0), ("AI7", 0.0), ("AG21", 344.0), ("AH21", 43.0), ("AI21", 8.0)] {
+        let v = get(&mut ws, &mm, &id, "Pontaj", cell);
+        assert!(close(&v, want), "{cell}: {v} ≠ {want}");
+    }
+    assert_eq!(get(&mut ws, &mm, &id, "Pontaj", "AG8"), "", "an empty line stays empty");
+}
+
+/// 7.9d Flux de numerar: 30 000 in and 3 500 + 9 000 + 14 000 + 2 500 = 29 000 out every month: net 1 000,
+/// balance 20 000 + 1 000 = 21 000 after the first month and 32 000 after the twelfth; yearly 360 000 / 348 000.
+#[test]
+fn cash_flow() {
+    let (_t, mut ws, mm) = setup();
+    let id = use_t(&mut ws, &mm, "flux-numerar");
+    for (cell, want) in [("B11", 30000.0), ("B20", 29000.0), ("B22", 1000.0), ("B23", 21000.0), ("C23", 22000.0), ("M23", 32000.0), ("N11", 360000.0), ("N20", 348000.0)] {
+        let v = get(&mut ws, &mm, &id, "Flux de numerar", cell);
+        assert!(close(&v, want), "{cell}: {v} ≠ {want}");
+    }
+    assert_eq!(get(&mut ws, &mm, &id, "Flux de numerar", "B24"), "");
+}
+
+/// 7.9d Comparație de oferte: paper 50 × 24.50 / 23.90 / 25.20 = 1 225 / 1 195 / 1 260 → B; toner 6 × 310 / 295 /
+/// 289 = 1 860 / 1 770 / 1 734 → C; folders 200 × 1.90 / 2.10 / 1.85 = 380 / 420 / 370 → C; totals 3 465 /
+/// 3 385 / 3 364, lowest per line 3 299; cheapest overall C.
+#[test]
+fn offer_comparison() {
+    let (_t, mut ws, mm) = setup();
+    let id = use_t(&mut ws, &mm, "comparatie-oferte");
+    let g = |ws: &mut Workspace, a1: &str| get(ws, &mm, &id, "Comparație oferte", a1);
+    for (cell, want) in [("D6", 1225.0), ("F6", 1195.0), ("H6", 1260.0), ("I6", 1195.0), ("I7", 1734.0), ("I8", 370.0), ("D21", 3465.0), ("F21", 3385.0), ("H21", 3364.0), ("I21", 3299.0)] {
+        let v = g(&mut ws, cell);
+        assert!(close(&v, want), "{cell}: {v} ≠ {want}");
+    }
+    assert_eq!(g(&mut ws, "J6"), "Furnizor B");
+    assert_eq!(g(&mut ws, "J7"), "Furnizor C");
+    assert_eq!(g(&mut ws, "J9"), "");
+    assert_eq!(g(&mut ws, "D22"), "Furnizor C");
 }

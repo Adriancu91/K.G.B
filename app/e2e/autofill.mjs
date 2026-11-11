@@ -31,7 +31,7 @@ const val = (p, sel) => p.eval(`document.querySelector(${JSON.stringify(sel)})?.
 const pick = (p, text) =>
   p.eval(`[...document.querySelectorAll('.suggest-list button')].find(b => b.innerText.includes(${JSON.stringify(text)})).click()`);
 const openContract = async (p) => {
-  await p.click("Modele (14)", ".sheet-tabs button");
+  await p.click("Modele (22)", ".sheet-tabs button");
   await p.eval("[...document.querySelectorAll('.model-card')].find(c => c.dataset.model === 'Contract de prestări servicii').querySelector('button.primary').click()");
   await p.until("!!document.querySelector('#gen-title')");
 };
@@ -67,7 +67,7 @@ try {
   await p.click("Acordă și activează");
   await p.until("[...document.querySelectorAll('nav .nav')].some(e => e.textContent.includes('Documente și modele'))");
   await p.click("Documente și modele", "nav .nav");
-  await p.until("document.querySelectorAll('.model-card').length === 14", 10000);
+  await p.until("document.querySelectorAll('.model-card').length === 22", 10000);
   await p.click("Date firmă", ".sheet-tabs button");
   const company = {
     Denumire: "Firma Mea de Test SRL", CUI: "RO14399840", "Nr. Registrul Comerțului": "J22/1/2020", Sediu: "Iași", IBAN: "RO49AAAA1B31007593840000",
@@ -120,7 +120,7 @@ try {
   check("fișa „Beta Servicii SRL” e în pagina Parteneri", true);
 
   await p.click("Documente și modele", "nav .nav");
-  await p.until("document.querySelectorAll('.model-card').length === 14", 10000);
+  await p.until("document.querySelectorAll('.model-card').length === 22", 10000);
   await openContract(p);
   await p.fill(".dialog input[aria-label='Client']", "beta");
   await p.until("!!document.querySelector('.suggest-list')", 5000);

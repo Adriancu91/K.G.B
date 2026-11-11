@@ -91,7 +91,7 @@ const BUILT_IN: [(&str, &str, &str, &[u8]); 5] = [
     ),
 ];
 /// The built-in PDF models, written in Typst (step 4.8b; D-045).
-const BUILT_IN_PDF: [(&str, &str, &str, &str); 9] = [
+const BUILT_IN_PDF: [(&str, &str, &str, &str); 17] = [
     (
         "pdf-oferta",
         "Ofertă comercială (PDF)",
@@ -147,8 +147,65 @@ const BUILT_IN_PDF: [(&str, &str, &str, &str); 9] = [
         "tehnic",
         include_str!("../models/pdf-nir.typ"),
     ),
+    // Step 7.9d: models by category, for institutions, partners and the team.
+    (
+        "pdf-adresa",
+        "Adresă oficială (PDF)",
+        "administrativ",
+        include_str!("../models/pdf-adresa.typ"),
+    ),
+    (
+        "pdf-pv-sedinta",
+        "Proces-verbal de ședință (PDF)",
+        "administrativ",
+        include_str!("../models/pdf-pv-sedinta.typ"),
+    ),
+    (
+        "pdf-cerere-concediu",
+        "Cerere de concediu de odihnă (PDF)",
+        "hr",
+        include_str!("../models/pdf-cerere-concediu.typ"),
+    ),
+    (
+        "pdf-pv-constatare",
+        "Proces-verbal de constatare (PDF)",
+        "tehnic",
+        include_str!("../models/pdf-pv-constatare.typ"),
+    ),
+    (
+        "pdf-notificare",
+        "Notificare (PDF)",
+        "juridic",
+        include_str!("../models/pdf-notificare.typ"),
+    ),
+    (
+        "pdf-somatie-plata",
+        "Somație de plată (PDF)",
+        "juridic",
+        include_str!("../models/pdf-somatie-plata.typ"),
+    ),
+    (
+        "pdf-cerere-institutie",
+        "Cerere pentru aviz sau autorizație (PDF)",
+        "avize",
+        include_str!("../models/pdf-cerere-institutie.typ"),
+    ),
+    (
+        "pdf-declaratie-proprie-raspundere",
+        "Declarație pe propria răspundere (PDF)",
+        "avize",
+        include_str!("../models/pdf-declaratie-proprie-raspundere.typ"),
+    ),
 ];
-const CATEGORIES: [&str; 5] = ["administrativ", "comercial", "hr", "tehnic", "altele"];
+const CATEGORIES: [&str; 7] = [
+    "administrativ",
+    "comercial",
+    "hr",
+    "tehnic",
+    "juridic",
+    "avize",
+    "altele",
+];
 
 pub struct Docs {
     manifest: Manifest,

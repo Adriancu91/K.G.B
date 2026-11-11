@@ -44,6 +44,7 @@ pub const ACTIVITIES: &[Activity] = &[
             "oferta",
             "pdf-contract-vanzare",
             "pdf-pv-predare-primire",
+            "pdf-somatie-plata",
         ],
     },
     Activity {
@@ -68,6 +69,7 @@ pub const ACTIVITIES: &[Activity] = &[
             "contract-servicii",
             "pdf-oferta",
             "pdf-pv-predare-primire",
+            "pdf-cerere-institutie",
         ],
     },
     Activity {
@@ -114,6 +116,7 @@ pub const ACTIVITIES: &[Activity] = &[
             "pdf-contract-inchiriere",
             "adeverinta-salariat",
             "pdf-decizie",
+            "pdf-cerere-institutie",
         ],
     },
     Activity {
@@ -133,7 +136,14 @@ pub const ACTIVITIES: &[Activity] = &[
             "kgb.calc",
         ],
         profile: "birou",
-        models: &["contract-servicii", "oferta", "pdf-oferta", "pdf-pv-receptie", "cerere"],
+        models: &[
+            "contract-servicii",
+            "oferta",
+            "pdf-oferta",
+            "pdf-pv-receptie",
+            "pdf-somatie-plata",
+            "cerere",
+        ],
     },
     Activity {
         id: "productie",

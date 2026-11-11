@@ -16,6 +16,8 @@ const CATEGORY: Record<string, string> = {
   comercial: "Comerciale",
   hr: "Resurse umane",
   tehnic: "Tehnice",
+  juridic: "Juridice",
+  avize: "Avize și autorizații",
   altele: "Altele",
 };
 

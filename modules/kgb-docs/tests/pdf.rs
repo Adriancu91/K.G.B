@@ -21,7 +21,8 @@ fn setup() -> (tempfile::TempDir, Workspace, ModuleManager) {
         "company_save",
         json!({"valori": {"nume": "Kronos Global Business SRL", "cui": "RO12345678", "reg_com": "J22/123/2020",
             "adresa": "Iași, Str. Lăpușneanu 1", "telefon": "0700 000 000", "email": "office@exemplu.ro",
-            "reprezentant": "Adrian Popescu", "functie_reprezentant": "administrator"}}),
+            "reprezentant": "Adrian Popescu", "functie_reprezentant": "administrator",
+            "iban": "RO49AAAA1B31007593840000", "banca": "Banca de test"}}),
     )
     .unwrap();
     (tmp, ws, mm)
@@ -122,11 +123,11 @@ fn pdf_from_a_typst_model() {
 /// Step 7.4i: every new model compiles to a PDF with its title and the
 /// values typed in; the parties use field names the partner directory fills.
 #[test]
-fn the_new_models_of_7_4i_generate() {
+fn the_new_models_of_7_4i_and_7_9d_generate() {
     let (_tmp, mut ws, mm) = setup();
     let list = call(&mut ws, &mm, "models", json!({})).unwrap();
     let models = list.as_array().unwrap();
-    assert_eq!(models.len(), 14, "5 Word + 9 PDF");
+    assert_eq!(models.len(), 22, "5 Word + 17 PDF");
     for (name, title, party) in [
         ("Contract de vânzare-cumpărare (PDF)", "CONTRACT DE VÂNZARE-CUMPĂRARE", "cumparator"),
         ("Contract de închiriere (PDF)", "CONTRACT DE ÎNCHIRIERE", "chirias"),
@@ -134,6 +135,15 @@ fn the_new_models_of_7_4i_generate() {
         ("Decizie (PDF)", "DECIZIE", ""),
         ("Împuternicire (PDF)", "ÎMPUTERNICIRE", ""),
         ("Notă de intrare-recepție (NIR) (PDF)", "NOTĂ DE INTRARE-RECEPȚIE", "furnizor"),
+        // 7.9d
+        ("Adresă oficială (PDF)", "Referitor la", ""),
+        ("Proces-verbal de ședință (PDF)", "PROCES-VERBAL DE ȘEDINȚĂ", ""),
+        ("Cerere de concediu de odihnă (PDF)", "CERERE DE CONCEDIU DE ODIHNĂ", ""),
+        ("Proces-verbal de constatare (PDF)", "PROCES-VERBAL DE CONSTATARE", "partener"),
+        ("Notificare (PDF)", "NOTIFICARE", "partener"),
+        ("Somație de plată (PDF)", "SOMAȚIE DE PLATĂ", "partener"),
+        ("Cerere pentru aviz sau autorizație (PDF)", "CERERE", ""),
+        ("Declarație pe propria răspundere (PDF)", "DECLARAȚIE PE PROPRIA RĂSPUNDERE", ""),
     ] {
         let m = models.iter().find(|m| m["nume"] == name).unwrap_or_else(|| panic!("{name}"));
         let fields: Vec<String> = m["campuri"].as_array().unwrap().iter().filter(|f| f["din_firma"] != true).map(|f| f["camp"].as_str().unwrap().to_string()).collect();

@@ -142,7 +142,7 @@ try {
   // Templates: use the invoice template, check its totals, edit the copy.
   await p.click("Șabloane de calcul…");
   await p.until("!!document.querySelector('.templates')", 10000);
-  check("biblioteca are 9 șabloane", (await p.eval("document.querySelectorAll('.templates li').length")) === 9);
+  check("biblioteca are 12 șabloane", (await p.eval("document.querySelectorAll('.templates li').length")) === 12);
   await p.screenshot(join(shots, "04-sabloane.png"));
   await p.eval("[...document.querySelectorAll('.templates li')].find(li => li.innerText.includes('Factură')).querySelector('button').click()");
   await p.until("document.querySelector('.pdf-doc h2')?.textContent === 'Factură.xlsx'", 10000);
