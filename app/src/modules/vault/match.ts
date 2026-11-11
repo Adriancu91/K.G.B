@@ -41,11 +41,22 @@ export function fromPurchase(x: { furnizor_cui?: string | null; numar: string; d
 export interface Match {
   where: string;
   sure: boolean;
+  /** What differs, for „posibil dublură”: the other invoice's date and / or total (this one's are the vault's). */
+  otherDate?: string;
+  otherTotal?: number;
+}
+
+/** A match with what differs. */
+export function compared(inv: Inv, other: Inv, where: string): Match {
+  const m: Match = { where, sure: sameInvoice(inv, other) };
+  if (inv.data && other.data && inv.data !== other.data) m.otherDate = other.data;
+  if (inv.total !== null && other.total !== null && inv.total !== other.total) m.otherTotal = other.total;
+  return m;
 }
 
 /** Where else an invoice of the vault is: each place with whether it is surely the same invoice. */
 export function matchesOf(inv: Inv, others: Array<{ inv: Inv; where: string }>): Match[] {
   const k = keyOf(inv);
   if (!k) return [];
-  return others.filter((o) => keyOf(o.inv) === k).map((o) => ({ where: o.where, sure: sameInvoice(inv, o.inv) }));
+  return others.filter((o) => keyOf(o.inv) === k).map((o) => compared(inv, o.inv, o.where));
 }

@@ -5,7 +5,7 @@
 import { useCallback, useEffect, useState } from "react";
 import { open, save } from "@tauri-apps/plugin-dialog";
 import { api, message } from "../../api";
-import { fromIssued, fromPurchase, matchesOf, sameInvoice, type Inv, type Match } from "./match";
+import { compared, fromIssued, fromPurchase, matchesOf, type Inv, type Match } from "./match";
 
 const ID = "kgb.vault";
 const BIZ = "kgb.business";
@@ -103,7 +103,7 @@ export function VaultPage({ onError, access }: { onError: (e: string | null) => 
     if (!d.factura?.numar) return [];
     const inVault = twins
       .filter((g) => g.documente.some((x) => x.id === d.id))
-      .flatMap((g) => g.documente.filter((x) => x.id !== d.id).map((x) => ({ where: `depozit, „${x.nume}”`, sure: !!x.factura && sameInvoice(asInv(d.factura!), asInv(x.factura)) })));
+      .flatMap((g) => g.documente.filter((x) => x.id !== d.id).map((x) => compared(asInv(d.factura!), asInv(x.factura ?? {}), `depozit, „${x.nume}”`)));
     return [...inVault, ...matchesOf(asInv(d.factura), others)];
   };
   const shown = dupOnly ? docs.filter((d) => elsewhere(d).length > 0) : docs;
@@ -283,7 +283,10 @@ export function VaultPage({ onError, access }: { onError: (e: string | null) => 
                     {elsewhere(d).map((m, n) => (
                       <div key={n} className={m.sure ? "vault-dup" : "vault-dup vault-dup-maybe"} data-testid="vault-dup">
                         <span>{m.sure ? "există și în:" : "posibil dublură:"}</span> <span>{m.where}</span>
-                        {!m.sure && <span className="small"> (altă dată sau alt total)</span>}
+                        {m.otherTotal !== undefined && typeof d.factura?.total === "number" && (
+                          <span className="small">{" "}<span>{`(alt total: ${lei(m.otherTotal)} față de ${lei(d.factura.total)} lei)`}</span></span>
+                        )}
+                        {m.otherDate && <span className="small">{" "}<span>{`(altă dată: ${ro(m.otherDate)} față de ${ro(d.factura?.data)})`}</span></span>}
                       </div>
                     ))}
                   </div>

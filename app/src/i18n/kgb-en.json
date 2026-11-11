@@ -2835,6 +2835,8 @@
   "Completat de la ANAF (date pentru {0}): {1}. Verifică și completează restul de mână.": "Filled in from ANAF (data for {0}): {1}. Check and fill in the rest manually.",
   "Marchează citit: {0}": "Mark as read: {0}",
   "Memento: {0}": "Reminder: {0}",
+  "(alt total: {0} față de {1} lei)": "(another total: {0} instead of {1} lei)",
+  "(altă dată: {0} față de {1})": "(another date: {0} instead of {1})",
   "· la fiecare {0} {1}": "· every {0} {1}",
   "Scadențe ({0} depășite)": "Due ({0} overdue)",
   "· garanție până la {0}": "· warranty until {0}",

@@ -33,7 +33,7 @@ eq(
 eq(
   "același număr, alt total: posibil",
   matchesOf(vault, [{ inv: { ...issued, total: 99900 }, where: "Business: facturi emise" }]),
-  [{ where: "Business: facturi emise", sure: false }],
+  [{ where: "Business: facturi emise", sure: false, otherTotal: 99900 }],
 );
 eq("alt emitent: nimic", matchesOf({ ...vault, emitent_cui: "18547290" }, [{ inv: issued, where: "x" }]), []);
 if (fail) process.exit(1);
