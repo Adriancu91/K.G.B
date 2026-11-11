@@ -1,0 +1,89 @@
+{
+  "manifest_format": 1,
+  "id": "kgb.contracts",
+  "name": "Contracte și abonamente",
+  "description": "Contractele cu clienții și cu furnizorii (chirie, asigurare, leasing, servicii): ce se facturează lunar, trimestrial sau anual, cu indexarea anuală, lista de facturat, expirările, termenele de preaviz și prelungirile automate, cu memento-uri.",
+  "version": "0.1.0",
+  "core": ">=0.1.0, <0.2.0",
+  "status": "beta",
+  "permissions": [
+    "storage.own",
+    "notify.send",
+    "partners.read"
+  ],
+  "services": [
+    "storage",
+    "notify",
+    "partners",
+    "log"
+  ],
+  "data_types": [
+    {
+      "collection": "contracte",
+      "description": "contractele: numărul, partea (client sau furnizor), partenerul, perioada, prelungirea automată, preavizul, starea",
+      "schema": {
+        "fields": {
+          "numar": { "type": "string", "required": true, "max_len": 40 },
+          "titlu": { "type": "string", "required": true, "max_len": 200 },
+          "parte": { "type": "string", "required": true, "enum": ["client", "furnizor"] },
+          "partener": { "type": "string", "required": true, "max_len": 36 },
+          "partener_nume": { "type": "string", "required": true, "max_len": 200 },
+          "inceput": { "type": "string", "required": true, "max_len": 10 },
+          "sfarsit": { "type": "string", "required": true, "max_len": 10 },
+          "prelungire_auto": { "type": "bool", "required": true },
+          "prelungire_luni": { "type": "integer", "required": true, "min": 1, "max": 120 },
+          "preaviz_zile": { "type": "integer", "required": true, "min": 0, "max": 365 },
+          "stare": { "type": "string", "required": true, "enum": ["ciorna", "activ", "suspendat", "incheiat", "reziliat"] },
+          "nota": { "type": "string", "required": true, "max_len": 2000 },
+          "creat_ms": { "type": "integer", "required": true, "min": 0 }
+        },
+        "additional": false
+      }
+    },
+    {
+      "collection": "abonamente",
+      "description": "liniile care se facturează periodic: denumirea, cantitatea, prețul fără TVA, cota, perioada, ziua facturării, indexarea anuală",
+      "schema": {
+        "fields": {
+          "contract": { "type": "string", "required": true, "max_len": 36 },
+          "denumire": { "type": "string", "required": true, "max_len": 200 },
+          "um": { "type": "string", "required": true, "max_len": 20 },
+          "cantitate": { "type": "integer", "required": true, "min": 1, "max": 1000000000 },
+          "pret": { "type": "integer", "required": true, "min": 0 },
+          "tva": { "type": "integer", "required": true, "min": 0, "max": 100 },
+          "perioada": { "type": "string", "required": true, "enum": ["lunar", "trimestrial", "semestrial", "anual"] },
+          "zi_facturare": { "type": "integer", "required": true, "min": 1, "max": 28 },
+          "de_la": { "type": "string", "required": true, "max_len": 10 },
+          "pana_la": { "type": "string", "required": true, "max_len": 10 },
+          "indexare": { "type": "integer", "required": true, "min": 0, "max": 10000 },
+          "activ": { "type": "bool", "required": true }
+        },
+        "additional": false
+      }
+    },
+    {
+      "collection": "facturari",
+      "description": "ce s-a facturat sau s-a sărit: abonamentul, perioada (luna de început), suma, numărul facturii",
+      "schema": {
+        "fields": {
+          "contract": { "type": "string", "required": true, "max_len": 36 },
+          "abonament": { "type": "string", "required": true, "max_len": 36 },
+          "perioada": { "type": "string", "required": true, "max_len": 7 },
+          "suma": { "type": "integer", "required": true, "min": 0 },
+          "stare": { "type": "string", "required": true, "enum": ["emisa", "sarita"] },
+          "factura": { "type": "string", "required": true, "max_len": 40 },
+          "data": { "type": "string", "required": true, "max_len": 10 },
+          "creat_ms": { "type": "integer", "required": true, "min": 0 }
+        },
+        "additional": false
+      }
+    }
+  ],
+  "events": {
+    "emits": [],
+    "listens": []
+  },
+  "data_format": 1,
+  "migrations": [],
+  "on_disable": "Contractele, abonamentele și facturările rămân în spațiul de lucru și reapar când modulul este activat din nou."
+}
