@@ -1,0 +1,61 @@
+{
+  "manifest_format": 1,
+  "id": "kgb.vault",
+  "name": "Depozitul de documente",
+  "description": "Toate documentele firmei într-un singur loc: un folder întreg sau fișiere alese, păstrate neschimbate, sortate pe categorii (actele firmei, autorizații, contracte, facturi de vânzare și de achiziție, extrase, chitanțe și NIR, personal), cu încrederea și motivul fiecărei sortări; facturile recunoscute (CUI, serie, număr, dată, total) pentru găsirea dublurilor.",
+  "version": "0.1.0",
+  "core": ">=0.1.0, <0.2.0",
+  "status": "beta",
+  "permissions": [
+    "storage.own",
+    "files.own"
+  ],
+  "services": [
+    "storage",
+    "files",
+    "log"
+  ],
+  "data_types": [
+    {
+      "collection": "documente",
+      "description": "fișierele depozitului: numele, locul din folderul ales, amprenta, categoria cu încrederea și motivul, datele facturii recunoscute",
+      "schema": {
+        "fields": {
+          "doc": { "type": "string", "required": true, "max_len": 36 },
+          "nume": { "type": "string", "required": true, "max_len": 255 },
+          "cale": { "type": "string", "required": true, "max_len": 500 },
+          "tip": { "type": "string", "required": true, "max_len": 10 },
+          "hash": { "type": "string", "required": true, "max_len": 80 },
+          "marime": { "type": "integer", "required": true, "min": 0 },
+          "categorie": { "type": "string", "required": true, "enum": ["identitate", "autorizatii", "contracte_clienti", "contracte_furnizori", "contracte_munca", "facturi_vanzare", "facturi_achizitie", "extrase", "chitante_nir", "personal", "altele"] },
+          "incredere": { "type": "integer", "required": true, "min": 0, "max": 100 },
+          "motiv": { "type": "string", "required": true, "max_len": 300 },
+          "confirmata": { "type": "bool", "required": true },
+          "factura": { "type": "object", "required": true },
+          "text": { "type": "string", "required": true, "max_len": 4000 },
+          "sursa": { "type": "string", "required": true, "enum": ["depozit", "program_online", "efactura", "business"] },
+          "nota": { "type": "string", "required": true, "max_len": 1000 },
+          "adaugat_ms": { "type": "integer", "required": true, "min": 0 }
+        },
+        "additional": false
+      }
+    },
+    {
+      "collection": "setari",
+      "description": "CUI-ul firmei (ca să se știe care facturi sunt de vânzare și care de achiziție)",
+      "schema": {
+        "fields": {
+          "cui_firma": { "type": "string", "required": true, "max_len": 20 }
+        },
+        "additional": false
+      }
+    }
+  ],
+  "events": {
+    "emits": [],
+    "listens": []
+  },
+  "data_format": 1,
+  "migrations": [],
+  "on_disable": "Documentele depozitului rămân în spațiul de lucru și reapar când modulul este activat din nou."
+}

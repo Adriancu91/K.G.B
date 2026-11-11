@@ -750,11 +750,6 @@
   "f": "modules/docs/DocsPage.tsx"
  },
  {
-  "ro": "Altele",
-  "en": "Other",
-  "f": "modules/docs/DocsPage.tsx"
- },
- {
   "ro": "lipsește",
   "en": "missing",
   "f": "modules/docs/DocsPage.tsx"
@@ -1588,11 +1583,6 @@
   "ro": "ștearsă",
   "en": "deleted",
   "f": "crates/kgb-core/src/conflicts.rs"
- },
- {
-  "ro": "numele fișierului",
-  "en": "file name",
-  "f": "crates/kgb-core/src/files.rs"
  },
  {
   "ro": "cuvânt ",

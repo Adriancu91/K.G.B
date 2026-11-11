@@ -1857,6 +1857,28 @@ tr.appt-overlap td {
 .appt-overlap-text {
   color: #c62828;
 }
+.vault-cats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin: 8px 0;
+}
+.vault-cats button.active {
+  background: var(--accent, #1565c0);
+  color: #fff;
+}
+.vault-todo {
+  border-color: #b45309;
+}
+tr.vault-unsure td {
+  background: rgba(180, 83, 9, 0.06);
+}
+.vault-unsure-text {
+  color: #b45309;
+}
+.vault-list td {
+  vertical-align: top;
+}
 .contract-card {
   border: 1px solid var(--border, #ccc);
   border-radius: 6px;

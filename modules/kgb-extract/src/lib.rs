@@ -112,8 +112,8 @@ fn is_pdf(name: &str) -> bool {
     name.to_lowercase().ends_with(".pdf")
 }
 
-/// The text lines of a document, each with its position.
-fn lines_of(name: &str, data: &[u8]) -> CoreResult<Vec<Line>> {
+/// The text lines of a document, each with its position (also read by the document vault, 7.10a).
+pub fn lines_of(name: &str, data: &[u8]) -> CoreResult<Vec<Line>> {
     if is_pdf(name) {
         match kgb_pdf::check::check(data) {
             kgb_pdf::check::Status::Intact(_) => {}

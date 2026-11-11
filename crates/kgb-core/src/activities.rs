@@ -28,6 +28,7 @@ pub const ACTIVITIES: &[Activity] = &[
         description: "Magazin, distribuție, vânzare en-gros: stocuri, facturi, oferte, comenzi și livrări.",
         modules: &[
             "kgb.business",
+            "kgb.vault",
             "kgb.docs",
             "kgb.pdf",
             "kgb.sheets",
@@ -51,6 +52,7 @@ pub const ACTIVITIES: &[Activity] = &[
         description: "Șantiere și echipe: pontaj pe puncte de lucru, autorizații, recepții, proiecte cu termene.",
         modules: &[
             "kgb.business",
+            "kgb.vault",
             "kgb.team",
             "kgb.permits",
             "kgb.planner",
@@ -74,6 +76,7 @@ pub const ACTIVITIES: &[Activity] = &[
         description: "Parc auto și șoferi cu actele care expiră, livrări urmărite, comenzi.",
         modules: &[
             "kgb.business",
+            "kgb.vault",
             "kgb.contracts",
             "kgb.team",
             "kgb.permits",
@@ -96,6 +99,7 @@ pub const ACTIVITIES: &[Activity] = &[
         description: "Restaurant, cafenea, pensiune: stocuri, pontaj pe ture, autorizații (DSV, ISU, mediu).",
         modules: &[
             "kgb.business",
+            "kgb.vault",
             "kgb.appointments",
             "kgb.team",
             "kgb.permits",
@@ -118,6 +122,7 @@ pub const ACTIVITIES: &[Activity] = &[
         description: "Consultanță, IT, reparații, firme de servicii: oferte, contracte, facturi, proiecte.",
         modules: &[
             "kgb.business",
+            "kgb.vault",
             "kgb.appointments",
             "kgb.contracts",
             "kgb.docs",
@@ -136,6 +141,7 @@ pub const ACTIVITIES: &[Activity] = &[
         description: "Ateliere și fabrici: stocuri pe depozite, echipe în ture, autorizații, planificare.",
         modules: &[
             "kgb.business",
+            "kgb.vault",
             "kgb.team",
             "kgb.planner",
             "kgb.permits",
@@ -153,6 +159,7 @@ pub const ACTIVITIES: &[Activity] = &[
         description: "Ferme și asociații: stocuri, autorizații și termene, calcule și foi de calcul.",
         modules: &[
             "kgb.business",
+            "kgb.vault",
             "kgb.permits",
             "kgb.calc",
             "kgb.sheets",
@@ -176,6 +183,7 @@ pub const ACTIVITIES: &[Activity] = &[
             "kgb.team",
             "kgb.permits",
             "kgb.business",
+            "kgb.vault",
         ],
         profile: "birou",
         models: &[
