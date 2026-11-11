@@ -429,6 +429,20 @@ impl Store {
         Ok(r)
     }
 
+    /// Permanently removes `retired/`: the journal generation before the last compaction and the blobs retired
+    /// by the last collection (D-090). Unlike [`Store::purge_leftovers`] it keeps `quarantine/` (what recovery cut
+    /// away, kept for diagnosis) and touches nothing the live data needs.
+    pub fn drop_retired(&mut self) -> Result<PurgeReport> {
+        let mut r = PurgeReport::default();
+        let dir = self.dir.join("retired");
+        if dir.exists() {
+            r.bytes = tree_bytes(&dir)?;
+            r.files = tree_files(&dir)?;
+            fs::remove_dir_all(&dir)?;
+        }
+        Ok(r)
+    }
+
     /// Hashes of every stored blob.
     pub fn blob_hashes(&self) -> Result<Vec<String>> {
         let root = self.dir.join("blobs");

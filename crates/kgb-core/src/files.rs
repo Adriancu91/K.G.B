@@ -135,6 +135,26 @@ pub(crate) fn list(ws: &Workspace, module: &str) -> CoreResult<Vec<FileRef>> {
 }
 
 #[derive(Debug, Default, Serialize)]
+pub struct ForgetReport {
+    /// Blobs no record points to any more (a deleted attachment, a picture replaced), now gone.
+    pub blobs: usize,
+    /// Bytes removed from the disk: the old journal generation and those blobs.
+    pub bytes: u64,
+}
+
+/// Forgets, on this computer, what the workspace held before its current state (D-090): the journal keeps only
+/// the newest state of every record (compaction), the blobs nothing points to are retired, and `retired/` is
+/// removed. Asked for by the person, for example right after a note was locked, so that its text and attachments
+/// as they were before the lock are no longer on the disk. Other computers keep their own history until they
+/// compact, backups keep theirs; peers that were behind the new compaction floor resynchronise in full.
+pub fn forget_history(ws: &mut Workspace) -> CoreResult<ForgetReport> {
+    ws.store_mut().compact()?;
+    let c = collect_unreferenced(ws)?;
+    let dropped = ws.store_mut().drop_retired()?;
+    Ok(ForgetReport { blobs: c.blobs_retired, bytes: dropped.bytes })
+}
+
+#[derive(Debug, Default, Serialize)]
 pub struct CollectReport {
     pub blobs_retired: usize,
     pub bytes_retired: u64,

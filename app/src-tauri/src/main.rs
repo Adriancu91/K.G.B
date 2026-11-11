@@ -309,6 +309,13 @@ fn collect_files(app: State<AppState>) -> CmdResult<files::CollectReport> {
     with_session(&app, |s| files::collect_unreferenced(&mut s.ws))
 }
 
+/// D-090: forgets on this computer the workspace's history before its current state (old journal, unreferenced
+/// blobs, `retired/`), asked for by the person (after locking a note).
+#[tauri::command]
+fn forget_history(app: State<AppState>) -> CmdResult<files::ForgetReport> {
+    with_session(&app, |s| files::forget_history(&mut s.ws))
+}
+
 /// Permanently removes quarantine, retired generations and orphan segments.
 /// The UI asks for confirmation and recommends a backup first.
 #[tauri::command]
@@ -2181,6 +2188,7 @@ fn main() {
             compact_now,
             collect_files,
             purge_leftovers,
+            forget_history,
             print::print_pdf,
             print::print_paper,
             net_fetch,

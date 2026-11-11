@@ -34,11 +34,12 @@ async function start() {
   return p;
 }
 const go = (p, label) => p.click(label, "nav .nav");
-const notes = (p) => p.eval("[...document.querySelectorAll('.list li .grow')].map(e => e.textContent)");
+// The notes are written and read through the Notes module's simple commands (kept for the tests since its page
+// became the notebook window, 7.4l-2): what matters here is the data that a backup keeps.
+const notesCall = (p, command, args = {}) => p.eval(`window.__TAURI_INTERNALS__.invoke("module_call", ${JSON.stringify({ id: "kgb.notes", command, args })})`);
+const notes = async (p) => (await notesCall(p, "list")).map((n) => n.text);
 async function addNote(p, t) {
-  await p.fill("input[aria-label='Notă nouă']", t);
-  await p.click("Adaugă");
-  await p.until(`[...document.querySelectorAll('.list li .grow')].some(e => e.textContent === ${JSON.stringify(t)})`);
+  await notesCall(p, "add", { text: t });
 }
 /** Waits for the page to come back after a workspace switch (full reload). */
 async function afterReload(p) {
@@ -51,15 +52,15 @@ try {
   await go(p, "Catalog module");
   await p.click("Activează");
   await p.click("Acordă și activează");
-  await go(p, "Note");
   await addNote(p, "înainte de backup");
 
   await go(p, "Date și backup");
   await p.click("Fă un backup acum");
   await p.until("document.body.innerText.includes('Backup creat')");
-  check("backup creat", (await p.eval("document.querySelectorAll('.audit tbody tr').length")) === 1);
+  // Besides the daily automatic backup (added later), exactly one made by hand.
+  const kinds = await p.eval("[...document.querySelectorAll('.audit tbody tr')].map(r => r.children[1]?.innerText.trim())");
+  check("backup creat", kinds.filter((k) => k === "manual").length === 1, JSON.stringify(kinds));
 
-  await go(p, "Note");
   await addNote(p, "după backup");
 
   await go(p, "Date și backup");
@@ -74,8 +75,6 @@ try {
   await p.click("Restaurează ca spațiu nou", ".dialog button");
   await afterReload(p);
   check("aplicația a trecut în spațiul restaurat", (await p.text()).includes("(restaurat "));
-  await go(p, "Note");
-  await p.until("document.querySelectorAll('.list li .grow').length > 0");
   check("spațiul restaurat are starea de la backup", JSON.stringify(await notes(p)) === JSON.stringify(["înainte de backup"]), JSON.stringify(await notes(p)));
   await p.screenshot(join(shots, "02-restaurat.png"));
 
@@ -85,8 +84,6 @@ try {
   await p.click("Deschide", ".list button");
   await p.click("Deschide", ".dialog button");
   await afterReload(p);
-  await go(p, "Note");
-  await p.until("document.querySelectorAll('.list li .grow').length === 2");
   check("spațiul original e neatins (ambele note)", JSON.stringify(await notes(p)) === JSON.stringify(["după backup", "înainte de backup"]));
   await p.screenshot(join(shots, "03-original.png"));
 
