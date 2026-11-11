@@ -715,11 +715,6 @@
   "f": "modules/contracts/ContractsPage.tsx"
  },
  {
-  "ro": " · oprită",
-  "en": " · off",
-  "f": "modules/contracts/ContractsPage.tsx"
- },
- {
   "ro": "Cantitatea",
   "en": "Quantity",
   "f": "modules/contracts/ContractsPage.tsx"
@@ -742,6 +737,11 @@
  {
   "ro": "Nota contractului",
   "en": "Note contractului",
+  "f": "modules/contracts/ContractsPage.tsx"
+ },
+ {
+  "ro": " · factura pe {0}",
+  "en": " · invoice on {0}",
   "f": "modules/contracts/ContractsPage.tsx"
  },
  {
@@ -1123,6 +1123,16 @@
   "ro": "Fișierul nu e XFDF (comentarii PDF exportate din Cyber Office Studio sau din alt program).",
   "en": "The file is not XFDF (PDF comments exported from Cyber Office Studio or another program).",
   "f": "modules/pdf/xfdf.ts"
+ },
+ {
+  "ro": "Pentru: {0}",
+  "en": "For: {0}",
+  "f": "modules/permits/dossierPdf.ts"
+ },
+ {
+  "ro": "Către: {0}",
+  "en": "To: {0}",
+  "f": "modules/permits/dossierPdf.ts"
  },
  {
   "ro": "Mediu",
@@ -1541,7 +1551,7 @@
  },
  {
   "ro": "oprită",
-  "en": "off",
+  "en": "stopped",
   "f": "pages/SourcesPage.tsx"
  },
  {

@@ -258,7 +258,7 @@ export function ContractsPage({ onError, access }: { onError: (e: string | null)
       if (!settings.confirmate || series.length === 0) throw new Error("În Business lipsesc datele firmei sau seria facturilor (fila „Setări facturare”).");
       const cui = cuiKey(detail.partener_cui);
       const partner = findBusinessPartner(partners, detail.partener_cui, first.partener_nume);
-      if (!partner) throw new Error(`Adaugă partenerul în Business (${first.partener_nume}${cui ? `, CUI ${cui}` : ""}), apoi emite factura.`);
+      if (!partner) throw new Error(cui ? `Adaugă partenerul în Business (${first.partener_nume}, CUI ${cui}), apoi emite factura.` : `Adaugă partenerul în Business (${first.partener_nume}), apoi emite factura.`);
       const wrong = rows.find((r) => !settings.cote_tva.includes(r.tva));
       if (wrong) throw new Error(`Cota de TVA ${wrong.tva}% a liniei „${wrong.denumire}” nu e în lista din Business.`);
       const r = await api.moduleCall<{ numar: string; total_text: string }>(BIZ, "invoice_issue", {
@@ -345,7 +345,9 @@ export function ContractsPage({ onError, access }: { onError: (e: string | null)
                 {open.titlu} {open.numar && <span className="muted small">nr. {open.numar}</span>}
               </h3>
               <p className="small">
-                {`${open.parte === "client" ? "Client" : "Furnizor"}: ${open.partener_nume}${open.partener_cui ? ` (CUI ${open.partener_cui})` : ""} · din ${ro(open.inceput)} · ${endText(open)} · ${stateText(open.stare)}`}
+                <span>{open.parte === "client" ? "Client:" : "Furnizor:"}</span> <strong>{open.partener_nume}</strong>
+                {open.partener_cui && <span>{` (CUI ${open.partener_cui})`}</span>}
+                {" "}<span>{`· contract din ${ro(open.inceput)}`}</span> <span>{`· ${endText(open)}`}</span> <span>{`· ${stateText(open.stare)}`}</span>
               </p>
               {open.nota && <p className="muted small">{open.nota}</p>}
               <div className="row wrap">
@@ -377,7 +379,11 @@ export function ContractsPage({ onError, access }: { onError: (e: string | null)
                   <li key={l.id} data-testid="contract-line">
                     <strong>{l.denumire}</strong>{" "}
                     <span className="small">
-                      {`${qty(l.cantitate)} ${l.um} × ${lei(l.pret)} lei + TVA ${l.tva}% · ${periodText(l.perioada)}, în ziua ${l.zi_facturare} · din ${ro(l.de_la)}${l.pana_la ? ` până la ${ro(l.pana_la)}` : ""}${l.indexare ? ` · indexare ${String(l.indexare / 100).replace(".", ",")}% pe an` : ""}${l.activ ? "" : " · oprită"}`}
+                      {`${qty(l.cantitate)} ${l.um} × ${lei(l.pret)} lei + TVA ${l.tva}% · ${periodText(l.perioada)}, în ziua ${l.zi_facturare}`}
+                      {" "}<span>{`· facturat din ${ro(l.de_la)}`}</span>
+                      {l.pana_la && <span>{` până la ${ro(l.pana_la)}`}</span>}
+                      {l.indexare > 0 && <span>{` · indexare ${String(l.indexare / 100).replace(".", ",")}% pe an`}</span>}
+                      {!l.activ && <span> · oprită</span>}
                     </span>{" "}
                     {l.activ && (
                       <button
@@ -590,7 +596,9 @@ export function ContractsPage({ onError, access }: { onError: (e: string | null)
             return (
               <div key={k} className={`contract-due${f.intarziata ? " contract-late" : ""}`} data-testid="due">
                 <div>
-                  <strong>{f.partener_nume}</strong> <span className="small">{`· ${f.titlu}${f.numar ? ` (nr. ${f.numar})` : ""} · factura pe ${ro(f.data_facturare)}`}</span>
+                  <strong>{f.partener_nume}</strong> <span className="small">{`· ${f.titlu}`}</span>
+                  {f.numar && <span className="small">{` (nr. ${f.numar})`}</span>}
+                  <span className="small">{` · factura pe ${ro(f.data_facturare)}`}</span>
                   {f.intarziata && <strong className="small"> · întârziată</strong>}
                   {f.parte === "furnizor" && <span className="muted small"> · de primit de la furnizor</span>}
                 </div>
