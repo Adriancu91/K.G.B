@@ -1,5 +1,5 @@
 // 7.9a, end to end in the real window: the catalog of procedures from official sources (D-088). In „Permise și
-// autorizații” › Proceduri › „Din catalog…” the 19 procedures are listed with their institution and the day their
+// autorizații” › Proceduri › „Din catalog…” the 26 procedures are listed with their institution and the day their
 // sources were checked; a search finds the ISU ones; the fire-safety approval is added (it becomes the firm's, with
 // its documents, steps and dated official sources) and a case file opened on it has its checklist.
 //
@@ -49,9 +49,14 @@ try {
   await p.click("Din catalog", "button");
   await p.until("document.querySelectorAll('.catalog-list li').length > 0", 10000);
   const n = await p.eval("document.querySelectorAll('.catalog-list li').length");
-  check("catalogul arată cele 19 proceduri", n === 19, `${n}`);
+  check("catalogul arată cele 26 de proceduri", n === 26, `${n}`);
   const first = await p.eval("document.querySelector('.catalog-list li').innerText");
   check("fiecare cu instituția și data verificării surselor", /surse verificate la 2026-11-10/.test(first), first.replace(/\s+/g, " ").slice(0, 160));
+  // Lot 2 (7.9a): the new procedures, each checked on 2026-11-11.
+  await p.fill("input[aria-label='Caută în catalog']", "taxi");
+  await sleep(300);
+  const taxi = await p.eval("[...document.querySelectorAll('.catalog-list li')].map(e => e.innerText.replace(/\\s+/g, ' '))");
+  check("lotul 2: căutarea „taxi” găsește autorizația de transport în regim de taxi, verificată la 2026-11-11", taxi.some((t) => t.includes("Autorizația de transport în regim de taxi") && t.includes("2026-11-11")), JSON.stringify(taxi).slice(0, 200));
   await p.fill("input[aria-label='Caută în catalog']", "ISU");
   await sleep(300);
   const isu = await p.eval("[...document.querySelectorAll('.catalog-list li strong')].map(e => e.innerText)");

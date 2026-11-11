@@ -2079,5 +2079,976 @@
     "verificat": "2026-11-10"
    }
   ]
+ },
+ {
+  "cheie": "iscir-autorizare-functionare",
+  "titlu": "ISCIR: autorizarea funcționării, verificările tehnice periodice și numirea RSVTI pentru instalații sub presiune și de ridicat",
+  "domeniu": "functionare",
+  "institutie": "ISCIR – Inspecția de Stat pentru Controlul Cazanelor, Recipientelor sub Presiune și Instalațiilor de Ridicat (inspecția teritorială); verificările tehnice le face CNCIR S.A. sau persoane autorizate de ISCIR",
+  "descriere": "Firma care deține sau folosește cazane, recipiente sub presiune, conducte, instalații GPL/GNC, macarale, stivuitoare autopropulsate, platforme ridicătoare, ascensoare și alte echipamente din domeniul ISCIR are trei obligații: să numească un operator RSVTI autorizat, să ia instalațiile în evidența ISCIR și să nu le folosească fără autorizarea funcționării (sau, la echipamentele mai mici, fără admiterea funcționării). Autorizarea o dă ISCIR, după verificarea tehnică făcută de CNCIR. Apoi instalațiile se verifică tehnic periodic (verificarea tehnică în utilizare), la termenele din prescripția tehnică a fiecărui tip de echipament. Lipsa RSVTI sau a luării în evidență se amendează cu 30.000–40.000 lei, iar folosirea fără autorizarea funcționării cu 15.000–25.000 lei (Legea 64/2008, art. 24).",
+  "conditii": [
+   {
+    "text": "Deținătorul/utilizatorul cere și obține autorizarea sau admiterea funcționării înainte de folosire (Legea 64/2008, art. 14 lit. b)).",
+    "obligatoriu": true
+   },
+   {
+    "text": "Instalațiile rămân în folosință doar dacă trec verificarea tehnică în utilizare și sunt reparate și întreținute de persoane autorizate (Legea 64/2008, art. 7 alin. (1), art. 14 lit. c) și f)).",
+    "obligatoriu": true
+   },
+   {
+    "text": "Firma ia în evidența ISCIR instalațiile, ține o evidență centralizată și anunță orice schimbare tehnică sau juridică (Legea 64/2008, art. 15 alin. (1)).",
+    "obligatoriu": true
+   },
+   {
+    "text": "Firma are operator RSVTI autorizat: un angajat propriu numit prin decizie internă sau o firmă ori un PFA autorizat, cu contract; câte unul pentru fiecare subdiviziune cu instalații ISCIR (Legea 64/2008, art. 15 alin. (2); PT CR 3-2025, art. 1, art. 2 alin. (2), art. 41 alin. (1) lit. b)).",
+    "obligatoriu": true
+   },
+   {
+    "text": "Firma întocmește proceduri proprii de supraveghere tehnică pentru fiecare tip de instalație, în 6 luni de la intrarea în vigoare a PT CR 3-2025 (PT CR 3-2025, art. 50).",
+    "obligatoriu": true
+   },
+   {
+    "text": "La fiecare loc de muncă există instrucțiunile tehnice de folosire și măsurile pentru avarii (Legea 64/2008, art. 14 lit. d)).",
+    "obligatoriu": true
+   },
+   {
+    "text": "Instalația o deservește doar personal autorizat (Legea 64/2008, art. 14 lit. e)).",
+    "obligatoriu": true
+   },
+   {
+    "text": "Unde prescripția o cere, se obține avizul obligatoriu de instalare/montare înainte de montaj (Legea 64/2008, art. 14 lit. a); PT CR 3-2025, art. 38 lit. s)).",
+    "obligatoriu": false
+   },
+   {
+    "text": "La stațiile de GPL, GNCV și hidrogen se cere supraveghere video permanentă, cu înregistrări păstrate cel puțin 20 de zile (Legea 64/2008, art. 14 lit. g)).",
+    "obligatoriu": false
+   }
+  ],
+  "documente": [
+   {
+    "nume": "Cerere de luare în evidență ca deținător/utilizator de instalații care beneficiază de serviciile unui operator RSVTI",
+    "obligatoriu": true,
+    "nota": "PT CR 3-2025, art. 41 alin. (1) lit. a) pct. 1; se depune la ISCIR în 15 zile de la numirea RSVTI"
+   },
+   {
+    "nume": "Evidența centralizată a instalațiilor ISCIR deținute/utilizate (model în anexa nr. 12 la PT CR 3-2025), pe baza actelor care dovedesc deținerea legală",
+    "obligatoriu": true,
+    "nota": "PT CR 3-2025, art. 41 alin. (1) lit. a) pct. 2"
+   },
+   {
+    "nume": "Copia deciziei de numire a RSVTI angajat propriu (model în anexa nr. 16) sau copia contractului cu firma/PFA RSVTI, cu datele operatorului desemnat",
+    "obligatoriu": true,
+    "nota": "PT CR 3-2025, art. 41 alin. (1) lit. a) pct. 3"
+   },
+   {
+    "nume": "Copia autorizației operatorului RSVTI",
+    "obligatoriu": true,
+    "nota": "PT CR 3-2025, art. 41 alin. (1) lit. a) pct. 4"
+   },
+   {
+    "nume": "Datele instalației pentru fișa de înregistrare în vederea autorizării funcționării (construire, montare, punere în funcțiune, întreținere, supraveghere, deservire)",
+    "obligatoriu": true,
+    "nota": "PT CR 2-2025, art. 12 alin. (2)–(3); le dă deținătorul, fișa o completează CNCIR"
+   },
+   {
+    "nume": "Documentația tehnică de însoțire a instalației și documentația de instalare/montare, după caz",
+    "obligatoriu": true,
+    "nota": "PT CR 2-2025, art. 18 alin. (2) lit. a)–b); intră în cartea instalației"
+   },
+   {
+    "nume": "Documentația cerută de prescripția tehnică specifică, pentru stațiile de GPL, GNC, GNCV și hidrogen, la care cererea de autorizare se depune direct la ISCIR",
+    "obligatoriu": false,
+    "nota": "PT CR 2-2025, art. 15 și anexa nr. 3"
+   },
+   {
+    "nume": "Contract între deținător și utilizator privind supravegherea tehnică, când aceștia sunt persoane diferite",
+    "obligatoriu": false,
+    "nota": "PT CR 3-2025, art. 41 alin. (3)"
+   }
+  ],
+  "pasi": [
+   "Se identifică, împreună cu RSVTI, echipamentele din domeniul ISCIR (PT CR 3-2025, art. 40 lit. a)).",
+   "Cele din anexa 1 la PT CR 2-2025 cer autorizarea funcționării de la ISCIR (de exemplu cazane de apă caldă peste 400 kW, recipiente peste categoria I, macarale peste 1 t, stivuitoare autopropulsate, platforme pentru persoane, ascensoare); cele din anexa 8 cer doar admiterea funcționării (de exemplu centrale termice de cel mult 400 kW, arzătoare, recipiente de categoria I, echipamente de ridicat manuale sau de cel mult 1 t).",
+   "Se numește operatorul RSVTI: un angajat propriu autorizat ISCIR (prin decizie internă) sau o firmă ori un PFA autorizat (prin contract), pentru toate instalațiile și pentru fiecare punct de lucru (PT CR 3-2025, art. 2 alin. (2), art. 41 alin. (1) lit. b)).",
+   "În 15 zile de la numirea RSVTI se depun la ISCIR cererea de luare în evidență, evidența centralizată, decizia sau contractul RSVTI și copia autorizației lui; actele se depun în limba română, iar copiile se marchează „conform cu originalul” și se semnează (PT CR 3-2025, art. 41; PT CR 2-2025, art. 34).",
+   "Pentru echipamentele la care prescripția specifică o cere, se obține avizul obligatoriu de instalare/montare înainte de montaj (Legea 64/2008, art. 14 lit. a)).",
+   "Se cere la CNCIR verificarea tehnică în vederea autorizării funcționării; dacă iese bine, raportul CNCIR ține loc de autorizare provizorie cel mult 90 de zile (PT CR 2-2025, art. 10–11).",
+   "CNCIR completează fișa de înregistrare și o trimite la ISCIR în 30 de zile; ISCIR verifică fișa și eliberează autorizarea funcționării prin CNCIR, iar dacă găsește neconformități nu autorizează și dispune oprirea instalației (PT CR 2-2025, art. 12–14, 16–17).",
+   "În 30 de zile de la autorizare, CNCIR întocmește cartea instalației, cu autorizarea originală atașată; firma o păstrează lângă instalație și o predă odată cu ea la vânzare (PT CR 2-2025, art. 17, 18, 31).",
+   "Pentru echipamentele din anexa 8 nu se merge la ISCIR: admiterea funcționării o dă persoana autorizată (RVT sau operatorul RSVTI), prin raportul de verificare tehnică cu număr de înregistrare (PT CR 2-2025, art. 19–21, 25).",
+   "Se fac verificările tehnice periodice la termenele din prescripția tehnică a fiecărui tip de echipament: prin CNCIR pentru anexa 1, prin persoane autorizate pentru anexa 8 (PT CR 2-2025, art. 26–27); RSVTI propune anual planul de verificări și cere în scris oprirea echipamentelor cu scadența depășită (PT CR 3-2025, art. 38).",
+   "Se anunță ISCIR în scris, în 15 zile, la schimbarea deținătorului sau utilizatorului, casare, modificări tehnice și încetarea contractului cu RSVTI (PT CR 2-2025, art. 32; PT CR 3-2025, art. 38, art. 41).",
+   "La avarie sau accident, instalația se oprește și ISCIR se anunță imediat (Legea 64/2008, art. 16; PT CR 3-2025, art. 38)."
+  ],
+  "taxe": "Activitățile ISCIR se plătesc după lista de tarife aprobată potrivit legii (PT CR 2-2025, art. 29; PT CR 3-2025, art. 46); tarifele CNCIR pentru verificări se aprobă prin hotărâre a Guvernului. Sumele nu apar în sursele citite: se află de la ISCIR sau CNCIR.",
+  "termen_legal": "Actele RSVTI se depun la ISCIR în 15 zile de la numire; autorizarea provizorie durează cel mult 90 de zile de la verificarea CNCIR; CNCIR trimite fișa la ISCIR în 30 de zile; cartea instalației, în 30 de zile de la autorizare; schimbările se anunță în 15 zile.",
+  "temei_legal": "Legea 64/2008, republicată: art. 5, 7, 9, 14, 15, 16, 24; PT CR 2-2025 (Ordinul nr. 1.167/2026, M.Of. nr. 666/12.08.2026): art. 9–36, anexele 1 și 8; PT CR 3-2025 (Ordinul nr. 1.168/2026, M.Of. nr. 667 bis/12.08.2026): art. 1, 2, 38–41, 46, 50; prescripțiile tehnice specifice fiecărui tip de echipament (de exemplu PT C1, C4, R1, R2) stabilesc termenele verificărilor periodice.",
+  "activitati": [
+   "productie",
+   "constructii",
+   "transport",
+   "comert"
+  ],
+  "surse": [
+   {
+    "titlu": "Legea nr. 64/2008 privind funcționarea în condiții de siguranță a instalațiilor sub presiune, instalațiilor de ridicat și a aparatelor consumatoare de combustibil (forma consolidată)",
+    "url": "https://legislatie.just.ro/Public/DetaliiDocument/90716",
+    "verificat": "2026-11-11"
+   },
+   {
+    "titlu": "PT CR 2-2025 – Autorizarea/admiterea funcționării și verificarea tehnică în utilizare (M.Of. nr. 666/12.08.2026)",
+    "url": "https://iscir.ro/wp-content/uploads/2026/08/Monitorul-Oficial-Partea-I-nr.-666.pdf",
+    "verificat": "2026-11-11"
+   },
+   {
+    "titlu": "PT CR 3-2025 – Autorizarea operatorilor RSVTI (M.Of. nr. 667 bis/12.08.2026)",
+    "url": "https://iscir.ro/wp-content/uploads/2026/08/PT-CR-3-2025.pdf",
+    "verificat": "2026-11-11"
+   },
+   {
+    "titlu": "ISCIR – Prescripții tehnice în vigoare",
+    "url": "https://iscir.ro/prescriptii-iscir",
+    "verificat": "2026-11-11"
+   }
+  ]
+ },
+ {
+  "cheie": "anpc-informare-consumatori",
+  "titlu": "Obligațiile de informare a consumatorilor la deschiderea unui magazin",
+  "domeniu": "comercial",
+  "institutie": "Autoritatea Națională pentru Protecția Consumatorilor (ANPC) și comisariatele județene / al municipiului București pentru protecția consumatorilor (control)",
+  "descriere": "ANPC nu eliberează autorizație, aviz sau acord pentru deschiderea unui magazin. Comerciantul trebuie să respecte de la prima zi niște obligații de informare, pe care inspectorii ANPC le verifică la control: prețuri afișate corect, datele firmei și orarul la vedere, placheta cu „Telefonul consumatorilor” și placheta SAL (soluționarea alternativă a litigiilor). Lista se aplică oricărui spațiu în care se vând produse sau se prestează servicii către consumatori. Activitatea se desfășoară numai în spații autorizate potrivit altor reglementări (de exemplu autorizațiile primăriei), care nu țin de ANPC.",
+  "conditii": [
+   {
+    "text": "Vânzarea și prestarea serviciilor se fac doar în locuri și spații autorizate potrivit legii (OG 21/1992, art. 26 alin. (1)).",
+    "obligatoriu": true
+   },
+   {
+    "text": "La unitate se afișează vizibil și se respectă: denumirea unității, codul de înregistrare la registrul comerțului, obiectul/obiectele de activitate autorizate și orarul de funcționare; orarul se stabilește, unde e cazul, după hotărârile autorităților locale (OG 21/1992, art. 26 alin. (2) și (3)).",
+    "obligatoriu": true
+   },
+   {
+    "text": "Prețurile și tarifele se afișează vizibil și neechivoc (OG 21/1992, art. 25); prețul final include TVA și toate costurile suplimentare (OG 21/1992, art. 20 alin. (4)).",
+    "obligatoriu": true
+   },
+   {
+    "text": "Prețul de vânzare și prețul pe unitatea de măsură se exprimă în lei, clar, lizibil, ușor de identificat, pe produs sau lângă el (ori în liste aflate în apropiere), fără ca cumpărătorul să trebuiască să întrebe; prețurile din vitrinele exterioare trebuie să se poată citi din afară (HG 947/2000 rep., art. 3 și 4).",
+    "obligatoriu": true
+   },
+   {
+    "text": "La produsele preambalate se afișează și prețul unitar, iar la cele vândute în vrac doar prețul unitar; excepții: hrana consumată pe loc, ambalajele sub 50 g/ml sau peste 10 kg/l, vânzătorii ambulanți, automatele etc. (HG 947/2000 rep., art. 5, 6, 9–11).",
+    "obligatoriu": true
+   },
+   {
+    "text": "La reduceri de preț se afișează prețul anterior, adică cel mai mic preț practicat în același spațiu în ultimele 30 de zile (10 zile la produsele perisabile), dovedit cu documente la cererea ANPC (HG 947/2000 rep., art. 4^1).",
+    "obligatoriu": true
+   },
+   {
+    "text": "Informațiile despre produse și servicii, instrucțiunile și contractele sunt în limba română, vizibile, lizibile și ușor de înțeles (OG 21/1992, art. 19 și art. 20 alin. (5)); la servicii se precizează categoria de calitate, termenul de realizare, garanția, prețul și riscurile previzibile (art. 21).",
+    "obligatoriu": true
+   },
+   {
+    "text": "Se afișează „TELEFONUL CONSUMATORILOR – 0219551”, adresa și telefonul/faxul comisariatului județean (sau al sectorului) pentru protecția consumatorilor și adresa www.anpc.ro, după modelele din anexele ordinului, în câmpul vizual al consumatorului, lângă casa de marcat sau lângă orar (Ordinul ANPC 72/2010, art. 1).",
+    "obligatoriu": true
+   },
+   {
+    "text": "Se afișează placheta informativă SAL (model în anexa 1, minimum 16 x 16 cm, descărcabilă gratuit de pe anpc.ro) în câmpul vizual al consumatorului, lângă casa de marcat sau lângă orar (Ordinul ANPC 449/2022, art. 1, modificat prin Ordinul 270/2026). Nu se aplică sectoarelor care au entități SAL proprii potrivit OG 38/2015 (art. 3).",
+    "obligatoriu": true
+   },
+   {
+    "text": "Dacă firma are și site de vânzare, comenzi online sau publicitate online: link vizibil spre www.anpc.ro pe pagina principală (Ordinul ANPC 72/2010, art. 2) și pictograma SAL de 250 x 50 pixeli cu legătură spre reclamatiisal.anpc.ro (Ordinul ANPC 449/2022, art. 2).",
+    "obligatoriu": false
+   },
+   {
+    "text": "Cântarele și celelalte mijloace de măsurare folosite la vânzare sunt verificate metrologic, iar indicațiile lor sunt lizibile și vizibile pentru cumpărător (OG 21/1992, art. 11).",
+    "obligatoriu": false
+   }
+  ],
+  "documente": [
+   {
+    "nume": "Placheta „Telefonul consumatorilor” (0219551, datele comisariatului județean, www.anpc.ro)",
+    "obligatoriu": true,
+    "nota": "Ordinul ANPC 72/2010, art. 1 și anexele (modele); se afișează, nu se depune nicăieri"
+   },
+   {
+    "nume": "Placheta informativă SAL, minimum 16 x 16 cm",
+    "obligatoriu": true,
+    "nota": "Ordinul ANPC 449/2022, art. 1 și anexa 1, modificate prin Ordinul 270/2026; se descarcă gratuit de pe anpc.ro"
+   },
+   {
+    "nume": "Afișul cu denumirea unității, codul de la registrul comerțului, obiectul de activitate și orarul de funcționare",
+    "obligatoriu": true,
+    "nota": "OG 21/1992, art. 26 alin. (2)"
+   },
+   {
+    "nume": "Etichete de preț / liste de prețuri cu prețul de vânzare și prețul unitar, în lei",
+    "obligatoriu": true,
+    "nota": "HG 947/2000 rep., art. 3–6; OG 21/1992, art. 25"
+   },
+   {
+    "nume": "Documente care dovedesc prețul anterior la produsele cu reducere",
+    "obligatoriu": false,
+    "nota": "Doar când se anunță reduceri; HG 947/2000 rep., art. 4^1 alin. (1)"
+   },
+   {
+    "nume": "Certificat de garanție, declarație de conformitate (unde se cere) și instrucțiuni în limba română pentru produsele de folosință îndelungată",
+    "obligatoriu": false,
+    "nota": "Doar la produse de folosință îndelungată; OG 21/1992, art. 20 alin. (3) și (5)"
+   },
+   {
+    "nume": "Pictograma SAL (250 x 50 px) și link spre www.anpc.ro pe pagina principală a site-ului",
+    "obligatoriu": false,
+    "nota": "Doar dacă firma vinde sau face publicitate online; Ordinul ANPC 449/2022, art. 2; Ordinul ANPC 72/2010, art. 2"
+   }
+  ],
+  "pasi": [
+   "ANPC nu emite autorizație pentru deschiderea magazinului; spațiul trebuie să fie autorizat după celelalte reglementări (de exemplu de primărie), iar obligațiile de mai jos le verifică inspectorii ANPC la control.",
+   "Se afișează la vedere denumirea unității, codul de înregistrare la registrul comerțului, obiectul de activitate autorizat și orarul de funcționare; orarul afișat se respectă.",
+   "Se pregătește placheta „Telefonul consumatorilor” după modelul din anexele Ordinului ANPC 72/2010, cu adresa și telefonul comisariatului pentru protecția consumatorilor din județ (sau sector), și se pune lângă casa de marcat sau lângă orar.",
+   "Se descarcă gratuit de pe anpc.ro placheta SAL, se tipărește la cel puțin 16 x 16 cm și se pune tot lângă casa de marcat sau lângă orar (nu e necesară dacă domeniul are o entitate SAL proprie, de exemplu cel bancar).",
+   "Se pun prețuri în lei pe fiecare produs sau lângă el (ori în liste aflate în apropiere): prețul de vânzare și, la produsele preambalate sau în vrac, prețul pe kilogram, litru sau altă unitate; se verifică faptul că pot fi citite fără ca clientul să întrebe, inclusiv în vitrină.",
+   "La reduceri se afișează și prețul anterior (cel mai mic din ultimele 30 de zile, 10 zile la produsele perisabile) și se păstrează documentele care îl dovedesc.",
+   "Se verifică faptul că produsele au informațiile în limba română (etichete, instrucțiuni, garanție) și că instrumentele de cântărire sunt verificate metrologic, cu afișajul vizibil pentru client.",
+   "Dacă se vinde sau se face publicitate și online, pe pagina principală a site-ului se pune un link vizibil spre www.anpc.ro și pictograma SAL (250 x 50 px) cu legătură spre reclamatiisal.anpc.ro."
+  ],
+  "taxe": "",
+  "termen_legal": "",
+  "temei_legal": "OG 21/1992 privind protecția consumatorilor, republicată, art. 11, 19, 20, 21, 25, 26; HG 947/2000 privind modalitatea de indicare a prețurilor produselor oferite consumatorilor spre vânzare, republicată, art. 3–12 (amenzi: 1.000–5.000 lei, iar pentru regula prețului anterior 5.000–30.000 lei, art. 12); Ordinul președintelui ANPC 72/2010 privind unele măsuri de informare a consumatorilor, cu modificările ulterioare; Ordinul președintelui ANPC 449/2022 privind informarea consumatorilor despre soluționarea alternativă a litigiilor, modificat prin Ordinul 32/2023 și Ordinul 270/2026; OG 38/2015 (excepția din art. 3 al Ordinului 449/2022).",
+  "activitati": [
+   "comert",
+   "horeca",
+   "servicii"
+  ],
+  "surse": [
+   {
+    "titlu": "OG 21/1992 privind protecția consumatorilor, republicată (forma consolidată)",
+    "url": "https://legislatie.just.ro/Public/DetaliiDocument/2175",
+    "verificat": "2026-11-11"
+   },
+   {
+    "titlu": "HG 947/2000 privind modalitatea de indicare a prețurilor, republicată (forma consolidată)",
+    "url": "https://legislatie.just.ro/Public/DetaliiDocument/24730",
+    "verificat": "2026-11-11"
+   },
+   {
+    "titlu": "Ordinul președintelui ANPC nr. 72/2010 privind unele măsuri de informare a consumatorilor (forma consolidată)",
+    "url": "https://legislatie.just.ro/Public/DetaliiDocument/117046",
+    "verificat": "2026-11-11"
+   },
+   {
+    "titlu": "Ordinul președintelui ANPC nr. 449/2022 privind informarea consumatorilor cu privire la soluționarea alternativă a litigiilor (forma consolidată)",
+    "url": "https://legislatie.just.ro/Public/DetaliiDocument/257649",
+    "verificat": "2026-11-11"
+   },
+   {
+    "titlu": "Ordinul președintelui ANPC nr. 270/2026 de modificare a Ordinului 449/2022",
+    "url": "https://legislatie.just.ro/Public/DetaliiDocumentAfis/310590",
+    "verificat": "2026-11-11"
+   }
+  ]
+ },
+ {
+  "cheie": "licenta-paza-alarmare-igpr",
+  "titlu": "Licența de funcționare pentru societăți de pază și protecție sau de sisteme de alarmare împotriva efracției (IGPR)",
+  "domeniu": "functionare",
+  "institutie": "Inspectoratul General al Poliției Române (IGPR); dosarul se depune la inspectoratul de poliție județean sau la Direcția Generală de Poliție a Municipiului București, după sediul societății; aviz prealabil al Serviciului Român de Informații",
+  "descriere": "Fără această licență o firmă nu poate face pază și protecție (pază de bunuri, pază de transporturi de bunuri și valori, gardă de corp) și nici nu poate proiecta, instala, modifica sau întreține sisteme de alarmare împotriva efracției. Sunt două tipuri ale aceleiași licențe IGPR, fiecare cu dosarul ei, dar cu aceeași verificare și aceleași condiții pentru conducător. După OUG 37/2026, licența se emite pe perioadă nedeterminată, iar firma raportează situația o dată la 3 ani; normele metodologice (forma consolidată din 30.05.2025) vorbesc încă de valabilitate de 3 ani și reînnoire, deci se întreabă la poliție ce se aplică. Desfășurarea activității fără licență este infracțiune.",
+  "conditii": [
+   {
+    "text": "Licența se eliberează de IGPR cu avizul prealabil al SRI; retragerea avizului SRI duce la anularea licenței (Legea 333/2003 rep., art. 19 alin. (2) – pază; art. 31 alin. (1)–(2) – alarmare).",
+    "obligatoriu": true
+   },
+   {
+    "text": "Pază și protecție: activitate principală cod CAEN 8001 (până la termenul din HG 284/2025 se acceptă și 8010/8020 CAEN Rev. 2), sediu înregistrat și autorizat pentru organizarea administrativă și coordonarea personalului (Norme HG 301/2012, art. 23).",
+    "obligatoriu": true
+   },
+   {
+    "text": "Pază și protecție: regulament de organizare și funcționare și lista mijloacelor materiale, tehnice, de transport și comunicații (Legea 333/2003 rep., art. 19 alin. (3)).",
+    "obligatoriu": true
+   },
+   {
+    "text": "Alarmare: coduri CAEN 4321, 7112 sau 8009, sediu înregistrat și autorizat; licența acoperă proiectarea și/sau instalarea, modificarea, întreținerea (Norme, art. 74; Legea 333/2003 rep., art. 31 alin. (1)).",
+    "obligatoriu": true
+   },
+   {
+    "text": "Conducătorul firmei (administrator, președintele consiliului de administrație sau directorul care coordonează personalul) are avizul inspectoratului de poliție județean sau al DGPMB (Legea 333/2003 rep., art. 19 alin. (9), art. 31 alin. (6); Norme, art. 24, art. 75).",
+    "obligatoriu": true
+   },
+   {
+    "text": "Conducătorul: cetățean român sau al unui stat UE/SEE, cel puțin 21 de ani, pregătire corespunzătoare, bună conduită și fără condamnări pentru infracțiuni intenționate (Legea 333/2003 rep., art. 19 alin. (10)); poliția verifică buna conduită (Norme, art. 26 alin. (3)).",
+    "obligatoriu": true
+   },
+   {
+    "text": "Personalul de pază este calificat și atestat profesional (atestat eliberat de poliție după curs și examen) (Legea 333/2003 rep., art. 36, art. 38).",
+    "obligatoriu": true
+   },
+   {
+    "text": "Alarmare: personalul tehnic e avizat de poliție la cererea angajatorului, dacă îndeplinește condițiile din art. 36 lit. a)–c) din lege și are competențele cerute (Legea 333/2003 rep., art. 31 alin. (6); Norme, art. 76 alin. (3), art. 80).",
+    "obligatoriu": true
+   },
+   {
+    "text": "După licențiere: schimbările se comunică poliției în 15 zile calendaristice; la fiecare 3 ani de la eliberare firma raportează că funcționează la sediile declarate, cu conducător avizat, personal atestat și dotare (Legea 333/2003 rep., art. 19 alin. (2^1)–(2^2), art. 31 alin. (3)–(4)).",
+    "obligatoriu": true
+   },
+   {
+    "text": "Firmele licențiate în alt stat UE/SEE notifică IGPR înainte de a începe activitatea (Legea 333/2003 rep., art. 31 alin. (7); Norme, art. 78).",
+    "obligatoriu": false
+   }
+  ],
+  "documente": [
+   {
+    "nume": "Cererea de eliberare a licenței, datată și înregistrată la societate",
+    "obligatoriu": true,
+    "nota": "Norme, art. 25 alin. (1) lit. a) și art. 76 alin. (1) lit. a); dosarul se depune pe bază de opis"
+   },
+   {
+    "nume": "Regulamentul de organizare și funcționare (la pază: după modelul IGPR, adaptat; la alarmare: cu organigramă, mijloace tehnice și proceduri de lucru)",
+    "obligatoriu": true,
+    "nota": "Norme, art. 25 alin. (1) lit. b); art. 76 alin. (1) lit. b)"
+   },
+   {
+    "nume": "Lista mijloacelor materiale, tehnice, de transport și comunicații",
+    "obligatoriu": true,
+    "nota": "Doar pază și protecție; Norme, art. 25 alin. (1) lit. c)"
+   },
+   {
+    "nume": "Copie certificată a dovezii OSIM de înregistrare a denumirii și a semnelor distinctive",
+    "obligatoriu": true,
+    "nota": "Doar pază și protecție; Norme, art. 25 alin. (1) lit. d)"
+   },
+   {
+    "nume": "Copie certificată a înștiințării către consiliul județean sau Consiliul General al Municipiului București privind sediul societății",
+    "obligatoriu": true,
+    "nota": "Doar pază și protecție; Norme, art. 25 alin. (1) lit. e)"
+   },
+   {
+    "nume": "Certificatul de înregistrare și certificatul constatator de la registrul comerțului",
+    "obligatoriu": true,
+    "nota": "Norme, art. 25 alin. (1) lit. f); și la alarmare (art. 76)"
+   },
+   {
+    "nume": "Documente care dovedesc sediul înregistrat și autorizat pentru organizarea administrativă și coordonarea personalului",
+    "obligatoriu": true,
+    "nota": "Norme, art. 25 alin. (1) lit. g); și la alarmare (art. 76)"
+   },
+   {
+    "nume": "Copii certificate ale atestatelor profesionale ale personalului de pază",
+    "obligatoriu": false,
+    "nota": "Doar pază și protecție, dacă firma are deja astfel de angajați; Norme, art. 25 alin. (1) lit. h)"
+   },
+   {
+    "nume": "Documente care dovedesc că conducătorul îndeplinește condițiile legii",
+    "obligatoriu": true,
+    "nota": "Norme, art. 25 alin. (1) lit. i); art. 76 alin. (1) lit. c)"
+   },
+   {
+    "nume": "Dovada plății taxei de licență",
+    "obligatoriu": false,
+    "nota": "Cerută de Norme, art. 25 alin. (1) lit. j), cu trimitere la o literă din lege abrogată prin OUG 37/2026; suma nu apare în textele citite, se întreabă la poliție"
+   },
+   {
+    "nume": "Pentru avizul conducătorului: copii certificate ale actului de identitate sau ale altui document care arată cetățenia și vârsta",
+    "obligatoriu": true,
+    "nota": "Norme, art. 25 alin. (2) lit. a); art. 76 alin. (2) lit. a)"
+   },
+   {
+    "nume": "Pentru avizul conducătorului: curriculum vitae (model european)",
+    "obligatoriu": true,
+    "nota": "Norme, art. 25 alin. (2) lit. c); art. 76 alin. (2) lit. a)"
+   },
+   {
+    "nume": "Pază: copie după diploma de licență în științe juridice sau certificatul de calificare „manager de securitate” / „manager servicii private de securitate”",
+    "obligatoriu": true,
+    "nota": "Norme, art. 25 alin. (2) lit. d)"
+   },
+   {
+    "nume": "Alarmare: copie certificată a certificatului de competență „proiectant”, „inginer” sau „tehnician sisteme de securitate” al conducătorului",
+    "obligatoriu": true,
+    "nota": "Norme, art. 76 alin. (2) lit. b)"
+   },
+   {
+    "nume": "Alarmare: declarație pe propria răspundere a conducătorului privind confidențialitatea (art. 32 din lege)",
+    "obligatoriu": true,
+    "nota": "Norme, art. 76 alin. (2) lit. c)"
+   }
+  ],
+  "pasi": [
+   "Se înființează firma cu codul CAEN potrivit (pază: 8001; alarmare: 4321, 7112 sau 8009) și cu un sediu înregistrat și autorizat.",
+   "Se pregătesc dosarul licenței (după tipul ei) și dosarul pentru avizul conducătorului; copiile certificate se aduc împreună cu originalele, care se returnează după verificare (Norme, art. 25 alin. (3)).",
+   "Reprezentantul legal depune dosarul, pe bază de opis, la inspectoratul de poliție județean sau la DGPMB, după sediul firmei (Norme, art. 25 alin. (1), art. 76 alin. (1)).",
+   "Poliția cere avizul SRI, verifică sediul și buna conduită a conducătorului, apoi trimite dosarul la IGPR cu un referat de propuneri (Norme, art. 26).",
+   "IGPR eliberează licența; avizul conducătorului se dă odată cu licența sau după ea; firma e trecută în Registrul național al societăților licențiate (Norme, art. 27).",
+   "După licențiere se comunică orice schimbare în 15 zile calendaristice și se raportează situația o dată la 3 ani (Legea 333/2003 rep., art. 19, art. 31); normele, încă neactualizate, cer reînnoire cu cel puțin 90 de zile înainte de expirare (art. 28, art. 87): se întreabă la poliție ce se aplică."
+  ],
+  "taxe": "",
+  "termen_legal": "",
+  "temei_legal": "Legea 333/2003 privind paza obiectivelor, bunurilor, valorilor și protecția persoanelor, republicată, modificată prin OUG 37/2026: art. 19 (pază și protecție), art. 31 (sisteme de alarmare), art. 36, 38 (personal), art. 56 (activitate fără licență – infracțiune), art. 60 (anularea licenței); HG 301/2012, Normele metodologice: art. 23–29^1 (pază), art. 74–87 (alarmare).",
+  "activitati": [
+   "servicii",
+   "constructii"
+  ],
+  "surse": [
+   {
+    "titlu": "Legea nr. 333/2003, republicată, forma consolidată",
+    "url": "https://legislatie.just.ro/Public/DetaliiDocument/45134",
+    "verificat": "2026-11-11"
+   },
+   {
+    "titlu": "Normele metodologice de aplicare a Legii nr. 333/2003, aprobate prin HG nr. 301/2012 (consolidare 30.05.2025)",
+    "url": "https://legislatie.just.ro/Public/DetaliiDocumentAfis/297342",
+    "verificat": "2026-11-11"
+   },
+   {
+    "titlu": "HG nr. 301/2012",
+    "url": "https://legislatie.just.ro/Public/DetaliiDocument/138059",
+    "verificat": "2026-11-11"
+   }
+  ]
+ },
+ {
+  "cheie": "acord-acces-drum-public",
+  "titlu": "Acordul prealabil și autorizația de amplasare și/sau de acces în zona drumului public (construcții, accese, panouri lângă drum)",
+  "domeniu": "constructii",
+  "institutie": "Administratorul drumului: pentru drumurile naționale și autostrăzi, CNAIR prin Direcția Regională de Drumuri și Poduri (DRDP) din zonă; pentru drumurile județene, consiliul județean; pentru drumurile locale, consiliul local (primăria)",
+  "descriere": "Pentru o construcție, o amplasare sau o cale de acces în zona unui drum public sunt necesare două acte de la administratorul drumului: acordul prealabil și autorizația de amplasare și/sau de acces, pe lângă autorizația de construire, când aceasta e necesară. Le cer, de exemplu, o stație de carburanți, un magazin, un depozit, o hală, un hotel sau o parcare cu ieșire la drumul național, ori cine pune un panou publicitar în zona drumului; răspunde beneficiarul lucrării. Pentru drumurile naționale, documentele și tarifele de mai jos sunt cele publicate de DRDP Timișoara (CNAIR); la drumurile județene și locale condițiile și tarifele le stabilește consiliul județean sau local, deci diferă de la o zonă la alta.",
+  "conditii": [
+   {
+    "text": "Pentru orice construcție, activitate comercială, cale de acces, amenajare, instalație sau panou publicitar în zona drumului public sunt obligatorii acordul prealabil și autorizația de amplasare și/sau de acces, emise de administratorul drumului, pe lângă autorizația de construire, după caz (OG 43/1997, art. 46 alin. (1)).",
+    "obligatoriu": true
+   },
+   {
+    "text": "Accesele la drumurile publice se proiectează și se construiesc pe baza acordului prealabil, a autorizației de amplasare și/sau de acces și cu avizul poliției rutiere (OG 43/1997, art. 52).",
+    "obligatoriu": true
+   },
+   {
+    "text": "În afara localităților, construcțiile care generează trafic suplimentar (unități de producție, complexe comerciale, depozite angro, showroom-uri, parcuri industriale etc.) nu se pot amplasa la mai puțin de 50 m de marginea părții carosabile la autostrăzi, drumuri expres și drumuri europene „E” și la mai puțin de 30 m la celelalte drumuri naționale și județene (OG 43/1997, art. 47 alin. (1)).",
+    "obligatoriu": true
+   },
+   {
+    "text": "Acordul și autorizația se dau pentru o anumită funcție sau destinație a obiectivului; schimbarea ei cere aprobarea administratorului drumului (OG 43/1997, art. 46 alin. (8)).",
+    "obligatoriu": true
+   },
+   {
+    "text": "Beneficiarul încheie cu administratorul drumului un contract de utilizare și acces în zona drumului, semnat odată cu eliberarea autorizației, și plătește tarifele; nu plătesc cei care folosesc zona drumului doar pentru acces la proprietate și operatorii unui serviciu public (OG 43/1997, art. 46 alin. (9)–(10)).",
+    "obligatoriu": true
+   },
+   {
+    "text": "Pe drumurile naționale din afara municipiilor și a reședințelor de județ, activitățile comerciale sunt interzise pe ampriză și în zona de siguranță, cu excepția locurilor special amenajate; în afara zonei de siguranță, pentru ele e obligatorie autorizația de amplasare și/sau de acces (OG 43/1997, art. 46 alin. (6)–(7)).",
+    "obligatoriu": true
+   },
+   {
+    "text": "Pe drumurile naționale, acordul prealabil și autorizația se emit la faza documentației tehnice pentru autorizația de construire (DTAC); autorizația de amplasare și/sau de acces se obține cât timp acordul prealabil e valabil, altfel procedura se reia (Ordinul MT 1836/2018, anexa 6, după DRDP Timișoara).",
+    "obligatoriu": true
+   }
+  ],
+  "documente": [
+   {
+    "nume": "Cerere tip (original)",
+    "obligatoriu": true,
+    "nota": "Lista DRDP Timișoara pentru construcții în zona DN; formularul e pe pagina DRDP."
+   },
+   {
+    "nume": "Certificat de urbanism valabil",
+    "obligatoriu": true,
+    "nota": "Lista DRDP Timișoara; la panourile existente se atașează și somația de intrare în legalitate de la administratorul drumului."
+   },
+   {
+    "nume": "Proces-verbal de constatare pe teren, încheiat cu Secția de Drumuri Naționale (sau Secția Autostrăzi) pe raza căreia se face lucrarea",
+    "obligatoriu": true,
+    "nota": "Lista DRDP Timișoara; se cere cu formularul pentru verificarea amplasamentului, de pe pagina DRDP."
+   },
+   {
+    "nume": "Împuternicire sau delegație de la beneficiar pentru semnarea, depunerea sau ridicarea documentelor",
+    "obligatoriu": false,
+    "nota": "Lista DRDP Timișoara; când documentele nu le depune beneficiarul."
+   },
+   {
+    "nume": "Punctul de vedere al executantului și al consultantului (drum în reabilitare sau consolidare) sau al proiectantului (teren pe traseul unui drum viitor: autostradă, drum expres)",
+    "obligatoriu": false,
+    "nota": "Lista DRDP Timișoara; doar în aceste situații."
+   },
+   {
+    "nume": "Acordul Inspectoratului de Poliție Județean, Direcția Poliției Rutiere (sau Poliția Autostrăzi), cu copia chitanței de plată",
+    "obligatoriu": true,
+    "nota": "Lista DRDP Timișoara; avizul poliției rutiere pentru accese e cerut și de OG 43/1997, art. 52."
+   },
+   {
+    "nume": "Proiect tehnic: memoriu tehnic (original)",
+    "obligatoriu": true,
+    "nota": "Lista DRDP Timișoara: poziția kilometrică, situația existentă și propusă, traficul estimat, amenajarea accesului după normativul AND 600/2010, scurgerea apelor, semnalizarea, parcările, sistemul rutier."
+   },
+   {
+    "nume": "Plan de situație la scara 1:500 (original), și în format electronic .pdf și .dwg, în coordonate Stereo 70",
+    "obligatoriu": true,
+    "nota": "Lista DRDP Timișoara."
+   },
+   {
+    "nume": "Plan de scurgere a apelor, la scara 1:500",
+    "obligatoriu": true,
+    "nota": "Lista DRDP Timișoara."
+   },
+   {
+    "nume": "Secțiuni transversale (prin acces, prin construcții și prin benzile suplimentare)",
+    "obligatoriu": true,
+    "nota": "Lista DRDP Timișoara."
+   },
+   {
+    "nume": "Detalii de sistem rutier pentru acces și pentru drumul național",
+    "obligatoriu": true,
+    "nota": "Lista DRDP Timișoara."
+   },
+   {
+    "nume": "Certificat de înregistrare (persoane juridice și persoane fizice înmatriculate) sau act de identitate (persoane fizice), în copie",
+    "obligatoriu": true,
+    "nota": "Lista DRDP Timișoara."
+   },
+   {
+    "nume": "Act de proprietate sau contract de închiriere, comodat, locațiune ori concesiune pentru terenul lucrării",
+    "obligatoriu": true,
+    "nota": "Lista DRDP Timișoara."
+   },
+   {
+    "nume": "Plan de încadrare în zonă (circa 1:2000), vizat de Oficiul de Cadastru și Publicitate Imobiliară, în copie, cu amplasamentul marcat",
+    "obligatoriu": true,
+    "nota": "Lista DRDP Timișoara."
+   }
+  ],
+  "pasi": [
+   "Se află cine administrează drumul: pentru drum național sau autostradă, CNAIR prin DRDP-ul din zonă; pentru drum județean, consiliul județean; pentru drum local, primăria sau consiliul local.",
+   "Se obține certificatul de urbanism de la primărie sau de la consiliul județean.",
+   "Pentru drumurile naționale: se cere la Secția de Drumuri Naționale din zonă verificarea pe teren a amplasamentului și se obține procesul-verbal de constatare.",
+   "Se face proiectul tehnic (memoriu, planuri, secțiuni, sistem rutier), cu accesul amenajat după normativul în vigoare pentru intersecții la nivel.",
+   "Se obține acordul poliției rutiere (IPJ, Direcția Poliției Rutiere) pentru acces.",
+   "Se depun la administratorul drumului cererea și dosarul pentru acordul prealabil; pe drumurile naționale, la DRDP, se plătesc tariful de analiză primară și tariful pentru acord.",
+   "Cât timp acordul prealabil e valabil, se cere autorizația de amplasare și/sau de acces; odată cu ea se semnează contractul de utilizare și acces în zona drumului (dacă nu există scutire de tarif).",
+   "Cu acordul și autorizația administratorului drumului se cere autorizația de construire la primărie sau la consiliul județean.",
+   "Lucrarea se execută doar după autorizare și doar cum s-a aprobat; apoi se plătește tariful lunar de utilizare a zonei drumului, prevăzut în contract.",
+   "La schimbarea destinației obiectivului (de exemplu din locuință în spațiu comercial) se cere întâi aprobarea administratorului drumului."
+  ],
+  "taxe": "Drumuri naționale (CNAIR): tarifele din Ordinul MT 1836/2018, anexa 6, cu modificările ulterioare, cum le publică DRDP Timișoara (în euro, cu TVA). Acte: analiza primară a documentației 30 euro/document; aviz sau acord prealabil pentru obiective socioeconomice și mijloace de publicitate 130 euro, plus 0,08 euro pentru fiecare mp de teren peste 1.000 mp; autorizație de amplasare și/sau de acces 80 euro; reanalizarea documentației 75 euro; prelungirea acordului sau a autorizației câte 50 euro; duplicat 10 euro; persoanele fizice care își construiesc locuința, garajul sau gardul plătesc o singură dată 27 euro. Utilizare lunară: căi de acces la obiective (stații de carburanți, hoteluri, depozite, spații comerciale, showroom-uri) 1,89 euro/mp pe autostradă, 0,75 euro/mp pe drum european, 0,45 euro/mp pe drum național; locuri de parcare 0,83 euro/mp pe drum european, 0,5 euro/mp pe drum național; obiectivele din zona de protecție aflate în afara terenurilor CNAIR sunt scutite de tariful de utilizare. Drumuri județene și locale: tarifele se aprobă prin hotărâre a consiliului județean sau local (OG 43/1997, art. 47 alin. (10)). Tarifele se pot actualiza: se verifică la DRDP sau la administratorul drumului înainte de depunere.",
+  "termen_legal": "",
+  "temei_legal": "OG 43/1997 privind regimul drumurilor, republicată: art. 14–17 (zonele drumului), art. 21–22 (administratorii), art. 46 (acordul prealabil, autorizația, contractul, valabilitatea; fără autorizație lucrarea se desființează pe cheltuiala beneficiarului în 5 zile de la notificare, alin. (4)–(5)), art. 47 (distanțe și tarife), art. 52 (căile de acces), art. 61 alin. (1) lit. a) (amendă 2.000–6.000 lei); Ordinul ministrului transporturilor 1836/2018 privind tarifele aplicate de CNAIR, anexa 6, cu modificările ulterioare; normativul AND 600/2010; Legea 50/1991.",
+  "activitati": [
+   "comert",
+   "constructii",
+   "transport",
+   "horeca",
+   "productie"
+  ],
+  "surse": [
+   {
+    "titlu": "OG nr. 43/1997 privind regimul drumurilor (text consolidat)",
+    "url": "https://legislatie.just.ro/Public/DetaliiDocument/11269",
+    "verificat": "2026-11-11"
+   },
+   {
+    "titlu": "DRDP Timișoara (CNAIR) – Acorduri și autorizații de amplasare în zona DN",
+    "url": "https://www.drdptm.ro/index.php?page=azd",
+    "verificat": "2026-11-11"
+   },
+   {
+    "titlu": "DRDP Timișoara – Conținutul documentațiilor pentru acordul prealabil, construcții",
+    "url": "https://www.drdptm.ro/INFORMATII/Acorduri%20si%20autorizatii%20de%20amplasare%20in%20zona%20DN/constructii.pdf",
+    "verificat": "2026-11-11"
+   },
+   {
+    "titlu": "DRDP Timișoara – Baza legală și tarifele (Ordinul MT 1836/2018, anexa 6)",
+    "url": "https://www.drdptm.ro/INFORMATII/Acorduri%20si%20autorizatii%20de%20amplasare%20in%20zona%20DN/baza_legala.pdf",
+    "verificat": "2026-11-11"
+   }
+  ]
+ },
+ {
+  "cheie": "autorizatie-publicitate-firma",
+  "titlu": "Autorizarea firmei (inclusiv firmă luminoasă) pe clădirea în care funcționează afacerea și taxa pentru afișaj",
+  "domeniu": "constructii",
+  "institutie": "Primăria localității unde se află clădirea (în București, primăria de sector sau Primăria Municipiului București, după competență); taxa pentru afișaj se declară la compartimentul de impozite și taxe locale al aceleiași primării",
+  "descriere": "Firma este orice inscripție, formă sau imagine prinsă de o clădire care arată ce operator economic sau ce activitate funcționează acolo. Legea 185/2013 cere ca firmele și copertinele inscripționate să fie autorizate prin autorizație de construire, emisă de primărie după certificatul de urbanism (Legea 50/1991). Excepție: firmele scrise pe vitrine și pe ușile de acces nu au nevoie de autorizație de construire, ci doar de avizul primăriei. Procedura și actele exacte diferă de la o localitate la alta, după regulamentul local de publicitate; exemplul de mai jos este de la Cluj-Napoca.",
+  "conditii": [
+   {
+    "text": "Firma și copertina inscripționată se montează doar pe baza autorizației de construire (Legea 185/2013, art. 19 alin. (1) și art. 4; Legea 50/1991, art. 3 alin. (1) lit. h)).",
+    "obligatoriu": true
+   },
+   {
+    "text": "Firma scrisă pe vitrină sau pe ușa de acces nu cere autorizație de construire: se pune pe baza avizului autorității publice locale (Legea 185/2013, art. 19 alin. (2)–(4)).",
+    "obligatoriu": false
+   },
+   {
+    "text": "Firma se pune pe fațada clădirii sau în locuri amenajate special; la blocurile de locuințe cu spații comerciale la parter, doar pe porțiunea de fațadă a spațiului sau pe parapetul plin al primului etaj, cu acordul proprietarilor (Legea 185/2013, art. 18 alin. (1) lit. a)).",
+    "obligatoriu": true
+   },
+   {
+    "text": "Firma în consolă se pune la cel puțin 2,50 m deasupra trotuarului și iese în afară cel mult 1,20 m (Legea 185/2013, art. 18 alin. (1) lit. b)).",
+    "obligatoriu": true
+   },
+   {
+    "text": "Firma iluminată se pune la cel puțin 3,00 m de sol; la mai puțin de 30 m de semnalizările rutiere nu folosește culorile acestora și nici lumină intermitentă (Legea 185/2013, art. 21 alin. (2)–(3)).",
+    "obligatoriu": true
+   },
+   {
+    "text": "Se respectă regulamentul local de publicitate aprobat de consiliul local, care stabilește zonele și ce tipuri de mijloace sunt permise în fiecare (Legea 185/2013, art. 8).",
+    "obligatoriu": true
+   },
+   {
+    "text": "Publicitatea de pe fațada spațiului comercial se deosebește de firmă prin culoare, formă sau dimensiune (Legea 185/2013, art. 20 alin. (2)).",
+    "obligatoriu": true
+   }
+  ],
+  "documente": [
+   {
+    "nume": "Certificat de urbanism",
+    "obligatoriu": true,
+    "nota": "Legea 50/1991, art. 7 alin. (1) lit. a); la Cluj-Napoca primul pas, cu cerere tip (HCL 133/2018, art. 5)"
+   },
+   {
+    "nume": "Dovada dreptului asupra imobilului",
+    "obligatoriu": true,
+    "nota": "Legea 50/1991, art. 7 alin. (1) lit. b)"
+   },
+   {
+    "nume": "Documentația tehnică (D.T.) pentru autorizația de construire",
+    "obligatoriu": true,
+    "nota": "Legea 50/1991, art. 7 alin. (1) lit. c); la Cluj-Napoca cu desene ale întregii fațade și ale elementelor existente pe ea"
+   },
+   {
+    "nume": "Avizele și acordurile cerute prin certificatul de urbanism",
+    "obligatoriu": true,
+    "nota": "Legea 50/1991, art. 7 alin. (1) lit. d)"
+   },
+   {
+    "nume": "Dovada plății taxelor pentru certificatul de urbanism și pentru autorizație",
+    "obligatoriu": true,
+    "nota": "Legea 50/1991, art. 7 alin. (1) lit. f)"
+   },
+   {
+    "nume": "Avizul Comisiei de Estetică Urbană",
+    "obligatoriu": false,
+    "nota": "Exemplu local, Cluj-Napoca (HCL 133/2018, art. 5)"
+   },
+   {
+    "nume": "Avizul direcției județene pentru cultură (patrimoniu)",
+    "obligatoriu": false,
+    "nota": "Cluj-Napoca, doar în zonele construite protejate (HCL 133/2018, art. 5)"
+   },
+   {
+    "nume": "Acordul proprietarilor, pentru firma de pe un bloc de locuințe",
+    "obligatoriu": false,
+    "nota": "Legea 185/2013, art. 18 alin. (1) lit. a)"
+   },
+   {
+    "nume": "Avizul primăriei, doar pentru firma de pe vitrină sau ușa de acces, în locul autorizației",
+    "obligatoriu": false,
+    "nota": "Legea 185/2013, art. 19 alin. (3)"
+   },
+   {
+    "nume": "Declarația pentru taxa de afișaj, la compartimentul de taxe locale",
+    "obligatoriu": true,
+    "nota": "Codul fiscal, art. 478 alin. (5): în 30 de zile de la amplasare; nu se datorează pentru afișajul din interiorul clădirii (art. 479 alin. (3))"
+   }
+  ],
+  "pasi": [
+   "Se citește regulamentul local de publicitate al localității: arată ce firme sunt permise în zonă, dimensiunile și unde se pun (de exemplu, la Cluj-Napoca o firmă pe plăcuță are cel mult 1200 cmp pentru majoritatea firmelor și se pune paralel cu fațada).",
+   "Dacă firma e doar scrisă pe vitrină sau pe ușă, se cere avizul primăriei și se montează; pașii de autorizare de mai jos nu mai sunt necesari.",
+   "Pentru firma de pe fațadă (inclusiv cea luminoasă) se depune la primărie cererea pentru certificatul de urbanism.",
+   "Se obțin avizele cerute în certificatul de urbanism (la Cluj-Napoca: avizul Comisiei de Estetică Urbană și, în zonele protejate, avizul pentru patrimoniu).",
+   "Se depune cererea de autorizație de construire cu documentația tehnică, avizele, dovada dreptului asupra spațiului și dovada plății taxelor.",
+   "După primirea autorizației se montează firma.",
+   "În 30 de zile de la montare se depune declarația pentru taxa de afișaj la compartimentul de taxe locale; taxa se plătește apoi anual."
+  ],
+  "taxe": "Pentru firma de pe clădire se plătesc taxa de certificat de urbanism și taxa de autorizație de construire (Legea 50/1991, art. 7 alin. (1) lit. f)), stabilite local. Taxa pentru afișaj în scop de reclamă și publicitate (Codul fiscal, art. 478) se plătește anual la bugetul local al localității unde e afișajul (în București, la sector): metri pătrați sau fracțiune de metru pătrat × suma stabilită de consiliul local, de până la 32 lei/mp pentru afișajul de la locul unde se desfășoară activitatea economică și de până la 23 lei/mp pentru celelalte panouri, sume care se pot indexa local. Taxa se recalculează pe lunile de afișare și se plătește în două rate egale, până la 31 martie și 30 septembrie; dacă e de cel mult 50 lei, se plătește integral până la 31 martie. Nu se datorează pentru afișajul din interiorul clădirilor (art. 479 alin. (3)). Suma exactă se află în hotărârea consiliului local.",
+  "termen_legal": "Autorizația de construire se emite în 30 de zile de la depunerea documentației complete (Legea 50/1991, art. 7 alin. (1)); declarația pentru taxa de afișaj se depune în 30 de zile de la amplasare (Codul fiscal, art. 478 alin. (5)).",
+  "temei_legal": "Legea 185/2013 privind amplasarea și autorizarea mijloacelor de publicitate, republicată: art. 3 lit. f), art. 4, art. 8, art. 18–21; Legea 50/1991, republicată: art. 3 alin. (1) lit. h), art. 4, art. 6, art. 7 alin. (1); Legea 227/2015 privind Codul fiscal: art. 477–479; exemplu local: Regulamentul privind mijloacele de publicitate din Cluj-Napoca (HCL 133/2018).",
+  "activitati": [
+   "comert",
+   "horeca",
+   "servicii",
+   "cabinet"
+  ],
+  "surse": [
+   {
+    "titlu": "Legea nr. 185/2013 privind amplasarea și autorizarea mijloacelor de publicitate (republicată, forma consolidată)",
+    "url": "https://legislatie.just.ro/Public/DetaliiDocument/149533",
+    "verificat": "2026-11-11"
+   },
+   {
+    "titlu": "Legea nr. 50/1991 privind autorizarea executării lucrărilor de construcții (republicată, forma consolidată)",
+    "url": "https://legislatie.just.ro/Public/DetaliiDocument/55794",
+    "verificat": "2026-11-11"
+   },
+   {
+    "titlu": "Legea nr. 227/2015 privind Codul fiscal (forma consolidată), art. 477–479",
+    "url": "https://legislatie.just.ro/Public/DetaliiDocument/171282",
+    "verificat": "2026-11-11"
+   },
+   {
+    "titlu": "Primăria Cluj-Napoca – Regulament privind organizarea, autorizarea și amplasarea mijloacelor de publicitate (HCL 133/2018)",
+    "url": "https://primariaclujnapoca.ro/informatii-publice/regulament-local/regulament-privind-organizarea-autorizarea-si-amplasarea-mijloacelor-de-publicitate-pe-raza-municipiului-cluj-napoca/",
+    "verificat": "2026-11-11"
+   }
+  ]
+ },
+ {
+  "cheie": "autorizatie-transport-taxi",
+  "titlu": "Autorizația de transport în regim de taxi și autorizația taxi pentru fiecare autovehicul",
+  "domeniu": "transport",
+  "institutie": "Primăria localității unde transportatorul are sediul sau domiciliul (compartimentul sau serviciul de autorizare a transportului); ARR pentru certificatele profesionale; RAR pentru certificatul de agreare a autovehiculului taxi",
+  "descriere": "Pentru transportul de persoane sau de mărfuri în regim de taxi e nevoie întâi de autorizația de transport, emisă de primărie. Ea nu dă singură dreptul de a lucra cu taxiul: permite doar participarea la atribuirea autorizațiilor taxi. Apoi, pentru fiecare autovehicul primit la atribuire, primăria emite o autorizație taxi, însoțită de două ecusoane. Se adresează transportatorilor (firme, PFA-uri, întreprinderi familiale). Actele cerute, taxele și formularele diferă de la o localitate la alta.",
+  "conditii": [
+   {
+    "text": "Înregistrare la registrul comerțului și capacitate profesională: certificatul de competență al managerului de transport sau, pentru persoana fizică, certificatul de atestare al taximetristului (Legea 38/2003, art. 9 alin. (1) lit. b)–c)).",
+    "obligatoriu": true
+   },
+   {
+    "text": "Onorabilitate (cazier judiciar, aviz medical și psihologic, cazier fiscal, declarație despre activitatea anterioară) și capacitate financiară (loc de parcare, autovehicule deținute în proprietate sau prin leasing) (Legea 38/2003, art. 9 alin. (1) lit. d)–e)).",
+    "obligatoriu": true
+   },
+   {
+    "text": "Managerul de transport are certificat de competență eliberat de ARR, îndeplinește condițiile de onorabilitate, a absolvit liceul și locuiește în România (Legea 38/2003, art. 7^1).",
+    "obligatoriu": true
+   },
+   {
+    "text": "Autorizația de transport e unică și nu se poate transmite altcuiva; modificarea condițiilor se declară la primărie în 30 de zile (Legea 38/2003, art. 9 alin. (3), art. 10 alin. (1)).",
+    "obligatoriu": true
+   },
+   {
+    "text": "Autorizațiile taxi se obțin prin procedura de atribuire organizată de primărie, cu punctaj pe criterii de departajare stabilite de consiliul local; numărul lor e limitat (cel mult 4 la 1.000 de locuitori) (Legea 38/2003, art. 14, art. 14^2).",
+    "obligatoriu": true
+   },
+   {
+    "text": "La prima atribuire autovehiculul are cel mult 5 ani; cel deținut în proprietate e înmatriculat în județ sau în București, cel luat în leasing poate fi înmatriculat oriunde; are certificat de agreare RAR (Legea 38/2003, art. 11).",
+    "obligatoriu": true
+   },
+   {
+    "text": "Taximetristul are cel puțin 21 de ani, permis categoria B de cel puțin 2 ani, este apt medical și psihologic și are certificat de atestare profesională eliberat de ARR după un test-grilă (Legea 38/2003, art. 26).",
+    "obligatoriu": true
+   }
+  ],
+  "documente": [
+   {
+    "nume": "Cerere pentru autorizația de transport în regim de taxi",
+    "obligatoriu": true,
+    "nota": "Legea 38/2003, art. 9 alin. (1) lit. a); formular tip la primărie (exemplu: Brașov)"
+   },
+   {
+    "nume": "Copie după certificatul de înregistrare la registrul comerțului și certificatul constatator",
+    "obligatoriu": true,
+    "nota": "Legea 38/2003, art. 9 alin. (1) lit. b); Brașov cere și certificatul constatator"
+   },
+   {
+    "nume": "Certificatul de competență profesională al managerului de transport sau, pentru persoana fizică, certificatul de atestare al taximetristului",
+    "obligatoriu": true,
+    "nota": "Legea 38/2003, art. 9 alin. (1) lit. c), art. 7^1; eliberate de ARR"
+   },
+   {
+    "nume": "Cazier judiciar, aviz medical și aviz psihologic (ale managerului de transport sau ale taximetristului)",
+    "obligatoriu": true,
+    "nota": "Legea 38/2003, art. 9 alin. (1) lit. d); Brașov: avizele de la unități agreate de ministerul transporturilor"
+   },
+   {
+    "nume": "Cazier fiscal al transportatorului",
+    "obligatoriu": true,
+    "nota": "Legea 38/2003, art. 9 alin. (1) lit. d)"
+   },
+   {
+    "nume": "Declarație pe propria răspundere despre perioadele în care s-a mai făcut transport în regim de taxi și despre eventualele interdicții",
+    "obligatoriu": true,
+    "nota": "Legea 38/2003, art. 9 alin. (1) lit. d)"
+   },
+   {
+    "nume": "Declarații pe propria răspundere despre locul de parcare și despre autovehiculele deținute (proprietate sau leasing)",
+    "obligatoriu": true,
+    "nota": "Legea 38/2003, art. 9 alin. (1) lit. e)"
+   },
+   {
+    "nume": "Certificat de atestare fiscală (fără datorii la bugetul local)",
+    "obligatoriu": false,
+    "nota": "Cerut la Brașov; depinde de localitate"
+   },
+   {
+    "nume": "Dovada plății tarifului pentru autorizație",
+    "obligatoriu": false,
+    "nota": "Cerută la Brașov; tariful îl stabilește fiecare consiliu local"
+   },
+   {
+    "nume": "Pentru autorizația taxi: copie după autorizația de transport",
+    "obligatoriu": true,
+    "nota": "Legea 38/2003, art. 11"
+   },
+   {
+    "nume": "Pentru autorizația taxi: copie după certificatul de înmatriculare și cartea de identitate a vehiculului (plus contractul de leasing, dacă e cazul)",
+    "obligatoriu": true,
+    "nota": "Legea 38/2003, art. 11; Brașov cere și ITP taxi valabil"
+   },
+   {
+    "nume": "Pentru autorizația taxi: copie după certificatul de agreare eliberat de RAR",
+    "obligatoriu": true,
+    "nota": "Legea 38/2003, art. 11"
+   },
+   {
+    "nume": "Pentru autorizația taxi: declarații despre criteriile de departajare și despre dispecerizare",
+    "obligatoriu": true,
+    "nota": "Legea 38/2003, art. 11; formulare la primărie (exemplu: Brașov)"
+   }
+  ],
+  "pasi": [
+   "Se obține de la ARR certificatul de competență pentru managerul de transport sau, pentru persoana fizică, certificatul de atestare de taximetrist (Legea 38/2003, art. 7^1 și art. 26).",
+   "Se strâng cazierele, avizele medical și psihologic și declarațiile despre activitatea anterioară, parcare și autovehicule (art. 9 alin. (1)).",
+   "Se depune dosarul pentru autorizația de transport la primăria de care ține sediul sau domiciliul (art. 9 alin. (1)); la unele primării se poate depune și online (de exemplu Brașov).",
+   "Se plătește tariful stabilit de consiliul local și se ridică autorizația de transport, eliberată pe durată nedeterminată și vizată la fiecare 5 ani (art. 8).",
+   "Se participă la procedura de atribuire a autorizațiilor taxi organizată de primărie; autorizațiile se atribuie după punctajul obținut pe criteriile de departajare (art. 14^2).",
+   "Pentru fiecare autovehicul câștigat se obține certificatul de agreare RAR, apoi se depun actele pentru autorizația taxi (art. 11); dacă s-a participat cu autovehicule care încă nu erau deținute, termenul e de 6 luni, altfel autorizațiile se retrag (art. 14^2).",
+   "Se ridică autorizația taxi, valabilă 5 ani, cu cele două ecusoane (art. 11); primăriile pot pune condiții în plus (Brașov cere dovada fiscalizării aparatului de taxat în 15 zile)."
+  ],
+  "taxe": "Legea nu fixează o sumă: tarifele și taxele locale sunt stabilite de fiecare consiliu local (Legea 38/2003, art. 13 lit. i)). Exemplu, Primăria Brașov (HCL 1004/2008): 300 lei pentru autorizația de transport și 100 lei pentru autorizația taxi.",
+  "termen_legal": "",
+  "temei_legal": "Legea 38/2003 privind transportul în regim de taxi și în regim de închiriere (forma consolidată), art. 1^1, 7^1, 8, 9, 10, 11, 13, 14, 14^2, 26; hotărârea consiliului local privind transportul în regim de taxi din fiecare localitate.",
+  "activitati": [
+   "transport"
+  ],
+  "surse": [
+   {
+    "titlu": "Legea nr. 38/2003 privind transportul în regim de taxi și în regim de închiriere (text consolidat)",
+    "url": "https://legislatie.just.ro/Public/DetaliiDocument/41461",
+    "verificat": "2026-11-11"
+   },
+   {
+    "titlu": "Primăria Brașov – Eliberare autorizație de transport în regim de taxi (persoane sau mărfuri)",
+    "url": "https://serviciielectronice.brasovcity.ro/cmsSE/acte-necesare-primaria-brasov/eliberare-autorizatie-de-transport-in-regim-de-taxi-persoane-sau-marfuri",
+    "verificat": "2026-11-11"
+   },
+   {
+    "titlu": "Primăria Brașov – Eliberare autorizație taxi (transport persoane în regim de taxi)",
+    "url": "https://serviciielectronice.brasovcity.ro/cmsSE/acte-necesare-primaria-brasov/eliberare-autorizatie-taxi-transport-persoane-in-regim-de-taxi",
+    "verificat": "2026-11-11"
+   }
+  ]
+ },
+ {
+  "cheie": "clasificare-structura-turistica",
+  "titlu": "Certificat de clasificare pentru structuri de primire turistice (hotel, pensiune, pensiune agroturistică, apartamente/camere etc.)",
+  "domeniu": "functionare",
+  "institutie": "Ministerul responsabil în domeniul turismului (pe turism.gov.ro: Ministerul Economiei, Digitalizării, Antreprenoriatului și Turismului), Calea Victoriei 152, Sector 1, București, sau online prin platforma SITUR",
+  "descriere": "Certificatul de clasificare arată tipul structurii (hotel, pensiune turistică, pensiune agroturistică, vilă, hostel, apartamente sau camere de închiriat etc.) și categoria ei (stele sau margarete). Fără el, sau fără autorizația provizorie de funcționare, structura nu are voie să cazeze turiști. Se cere pentru fiecare structură în parte, de operatorul care o deține sau o administrează, inclusiv de persoanele fizice care închiriază apartamente sau camere din locuința proprie. Certificatul nu înlocuiește celelalte avize și autorizații (sanitară, ISU, mediu). Spațiile de alimentație publică din structură au fișa lor separată (anexa 5). Conducerea operativă a structurii o asigură o persoană cu brevet de turism sau cu o calificare echivalentă.",
+  "conditii": [
+   {
+    "text": "Structura de primire turistică funcționează doar dacă e clasificată: are certificat de clasificare sau autorizație provizorie de funcționare (OG 58/1998, art. 30; HG 1267/2010, art. 7).",
+    "obligatoriu": true
+   },
+   {
+    "text": "Structura îndeplinește criteriile minime pentru tipul și categoria cerute, verificate la fața locului; dacă nu le îndeplinește, nu se clasifică, iar autorizația provizorie încetează (Normele aprobate prin Ordinul 65/2013, art. 8).",
+    "obligatoriu": true
+   },
+   {
+    "text": "Conducerea operativă o asigură o persoană cu brevet de turism pentru funcția respectivă, cu certificat de absolvire a unui curs de management de la un furnizor autorizat sau cu diplomă universitară în turism; normele prevăd excepții (OG 58/1998, art. 27 alin. (1); Normele, art. 46).",
+    "obligatoriu": true
+   },
+   {
+    "text": "Personalul minim (conducere operativă, șef recepție și/sau șef producție și servire, după caz) este angajat și calificat după anexa 7 la Norme (Normele, art. 4 alin. (1) lit. e)).",
+    "obligatoriu": true
+   },
+   {
+    "text": "Persoană fizică (apartamente sau camere din locuința proprie): cel mult 7 camere sau 14 locuri (Normele, art. 4 alin. (1^2)).",
+    "obligatoriu": true
+   },
+   {
+    "text": "Funcționarea fără clasificare sau fără autorizație provizorie este contravenție: amendă de 40.000–50.000 lei (HG 1267/2010, art. 15 lit. a), art. 16 alin. (1) lit. a)).",
+    "obligatoriu": true
+   }
+  ],
+  "documente": [
+   {
+    "nume": "Cerere standardizată pentru obținerea certificatului de clasificare (anexa 3)",
+    "obligatoriu": true,
+    "nota": "Normele, art. 4 alin. (1) lit. a); modelul e pe turism.gov.ro"
+   },
+   {
+    "nume": "Fișa standardizată de încadrare pe categorii și tipuri a spațiilor de cazare (anexa 4)",
+    "obligatoriu": true,
+    "nota": "Normele, art. 4 alin. (1) lit. c), după caz; și pentru persoane fizice (alin. (1^1))"
+   },
+   {
+    "nume": "Fișa standardizată a spațiilor de alimentație publică (anexa 5)",
+    "obligatoriu": false,
+    "nota": "Normele, art. 4 alin. (1) lit. d); doar dacă structura are și funcțiune de alimentație publică"
+   },
+   {
+    "nume": "Extras din registrul general de evidență a salariaților, certificat de semnatarul cererii, pentru personalul minim, cu actele de pregătire profesională cerute de anexa 7",
+    "obligatoriu": true,
+    "nota": "Normele, art. 4 alin. (1) lit. e); celelalte acte de personal se arată la verificarea la fața locului"
+   },
+   {
+    "nume": "Acte care dovedesc legalitatea construcției: autorizație de construire sau certificat de edificare, acte de proprietate, extras de carte funciară",
+    "obligatoriu": true,
+    "nota": "Normele, art. 4 alin. (1) lit. f)"
+   },
+   {
+    "nume": "Pentru instituții publice, asociații, fundații, culte și altele asemenea: actul de înființare, înregistrarea fiscală, statutul sau actul care permite activitatea, actul care dă dreptul de administrare a structurii",
+    "obligatoriu": false,
+    "nota": "Normele, art. 4 alin. (1) lit. b)"
+   },
+   {
+    "nume": "Persoane fizice: cerere standardizată anexa 3^1 (în loc de anexa 3)",
+    "obligatoriu": false,
+    "nota": "Normele, art. 4 alin. (1^1); se depune doar la sediul instituției"
+   },
+   {
+    "nume": "Persoane fizice: copia actului de identitate; la mai mulți proprietari, actele lor și acordul lor pentru închiriere",
+    "obligatoriu": false,
+    "nota": "Normele, art. 4 alin. (1^1)"
+   },
+   {
+    "nume": "Persoane fizice în bloc: avizul scris al comitetului executiv al asociației de proprietari și acordul scris al vecinilor direct afectați, sau declarație pe propria răspundere dacă nu există asociație",
+    "obligatoriu": false,
+    "nota": "Normele, art. 4 alin. (1^1); modelul de acord e pe turism.gov.ro"
+   },
+   {
+    "nume": "Persoane fizice: actul de proprietate cu adresa și actele de legalitate a construcției",
+    "obligatoriu": false,
+    "nota": "Normele, art. 4 alin. (1^1)"
+   }
+  ],
+  "pasi": [
+   "Se pregătește dosarul: cererea standardizată (anexa 3 sau, pentru persoane fizice, anexa 3^1), fișa spațiilor de cazare (anexa 4), fișa de alimentație (anexa 5, dacă e cazul) și actele cerute; formularele sunt pe turism.gov.ro.",
+   "Dosarul se depune online, pe platforma SITUR, sau la sediul instituției; persoanele fizice depun doar la sediu.",
+   "Instituția analizează dosarul în cel mult 30 de zile calendaristice de la depunerea completă; dacă lipsesc acte, solicitantul e anunțat în 5 zile lucrătoare, iar dosarul necompletat în 3 luni se închide.",
+   "După analiza actelor se primește autorizația provizorie de funcționare.",
+   "În cel mult 90 de zile de la autorizația provizorie, o comisie verifică structura la fața locului, în prezența reprezentantului legal, și întocmește nota de clasificare; neconformitățile minore se remediază în cel mult 15 zile lucrătoare.",
+   "Certificatul de clasificare și anexa lui se eliberează în 15 zile de la nota de clasificare, doar operatorului (personal, prin împuternicit sau prin curier).",
+   "Se afișează la exterior denumirea, tipul și însemnele categoriei, iar la recepție o copie a certificatului și a anexei; originalele se păstrează în structură.",
+   "La reclasificare, schimbarea titularului, a denumirii sau adresei, pierderea certificatului sau modificarea spațiilor din anexă se depune o nouă cerere, cu documentele prevăzute (Normele, art. 4 alin. (2)–(6))."
+  ],
+  "taxe": "",
+  "termen_legal": "Analiza dosarului complet: cel mult 30 de zile calendaristice (Normele, art. 6 alin. (1)); verificarea la fața locului: în 90 de zile de la autorizația provizorie (art. 8 alin. (2)); certificatul: în 15 zile de la nota de clasificare (art. 11).",
+  "temei_legal": "OG 58/1998 privind organizarea și desfășurarea activității de turism în România, art. 24, 27–31; HG 1267/2010 privind eliberarea certificatelor de clasificare, a licențelor și brevetelor de turism, art. 2–4, 7, 15–17; Normele metodologice aprobate prin Ordinul 65/2013, cu modificările ulterioare, art. 4, 6, 8, 11–13, 27–28, 46–50 și anexele 3, 3^1, 4, 5, 7.",
+  "activitati": [
+   "horeca"
+  ],
+  "surse": [
+   {
+    "titlu": "turism.gov.ro – Certificat de clasificare pentru structurile de primire turistice cu funcțiuni de cazare și/sau alimentație publică",
+    "url": "https://turism.gov.ro/web/certificat-de-clasificare-pentru-structurile-de-primire-turistice-cu-functiuni-de-cazare-sisau-alimentatie-publica/",
+    "verificat": "2026-11-11"
+   },
+   {
+    "titlu": "turism.gov.ro – Autorizare turism",
+    "url": "https://turism.gov.ro/web/autorizare-turism/",
+    "verificat": "2026-11-11"
+   },
+   {
+    "titlu": "Normele metodologice aprobate prin Ordinul 65/2013, forma consolidată",
+    "url": "https://legislatie.just.ro/Public/DetaliiDocumentAfis/312684",
+    "verificat": "2026-11-11"
+   },
+   {
+    "titlu": "HG 1267/2010 privind eliberarea certificatelor de clasificare, a licențelor și brevetelor de turism",
+    "url": "https://legislatie.just.ro/Public/DetaliiDocument/124665",
+    "verificat": "2026-11-11"
+   },
+   {
+    "titlu": "OG 58/1998 privind organizarea și desfășurarea activității de turism în România",
+    "url": "https://legislatie.just.ro/Public/DetaliiDocument/15492",
+    "verificat": "2026-11-11"
+   }
+  ]
  }
 ]
