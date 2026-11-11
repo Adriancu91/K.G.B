@@ -3811,6 +3811,18 @@ dependencies = [
 ]
 
 [[package]]
+name = "kgb-contracts"
+version = "0.1.0"
+dependencies = [
+ "kgb-core",
+ "kgb-store",
+ "serde",
+ "serde_json",
+ "tempfile",
+ "uuid",
+]
+
+[[package]]
 name = "kgb-core"
 version = "0.1.0"
 dependencies = [
