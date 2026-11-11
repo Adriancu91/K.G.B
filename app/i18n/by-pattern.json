@@ -1300,6 +1300,31 @@
   "f": "modules/planner/reports.tsx"
  },
  {
+  "ro": "(alege)",
+  "en": "(choose)",
+  "f": "modules/recipes/RecipesPage.tsx"
+ },
+ {
+  "ro": "Numele rețetei",
+  "en": "Recipe name",
+  "f": "modules/recipes/RecipesPage.tsx"
+ },
+ {
+  "ro": "fără preț",
+  "en": "not price",
+  "f": "modules/recipes/RecipesPage.tsx"
+ },
+ {
+  "ro": "Furnizorul",
+  "en": "Supplier",
+  "f": "modules/recipes/RecipesPage.tsx"
+ },
+ {
+  "ro": "Calculează consumul",
+  "en": "Calculate consumul",
+  "f": "modules/recipes/RecipesPage.tsx"
+ },
+ {
   "ro": "Conținutul celulei",
   "en": "Cell contents",
   "f": "modules/sheets/SheetsPage.tsx"

@@ -1,0 +1,18 @@
+[package]
+name = "kgb-recipes"
+version = "0.1.0"
+edition.workspace = true
+publish.workspace = true
+license.workspace = true
+description = "K.G.B. module: recipes and costs (step 7.9e) - ingredients with prices and losses, recipes with semi-finished parts, cost per portion, proposed price with mark-up and VAT, margin, allergens (EU 1169/2011 annex II), consumption list exported as CSV."
+
+[dependencies]
+kgb-core.workspace = true
+kgb-store.workspace = true
+serde.workspace = true
+serde_json.workspace = true
+uuid.workspace = true
+rust_xlsxwriter.workspace = true
+
+[dev-dependencies]
+tempfile.workspace = true

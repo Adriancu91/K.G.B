@@ -78,6 +78,7 @@ fn builtin_modules() -> Vec<Box<dyn Module>> {
         Box::new(kgb_contracts::Contracts::new()),
         Box::new(kgb_vault::Vault::new()),
         Box::new(kgb_maintenance::Maintenance::new()),
+        Box::new(kgb_recipes::Recipes::new()),
     ]
 }
 
