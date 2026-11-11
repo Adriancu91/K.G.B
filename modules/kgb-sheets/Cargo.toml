@@ -17,7 +17,7 @@ calamine = "0.38.0"
 umya-spreadsheet = "=4.0.0-beta.1"
 ironcalc = "0.9.1"
 # Templates (step 3.7) are written with the export library (D-033).
-rust_xlsxwriter = "0.102.0"
+rust_xlsxwriter.workspace = true
 zip = { version = "9.4.1", default-features = false, features = ["deflate"] }
 # CSV: parsing and the old Windows code pages (Ş/Ţ with cedilla).
 csv = "1.4.0"

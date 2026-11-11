@@ -170,6 +170,15 @@ fn costs_allergens_and_consumption() {
     )
     .unwrap();
     assert!(std::fs::read_to_string(&dest).unwrap().contains("Făină"));
+    let book = tmp.path().join("consum.xlsx");
+    call(
+        &mut ws,
+        &mm,
+        "consum_export",
+        json!({"linii": [{"reteta": dish, "portii": 8000}], "dest": book}),
+    )
+    .unwrap();
+    assert_eq!(&std::fs::read(&book).unwrap()[..2], b"PK", "an .xlsx (zip)");
 
     // Used things are not deleted.
     let ings = call(&mut ws, &mm, "ingrediente", json!({})).unwrap();

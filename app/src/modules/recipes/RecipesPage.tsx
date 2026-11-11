@@ -525,7 +525,7 @@ export function RecipesPage({ onError, access }: { onError: (e: string | null) =
                 disabled={busy}
                 onClick={() =>
                   void run(async () => {
-                    const dest = await save({ defaultPath: `consum-${today}.csv`, filters: [{ name: "CSV", extensions: ["csv"] }], title: "Unde salvez lista de consum?" });
+                    const dest = await save({ defaultPath: `consum-${today}.xlsx`, filters: [{ name: "Foaie de calcul .xlsx", extensions: ["xlsx"] }, { name: "CSV", extensions: ["csv"] }], title: "Unde salvez lista de consum?" });
                     if (!dest) return;
                     const linii = uses.filter((u) => u.reteta).map((u) => ({ reteta: u.reteta, portii: milli(u.portii) }));
                     await api.moduleCall(ID, "consum_export", { linii, dest });
@@ -533,7 +533,7 @@ export function RecipesPage({ onError, access }: { onError: (e: string | null) =
                   })
                 }
               >
-                Exportă .csv
+                Exportă .xlsx / .csv
               </button>
             )}
           </div>

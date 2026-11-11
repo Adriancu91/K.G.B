@@ -3751,6 +3751,7 @@ dependencies = [
  "kgb-pdf",
  "kgb-permits",
  "kgb-planner",
+ "kgb-recipes",
  "kgb-sheets",
  "kgb-store",
  "kgb-team",
@@ -4005,6 +4006,7 @@ version = "0.1.0"
 dependencies = [
  "kgb-core",
  "kgb-store",
+ "rust_xlsxwriter",
  "serde",
  "serde_json",
  "tempfile",

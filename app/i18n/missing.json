@@ -1,1 +1,10 @@
-[]
+[
+ {
+  "s": "Cantitate brută",
+  "t": 0,
+  "f": [
+   "modules/kgb-recipes/src/lib.rs"
+  ],
+  "n": 1
+ }
+]

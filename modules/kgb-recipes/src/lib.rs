@@ -15,7 +15,7 @@
 //!
 //! Commands: `ingrediente {text?}`, `ingredient_save`, `ingredient_delete {id, version}`, `retete {text?, fel?}`,
 //! `reteta {id, azi}`, `reteta_save`, `reteta_delete {id, version}`, `reteta_copie {id}`, `consum {linii}`,
-//! `consum_export {linii, dest}` (CSV, UTF-8 with BOM, „;”).
+//! `consum_export {linii, dest}` (.xlsx when the name says so, else CSV: UTF-8 with BOM, „;”).
 
 use std::collections::{BTreeMap, BTreeSet};
 use std::path::PathBuf;
@@ -648,6 +648,47 @@ impl Recipes {
     }
 }
 
+/// The consumption as an .xlsx workbook: one sheet, the quantities with three decimals, the costs in lei.
+pub fn consumption_xlsx(rows: &[Value]) -> Result<Vec<u8>, String> {
+    use rust_xlsxwriter::{Format, Workbook};
+    let mut wb = Workbook::new();
+    let bold = Format::new().set_bold();
+    let qty = Format::new().set_num_format("0.000");
+    let money = Format::new().set_num_format("#,##0.00");
+    let ws = wb.add_worksheet();
+    ws.set_name("Consum").map_err(|e| e.to_string())?;
+    for (c, h) in ["Ingredient", "Cantitate brută", "UM", "Cost fără TVA (lei)"]
+        .iter()
+        .enumerate()
+    {
+        ws.write_string_with_format(0, c as u16, *h, &bold)
+            .map_err(|e| e.to_string())?;
+    }
+    let mut total = 0.0;
+    for (n, r) in rows.iter().enumerate() {
+        let row = n as u32 + 1;
+        let cost = r["cost"].as_f64().unwrap_or_default() / 100.0;
+        total += cost;
+        ws.write_string(row, 0, r["nume"].as_str().unwrap_or_default())
+            .map_err(|e| e.to_string())?;
+        ws.write_number_with_format(row, 1, r["cantitate"].as_f64().unwrap_or_default(), &qty)
+            .map_err(|e| e.to_string())?;
+        ws.write_string(row, 2, r["um"].as_str().unwrap_or_default())
+            .map_err(|e| e.to_string())?;
+        ws.write_number_with_format(row, 3, cost, &money)
+            .map_err(|e| e.to_string())?;
+    }
+    let last = rows.len() as u32 + 1;
+    ws.write_string_with_format(last, 0, "Total", &bold)
+        .map_err(|e| e.to_string())?;
+    ws.write_number_with_format(last, 3, total, &money)
+        .map_err(|e| e.to_string())?;
+    ws.set_column_width(0, 32).map_err(|e| e.to_string())?;
+    ws.set_column_width(1, 16).map_err(|e| e.to_string())?;
+    ws.set_column_width(3, 20).map_err(|e| e.to_string())?;
+    wb.save_to_buffer().map_err(|e| e.to_string())
+}
+
 /// The consumption as CSV for a spreadsheet: UTF-8 with BOM, „;”, decimal comma.
 pub fn consumption_csv(rows: &[Value]) -> String {
     let num = |x: f64, d: usize| format!("{x:.d$}").replace('.', ",");
@@ -772,7 +813,14 @@ impl Module for Recipes {
             "consum_export" => {
                 let a: UseExport = args(command, a)?;
                 let rows = self.consumption(ctx, &a.linii)?;
-                ctx.export_bytes(&a.dest, consumption_csv(&rows).as_bytes(), true)?;
+                // The kind follows the file's name: .xlsx, else CSV.
+                let xlsx = a.dest.extension().is_some_and(|e| e.eq_ignore_ascii_case("xlsx"));
+                let bytes = if xlsx {
+                    consumption_xlsx(&rows).map_err(|e| bad("exportul .xlsx", e))?
+                } else {
+                    consumption_csv(&rows).into_bytes()
+                };
+                ctx.export_bytes(&a.dest, &bytes, true)?;
                 Ok(json!({"salvat": a.dest, "randuri": rows.len()}))
             }
             other => Err(CoreError::invalid("comanda", format!("„{other}” nu există în {ID}"))),
