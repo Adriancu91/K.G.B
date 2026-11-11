@@ -6,7 +6,7 @@
 // Usage: node app/e2e/permits-catalog.mjs <path-to-kgb-app.exe> <screenshot-dir>
 // Uses a throw-away data folder (KGB_DATA_DIR), never the user's real data.
 import { spawn, execFileSync } from "node:child_process";
-import { mkdtempSync, mkdirSync, rmSync } from "node:fs";
+import { existsSync, mkdtempSync, mkdirSync, readdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { connect, sleep } from "./cdp.mjs";
@@ -84,6 +84,30 @@ try {
   const items = await p.eval("document.querySelectorAll('.checklist li').length");
   check("dosarul are lista de verificare din procedură", items >= 10, `${items} puncte`);
   await p.screenshot(join(shots, "02-dosar.png"));
+
+  // 7.9b: „Exportă dosarul…” — one attached document, then the folder (the page takes the test folder instead of
+  // opening the system's folder dialog, which a test can't drive).
+  const cases = await call("dosare", { azi: "2026-11-10" });
+  const cs = cases[0];
+  const scan = join(data, "plan-de-situatie.pdf");
+  writeFileSync(scan, "%PDF-1.4\n% plan de test\n");
+  await p.eval(`window.__TAURI_INTERNALS__.invoke("module_import_file_with", ${JSON.stringify({ id: "kgb.permits", path: scan, command: "dosar_fisier", args: { id: cs.id, version: cs.version } })})`);
+  const out = join(data, "export");
+  mkdirSync(out);
+  await p.eval(`window.__kgbE2eFolder = ${JSON.stringify(out)}; true`);
+  await p.click("Dosare", ".sheet-tabs button");
+  await p.click("Permise", "nav .nav");
+  await p.until("[...document.querySelectorAll('button')].some(b => b.innerText.includes('Aviz ISU'))", 10000).catch(() => {});
+  await p.eval("[...document.querySelectorAll('button, td, li')].find(e => e.innerText?.trim().startsWith('Aviz ISU – depozit nou'))?.click()");
+  await p.until("!!document.querySelector('button[aria-label=\"Exportă dosarul\"]')", 10000);
+  await p.eval("document.querySelector('button[aria-label=\"Exportă dosarul\"]').click()");
+  await p.until("!!document.querySelector('.export-done')", 20000);
+  const dir = join(out, "Aviz ISU – depozit nou");
+  const files = existsSync(dir) ? readdirSync(dir) : [];
+  check("„Exportă dosarul” face folderul cu opisul, adresa de înaintare și documentul atașat", files.includes("00 Opis.pdf") && files.includes("00 Adresa de inaintare.pdf") && files.includes("01 plan-de-situatie.pdf"), JSON.stringify(files));
+  const opis = files.includes("00 Opis.pdf") ? readFileSync(join(dir, "00 Opis.pdf")) : Buffer.alloc(0);
+  check("opisul e un PDF", opis.subarray(0, 5).toString() === "%PDF-", `${opis.length} octeți`);
+  await p.screenshot(join(shots, "03-export.png"));
   p.close();
 } catch (e) {
   check("scenariul a rulat până la capăt", false, e.message);

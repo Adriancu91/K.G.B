@@ -2546,7 +2546,13 @@
   "nu e în catalog": "is not in the catalog",
   "doar pentru": "only for",
   "Adaugă": "Add",
-  "documente,": "documents,"
+  "documente,": "documents,",
+  "Exportă dosarul": "Export the dossier",
+  "Exportă dosarul…": "Export the dossier…",
+  "Un folder nou cu opisul, adresa de înaintare și documentele atașate, numerotate.": "A new folder with the list of documents, the cover letter and the attached documents, numbered.",
+  "un document făcut": "a document made",
+  "Exportat:": "Exported:",
+  "Unde pun dosarul?": "Where do I put the dossier?"
  },
  "templates": {
   "Completat de la ANAF (date pentru {0}): {1}. Verifică și completează restul de mână.": "Filled in from ANAF (data for {0}): {1}. Check and fill in the rest manually.",
@@ -3122,7 +3128,9 @@
   "sunt deja {0} știri păstrate; uită câteva întâi": "{0} news items are already kept; forget some first",
   "fluxul nu e XML valid ({0})": "the feed is not valid XML ({0})",
   "Condiții verificate: {0}": "Terms checked: {0}",
-  "Licență: {0}": "Licence: {0}"
+  "Licență: {0}": "Licence: {0}",
+  "dosarul e în {0}": "the dossier is in {0}",
+  "nu s-a putut face: {0}": "could not be made: {0}"
  },
  "skip": [
   "rețeaua locală",
@@ -3242,6 +3250,23 @@
   "{0}: domeniul {1}",
   "{0}: prea multe",
   "{0}: un document",
-  "{0}: un pas"
+  "{0}: un pas",
+  "Documentele dosarului",
+  "pregătit",
+  "LIPSEȘTE (obligatoriu)",
+  "dacă e cazul",
+  "Fișierele din acest folder",
+  "Listă pregătită cu K.G.B. după procedura din „Permise și autorizații”; verificați la instituție lista actuală înainte de depunere.",
+  "ADRESĂ DE ÎNAINTARE",
+  "Subscrisa {0}{1}{2}{3}",
+  ", cu sediul în {0}",
+  ", reprezentată prin {0}",
+  "Subsemnatul/Subscrisa {0}, cu sediul/domiciliul în {1}",
+  "{0}, vă înaintăm dosarul pentru „{1}”{2}, conținând documentele enumerate în opisul anexat ({3} poziții).",
+  "Vă rugăm să ne comunicați orice completare necesară la datele de contact de mai sus.",
+  "Semnătura și ștampila: {0}",
+  "Formularul oficial de cerere al instituției, dacă procedura are unul, se completează separat și se pune în dosar.",
+  "Adresa de inaintare.pdf",
+  "dosar exportat într-un folder"
  ]
 }

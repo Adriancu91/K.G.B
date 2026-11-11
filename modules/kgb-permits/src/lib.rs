@@ -730,6 +730,76 @@ Temei legal: {}",
                 ctx.export_bytes(&a.dest, &bytes, a.overwrite)?;
                 Ok(Value::Null)
             }
+            // The dossier to file (7.9b): a new folder, inside the one the person chose, with the documents the page
+            // made (the list of documents, the cover letter, as PDF) and every document attached to the case, numbered
+            // in order. Nothing existing is replaced: a folder of the same name gets „(2)”, „(3)”…
+            "dosar_export" => {
+                #[derive(Deserialize)]
+                #[serde(deny_unknown_fields)]
+                struct Made {
+                    nume: String,
+                    date: String,
+                }
+                #[derive(Deserialize)]
+                #[serde(deny_unknown_fields)]
+                struct A {
+                    id: Uuid,
+                    folder: PathBuf,
+                    #[serde(default)]
+                    facute: Vec<Made>,
+                }
+                let a: A = args(command, a)?;
+                let r = Self::live(ctx, CASES, a.id, "dosarul")?;
+                if !a.folder.is_dir() {
+                    return Err(bad("folderul", "nu există"));
+                }
+                let clean = |n: &str| -> String {
+                    let t: String = n
+                        .chars()
+                        .map(|c| if "\\/:*?\"<>|".contains(c) || c.is_control() { '-' } else { c })
+                        .collect();
+                    let t = t.trim().trim_end_matches('.').to_string();
+                    if t.is_empty() { "dosar".into() } else { t.chars().take(120).collect() }
+                };
+                let title = clean(r.fields.get("titlu").and_then(Value::as_str).unwrap_or("dosar"));
+                let mut dir = a.folder.join(&title);
+                let mut k = 2;
+                while dir.exists() {
+                    dir = a.folder.join(format!("{title} ({k})"));
+                    k += 1;
+                }
+                std::fs::create_dir(&dir).map_err(|e| bad("folderul dosarului", format!("nu s-a putut face: {e}")))?;
+                let mut written = Vec::new();
+                for m in &a.facute {
+                    let bytes = base64::engine::general_purpose::STANDARD
+                        .decode(m.date.as_bytes())
+                        .map_err(|_| bad("un document făcut", "nu a ajuns întreg"))?;
+                    let name = format!("00 {}", clean(&m.nume));
+                    ctx.export_bytes(&dir.join(&name), &bytes, false)?;
+                    written.push(name);
+                }
+                let files: Vec<(Uuid, String)> = r
+                    .fields
+                    .get("fisiere")
+                    .and_then(Value::as_array)
+                    .into_iter()
+                    .flatten()
+                    .filter_map(|f| {
+                        Some((
+                            f.get("id")?.as_str()?.parse().ok()?,
+                            f.get("nume").and_then(Value::as_str).unwrap_or("document").to_string(),
+                        ))
+                    })
+                    .collect();
+                for (i, (id, nume)) in files.iter().enumerate() {
+                    let (_, bytes) = ctx.get_file(*id)?;
+                    let name = format!("{:02} {}", i + 1, clean(nume));
+                    ctx.export_bytes(&dir.join(&name), &bytes, false)?;
+                    written.push(name);
+                }
+                ctx.log("dosar exportat într-un folder");
+                Ok(json!({"folder": dir.display().to_string(), "fisiere": written}))
+            }
             "dosar_delete" => {
                 let a: ById = args(command, a)?;
                 let r = Self::live(ctx, CASES, a.id, "dosarul")?;

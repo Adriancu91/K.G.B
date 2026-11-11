@@ -7,6 +7,7 @@ import { open, save } from "@tauri-apps/plugin-dialog";
 import { useCallback, useEffect, useState } from "react";
 import { api, message } from "../../api";
 import { CatalogDialog } from "./CatalogDialog";
+import { coverLetterPdf, opisPdf, type DossierInfo } from "./dossierPdf";
 
 const ID = "kgb.permits";
 
@@ -263,7 +264,48 @@ function ProcedureEditor({ draft, onSave, onCancel }: { draft: Draft; onSave: (d
   );
 }
 
-function CaseDetail({ c, procs, reload, onError }: { c: Case; procs: Procedure[]; reload: () => Promise<void>; onError: (e: string | null) => void }) {
+const b64 = (b: Uint8Array) => {
+  let s = "";
+  for (let i = 0; i < b.length; i += 0x8000) s += String.fromCharCode(...b.subarray(i, i + 0x8000));
+  return btoa(s);
+};
+
+/** The firm's data, from „Documente și modele” when that module is on (else blank lines in the letter). */
+async function firmData(): Promise<DossierInfo["firma"]> {
+  const empty = { nume: "", cui: "", adresa: "", reprezentant: "", telefon: "", email: "" };
+  try {
+    const c = await api.moduleCall<{ campuri: { camp: string; valoare: string }[] }>("kgb.docs", "company");
+    const v = (k: string) => c.campuri.find((f) => f.camp === k)?.valoare?.trim() ?? "";
+    return { nume: v("nume"), cui: v("cui"), adresa: v("adresa"), reprezentant: v("reprezentant"), telefon: v("telefon"), email: v("email") };
+  } catch {
+    return empty;
+  }
+}
+
+/** 7.9b: the dossier as a folder — opis and cover letter made here, the attached documents from the module. */
+async function exportDossier(c: Case, proc: Procedure | undefined, folder: string): Promise<string> {
+  const info: DossierInfo = {
+    titlu: c.titlu,
+    procedura: c.procedura_titlu,
+    institutie: proc?.institutie ?? "",
+    client: c.client ?? "",
+    azi: today(),
+    documente: c.elemente.filter((x) => x.cheie.startsWith("doc:")).map((x) => ({ text: x.text, obligatoriu: x.obligatoriu, bifat: x.bifat })),
+    atasate: c.fisiere.map((f) => f.nume),
+    firma: await firmData(),
+  };
+  const r = await api.moduleCall<{ folder: string; fisiere: string[] }>(ID, "dosar_export", {
+    id: c.id,
+    folder,
+    facute: [
+      { nume: "Opis.pdf", date: b64(await opisPdf(info)) },
+      { nume: "Adresa de inaintare.pdf", date: b64(await coverLetterPdf(info)) },
+    ],
+  });
+  return r.folder;
+}
+
+function CaseDetail({ c, procs, reload, onError, onExported }: { c: Case; procs: Procedure[]; reload: () => Promise<void>; onError: (e: string | null) => void; onExported?: (folder: string) => void }) {
   const proc = procs.find((p) => p.id === c.procedura);
   const run = async (f: () => Promise<unknown>) => {
     try {
@@ -321,6 +363,25 @@ function CaseDetail({ c, procs, reload, onError }: { c: Case; procs: Procedure[]
           </li>
         ))}
       </ul>
+      <div className="row wrap">
+        <button
+          className="primary"
+          aria-label="Exportă dosarul"
+          onClick={() =>
+            void run(async () => {
+              // The e2e can't drive the system's folder dialog, so it names the folder here; a page script could
+              // already call the core directly, so this gives nothing new.
+              const folder = (window as { __kgbE2eFolder?: string }).__kgbE2eFolder ?? (await open({ directory: true, multiple: false, title: "Unde pun dosarul?" }));
+              if (typeof folder !== "string") return;
+              const out = await exportDossier(c, proc, folder);
+              onExported?.(out);
+            })
+          }
+        >
+          Exportă dosarul…
+        </button>
+        <span className="muted small">Un folder nou cu opisul, adresa de înaintare și documentele atașate, numerotate.</span>
+      </div>
       <h4>Documente atașate</h4>
       <ul>
         {c.fisiere.map((f) => (
@@ -363,6 +424,7 @@ export function PermitsPage({ onError }: { onError: (e: string | null) => void }
   const [nc, setNc] = useState({ titlu: "", procedura: "", client: "", deschis: today(), termen: "" });
   const [catalog, setCatalog] = useState(false);
   const [added, setAdded] = useState<string | null>(null);
+  const [exported, setExported] = useState<string | null>(null);
 
   const load = useCallback(async () => {
     try {
@@ -525,7 +587,8 @@ export function PermitsPage({ onError }: { onError: (e: string | null) => void }
               </tbody>
             </table>
           )}
-          {current && <CaseDetail c={current} procs={procs} reload={load} onError={onError} />}
+          {current && <CaseDetail c={current} procs={procs} reload={load} onError={onError} onExported={(f) => setExported(`dosarul e în ${f}`)} />}
+          {exported && <p className="muted export-done">Exportat: {exported}</p>}
           {procs.length === 0 ? (
             <p className="muted">Ca să deschizi un dosar, adaugă întâi o procedură.</p>
           ) : (
