@@ -333,6 +333,8 @@ interface SuiteBridge {
   listVersions(path: string): Promise<FileVersion[]>;
   /** Notița blocată (D-090): textul ei în clar se scoate din variantele vechi ale caietului; lipsă = nu există variante. */
   scrubNoteVersions?(path: string, noteId: string, secret: unknown): Promise<number>;
+  /** Uită pe acest calculator istoricul spațiului de lucru (ce era scris înainte de o blocare); doar unde există un astfel de istoric. */
+  forgetHistory?(): Promise<{ blobs: number; bytes: number }>;
   readVersion(path: string, id: string): Promise<string>;
   /** Ciorna unui document nesalvat (o copie la câteva secunde cât scrii; rămâne 7 zile). */
   putDraft(d: { id: string; kind: FileKind; title: string; content: string }): Promise<void>;

@@ -84,6 +84,8 @@ export interface KgbHost {
   save(o: { defaultPath: string; filters: DialogFilter[] }): Promise<string | null>;
   /** The system's folder dialog (several files at once go into the folder chosen). */
   openFolder(title?: string): Promise<string | null>;
+  /** D-090: forgets on this computer the workspace's history before its current state. */
+  forgetHistory(): Promise<{ blobs: number; bytes: number }>;
   /** The app's language (RO / EN) and its changes: the window follows it. */
   lang(): "ro" | "en";
   onLang(f: (l: "ro" | "en") => void): () => void;
@@ -332,6 +334,7 @@ export function installCosBridge(host: KgbHost, kind: BridgeKind = SHEETS): void
       return (await kgb.moduleCall<{ id: string }>("kgb.notes", "attachment_add", { data: b64(data), ext: ext ?? "bin" })).id;
     },
     readAttachment: async (id: string) => unb64((await kgb.moduleCall<{ data: string }>("kgb.notes", "attachment_read", { id })).data),
+    forgetHistory: () => kgb.forgetHistory(),
     deleteAttachment: async (id: string) => {
       if (notesReadOnly) throw new Error("Rolul tău poate doar citi notele.");
       await kgb.moduleCall("kgb.notes", "attachment_delete", { id });
