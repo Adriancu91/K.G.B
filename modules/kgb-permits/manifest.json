@@ -188,6 +188,76 @@
         "procedura",
         "stare"
       ]
+    },
+    {
+      "collection": "autorizatii",
+      "description": "autorizațiile, avizele și licențele pe care firma le are: numărul, instituția, data emiterii, valabilitatea, procedura și documentul din depozit pe care sunt scrise",
+      "schema": {
+        "fields": {
+          "titlu": {
+            "type": "string",
+            "required": true,
+            "nullable": false,
+            "max_len": 200
+          },
+          "institutie": {
+            "type": "string",
+            "required": false,
+            "nullable": true,
+            "max_len": 300
+          },
+          "numar": {
+            "type": "string",
+            "required": false,
+            "nullable": true,
+            "max_len": 80
+          },
+          "emisa": {
+            "type": "string",
+            "required": false,
+            "nullable": true,
+            "max_len": 10
+          },
+          "valabila_pana": {
+            "type": "string",
+            "required": false,
+            "nullable": true,
+            "max_len": 10
+          },
+          "procedura": {
+            "type": "string",
+            "required": false,
+            "nullable": true,
+            "max_len": 36
+          },
+          "document": {
+            "type": "string",
+            "required": false,
+            "nullable": true,
+            "max_len": 36
+          },
+          "nota": {
+            "type": "string",
+            "required": false,
+            "nullable": true,
+            "max_len": 2000
+          },
+          "creat_ms": {
+            "type": "integer",
+            "required": true,
+            "min": 0
+          },
+          "actualizat_ms": {
+            "type": "integer",
+            "required": true,
+            "min": 0
+          }
+        },
+        "additional": false
+      },
+      "indexes": [
+        "valabila_pana"
+      ]
     }
   ],
   "events": {

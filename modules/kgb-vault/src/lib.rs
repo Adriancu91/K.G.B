@@ -19,7 +19,8 @@
 //! Commands: `adauga {name, data, cale?}`, `lista {categorie?, text?, de_confirmat?}`, `rezumat`,
 //! `confirma {id, version, categorie}`, `factura_save {id, version, factura}`, `sterge {id, version}`,
 //! `salveaza_copie {id, dest}`, `setari`, `setari_save {cui_firma, version?}`, `profil_firma` (7.10b: the firm's
-//! data read from the documents of „Actele firmei”, as proposals with the documents they come from).
+//! data read from the documents of „Actele firmei”, as proposals with the documents they come from),
+//! `autorizatii_propuse` (7.10b: what each document of „Autorizații și avize” says about its permit).
 
 use std::collections::BTreeMap;
 use std::io::Read;
@@ -42,6 +43,7 @@ pub const DOCUMENTS: &str = "documente";
 pub const SETTINGS: &str = "setari";
 /// The categories, in display order, with their names on screen.
 pub mod firm;
+pub mod permit;
 
 pub const CATEGORIES: [(&str, &str); 11] = [
     ("identitate", "Actele firmei"),
@@ -940,7 +942,12 @@ impl Vault {
         docs.sort_by_key(|r| std::cmp::Reverse(i(r, "adaugat_ms")));
         for r in &docs {
             let f = firm::firm_from_text(&s(r, "text"));
-            for (camp, v) in [("nume", f.nume), ("cui", f.cui), ("reg_com", f.reg_com), ("adresa", f.adresa)] {
+            for (camp, v) in [
+                ("nume", f.nume),
+                ("cui", f.cui),
+                ("reg_com", f.reg_com),
+                ("adresa", f.adresa),
+            ] {
                 if v.is_empty() {
                     continue;
                 }
@@ -954,6 +961,23 @@ impl Vault {
             "documente": docs.len(),
             "propuneri": found.iter().map(|(c, v, from)| json!({"camp": c, "valoare": v, "din": from})).collect::<Vec<_>>(),
         }))
+    }
+
+    /// 7.10b: for each document of „Autorizații și avize”, what its text says about the permit (title, number,
+    /// issue day, end of validity, institution), for the permit's form in „Permise și autorizații”.
+    fn permit_proposals(&self, ctx: &mut ModuleContext<'_>) -> CoreResult<Value> {
+        let mut docs = self.all(ctx)?;
+        docs.retain(|r| s(r, "categorie") == "autorizatii");
+        docs.sort_by_key(|r| std::cmp::Reverse(i(r, "adaugat_ms")));
+        Ok(json!(
+            docs.iter()
+                .map(|r| {
+                    let p = permit::permit_from_text(&s(r, "text"));
+                    json!({"doc": r.id, "nume": s(r, "nume"), "titlu": p.titlu, "numar": p.numar, "emisa": p.emisa,
+                       "valabila_pana": p.valabila_pana, "institutie": p.institutie})
+                })
+                .collect::<Vec<_>>()
+        ))
     }
 
     fn summary(&self, ctx: &mut ModuleContext<'_>) -> CoreResult<Value> {
@@ -1092,6 +1116,7 @@ impl Module for Vault {
             "rezumat" => self.summary(ctx),
             "dubluri" => self.duplicates(ctx),
             "profil_firma" => self.firm_profile(ctx),
+            "autorizatii_propuse" => self.permit_proposals(ctx),
             "confirma" => self.confirm(ctx, args(command, a)?),
             "factura_save" => self.invoice_save(ctx, args(command, a)?),
             "sterge" => {
@@ -1140,7 +1165,11 @@ mod tests {
             "CNP •••••••••••••, tel 0722000111"
         );
         assert_eq!(hide_cnp("12345678901234"), "12345678901234", "14 digits are not a CNP");
-        assert_eq!(hide_cnp("Nr. ord. RC: J2002001234220"), "Nr. ord. RC: J2002001234220", "a trade register number");
+        assert_eq!(
+            hide_cnp("Nr. ord. RC: J2002001234220"),
+            "Nr. ord. RC: J2002001234220",
+            "a trade register number"
+        );
         assert_eq!(hide_cnp("CNP:1960101123456"), "CNP:•••••••••••••");
         assert_eq!(fold("Contract  Individual\nde MUNCĂ"), "contract individual de munca");
     }

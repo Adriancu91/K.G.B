@@ -151,7 +151,10 @@ pub fn forget_history(ws: &mut Workspace) -> CoreResult<ForgetReport> {
     ws.store_mut().compact()?;
     let c = collect_unreferenced(ws)?;
     let dropped = ws.store_mut().drop_retired()?;
-    Ok(ForgetReport { blobs: c.blobs_retired, bytes: dropped.bytes })
+    Ok(ForgetReport {
+        blobs: c.blobs_retired,
+        bytes: dropped.bytes,
+    })
 }
 
 #[derive(Debug, Default, Serialize)]

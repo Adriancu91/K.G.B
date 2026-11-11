@@ -242,3 +242,109 @@ fn every_catalog_procedure_can_be_added() {
             .is_err()
     );
 }
+
+/// 7.10b: the permits the firm has. The list says what has expired, what ends within 30 days, what is valid and
+/// what has no end; the reminders come 30 and 7 days before, on the day and weekly after, each once; a wrong date,
+/// an end before the issue day or a document id that is not one are refused.
+#[test]
+fn the_firms_permits_and_their_reminders() {
+    let (_t, mut ws, mm) = setup();
+    let save = |mm: &ModuleManager, ws: &mut Workspace, a: Value| mm.call(ws, None, ID, "autorizatie_save", a);
+    let isu = save(&mm, &mut ws, json!({"titlu": "Autorizație de securitate la incendiu", "institutie": "ISU Iași", "numar": "123/24", "emisa": "2024-03-15"})).unwrap();
+    save(
+        &mm,
+        &mut ws,
+        json!({"titlu": "Autorizație sanitară", "emisa": "2021-12-01", "valabila_pana": "2026-12-11"}),
+    )
+    .unwrap();
+    save(&mm, &mut ws, json!({"titlu": "Licență transport", "valabila_pana": "2026-11-01", "document": uuid::Uuid::now_v7().to_string()})).unwrap();
+    save(
+        &mm,
+        &mut ws,
+        json!({"titlu": "Acord de mediu", "valabila_pana": "2030-01-01"}),
+    )
+    .unwrap();
+    for bad in [
+        json!({"titlu": ""}),
+        json!({"titlu": "X", "emisa": "2026-02-30"}),
+        json!({"titlu": "X", "emisa": "2026-05-01", "valabila_pana": "2026-04-01"}),
+        json!({"titlu": "X", "document": "nu-e-un-id"}),
+    ] {
+        assert!(save(&mm, &mut ws, bad.clone()).is_err(), "{bad}");
+    }
+    let l = call(&mm, &mut ws, "autorizatii", json!({"azi": "2026-11-11"}));
+    let rows: Vec<(String, String)> = l
+        .as_array()
+        .unwrap()
+        .iter()
+        .map(|x| (x["titlu"].as_str().unwrap().into(), x["stare"].as_str().unwrap().into()))
+        .collect();
+    assert_eq!(
+        rows,
+        [
+            ("Licență transport".to_string(), "expirata".to_string()),
+            ("Autorizație sanitară".into(), "expira".into()),
+            ("Acord de mediu".into(), "valabila".into()),
+            ("Autorizație de securitate la incendiu".into(), "fara_termen".into()),
+        ]
+    );
+    assert_eq!(l[1]["zile"], 30);
+
+    // Reminders by interval, each once: today the sanitary one (30 days left) and the transport licence (ended
+    // 10 days ago, in its second week after); nothing more the same week; the licence again in its third week; the
+    // sanitary one in its last week and on the day.
+    let names = |v: &[notifications::NotificationView]| {
+        let mut t = v.iter().map(|n| n.titlu.clone()).collect::<Vec<_>>();
+        t.sort();
+        t
+    };
+    assert_eq!(
+        names(&mm.remind_all(&mut ws, "2026-11-11").unwrap()),
+        [
+            "A expirat: „Licență transport”",
+            "Expiră în curând: „Autorizație sanitară”"
+        ]
+    );
+    assert!(mm.remind_all(&mut ws, "2026-11-11").unwrap().is_empty(), "once");
+    assert!(
+        mm.remind_all(&mut ws, "2026-11-15").unwrap().is_empty(),
+        "still the same week"
+    );
+    assert_eq!(
+        names(&mm.remind_all(&mut ws, "2026-11-16").unwrap()),
+        ["A expirat: „Licență transport”"]
+    );
+    assert_eq!(
+        names(&mm.remind_all(&mut ws, "2026-12-06").unwrap()),
+        ["Expiră în mai puțin de o săptămână: „Autorizație sanitară”"]
+    );
+    assert_eq!(
+        names(&mm.remind_all(&mut ws, "2026-12-11").unwrap()),
+        ["Expiră azi: „Autorizație sanitară”"]
+    );
+
+    // Edited (renewed) and deleted.
+    let v = isu["version"].as_u64().unwrap();
+    call(
+        &mm,
+        &mut ws,
+        "autorizatie_save",
+        json!({"id": isu["id"], "version": v, "titlu": "Autorizație de securitate la incendiu", "valabila_pana": "2031-01-01"}),
+    );
+    let l = call(&mm, &mut ws, "autorizatii", json!({"azi": "2026-11-11"}));
+    let isu_now = l.as_array().unwrap().iter().find(|x| x["id"] == isu["id"]).unwrap();
+    assert_eq!(isu_now["stare"], "valabila");
+    call(
+        &mm,
+        &mut ws,
+        "autorizatie_delete",
+        json!({"id": isu["id"], "version": isu_now["version"]}),
+    );
+    assert_eq!(
+        call(&mm, &mut ws, "autorizatii", json!({"azi": "2026-11-11"}))
+            .as_array()
+            .unwrap()
+            .len(),
+        3
+    );
+}

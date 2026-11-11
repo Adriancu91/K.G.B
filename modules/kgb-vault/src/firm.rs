@@ -45,7 +45,11 @@ fn after<'a>(line: &'a str, labels: &[&str]) -> Option<&'a str> {
 
 /// A trade register number: the old form `J22/123/2020` (also F, C) or the new one `J2020000123221`.
 fn reg_com(v: &str) -> Option<String> {
-    let c: String = v.chars().filter(|c| !c.is_whitespace()).collect::<String>().to_uppercase();
+    let c: String = v
+        .chars()
+        .filter(|c| !c.is_whitespace())
+        .collect::<String>()
+        .to_uppercase();
     let first = c.chars().next()?;
     if !matches!(first, 'J' | 'F' | 'C') {
         return None;
@@ -53,7 +57,9 @@ fn reg_com(v: &str) -> Option<String> {
     let rest = &c[1..];
     let parts: Vec<&str> = rest.split('/').collect();
     let old = parts.len() == 3
-        && parts.iter().all(|p| !p.is_empty() && p.bytes().all(|b| b.is_ascii_digit()))
+        && parts
+            .iter()
+            .all(|p| !p.is_empty() && p.bytes().all(|b| b.is_ascii_digit()))
         && parts[0].len() <= 2
         && parts[2].len() == 4;
     let new = rest.len() == 13 && rest.bytes().all(|b| b.is_ascii_digit());
@@ -80,7 +86,11 @@ pub fn firm_from_text(text: &str) -> FirmFound {
         {
             // The digits at the start, after an optional „RO”: „RO 14399840 din data de …” → 14399840.
             let v = v.trim_start();
-            let v = v.strip_prefix("RO").or_else(|| v.strip_prefix("ro")).unwrap_or(v).trim_start();
+            let v = v
+                .strip_prefix("RO")
+                .or_else(|| v.strip_prefix("ro"))
+                .unwrap_or(v)
+                .trim_start();
             let digits: String = v.chars().take_while(char::is_ascii_digit).collect();
             if kgb_core::ids::cui_valid(&digits) {
                 f.cui = digits;

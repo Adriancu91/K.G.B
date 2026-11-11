@@ -170,7 +170,6 @@ fn delete_marks_and_collection_retires_only_unreferenced_blobs() {
     assert!(!retired.exists() || std::fs::read_dir(&retired).unwrap().count() == 0);
 }
 
-
 /// D-090: after `forget_history`, what a record and an attachment were before (a note's text before it was
 /// locked, the attachment replaced by its encrypted copy) is nowhere in the workspace's folder; the current state
 /// stays readable.
@@ -201,10 +200,16 @@ fn forget_history_leaves_no_old_bytes_on_disk() {
     let mut g = Fields::new();
     g.insert("text".into(), json!("criptat"));
     let v = ws.store().get("t.note", id).unwrap().unwrap().version;
-    ws.store_mut().write(vec![Write::put("t.note", id, g).expect(v)]).unwrap();
-    mm.call(&mut ws, None, "t.a", "delete", json!({"id": att["id"]})).unwrap();
+    ws.store_mut()
+        .write(vec![Write::put("t.note", id, g).expect(v)])
+        .unwrap();
+    mm.call(&mut ws, None, "t.a", "delete", json!({"id": att["id"]}))
+        .unwrap();
     ws.store_mut().flush().unwrap();
-    assert!(has(b"TEXT-INAINTE-DE-BLOCARE-7Q"), "the old text is in the journal before (the test means something)");
+    assert!(
+        has(b"TEXT-INAINTE-DE-BLOCARE-7Q"),
+        "the old text is in the journal before (the test means something)"
+    );
     assert!(has(b"ATASAMENT-IN-CLAR-9Z"), "the old attachment is a blob before");
 
     let r = kgb_core::files::forget_history(&mut ws).unwrap();
@@ -212,7 +217,10 @@ fn forget_history_leaves_no_old_bytes_on_disk() {
     assert!(r.bytes > 0);
     assert!(!has(b"TEXT-INAINTE-DE-BLOCARE-7Q"), "old text gone from the disk");
     assert!(!has(b"ATASAMENT-IN-CLAR-9Z"), "old attachment gone from the disk");
-    assert_eq!(ws.store().get("t.note", id).unwrap().unwrap().fields["text"], json!("criptat"));
+    assert_eq!(
+        ws.store().get("t.note", id).unwrap().unwrap().fields["text"],
+        json!("criptat")
+    );
     // Quarantine is left alone.
     assert!(!dir.join("store").join("retired").exists());
 }

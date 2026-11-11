@@ -18,8 +18,11 @@
 //! - `dosare {azi}`, `dosar_save {...}`, `dosar_bifeaza {id, version, cheie, bifat}`,
 //!   `dosar_stare {id, version, stare}`, `dosar_fisier {id, version, name, data}`,
 //!   `fisier_salveaza {fisier, dest, overwrite?}`, `dosar_delete {id, version}`
+//! - 7.10b, the permits the firm has (register.rs): `autorizatii {azi}`, `autorizatie_save {...}`,
+//!   `autorizatie_delete {id, version}`
 
 pub mod catalog;
+pub mod register;
 
 use std::collections::BTreeMap;
 use std::path::PathBuf;
@@ -592,7 +595,7 @@ impl Permits {
                 .key(key),
             )?;
         }
-        Ok(())
+        self.held_reminders(ctx, t)
     }
 }
 
@@ -756,10 +759,20 @@ Temei legal: {}",
                 let clean = |n: &str| -> String {
                     let t: String = n
                         .chars()
-                        .map(|c| if "\\/:*?\"<>|".contains(c) || c.is_control() { '-' } else { c })
+                        .map(|c| {
+                            if "\\/:*?\"<>|".contains(c) || c.is_control() {
+                                '-'
+                            } else {
+                                c
+                            }
+                        })
                         .collect();
                     let t = t.trim().trim_end_matches('.').to_string();
-                    if t.is_empty() { "dosar".into() } else { t.chars().take(120).collect() }
+                    if t.is_empty() {
+                        "dosar".into()
+                    } else {
+                        t.chars().take(120).collect()
+                    }
                 };
                 let title = clean(r.fields.get("titlu").and_then(Value::as_str).unwrap_or("dosar"));
                 let mut dir = a.folder.join(&title);
@@ -799,6 +812,16 @@ Temei legal: {}",
                 }
                 ctx.log("dosar exportat într-un folder");
                 Ok(json!({"folder": dir.display().to_string(), "fisiere": written}))
+            }
+            "autorizatii" => {
+                let t: Today = serde_json::from_value(a).unwrap_or_default();
+                let azi = t.azi.ok_or_else(|| bad("ziua de azi", "lipsește"))?;
+                self.held(ctx, &azi)
+            }
+            "autorizatie_save" => self.held_save(ctx, args(command, a)?),
+            "autorizatie_delete" => {
+                let a: ById = args(command, a)?;
+                self.held_delete(ctx, a.id, a.version)
             }
             "dosar_delete" => {
                 let a: ById = args(command, a)?;

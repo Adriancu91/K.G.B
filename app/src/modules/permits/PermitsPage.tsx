@@ -7,6 +7,7 @@ import { open, save } from "@tauri-apps/plugin-dialog";
 import { useCallback, useEffect, useState } from "react";
 import { api, message } from "../../api";
 import { CatalogDialog } from "./CatalogDialog";
+import { HeldPermits } from "./HeldPermits";
 import { coverLetterPdf, opisPdf, type DossierInfo } from "./dossierPdf";
 
 const ID = "kgb.permits";
@@ -416,7 +417,7 @@ function CaseDetail({ c, procs, reload, onError, onExported }: { c: Case; procs:
 }
 
 export function PermitsPage({ onError }: { onError: (e: string | null) => void }) {
-  const [tab, setTab] = useState<"dosare" | "proceduri">("dosare");
+  const [tab, setTab] = useState<"dosare" | "proceduri" | "autorizatii">("dosare");
   const [procs, setProcs] = useState<Procedure[]>([]);
   const [cases, setCases] = useState<Case[]>([]);
   const [editing, setEditing] = useState<Draft | null>(null);
@@ -476,7 +477,11 @@ export function PermitsPage({ onError }: { onError: (e: string | null) => void }
         <button className={tab === "proceduri" ? "active" : ""} onClick={() => setTab("proceduri")}>
           Proceduri ({procs.length})
         </button>
+        <button className={tab === "autorizatii" ? "active" : ""} onClick={() => setTab("autorizatii")}>
+          Autorizațiile firmei
+        </button>
       </div>
+      {tab === "autorizatii" && <HeldPermits procs={procs} onError={onError} />}
 
       {tab === "proceduri" &&
         (editing ? (
