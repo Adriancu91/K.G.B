@@ -1857,6 +1857,21 @@ tr.appt-overlap td {
 .appt-overlap-text {
   color: #c62828;
 }
+tr.mnt-depasit td {
+  background: rgba(198, 40, 40, 0.08);
+}
+tr.mnt-curand td {
+  background: rgba(180, 83, 9, 0.07);
+}
+.mnt-state-depasit {
+  color: #c62828;
+}
+.mnt-state-curand {
+  color: #b45309;
+}
+.mnt-state-fara_citire {
+  color: #6a1b9a;
+}
 .vault-cats {
   display: flex;
   flex-wrap: wrap;
