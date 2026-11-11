@@ -7,7 +7,7 @@
 // Usage: node app/e2e/cos-notes-full.mjs <path-to-kgb-app.exe> <screenshot-dir>
 // Uses a throw-away data folder (KGB_DATA_DIR) and a throw-away output folder.
 import { spawn, execFileSync } from "node:child_process";
-import { existsSync, mkdirSync, mkdtempSync, readFileSync, rmSync } from "node:fs";
+import { existsSync, mkdirSync, mkdtempSync, readdirSync, readFileSync, rmSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { connect, sleep } from "./cdp.mjs";
@@ -130,6 +130,24 @@ try {
   check("nicăieri în caiet textul sau conținutul atașamentului", !raw.includes("98.000") && !raw.includes(SECRET));
   await until(async () => !!(await call(p, "attachment_read", { id: plainId })).error, 10000);
   check("copia în clar a atașamentului e ștearsă din fișierele modulului", !!(await call(p, "attachment_read", { id: plainId })).error);
+  // D-090: the window asks to forget this computer's history before the lock (default yes); after it, neither the
+  // note's text nor the attachment's bytes are anywhere in the data folder.
+  await frUntil(p, "[...document.querySelectorAll('button')].some(b => b.textContent.trim() === 'Șterge din istoric')", 15000);
+  await btn(p, "Șterge din istoric");
+  await frUntil(p, "/Am șters din istoricul acestui calculator/.test(document.body.innerText)", 30000);
+  const leaks = [];
+  const scan = (dir) => {
+    for (const e of readdirSync(dir, { withFileTypes: true })) {
+      const f = join(dir, e.name);
+      if (e.isDirectory()) scan(f);
+      else {
+        const b = readFileSync(f);
+        if (b.includes(Buffer.from(SECRET)) || b.includes(Buffer.from(BODY))) leaks.push(f.slice(data.length));
+      }
+    }
+  };
+  scan(data);
+  check("după „Șterge din istoric”: textul și atașamentul nu mai sunt în niciun fișier din dosarul de date", leaks.length === 0, leaks.join(" | "));
 
   // Wrong password refused; the right one opens it and the attachment reads whole.
   await fr(p, "document.querySelector('.note-locked input[type=password]').focus(), true");

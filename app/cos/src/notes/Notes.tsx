@@ -852,6 +852,20 @@ Cuvântul rămâne în text, doar fără „#”.`, 'Scoate eticheta'))) return;
     }, 3000);
   };
   const extOf = (name: string): 'pdf' | 'webm' | 'bin' => (/[.]pdf$/i.test(name) ? 'pdf' : /[.]webm$/i.test(name) ? 'webm' : 'bin');
+  // Unde aplicația ține un istoric al spațiului de lucru (D-090), ce era scris înainte de blocare rămâne acolo până la curățare:
+  // după ce s-au șters fișierele în clar și s-a salvat caietul, omul e întrebat dacă îl șterge acum (implicit da).
+  const offerForget = () => {
+    if (!api.forgetHistory) return;
+    window.setTimeout(async () => {
+      if (!(await askYes('Șterg și din istoricul acestui calculator ce era scris în notiță înainte de blocare? Durează câteva secunde.', 'Șterge din istoric', 'Nu acum'))) return;
+      try {
+        await api.forgetHistory!();
+        setStatus('Am șters din istoricul acestui calculator ce era scris înainte de blocare.');
+      } catch (e) {
+        setStatus('Istoricul nu s-a putut șterge acum: ' + ((e as Error).message || 'eroare'));
+      }
+    }, 4500);
+  };
   /** Octeții unui atașament: unul criptat se decriptează cu cheia notiței deschise. */
   const readAtt = async (f: NoteFile) => {
     const data = await api.readAttachment(f.id);
@@ -877,6 +891,7 @@ Cuvântul rămâne în text, doar fără „#”.`, 'Scoate eticheta'))) return;
       // După salvarea care urmează blocării (ea poate păstra o variantă cu notița încă în clar): și variantele vechi se curăță.
       const at = storePath;
       if (at) window.setTimeout(() => { void api.scrubNoteVersions?.(at, id, secret).catch(() => 0); }, 4000);
+      offerForget();
       setLockDlg(false);
       setStatus('Notița e blocată cu parolă.');
     } catch (e) {
@@ -902,6 +917,7 @@ Cuvântul rămâne în text, doar fără „#”.`, 'Scoate eticheta'))) return;
         change((s) => ({ ...s, notes: s.notes.map((n) => (n.id === id ? { ...n, secret } : n)) }));
         dropPlainFiles(sealed.old, id);
         setStatus('Am criptat și atașamentele rămase necriptate.');
+        offerForget();
       }
       const opened1 = open;
       setUnlocked((u) => ({ ...u, [stored.id]: opened1 }));
