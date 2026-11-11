@@ -141,12 +141,12 @@ export function VaultPage({ onError, access }: { onError: (e: string | null) => 
         failed.push(`${f.rel} (${message(e)})`);
       }
     }
-    const parts = [`${added} documente noi`];
-    if (there) parts.push(`${there} erau deja în depozit`);
-    if (skipped) parts.push(`${skipped} fișiere sărite (alt fel de fișier sau prea mari)`);
+    const parts = [added === 1 ? "un document nou" : `${added} documente noi`];
+    if (there) parts.push(there === 1 ? "unul era deja în depozit" : `${there} erau deja în depozit`);
+    if (skipped) parts.push(skipped === 1 ? "un fișier sărit (alt fel de fișier sau prea mare)" : `${skipped} fișiere sărite (alt fel de fișier sau prea mari)`);
     if (tooMany) parts.push("folderul are peste 3000 de fișiere: au intrat primele 3000, alege subfolderele rămase pe rând");
-    if (failed.length) parts.push(`${failed.length} nu s-au putut citi: ${failed.slice(0, 5).join("; ")}`);
-    setNotice(`${parts.join(" · ")}.`);
+    if (failed.length) parts.push(failed.length === 1 ? `unul nu s-a putut citi: ${failed[0]}` : `${failed.length} nu s-au putut citi: ${failed.slice(0, 5).join("; ")}`);
+    setNotice(parts.join(" · "));
   };
 
   const addFolder = () =>
@@ -189,7 +189,12 @@ export function VaultPage({ onError, access }: { onError: (e: string | null) => 
       )}
       {notice && !progress && (
         <p className="muted" role="status">
-          {notice}
+          {notice.split(" · ").map((part, n) => (
+            <span key={n}>
+              {n > 0 && " · "}
+              <span>{part}</span>
+            </span>
+          ))}
         </p>
       )}
 

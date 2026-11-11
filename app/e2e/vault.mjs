@@ -81,13 +81,13 @@ try {
   await clickText(p, "Adaugă un folder…", ".vault");
   await p.until("document.querySelector('.vault [role=status]')?.innerText.includes('documente noi')", 20000);
   const note = await p.eval("document.querySelector('.vault [role=status]').innerText");
-  check("folderul: 4 documente noi, 1 era deja (copia), 1 sărit (.exe)", /4 documente noi/.test(note) && /1 erau deja/.test(note) && /1 fișiere sărite/.test(note), note);
+  check("folderul: 4 documente noi, unul era deja (copia), un fișier sărit (.exe)", /4 documente noi/.test(note) && /unul era deja/.test(note) && /un fișier sărit/.test(note), note);
   await p.until("document.querySelectorAll('[data-testid=vault-doc]').length === 4", 8000);
   const r = await rows(p);
   const cat = (part) => r.find((x) => x.t.includes(part))?.cat;
   check(
-    "sortate: contract de muncă, actele firmei, factură, autorizație (după folder)",
-    cat("cim popescu") === "contracte_munca" && cat("certificat constatator") === "identitate" && cat("KGB 12.xml") === "facturi_achizitie" && cat("scan ISU") === "autorizatii",
+    "sortate: contract de muncă, actele firmei, factură de vânzare (după folderul „emise”), autorizație (după folder)",
+    cat("cim popescu") === "contracte_munca" && cat("certificat constatator") === "identitate" && cat("KGB 12.xml") === "facturi_vanzare" && cat("scan ISU") === "autorizatii",
     JSON.stringify(r.map((x) => x.cat)),
   );
   check(

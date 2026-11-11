@@ -519,16 +519,51 @@ pub fn sort(path: &str, text: &str, invoice: Option<&Invoice>, firm: &str) -> So
                 confidence: 90,
                 reason: "factură de la alt emitent (CUI-ul emitentului nu e al firmei)".into(),
             },
-            (true, _) => Sorting {
-                category: "facturi_achizitie",
-                confidence: 50,
-                reason: "factură; nu știu CUI-ul firmei, deci nici dacă e de vânzare sau de achiziție (Setări)".into(),
-            },
-            (false, true) => Sorting {
-                category: "facturi_achizitie",
-                confidence: 55,
-                reason: "factură fără CUI-ul emitentului citit".into(),
-            },
+            // Without the firm's CUI (or the issuer's), the folder's name proposes the side; still to confirm.
+            (true, _) | (false, true) => {
+                let no_firm = firm.is_empty();
+                match (side_by_folder(path), no_firm) {
+                    (Some((true, hint)), true) => Sorting {
+                        category: "facturi_vanzare",
+                        confidence: 50,
+                        reason: format!(
+                            "factură de vânzare după numele folderului („{hint}”); nu știu CUI-ul firmei (Setări)"
+                        ),
+                    },
+                    (Some((true, hint)), false) => Sorting {
+                        category: "facturi_vanzare",
+                        confidence: 50,
+                        reason: format!(
+                            "factură de vânzare după numele folderului („{hint}”); CUI-ul emitentului nu s-a putut citi"
+                        ),
+                    },
+                    (Some((false, hint)), true) => Sorting {
+                        category: "facturi_achizitie",
+                        confidence: 50,
+                        reason: format!(
+                            "factură de achiziție după numele folderului („{hint}”); nu știu CUI-ul firmei (Setări)"
+                        ),
+                    },
+                    (Some((false, hint)), false) => Sorting {
+                        category: "facturi_achizitie",
+                        confidence: 50,
+                        reason: format!(
+                            "factură de achiziție după numele folderului („{hint}”); CUI-ul emitentului nu s-a putut citi"
+                        ),
+                    },
+                    (None, true) => Sorting {
+                        category: "facturi_achizitie",
+                        confidence: 45,
+                        reason: "factură; nu știu CUI-ul firmei, deci nici dacă e de vânzare sau de achiziție (Setări)"
+                            .into(),
+                    },
+                    (None, false) => Sorting {
+                        category: "facturi_achizitie",
+                        confidence: 45,
+                        reason: "factură fără CUI-ul emitentului citit".into(),
+                    },
+                }
+            }
         };
     }
     let folded: String = fold(text).chars().take(30_000).collect();
@@ -619,6 +654,29 @@ pub fn sort(path: &str, text: &str, invoice: Option<&Invoice>, firm: &str) -> So
         confidence,
         reason: reason.chars().take(300).collect(),
     }
+}
+
+/// Sales (`true`) or purchases (`false`) from the names of the folders („Facturi/emise”, „Achiziții”), with the
+/// word found; the last folder that says it wins.
+fn side_by_folder(path: &str) -> Option<(bool, &'static str)> {
+    const SALES: [&str; 6] = ["emise", "vanzari", "vanzare", "iesire", "iesiri", "clienti"];
+    const PURCHASES: [&str; 7] = [
+        "primite",
+        "achizitii",
+        "achizitie",
+        "furnizori",
+        "intrare",
+        "intrari",
+        "cheltuieli",
+    ];
+    let words = words_of(path);
+    words.iter().rev().find_map(|w| {
+        SALES
+            .iter()
+            .find(|x| *x == w)
+            .map(|x| (true, *x))
+            .or_else(|| PURCHASES.iter().find(|x| *x == w).map(|x| (false, *x)))
+    })
 }
 
 /// Whether the firm (by its CUI) is the provider (`true`) or the beneficiary (`false`) of a contract: the role

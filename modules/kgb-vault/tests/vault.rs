@@ -275,3 +275,26 @@ fn the_same_invoice_twice_is_shown() {
     assert_eq!(g[0]["documente"].as_array().unwrap().len(), 3);
     assert_eq!(g[0]["sigur"], false, "one of the three has another total");
 }
+
+#[test]
+fn without_the_firms_cui_the_folder_proposes_the_side() {
+    let inv = kgb_vault::Invoice {
+        emitent_cui: "14399840".into(),
+        serie: "KGB".into(),
+        numar: "12".into(),
+        ..Default::default()
+    };
+    let sale = sort("Facturi/emise/KGB 12.xml", "", Some(&inv), "");
+    assert_eq!(sale.category, "facturi_vanzare");
+    assert!(sale.confidence < 75 && sale.reason.contains("emise"), "{}", sale.reason);
+    assert_eq!(
+        sort("Achizitii 2026/f.pdf", "", Some(&inv), "").category,
+        "facturi_achizitie"
+    );
+    assert!(sort("Facturi/f.pdf", "", Some(&inv), "").confidence < 75);
+    // The firm's CUI decides over the folder.
+    assert_eq!(
+        sort("Facturi/primite/f.pdf", "", Some(&inv), "14399840").category,
+        "facturi_vanzare"
+    );
+}
