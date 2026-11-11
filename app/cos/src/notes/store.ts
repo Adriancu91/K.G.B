@@ -117,13 +117,15 @@ export interface NoteFile {
   id: string; name: string; size: number;
   /** Textul din PDF (primele pagini), ca să se găsească la căutare. */
   text?: string;
+  /** Atașamentul unei notițe blocate e criptat cu cheia ei: aici e iv-ul (fără el, fișierul e în clar). */
+  enc?: string;
 }
 
 function cleanFiles(raw: unknown): NoteFile[] | undefined {
   if (!Array.isArray(raw)) return undefined;
   const list = raw
     .filter((f) => f && typeof f.id === 'string' && /^[a-z0-9]+[.](pdf|webm|bin)$/.test(f.id) && typeof f.name === 'string')
-    .map((f) => ({ id: f.id as string, name: (f.name as string).slice(0, 200), size: Number(f.size) || 0, ...(typeof f.text === 'string' && f.text ? { text: (f.text as string).slice(0, 20000) } : {}) }));
+    .map((f) => ({ id: f.id as string, name: (f.name as string).slice(0, 200), size: Number(f.size) || 0, ...(typeof f.text === 'string' && f.text ? { text: (f.text as string).slice(0, 20000) } : {}), ...(typeof f.enc === 'string' && f.enc ? { enc: f.enc as string } : {}) }));
   return list.length ? list : undefined;
 }
 

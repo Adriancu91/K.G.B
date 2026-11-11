@@ -501,3 +501,19 @@ Deciziile DECIS se schimbă doar cu aprobarea explicită a proprietarului (Maste
 
      Cheia de dublură e emitent_cui + serie + numar. Dacă data sau totalul diferă, apare „posibil dublură” și decide omul (7.10d).
 - **Deschis:** dacă linkul PDF de pe fgo.ro cere autentificare și ce se întâmplă la depășirea limitei. Se verifică doar pe mediul de test, cu un cont făcut de proprietar.
+
+
+### D-090 — Notițele blocate cu parolă: ce se criptează, unde stă cheia și ce rămâne în urmă (7.4l-2)
+- **Data:** 11 nov. 2026 · **Statut:** DECIS (sesiunea COS și sesiunea K.G.B., D-074) · partea despre nucleu (`forget_history`) o adaugă sesiunea K.G.B.
+- **Contextul:** fereastra Notelor e codul Cyber Office Studio, neschimbat (D-071), în ambele aplicații. La verificarea 7.4l-2 s-a găsit că fișierele atașate (PDF, înregistrări, alte fișiere) nu se criptau: în partea criptată ajungea doar trimiterea către fișier, iar fișierul rămânea în clar lângă caiet (COS) sau ca fișier al modulului (K.G.B.), deși fereastra spunea că „PDF-urile se criptează”. Tot atunci s-a văzut că în K.G.B. referințele atașamentelor (UUID) nu treceau de verificarea caietului ferestrei, deci atașamentele notițelor nu rămâneau în caiet.
+- **Criptarea** (cod COS, `notes/secret.ts`):
+  1. AES-256-GCM, cu WebCrypto.
+  2. Cheia vine din parolă: PBKDF2-SHA-256, 310.000 de pași, sare aleatorie de 16 octeți pentru fiecare notiță.
+  3. Parola nu se păstrează nicăieri. Cheia stă doar în memoria ferestrei, cât notița e deschisă; după 5 minute fără activitate notița se închide singură.
+  4. Se criptează textul, pozele (cu textul și desenele lor), cutiile și lista atașamentelor. Titlul rămâne vizibil, ca notița să poată fi găsită în listă.
+  5. Fiecare atașament se criptează și el, cu aceeași cheie și un iv nou: o copie `.bin` criptată, cu iv-ul în referință (`enc`). Copia în clar se șterge, dacă nicio altă notiță nu o mai folosește. O notiță blocată înainte de această decizie își criptează atașamentele rămase în clar la prima deschidere cu parola, iar fereastra spune „Am criptat și atașamentele rămase necriptate”.
+  6. „Scoate parola” pune atașamentele înapoi în clar (copii noi); copiile criptate rămân, fiindcă o copie a notiței le poate folosi.
+- **La sincronizare (K.G.B.):** înregistrarea notiței din `pages` are doar `{v, salt, iv, data}` pentru partea ascunsă, plus titlul. Pe alt PC notița apare cu titlul și 🔒 și se deschide cu aceeași parolă. Atașamentele criptate sunt fișiere ale modulului ca oricare altele.
+- **Parola uitată = conținut pierdut.** Nimeni nu îl poate recupera: nici aplicația, nici noi, nici altcineva. Fereastra spune asta la blocare.
+- **Ce poate rămâne în urmă și fereastra spune:** variantele din Versiuni (COS) făcute înainte de blocare; până la curățarea lor, celelalte calculatoare care au primit notița neblocată și backupurile făcute înainte. În K.G.B., pe acest PC, ce era scris înainte de blocare rămâne în jurnalul spațiului de lucru până la compactare: îl șterge `forget_history` (paragraful sesiunii K.G.B.).
+- **Teste:** COS `cdp-notes-lockfiles` (blocare cu atașament: nimic în clar lângă caiet, copie criptată, citire întreagă cu parola, „Scoate parola”); K.G.B. testul Rust al Notelor (numele atașamentului, ștergerea) și e2e `cos-notes-full`.

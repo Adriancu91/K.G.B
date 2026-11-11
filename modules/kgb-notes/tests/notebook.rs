@@ -10,8 +10,16 @@ use serde_json::{Value, json};
 fn enabled(tmp: &tempfile::TempDir) -> (Workspace, ModuleManager) {
     let mut ws = Workspace::create(&tmp.path().join("ws"), "T").unwrap();
     let mm = ModuleManager::new(vec![Box::new(Notes::new()) as Box<dyn Module>], CORE_VERSION).unwrap();
-    mm.enable(&mut ws, ID, &["storage.own".to_string(), "files.own".to_string(), "notify.send".to_string()])
-        .unwrap();
+    mm.enable(
+        &mut ws,
+        ID,
+        &[
+            "storage.own".to_string(),
+            "files.own".to_string(),
+            "notify.send".to_string(),
+        ],
+    )
+    .unwrap();
     (ws, mm)
 }
 
@@ -221,6 +229,19 @@ fn oversized_notes_and_broken_notebooks_are_refused() {
             .unwrap()["data"],
         "JVBERi0="
     );
+    // The name the window keeps (letters and digits, then the kind), as its notebook check wants it.
+    let name = id.as_str().unwrap();
+    assert!(
+        name.ends_with(".pdf") && name[..name.len() - 4].chars().all(|c| c.is_ascii_hexdigit()),
+        "{name}"
+    );
+    // The plain copy of a locked note's attachment is removed (D-090); then it cannot be read.
+    mm.call(&mut ws, None, ID, "attachment_delete", json!({"id": id}))
+        .unwrap();
+    assert!(
+        mm.call(&mut ws, None, ID, "attachment_read", json!({"id": id}))
+            .is_err()
+    );
     assert!(
         mm.call(
             &mut ws,
@@ -247,11 +268,18 @@ fn the_window_saving_again_and_again_with_the_seen_of_its_last_save() {
     assert_eq!(rep["written"], 2);
     seen = rep["seen"].clone();
     // B changed twice in a row: written each time, never a conflict.
-    for (i, t) in ["2026-11-10T11:00:00.000Z", "2026-11-10T12:00:00.000Z"].iter().enumerate() {
+    for (i, t) in ["2026-11-10T11:00:00.000Z", "2026-11-10T12:00:00.000Z"]
+        .iter()
+        .enumerate()
+    {
         book["notes"][1]["body"] = json!(format!("schimbarea {i}"));
         book["notes"][1]["updated"] = json!(t);
         let rep = save(&mut ws, &mm, &book, &seen);
-        assert_eq!((rep["written"].as_u64(), rep["conflicts"].as_u64()), (Some(1), Some(0)), "{rep}");
+        assert_eq!(
+            (rep["written"].as_u64(), rep["conflicts"].as_u64()),
+            (Some(1), Some(0)),
+            "{rep}"
+        );
         seen = rep["seen"].clone();
     }
     // A deleted and the section Birou dropped in the window: both gone from the core.
@@ -263,4 +291,29 @@ fn the_window_saving_again_and_again_with_the_seen_of_its_last_save() {
     assert_eq!(titles(&now), vec!["B"]);
     assert_eq!(now["sections"], json!(["Acasă"]));
     assert_eq!(now["notes"][0]["body"], "schimbarea 1");
+}
+
+/// The window's exports (Markdown, a copy of an attachment) go where the person chose.
+#[test]
+fn the_window_exports_a_file() {
+    let tmp = tempfile::tempdir().unwrap();
+    let mut ws = kgb_core::workspace::Workspace::create(&tmp.path().join("ws"), "T").unwrap();
+    let mm =
+        kgb_core::modules::ModuleManager::new(vec![Box::new(kgb_notes::Notes::new())], kgb_core::CORE_VERSION).unwrap();
+    mm.enable(
+        &mut ws,
+        ID,
+        &["storage.own".into(), "files.own".into(), "notify.send".into()],
+    )
+    .unwrap();
+    let dest = tmp.path().join("Notiță.md");
+    mm.call(
+        &mut ws,
+        None,
+        ID,
+        "export_file",
+        json!({"dest": dest, "data": "IyBUaXRsdQ=="}),
+    )
+    .unwrap();
+    assert_eq!(std::fs::read_to_string(&dest).unwrap(), "# Titlu");
 }

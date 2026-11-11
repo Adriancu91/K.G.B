@@ -444,11 +444,7 @@ pub fn save(ctx: &mut ModuleContext<'_>, content: &str, seen: &SeenState) -> Cor
     }
     // The rest of the notebook: merged when it changed since the load.
     let merged = book.exists && book.version != seen.notebook_version;
-    let meta = if merged {
-        merge_meta(&book.meta, root)
-    } else {
-        root
-    };
+    let meta = if merged { merge_meta(&book.meta, root) } else { root };
     // Pictures no note uses any more (in the list or in the trash) are removed.
     let unused: Vec<(String, String)> = book
         .images
@@ -510,11 +506,39 @@ pub fn attachment_add(ctx: &mut ModuleContext<'_>, data: &str, ext: &str) -> Cor
         .decode(data.as_bytes())
         .map_err(|_| bad("atașamentul nu a ajuns întreg"))?;
     let f = ctx.put_file(&format!("atasament.{ext}"), &bytes)?;
-    Ok(f.id.to_string())
+    // The window keeps attachments by a name of letters and digits with the kind (`<id>.pdf`), as in COS.
+    Ok(format!("{}.{ext}", f.id.simple()))
+}
+
+/// The largest file the window may save out (a note's export, a copy of an attachment).
+const MAX_EXPORT_BYTES: usize = 100 * 1024 * 1024;
+
+/// Writes a file the Notes window produced (Markdown, HTML, a copy of an attachment) where the person chose in the
+/// save dialog (which already asked before replacing a file).
+pub fn export_file(ctx: &mut ModuleContext<'_>, dest: &std::path::Path, data: &str) -> CoreResult<usize> {
+    let bytes = B64
+        .decode(data.as_bytes())
+        .map_err(|_| bad("fișierul nu a ajuns întreg"))?;
+    if bytes.len() > MAX_EXPORT_BYTES {
+        return Err(bad("fișierul este prea mare"));
+    }
+    ctx.export_bytes(dest, &bytes, true)?;
+    Ok(bytes.len())
+}
+
+/// The file of an attachment name (`<32 hex>.<ext>`, or a bare id from before).
+fn attachment_id(id: &str) -> CoreResult<Uuid> {
+    Uuid::parse_str(id.split('.').next().unwrap_or_default()).map_err(|_| bad("atașamentul nu există"))
+}
+
+/// Removes an attachment: the plain copy of one whose locked note now keeps an encrypted copy (D-090).
+pub fn attachment_delete(ctx: &mut ModuleContext<'_>, id: &str) -> CoreResult<()> {
+    let id = attachment_id(id)?;
+    ctx.delete_file(id)
 }
 
 pub fn attachment_read(ctx: &mut ModuleContext<'_>, id: &str) -> CoreResult<String> {
-    let id = Uuid::parse_str(id).map_err(|_| bad("atașamentul nu există"))?;
+    let id = attachment_id(id)?;
     let (_, bytes) = ctx.get_file(id)?;
     Ok(B64.encode(bytes))
 }

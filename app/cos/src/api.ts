@@ -301,6 +301,8 @@ interface SuiteBridge {
   /** Păstrează un atașament lângă caiet și întoarce id-ul lui; `ext`: „pdf” (implicit), „webm” (înregistrare audio) sau „bin” (orice alt fișier). */
   addAttachment(data: Uint8Array, ext?: 'pdf' | 'webm' | 'bin'): Promise<string>;
   readAttachment(id: string): Promise<Uint8Array>;
+  /** Șterge un atașament (după ce notița blocată și-a criptat copia); lipsă = nu se poate șterge. */
+  deleteAttachment?(id: string): Promise<void>;
   /** Slide-ul pe al doilea monitor (doar în Electron). */
   audience?: AudienceBridge;
   /** Export MP4 cu FFmpeg (doar în Electron și doar dacă FFmpeg e instalat). */
@@ -329,6 +331,8 @@ interface SuiteBridge {
   noteSync?(msg: NoteSync): Promise<number>;
   onNoteSync?(cb: (msg: NoteSync) => void): () => void;
   listVersions(path: string): Promise<FileVersion[]>;
+  /** Notița blocată (D-090): textul ei în clar se scoate din variantele vechi ale caietului; lipsă = nu există variante. */
+  scrubNoteVersions?(path: string, noteId: string, secret: unknown): Promise<number>;
   readVersion(path: string, id: string): Promise<string>;
   /** Ciorna unui document nesalvat (o copie la câteva secunde cât scrii; rămâne 7 zile). */
   putDraft(d: { id: string; kind: FileKind; title: string; content: string }): Promise<void>;
@@ -487,6 +491,7 @@ const fallback: SuiteBridge = {
     if (!memAttachments[id]) throw new Error('Atașamentul nu mai e disponibil.');
     return memAttachments[id].slice();
   },
+  deleteAttachment: async (id) => { delete memAttachments[id]; },
   listVersions: async (path) => (memVersions[path] ?? []).map((x) => x.v),
   readVersion: async (path, id) => memVersions[path]?.find((x) => x.v.id === id)?.content ?? '',
   putDraft: async (d) => { memDrafts[d.id] = { ...d, time: Date.now() }; },
