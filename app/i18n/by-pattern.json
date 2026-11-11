@@ -1170,6 +1170,36 @@
   "f": "modules/permits/dossierPdf.ts"
  },
  {
+  "ro": "fără termen",
+  "en": "not termen",
+  "f": "modules/permits/HeldPermits.tsx"
+ },
+ {
+  "ro": "Folosește",
+  "en": "Use",
+  "f": "modules/permits/HeldPermits.tsx"
+ },
+ {
+  "ro": "Numărul autorizației",
+  "en": "Permit number",
+  "f": "modules/permits/HeldPermits.tsx"
+ },
+ {
+  "ro": "Numărul",
+  "en": "Number",
+  "f": "modules/permits/HeldPermits.tsx"
+ },
+ {
+  "ro": "Data emiterii",
+  "en": "Issue date",
+  "f": "modules/permits/HeldPermits.tsx"
+ },
+ {
+  "ro": "Emisă",
+  "en": "Issued",
+  "f": "modules/permits/HeldPermits.tsx"
+ },
+ {
   "ro": "Mediu",
   "en": "Medium",
   "f": "modules/permits/PermitsPage.tsx"
@@ -1330,11 +1360,6 @@
   "f": "modules/sheets/SheetsPage.tsx"
  },
  {
-  "ro": "Folosește",
-  "en": "Use",
-  "f": "modules/sheets/SheetsPage.tsx"
- },
- {
   "ro": "Foaie de calcul",
   "en": "Spreadsheet",
   "f": "modules/sheets/SheetsPage.tsx"
@@ -1368,6 +1393,71 @@
   "ro": "Documente și modele: {0}",
   "en": "Documents and templates: {0}",
   "f": "modules/vault/FirmProfile.tsx"
+ },
+ {
+  "ro": "Am adăugat {0} articole.",
+  "en": "Added {0} articole.",
+  "f": "modules/works/WorksPage.tsx"
+ },
+ {
+  "ro": "Contractul",
+  "en": "Contract",
+  "f": "modules/works/WorksPage.tsx"
+ },
+ {
+  "ro": "Lucrarea",
+  "en": "Work",
+  "f": "modules/works/WorksPage.tsx"
+ },
+ {
+  "ro": "Șterge devizul",
+  "en": "Delete devizul",
+  "f": "modules/works/WorksPage.tsx"
+ },
+ {
+  "ro": "Denumire",
+  "en": "Name",
+  "f": "modules/works/WorksPage.tsx"
+ },
+ {
+  "ro": "Preț unitar",
+  "en": "Unit price",
+  "f": "modules/works/WorksPage.tsx"
+ },
+ {
+  "ro": "rândul {0}",
+  "en": "row {0}",
+  "f": "modules/works/WorksPage.tsx"
+ },
+ {
+  "ro": "Articolul suplimentat",
+  "en": "Article suplimentat",
+  "f": "modules/works/WorksPage.tsx"
+ },
+ {
+  "ro": "Perioada de la",
+  "en": "Period from",
+  "f": "modules/works/WorksPage.tsx"
+ },
+ {
+  "ro": "Deviz",
+  "en": "Estimate",
+  "f": "modules/works/WorksPage.tsx"
+ },
+ {
+  "ro": "Anterior",
+  "en": "Previous",
+  "f": "modules/works/WorksPage.tsx"
+ },
+ {
+  "ro": "Rest",
+  "en": "Remaining",
+  "f": "modules/works/WorksPage.tsx"
+ },
+ {
+  "ro": "Exportă .xlsx",
+  "en": "Export .xlsx",
+  "f": "modules/works/WorksPage.tsx"
  },
  {
   "ro": "Salvat pe calculator: {0}",
@@ -1507,11 +1597,6 @@
  {
   "ro": "România",
   "en": "Romania",
-  "f": "pages/PartnersPage.tsx"
- },
- {
-  "ro": "Denumire",
-  "en": "Name",
   "f": "pages/PartnersPage.tsx"
  },
  {
@@ -1760,11 +1845,6 @@
   "f": "modules/kgb-docs/src/lib.rs"
  },
  {
-  "ro": "Preț unitar",
-  "en": "Unit price",
-  "f": "modules/kgb-docs/src/lib.rs"
- },
- {
   "ro": "Suma datorată",
   "en": "Amount owed",
   "f": "modules/kgb-docs/src/lib.rs"
@@ -1793,6 +1873,16 @@
   "ro": "Termen depășit",
   "en": "Deadline passed",
   "f": "modules/kgb-permits/src/lib.rs"
+ },
+ {
+  "ro": "Expiră în curând",
+  "en": "Expires soon",
+  "f": "modules/kgb-permits/src/register.rs"
+ },
+ {
+  "ro": "Expiră azi",
+  "en": "Expires today",
+  "f": "modules/kgb-permits/src/register.rs"
  },
  {
   "ro": "Următorul: {0}",
@@ -1893,5 +1983,15 @@
   "ro": "Taxe și impozite",
   "en": "Taxes and duties",
   "f": "modules/kgb-sheets/src/templates.rs"
+ },
+ {
+  "ro": "fără denumire",
+  "en": "not denumire",
+  "f": "modules/kgb-works/src/calc.rs"
+ },
+ {
+  "ro": "are mai mult de 1000 de rânduri",
+  "en": "has more than 1000 rows",
+  "f": "modules/kgb-works/src/lib.rs"
  }
 ]

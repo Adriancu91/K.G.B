@@ -1,0 +1,103 @@
+{
+  "manifest_format": 1,
+  "id": "kgb.works",
+  "name": "Situații de lucrări",
+  "description": "Devizul ofertă sau contract cu articolele lui (UM, cantitate, preț unitar), suplimentările cu motiv, situațiile lunare de plată (anterior, curent, cumulat, rest, valori), reținerea de garanție și TVA alese de om, situațiile anulate păstrate cu motivul, PDF și .xlsx.",
+  "version": "0.1.0",
+  "core": ">=0.1.0, <0.2.0",
+  "status": "beta",
+  "permissions": [
+    "storage.own",
+    "files.own",
+    "partners.read"
+  ],
+  "services": [
+    "storage",
+    "files",
+    "partners",
+    "log"
+  ],
+  "data_types": [
+    {
+      "collection": "devize",
+      "description": "devizele: numele, numărul, data, beneficiarul, contractul (ca text), șantierul, cota de TVA, reținerea de garanție și baza ei, starea",
+      "schema": {
+        "fields": {
+          "nume": { "type": "string", "required": true, "max_len": 200 },
+          "numar": { "type": "string", "required": true, "max_len": 40 },
+          "data": { "type": "string", "required": true, "max_len": 10 },
+          "beneficiar_nume": { "type": "string", "required": true, "max_len": 200 },
+          "partener": { "type": "string", "required": true, "max_len": 36 },
+          "contract_text": { "type": "string", "required": true, "max_len": 200 },
+          "santier": { "type": "string", "required": true, "max_len": 200 },
+          "tva": { "type": "integer", "required": true, "min": 0, "max": 100 },
+          "garantie": { "type": "integer", "required": true, "min": 0, "max": 2000 },
+          "garantie_baza": { "type": "string", "required": true, "enum": ["fara_tva", "cu_tva"] },
+          "stare": { "type": "string", "required": true, "enum": ["ciorna", "aprobat", "inchis"] },
+          "nota": { "type": "string", "required": true, "max_len": 2000 },
+          "creat_ms": { "type": "integer", "required": true, "min": 0 }
+        },
+        "additional": false
+      }
+    },
+    {
+      "collection": "articole",
+      "description": "articolele devizului: codul, denumirea, unitatea, cantitatea (miimi), prețul unitar fără TVA (bani), ordinea",
+      "schema": {
+        "fields": {
+          "deviz": { "type": "string", "required": true, "max_len": 36 },
+          "cod": { "type": "string", "required": true, "max_len": 40 },
+          "denumire": { "type": "string", "required": true, "max_len": 300 },
+          "um": { "type": "string", "required": true, "max_len": 20 },
+          "cantitate": { "type": "integer", "required": true, "min": 0, "max": 1000000000000 },
+          "pret_unitar": { "type": "integer", "required": true, "min": 0 },
+          "ordine": { "type": "integer", "required": true, "min": 0 }
+        },
+        "additional": false
+      }
+    },
+    {
+      "collection": "suplimentari",
+      "description": "suplimentările de cantitate ale unui articol, fiecare cu motivul și data",
+      "schema": {
+        "fields": {
+          "articol": { "type": "string", "required": true, "max_len": 36 },
+          "cantitate": { "type": "integer", "required": true, "min": 1, "max": 1000000000000 },
+          "motiv": { "type": "string", "required": true, "max_len": 500 },
+          "data": { "type": "string", "required": true, "max_len": 10 },
+          "creat_ms": { "type": "integer", "required": true, "min": 0 }
+        },
+        "additional": false
+      }
+    },
+    {
+      "collection": "situatii",
+      "description": "situațiile de plată: devizul, numărul, perioada, cantitățile executate pe articole, starea (ciornă, emisă, anulată cu motiv), TVA și garanția de la emitere",
+      "schema": {
+        "fields": {
+          "deviz": { "type": "string", "required": true, "max_len": 36 },
+          "numar": { "type": "integer", "required": true, "min": 1 },
+          "de_la": { "type": "string", "required": true, "max_len": 10 },
+          "pana_la": { "type": "string", "required": true, "max_len": 10 },
+          "data": { "type": "string", "required": true, "max_len": 10 },
+          "stare": { "type": "string", "required": true, "enum": ["ciorna", "emisa", "anulata"] },
+          "motiv_anulare": { "type": "string", "required": true, "max_len": 500 },
+          "linii": { "type": "array", "required": true, "max_len": 1000 },
+          "tva": { "type": "integer", "required": true, "min": 0, "max": 100 },
+          "garantie": { "type": "integer", "required": true, "min": 0, "max": 2000 },
+          "garantie_baza": { "type": "string", "required": true, "enum": ["fara_tva", "cu_tva"] },
+          "nota": { "type": "string", "required": true, "max_len": 2000 },
+          "creat_ms": { "type": "integer", "required": true, "min": 0 }
+        },
+        "additional": false
+      }
+    }
+  ],
+  "events": {
+    "emits": [],
+    "listens": []
+  },
+  "data_format": 1,
+  "migrations": [],
+  "on_disable": "Devizele, articolele, suplimentările și situațiile rămân în spațiul de lucru și reapar când modulul este activat din nou."
+}

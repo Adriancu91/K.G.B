@@ -1,0 +1,23 @@
+[package]
+name = "kgb-works"
+version = "0.1.0"
+edition.workspace = true
+publish.workspace = true
+license.workspace = true
+description = "K.G.B. module: works statements (step 7.9e) - the estimate with its items, supplements with a reason, monthly payment statements (previous, current, cumulated, remaining), retention and VAT chosen by the person, cancelled statements kept, PDF with Typst and .xlsx."
+
+[dependencies]
+kgb-core.workspace = true
+kgb-store.workspace = true
+serde.workspace = true
+serde_json.workspace = true
+uuid.workspace = true
+rust_xlsxwriter.workspace = true
+typst.workspace = true
+typst-pdf.workspace = true
+typst-layout.workspace = true
+typst-assets.workspace = true
+
+[dev-dependencies]
+tempfile.workspace = true
+lopdf = "0.47.0"
