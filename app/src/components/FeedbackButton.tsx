@@ -1,5 +1,6 @@
 // "Trimite o observație" in the whole app (7.4l-0e), with COS's window (Feedback.tsx, unchanged): the person writes
-// what does not work; a picture of the window, the page and the version are kept with it, only on this computer
+// what does not work; a picture of the window, the screenshots they attach (pasted or chosen), the page and the
+// version are kept with it, only on this computer
 // (Documents\K.G.B\Observații, src-tauri/src/feedback.rs). Nothing goes to the internet: the person sends the files.
 import { useState } from "react";
 import { invoke } from "@tauri-apps/api/core";
@@ -21,14 +22,15 @@ Object.assign(cosApi, {
     const png = await invoke<string | null>("feedback_capture");
     return png ? Uint8Array.from(atob(png), (c) => c.charCodeAt(0)) : null;
   },
-  feedbackSave: ({ text, module, file, png }: { text: string; module: string; file: string; png: Uint8Array | null }) => {
+  feedbackSave: ({ text, module, file, png, images = [] }: { text: string; module: string; file: string; png: Uint8Array | null; images?: { name: string; data: Uint8Array }[] }) => {
     const d = new Date();
     const stamp = `${d.getFullYear()}-${p2(d.getMonth() + 1)}-${p2(d.getDate())} ${p2(d.getHours())}-${p2(d.getMinutes())}-${p2(d.getSeconds())}`;
-    return invoke<{ dir: string; txt: string; png: string | null }>("feedback_save", {
+    return invoke<{ dir: string; txt: string; png: string | null; images: string[] }>("feedback_save", {
       text,
       module,
       file,
       png: png ? b64(png) : null,
+      images: images.map((i) => ({ name: i.name, data: b64(i.data) })),
       stamp,
       date: d.toLocaleString("ro-RO"),
     });

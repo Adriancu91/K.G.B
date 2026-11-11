@@ -50,6 +50,22 @@ try {
   await p.eval(`document.querySelector("${dlg} textarea").focus()`);
   await p.send("Input.insertText", { text: "Am apăsat Salvează și nu s-a întâmplat nimic.\nA doua linie." });
   await sleep(200);
+  // The person's own screenshots: one pasted into the text (Ctrl+V after Win+Shift+S), one chosen as a file.
+  await p.eval(`(async () => {
+    const shot = async (type, color) => {
+      const c = document.createElement("canvas"); c.width = 320; c.height = 200;
+      const g = c.getContext("2d"); g.fillStyle = color; g.fillRect(0, 0, 320, 200);
+      return new Promise((ok) => c.toBlob((b) => ok(new File([b], type === "image/png" ? "lipita.png" : "aleasa.jpg", { type })), type));
+    };
+    const pasted = new DataTransfer(); pasted.items.add(await shot("image/png", "#c33"));
+    document.querySelector("${dlg} textarea").dispatchEvent(new ClipboardEvent("paste", { clipboardData: pasted, bubbles: true, cancelable: true }));
+    const chosen = new DataTransfer(); chosen.items.add(await shot("image/jpeg", "#36c"));
+    const input = document.querySelector("${dlg} input[type=file]");
+    input.files = chosen.files; input.dispatchEvent(new Event("change", { bubbles: true }));
+    return true;
+  })()`);
+  await p.until(`document.querySelectorAll("${dlg} .feedback-shots li img").length === 2`, 5000);
+  check("capturile lipite și alese apar în fereastră, cu „scoate”", (await p.eval(`document.querySelectorAll("${dlg} .feedback-shots li button").length`)) === 2);
   await p.click("Salvează observația", `${dlg} button`);
   await p.until(`(document.querySelector("${dlg}")?.innerText ?? '').includes('Am salvat observația')`, 10000);
   const done = await p.eval(`document.querySelector("${dlg}").innerText`);
@@ -60,7 +76,7 @@ try {
   const dir = join(data, "Observatii");
   const files = readdirSync(dir);
   const txt = files.find((f) => /^Observație \d{4}-\d{2}-\d{2} \d{2}-\d{2}-\d{2}\.txt$/.test(f));
-  const png = files.find((f) => f.endsWith(".png"));
+  const png = files.find((f) => f.endsWith(".png") && !f.includes(" - captura "));
   check("textul și poza sunt în dosarul observațiilor", !!txt && !!png, files.join(", "));
   const body = txt ? readFileSync(join(dir, txt), "utf8") : "";
   check(
@@ -70,6 +86,13 @@ try {
   );
   const head = png ? readFileSync(join(dir, png)).subarray(0, 8) : Buffer.alloc(0);
   check("poza e un PNG", head.equals(Buffer.from([0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a])) && statSync(join(dir, png)).size > 10000);
+  const extra = files.filter((f) => f.includes(" - captura ")).sort();
+  check(
+    "capturile atașate sunt lângă observație, numerotate, PNG și JPEG",
+    extra.length === 2 && extra[0].endsWith(" - captura 1.png") && extra[1].endsWith(" - captura 2.jpg") && readFileSync(join(dir, extra[1])).subarray(0, 3).equals(Buffer.from([0xff, 0xd8, 0xff])),
+    extra.join(", "),
+  );
+  check("fișierul text le numește", body.includes(`Capturi atașate: ${extra.join(", ")}`), body.split("\r\n").find((l) => l.startsWith("Capturi")) ?? "");
   await p.click("Închide", `${dlg} button`);
   await p.until(`!document.querySelector("${dlg}")`, 5000);
   check("„Închide” închide fereastra", true);

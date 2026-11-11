@@ -8,3 +8,8 @@
 .feedback-pic { display: flex; align-items: center; gap: 8px; font-size: 13px; margin-bottom: 12px; }
 .feedback-pic img { max-width: 160px; max-height: 90px; border: 1px solid var(--border, #ccc); border-radius: 4px; margin-left: auto; }
 .feedback-done { overflow-wrap: anywhere; }
+.feedback-shots { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; font-size: 13px; margin-bottom: 12px; }
+.feedback-shots .muted { opacity: .75; }
+.feedback-shots ul { display: flex; flex-wrap: wrap; gap: 8px; list-style: none; margin: 0; padding: 0; width: 100%; }
+.feedback-shots li { display: flex; flex-direction: column; align-items: center; gap: 2px; }
+.feedback-shots img { max-width: 120px; max-height: 70px; border: 1px solid var(--border, #ccc); border-radius: 4px; }

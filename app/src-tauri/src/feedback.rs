@@ -1,6 +1,6 @@
 //! "Trimite o observație" (7.4l-0e), as in Cyber Office Studio (electron/main.cjs, feedback:*): the person writes
-//! what does not work; a picture of the window (WebView2's own CapturePreview of this window), the page and the
-//! version are kept with it. Everything is saved only on this computer, in Documents\K.G.B\Observații; nothing goes
+//! what does not work; a picture of the window (WebView2's own CapturePreview of this window), up to five
+//! screenshots they attach (PNG or JPEG, checked by their first bytes), the page and the version are kept with it. Everything is saved only on this computer, in Documents\K.G.B\Observații; nothing goes
 //! to the internet: the person sends the files themself. With KGB_DATA_DIR (the tests' throw-away data folder)
 //! the notes go to <that folder>\Observatii.
 
@@ -15,6 +15,28 @@ use tokio::sync::oneshot;
 /// The largest picture accepted from the page (a full-HD PNG is a few MB).
 const MAX_PNG: usize = 32 * 1024 * 1024;
 const MAX_TEXT: usize = 20_000;
+/// Screenshots the person attaches (pasted or chosen in the window): PNG or JPEG, at most this many.
+const MAX_IMAGES: usize = 5;
+
+/// An attached screenshot as the page sends it: its name (not used for the file; the files are numbered) and
+/// its bytes in base64.
+#[derive(serde::Deserialize)]
+pub struct Image {
+    #[serde(rename = "name")]
+    _name: String,
+    data: String,
+}
+
+/// The extension of an attached picture from its first bytes, or None when it is neither PNG nor JPEG.
+fn image_kind(b: &[u8]) -> Option<&'static str> {
+    if b.starts_with(b"\x89PNG\r\n\x1a\n") {
+        Some("png")
+    } else if b.starts_with(&[0xFF, 0xD8, 0xFF]) {
+        Some("jpg")
+    } else {
+        None
+    }
+}
 
 fn dir(app: &AppHandle) -> Result<PathBuf, String> {
     if let Some(d) = std::env::var_os("KGB_DATA_DIR") {
@@ -84,9 +106,12 @@ pub struct Saved {
     dir: String,
     txt: String,
     png: Option<String>,
+    images: Vec<String>,
 }
 
 /// Writes the note (and the picture, if kept) as „Observație <date> <time>.txt / .png”.
+// The arguments are the fields the page sends, one by one (as the Tauri command names them).
+#[allow(clippy::too_many_arguments)]
 #[tauri::command]
 pub fn feedback_save(
     app: AppHandle,
@@ -94,6 +119,7 @@ pub fn feedback_save(
     module: String,
     file: String,
     png: Option<String>,
+    images: Option<Vec<Image>>,
     stamp: String,
     date: String,
 ) -> Result<Saved, String> {
@@ -126,6 +152,21 @@ pub fn feedback_save(
         }
         None => None,
     };
+    let images = images.unwrap_or_default();
+    if images.len() > MAX_IMAGES {
+        return Err(format!("cel mult {MAX_IMAGES} capturi"));
+    }
+    let mut shots: Vec<(&'static str, Vec<u8>)> = Vec::new();
+    for i in &images {
+        let b = B64
+            .decode(i.data.as_bytes())
+            .map_err(|_| "o captură nu a ajuns întreagă".to_string())?;
+        let kind = image_kind(&b).ok_or_else(|| "o captură nu e PNG sau JPEG".to_string())?;
+        if b.len() > MAX_PNG {
+            return Err("o captură e prea mare".into());
+        }
+        shots.push((kind, b));
+    }
     let dir = dir(&app)?;
     std::fs::create_dir_all(&dir).map_err(|e| format!("dosarul observațiilor nu s-a putut face: {e}"))?;
     let base = dir.join(format!("Observație {stamp}"));
@@ -153,6 +194,19 @@ pub fn feedback_save(
                 "(fără)".into()
             }
         ),
+        format!(
+            "Capturi atașate: {}",
+            if shots.is_empty() {
+                "(niciuna)".into()
+            } else {
+                shots
+                    .iter()
+                    .enumerate()
+                    .map(|(n, (k, _))| format!("Observație {stamp} - captura {}.{k}", n + 1))
+                    .collect::<Vec<_>>()
+                    .join(", ")
+            }
+        ),
         String::new(),
         text.replace("\r\n", "\n").replace('\n', "\r\n"),
         String::new(),
@@ -161,10 +215,17 @@ pub fn feedback_save(
     if let Some(b) = &png {
         std::fs::write(&pic, b).map_err(|e| format!("poza nu s-a putut scrie: {e}"))?;
     }
+    let mut written = Vec::new();
+    for (n, (kind, b)) in shots.iter().enumerate() {
+        let f = dir.join(format!("Observație {stamp} - captura {}.{kind}", n + 1));
+        std::fs::write(&f, b).map_err(|e| format!("o captură nu s-a putut scrie: {e}"))?;
+        written.push(f.display().to_string());
+    }
     Ok(Saved {
         dir: dir.display().to_string(),
         txt: txt.display().to_string(),
         png: png.map(|_| pic.display().to_string()),
+        images: written,
     })
 }
 
