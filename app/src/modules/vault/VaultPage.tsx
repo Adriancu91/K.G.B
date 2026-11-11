@@ -3,13 +3,17 @@
 // reason, the uncertain ones are confirmed by the person; invoices show what was recognised (issuer CUI, series and
 // number, date, total) for the duplicate check of 7.10d. A read-only role sees everything and changes nothing.
 // 7.10b: „Profilul firmei din acte” proposes the firm's data from its papers (FirmProfile.tsx); a purchase invoice
-// not yet in Business can be recorded there by the person, from a filled-in form (ToBusiness.tsx).
+// not yet in Business can be recorded there by the person, from a filled-in form (ToBusiness.tsx); a receipt
+// („Chitanțe, NIR, dispoziții”) can be recorded in Business's cash register the same way (ToCash.tsx), and the
+// lines of a purchase e-Factura as a reception in stock (ToStock.tsx).
 import { useCallback, useEffect, useState } from "react";
 import { open, save } from "@tauri-apps/plugin-dialog";
 import { api, message } from "../../api";
 import { compared, fromIssued, fromPurchase, matchesOf, type Inv, type Match } from "./match";
 import { FirmProfile } from "./FirmProfile";
 import { ToBusiness } from "./ToBusiness";
+import { ToCash } from "./ToCash";
+import { ToStock } from "./ToStock";
 
 const ID = "kgb.vault";
 const BIZ = "kgb.business";
@@ -75,6 +79,8 @@ export function VaultPage({ onError, access, onOpen }: { onError: (e: string | n
   const [profile, setProfile] = useState(false);
   const [bizOn, setBizOn] = useState(false);
   const [toBiz, setToBiz] = useState<string | null>(null);
+  const [toCash, setToCash] = useState<string | null>(null);
+  const [toStock, setToStock] = useState<string | null>(null);
   const [twins, setTwins] = useState<Array<{ sigur: boolean; documente: Doc[] }>>([]);
   const [others, setOthers] = useState<Array<{ inv: Inv; where: string }>>([]);
 
@@ -323,6 +329,22 @@ export function VaultPage({ onError, access, onOpen }: { onError: (e: string | n
                         Înregistrează în Business…
                       </button>
                     )}
+                    {bizOn && !readOnly && d.categorie === "facturi_achizitie" && d.tip === "xml" && toStock !== d.id && (
+                      <button className="link small" disabled={busy} onClick={() => setToStock(d.id)}>
+                        Recepție în stoc…
+                      </button>
+                    )}
+                    {toStock === d.id && (
+                      <ToStock
+                        docId={d.id}
+                        onClose={() => setToStock(null)}
+                        onDone={(msg) => {
+                          setToStock(null);
+                          setNotice(msg);
+                          void load();
+                        }}
+                      />
+                    )}
                     {toBiz === d.id && (
                       <ToBusiness
                         doc={d.nume}
@@ -339,7 +361,23 @@ export function VaultPage({ onError, access, onOpen }: { onError: (e: string | n
                 )}
               </td>
               <td>
+                {toCash === d.id && (
+                  <ToCash
+                    docId={d.id}
+                    onClose={() => setToCash(null)}
+                    onDone={(msg) => {
+                      setToCash(null);
+                      setNotice(msg);
+                      void load();
+                    }}
+                  />
+                )}
                 <div className="row wrap">
+                  {bizOn && !readOnly && d.categorie === "chitante_nir" && toCash !== d.id && (
+                    <button className="link small" disabled={busy} onClick={() => setToCash(d.id)}>
+                      Înregistrează în casă…
+                    </button>
+                  )}
                   {!d.confirmata && (
                     <button className="small" disabled={busy || readOnly} onClick={() => void run(() => api.moduleCall(ID, "confirma", { id: d.id, version: d.version, categorie: d.categorie }))}>
                       Confirmă

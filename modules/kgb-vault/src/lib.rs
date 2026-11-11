@@ -20,7 +20,9 @@
 //! `confirma {id, version, categorie}`, `factura_save {id, version, factura}`, `sterge {id, version}`,
 //! `salveaza_copie {id, dest}`, `setari`, `setari_save {cui_firma, version?}`, `profil_firma` (7.10b: the firm's
 //! data read from the documents of „Actele firmei”, as proposals with the documents they come from),
-//! `autorizatii_propuse` (7.10b: what each document of „Autorizații și avize” says about its permit).
+//! `autorizatii_propuse` (7.10b: what each document of „Autorizații și avize” says about its permit),
+//! `chitanta_propunere {id}` (7.10b: a receipt for the cash register), `factura_linii {id}` (7.10b: the lines of
+//! an e-Factura for a reception in stock).
 
 use std::collections::BTreeMap;
 use std::io::Read;
@@ -45,6 +47,7 @@ pub const SETTINGS: &str = "setari";
 pub mod contract;
 pub mod firm;
 pub mod permit;
+pub mod receipt;
 
 pub const CATEGORIES: [(&str, &str); 11] = [
     ("identitate", "Actele firmei"),
@@ -326,6 +329,56 @@ pub fn ubl_invoice(xml: &str) -> Option<Invoice> {
         data: iso_date(&date).unwrap_or_default(),
         total,
     })
+}
+
+/// One line of an e-Factura (UBL) invoice, as written: what was bought, the supplier's code, the quantity and its
+/// unit (the UN/ECE code, `H87` pieces, `KGM` kilograms…), the price per unit without VAT and the VAT rate.
+#[derive(Clone, Debug, Default, PartialEq)]
+pub struct UblLine {
+    pub nume: String,
+    pub cod: String,
+    pub cantitate: String,
+    pub um: String,
+    /// Price per unit without VAT, as written (`12.50`).
+    pub pret: String,
+    pub tva: String,
+}
+
+/// The lines of an e-Factura (UBL) invoice (7.10b: what came in, for the reception in Business).
+pub fn ubl_lines(xml: &str) -> Vec<UblLine> {
+    let mut out = Vec::new();
+    let mut at = 0;
+    while let Some(start) = xml.get(at..).and_then(|x| x.find("<cac:InvoiceLine")).map(|i| at + i) {
+        let end = xml[start..].find("</cac:InvoiceLine>").map_or(xml.len(), |e| start + e);
+        let part = &xml[start..end];
+        let get = |t: &str| xml_tag(part, t, 0).map(|(v, _)| v.to_string()).unwrap_or_default();
+        let um = part
+            .find("<cbc:InvoicedQuantity")
+            .and_then(|i| {
+                let head = &part[i..i + part[i..].find('>')?];
+                let u = head.find("unitCode=\"")? + "unitCode=\"".len();
+                Some(head[u..u + head[u..].find('"')?].to_string())
+            })
+            .unwrap_or_default();
+        // The supplier's code of the item (cac:SellersItemIdentification/cbc:ID), not the line's own ID.
+        let cod = part
+            .find("<cac:SellersItemIdentification")
+            .and_then(|i| xml_tag(&part[i..], "cbc:ID", 0).map(|(v, _)| v.to_string()))
+            .unwrap_or_default();
+        out.push(UblLine {
+            nume: get("cbc:Name"),
+            cod,
+            cantitate: get("cbc:InvoicedQuantity"),
+            um,
+            pret: get("cbc:PriceAmount"),
+            tva: get("cbc:Percent"),
+        });
+        at = end.max(start + 1);
+        if out.len() >= 500 {
+            break;
+        }
+    }
+    out
 }
 
 /// An invoice found in the lines of a PDF or a workbook: a number and a total at least.
@@ -987,6 +1040,28 @@ impl Vault {
         ))
     }
 
+    /// 7.10b: a receipt of the vault read as a proposal for the cash register of Business: what the paper says, and
+    /// whether the firm received the money (its own receipt) or paid it (someone else's). `null` when the text is
+    /// not a receipt.
+    fn receipt_proposal(&self, ctx: &mut ModuleContext<'_>, id: Uuid) -> CoreResult<Value> {
+        let r = self.live(ctx, id)?;
+        let Some(c) = receipt::receipt_from_text(&s(&r, "text")) else {
+            return Ok(Value::Null);
+        };
+        let (firm, _) = self.firm(ctx)?;
+        let sens = if firm.is_empty() || c.emitent_cui.is_empty() {
+            ""
+        } else if cui_key(&c.emitent_cui) == cui_key(&firm) {
+            "incasare"
+        } else {
+            "plata"
+        };
+        Ok(json!({
+            "document": s(&r, "nume"), "serie": c.serie, "numar": c.numar, "data": c.data, "suma": c.suma,
+            "de_la": c.de_la, "reprezentand": c.reprezentand, "emitent_cui": c.emitent_cui, "sens": sens,
+        }))
+    }
+
     /// 7.10b: a contract of the vault read as a proposal for „Contracte și abonamente” (the page opens it there;
     /// nothing is written in Contracts without the person).
     fn contract_proposal(&self, ctx: &mut ModuleContext<'_>, id: Uuid) -> CoreResult<Value> {
@@ -1145,6 +1220,23 @@ impl Module for Vault {
             "dubluri" => self.duplicates(ctx),
             "profil_firma" => self.firm_profile(ctx),
             "autorizatii_propuse" => self.permit_proposals(ctx),
+            "factura_linii" => {
+                let a: ById = args(command, a)?;
+                let r = self.live(ctx, a.id)?;
+                let doc: Uuid = s(&r, "doc").parse().map_err(|_| bad("documentul", "nu are fișier"))?;
+                let (_, data) = ctx.read_document(doc, Some(1))?;
+                let xml = String::from_utf8_lossy(&data);
+                let inv = ubl_invoice(&xml).ok_or_else(|| bad("documentul", "nu e o factură e-Factura (XML)"))?;
+                let lines: Vec<Value> = ubl_lines(&xml)
+                    .into_iter()
+                    .map(|l| json!({"nume": l.nume, "cod": l.cod, "cantitate": l.cantitate, "um": l.um, "pret": l.pret, "tva": l.tva}))
+                    .collect();
+                Ok(json!({"document": s(&r, "nume"), "factura": inv.to_json(), "linii": lines}))
+            }
+            "chitanta_propunere" => {
+                let a: ById = args(command, a)?;
+                self.receipt_proposal(ctx, a.id)
+            }
             "contract_propunere" => {
                 let a: ById = args(command, a)?;
                 self.contract_proposal(ctx, a.id)
@@ -1204,5 +1296,47 @@ mod tests {
         );
         assert_eq!(hide_cnp("CNP:1960101123456"), "CNP:•••••••••••••");
         assert_eq!(fold("Contract  Individual\nde MUNCĂ"), "contract individual de munca");
+    }
+}
+
+#[cfg(test)]
+mod ubl_lines_tests {
+    use super::*;
+
+    #[test]
+    fn the_lines_of_an_e_factura() {
+        let xml = r#"<Invoice xmlns:cac="c" xmlns:cbc="b"><cbc:ID>F 77</cbc:ID>
+<cac:AccountingSupplierParty><cac:Party><cbc:CompanyID>RO18547290</cbc:CompanyID></cac:Party></cac:AccountingSupplierParty>
+<cac:InvoiceLine><cbc:ID>1</cbc:ID><cbc:InvoicedQuantity unitCode="KGM">25.5</cbc:InvoicedQuantity>
+  <cbc:LineExtensionAmount currencyID="RON">255.00</cbc:LineExtensionAmount>
+  <cac:Item><cbc:Name>Ciment 40 kg</cbc:Name><cac:SellersItemIdentification><cbc:ID>CIM40</cbc:ID></cac:SellersItemIdentification>
+  <cac:ClassifiedTaxCategory><cbc:ID>S</cbc:ID><cbc:Percent>21</cbc:Percent></cac:ClassifiedTaxCategory></cac:Item>
+  <cac:Price><cbc:PriceAmount currencyID="RON">10.00</cbc:PriceAmount></cac:Price></cac:InvoiceLine>
+<cac:InvoiceLine><cbc:ID>2</cbc:ID><cbc:InvoicedQuantity unitCode="H87">3</cbc:InvoicedQuantity>
+  <cac:Item><cbc:Name>Mistrie</cbc:Name></cac:Item><cac:Price><cbc:PriceAmount>20</cbc:PriceAmount></cac:Price></cac:InvoiceLine>
+</Invoice>"#;
+        let l = ubl_lines(xml);
+        assert_eq!(l.len(), 2);
+        assert_eq!(
+            l[0],
+            UblLine {
+                nume: "Ciment 40 kg".into(),
+                cod: "CIM40".into(),
+                cantitate: "25.5".into(),
+                um: "KGM".into(),
+                pret: "10.00".into(),
+                tva: "21".into()
+            }
+        );
+        assert_eq!(
+            (
+                l[1].nume.as_str(),
+                l[1].cod.as_str(),
+                l[1].um.as_str(),
+                l[1].pret.as_str()
+            ),
+            ("Mistrie", "", "H87", "20")
+        );
+        assert!(ubl_lines("<Invoice/>").is_empty());
     }
 }

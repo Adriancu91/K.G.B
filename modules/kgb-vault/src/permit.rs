@@ -40,7 +40,7 @@ const BODIES: [&str; 9] = [
 ];
 
 /// `dd.mm.yyyy` (or with `/` or `-`) anywhere in `s` → the first such date as `AAAA-LL-ZZ`, if it exists.
-fn first_date(s: &str) -> Option<String> {
+pub(crate) fn first_date(s: &str) -> Option<String> {
     let b: Vec<char> = s.chars().collect();
     for i in 0..b.len() {
         let take = |from: usize, n: usize| -> Option<u32> {
