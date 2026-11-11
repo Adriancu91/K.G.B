@@ -71,6 +71,7 @@ pub const ACTIVITIES: &[Activity] = &[
         description: "Parc auto și șoferi cu actele care expiră, livrări urmărite, comenzi.",
         modules: &[
             "kgb.business",
+            "kgb.contracts",
             "kgb.team",
             "kgb.permits",
             "kgb.docs",
@@ -115,6 +116,7 @@ pub const ACTIVITIES: &[Activity] = &[
         modules: &[
             "kgb.business",
             "kgb.appointments",
+            "kgb.contracts",
             "kgb.docs",
             "kgb.write",
             "kgb.pdf",
@@ -191,6 +193,7 @@ pub const ACTIVITIES: &[Activity] = &[
             "kgb.calc",
             "kgb.planner",
             "kgb.docs",
+            "kgb.contracts",
         ],
         profile: "personal",
         models: &["cerere", "pdf-imputernicire", "pdf-contract-inchiriere"],
