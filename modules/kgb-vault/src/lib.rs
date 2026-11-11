@@ -228,8 +228,11 @@ impl Invoice {
     }
 }
 
+/// Issuer CUI, series, number.
+pub type InvoiceKey = (String, String, String);
+
 /// The key of an invoice (7.10d, D-089): issuer CUI + series + number. `None` without a number or an issuer.
-pub fn invoice_key(inv: &Invoice) -> Option<(String, String, String)> {
+pub fn invoice_key(inv: &Invoice) -> Option<InvoiceKey> {
     (!inv.numar.is_empty() && !inv.emitent_cui.is_empty())
         .then(|| (inv.emitent_cui.clone(), inv.serie.clone(), inv.numar.clone()))
 }
@@ -244,7 +247,7 @@ pub fn same_invoice(a: &Invoice, b: &Invoice) -> bool {
 
 /// Groups of invoices sharing a key; each group says whether it is surely one invoice or only possibly.
 pub fn duplicate_groups<T: Clone>(items: &[(T, Invoice)]) -> Vec<(Vec<T>, bool)> {
-    let mut by: BTreeMap<(String, String, String), Vec<&(T, Invoice)>> = BTreeMap::new();
+    let mut by: BTreeMap<InvoiceKey, Vec<&(T, Invoice)>> = BTreeMap::new();
     for it in items {
         if let Some(k) = invoice_key(&it.1) {
             by.entry(k).or_default().push(it);
