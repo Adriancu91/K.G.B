@@ -268,9 +268,10 @@ export function translateAny(s: string): string | null {
 // Mesajul de stare de lângă numele fișierului (.status-msg, în Slides și Video) se traduce, deși numele de lângă el nu.
 const skipped = (el: Element | null, skip = SKIP) => !el || !el.closest(ROOTS) || (!!el.closest(skip) && !el.closest('.status-msg'));
 
-/** Siguranță: un nod pe care altcineva îl pune mereu înapoi în română nu se mai traduce după 25 de încercări (fără bucle fără sfârșit). */
-const flips = new WeakMap<Node, number>();
-const tooMany = (n: Node) => { const c = (flips.get(n) ?? 0) + 1; flips.set(n, c); return c > 25; };
+/** Siguranță: un nod pe care altcineva îl pune mereu înapoi în același text românesc nu se mai traduce după 25 de încercări
+ *  (fără bucle fără sfârșit). Un text nou în același nod (de exemplu titlul paginii, la fiecare pagină deschisă) o ia de la capăt. */
+const flips = new WeakMap<Node, { ro: string; c: number }>();
+const tooMany = (n: Node, ro: string) => { const f = flips.get(n); const c = f?.ro === ro ? f.c + 1 : 1; flips.set(n, { ro, c }); return c > 25; };
 function doText(n: Text) {
   const o = textOrig.get(n);
   if (o && o.en === n.data) return;
@@ -278,7 +279,7 @@ function doText(n: Text) {
   ctx = ctxOf(n.parentElement); modCtx = modOf(n.parentElement);
   const t = translate(n.data);
   ctx = null; modCtx = null;
-  if (t !== null && t !== n.data) { if (tooMany(n)) return; textOrig.set(n, { ro: n.data, en: t }); produced.add(t.trim()); n.data = t; }
+  if (t !== null && t !== n.data) { if (tooMany(n, n.data)) return; textOrig.set(n, { ro: n.data, en: t }); produced.add(t.trim()); n.data = t; }
 }
 function doAttrs(el: Element) {
   if (!el.closest(ROOTS) || el.closest('.no-i18n, .ProseMirror')) return;
@@ -292,7 +293,7 @@ function doAttrs(el: Element) {
     // „Anulează” e Cancel în ferestre, dar pe butonul ↶ e Undo.
     const t = v === 'Anulează' && el.textContent?.trim() === '↶' ? 'Undo' : translate(v);
     ctx = null; modCtx = null;
-    if (t !== null && t !== v) { if (tooMany(el)) return; const r = rec ?? {}; r[a] = { ro: v, en: t }; attrOrig.set(el, r); produced.add(t.trim()); el.setAttribute(a, t); }
+    if (t !== null && t !== v) { if (tooMany(el, '')) return; const r = rec ?? {}; r[a] = { ro: v, en: t }; attrOrig.set(el, r); produced.add(t.trim()); el.setAttribute(a, t); }
   }
 }
 function walk(root: Node) {
