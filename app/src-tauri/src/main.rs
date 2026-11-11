@@ -76,6 +76,7 @@ fn builtin_modules() -> Vec<Box<dyn Module>> {
         Box::new(kgb_market::Market::new()),
         Box::new(kgb_appointments::Appointments::new()),
         Box::new(kgb_contracts::Contracts::new()),
+        Box::new(kgb_vault::Vault::new()),
     ]
 }
 
@@ -1857,6 +1858,72 @@ fn module_import_file_with(
     })
 }
 
+/// The files of a folder the person chose (7.10a, the document vault): recursive, at most [`FOLDER_DEPTH`] levels
+/// and [`FOLDER_MAX`] files, only the kinds the vault reads, without hidden files and links. Nothing is read
+/// here; the page sends each file to the module with `module_import_file_with`.
+const FOLDER_DEPTH: usize = 8;
+const FOLDER_MAX: usize = 3000;
+const FOLDER_KINDS: [&str; 15] = ["pdf", "docx", "xlsx", "xlsm", "xls", "ods", "csv", "txt", "xml", "jpg", "jpeg", "png", "tif", "tiff", "doc"];
+
+#[derive(Serialize)]
+struct FolderFile {
+    path: String,
+    rel: String,
+    size: u64,
+}
+
+#[derive(Serialize)]
+struct FolderFiles {
+    files: Vec<FolderFile>,
+    /// Files of other kinds, too large, or beyond the limits.
+    sarite: usize,
+    prea_multe: bool,
+}
+
+#[tauri::command]
+fn folder_files(path: PathBuf) -> CmdResult<FolderFiles> {
+    let meta = std::fs::metadata(&path).map_err(err)?;
+    if !meta.is_dir() {
+        return Err("nu e un folder".into());
+    }
+    let mut out = FolderFiles { files: Vec::new(), sarite: 0, prea_multe: false };
+    let mut stack = vec![(path.clone(), 0_usize)];
+    while let Some((dir, depth)) = stack.pop() {
+        let Ok(entries) = std::fs::read_dir(&dir) else { continue };
+        let mut entries: Vec<_> = entries.flatten().collect();
+        entries.sort_by_key(|e| e.file_name());
+        for e in entries {
+            let name = e.file_name().to_string_lossy().to_string();
+            let Ok(ft) = e.file_type() else { continue };
+            if name.starts_with('.') || name.starts_with('~') || ft.is_symlink() {
+                continue;
+            }
+            if ft.is_dir() {
+                if depth + 1 < FOLDER_DEPTH {
+                    stack.push((e.path(), depth + 1));
+                } else {
+                    out.sarite += 1;
+                }
+                continue;
+            }
+            let ext = name.rsplit('.').next().unwrap_or("").to_lowercase();
+            let size = e.metadata().map(|m| m.len()).unwrap_or(0);
+            if !name.contains('.') || !FOLDER_KINDS.contains(&ext.as_str()) || size == 0 || size > kgb_core::files::MAX_FILE_BYTES as u64 {
+                out.sarite += 1;
+                continue;
+            }
+            if out.files.len() >= FOLDER_MAX {
+                out.prea_multe = true;
+                return Ok(out);
+            }
+            let rel = e.path().strip_prefix(&path).map(|r| r.to_string_lossy().replace('\\', "/")).unwrap_or(name);
+            out.files.push(FolderFile { path: e.path().to_string_lossy().to_string(), rel, size });
+        }
+    }
+    out.files.sort_by(|a, b| a.rel.cmp(&b.rel));
+    Ok(out)
+}
+
 // ---------- diagnostics ----------
 
 #[derive(Serialize)]
@@ -2078,6 +2145,7 @@ fn main() {
             request_refuse,
             module_import_file,
             module_import_file_with,
+            folder_files,
             notifications_list,
             reminders_tick,
             notification_read,

@@ -18,6 +18,7 @@ import { CalcPage } from "./modules/calc/CalcPage";
 import { NewsPage } from "./modules/news/NewsPage";
 import { AppointmentsPage } from "./modules/appointments/AppointmentsPage";
 import { ContractsPage } from "./modules/contracts/ContractsPage";
+import { VaultPage } from "./modules/vault/VaultPage";
 import { NotificationBell } from "./components/Notifications";
 import { Catalog } from "./pages/Catalog";
 import { DataPage } from "./pages/DataPage";
@@ -51,6 +52,7 @@ const MODULE_PAGES: Record<string, ComponentType<{ onError: (e: string | null) =
   "kgb.news": NewsPage,
   "kgb.appointments": AppointmentsPage,
   "kgb.contracts": ContractsPage,
+  "kgb.vault": VaultPage,
   "kgb.write": WritePage,
 };
 

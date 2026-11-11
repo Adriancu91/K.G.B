@@ -3753,6 +3753,7 @@ dependencies = [
  "kgb-sheets",
  "kgb-store",
  "kgb-team",
+ "kgb-vault",
  "kgb-write",
  "serde",
  "serde_json",

@@ -337,6 +337,8 @@ export const api = {
   /** Same, for another module command with extra arguments (e.g. the bank account). */
   importFileWith: <T>(id: string, path: string, command: string, args: Record<string, unknown>) =>
     invoke<T>("module_import_file_with", { id, path, command, args }),
+  /** The files of a folder the person chose (the document vault): only the kinds it reads. */
+  folderFiles: (path: string) => invoke<{ files: Array<{ path: string; rel: string; size: number }>; sarite: number; prea_multe: boolean }>("folder_files", { path }),
   notifications: () => invoke<{ items: NotificationView[]; unread: number }>("notifications_list"),
   /** Reminders round; `azi` is the local date (YYYY-MM-DD). Returns how many are new. */
   remindersTick: (azi: string) => invoke<number>("reminders_tick", { azi }),
