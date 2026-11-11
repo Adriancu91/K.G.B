@@ -298,3 +298,40 @@ fn without_the_firms_cui_the_folder_proposes_the_side() {
         "facturi_vanzare"
     );
 }
+
+/// 7.10b: the firm's data read from the papers of „Actele firmei”, one proposal per value with the documents it
+/// comes from; a document of another category is not read; two papers that disagree give two proposals.
+#[test]
+fn the_firm_profile_from_its_papers() {
+    let (_t, mut ws, mm) = setup();
+    let cert = "CERTIFICAT CONSTATATOR\nDenumire: ALFA CONSTRUCT S.R.L.\nCod unic de înregistrare: 14399840\n\
+                Număr de ordine în registrul comerţului: J22/1234/2002\nSediul social: Iaşi, Str. Lăpuşneanu nr. 1\n";
+    let c = add(&mut ws, &mm, "certificat constatator.txt", "Acte firma/certificat constatator.txt", cert.as_bytes());
+    // Sorted as an act of the firm (if the text alone was not enough, confirmed here).
+    let id = c["id"].clone();
+    let l = call(&mut ws, &mm, "lista", json!({})).unwrap();
+    let d = l.as_array().unwrap().iter().find(|d| d["id"] == id).unwrap().clone();
+    if d["categorie"] != "identitate" {
+        call(&mut ws, &mm, "confirma", json!({"id": id, "version": d["version"], "categorie": "identitate"})).unwrap();
+    }
+    // The same data again in a second paper, and a different seat in a third.
+    let cui_paper = add(&mut ws, &mm, "certificat inregistrare.txt", "Acte firma/certificat inregistrare.txt",
+        "CERTIFICAT DE ÎNREGISTRARE\nFirma: ALFA CONSTRUCT S.R.L.\nCUI: RO14399840\nSediul social: Iaşi, Str. Cuza Vodă 2\n".as_bytes());
+    let l = call(&mut ws, &mm, "lista", json!({})).unwrap();
+    let d2 = l.as_array().unwrap().iter().find(|d| d["id"] == cui_paper["id"]).unwrap().clone();
+    if d2["categorie"] != "identitate" {
+        call(&mut ws, &mm, "confirma", json!({"id": d2["id"], "version": d2["version"], "categorie": "identitate"})).unwrap();
+    }
+    // A contract that names another firm is not read for the firm's own data.
+    add(&mut ws, &mm, "contract.txt", "Contracte/contract.txt", "CONTRACT DE PRESTĂRI SERVICII\nDenumire: GAMMA SRL\nCUI: 14399840\n".as_bytes());
+
+    let p = call(&mut ws, &mm, "profil_firma", json!({})).unwrap();
+    assert_eq!(p["documente"], 2);
+    let props = p["propuneri"].as_array().unwrap();
+    let of = |camp: &str| props.iter().filter(|x| x["camp"] == camp).map(|x| (x["valoare"].as_str().unwrap().to_string(), x["din"].as_array().unwrap().len())).collect::<Vec<_>>();
+    assert_eq!(of("nume"), [("ALFA CONSTRUCT S.R.L.".to_string(), 2)]);
+    assert_eq!(of("cui"), [("14399840".to_string(), 2)]);
+    assert_eq!(of("reg_com"), [("J22/1234/2002".to_string(), 1)]);
+    assert_eq!(of("adresa").len(), 2, "two papers, two seats: the person chooses");
+    assert!(!props.iter().any(|x| x["valoare"] == "GAMMA SRL"));
+}

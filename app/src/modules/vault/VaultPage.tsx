@@ -2,10 +2,14 @@
 // subfolders) or chosen files come in unchanged and once per content; each gets a category with a confidence and a
 // reason, the uncertain ones are confirmed by the person; invoices show what was recognised (issuer CUI, series and
 // number, date, total) for the duplicate check of 7.10d. A read-only role sees everything and changes nothing.
+// 7.10b: „Profilul firmei din acte” proposes the firm's data from its papers (FirmProfile.tsx); a purchase invoice
+// not yet in Business can be recorded there by the person, from a filled-in form (ToBusiness.tsx).
 import { useCallback, useEffect, useState } from "react";
 import { open, save } from "@tauri-apps/plugin-dialog";
 import { api, message } from "../../api";
 import { compared, fromIssued, fromPurchase, matchesOf, type Inv, type Match } from "./match";
+import { FirmProfile } from "./FirmProfile";
+import { ToBusiness } from "./ToBusiness";
 
 const ID = "kgb.vault";
 const BIZ = "kgb.business";
@@ -64,6 +68,9 @@ export function VaultPage({ onError, access }: { onError: (e: string | null) => 
   const [notice, setNotice] = useState<string | null>(null);
 
   const [dupOnly, setDupOnly] = useState(false);
+  const [profile, setProfile] = useState(false);
+  const [bizOn, setBizOn] = useState(false);
+  const [toBiz, setToBiz] = useState<string | null>(null);
   const [twins, setTwins] = useState<Array<{ sigur: boolean; documente: Doc[] }>>([]);
   const [others, setOthers] = useState<Array<{ inv: Inv; where: string }>>([]);
 
@@ -80,7 +87,9 @@ export function VaultPage({ onError, access }: { onError: (e: string | null) => 
       setCui((c) => c || s.cui_firma);
       // The invoices of Business (issued, and purchases with those from e-Factura), when it is enabled and readable.
       const m = await api.listModules();
-      if (m.modules.some((x) => x.id === BIZ && x.enabled) && m.access[BIZ] !== "niciunul") {
+      const biz = m.modules.some((x) => x.id === BIZ && x.enabled) && m.access[BIZ] !== "niciunul";
+      setBizOn(biz && m.access[BIZ] !== "citire");
+      if (biz) {
         const [issued, bought, settings] = await Promise.all([
           api.moduleCall<Array<{ serie: string; numar: number; data: string; total: number; storno_de: string | null }>>(BIZ, "invoices"),
           api.moduleCall<Array<{ furnizor_cui?: string | null; numar: string; data: string; total: number; storno_de: string | null }>>(BIZ, "purchases"),
@@ -213,7 +222,22 @@ export function VaultPage({ onError, access }: { onError: (e: string | null) => 
         </label>
         <button disabled={busy || readOnly}>Salvează</button>
         <span className="muted small">Din el se știe care facturi sunt de vânzare și care de achiziție.</span>
+        <button type="button" disabled={busy} onClick={() => setProfile(true)}>
+          Profilul firmei din acte…
+        </button>
       </form>
+      {profile && (
+        <FirmProfile
+          readOnly={readOnly}
+          onClose={() => setProfile(false)}
+          onDone={(m) => {
+            setProfile(false);
+            setNotice(m);
+            setCui("");
+            void load();
+          }}
+        />
+      )}
 
       {sum && (
         <div className="vault-cats" role="tablist" aria-label="Categoriile">
@@ -289,6 +313,23 @@ export function VaultPage({ onError, access }: { onError: (e: string | null) => 
                         {m.otherDate && <span className="small">{" "}<span>{`(altă dată: ${ro(m.otherDate)} față de ${ro(d.factura?.data)})`}</span></span>}
                       </div>
                     ))}
+                    {bizOn && !readOnly && d.categorie === "facturi_achizitie" && !elsewhere(d).some((m) => m.where.startsWith("Business")) && toBiz !== d.id && (
+                      <button className="link small" disabled={busy} onClick={() => setToBiz(d.id)}>
+                        Înregistrează în Business…
+                      </button>
+                    )}
+                    {toBiz === d.id && (
+                      <ToBusiness
+                        doc={d.nume}
+                        inv={d.factura}
+                        onClose={() => setToBiz(null)}
+                        onDone={(msg) => {
+                          setToBiz(null);
+                          setNotice(msg);
+                          void load();
+                        }}
+                      />
+                    )}
                   </div>
                 )}
               </td>

@@ -18,7 +18,8 @@
 //!
 //! Commands: `adauga {name, data, cale?}`, `lista {categorie?, text?, de_confirmat?}`, `rezumat`,
 //! `confirma {id, version, categorie}`, `factura_save {id, version, factura}`, `sterge {id, version}`,
-//! `salveaza_copie {id, dest}`, `setari`, `setari_save {cui_firma, version?}`.
+//! `salveaza_copie {id, dest}`, `setari`, `setari_save {cui_firma, version?}`, `profil_firma` (7.10b: the firm's
+//! data read from the documents of „Actele firmei”, as proposals with the documents they come from).
 
 use std::collections::BTreeMap;
 use std::io::Read;
@@ -40,6 +41,8 @@ pub const ID: &str = "kgb.vault";
 pub const DOCUMENTS: &str = "documente";
 pub const SETTINGS: &str = "setari";
 /// The categories, in display order, with their names on screen.
+pub mod firm;
+
 pub const CATEGORIES: [(&str, &str); 11] = [
     ("identitate", "Actele firmei"),
     ("autorizatii", "Autorizații și avize"),
@@ -182,7 +185,8 @@ pub fn iso_date(t: &str) -> Option<String> {
         .then(|| format!("{y:04}-{m:02}-{d:02}"))
 }
 
-/// Any run of exactly 13 digits (a CNP) hidden.
+/// Any run of exactly 13 digits (a CNP) hidden, except right after the letter of a trade register number
+/// (`J2002001234220`, the form used since 2024: J, F or C glued to the digits), which no CNP has.
 pub fn hide_cnp(t: &str) -> String {
     let chars: Vec<char> = t.chars().collect();
     let mut out = String::with_capacity(t.len());
@@ -193,7 +197,8 @@ pub fn hide_cnp(t: &str) -> String {
             while e < chars.len() && chars[e].is_ascii_digit() {
                 e += 1;
             }
-            if e - k == 13 {
+            let register = k > 0 && matches!(chars[k - 1], 'J' | 'F' | 'C');
+            if e - k == 13 && !register {
                 out.push_str("•••••••••••••");
             } else {
                 out.extend(&chars[k..e]);
@@ -926,6 +931,31 @@ impl Vault {
         ))
     }
 
+    /// 7.10b: what the firm's papers say about the firm, field by field, each value with the documents it was
+    /// read from; two documents that disagree give two proposals, and the person chooses.
+    fn firm_profile(&self, ctx: &mut ModuleContext<'_>) -> CoreResult<Value> {
+        let mut found: Vec<(&'static str, String, Vec<String>)> = Vec::new();
+        let mut docs = self.all(ctx)?;
+        docs.retain(|r| s(r, "categorie") == "identitate");
+        docs.sort_by_key(|r| std::cmp::Reverse(i(r, "adaugat_ms")));
+        for r in &docs {
+            let f = firm::firm_from_text(&s(r, "text"));
+            for (camp, v) in [("nume", f.nume), ("cui", f.cui), ("reg_com", f.reg_com), ("adresa", f.adresa)] {
+                if v.is_empty() {
+                    continue;
+                }
+                match found.iter_mut().find(|(c, x, _)| *c == camp && *x == v) {
+                    Some((_, _, from)) => from.push(s(r, "nume")),
+                    None => found.push((camp, v, vec![s(r, "nume")])),
+                }
+            }
+        }
+        Ok(json!({
+            "documente": docs.len(),
+            "propuneri": found.iter().map(|(c, v, from)| json!({"camp": c, "valoare": v, "din": from})).collect::<Vec<_>>(),
+        }))
+    }
+
     fn summary(&self, ctx: &mut ModuleContext<'_>) -> CoreResult<Value> {
         let all = self.all(ctx)?;
         let (firm, version) = self.firm(ctx)?;
@@ -1061,6 +1091,7 @@ impl Module for Vault {
             "lista" => self.list(ctx, args(command, a)?),
             "rezumat" => self.summary(ctx),
             "dubluri" => self.duplicates(ctx),
+            "profil_firma" => self.firm_profile(ctx),
             "confirma" => self.confirm(ctx, args(command, a)?),
             "factura_save" => self.invoice_save(ctx, args(command, a)?),
             "sterge" => {
@@ -1109,6 +1140,8 @@ mod tests {
             "CNP •••••••••••••, tel 0722000111"
         );
         assert_eq!(hide_cnp("12345678901234"), "12345678901234", "14 digits are not a CNP");
+        assert_eq!(hide_cnp("Nr. ord. RC: J2002001234220"), "Nr. ord. RC: J2002001234220", "a trade register number");
+        assert_eq!(hide_cnp("CNP:1960101123456"), "CNP:•••••••••••••");
         assert_eq!(fold("Contract  Individual\nde MUNCĂ"), "contract individual de munca");
     }
 }
