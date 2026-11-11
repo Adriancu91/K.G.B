@@ -52,7 +52,10 @@ async function shot(p, name) {
 }
 
 const nav = (p) => p.eval("[...document.querySelectorAll('nav .nav span:first-child')].map(e => e.textContent)");
-const notes = (p) => p.eval("[...document.querySelectorAll('.list li .grow')].map(e => e.textContent)");
+// The notes are read and added through the module: its page is now the notes window of COS (7.4l-2), tested in cos-notes.
+const call = (p, command, args = {}) => p.eval(`window.__TAURI_INTERNALS__.invoke("module_call", ${JSON.stringify({ id: "kgb.notes", command, args })})`);
+const notes = async (p) => (await call(p, "list")).map((n) => n.text);
+const opened = (p) => p.until("!!document.querySelector('main .notes-window iframe')", 10000);
 const go = (p, label) => p.click(label, "nav .nav");
 
 try {
@@ -74,10 +77,10 @@ try {
 
   // 3. Use it.
   await go(p, "Note");
+  await opened(p);
   for (const t of ["Prima notă", "A doua notă — ăîșțâ"]) {
-    await p.fill("input[aria-label='Notă nouă']", t);
-    await p.click("Adaugă");
-    await p.until(`[...document.querySelectorAll('.list li .grow')].some(e => e.textContent === ${JSON.stringify(t)})`);
+    await call(p, "add", { text: t });
+    await sleep(5);
   }
   check("două note adăugate", (await notes(p)).length === 2, JSON.stringify(await notes(p)));
   await shot(p, "note");
@@ -103,7 +106,7 @@ try {
   await p.until("!document.querySelector('aside.collapsed')");
   check("profilul păstrat", (await p.text()).includes("Profil: Management"));
   await go(p, "Note");
-  await p.until("document.querySelectorAll('.list li .grow').length === 2");
+  await opened(p);
   check("notele păstrate după oprire forțată", (await notes(p)).length === 2);
   await shot(p, "dupa-oprire");
 
@@ -126,7 +129,7 @@ try {
   await p.click("Activează");
   await p.click("Acordă și activează");
   await go(p, "Note");
-  await p.until("document.querySelectorAll('.list li .grow').length === 2");
+  await opened(p);
   check("după reactivare notele sunt toate acolo", (await notes(p)).join("|") === "A doua notă — ăîșțâ|Prima notă");
   await shot(p, "reactivat");
 
