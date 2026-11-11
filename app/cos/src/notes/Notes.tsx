@@ -46,7 +46,7 @@ import { applyIcsTasks, noteTasksIcs, parseIcsTasks } from './tasks';
 import { noteMailText, noteMailto } from './mail';
 import { BACKGROUNDS, backgroundImage } from './backgrounds';
 import { clock, isAudio, isVideoName, MAX_RECORD_MIN, MAX_VIDEO_MIN, recordingName, startRecording, videoName, Recording } from './record';
-import { deriveKey, newSalt, OpenSecret, seal, SecretPayload, unseal } from './secret';
+import { deriveKey, newSalt, OpenSecret, seal, sealData, SecretPayload, unseal, unsealData } from './secret';
 import { tableAt, tableOp, TableOp } from './table';
 import { wrapEdit, headingEdit, paraStyleEdit, PARA_STYLES, clearEdit, tableText, Wrap, colorEdit, INK_COLORS, INK_SIZES, INK_FONTS, styleEdit, fontCss, alignEdit, equationAt, equationMark } from './inline';
 import { captureScreen } from '../screenshot';
@@ -830,6 +830,36 @@ Cuvântul rămâne în text, doar fără „#”.`, 'Scoate eticheta'))) return;
   const [pwError, setPwError] = useState('');
   const [pwBusy, setPwBusy] = useState(false);
 
+  // Atașamentele unei notițe blocate: fiecare fișier în clar devine o copie criptată cu cheia notiței (iv-ul în referință).
+  // Cele în clar se șterg doar dacă nicio altă notiță nu le mai folosește (o copie neblocată a notiței, de exemplu).
+  const sealFiles = async (key: CryptoKey, files: NoteFile[]) => {
+    const old: string[] = [];
+    const out: NoteFile[] = [];
+    for (const f of files) {
+      if (f.enc) { out.push(f); continue; }
+      const { iv, data } = await sealData(key, await api.readAttachment(f.id));
+      out.push({ ...f, id: await api.addAttachment(data, 'bin'), enc: iv });
+      old.push(f.id);
+    }
+    return { files: out, old };
+  };
+  const dropPlainFiles = (ids: string[], noteId: string) => {
+    if (!ids.length) return;
+    // După ce caietul s-a salvat cu referințele noi (salvarea e la câteva clipe după schimbare).
+    window.setTimeout(() => {
+      const used = new Set((latest.current?.notes ?? []).filter((n) => n.id !== noteId).flatMap((n) => (n.files ?? []).map((f) => f.id)));
+      for (const id of ids) if (!used.has(id)) void api.deleteAttachment?.(id).catch(() => {});
+    }, 3000);
+  };
+  const extOf = (name: string): 'pdf' | 'webm' | 'bin' => (/[.]pdf$/i.test(name) ? 'pdf' : /[.]webm$/i.test(name) ? 'webm' : 'bin');
+  /** Octeții unui atașament: unul criptat se decriptează cu cheia notiței deschise. */
+  const readAtt = async (f: NoteFile) => {
+    const data = await api.readAttachment(f.id);
+    if (!f.enc) return data;
+    if (!opened) throw new Error('Notița e blocată.');
+    return unsealData(opened.key, f.enc, data);
+  };
+
   const lockNote = async () => {
     if (!note || note.secret) return;
     if (pw1.length < 4) { setPwError('Parola trebuie să aibă cel puțin 4 caractere.'); return; }
@@ -838,12 +868,16 @@ Cuvântul rămâne în text, doar fără „#”.`, 'Scoate eticheta'))) return;
     try {
       const salt = newSalt();
       const key = await deriveKey(pw1, salt);
-      const plain: SecretPayload = { body: note.body, ...(note.images ? { images: note.images } : {}), ...(note.imageText ? { imageText: note.imageText } : {}), ...(note.imageInk ? { imageInk: note.imageInk } : {}), ...(note.imageDiagram ? { imageDiagram: note.imageDiagram } : {}), ...(note.files ? { files: note.files } : {}), ...(note.boxes ? { boxes: note.boxes } : {}) };
+      const sealed = note.files ? await sealFiles(key, note.files) : { files: undefined, old: [] as string[] };
+      const plain: SecretPayload = { body: note.body, ...(note.images ? { images: note.images } : {}), ...(note.imageText ? { imageText: note.imageText } : {}), ...(note.imageInk ? { imageInk: note.imageInk } : {}), ...(note.imageDiagram ? { imageDiagram: note.imageDiagram } : {}), ...(sealed.files ? { files: sealed.files } : {}), ...(note.boxes ? { boxes: note.boxes } : {}) };
       const secret = await seal(key, salt, plain);
       const id = note.id;
       change((s) => ({ ...s, notes: s.notes.map((n) => (n.id === id ? { ...n, body: '', images: undefined, imageText: undefined, imageInk: undefined, imageDiagram: undefined, files: undefined, sheetLinks: undefined, boxes: undefined, secret } : n)) }));
+      dropPlainFiles(sealed.old, id);
       setLockDlg(false);
       setStatus('Notița e blocată cu parolă.');
+    } catch (e) {
+      setPwError('Notița nu s-a putut bloca: ' + ((e as Error).message || 'eroare'));
     } finally {
       setPw1(''); setPw2(''); setPwBusy(false);
     }
@@ -854,8 +888,20 @@ Cuvântul rămâne în text, doar fără „#”.`, 'Scoate eticheta'))) return;
     setPwBusy(true);
     setPwError('');
     try {
-      const open = await unseal(pw1, stored.secret);
-      setUnlocked((u) => ({ ...u, [stored.id]: open }));
+      let open = await unseal(pw1, stored.secret);
+      const left = (open.plain.files ?? []).filter((f) => !f.enc);
+      if (left.length) {
+        const sealed = await sealFiles(open.key, open.plain.files ?? []);
+        open = { ...open, plain: { ...open.plain, files: sealed.files } };
+        const secret = await seal(open.key, open.salt, open.plain);
+        const id = stored.id;
+        sealSeq.current++;
+        change((s) => ({ ...s, notes: s.notes.map((n) => (n.id === id ? { ...n, secret } : n)) }));
+        dropPlainFiles(sealed.old, id);
+        setStatus('Am criptat și atașamentele rămase necriptate.');
+      }
+      const opened1 = open;
+      setUnlocked((u) => ({ ...u, [stored.id]: opened1 }));
       setPw1('');
     } catch (e) {
       setPwError((e as Error).message || 'Notița nu s-a putut deschide.');
@@ -898,7 +944,15 @@ Cuvântul rămâne în text, doar fără „#”.`, 'Scoate eticheta'))) return;
 
   const removePassword = async () => {
     if (!stored || !opened || !(await askYes('Scoți parola? Notița va fi din nou la vedere pentru oricine deschide Cyber Office Studio.', 'Scoate parola'))) return;
-    const plain = opened.plain;
+    const key = opened.key;
+    const files = opened.plain.files
+      ? await Promise.all(opened.plain.files.map(async (f) => {
+        if (!f.enc) return f;
+        const { enc: _enc, ...rest } = f;
+        return { ...rest, id: await api.addAttachment(await unsealData(key, f.enc, await api.readAttachment(f.id)), extOf(f.name)) };
+      }))
+      : undefined;
+    const plain = { ...opened.plain, ...(files ? { files } : {}) };
     sealSeq.current++;
     change((s) => ({ ...s, notes: s.notes.map((n) => (n.id === stored.id ? { ...n, ...plain, secret: undefined } : n)) }));
     relock();
@@ -1070,7 +1124,7 @@ Cuvântul rămâne în text, doar fără „#”.`, 'Scoate eticheta'))) return;
     if (room <= 0) { alert(`O notiță poate avea cel mult ${MAX_IMAGES} poze.`); return; }
     try {
       const { pdfPageImages } = await import('./pdftext');
-      const { images, texts, pages } = await pdfPageImages(await api.readAttachment(f.id), room);
+      const { images, texts, pages } = await pdfPageImages(await readAtt(f), room);
       await addImages(images, texts);
       if (pages > images.length) alert(`Au intrat primele ${images.length} pagini din ${pages} (o notiță are cel mult ${MAX_IMAGES} poze).`);
     } catch { alert(`Paginile din „${f.name}” nu au putut fi puse în notiță.`); }
@@ -1224,21 +1278,21 @@ Cuvântul rămâne în text, doar fără „#”.`, 'Scoate eticheta'))) return;
   };
   const saveCopy = async (f: NoteFile) => {
     try {
-      const saved = await api.exportFile({ format: 'any', suggestedName: f.name, data: await api.readAttachment(f.id) });
+      const saved = await api.exportFile({ format: 'any', suggestedName: f.name, data: await readAtt(f) });
       if (saved) setStatus(`Copia „${f.name}” e salvată.`);
     } catch { alert(`Fișierul „${f.name}” nu mai e lângă caiet (dosarul Notițe-atașamente).`); }
   };
   // Un .docx / .xlsx / .csv / .pptx / o poză atașată se deschide direct în aplicația lui, într-un tab nou (fileKinds.ts).
   const openInApp = async (f: NoteFile) => {
     try {
-      openBytes(f.name, await api.readAttachment(f.id));
+      openBytes(f.name, await readAtt(f));
       setStatus(`Deschis într-un tab nou: ${f.name}`);
     } catch { alert(`Fișierul „${f.name}” nu mai e lângă caiet (dosarul Notițe-atașamente).`); }
   };
 
   const openPdf = async (f: NoteFile) => {
     try {
-      onOpenPdf?.({ path: f.name, data: await api.readAttachment(f.id) });
+      onOpenPdf?.({ path: f.name, data: await readAtt(f) });
     } catch {
       alert(`PDF-ul „${f.name}” nu mai e lângă caiet (dosarul Notițe-atașamente).`);
     }
@@ -1286,7 +1340,7 @@ Cuvântul rămâne în text, doar fără „#”.`, 'Scoate eticheta'))) return;
   const playAudio = async (f: NoteFile) => {
     if (audioUrl[f.id]) return;
     try {
-      const data = await api.readAttachment(f.id);
+      const data = await readAtt(f);
       setAudioUrl((m) => ({ ...m, [f.id]: URL.createObjectURL(new Blob([data as BlobPart], { type: isVideoName(f.name) ? 'video/webm' : 'audio/webm' })) }));
     } catch { alert(`Înregistrarea „${f.name}” nu mai e lângă caiet (dosarul Notițe-atașamente).`); }
   };
@@ -2791,12 +2845,12 @@ ${note.imageText[i]!.slice(0, 400)}`}>📋 Text</button>
         <div className="print-overlay" onMouseDown={(e) => { if (e.target === e.currentTarget && !pwBusy) setLockDlg(false); }}>
           <form className="print-dlg note-lock-dlg" role="dialog" aria-label="Blochează notița" onSubmit={(e) => { e.preventDefault(); lockNote(); }}>
             <h3>🔒 Blochează „{shownTitle(note)}”</h3>
-            <p className="print-info">Textul, pozele și PDF-urile notiței se criptează (AES-256). Titlul rămâne vizibil în listă.
+            <p className="print-info">Textul, pozele, PDF-urile și celelalte fișiere atașate ale notiței se criptează (AES-256). Titlul rămâne vizibil în listă.
               <b> Dacă uiți parola, notița nu mai poate fi deschisă de nimeni.</b></p>
             <input type="password" autoFocus placeholder="Parola" value={pw1} onChange={(e) => { setPw1(e.target.value); setPwError(''); }} aria-label="Parola" />
             <input type="password" placeholder="Parola, încă o dată" value={pw2} onChange={(e) => { setPw2(e.target.value); setPwError(''); }} aria-label="Parola, încă o dată" />
             {pwError && <p className="note-pw-error">{pwError}</p>}
-            <p className="print-info">Atenție: variantele din Versiuni făcute înainte de blocare păstrează notița neblocată.</p>
+            <p className="print-info">Atenție: variantele din Versiuni făcute înainte de blocare păstrează notița neblocată; la fel, până la curățarea lor, celelalte calculatoare care au primit notița și backupurile făcute înainte.</p>
             <div className="note-lock-actions">
               <button type="button" onClick={() => setLockDlg(false)} disabled={pwBusy}>Renunță</button>
               <button type="submit" className="primary" disabled={!pw1 || !pw2 || pwBusy}>{pwBusy ? 'Se blochează…' : 'Blochează'}</button>

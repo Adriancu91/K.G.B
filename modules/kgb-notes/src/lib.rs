@@ -214,6 +214,11 @@ impl Module for Notes {
                 let a: AttachmentRead = args(command, a)?;
                 Ok(serde_json::json!({ "data": notebook::attachment_read(ctx, &a.id)? }))
             }
+            "attachment_delete" => {
+                let a: AttachmentRead = args(command, a)?;
+                notebook::attachment_delete(ctx, &a.id)?;
+                Ok(serde_json::json!({ "deleted": a.id }))
+            }
             _ => Err(CoreError::invalid(
                 "modulul Note",
                 format!("comandă necunoscută „{command}”"),

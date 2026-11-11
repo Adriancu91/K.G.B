@@ -1,0 +1,12 @@
+{
+  "dict": {
+    "Am criptat și atașamentele rămase necriptate.": "The attachments left unencrypted are now encrypted too.",
+    "Atenție: variantele din Versiuni făcute înainte de blocare păstrează notița neblocată; la fel, până la curățarea lor, celelalte calculatoare care au primit notița și backupurile făcute înainte.": "Note: the versions in Versions made before locking keep the note unlocked; so do, until they are cleaned, the other computers that received the note and the backups made before.",
+    "Notița e blocată.": "The note is locked.",
+    "Notița nu s-a putut bloca: ": "The note could not be locked: ",
+    "Textul, pozele, PDF-urile și celelalte fișiere atașate ale notiței se criptează (AES-256). Titlul rămâne vizibil în listă.": "The note's text, pictures, PDFs and other attached files are encrypted (AES-256). The title stays visible in the list.",
+    "Atașamentul nu s-a putut decripta.": "The attachment could not be decrypted."
+  },
+  "templates": {},
+  "skip": []
+}

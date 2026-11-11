@@ -45,6 +45,21 @@ export async function seal(key: CryptoKey, salt: string, plain: SecretPayload): 
   return { v: 1, salt, iv: toB64(iv), data: toB64(data) };
 }
 
+/** Un atașament al unei notițe blocate: octeții lui criptați cu cheia notiței; iv-ul stă în referință (`enc`). */
+export async function sealData(key: CryptoKey, data: Uint8Array): Promise<{ iv: string; data: Uint8Array }> {
+  const iv = crypto.getRandomValues(new Uint8Array(12));
+  return { iv: toB64(iv), data: new Uint8Array(await crypto.subtle.encrypt({ name: 'AES-GCM', iv }, key, data as BufferSource)) };
+}
+
+/** Octeții în clar ai unui atașament criptat; aruncă eroare dacă nu se potrivesc cu cheia. */
+export async function unsealData(key: CryptoKey, iv: string, data: Uint8Array): Promise<Uint8Array> {
+  try {
+    return new Uint8Array(await crypto.subtle.decrypt({ name: 'AES-GCM', iv: fromB64(iv) }, key, data as BufferSource));
+  } catch {
+    throw new Error('Atașamentul nu s-a putut decripta.');
+  }
+}
+
 /** Deschide notița; aruncă eroare la parolă greșită (AES-GCM verifică singur integritatea). */
 export async function unseal(password: string, s: Secret): Promise<OpenSecret> {
   const key = await deriveKey(password, s.salt);

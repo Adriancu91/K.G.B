@@ -332,5 +332,9 @@ export function installCosBridge(host: KgbHost, kind: BridgeKind = SHEETS): void
       return (await kgb.moduleCall<{ id: string }>("kgb.notes", "attachment_add", { data: b64(data), ext: ext ?? "bin" })).id;
     },
     readAttachment: async (id: string) => unb64((await kgb.moduleCall<{ data: string }>("kgb.notes", "attachment_read", { id })).data),
+    deleteAttachment: async (id: string) => {
+      if (notesReadOnly) throw new Error("Rolul tău poate doar citi notele.");
+      await kgb.moduleCall("kgb.notes", "attachment_delete", { id });
+    },
   });
 }

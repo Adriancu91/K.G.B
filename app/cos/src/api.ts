@@ -301,6 +301,8 @@ interface SuiteBridge {
   /** Păstrează un atașament lângă caiet și întoarce id-ul lui; `ext`: „pdf” (implicit), „webm” (înregistrare audio) sau „bin” (orice alt fișier). */
   addAttachment(data: Uint8Array, ext?: 'pdf' | 'webm' | 'bin'): Promise<string>;
   readAttachment(id: string): Promise<Uint8Array>;
+  /** Șterge un atașament (după ce notița blocată și-a criptat copia); lipsă = nu se poate șterge. */
+  deleteAttachment?(id: string): Promise<void>;
   /** Slide-ul pe al doilea monitor (doar în Electron). */
   audience?: AudienceBridge;
   /** Export MP4 cu FFmpeg (doar în Electron și doar dacă FFmpeg e instalat). */
@@ -487,6 +489,7 @@ const fallback: SuiteBridge = {
     if (!memAttachments[id]) throw new Error('Atașamentul nu mai e disponibil.');
     return memAttachments[id].slice();
   },
+  deleteAttachment: async (id) => { delete memAttachments[id]; },
   listVersions: async (path) => (memVersions[path] ?? []).map((x) => x.v),
   readVersion: async (path, id) => memVersions[path]?.find((x) => x.v.id === id)?.content ?? '',
   putDraft: async (d) => { memDrafts[d.id] = { ...d, time: Date.now() }; },
