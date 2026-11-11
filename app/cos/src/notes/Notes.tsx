@@ -874,6 +874,9 @@ Cuvântul rămâne în text, doar fără „#”.`, 'Scoate eticheta'))) return;
       const id = note.id;
       change((s) => ({ ...s, notes: s.notes.map((n) => (n.id === id ? { ...n, body: '', images: undefined, imageText: undefined, imageInk: undefined, imageDiagram: undefined, files: undefined, sheetLinks: undefined, boxes: undefined, secret } : n)) }));
       dropPlainFiles(sealed.old, id);
+      // După salvarea care urmează blocării (ea poate păstra o variantă cu notița încă în clar): și variantele vechi se curăță.
+      const at = storePath;
+      if (at) window.setTimeout(() => { void api.scrubNoteVersions?.(at, id, secret).catch(() => 0); }, 4000);
       setLockDlg(false);
       setStatus('Notița e blocată cu parolă.');
     } catch (e) {
@@ -2850,7 +2853,7 @@ ${note.imageText[i]!.slice(0, 400)}`}>📋 Text</button>
             <input type="password" autoFocus placeholder="Parola" value={pw1} onChange={(e) => { setPw1(e.target.value); setPwError(''); }} aria-label="Parola" />
             <input type="password" placeholder="Parola, încă o dată" value={pw2} onChange={(e) => { setPw2(e.target.value); setPwError(''); }} aria-label="Parola, încă o dată" />
             {pwError && <p className="note-pw-error">{pwError}</p>}
-            <p className="print-info">Atenție: variantele din Versiuni făcute înainte de blocare păstrează notița neblocată; la fel, până la curățarea lor, celelalte calculatoare care au primit notița și backupurile făcute înainte.</p>
+            <p className="print-info">Din variantele vechi ale caietului (Versiuni) textul notiței se scoate și el. Rămâne necriptat doar pe celelalte calculatoare care au primit notița și în backupurile făcute înainte, până la curățarea lor.</p>
             <div className="note-lock-actions">
               <button type="button" onClick={() => setLockDlg(false)} disabled={pwBusy}>Renunță</button>
               <button type="submit" className="primary" disabled={!pw1 || !pw2 || pwBusy}>{pwBusy ? 'Se blochează…' : 'Blochează'}</button>

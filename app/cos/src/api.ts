@@ -331,6 +331,8 @@ interface SuiteBridge {
   noteSync?(msg: NoteSync): Promise<number>;
   onNoteSync?(cb: (msg: NoteSync) => void): () => void;
   listVersions(path: string): Promise<FileVersion[]>;
+  /** Notița blocată (D-090): textul ei în clar se scoate din variantele vechi ale caietului; lipsă = nu există variante. */
+  scrubNoteVersions?(path: string, noteId: string, secret: unknown): Promise<number>;
   readVersion(path: string, id: string): Promise<string>;
   /** Ciorna unui document nesalvat (o copie la câteva secunde cât scrii; rămâne 7 zile). */
   putDraft(d: { id: string; kind: FileKind; title: string; content: string }): Promise<void>;
