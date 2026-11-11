@@ -20,6 +20,7 @@ import { AppointmentsPage } from "./modules/appointments/AppointmentsPage";
 import { ContractsPage } from "./modules/contracts/ContractsPage";
 import { VaultPage } from "./modules/vault/VaultPage";
 import { MaintenancePage } from "./modules/maintenance/MaintenancePage";
+import { RecipesPage } from "./modules/recipes/RecipesPage";
 import { NotificationBell } from "./components/Notifications";
 import { Catalog } from "./pages/Catalog";
 import { DataPage } from "./pages/DataPage";
@@ -55,6 +56,7 @@ const MODULE_PAGES: Record<string, ComponentType<{ onError: (e: string | null) =
   "kgb.contracts": ContractsPage,
   "kgb.vault": VaultPage,
   "kgb.maintenance": MaintenancePage,
+  "kgb.recipes": RecipesPage,
   "kgb.write": WritePage,
 };
 

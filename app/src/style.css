@@ -1872,6 +1872,20 @@ tr.mnt-curand td {
 .mnt-state-fara_citire {
   color: #6a1b9a;
 }
+.recipe-sum {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  margin: 8px 0;
+}
+.recipe-allergens {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 2px 12px;
+  border: 1px solid var(--border, #ccc);
+  border-radius: 6px;
+  margin: 8px 0;
+}
 .vault-cats {
   display: flex;
   flex-wrap: wrap;
