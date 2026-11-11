@@ -1,7 +1,74 @@
-# K.G.B. — Etapa 7: raport (ciornă, partea sesiunii COS)
+# K.G.B. — Etapa 7: raport (ciornă)
 
-**Data:** 11 nov. 2026 · **Statut:** CIORNĂ. Secțiunile de mai jos sunt ale sesiunii COS; sesiunea K.G.B. adaugă restul (nucleul, Business, Permise, telefonul, piața, poarta).
+**Data:** 12 nov. 2026 · **Statut:** CIORNĂ, până la trecerea completă prin toate testele (poarta, mai jos). Au lucrat două sesiuni: sesiunea K.G.B. (nucleul, Business, Permise, telefonul, profilul firmei din documente, programul de facturare online, porțile) și sesiunea COS (ce s-a mutat din Cyber Office Studio, modulele noi pentru tipuri de firme, depozitul și dublurile). Fiecare pas are în `WORKLIST.md` dovada lui: commit-ul și testele trecute în fereastra reală.
 **Cum s-a lucrat:** fiecare pas pe o ramură `kgb/cos-*`, construit și încercat în fereastra reală (e2e pe build-ul release, cu date separate), apoi trecut prin poarta sesiunii K.G.B. și unit în `main`. Deciziile s-au luat de comun acord (D-074).
+
+## Pe scurt
+- **Ce s-a cerut:** Etapa 7 a pornit ca „module de afaceri” (surse externe, permise, echipă, calculator, știri, piață). Pe drum, proprietarul a cerut în plus:
+  - agenda de parteneri, datele firmei după CUI, completarea automată;
+  - Acasă ca centru de control, mesaje, telefonul;
+  - funcțiile mutate din Cyber Office Studio;
+  - profiluri pe tipuri de firme și module noi pentru ele;
+  - avize și autorizații cu dosar;
+  - depozitul de documente cu profilul firmei din documente.
+- **Ce s-a făcut:** toți pașii fără 🔒 din 7.1–7.10. Rămân doar probele proprietarului și decizia despre e-mail (lista la „Ce NU e făcut”).
+- **Cum s-a verificat:** fiecare schimbare a fost construită și încercată în fereastra reală (e2e pe build-ul release, cu date de test separate), cu traducerea în engleză fără text netradus și cu testele Rust și clippy fără avertismente, înainte de a intra în `main`.
+- **Decizii noi:** D-062…D-090; cele mai importante sunt în secțiunile de mai jos.
+
+## Nucleul, Business și paginile comune (sesiunea K.G.B.)
+- **Surse externe (7.1, D-062/D-063):** fiecare sursă din afară are adresă, condiții, licență și dată de verificare. Nimic nu e activ din fabrică.
+- **Internetul (D-086):** cererile pleacă doar la clicul omului, prin nucleu, doar spre adrese din afară, cu „Setări › Internet” pornit.
+- **Module noi:** Permise și autorizații (7.2), Echipă și pontaj (7.3, D-064: pontaj declarat, fără supraveghere), Calculator și conversii (7.4, D-065), Știri (7.5).
+- **Pagini comune:**
+  - agenda de parteneri, comună tuturor modulelor (7.4a, D-066);
+  - „Caută la ANAF” după CUI (7.4b);
+  - completarea din agendă și din documentele anterioare (7.4c);
+  - Acasă ca centru de control, cu panouri noi (7.4d, 7.4e);
+  - mesaje în echipă (7.4f) și „Echipa pe scurt” doar pentru administratori (7.4h);
+  - profilurile pe tipuri de activitate (7.4n, apoi 7.9c, care propun și avizele).
+- **Business:**
+  - plăți legate de mai multe facturi;
+  - oferte cu valabilitate, comenzi cu aprobare, stoc rezervat și blocat, livrări urmărite;
+  - parc auto cu actele care expiră (7.4j, 7.4k).
+- **Telefonul (7.4m, D-068/D-069):**
+  - pagina locală pentru telefoane, pe orice PC, cu preluare automată;
+  - fișa de recepție pe linii, inventarul numărat, pontajul, livrările șoferului, taskurile și mesajele;
+  - K.G.B. lângă ceas pe PC-ul care servește telefoanele.
+- **Printre altele:**
+  - tipărirea pe hârtie și PDF-ul paginilor ferestrelor (D-081, D-084);
+  - semnătura digitală cu certificatele din Windows (D-085);
+  - „Trimite o observație” cu poza ferestrei și cu capturile omului.
+
+## Avize, autorizații și dosare (7.2, 7.9a–7.9d)
+- **Catalogul de proceduri (D-088):** 26 de proceduri, doar din surse oficiale, fiecare cu sursele și data verificării. Câmpurile pe care sursa nu le spune rămân goale.
+- **Dosarul de depus:** din procedură, cu lista de verificare. „Exportă dosarul” face un folder cu opisul PDF, adresa de înaintare completată din datele firmei și documentele atașate, numerotate.
+- **„Autorizațiile firmei”:** autorizațiile pe care firma le are. Cele expirate și cele care expiră curând apar sus, cu memento-uri pe intervale (în ultimele 30 de zile, în ultima săptămână, în ziua expirării, apoi săptămânal). Se pot completa din actele din depozit.
+- **Documente și modele:** 22 de modele pe categorii (administrative, comerciale, HR, tehnice, juridice, avize). Foile de calcul au 12 șabloane cu formule verificate de mână.
+
+## Profilul firmei din documente (7.10b)
+Totul e o propunere. Omul o vede lângă ce există deja și o confirmă; nimic nu se scrie pe tăcute.
+- **Datele firmei**, din certificatul constatator: denumirea, CUI-ul (doar cu cifra de control corectă), nr. Registrului Comerțului (forma veche și cea nouă) și sediul.
+- **Factura de achiziție** se înregistrează în Business, iar Business refuză aceeași factură a doua oară.
+- **Autorizațiile** trec în Permise.
+- **Contractele** trec în Contracte (sesiunea COS).
+- **Chitanțele** trec în casă: plată sau încasare după CUI-ul firmei. Aceeași chitanță deja în casă e numită.
+- **Liniile unei facturi e-Factura de achiziție** devin o recepție (NIR). Fiecare linie e potrivită cu produsul după codul furnizorului sau după nume; altfel devine produs nou, adăugat doar la înregistrare.
+- **Facturile PDF:** liniile lor nu se citesc sigur, deci recepția se face doar din XML.
+
+## Programul de facturare online, doar citire (7.10c, D-089)
+- **Ce oferă API-ul programului (verificat pe documentația lui oficială):** nu listează facturile emise; dă doar valoarea și linkul PDF pentru o factură cerută după serie și număr. Cheia lui poate tot, inclusiv să anuleze și să șteargă.
+- **De aceea, în K.G.B.:**
+  - cheia e sigilată cu DPAPI doar pe acest PC și nu se dă înapoi paginii;
+  - există doar două cereri de citire, iar un test pică dacă în cod apare vreo cerere de scriere;
+  - se citesc cel mult 500 de numere odată, una pe secundă, cu oprire după 5 numere lipsă la rând;
+  - PDF-ul se aduce doar de pe site-ul programului;
+  - cererile pleacă doar la clic, cu internetul pornit și programul aprobat în Surse externe.
+- **Testul:** e2e cu un server local care imită programul. Proba cu contul proprietarului rămâne la el.
+
+## Istoricul de pe acest PC după blocarea unei notițe (D-090, nucleu)
+- **`forget_history`:** compactează jurnalul, retrage fișierele fără referință și șterge `retired/`. `quarantine/` rămâne pentru diagnoză.
+- **Testul:** caută pe tot dosarul textul și atașamentul de dinainte de blocare. Le găsește înainte de ștergere și nu le mai găsește după.
+- **Ce nu șterge:** nimic de pe alte PC-uri și nimic din backupuri. Un PC rămas în urmă face apoi o sincronizare completă.
 
 ## Module noi pentru tipuri de firme (7.9e)
 Cele cinci module sunt propuse la profilurile de activitate potrivite (Situații de lucrări: construcții, servicii, producție); e2e activity 12/12.
@@ -50,3 +117,11 @@ Cele cinci module sunt propuse la profilurile de activitate potrivite (Situații
 - **Imagini, prezentări și video** din COS nu s-au mutat (decizia proprietarului: mai târziu).
 - **Citirea contractelor** se bazează pe formulările obișnuite; un contract scris altfel dă câmpuri goale („Nu am găsit: …”), pe care le completează omul.
 - **Notițele blocate pe alte PC-uri:** istoricul lor se curăță doar când omul îl șterge acolo.
+- **Programul de facturare online:** e încercat doar cu un server local care imită documentația. Linkul PDF poate cere autentificare, iar ce se întâmplă la depășirea limitei nu e spus în documentație; ambele se văd abia cu contul proprietarului (🔒).
+- **Cotele de TVA (21 / 11 / 0)** rămân de confirmat cu un contabil (D-052).
+- **Etapa 6:** proba cu al doilea PC (6.10) și poarta 6.12 sunt tot 🔒. Sincronizarea între PC-uri e verificată doar pe un singur PC (noduri de test).
+- **Profilul firmei din documente:** citește formulările obișnuite. Un act scris altfel dă câmpuri goale, pe care omul le completează.
+
+## Ce cere poarta Etapei 7
+1. Trecerea completă prin toate testele e2e pe un singur build din `main`. Tabelul se adaugă aici, apoi statutul trece din CIORNĂ în FINAL.
+2. Decizia proprietarului, separat, despre ce rămâne 🔒 (probele de mai sus, e-mailul), dacă vrea să le închidă înainte de Etapa 8.
