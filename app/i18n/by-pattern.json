@@ -1725,11 +1725,6 @@
   "f": "modules/kgb-calc/src/units.rs"
  },
  {
-  "ro": "numărul",
-  "en": "number",
-  "f": "modules/kgb-contracts/src/lib.rs"
- },
- {
   "ro": "Contract de prestări servicii",
   "en": "Service agreement",
   "f": "modules/kgb-docs/src/lib.rs"

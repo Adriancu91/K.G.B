@@ -158,6 +158,28 @@ function endText(c: Contract): string {
 const blankContract = { numar: "", titlu: "", parte: "client", partener: "", partener_nume: "", inceput: iso(new Date()), sfarsit: "", prelungire_auto: false, prelungire_luni: "12", preaviz_zile: "30", nota: "" };
 const blankLine = { denumire: "", um: "lună", cantitate: "1", pret: "", tva: "21", perioada: "lunar", zi_facturare: "1", de_la: "", pana_la: "", indexare: "" };
 
+/** A proposal from the vault (7.10b, „Propune contractul…”), as kgb.vault `contract_propunere` gives it. */
+interface Proposal {
+  document: string;
+  parte: string;
+  numar: string;
+  data: string;
+  inceput: string;
+  sfarsit: string;
+  durata_luni: number | null;
+  nedeterminata: boolean;
+  prelungire_auto: boolean;
+  preaviz_zile: number | null;
+  partener_cui: string;
+  partener_nume: string;
+}
+
+/** The last day of a term of `months` from `start` (`AAAA-LL-ZZ`): 01.02.2026 + 12 months → 31.01.2027. */
+function endOf(start: string, months: number): string {
+  const [y, m, d] = start.split("-").map(Number);
+  return iso(new Date(y!, m! - 1 + months, d! - 1));
+}
+
 export function ContractsPage({ onError, access }: { onError: (e: string | null) => void; access?: string }) {
   const readOnly = access === "citire";
   const today = iso(new Date());
@@ -167,6 +189,52 @@ export function ContractsPage({ onError, access }: { onError: (e: string | null)
   const [side, setSide] = useState("");
   const [open, setOpen] = useState<Detail | null>(null);
   const [form, setForm] = useState(blankContract);
+  const [proposed, setProposed] = useState<{ document: string; missing: string[] } | null>(null);
+  // A proposal from the vault: the form of a new contract filled with what was read; nothing is saved without the person.
+  useEffect(() => {
+    let raw: string | null = null;
+    try {
+      raw = sessionStorage.getItem("kgb.contracts.propunere");
+      sessionStorage.removeItem("kgb.contracts.propunere");
+    } catch {
+      raw = null;
+    }
+    if (!raw) return;
+    const p = JSON.parse(raw) as Proposal;
+    const start = p.inceput || p.data || iso(new Date());
+    const end = p.nedeterminata ? "" : p.sfarsit || (p.durata_luni ? endOf(start, p.durata_luni) : "");
+    const missing = [
+      ...(p.numar ? [] : ["numărul"]),
+      ...(p.inceput || p.data ? [] : ["data"]),
+      ...(p.partener_nume || p.partener_cui ? [] : ["partenerul"]),
+      ...(end || p.nedeterminata ? [] : ["sfârșitul"]),
+    ];
+    setTab("contracte");
+    setForm({
+      ...blankContract,
+      numar: p.numar,
+      titlu: p.document.replace(/[.][^.]+$/, "").slice(0, 200),
+      parte: p.parte === "furnizor" ? "furnizor" : "client",
+      partener_nume: p.partener_nume,
+      inceput: start,
+      sfarsit: end,
+      prelungire_auto: p.prelungire_auto && !!end,
+      prelungire_luni: String(p.durata_luni && p.durata_luni <= 120 ? p.durata_luni : 12),
+      preaviz_zile: String(p.preaviz_zile ?? 30),
+      nota: `Din depozit: ${p.document}`.slice(0, 2000),
+    });
+    setProposed({ document: p.document, missing });
+    // The partner from the directory, by CUI (as kgb_core::ids compares it).
+    if (p.partener_cui) {
+      api
+        .moduleCall<Card[]>(ID, "parteneri", { text: p.partener_cui })
+        .then((cards) => {
+          const c = cards.find((x) => cuiKey(x.cui) === cuiKey(p.partener_cui));
+          if (c) setForm((f) => ({ ...f, partener: c.id, partener_nume: c.denumire }));
+        })
+        .catch(() => {});
+    }
+  }, []);
   const [cards, setCards] = useState<Card[]>([]);
   const [line, setLine] = useState(blankLine);
   const [until, setUntil] = useState(monthEnd());
@@ -502,6 +570,12 @@ export function ContractsPage({ onError, access }: { onError: (e: string | null)
           )}
 
           <h3>Contract nou</h3>
+          {proposed && (
+            <p className="warn" role="status" data-testid="contract-proposed">
+              <span>{`Propus din documentul „${proposed.document}”: verifică datele și apasă „Salvează contractul”.`}</span>
+              {proposed.missing.length > 0 && <span>{" "}<span>{`Nu am găsit: ${proposed.missing.join(", ")}.`}</span></span>}
+            </p>
+          )}
           <form
             className="row wrap"
             onSubmit={(e) => {
@@ -521,6 +595,7 @@ export function ContractsPage({ onError, access }: { onError: (e: string | null)
                   nota: form.nota,
                 });
                 setForm(blankContract);
+                setProposed(null);
                 setNotice("Contractul e salvat ca ciornă. Adaugă ce se facturează, apoi apasă „Activează”.");
                 await openContract(r.id);
               });
