@@ -3,7 +3,7 @@
 // and automatic renewals. Modules do not call each other: this page asks Business to issue the invoice, then
 // marks the period here. If the invoice is issued but the mark fails, the page says so, so it is not lost.
 // A read-only role sees everything and changes nothing (the core refuses anyway; the buttons say so first).
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { api, message } from "../../api";
 import { cuiKey, findBusinessPartner } from "./cui";
 
@@ -176,6 +176,7 @@ export function ContractsPage({ onError, access }: { onError: (e: string | null)
   const [events, setEvents] = useState<CalEvent[]>([]);
   const [biz, setBiz] = useState<{ on: boolean; write: boolean }>({ on: false, write: false });
   const [busy, setBusy] = useState(false);
+  const openId = useRef<string | null>(null);
   const [notice, setNotice] = useState<string | null>(null);
 
   const load = useCallback(async () => {
@@ -195,6 +196,7 @@ export function ContractsPage({ onError, access }: { onError: (e: string | null)
 
   const openContract = async (id: string) => {
     try {
+      openId.current = id;
       setOpen(await api.moduleCall<Detail>(ID, "contract", { id, azi: today }));
       setLine({ ...blankLine, de_la: "" });
     } catch (e) {
@@ -212,7 +214,8 @@ export function ContractsPage({ onError, access }: { onError: (e: string | null)
       setBusy(false);
     }
     await load();
-    if (open) await openContract(open.id);
+    // The card shown now (a save may have opened another one meanwhile).
+    if (openId.current) await openContract(openId.current);
   };
   const lineName = (id: string) => open?.linii.find((l) => l.id === id)?.denumire ?? "?";
 
@@ -367,6 +370,7 @@ export function ContractsPage({ onError, access }: { onError: (e: string | null)
                       void run(async () => {
                         await api.moduleCall(ID, "contract_delete", { id: open.id, version: open.version });
                         setOpen(null);
+                        openId.current = null;
                       })
                     }
                   >

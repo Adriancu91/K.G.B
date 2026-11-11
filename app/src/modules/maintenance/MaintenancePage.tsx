@@ -2,7 +2,7 @@
 // without a reading said so), the equipment with its plans, history, readings and costs, and the costs per year.
 // What is due is computed by the module, never written; with days and a counter, it says which one decides.
 // A read-only role sees everything and changes nothing (the core refuses anyway; the buttons say so first).
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { api, message } from "../../api";
 
 const ID = "kgb.maintenance";
@@ -121,13 +121,15 @@ export function MaintenancePage({ onError, access }: { onError: (e: string | nul
   const [work, setWork] = useState(blankWork);
   const [reading, setReading] = useState("");
   const [busy, setBusy] = useState(false);
+  const openId = useRef<string | null>(null);
   const [notice, setNotice] = useState<string | null>(null);
   const [askWorking, setAskWorking] = useState(false);
 
   const openEquipment = useCallback(
     async (id: string) => {
       try {
-        setOpen(await api.moduleCall<Detail>(ID, "echipament", { id, azi: today }));
+        openId.current = id;
+      setOpen(await api.moduleCall<Detail>(ID, "echipament", { id, azi: today }));
       } catch (e) {
         onError(message(e));
       }
@@ -159,7 +161,8 @@ export function MaintenancePage({ onError, access }: { onError: (e: string | nul
       setBusy(false);
     }
     await load();
-    if (open) await openEquipment(open.id);
+    // The card shown now (a save may have opened another one meanwhile).
+    if (openId.current) await openEquipment(openId.current);
   };
 
   /** „Marchează făcută” from the due list: the equipment opens with the intervention ready. */
