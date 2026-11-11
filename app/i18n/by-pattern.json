@@ -1170,6 +1170,36 @@
   "f": "modules/permits/dossierPdf.ts"
  },
  {
+  "ro": "fără termen",
+  "en": "not termen",
+  "f": "modules/permits/HeldPermits.tsx"
+ },
+ {
+  "ro": "Folosește",
+  "en": "Use",
+  "f": "modules/permits/HeldPermits.tsx"
+ },
+ {
+  "ro": "Numărul autorizației",
+  "en": "Permit number",
+  "f": "modules/permits/HeldPermits.tsx"
+ },
+ {
+  "ro": "Numărul",
+  "en": "Number",
+  "f": "modules/permits/HeldPermits.tsx"
+ },
+ {
+  "ro": "Data emiterii",
+  "en": "Issue date",
+  "f": "modules/permits/HeldPermits.tsx"
+ },
+ {
+  "ro": "Emisă",
+  "en": "Issued",
+  "f": "modules/permits/HeldPermits.tsx"
+ },
+ {
   "ro": "Mediu",
   "en": "Medium",
   "f": "modules/permits/PermitsPage.tsx"
@@ -1330,11 +1360,6 @@
   "f": "modules/sheets/SheetsPage.tsx"
  },
  {
-  "ro": "Folosește",
-  "en": "Use",
-  "f": "modules/sheets/SheetsPage.tsx"
- },
- {
   "ro": "Foaie de calcul",
   "en": "Spreadsheet",
   "f": "modules/sheets/SheetsPage.tsx"
@@ -1372,11 +1397,6 @@
  {
   "ro": "Am adăugat {0} articole.",
   "en": "Added {0} articole.",
-  "f": "modules/works/WorksPage.tsx"
- },
- {
-  "ro": "Numărul",
-  "en": "Number",
   "f": "modules/works/WorksPage.tsx"
  },
  {
@@ -1853,6 +1873,16 @@
   "ro": "Termen depășit",
   "en": "Deadline passed",
   "f": "modules/kgb-permits/src/lib.rs"
+ },
+ {
+  "ro": "Expiră în curând",
+  "en": "Expires soon",
+  "f": "modules/kgb-permits/src/register.rs"
+ },
+ {
+  "ro": "Expiră azi",
+  "en": "Expires today",
+  "f": "modules/kgb-permits/src/register.rs"
  },
  {
   "ro": "Următorul: {0}",
