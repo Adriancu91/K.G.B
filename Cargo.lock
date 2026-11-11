@@ -4032,6 +4032,23 @@ dependencies = [
 ]
 
 [[package]]
+name = "kgb-vault"
+version = "0.1.0"
+dependencies = [
+ "base64 0.22.1",
+ "blake3",
+ "kgb-core",
+ "kgb-docs",
+ "kgb-extract",
+ "kgb-store",
+ "serde",
+ "serde_json",
+ "tempfile",
+ "uuid",
+ "zip",
+]
+
+[[package]]
 name = "kgb-write"
 version = "0.1.0"
 dependencies = [
