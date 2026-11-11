@@ -194,6 +194,8 @@ interface SuiteBridge {
   saveFile(req: { path: string | null; content: string; kind: FileKind; suggestedName?: string; suggestedDir?: string }): Promise<{ path: string } | null>;
   /** „Trimite o observație”: poza ferestrei (PNG), textul și locul din aplicație, salvate local în Documente\Suite\Observații. */
   feedbackCapture(): Promise<Uint8Array | null>;
+  /** Capturile la observație se pot păstra (lipsă = da); pagina web pune false. */
+  feedbackImages?: boolean;
   feedbackSave(req: { text: string; module: string; file: string; png: Uint8Array | null }): Promise<{ dir: string; txt: string; png: string | null }>;
   feedbackOpenDir(): Promise<string>;
   /** „Despre”: numele, versiunea, versiunea de test (zile rămase) și dacă există fișierele de licență. */

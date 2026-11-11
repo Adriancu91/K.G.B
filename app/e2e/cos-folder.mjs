@@ -92,6 +92,9 @@ try {
 
   // Again: the save dialog asked about the first one (replaced); the other one is not replaced but gets „ (2)”.
   await exportAll(p);
+  // The message of the first export is still on screen: wait for the third file itself.
+  for (let i = 0; i < 50 && !readdirSync(out).some((f) => f.endsWith(" (2).csv")); i++) await sleep(200);
+  await sleep(300);
   const files2 = readdirSync(out).sort();
   check("a doua oară: a doua foaie cu „ (2)”, nimic înlocuit pe tăcute", files2.length === 3 && files2.some((f) => / \(2\)\.csv$/.test(f)), files2.join(" | "));
   await p.screenshot(join(shots, "01-csv-toate-foile.png"));
