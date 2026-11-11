@@ -1,6 +1,6 @@
 # K.G.B. — Etapa 7: raport (ciornă)
 
-**Data:** 12 nov. 2026 · **Statut:** CIORNĂ, până la trecerea completă prin toate testele (poarta, mai jos). Au lucrat două sesiuni: sesiunea K.G.B. (nucleul, Business, Permise, telefonul, profilul firmei din documente, programul de facturare online, porțile) și sesiunea COS (ce s-a mutat din Cyber Office Studio, modulele noi pentru tipuri de firme, depozitul și dublurile). Fiecare pas are în `WORKLIST.md` dovada lui: commit-ul și testele trecute în fereastra reală.
+**Data:** 12 nov. 2026 · **Statut:** FINAL, în așteptarea porții proprietarului (poarta Etapei 7, mai jos: toate testele trecute pe un singur build). Au lucrat două sesiuni: sesiunea K.G.B. (nucleul, Business, Permise, telefonul, profilul firmei din documente, programul de facturare online, porțile) și sesiunea COS (ce s-a mutat din Cyber Office Studio, modulele noi pentru tipuri de firme, depozitul și dublurile). Fiecare pas are în `WORKLIST.md` dovada lui: commit-ul și testele trecute în fereastra reală.
 **Cum s-a lucrat:** fiecare pas pe o ramură `kgb/cos-*`, construit și încercat în fereastra reală (e2e pe build-ul release, cu date separate), apoi trecut prin poarta sesiunii K.G.B. și unit în `main`. Deciziile s-au luat de comun acord (D-074).
 
 ## Pe scurt
@@ -122,6 +122,43 @@ Cele cinci module sunt propuse la profilurile de activitate potrivite (Situații
 - **Etapa 6:** proba cu al doilea PC (6.10) și poarta 6.12 sunt tot 🔒. Sincronizarea între PC-uri e verificată doar pe un singur PC (noduri de test).
 - **Profilul firmei din documente:** citește formulările obișnuite. Un act scris altfel dă câmpuri goale, pe care omul le completează.
 
-## Ce cere poarta Etapei 7
-1. Trecerea completă prin toate testele e2e pe un singur build din `main`. Tabelul se adaugă aici, apoi statutul trece din CIORNĂ în FINAL.
-2. Decizia proprietarului, separat, despre ce rămâne 🔒 (probele de mai sus, e-mailul), dacă vrea să le închidă înainte de Etapa 8.
+## Poarta Etapei 7: toate testele pe un singur build
+**Cum s-a verificat:** un singur build release din `main` (faa1f99, 12 nov. 2026), apoi toate testele de fereastră din `app/e2e`, la rând, fiecare cu date de test separate, pe același laptop. A rulat sesiunea COS; testul învechit `gate.mjs` l-a reparat ea, iar sesiunea K.G.B. a trecut reparația prin poartă (be3d8d8).
+
+**Rezultat:** 62 de teste, **728 din 728 de verificări trecute**. Nicio regresie în cod. Un test era învechit (`gate.mjs` căuta vechea casetă „Notă nouă”) și a fost actualizat. Un test a fost sărit (`desktop.mjs`, vezi mai jos).
+
+| Test | Verificări | Test | Verificări | Test | Verificări |
+|---|---|---|---|---|---|
+| activity | 12/12 | extract | 9/9 | pdf-sign | 8/8 |
+| anaf | 8/8 | feedback | 11/11 | pdf | 52/52 |
+| appointments | 7/7 | fleet | 6/6 | permits-catalog | 11/11 |
+| autofill | 6/6 | gate | 15/15 | permits-held | 5/5 |
+| backup | 8/8 | holds | 4/4 | permits | 6/6 |
+| business | 28/28 | home | 17/17 | phone | 58/58 |
+| calc | 7/7 | invite | 11/11 | planner | 22/22 |
+| chat | 7/7 | lang | 8/8 | recipes | 10/10 |
+| conflicts | 6/6 | maintenance | 10/10 | reminders | 4/4 |
+| contracts | 8/8 | market | 7/7 | sheets | 20/20 |
+| cos-dialogs | 11/11 | network | 15/15 | sources | 6/6 |
+| cos-docs | 19/19 | news | 8/8 | team-overview | 7/7 |
+| cos-efactura | 23/23 | offers | 6/6 | team | 5/5 |
+| cos-folder | 4/4 | online-invoicing | 6/6 | tools | 11/11 |
+| cos-merge | 4/4 | orders | 5/5 | vault-cash | 6/6 |
+| cos-notes-full | 13/13 | org | 14/14 | vault-contract | 5/5 |
+| cos-notes | 12/12 | panels | 9/9 | vault-profile | 8/8 |
+| cos-ocr | 6/6 | partners | 9/9 | vault | 11/11 |
+| cos-print | 16/16 | pdf-edittext | 12/12 | works | 16/16 |
+| cos-sheets-import | 23/23 | | | | |
+| cos-sheets | 19/19 | | | | |
+| cos-web | 9/9 | | | | |
+| deliveries | 4/4 | | | | |
+| docs | 15/15 | | | | |
+
+**Ce NU dovedesc aceste teste:**
+- **Rețeaua reală între două PC-uri:** `network` și `invite` rulează pe același laptop, cu un nod de test.
+- **Probele care cer hardware real sau prezența proprietarului:** stickul de semnătură, OCR-ul pe poza de telefon, foaia tipărită, contul real al programului de facturare online.
+- **`desktop.mjs`:** scrie în lista de programe pornite odată cu Windows (o intrare de test, în lista utilizatorului) și verifică că pornește un singur K.G.B. Rulat acum, s-ar putea atinge de K.G.B.-ul deschis de proprietar. Rămâne 🔒, pentru o rulare cu el de față.
+
+**Ce decide proprietarul:**
+1. Poarta Etapei 7, pe baza acestui raport.
+2. Ce rămâne 🔒 și dacă vrea să le închidă înainte de Etapa 8: probele de mai sus și e-mailul din aplicație („nimic trimis în numele lui”, deci o decizie separată).
