@@ -1863,7 +1863,9 @@ fn module_import_file_with(
 /// here; the page sends each file to the module with `module_import_file_with`.
 const FOLDER_DEPTH: usize = 8;
 const FOLDER_MAX: usize = 3000;
-const FOLDER_KINDS: [&str; 15] = ["pdf", "docx", "xlsx", "xlsm", "xls", "ods", "csv", "txt", "xml", "jpg", "jpeg", "png", "tif", "tiff", "doc"];
+const FOLDER_KINDS: [&str; 15] = [
+    "pdf", "docx", "xlsx", "xlsm", "xls", "ods", "csv", "txt", "xml", "jpg", "jpeg", "png", "tif", "tiff", "doc",
+];
 
 #[derive(Serialize)]
 struct FolderFile {
@@ -1886,7 +1888,11 @@ fn folder_files(path: PathBuf) -> CmdResult<FolderFiles> {
     if !meta.is_dir() {
         return Err("nu e un folder".into());
     }
-    let mut out = FolderFiles { files: Vec::new(), sarite: 0, prea_multe: false };
+    let mut out = FolderFiles {
+        files: Vec::new(),
+        sarite: 0,
+        prea_multe: false,
+    };
     let mut stack = vec![(path.clone(), 0_usize)];
     while let Some((dir, depth)) = stack.pop() {
         let Ok(entries) = std::fs::read_dir(&dir) else { continue };
@@ -1908,7 +1914,11 @@ fn folder_files(path: PathBuf) -> CmdResult<FolderFiles> {
             }
             let ext = name.rsplit('.').next().unwrap_or("").to_lowercase();
             let size = e.metadata().map(|m| m.len()).unwrap_or(0);
-            if !name.contains('.') || !FOLDER_KINDS.contains(&ext.as_str()) || size == 0 || size > kgb_core::files::MAX_FILE_BYTES as u64 {
+            if !name.contains('.')
+                || !FOLDER_KINDS.contains(&ext.as_str())
+                || size == 0
+                || size > kgb_core::files::MAX_FILE_BYTES as u64
+            {
                 out.sarite += 1;
                 continue;
             }
@@ -1916,8 +1926,16 @@ fn folder_files(path: PathBuf) -> CmdResult<FolderFiles> {
                 out.prea_multe = true;
                 return Ok(out);
             }
-            let rel = e.path().strip_prefix(&path).map(|r| r.to_string_lossy().replace('\\', "/")).unwrap_or(name);
-            out.files.push(FolderFile { path: e.path().to_string_lossy().to_string(), rel, size });
+            let rel = e
+                .path()
+                .strip_prefix(&path)
+                .map(|r| r.to_string_lossy().replace('\\', "/"))
+                .unwrap_or(name);
+            out.files.push(FolderFile {
+                path: e.path().to_string_lossy().to_string(),
+                rel,
+                size,
+            });
         }
     }
     out.files.sort_by(|a, b| a.rel.cmp(&b.rel));
