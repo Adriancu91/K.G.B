@@ -750,6 +750,11 @@
   "f": "modules/docs/DocsPage.tsx"
  },
  {
+  "ro": "Juridice",
+  "en": "Legal",
+  "f": "modules/docs/DocsPage.tsx"
+ },
+ {
   "ro": "lipsește",
   "en": "missing",
   "f": "modules/docs/DocsPage.tsx"
@@ -1750,6 +1755,41 @@
   "f": "modules/kgb-docs/src/lib.rs"
  },
  {
+  "ro": "Conținut",
+  "en": "Content",
+  "f": "modules/kgb-docs/src/lib.rs"
+ },
+ {
+  "ro": "Data începerii",
+  "en": "Start date",
+  "f": "modules/kgb-docs/src/lib.rs"
+ },
+ {
+  "ro": "Locul livrării",
+  "en": "Place of delivery",
+  "f": "modules/kgb-docs/src/lib.rs"
+ },
+ {
+  "ro": "Penalități",
+  "en": "Penalties",
+  "f": "modules/kgb-docs/src/lib.rs"
+ },
+ {
+  "ro": "Preț unitar",
+  "en": "Unit price",
+  "f": "modules/kgb-docs/src/lib.rs"
+ },
+ {
+  "ro": "Suma datorată",
+  "en": "Amount owed",
+  "f": "modules/kgb-docs/src/lib.rs"
+ },
+ {
+  "ro": "Utilități",
+  "en": "Utilities",
+  "f": "modules/kgb-docs/src/lib.rs"
+ },
+ {
   "ro": "Notiță",
   "en": "Note",
   "f": "modules/kgb-notes/src/remind.rs"
@@ -1795,23 +1835,18 @@
   "f": "modules/kgb-sheets/src/templates.rs"
  },
  {
+  "ro": "Achiziții",
+  "en": "Purchases",
+  "f": "modules/kgb-sheets/src/templates.rs"
+ },
+ {
   "ro": "Diferență",
   "en": "Difference",
   "f": "modules/kgb-sheets/src/templates.rs"
  },
  {
-  "ro": "Utilități",
-  "en": "Utilities",
-  "f": "modules/kgb-sheets/src/templates.rs"
- },
- {
   "ro": "Număr:",
   "en": "Number:",
-  "f": "modules/kgb-sheets/src/templates.rs"
- },
- {
-  "ro": "Preț unitar",
-  "en": "Unit price",
   "f": "modules/kgb-sheets/src/templates.rs"
  },
  {
@@ -1852,6 +1887,26 @@
  {
   "ro": "Sold la început",
   "en": "Opening balance",
+  "f": "modules/kgb-sheets/src/templates.rs"
+ },
+ {
+  "ro": "Peste normă",
+  "en": "Above the norm",
+  "f": "modules/kgb-sheets/src/templates.rs"
+ },
+ {
+  "ro": "Sold la început:",
+  "en": "Opening balance:",
+  "f": "modules/kgb-sheets/src/templates.rs"
+ },
+ {
+  "ro": "Alte încasări",
+  "en": "Other income",
+  "f": "modules/kgb-sheets/src/templates.rs"
+ },
+ {
+  "ro": "Taxe și impozite",
+  "en": "Taxes and duties",
   "f": "modules/kgb-sheets/src/templates.rs"
  }
 ]

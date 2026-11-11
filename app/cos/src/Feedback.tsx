@@ -9,6 +9,8 @@ interface Props { where: string; file: string; onClose: () => void; png: Uint8Ar
 
 // Capturile atașate de om (lipite cu Ctrl+V sau alese din fișiere): PNG sau JPEG, cel mult 5.
 const MAX_IMAGES = 5;
+// Unde capturile nu se pot păstra (pagina web le-ar pierde), butonul și lipirea lor nu apar deloc.
+const imagesOk = () => (api as { feedbackImages?: boolean }).feedbackImages !== false;
 type Shot = { name: string; data: Uint8Array; url: string };
 
 export default function Feedback({ where, file, onClose, png }: Props) {
@@ -64,6 +66,7 @@ export default function Feedback({ where, file, onClose, png }: Props) {
             <p className="ask-msg">Scrie ce nu merge sau ce ai vrea altfel. Se salvează doar pe calculatorul tău, cu o poză a ferestrei; nimic nu pleacă singur pe internet.</p>
             <textarea ref={box} className="feedback-text" rows={6} value={text} onChange={(e) => setText(e.target.value)}
               onPaste={(e) => {
+                if (!imagesOk()) return;
                 const files = [...e.clipboardData.files].filter((f) => f.type.startsWith('image/'));
                 if (files.length) { e.preventDefault(); void addFiles(files); }
               }}
@@ -76,7 +79,7 @@ export default function Feedback({ where, file, onClose, png }: Props) {
                 {url.current && <img src={url.current} alt="Poza ferestrei" />}
               </label>
             )}
-            <div className="feedback-shots">
+            {imagesOk() && <div className="feedback-shots">
               <button type="button" disabled={shots.length >= MAX_IMAGES} onClick={() => pick.current?.click()}>Adaugă o captură…</button>
               <span className="muted small">sau lipește una în text cu Ctrl+V (de exemplu după Win+Shift+S); cel mult 5</span>
               <input ref={pick} type="file" accept="image/png,image/jpeg" multiple hidden aria-label="Capturi de atașat"
@@ -91,7 +94,7 @@ export default function Feedback({ where, file, onClose, png }: Props) {
                   ))}
                 </ul>
               )}
-            </div>
+            </div>}
             <div className="print-actions">
               <button onClick={onClose}>Renunță</button>
               <button className="primary" disabled={!text.trim() || busy} onClick={save} title="Ctrl+Enter">Salvează observația</button>

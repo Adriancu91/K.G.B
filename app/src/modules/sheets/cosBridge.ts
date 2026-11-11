@@ -82,6 +82,8 @@ export interface KgbHost {
   importFileWith<T>(id: string, path: string, command: string, args: Record<string, unknown>): Promise<T>;
   open(o: { multiple: boolean; filters: DialogFilter[] }): Promise<string | string[] | null>;
   save(o: { defaultPath: string; filters: DialogFilter[] }): Promise<string | null>;
+  /** The system's folder dialog (several files at once go into the folder chosen). */
+  openFolder(title?: string): Promise<string | null>;
   /** The app's language (RO / EN) and its changes: the window follows it. */
   lang(): "ro" | "en";
   onLang(f: (l: "ro" | "en") => void): () => void;
@@ -95,6 +97,10 @@ export interface KgbHost {
 let kgb: KgbHost;
 const open: KgbHost["open"] = (o) => kgb.open(o);
 const save: KgbHost["save"] = (o) => kgb.save(o);
+/** The folders the person chose in this window (folder dialog, or the folder of a file saved): only into these do
+ *  several files go at once (writeToFolder), never over another file. */
+const chosenFolders = new Set<string>();
+const folderOf = (p: string) => p.slice(0, Math.max(p.lastIndexOf("/"), p.lastIndexOf("\\")));
 /** The sites the person let this window read from (D-086), for as long as it is open. */
 const webAllowed = new Set<string>();
 /** The most files brought at once by importMany. */
@@ -232,6 +238,7 @@ export function installCosBridge(host: KgbHost, kind: BridgeKind = SHEETS): void
       const dest = await save({ defaultPath: name, filters: filtersOf(req.format) });
       if (!dest) return null;
       await kgb.moduleCall(cfg.id, "export_file", { dest, data: b64(req.data) });
+      chosenFolders.add(folderOf(dest));
       return { path: dest };
     },
     // Paper (D-084): the same pages as Export PDF, then Windows' print dialog. window.print() opened the browser's
@@ -282,9 +289,16 @@ export function installCosBridge(host: KgbHost, kind: BridgeKind = SHEETS): void
       if (r.status >= 400) throw new Error(`Serverul de marcă temporală a răspuns cu eroarea ${r.status}.`);
       return unb64(r.data);
     },
-    pickFolder: async () => null,
+    pickFolder: async (title?: string) => {
+      const d = await kgb.openFolder(title);
+      if (d) chosenFolders.add(d);
+      return d;
+    },
     listTables: async () => [],
-    writeToFolder: unsupported("Scrierea într-un dosar"),
+    writeToFolder: async (dir: string, name: string, data: Uint8Array) => {
+      if (!chosenFolders.has(dir)) throw new Error("Fișierele se scriu doar în dosarul ales de tine.");
+      return (await kgb.moduleCall<{ path: string }>(cfg.id, "export_into", { dir, name, data: b64(data) })).path;
+    },
     // The document window: sending by e-mail and bringing several files at once are not there yet.
     composeMail: unsupported("Trimiterea pe e-mail"),
     openMail: unsupported("Deschiderea unui e-mail"),

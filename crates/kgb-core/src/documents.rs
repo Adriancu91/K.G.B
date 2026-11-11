@@ -306,6 +306,57 @@ pub(crate) fn export_bytes(dest: &Path, data: &[u8], overwrite: bool) -> CoreRes
     Ok(())
 }
 
+/// A bare file name: no folder in it, no characters Windows refuses, not „.” or „..”, at most 200 characters.
+fn bare_name(name: &str) -> CoreResult<&str> {
+    let n = name.trim();
+    let bad = n.is_empty()
+        || n == "."
+        || n == ".."
+        || n.chars().count() > 200
+        || n.ends_with('.')
+        || n.ends_with(' ')
+        || n.chars()
+            .any(|c| c.is_control() || matches!(c, '/' | '\\' | ':' | '*' | '?' | '"' | '<' | '>' | '|'));
+    if bad {
+        return Err(CoreError::invalid(
+            "numele fișierului",
+            format!("„{name}” nu e un nume de fișier"),
+        ));
+    }
+    Ok(n)
+}
+
+/// Writes `data` as `name` in the folder `dir`, or as „stem (2).ext”… when the name is taken (never replacing).
+pub(crate) fn export_into(dir: &Path, name: &str, data: &[u8]) -> CoreResult<std::path::PathBuf> {
+    let name = bare_name(name)?;
+    if !dir.is_dir() {
+        return Err(CoreError::invalid(
+            "dosarul",
+            format!("{} nu e un dosar", dir.display()),
+        ));
+    }
+    let (stem, ext) = match name.rfind('.') {
+        Some(i) if i > 0 => (&name[..i], &name[i..]),
+        _ => (name, ""),
+    };
+    for n in 1..=1000 {
+        let dest = if n == 1 {
+            dir.join(name)
+        } else {
+            dir.join(format!("{stem} ({n}){ext}"))
+        };
+        match export_bytes(&dest, data, false) {
+            Ok(()) => return Ok(dest),
+            Err(CoreError::AlreadyExists(_)) => continue,
+            Err(e) => return Err(e),
+        }
+    }
+    Err(CoreError::invalid(
+        "numele fișierului",
+        format!("prea multe fișiere „{name}” în dosar"),
+    ))
+}
+
 /// Hashes referenced by any live version (protected from blob collection).
 pub(crate) fn referenced_hashes(ws: &Workspace) -> CoreResult<Vec<String>> {
     Ok(ws
@@ -314,4 +365,40 @@ pub(crate) fn referenced_hashes(ws: &Workspace) -> CoreResult<Vec<String>> {
         .iter()
         .map(|r| s(r, "hash"))
         .collect())
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn several_files_into_a_folder_never_over_another() {
+        let t = tempfile::tempdir().unwrap();
+        let a = export_into(t.path(), "Ion Pop.docx", b"1").unwrap();
+        let b = export_into(t.path(), "Ion Pop.docx", b"2").unwrap();
+        let c = export_into(t.path(), "Ion Pop.docx", b"3").unwrap();
+        assert_eq!(a.file_name().unwrap(), "Ion Pop.docx");
+        assert_eq!(b.file_name().unwrap(), "Ion Pop (2).docx");
+        assert_eq!(c.file_name().unwrap(), "Ion Pop (3).docx");
+        assert_eq!(std::fs::read(&a).unwrap(), b"1", "the first one is not replaced");
+        let d = export_into(t.path(), "README", b"x").unwrap();
+        assert_eq!(
+            export_into(t.path(), "README", b"y").unwrap().file_name().unwrap(),
+            "README (2)"
+        );
+        assert_eq!(d.file_name().unwrap(), "README");
+        for bad in [
+            "../afara.txt",
+            "sub/nume.txt",
+            "C:x.txt",
+            "a\\b.txt",
+            "..",
+            "",
+            "a?.txt",
+            "punct.",
+        ] {
+            assert!(export_into(t.path(), bad, b"x").is_err(), "{bad:?}");
+        }
+        assert!(export_into(&t.path().join("nu-exista"), "a.txt", b"x").is_err());
+    }
 }

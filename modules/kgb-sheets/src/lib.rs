@@ -179,6 +179,15 @@ struct ExportFile {
     data: String,
 }
 
+/// A file written into a folder the person chose (never over another file).
+#[derive(Deserialize)]
+#[serde(deny_unknown_fields)]
+struct ExportInto {
+    dir: PathBuf,
+    name: String,
+    data: String,
+}
+
 /// The largest workbook the window may hand back.
 const MAX_BOOK_BYTES: usize = 100 * 1024 * 1024;
 
@@ -508,6 +517,17 @@ impl Module for Sheets {
                 // Nothing is stored: the window reads the file and decides what to do with it.
                 let a: Import = args(a)?;
                 Ok(json!({"name": a.name, "data": a.data}))
+            }
+            "export_into" => {
+                let a: ExportInto = args(a)?;
+                let data = B64
+                    .decode(a.data.as_bytes())
+                    .map_err(|_| bad("fișierul nu a ajuns întreg"))?;
+                if data.len() > MAX_BOOK_BYTES {
+                    return Err(bad("fișierul este prea mare"));
+                }
+                let path = ctx.export_into(&a.dir, &a.name, &data)?;
+                Ok(json!({"path": path, "bytes": data.len()}))
             }
             "export_file" => {
                 let a: ExportFile = args(a)?;

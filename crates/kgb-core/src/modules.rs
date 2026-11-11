@@ -752,6 +752,14 @@ impl ModuleContext<'_> {
         documents::export_bytes(dest, data, overwrite)
     }
 
+    /// Writes a file the module produced into a folder the person chose (several files at once: one document per
+    /// row of a mail merge, one CSV per sheet). The name is a bare file name; an existing file is never replaced:
+    /// „Nume (2).ext”, „Nume (3).ext”… is used instead. Returns the path written.
+    pub fn export_into(&mut self, dir: &Path, name: &str, data: &[u8]) -> CoreResult<std::path::PathBuf> {
+        self.require("files.own")?;
+        documents::export_into(dir, name, data)
+    }
+
     /// Structured log line tagged with the module id (no permission needed:
     /// modules must use the core log instead of their own, Master Plan §4.1).
     /// Sends a notification to the app's notification centre (permission
