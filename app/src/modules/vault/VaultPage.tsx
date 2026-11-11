@@ -55,8 +55,12 @@ const lei = (b: number) => {
 };
 const size = (n: number) => (n >= 1 << 20 ? `${(n / (1 << 20)).toFixed(1).replace(".", ",")} MB` : `${Math.max(1, Math.round(n / 1024))} KB`);
 
-export function VaultPage({ onError, access }: { onError: (e: string | null) => void; access?: string }) {
+/** The proposal „Contracte și abonamente” opens as a new contract (7.10b); it reads and removes it on opening. */
+export const CONTRACT_PROPOSAL_KEY = "kgb.contracts.propunere";
+
+export function VaultPage({ onError, access, onOpen }: { onError: (e: string | null) => void; access?: string; onOpen?: (page: string) => void }) {
   const readOnly = access === "citire";
+  const [contractsOn, setContractsOn] = useState(false);
   const [sum, setSum] = useState<Summary | null>(null);
   const [docs, setDocs] = useState<Doc[]>([]);
   const [cat, setCat] = useState("");
@@ -87,6 +91,7 @@ export function VaultPage({ onError, access }: { onError: (e: string | null) => 
       setCui((c) => c || s.cui_firma);
       // The invoices of Business (issued, and purchases with those from e-Factura), when it is enabled and readable.
       const m = await api.listModules();
+      setContractsOn(m.modules.some((x) => x.id === "kgb.contracts" && x.enabled) && m.access["kgb.contracts"] === "scriere");
       const biz = m.modules.some((x) => x.id === BIZ && x.enabled) && m.access[BIZ] !== "niciunul";
       setBizOn(biz && m.access[BIZ] !== "citire");
       if (biz) {
@@ -338,6 +343,26 @@ export function VaultPage({ onError, access }: { onError: (e: string | null) => 
                   {!d.confirmata && (
                     <button className="small" disabled={busy || readOnly} onClick={() => void run(() => api.moduleCall(ID, "confirma", { id: d.id, version: d.version, categorie: d.categorie }))}>
                       Confirmă
+                    </button>
+                  )}
+                  {(d.categorie === "contracte_clienti" || d.categorie === "contracte_furnizori") && (
+                    <button
+                      className="small"
+                      disabled={busy || !contractsOn}
+                      title={contractsOn ? "Deschide în Contracte și abonamente un contract nou completat din acest document; îl verifici și îl salvezi tu" : "Pentru asta, activează modulul Contracte și abonamente (și un rol care poate scrie în el)"}
+                      onClick={() =>
+                        void run(async () => {
+                          const p = await api.moduleCall<Record<string, unknown>>(ID, "contract_propunere", { id: d.id });
+                          try {
+                            sessionStorage.setItem(CONTRACT_PROPOSAL_KEY, JSON.stringify(p));
+                          } catch {
+                            /* the page shows nothing to fill, the person writes it */
+                          }
+                          onOpen?.("kgb.contracts");
+                        })
+                      }
+                    >
+                      Propune contractul…
                     </button>
                   )}
                   <button
