@@ -215,4 +215,19 @@ Interdicții permanente: fără baze de date (D-005, D-018), fără schimbări d
   - [x] 7.10d Dublurile (sesiunea COS): o factură recunoscută după CUI-ul emitentului, seria și numărul normalizate, data și totalul, plus amprenta fișierului; comparată între depozit, programul de facturare online, Business, importul e-Factura și `kgb.extract`; „există deja în …” fără import a doua oară; același număr cu altă dată sau alt total → „posibil dublură”, decide omul — **făcut 11 nov. 2026 (11ef64f):** în depozit, aceeași factură din alt fișier e numită la adăugare și grupată („dubluri”: sigur sau posibil); pagina o compară și cu facturile emise și cheltuielile din Business (match.ts, aceleași reguli ca modulul, test vault-match 10/10); la „posibil dublură” scrie ce diferă (alt total / altă dată); e2e vault 11/11, business 28/28. Refuzul dublurii la importul în Business rămâne la 7.10b
 - [x] 7.8 Raport Etapa 7 (`docs/ETAPA7_RAPORT.md`) — **12 nov. 2026:** scris de ambele sesiuni; poarta: un singur build din main (faa1f99), 62 de teste, 728/728 verificări, nicio regresie (gate.mjs învechit, actualizat); desktop.mjs 🔒 (scrie în lista de pornire a Windows, cu proprietarul de față)
 - [x] 7.12 Poarta Etapei 7: decizia proprietarului pe baza raportului — **aprobată 12 nov. 2026 (D-091)**
-- [ ] 🔒 7.9 Poarta Etapei 7
+
+## Etapa 8 — pași (plan: `docs/ETAPA8_PLAN.md`; decizii propuse D-092 … D-097; planul așteaptă acordul proprietarului)
+- [ ] 8.1 Licențele componentelor livrate: lista completă (Rust și JavaScript, inclusiv cele indirecte), `THIRD-PARTY-NOTICES` în installer și în „Despre”, copyleft sau neclar semnalat
+- [ ] 8.2 Versiuni și canale: versiunea dintr-un singur loc, canal stabil și canal de test, banda „pre-lansare” doar pe canalul de test, note de versiune
+- [ ] 8.3 Installer stabil: utilizatorul curent, verificarea Windows și WebView2 (D-095), upgrade cu datele păstrate, dezinstalare care păstrează datele implicit (D-097); scenariul automat instalare → upgrade → dezinstalare → reinstalare
+- [ ] 🔒 8.4 Medii curate de test (Windows Sandbox / mașină virtuală / al doilea PC), pornite de proprietar
+- [ ] 🔒 8.5 Semnarea programului (D-092): certificat sau serviciu ales și plătit de proprietar; installer și program semnate, verificate
+- [ ] 8.6 Actualizarea (D-094): „Caută actualizări” la clic, listă și pachete semnate, backup înainte, revenire automată dacă spațiul nu se deschide (după deciziile D-094 și acordul pentru biblioteca de actualizare)
+- [ ] 8.7 Licența (D-093): fișier semnat de proprietar, verificat fără internet, pagina „Licență”; datele rămân deschise și exportabile oricum (după decizia D-093)
+- [ ] 8.8 Fără telemetrie (D-096): test că nicio cerere nu pleacă fără clic; erorile rămân locale
+- [ ] 8.9 Documentația: ghidul utilizatorului RO/EN în aplicație („Ajutor”) și PDF; ghidul de instalare și administrare
+- [ ] 8.10 Suport: pachetul de diagnostic fără date personale (test), „Probleme cunoscute”, adresa de contact (🔒 aleasă de proprietar)
+- [ ] 8.11 Verificarea de securitate înainte de livrare (dependențe, CSP, permisiuni, căile de internet, jurnal, chei)
+- [ ] 🔒 8.12 Numele, marca, domeniile, EULA și nota de confidențialitate (proprietarul, cu un jurist dacă vrea)
+- [ ] 8.13 Raport `docs/ETAPA8_RAPORT.md`
+- [ ] 🔒 8.14 Poarta Etapei 8: instalare, upgrade, dezinstalare, backup și restaurare pe medii curate
