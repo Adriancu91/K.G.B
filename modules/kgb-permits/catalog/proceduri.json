@@ -3050,5 +3050,1012 @@
     "verificat": "2026-11-11"
    }
   ]
+ },
+ {
+  "cheie": "fiscalizare-casa-de-marcat",
+  "titlu": "Casa de marcat (aparat de marcat electronic fiscal): cumpărare, fiscalizare, înregistrare la ANAF și conectare la sistemul național de monitorizare",
+  "domeniu": "comercial",
+  "institutie": "ANAF: administrația județeană a finanțelor publice unde se instalează aparatul (București și Ilfov: DGRFP București; contribuabilii mari: DGAMC), pe cerere după anexa 6 la norme. Aparatul se cumpără de la un distribuitor autorizat; tehnicianul acreditat îl instalează și îl fiscalizează.",
+  "descriere": "Orice firmă sau persoană fizică autorizată care încasează bani (numerar, card sau tichete) pentru mărfuri vândute cu amănuntul ori pentru servicii prestate direct populației trebuie să folosească o casă de marcat fiscală și să dea bon fiscal. Legea are excepții (de exemplu profesiile libere, lucrările de construcții la locuințe, reparațiile la domiciliul clientului, comerțul ocazional al producătorilor agricoli), dar la unele dintre ele se dă chitanță. Obligația începe din ziua în care începe activitatea în fiecare locație. Se cumpără doar aparate de tipul nou, cu jurnal electronic și conectare la internet, de la distribuitori autorizați. ANAF atribuie fiecărui aparat un număr unic de identificare; tehnicianul îl instalează, îl fiscalizează (îi activează memoria fiscală cu datele firmei) și îl conectează la sistemul informatic al ANAF, unde aparatul trimite datele zilnic. Dacă aparatul nu poate transmite datele în perioada permisă, se blochează. Când aparatul se defectează, operațiunile se trec într-un registru special vizat de ANAF și se dau chitanțe. La plata cu cardul, bonul se tipărește doar dacă îl cere clientul. Mutarea aparatului la alt punct de lucru, vânzarea lui, furtul sau încetarea activității se anunță la ANAF. Amenda pentru lipsa codului QR pe bon e suspendată până la 31 octombrie 2027.",
+  "conditii": [
+   {
+    "text": "Folosești casă de marcat fiscală dacă încasezi, integral sau parțial, cu numerar, card sau tichete, contravaloarea mărfurilor vândute cu amănuntul sau a serviciilor prestate direct populației (OUG 28/1999, art. 1 alin. (1); Normele aprobate prin HG 479/2003, art. 1 alin. (1)–(2)).",
+    "obligatoriu": true
+   },
+   {
+    "text": "Verifici dacă activitatea ta e în lista de excepții; la activitățile de la art. 2 lit. f), h), i)–l), dacă nu folosești casă de marcat, dai chitanță (OUG 28/1999, art. 2 și art. 2^1).",
+    "obligatoriu": true
+   },
+   {
+    "text": "Obligația ia naștere de la data începerii activității comerciale în fiecare locație (OUG 28/1999, art. 6).",
+    "obligatoriu": true
+   },
+   {
+    "text": "Aparatul se cumpără numai de la un distribuitor autorizat sau o unitate acreditată pentru comercializare; lipsa aparatului se amendează cu 10.000–20.000 lei și se suspendă activitatea în acel punct până la dotare (OUG 28/1999, art. 10 lit. e), art. 11 alin. (1) lit. d)).",
+    "obligatoriu": true
+   },
+   {
+    "text": "Asiguri conectarea la distanță a aparatului pentru trimiterea datelor fiscale la ANAF; nerespectarea se amendează cu 8.000–10.000 lei (OUG 28/1999, art. 3^1 alin. (4), art. 10 lit. ff), art. 11 alin. (1) lit. l); Ordinul ANAF 2668/2020, art. 2).",
+    "obligatoriu": true
+   },
+   {
+    "text": "Emiți bon fiscal pentru toate vânzările și îl dai clientului; la plata cu cardul, bonul se tipărește doar la cererea clientului; neemiterea bonului se amendează între 2.000 și 30.000 lei, după suma nejustificată, plus confiscarea ei (OUG 28/1999, art. 1 alin. (2), (2^1), art. 10 lit. c), art. 11 alin. (1) lit. e)).",
+    "obligatoriu": true
+   },
+   {
+    "text": "Afișezi la loc vizibil anunțul de atenționare a clienților privind bonul fiscal (OUG 28/1999, art. 1 alin. (11)).",
+    "obligatoriu": true
+   },
+   {
+    "text": "Lași intervenția pe aparat doar tehnicienilor de service autorizați și folosești numai consumabilele prevăzute în manual (OUG 28/1999, art. 4 alin. (12) lit. a), f)).",
+    "obligatoriu": true
+   },
+   {
+    "text": "Păstrezi rapoartele Z și registrul special 5 ani, jurnalul electronic 5 ani, iar la umplerea memoriei fiscale sau la încetarea activității păstrezi memoria fiscală 5 ani (OUG 28/1999, art. 4 alin. (5), (8), (9)).",
+    "obligatoriu": true
+   },
+   {
+    "text": "În zonele fără rețea de comunicații electronice, aparatul lucrează offline (profil 0), cu declarație depusă la ANAF și cu datele trimise prin fișier PDF cu XML atașat (Ordinul ANAF 2668/2020, art. 3 alin. (2), anexa 1 art. 2).",
+    "obligatoriu": false
+   }
+  ],
+  "documente": [
+   {
+    "nume": "Cerere de atribuire a numărului unic de identificare din aplicația informatică a ANAF (anexa 6 la norme)",
+    "obligatoriu": true,
+    "nota": "Normele aprobate prin HG 479/2003, art. 61 alin. (1)"
+   },
+   {
+    "nume": "Copia facturii și a documentului de plată pentru aparat, sau copia contractului cu plata în rate ori a contractului de leasing financiar cu transferul dreptului de proprietate",
+    "obligatoriu": true,
+    "nota": "Normele, art. 61 alin. (3) lit. a)"
+   },
+   {
+    "nume": "Copia procesului-verbal de sigilare a memoriei fiscale și a aparatului",
+    "obligatoriu": true,
+    "nota": "Normele, art. 61 alin. (3) lit. b); procesul-verbal se face conform art. 49 alin. (3)"
+   },
+   {
+    "nume": "Declarație pe propria răspundere privind adresa locului unde se instalează aparatul (sau privind activitatea ambulantă ori de taxi)",
+    "obligatoriu": true,
+    "nota": "Normele, art. 61 alin. (3) lit. c); ANAF verifică punctul de lucru la registrul comerțului"
+   },
+   {
+    "nume": "Pentru taxi: declarație privind numărul de înmatriculare al mașinii și copia autorizației taxi",
+    "obligatoriu": false,
+    "nota": "Normele, art. 61 alin. (3) lit. d)"
+   },
+   {
+    "nume": "Declarația de instalare a aparatului (anexa 10 la norme), semnată de utilizator și de tehnician; copia ei se trimite la organul fiscal cel târziu a doua zi după instalare",
+    "obligatoriu": true,
+    "nota": "Normele, art. 104 alin. (1)–(3)"
+   },
+   {
+    "nume": "Cartea de intervenții a aparatului (anexa 1 la norme), primită de la distribuitor și ștampilată de organul fiscal",
+    "obligatoriu": true,
+    "nota": "OUG 28/1999, art. 5 alin. (3); Normele, art. 102, 105"
+   },
+   {
+    "nume": "Registrul special (modelele din anexele 2a și 2b la norme), cu pagini numerotate, sigilat și vizat de organul fiscal înainte de începerea activității",
+    "obligatoriu": true,
+    "nota": "Normele, art. 6 alin. (4)–(5), art. 105; nu se aplică la taxi și la automatele fără supraveghere"
+   },
+   {
+    "nume": "Declarație pentru aparatele din zone fără rețea de comunicații electronice (anexa 2 la Ordinul ANAF 2668/2020), depusă electronic ca PDF cu XML atașat",
+    "obligatoriu": false,
+    "nota": "Ordinul ANAF 2668/2020, art. 3 alin. (2)–(4); doar dacă aparatul nu se poate conecta"
+   }
+  ],
+  "pasi": [
+   "Verifici dacă activitatea ta cere casă de marcat: încasezi de la populație pentru vânzări cu amănuntul sau servicii? Verifici și lista de excepții din art. 2 al OUG 28/1999. Obligația începe din ziua în care pornești activitatea în fiecare punct de lucru.",
+   "Cumperi aparatul de la un distribuitor autorizat sau de la o unitate acreditată (Ministerul Finanțelor publică lista lor). Primești manualul în limba română, cartea de intervenții, contractul de service și procesul-verbal de sigilare; aparatul vine sigilat cu sigiliul fiscal.",
+   "Depui la administrația județeană a finanțelor publice (în București și Ilfov la DGRFP București sau, pentru contribuabilii mari, la DGAMC) cererea din anexa 6, cu factura, procesul-verbal de sigilare și declarația privind adresa de instalare. ANAF îți comunică numărul unic de identificare al aparatului în 2 zile lucrătoare.",
+   "Ceri distribuitorului instalarea; el o face în cel mult 72 de ore. Tehnicianul instalează și fiscalizează aparatul, face bonurile și raportul Z de probă, completează cartea de intervenții și îl trece în profilul 1 (conectat la sistemul ANAF), importând fișierele generate de ANAF.",
+   "Se semnează declarația de instalare (anexa 10) în trei exemplare; cel târziu a doua zi după instalare trimiți o copie la organul fiscal. Dacă locul nu are rețea de comunicații, depui în 2 zile lucrătoare declarația din anexa 2 la Ordinul ANAF 2668/2020.",
+   "Înainte de începerea activității prezinți la organul fiscal din zona unde e instalat aparatul cartea de intervenții (se ștampilează) și registrul special (se vizează pe ultima pagină).",
+   "Zilnic emiți bon fiscal pentru fiecare vânzare, scoți raportul de închidere zilnică (Z), care se transmite automat la ANAF, ții afișat anunțul pentru clienți și arhivezi rapoartele și jurnalul electronic 5 ani.",
+   "Dacă aparatul se strică, anunți imediat service-ul în modul stabilit prin contract, treci data în cartea de intervenții și, până la reparare, scrii toate vânzările în registrul special și dai chitanțe (facturi la cerere).",
+   "Dacă muți aparatul la alt punct de lucru, anunți organul fiscal înainte să începi activitatea acolo și anunți service-ul; tehnicianul schimbă adresa, resigilează aparatul și face o declarație de instalare nouă.",
+   "La încetarea activității vinzi aparatul doar distribuitorului sau unității acreditate de la care l-ai cumpărat și anunți organul fiscal; la furt sau distrugere ceri ANAF anularea legăturii aparatului cu firma, cu acte doveditoare. Păstrezi memoria fiscală și jurnalul electronic 5 ani."
+  ],
+  "taxe": "",
+  "termen_legal": "Numărul unic de identificare: în 2 zile lucrătoare de la cerere (Normele, art. 61 alin. (4)); instalarea: în cel mult 72 de ore de la cerere (OUG 28/1999, art. 5 alin. (5)); copia declarației de instalare la ANAF: cel târziu a doua zi (Normele, art. 104 alin. (3)).",
+  "temei_legal": "OUG 28/1999 privind obligația operatorilor economici de a utiliza aparate de marcat electronice fiscale, republicată, cu modificările ulterioare, art. 1–6, 8, 10–11; Normele metodologice aprobate prin HG 479/2003, republicată, cu modificările ulterioare, art. 1, 6–8, 42, 49, 59–62, 102–108, 116 și anexele 1, 2a, 2b, 6, 10, 11; Ordinul președintelui ANAF nr. 2668/2020 privind procedura de conectare a aparatelor de marcat electronice fiscale la sistemul informatic național de supraveghere și monitorizare a datelor fiscale.",
+  "activitati": [
+   "comert",
+   "horeca",
+   "servicii"
+  ],
+  "surse": [
+   {
+    "titlu": "OUG 28/1999 privind obligația operatorilor economici de a utiliza aparate de marcat electronice fiscale, republicată, forma consolidată",
+    "url": "https://legislatie.just.ro/Public/DetaliiDocument/17431",
+    "verificat": "2026-11-12"
+   },
+   {
+    "titlu": "Normele metodologice pentru aplicarea OUG 28/1999, aprobate prin HG 479/2003, forma consolidată",
+    "url": "https://legislatie.just.ro/Public/DetaliiDocument/43675",
+    "verificat": "2026-11-12"
+   },
+   {
+    "titlu": "anaf.ro – Ordinul președintelui ANAF nr. 2668/2020 privind procedura de conectare a aparatelor de marcat electronice fiscale",
+    "url": "https://static.anaf.ro/static/10/Anaf/legislatie/OPANAF_2668_2020.pdf",
+    "verificat": "2026-11-12"
+   }
+  ]
+ },
+ {
+  "cheie": "verificare-metrologica-cantare",
+  "titlu": "Verificarea metrologică a cântarelor, pompelor de carburant, contoarelor și a altor mijloace de măsurare folosite în comerț",
+  "domeniu": "comercial",
+  "institutie": "Biroul Român de Metrologie Legală (BRML), prin direcțiile regionale (DRML) și serviciile județene (SJML), cu adresele pe brml.ro, sau un laborator autorizat de BRML. Aparatul se duce la laborator; cel care nu se poate muta se verifică pe loc.",
+  "descriere": "Cântarele, pompele de carburant, măsurile de volum pentru băuturi vândute direct, contoarele, taximetrele și alte mijloace de măsurare folosite la vânzare, la stabilirea unor plăți sau în alte domenii de interes public sunt supuse controlului metrologic legal, dacă figurează în Lista oficială a mijloacelor de măsurare (L.O.-2022). Un astfel de aparat trebuie să fie verificat înainte de punerea în funcțiune (verificare inițială, făcută de producător sau importator) și apoi periodic, cel puțin la intervalul maxim din listă: de exemplu 1 an pentru cântarele cu funcționare neautomată, distribuitoarele de combustibil, măsurile de volum pentru vânzări directe de lichide și greutăți, 2 ani pentru rulete și alcoolmetre, 7 ani pentru contoarele de apă rece. Proprietarul care folosește aparatul îl declară la BRML înainte de utilizare, îl prezintă la verificarea periodică și plătește verificarea. După verificare, aparatul primește marcajul de verificare metrologică (sigiliu) și un buletin de verificare, valabile doar până la data trecută în buletin. Un aparat fără marcaj valabil nu e legal: nu are voie să fie folosit și nici ținut în locul unde se fac măsurările, altfel se sigilează sau se confiscă și se dă amendă. După orice reparație, aparatul se verifică din nou. Aparatele care nu sunt în listă sau nu se folosesc în domenii de interes public nu au această obligație.",
+  "conditii": [
+   {
+    "text": "Obligația privește mijloacele de măsurare cuprinse în Lista oficială L.O.-2022 și folosite în măsurări de interes public, de exemplu vânzarea directă către populație sau cântărirea în tranzacții comerciale (OG 20/1992, art. 3, art. 15; L.O.-2022, art. 1, art. 4 lit. b); IML 3-05, art. 29).",
+    "obligatoriu": true
+   },
+   {
+    "text": "Proprietarul care folosește sau dă spre folosire aparatul îi asigură legalitatea și îl declară la BRML înainte de punerea în funcțiune sau de utilizare (OG 20/1992, art. 24 alin. 1).",
+    "obligatoriu": true
+   },
+   {
+    "text": "Aparatul nou se pune în funcțiune doar după verificarea inițială sau după evaluarea conformității prevăzută de HG 710/2015 (cântare neautomate) ori HG 711/2015; verificarea inițială e obligația producătorului sau a importatorului, iar la importul pentru uz propriu, a deținătorului (OG 20/1992, art. 16; IML 3-05, art. 9 alin. (2)–(3), art. 11; L.O.-2022, notele 3 și 14).",
+    "obligatoriu": true
+   },
+   {
+    "text": "Proprietarul prezintă aparatul la verificarea periodică, la intervalul ales de el, dar fără să depășească intervalul maxim din coloana 6 a listei, și suportă costul verificării (IML 3-05, art. 12; L.O.-2022, art. 8).",
+    "obligatoriu": true
+   },
+   {
+    "text": "Marcajul de verificare se aplică doar pe aparatele admise și e valabil numai în intervalul trecut în buletinul de verificare; marcajele aplicate ca sigiliu au aceeași protecție ca sigiliile statului (OG 20/1992, art. 18; IML 4-05, art. 6–8).",
+    "obligatoriu": true
+   },
+   {
+    "text": "Este interzis să folosești sau să ții în locul de măsurare aparate false, falsificate, fără marcajele obligatorii valabile sau cu indicații doar în unități de măsură nelegale; aparatele nelegale se sigilează și, după caz, se confiscă (OG 20/1992, art. 19, art. 24 alin. 2).",
+    "obligatoriu": true
+   },
+   {
+    "text": "După orice reparare sau modificare, aparatul se verifică din nou, iar prezentarea la verificare o face firma care l-a reparat; repararea și montarea se fac doar de firme cu aviz BRML (OG 20/1992, art. 16^1 lit. b), art. 23; IML 3-05, art. 7 lit. d), art. 14 alin. (2)).",
+    "obligatoriu": true
+   },
+   {
+    "text": "Dacă aparatul a avut un incident sau, din cauza folosirii intense, nu mai măsoară sigur, îl scoți din uz și îl prezinți la verificare, chiar dacă verificarea anterioară e încă valabilă (IML 3-05, art. 13).",
+    "obligatoriu": true
+   },
+   {
+    "text": "Nedeclararea aparatului la BRML și folosirea sau deținerea de aparate fără marcaje valabile sunt contravenții sancționate cu amendă, iar în al doilea caz și cu sigilarea sau confiscarea aparatului; cuantumul e cel din art. 29 lit. h) și i) (OG 20/1992, art. 29 lit. h), i); art. 33).",
+    "obligatoriu": true
+   }
+  ],
+  "documente": [
+   {
+    "nume": "Declarația mijloacelor de măsurare supuse controlului metrologic legal, făcută la BRML înainte de punerea în funcțiune",
+    "obligatoriu": true,
+    "nota": "OG 20/1992, art. 24 alin. 1; modelul de declarație nu l-am găsit în sursele citite, se cere la DRML/SJML"
+   },
+   {
+    "nume": "Documentele aparatului care arată aprobarea de model (sau marcajele de conformitate) și verificarea inițială",
+    "obligatoriu": true,
+    "nota": "IML 3-05, art. 8: la verificare se acceptă, cu excepțiile din listă, doar aparatele cu aprobare de model"
+   },
+   {
+    "nume": "Buletinul de verificare metrologică, cu rezultatul ADMIS/RESPINS și valabilitatea verificării (se primește la verificare și se păstrează)",
+    "obligatoriu": true,
+    "nota": "IML 3-05, art. 17 alin. (1)–(2); IML 4-05, art. 7"
+   },
+   {
+    "nume": "Certificat de etalonare sau de calibrare, doar pentru aparatele la care Lista oficială îl cere (de exemplu cisterne și rezervoare de stocare)",
+    "obligatoriu": false,
+    "nota": "IML 3-05, art. 17 alin. (1); L.O.-2022, nota 7"
+   }
+  ],
+  "pasi": [
+   "Faci lista aparatelor de măsură pe care le folosești la vânzare sau la stabilirea unor plăți (cântare, pompe de carburant, măsuri de volum pentru băuturi, contoare, taximetre etc.) și verifici în Lista oficială L.O.-2022 dacă sunt cuprinse și ce interval maxim de verificare au.",
+   "La cumpărare alegi doar aparate cu aprobare de model sau cu marcajele de conformitate și cu verificarea inițială făcută; dacă imporți singur aparatul pentru uz propriu, verificarea inițială e obligația ta.",
+   "Înainte să începi să folosești aparatul, îl declari la BRML, prin direcția regională sau serviciul județean de metrologie legală din zona ta (datele de contact sunt pe brml.ro).",
+   "Programezi verificarea periodică la un laborator al BRML sau la un laborator autorizat de BRML; aparatele mari sau care se pot deregla la transport se verifică la locul de utilizare, unde pui la dispoziție spațiul, personalul și utilajele necesare. Costul îl suporți tu.",
+   "Dacă aparatul e admis, verificatorul metrolog aplică marcajul de verificare (sigiliul) și îți dă buletinul de verificare metrologică, în care scrie până când e valabilă verificarea. Păstrezi buletinul la locul unde folosești aparatul.",
+   "Ții evidența datelor de expirare și prezinți din nou aparatul la verificare înainte să treacă intervalul maxim din listă (de exemplu 1 an la cântarele neautomate și la pompele de carburant). Nu folosești și nu ții la vedere aparate cu verificarea expirată.",
+   "Dacă aparatul se strică, îl repari doar la o firmă cu aviz BRML; după reparare firma îl prezintă la verificare și abia apoi îl folosești din nou. Dacă aparatul a avut un incident sau nu mai măsoară sigur, îl scoți din uz și îl duci la verificare, indiferent de data din buletin."
+  ],
+  "taxe": "",
+  "termen_legal": "Intervalul maxim dintre două verificări e cel din coloana 6 a Listei oficiale L.O.-2022 (art. 8), de exemplu 1 an la cântarele cu funcționare neautomată (L52-1) și la distribuitoarele de combustibil (L30-4); prima verificare periodică se socotește de la punerea în funcțiune (art. 9).",
+  "temei_legal": "OG 20/1992 privind activitatea de metrologie, aprobată cu modificări prin Legea 11/1994, cu modificările ulterioare (forma consolidată la 29.08.2010), art. 3, 15–16^1, 18–20, 23–24, 29, 33, 35; Instrucțiunile de metrologie legală IML 3-05 (verificări metrologice) și IML 4-05 (marcaje metrologice), aprobate prin HG 1660/2005, cu modificările ulterioare; Lista oficială a mijloacelor de măsurare supuse controlului metrologic legal L.O.-2022, aprobată prin Ordinul directorului general al BRML nr. 77/2022, modificată prin Ordinul nr. 204/2024.",
+  "activitati": [
+   "comert",
+   "horeca",
+   "productie",
+   "agricultura"
+  ],
+  "surse": [
+   {
+    "titlu": "OG 20/1992 privind activitatea de metrologie, forma consolidată",
+    "url": "https://legislatie.just.ro/Public/DetaliiDocument/2171",
+    "verificat": "2026-11-12"
+   },
+   {
+    "titlu": "Lista oficială a mijloacelor de măsurare supuse controlului metrologic legal L.O.-2022, forma consolidată",
+    "url": "https://legislatie.just.ro/Public/DetaliiDocument/253632",
+    "verificat": "2026-11-12"
+   },
+   {
+    "titlu": "Instrucțiuni de metrologie legală IML 3-05 – verificarea metrologică a mijloacelor de măsurare (HG 1660/2005)",
+    "url": "https://legislatie.just.ro/Public/DetaliiDocument/121475",
+    "verificat": "2026-11-12"
+   },
+   {
+    "titlu": "Instrucțiuni de metrologie legală IML 4-05 – marcaje metrologice (HG 1660/2005)",
+    "url": "https://legislatie.just.ro/Public/DetaliiDocument/68019",
+    "verificat": "2026-11-12"
+   },
+   {
+    "titlu": "brml.ro – Direcții regionale și servicii județene de metrologie legală",
+    "url": "https://www.brml.ro/directii-regionale-de-metrologie-legala",
+    "verificat": "2026-11-12"
+   }
+  ]
+ },
+ {
+  "cheie": "atestat-anre-instalatii-electrice",
+  "titlu": "Atestat ANRE pentru firmele care proiectează, execută și verifică instalații electrice (tipurile A, B, C, D, E)",
+  "domeniu": "constructii",
+  "institutie": "Autoritatea Națională de Reglementare în Domeniul Energiei (ANRE); cererea se depune prin portalul ANRE pus la dispoziție în acest scop, prin e-mail, prin Punctul de contact unic electronic (PCUe) sau pe hârtie, la sediul ANRE (art. 14 alin. (2) din Regulament)",
+  "descriere": "Firma (operatorul economic) care proiectează, execută sau verifică instalații electrice trebuie să aibă atestat ANRE pentru tipul de lucrări pe care le face; fără atestat valabil aceste activități sunt interzise. Atestatul se dă firmei, nu persoanei: electricienii autorizați sunt o autorizare separată, pe persoană. Tipurile principale: A1 și A2 (încercări la instalații de joasă, respectiv joasă și medie tensiune), A3 (încercări pentru certificarea centralelor), A (A1 + A2); Bp (proiectare de instalații de joasă tensiune), Bi (execuție de instalații interioare și exterioare), Be (execuție, include Bi și A1), B (include Bp, Be, Bi, A1); C1A și C1B (proiectare de linii și posturi, 0,4–20 kV, respectiv 0,4–110 kV), C2A și C2B (execuție pe aceleași niveluri); D1 și D2 (proiectare, respectiv execuție de linii la orice tensiune); E1 și E2 (proiectare, respectiv execuție de stații și partea electrică a centralelor), E2PA (lucrări de protecție și automatizare în stații). Competențele exacte ale fiecărui tip sunt în anexa 3. Atestatul are durată nelimitată, dar trebuie vizat de ANRE o dată la 5 ani; dacă nu e vizat la timp, își pierde valabilitatea și trebuie cerut unul nou. Firma trebuie să păstreze tot timpul personalul și dotările cu care a primit atestatul și să anunțe ANRE când acestea se schimbă. Antreprenorul general care dă lucrările electrice unui subcontractant atestat le coordonează printr-un angajat al său care este electrician autorizat.",
+  "conditii": [
+   {
+    "text": "Proiectarea, execuția și verificarea instalațiilor electrice se fac doar de operatori economici care au atestat (sau decizie de confirmare, pentru firmele din UE/SEE/Elveția) emis de ANRE; fără atestat valabil activitatea este interzisă (Regulament, art. 2 alin. (1), art. 36).",
+    "obligatoriu": true
+   },
+   {
+    "text": "Firma are în structura de personal cel puțin doi electricieni autorizați, cu gradul și tipul minim cerute pentru tipul de atestat în anexa 8 (Regulament, art. 14 alin. (1) lit. d)); legătura cu ei se dovedește cu extras din registrul de evidență a salariaților sau cu contracte de prestări servicii certificate (lit. e)).",
+    "obligatoriu": true
+   },
+   {
+    "text": "Firma are dotarea tehnică minimă (spații, utilaje, scule, aparate de măsură) prevăzută în anexa 6 pentru tipul de atestat cerut (Regulament, art. 14 alin. (1) lit. c)).",
+    "obligatoriu": true
+   },
+   {
+    "text": "Firma nu e în faliment și nu i s-a retras un atestat în ultimii 5 ani din motive care îi sunt imputabile (Regulament, art. 12 alin. (3)).",
+    "obligatoriu": true
+   },
+   {
+    "text": "O firmă nu poate avea în același timp două sau mai multe atestate care dau aceleași competențe (Regulament, art. 2 alin. (4)).",
+    "obligatoriu": true
+   },
+   {
+    "text": "După obținere, firma păstrează structura minimă de personal autorizat și trimite la ANRE documentele în 15 zile de la orice modificare a acesteia; anual trimite fișa de personal (Regulament, anexa 1 pct. 6 lit. b), c), i)).",
+    "obligatoriu": true
+   },
+   {
+    "text": "Schimbarea denumirii, a formei juridice sau a sediului se anunță la ANRE în 10 zile calendaristice, pentru modificarea atestatului (Regulament, art. 26 alin. (2)).",
+    "obligatoriu": true
+   }
+  ],
+  "documente": [
+   {
+    "nume": "Cerere de acordare a atestatului, după modelul din anexa 4",
+    "obligatoriu": true,
+    "nota": "Regulament, art. 12 alin. (2) și anexa 4"
+   },
+   {
+    "nume": "Certificat constatator de la Registrul Comerțului, eliberat cu cel mult 30 de zile înainte",
+    "obligatoriu": true,
+    "nota": "Regulament, art. 14 alin. (1) lit. a)"
+   },
+   {
+    "nume": "Organigrama firmei",
+    "obligatoriu": true,
+    "nota": "Regulament, art. 14 alin. (1) lit. b)"
+   },
+   {
+    "nume": "Lista dotărilor tehnice (modelul din anexa 5), care cuprinde cel puțin dotările din anexa 6 pentru tipul de atestat",
+    "obligatoriu": true,
+    "nota": "Regulament, art. 14 alin. (1) lit. c)"
+   },
+   {
+    "nume": "Lista personalului alocat activităților supuse atestării (modelul din anexa 7), cu gradul și tipul legitimației de electrician autorizat",
+    "obligatoriu": true,
+    "nota": "Regulament, art. 14 alin. (1) lit. d)"
+   },
+   {
+    "nume": "Raport extras din registrul general de evidență a salariaților pentru fiecare persoană din structura minimă sau copii certificate ale contractelor de prestări servicii",
+    "obligatoriu": true,
+    "nota": "Regulament, art. 14 alin. (1) lit. e)"
+   },
+   {
+    "nume": "Declarație pe propria răspundere (modelul din anexa 9)",
+    "obligatoriu": true,
+    "nota": "Regulament, art. 14 alin. (1) lit. f)"
+   },
+   {
+    "nume": "Declarație de consimțământ pentru prelucrarea datelor personale (modelul din anexa 10)",
+    "obligatoriu": true,
+    "nota": "Regulament, art. 14 alin. (1) lit. g)"
+   },
+   {
+    "nume": "Dovada plății tarifului de emitere a atestatului",
+    "obligatoriu": true,
+    "nota": "Regulament, art. 13 alin. (2), art. 14 alin. (1) lit. h)"
+   }
+  ],
+  "pasi": [
+   "Se alege tipul de atestat potrivit lucrărilor (anexa 3) și se verifică dacă firma are electricienii autorizați (anexa 8) și dotările minime (anexa 6) cerute pentru acel tip.",
+   "Se plătește integral tariful de emitere, înainte sau odată cu depunerea cererii; dacă banii nu ajung la ANRE în 10 zile lucrătoare de la înregistrare, cererea se clasează (art. 13 alin. (2)–(3)).",
+   "Se depune cererea (anexa 4) cu documentele de la art. 14 alin. (1), în limba română, prin portalul ANRE, e-mail, PCUe sau pe hârtie; documentele trimise electronic se semnează cu semnătură electronică (art. 14 alin. (2)–(3)).",
+   "Dacă dosarul e incomplet, ANRE cere completarea; firma are 30 de zile să răspundă, altfel dosarul se clasează (art. 20 alin. (1)–(3)).",
+   "Pentru dosarul complet, ANRE face raportul și decide în 30 de zile calendaristice; decizia o semnează președintele ANRE (art. 21 alin. (1), (6)).",
+   "Decizia se poate primi pe e-mail, la cerere, iar atestatul original se ridică personal sau prin curier (art. 22).",
+   "Viza: cererea de vizare se depune cu cel puțin 60 de zile înainte de împlinirea a 5 ani de la emitere sau de la ultima viză; cererea întârziată e tratată ca cerere nouă, iar atestatul nevizat la termen își pierde valabilitatea (art. 10, art. 24).",
+   "La schimbarea denumirii, formei juridice sau sediului se cere modificarea atestatului în 10 zile; pentru atestat pierdut sau distrus se cere duplicat, după publicarea unui anunț într-un ziar național (art. 26, art. 28)."
+  ],
+  "taxe": "Tarifele pentru 2026 (Ordinul ANRE nr. 82/2025, anexa 2, tabelul nr. 1): atestat de tip A1, Bp, Be, Bi sau B – 1.600 lei; atestat de tip A2, A3, C1A sau C2A – 3.100 lei; atestat de tip A, C1B, C2B, D1, D2, E1, E2 sau E2PA – 4.500 lei; duplicat – 125 lei. Tariful de vizare periodică este 50% din tariful de emitere pentru același tip. Tarifele nu se restituie dacă cererea e retrasă, clasată sau respinsă (Regulament, art. 41). Tarifele se stabilesc anual prin ordin al președintelui ANRE (Regulament, art. 13 alin. (1)).",
+  "termen_legal": "ANRE decide în 30 de zile calendaristice de la dosarul complet (art. 21 alin. (1)); completările se trimit în 30 de zile (art. 20 alin. (2)); viza se cere cu cel puțin 60 de zile înainte de împlinirea a 5 ani (art. 24 alin. (1)).",
+  "temei_legal": "Regulamentul pentru atestarea operatorilor economici care proiectează, execută și verifică instalații electrice, aprobat prin Ordinul ANRE nr. 134/2021 (MO nr. 1216/22.12.2021), art. 2, 8–10, 12–14, 20–22, 24, 26, 28, 30–31, 36, 41 și anexele 1, 3–10; Ordinul ANRE nr. 82/2025 privind tarifele și contribuțiile bănești percepute de ANRE în 2026, anexa 2; cadrul general: Legea energiei electrice și a gazelor naturale nr. 123/2012.",
+  "activitati": [
+   "constructii",
+   "servicii"
+  ],
+  "surse": [
+   {
+    "titlu": "Regulamentul pentru atestarea operatorilor economici care proiectează, execută și verifică instalații electrice (Ordinul ANRE nr. 134/2021)",
+    "url": "https://legislatie.just.ro/Public/DetaliiDocumentAfis/249816",
+    "verificat": "2026-11-12"
+   },
+   {
+    "titlu": "Ordinul ANRE nr. 82/2025 privind aprobarea tarifelor și contribuțiilor bănești percepute de ANRE în anul 2026",
+    "url": "https://legislatie.just.ro/Public/DetaliiDocument/305643",
+    "verificat": "2026-11-12"
+   }
+  ]
+ },
+ {
+  "cheie": "autorizare-rar-service-auto",
+  "titlu": "Autorizația tehnică RAR pentru service auto (reparații, întreținere, reglaje, modificări la vehicule rutiere)",
+  "domeniu": "transport",
+  "institutie": "Registrul Auto Român (RAR), prin Organismul de Certificare Sisteme de Management (RAR-OCS), Bd. Expoziției nr. 1K, sector 1, București, sau reprezentanța RAR din județ; formularele se trimit pe e-mail la ocs@rarom.ro sau se depun la ghișeu",
+  "descriere": "Atelierele care repară, întrețin sau reglează vehicule rutiere, care repară, recondiționează, montează sau verifică componente, care fac modificări constructive sau reconstrucții, precum și cele care dezmembrează vehicule scoase din uz, pot lucra doar în baza autorizației tehnice eliberate de RAR. Autorizația se dă pe tipuri de activități (de exemplu A1 – reparații, A2 – întreținere, A3 – reglaje funcționale, B1–B3 – lucrări la componente, B4 – modificări constructive și reconstrucție, B5 – dezmembrare) și pe clase: clasa I o au atelierele care respectă procedurile producătorului și au acordul acestuia sau sistem de calitate certificat, după caz; celelalte primesc clasa II (iar la A1 există și clasa III, pentru doar o parte din operații). Pentru lucrări la vehicule noi aflate în garanție e nevoie de acordul producătorului sau al reprezentantului său. Autorizația nu are o dată de expirare: rămâne valabilă cât timp atelierul păstrează condițiile, verificate de RAR prin audituri de supraveghere anuale (primul la 6 luni). Atelierul dă certificat de garanție pentru lucrări, folosește doar piese originale sau omologate la sistemele de siguranță și mediu și permite clientului să urmărească lucrarea dintr-un spațiu special amenajat. Dezmembrarea vehiculelor scoase din uz are condiții în plus (aviz de la Poliție, registre speciale) și nu e tratată aici în detaliu.",
+  "conditii": [
+   {
+    "text": "Activitățile de reparații, întreținere, reglaje, modificări constructive și dezmembrare se fac doar în ateliere specializate, în baza autorizației tehnice (OG 82/2000, art. 1 alin. (2)–(3)); autorizația o eliberează RAR, pe baza unui raport de evaluare (art. 2 alin. (1)).",
+    "obligatoriu": true
+   },
+   {
+    "text": "Atelierul are dotări, documentație și tehnologie potrivite, personal calificat, iar conducătorul îndeplinește condițiile de onorabilitate și capacitate profesională (OG 82/2000, art. 2 alin. (3)).",
+    "obligatoriu": true
+   },
+   {
+    "text": "La audit se verifică: onorabilitatea conducătorului (cazier judiciar), certificatul de atestare a capacității profesionale a conducătorului atelierului, spațiile, posibilitatea clientului de a asista la lucrare, calificarea personalului și dotările minime din anexa 4 (RNTR 9, cap. II pct. 9 lit. a), a^1), b), b^1), g)).",
+    "obligatoriu": true
+   },
+   {
+    "text": "Pentru lucrări la vehicule noi aflate în garanție, atelierul are acordul producătorului sau al reprezentantului autorizat (OG 82/2000, art. 2 alin. (5)).",
+    "obligatoriu": false
+   },
+   {
+    "text": "La sistemele de siguranță, protecția mediului și antifurt se folosesc doar piese și materiale originale sau omologate/certificate (OG 82/2000, art. 4); pentru lucrări se emite certificat de garanție (art. 5).",
+    "obligatoriu": true
+   },
+   {
+    "text": "Atelierul anunță RAR orice schimbare care afectează condițiile în care a primit autorizația (RNTR 9, cap. II pct. 16^1).",
+    "obligatoriu": true
+   },
+   {
+    "text": "Lucrul fără autorizație tehnică se amendează cu 4.000–10.000 lei, iar lucrul cu autorizația suspendată sau fără păstrarea condițiilor inițiale cu 5.000–10.000 lei (OG 82/2000, art. 6^1 alin. (1) lit. a)–b)).",
+    "obligatoriu": true
+   }
+  ],
+  "documente": [
+   {
+    "nume": "Cerere-tip de autorizare (formularul RAR pentru RNTR 9)",
+    "obligatoriu": true,
+    "nota": "RNTR 9, cap. II pct. 4–5, anexa 2; formularul e pe rarom.ro"
+   },
+   {
+    "nume": "Chestionar de autoevaluare a capabilității tehnice",
+    "obligatoriu": true,
+    "nota": "RNTR 9, cap. II pct. 4–5, anexa 3"
+   },
+   {
+    "nume": "Organigrama (structura organizatorică)",
+    "obligatoriu": true,
+    "nota": "Lista documentelor RAR, poz. 2a"
+   },
+   {
+    "nume": "Planul atelierului: posturile de lucru, spațiul de vizualizare pentru client, amplasarea echipamentelor, sursele de energie electrică, aer comprimat etc.",
+    "obligatoriu": true,
+    "nota": "Lista documentelor RAR, poz. 2b; RNTR 9, cap. II pct. 9 lit. b^1)"
+   },
+   {
+    "nume": "Lista utilajelor și a echipamentelor de inspecție",
+    "obligatoriu": true,
+    "nota": "Lista documentelor RAR, poz. 2c; RNTR 9, anexa 4"
+   },
+   {
+    "nume": "Certificat constatator de la Registrul Comerțului, de cel mult 3 luni, cu sediul, punctul de lucru și activitatea de reparare și întreținere a autovehiculelor",
+    "obligatoriu": true,
+    "nota": "Lista documentelor RAR, poz. 3; RNTR 9, cap. II pct. 5"
+   },
+   {
+    "nume": "Contractul pentru autorizarea și supravegherea operatorilor economici, semnat și ștampilat de reprezentantul legal, în două exemplare",
+    "obligatoriu": true,
+    "nota": "Pagina RAR pentru autorizarea atelierelor service; RNTR 9, cap. II pct. 7–8"
+   },
+   {
+    "nume": "Certificatul de atestare a capacității profesionale a conducătorului atelierului (atestat RAR)",
+    "obligatoriu": true,
+    "nota": "RNTR 9, cap. II pct. 9 lit. a^1); se verifică la audit"
+   }
+  ],
+  "pasi": [
+   "Se stabilesc activitățile cerute (A1–A3, B1–B5) și clasa, după anexa 1 la RNTR 9, și se verifică dotările minime din anexa 4.",
+   "Se descarcă de pe rarom.ro cererea-tip, chestionarul de autoevaluare și contractul; se completează și se semnează de reprezentantul legal.",
+   "Se trimit pe e-mail la ocs@rarom.ro sau se depun la reprezentanța RAR din județ (în București, la RAR-OCS), împreună cu documentele din lista RAR; dosarul primește un număr după verificarea actelor.",
+   "Dacă dosarul e incomplet sau greșit, se restituie cu explicații și procesul se reia (RNTR 9, cap. II pct. 6).",
+   "RAR stabilește durata auditului și costurile și trimite contractul și înștiințarea de plată; după semnarea contractului și plată, se programează auditul de comun acord (pct. 7–8).",
+   "Auditul se face la fiecare atelier; neconformitățile minore se corectează în termenele stabilite, cele majore în 45 de zile, altfel procesul se reia; documentele lipsă se completează în 15 zile (pct. 9–11).",
+   "RAR eliberează autorizația tehnică în cel mult 30 de zile și trece atelierul în baza sa de date (pct. 12–13).",
+   "Supravegherea: primul audit la 6 luni, apoi anual; vigneta RAR primită se lipește pe spatele autorizației. Neconformitățile pot duce la suspendare de până la 30 de zile, iar trei suspendări în 18 luni duc la anulare (pct. 16, 17, 19–21)."
+  ],
+  "taxe": "Costurile se plătesc la RAR pe baza contractului și a înștiințării de plată (RNTR 9, cap. II pct. 7–8). După documentul RAR-OCS din 01.01.2026 („Costuri service auto”), costul unei ore de audit este 215,70 lei; costul autorizării = analiza dosarului + evaluarea fiecărei activități + evaluarea posturilor de lucru (pe număr de posturi) + evaluarea dosarului + emiterea autorizației, fiecare calculată ca număr de ore × 215,70 lei; costul supravegherii anuale se calculează la fel, fără analiza dosarului și cu durate mai mici. Duratele pe activitate sunt în tabelul RAR. Auditul suplimentar făcut după contestații confirmate se plătește de atelier (OG 82/2000, art. 3 alin. (10)).",
+  "termen_legal": "Autorizația se eliberează în cel mult 30 de zile (RNTR 9, cap. II pct. 13); neconformitățile majore se remediază în 45 de zile (pct. 11); primul audit de supraveghere la 6 luni, apoi anual (pct. 16).",
+  "temei_legal": "OG 82/2000 privind autorizarea operatorilor economici care desfășoară activități de reparare, reglare, modificare constructivă și dezmembrare a vehiculelor rutiere, art. 1, 2, 3, 4, 5, 6^1; Reglementările RNTR 9, aprobate prin Ordinul nr. 2.131/2005, cu modificările ulterioare (Ordinele 1.022/2013, 572/2016, 2.222/2020, 1.223/2021), cap. II pct. 4–21 și anexele 1–4.",
+  "activitati": [
+   "servicii",
+   "transport"
+  ],
+  "surse": [
+   {
+    "titlu": "RAR – Autorizare ateliere service auto (formulare)",
+    "url": "https://www.rarom.ro/?page_id=740",
+    "verificat": "2026-11-12"
+   },
+   {
+    "titlu": "RAR – Autorizarea unităților service auto",
+    "url": "https://www.rarom.ro/?page_id=883",
+    "verificat": "2026-11-12"
+   },
+   {
+    "titlu": "RAR – Lista documentelor necesare pentru autorizare (RNTR 9)",
+    "url": "https://www.rarom.ro/cs-uploads/FA_1list.pdf",
+    "verificat": "2026-11-12"
+   },
+   {
+    "titlu": "RAR-OCS – Costuri pentru autorizare/supraveghere service auto (01.01.2026)",
+    "url": "https://www.rarom.ro/cs-uploads/Costuri_service_auto.pdf",
+    "verificat": "2026-11-12"
+   },
+   {
+    "titlu": "RNTR 9, aprobate prin Ordinul nr. 2.131/2005, forma consolidată",
+    "url": "https://legislatie.just.ro/public/DetaliiDocument/67958",
+    "verificat": "2026-11-12"
+   },
+   {
+    "titlu": "OG 82/2000, forma consolidată",
+    "url": "https://legislatie.just.ro/Public/DetaliiDocument/24007",
+    "verificat": "2026-11-12"
+   }
+  ]
+ },
+ {
+  "cheie": "licenta-agentie-turism",
+  "titlu": "Licența de turism pentru agenția de turism (organizatoare sau intermediară) și anexa pentru sediile secundare",
+  "domeniu": "functionare",
+  "institutie": "Ministerul responsabil de turism (pe turism.gov.ro: Ministerul Economiei, Digitalizării, Antreprenoriatului și Turismului), Calea Victoriei 152, Sector 1, București; dosarul se depune la registratura instituției (unele cereri și online, în platforma dedicată).",
+  "descriere": "O firmă poate oferi și vinde pachete de servicii de călătorie sau servicii turistice în România, inclusiv online, doar dacă are licență de turism eliberată de ministerul care se ocupă de turism. Licența se cere înainte de a începe activitatea. Agenția organizatoare este cea care combină și vinde pachete (ale ei); agenția intermediară vinde pachete făcute de o agenție organizatoare. Pentru fiecare sediu secundar, filială sau reprezentanță se cere o anexă la licență. Agenția organizatoare trebuie să aibă un instrument de garantare pentru insolvență (scrisoare de garanție bancară, poliță de asigurare, fond de garantare sau alt instrument legal), care acoperă banii plătiți de turiști și, dacă pachetul include transport, repatrierea lor; dacă e SRL, capitalul social trebuie să fie de cel puțin 25.000 lei. Agenția este condusă de o persoană calificată (de exemplu cu brevet de turism specific funcției). Licența e valabilă pe perioadă nedeterminată, cât timp se păstrează condițiile; la orice schimbare (sediu, denumire, titular, tip de agenție) se cere o licență nouă în cel mult 30 de zile. Licența nu poate fi dată altei firme. Agențiile din alte state UE/SEE autorizate acolo nu au nevoie de licență pentru servicii transfrontaliere, dar trebuie să anunțe ministerul prin formularul din anexa 15 la Norme.",
+  "conditii": [
+   {
+    "text": "Ofertarea și vânzarea serviciilor sau pachetelor turistice, inclusiv online, se fac numai pe baza licenței de turism și, pentru sediile secundare, a anexei la licență (HG 1267/2010, art. 10 alin. (1), (2) și (5)).",
+    "obligatoriu": true
+   },
+   {
+    "text": "Licența se cere înainte de începerea activității de organizare, ofertare sau comercializare a pachetelor de servicii de călătorie (Normele aprobate prin Ordinul 65/2013, art. 35 pct. 1).",
+    "obligatoriu": true
+   },
+   {
+    "text": "Agenția organizatoare are un instrument de garantare pentru insolvență (scrisoare de garanție bancară, poliță de asigurare, fond de garantare sau alt instrument legal), care acoperă plățile turiștilor și, dacă pachetul include transport, repatrierea (OG 2/2018, art. 18 alin. (1) și art. 20 alin. (1); Normele, anexa 8 pct. 3).",
+    "obligatoriu": true
+   },
+   {
+    "text": "Dacă agenția organizatoare este SRL, capitalul social este de cel puțin 25.000 lei (OG 2/2018, art. 20 alin. (2); Normele, anexa 8 pct. 4).",
+    "obligatoriu": true
+   },
+   {
+    "text": "Persoana care conduce agenția și sediile secundare are contract de muncă cu normă întreagă înregistrat în registrul salariaților sau contract de management (excepție: asociații și administratorul) și are cel puțin unul dintre: curs de formare managerială în domeniu de minimum 300 de ore, diplomă universitară în turism, brevet de turism specific funcției sau 5 ani de experiență într-o agenție de turism, cel puțin ca agent de turism (Normele, art. 34 alin. (1) și anexa 8 pct. 7).",
+    "obligatoriu": true
+   },
+   {
+    "text": "Fiecare sediu secundar are cel puțin o persoană calificată ca agent de turism (curs de calificare, certificat de competențe sau 2 ani de experiență); dacă pleacă persoana care conduce agenția, ea se înlocuiește în cel mult 60 de zile (Normele, art. 34 alin. (2) și (3)).",
+    "obligatoriu": true
+   },
+   {
+    "text": "Criteriile minime din anexa 8 la Norme: cel puțin 50% dintre agenții de turism calificați, ghizi atestați pentru programele turistice (la organizatoare), firmă cu denumirea agenției la intrare, pagină web cu datele firmei și copia licenței (plus dovada garanției, la organizatoare), nume care nu se confundă cu al altor agenții, clădire în stare bună și sediu salubru (nu se aplică agențiilor exclusiv online) (Normele, art. 31 alin. (1) și anexa 8).",
+    "obligatoriu": true
+   },
+   {
+    "text": "Licența și anexa se afișează la loc vizibil în agenție și în sediile secundare, numărul licenței se scrie pe toate documentele emise, iar originalele se păstrează permanent la sediu (HG 1267/2010, art. 13 alin. (2)).",
+    "obligatoriu": true
+   },
+   {
+    "text": "Activitatea fără licență sau prin sedii secundare fără anexă, ori în alte sedii decât cele din licență, este contravenție: amendă de 10.000–20.000 lei (HG 1267/2010, art. 15 lit. j) și m), art. 16 alin. (1) lit. a)).",
+    "obligatoriu": true
+   }
+  ],
+  "documente": [
+   {
+    "nume": "Declarație standardizată pe propria răspundere (modelul din anexa 6 la Norme)",
+    "obligatoriu": true,
+    "nota": "Normele, art. 35 pct. 1 lit. a); modelul se descarcă de pe turism.gov.ro"
+   },
+   {
+    "nume": "Dovada instrumentului de garantare pentru insolvență (scrisoare de garanție bancară, poliță de asigurare, fond de garantare sau alt instrument legal)",
+    "obligatoriu": false,
+    "nota": "Normele, art. 35 pct. 1 lit. c); OG 2/2018, art. 18 alin. (1); doar pentru agenția organizatoare"
+   },
+   {
+    "nume": "Certificat de cazier fiscal pentru firmă, asociații/acționarii unici sau majoritari, persoana care conduce agenția și administrator (sau declarație pe propria răspundere după OG 39/2015, pentru cine nu e înregistrat fiscal în România)",
+    "obligatoriu": true,
+    "nota": "Normele, art. 35 pct. 1 lit. d)"
+   },
+   {
+    "nume": "Extras REGES cu contractul de muncă al persoanei care conduce agenția, vizat de semnatarul declarației, sau copia contractului de management, plus copia actului de pregătire profesională (de exemplu brevetul de turism)",
+    "obligatoriu": true,
+    "nota": "Normele, art. 35 pct. 1 lit. e)"
+   },
+   {
+    "nume": "Pentru instituții publice, asociații, fundații, culte și altele asemenea: actul de înființare, înregistrarea fiscală și statutul sau actul care permite activitatea de agenție de turism",
+    "obligatoriu": false,
+    "nota": "Normele, art. 35 pct. 1 lit. b)"
+   },
+   {
+    "nume": "Anexă pentru sediu secundar: declarația standardizată (anexa 6), copia licenței și, pentru entități necomerciale, actul care dă dreptul de folosință asupra spațiului",
+    "obligatoriu": false,
+    "nota": "Normele, art. 35 pct. 2"
+   },
+   {
+    "nume": "Schimbare de sediu, denumire sau tip de agenție: cerere de modificare și licența (și anexa) în original; la trecerea din intermediară în organizatoare, și dovada instrumentului de garantare",
+    "obligatoriu": false,
+    "nota": "Normele, art. 35 pct. 3, 5 și 8"
+   },
+   {
+    "nume": "Schimbarea titularului: aceleași acte ca la eliberare, depuse de noul titular, plus licența și anexele vechi în original",
+    "obligatoriu": false,
+    "nota": "Normele, art. 35 pct. 6"
+   }
+  ],
+  "pasi": [
+   "Se stabilește tipul agenției (organizatoare sau intermediară) și se asigură persoana care o conduce, cu contract și calificare (de exemplu brevet de turism specific funcției sau curs de management de minimum 300 de ore).",
+   "Agenția organizatoare încheie instrumentul de garantare pentru insolvență (garanție bancară, poliță de asigurare sau alt instrument legal) și, dacă e SRL, verifică să aibă capital social de cel puțin 25.000 lei.",
+   "Se pregătesc spațiul și pagina web după criteriile minime din anexa 8 la Norme (firmă la intrare, sediu salubru, datele firmei și copia licenței pe pagina web).",
+   "Se completează declarația standardizată (anexa 6, de pe turism.gov.ro) și se strâng actele: cazier fiscal, extras REGES sau contract de management, actul de calificare, dovada garanției (la organizatoare).",
+   "Dosarul se depune la sediul ministerului care se ocupă de turism, Calea Victoriei 152, București, înainte de începerea activității.",
+   "Ministerul analizează dosarul în cel mult 30 de zile calendaristice de la înregistrare; dacă lipsesc acte, solicitantul e anunțat în 5 zile lucrătoare, iar dacă nu le completează în 45 de zile de la prima notificare, dosarul se clasează.",
+   "Licența (și anexa, pentru sediile secundare) se ridică doar de titular: personal, prin împuternicit sau prin curier. La agențiile care lucrează doar online, pe licență scrie „CU ACTIVITATE EXCLUSIV ONLINE”.",
+   "Licența se afișează la vedere în agenție și în fiecare sediu secundar, numărul ei se trece pe toate documentele, originalul rămâne la sediu, iar instrumentul de garantare se afișează la vedere și pe pagina web.",
+   "La orice schimbare (sediu, denumire, titular, tip, sedii secundare) se cere licență sau anexă nouă în cel mult 30 de zile; la închidere se cere radierea cu cel puțin 30 de zile înainte, iar turiștii se anunță cu 30 de zile înainte."
+  ],
+  "taxe": "",
+  "termen_legal": "Dosarul complet se soluționează în cel mult 30 de zile calendaristice de la înregistrare (Normele, art. 37 alin. (1); art. 39 alin. (1)); dosarul incomplet: notificare în 5 zile lucrătoare, clasare dacă nu se completează în 45 de zile (art. 37 alin. (2)–(3)).",
+  "temei_legal": "OG 2/2018 privind pachetele de servicii de călătorie și serviciile de călătorie asociate, art. 3 pct. 1, art. 18 și 20; HG 1267/2010 privind eliberarea certificatelor de clasificare, a licențelor și brevetelor de turism, art. 10–16; Normele metodologice aprobate prin Ordinul 65/2013, cu modificările ulterioare (inclusiv Ordinul 948/2026), art. 30–45 și anexele 6, 8 și 15.",
+  "activitati": [
+   "servicii",
+   "birou"
+  ],
+  "surse": [
+   {
+    "titlu": "turism.gov.ro – Licență de turism (documentația pentru eliberare, anexă, modificări)",
+    "url": "https://turism.gov.ro/web/licenta-de-turism/",
+    "verificat": "2026-11-12"
+   },
+   {
+    "titlu": "Normele metodologice aprobate prin Ordinul 65/2013, forma consolidată",
+    "url": "https://legislatie.just.ro/Public/DetaliiDocumentAfis/312684",
+    "verificat": "2026-11-12"
+   },
+   {
+    "titlu": "HG 1267/2010 privind eliberarea certificatelor de clasificare, a licențelor și brevetelor de turism",
+    "url": "https://legislatie.just.ro/Public/DetaliiDocumentAfis/124665",
+    "verificat": "2026-11-12"
+   },
+   {
+    "titlu": "OG 2/2018 privind pachetele de servicii de călătorie și serviciile de călătorie asociate",
+    "url": "https://legislatie.just.ro/Public/DetaliiDocumentAfis/204233",
+    "verificat": "2026-11-12"
+   }
+  ]
+ },
+ {
+  "cheie": "inregistrare-cabinet-medical",
+  "titlu": "Înființarea cabinetului medical și înregistrarea în Registrul unic al cabinetelor medicale (cabinet individual, grupat, asociat, societate civilă medicală sau societate cu activitate medicală)",
+  "domeniu": "sanitar",
+  "institutie": "Direcția de sănătate publică (DSP) a județului sau a Bucureștiului: autorizația sanitară și certificatul de înregistrare în Registrul unic al cabinetelor medicale; avizul îl dă Colegiul Medicilor (sau al Medicilor Stomatologi) din județ. Depunere la aceste instituții.",
+  "descriere": "Un cabinet medical (inclusiv stomatologic) poate funcționa doar după ce este înregistrat în Registrul unic al cabinetelor medicale ținut de DSP: certificatul de înregistrare este chiar actul lui de înființare. Cabinetele fără personalitate juridică (individual, grupat, asociat, societate civilă medicală) se trec în partea I a registrului; cele cu personalitate juridică (societate după Legea 31/1990, de exemplu SRL, asociație sau fundație) în partea a II-a. Înființarea are trei etape, în ordine: autorizația sanitară de funcționare de la DSP, avizul colegiului medicilor (sau al medicilor stomatologi), apoi înregistrarea la DSP. Cabinetul se înființează doar în specialitatea medicilor care lucrează în el, iar în certificat se trec toate serviciile oferite. La o societate, activitatea medicală trebuie să fie obiectul unic sau principal, iar administratorul (sau o treime din consiliul de administrație) trebuie să fie medic membru al colegiului. Fiecare sediu secundar urmează aceeași procedură și primește propriul certificat. Fiecare medic care lucrează în cabinet trebuie să aibă asigurare de malpraxis (răspundere civilă profesională). Funcționarea fără certificat de înregistrare se amendează cu 20.000–40.000 lei.",
+  "conditii": [
+   {
+    "text": "Cabinetul funcționează numai cu certificat de înregistrare în Registrul unic al cabinetelor medicale, emis de DSP; certificatul este actul de înființare (OG 124/1998, art. 1 alin. (8), art. 5 alin. (3); Normele aprobate prin Ordinul 1.670/2025, art. 15).",
+    "obligatoriu": true
+   },
+   {
+    "text": "Înființarea are trei etape, în această ordine: autorizația sanitară de funcționare, avizul colegiului medicilor sau al medicilor stomatologi, înregistrarea în Registrul unic (Normele, art. 13; OG 124/1998, art. 1 alin. (15)).",
+    "obligatoriu": true
+   },
+   {
+    "text": "Cabinetul se înființează numai în specialitatea medicului titular, a asociaților, a medicilor salariați sau colaboratori și oferă servicii doar în limita competențelor lor, trecute în certificat (Normele, art. 2 alin. (1)–(2)).",
+    "obligatoriu": true
+   },
+   {
+    "text": "Societate după Legea 31/1990 (de exemplu SRL): obiect de activitate unic sau principal servicii de asistență medicală umană, iar administratorul sau cel puțin o treime din consiliul de administrație sunt medici membri ai colegiului (OG 124/1998, art. 1 alin. (5); Normele, art. 5).",
+    "obligatoriu": false
+   },
+   {
+    "text": "Asociație sau fundație: scopul este asistența medicală, iar președintele sau o treime din consiliul director sunt medici membri ai colegiului (OG 124/1998, art. 1 alin. (6); Normele, art. 6).",
+    "obligatoriu": false
+   },
+   {
+    "text": "Cabinetele grupate, asociate și societatea civilă medicală au o convenție sau un contract scris, înregistrat la administrația financiară, cu câte un exemplar depus la DSP și la colegiul teritorial (Normele, art. 4 alin. (2)–(4)).",
+    "obligatoriu": false
+   },
+   {
+    "text": "Cabinetul are dotarea minimă pentru serviciile oferite (anexa 4 la Norme) și spațiu deținut legal; în același spațiu pot fi cel mult două cabinete, din specialități compatibile (OG 124/1998, art. 7; Normele, art. 16 alin. (1) lit. c)–d), art. 19).",
+    "obligatoriu": true
+   },
+   {
+    "text": "Serviciile medicale se dau doar de personal autorizat, cu drept de liberă practică cu viza la zi (OG 124/1998, art. 1 alin. (7); Normele, art. 17).",
+    "obligatoriu": true
+   },
+   {
+    "text": "Fiecare medic și medic stomatolog are asigurare de răspundere civilă (malpraxis) cât timp profesează; copia ei se prezintă înainte de angajare (Legea 95/2006, art. 473, art. 557, art. 667).",
+    "obligatoriu": true
+   },
+   {
+    "text": "Denumirea cuprinde forma de organizare, iar serviciile și programul se afișează la loc vizibil (OG 124/1998, art. 4; Normele, art. 18).",
+    "obligatoriu": true
+   },
+   {
+    "text": "Funcționarea fără certificat de înregistrare: amendă de 20.000–40.000 lei (OG 124/1998, art. 13 alin. (1)).",
+    "obligatoriu": true
+   }
+  ],
+  "documente": [
+   {
+    "nume": "Cerere de înființare a cabinetului medical",
+    "obligatoriu": true,
+    "nota": "Normele, art. 16 alin. (1) lit. a)"
+   },
+   {
+    "nume": "Copie de pe autorizația sanitară de funcționare emisă de DSP (după Ordinul 1.030/2009)",
+    "obligatoriu": true,
+    "nota": "Normele, art. 14 și art. 16 alin. (1) lit. b)"
+   },
+   {
+    "nume": "Lista dotării minime existente, potrivită serviciilor (anexa 4 la Norme)",
+    "obligatoriu": true,
+    "nota": "Normele, art. 16 alin. (1) lit. c)"
+   },
+   {
+    "nume": "Dovada deținerii legale a spațiului (proprietate, închiriere, comodat etc.)",
+    "obligatoriu": true,
+    "nota": "Normele, art. 16 alin. (1) lit. d)"
+   },
+   {
+    "nume": "Avizul structurii teritoriale a Colegiului Medicilor din România sau a Colegiului Medicilor Stomatologi din România",
+    "obligatoriu": true,
+    "nota": "Normele, art. 16 alin. (1) lit. e); actele pentru aviz sunt la art. 29"
+   },
+   {
+    "nume": "Societate (Legea 31/1990): certificatul de înregistrare la registrul comerțului cu codul CAEN, certificatul constatator cu sediul cabinetului și actul constitutiv cu obiectul de activitate",
+    "obligatoriu": false,
+    "nota": "Normele, art. 16 alin. (1) lit. f)"
+   },
+   {
+    "nume": "Asociație sau fundație: dovada personalității juridice și statutul în care apar serviciile medicale",
+    "obligatoriu": false,
+    "nota": "Normele, art. 16 alin. (1) lit. g)"
+   },
+   {
+    "nume": "Cabinete grupate sau asociate: convenția de grupare sau de asociere; societate civilă medicală: contractul de asociere",
+    "obligatoriu": false,
+    "nota": "Normele, art. 16 alin. (1) lit. j)–k)"
+   },
+   {
+    "nume": "Cabinete cu radiologie (inclusiv stomatologică): autorizația de securitate radiologică (Legea 111/1996)",
+    "obligatoriu": false,
+    "nota": "Normele, art. 16 alin. (1) lit. m)"
+   },
+   {
+    "nume": "Declarația pe propria răspundere a reprezentantului legal cu lista personalului autorizat, cu dovezile dreptului de liberă practică (viza la zi) și contractele de muncă sau colaborare",
+    "obligatoriu": false,
+    "nota": "Normele, art. 16 alin. (1) lit. o); unde lucrează și alt personal autorizat"
+   },
+   {
+    "nume": "Pentru avizul colegiului: regulamentul de organizare și funcționare, fișele posturilor, programul de lucru, lista serviciilor, declarația că se respectă independența profesională a medicilor",
+    "obligatoriu": true,
+    "nota": "Normele, art. 29 alin. (1) lit. k)–o)"
+   },
+   {
+    "nume": "Poliță de asigurare de malpraxis pentru fiecare medic",
+    "obligatoriu": true,
+    "nota": "Legea 95/2006, art. 473, 557 și 667; normele nu o trec în dosarul de înregistrare"
+   }
+  ],
+  "pasi": [
+   "Se alege forma de organizare: cabinet individual, grupat, asociat, societate civilă medicală sau societate (de exemplu SRL) ori asociație; pentru o societate se înregistrează întâi firma la registrul comerțului, cu activitatea medicală ca obiect unic sau principal.",
+   "Se asigură spațiul (cu act legal de folosință) și dotarea minimă pentru specialitate, după anexa 4 la Norme; fiecare medic își încheie asigurarea de malpraxis.",
+   "Prima etapă: se cere de la DSP autorizația sanitară de funcționare, care se dă pe baza unui referat de evaluare (Ordinul 1.030/2009).",
+   "A doua etapă: se cere avizul colegiului teritorial al medicilor sau al medicilor stomatologi, cu autorizația sanitară și actele de la art. 29 din Norme; specialiștii colegiului evaluează dotarea și numărul de cabinete.",
+   "A treia etapă: se depune la DSP dosarul pentru înregistrare (cererea, autorizația sanitară, lista dotării, dovada spațiului, avizul colegiului și actele formei de organizare).",
+   "DSP emite certificatul de înregistrare în Registrul unic (partea I sau a II-a) în două exemplare, cu un cod unic de unitate; cabinetul apare apoi în lista publicată pe site-ul DSP.",
+   "În 30 de zile calendaristice de la certificat se depun la DSP copiile contractelor de muncă sau de colaborare ale personalului declarat; orice schimbare a personalului se anunță în 5 zile lucrătoare.",
+   "La mutare, schimbarea structurii sau a obiectului de activitate se cer autorizație sanitară nouă și certificat-anexă, pe baza avizului colegiului; suspendarea activității se cere la DSP și durează cel mult 12 luni, altfel cabinetul se desființează."
+  ],
+  "taxe": "",
+  "termen_legal": "Legea și normele citite nu dau un termen de emitere a certificatului. După emitere: contractele personalului se depun în 30 de zile calendaristice, schimbările de personal se anunță în 5 zile lucrătoare (Normele, art. 16^1); suspendare: cel mult 12 luni (art. 20 alin. (2)).",
+  "temei_legal": "OG 124/1998 privind organizarea și funcționarea cabinetelor medicale, republicată, cu modificările ulterioare (inclusiv OG 9/2025 și Legea 78/2025), art. 1–7 și 13; Normele metodologice privind înființarea, organizarea și funcționarea cabinetelor medicale și înscrierea acestora în Registrul unic al cabinetelor medicale, aprobate prin Ordinul ministrului sănătății 1.670/2025, modificate prin Ordinele 1.861/2025 și 1.090/2026, art. 2–29 și anexele 1–5; Legea 95/2006 privind reforma în domeniul sănătății, republicată, art. 473, 557 și 667–668 (asigurarea de malpraxis).",
+  "activitati": [
+   "cabinet"
+  ],
+  "surse": [
+   {
+    "titlu": "OG 124/1998 privind organizarea și funcționarea cabinetelor medicale, republicată, forma consolidată",
+    "url": "https://legislatie.just.ro/Public/DetaliiDocument/37757",
+    "verificat": "2026-11-12"
+   },
+   {
+    "titlu": "Normele metodologice privind înființarea, organizarea și funcționarea cabinetelor medicale și înscrierea în Registrul unic, aprobate prin Ordinul 1.670/2025, forma consolidată",
+    "url": "https://legislatie.just.ro/Public/DetaliiDocument/304856",
+    "verificat": "2026-11-12"
+   },
+   {
+    "titlu": "Ordinul ministrului sănătății 1.670/2025 de aprobare a normelor",
+    "url": "https://legislatie.just.ro/Public/DetaliiDocument/304796",
+    "verificat": "2026-11-12"
+   },
+   {
+    "titlu": "Legea 95/2006 privind reforma în domeniul sănătății, republicată, forma consolidată",
+    "url": "https://legislatie.just.ro/Public/DetaliiDocument/71139",
+    "verificat": "2026-11-12"
+   }
+  ]
+ },
+ {
+  "cheie": "licente-muzica-ambientala",
+  "titlu": "Licențe și remunerații pentru muzica ambientală în spații comerciale (magazine, restaurante, cafenele, hoteluri, săli de sport)",
+  "domeniu": "comercial",
+  "institutie": "Organismele de gestiune colectivă desemnate colectori unici (pentru autori, pentru artiștii interpreți și pentru producătorii de fonograme; lista e pe orda.ro, la Metodologii). Licența se cere în scris, înainte de a pune muzică. ORDA publică metodologiile.",
+  "descriere": "Dacă într-un spațiu deschis publicului (magazin, restaurant, bar, cafenea, hotel, sală de sport, salon) se aude muzică de la radio, TV, CD, calculator sau playlist, legea o consideră comunicare publică. Pentru ea se plătesc două feluri de drepturi: drepturile autorilor (compozitori, textieri) și remunerația unică echitabilă cuvenită artiștilor interpreți și producătorilor de fonograme. Plata se face doar prin organismele de gestiune colectivă, care reprezintă și autorii sau artiștii care nu le-au dat mandat. Patronul cere licența neexclusivă (autorizația) înainte de prima utilizare, apoi plătește lunar sumele din metodologiile publicate în Monitorul Oficial. Sumele depind de tipul spațiului, de suprafața în metri pătrați sau de numărul de camere și de localitate, iar pentru fiecare spațiu se plătește separat. Metodologiile se aplică tuturor utilizatorilor din domeniu și nu se pot acorda alte reduceri decât cele scrise în ele. Organismul trebuie să emită factură; fără factură nu există obligația de plată.",
+  "conditii": [
+   {
+    "text": "Difuzarea muzicii într-un loc deschis publicului sau unde se adună mai multe persoane decât familia și cunoscuții ei este comunicare publică (Legea 8/1996, art. 20 alin. (1)); autorul are dreptul exclusiv de a o autoriza (art. 13 lit. f)).",
+    "obligatoriu": true
+   },
+   {
+    "text": "Pentru muzica de pe fonograme publicate în scop comercial, artiștii interpreți și producătorii de fonograme au dreptul la o remunerație unică echitabilă, stabilită prin metodologii (Legea 8/1996, art. 112 alin. (1)–(3)).",
+    "obligatoriu": true
+   },
+   {
+    "text": "Remunerația pentru artiști și producători se gestionează obligatoriu colectiv (art. 145 alin. (1) lit. d)), iar comunicarea publică a operelor muzicale e în gestiune colectivă extinsă (art. 145^1 alin. (1) lit. a)): organismele îi reprezintă și pe titularii fără mandat.",
+    "obligatoriu": true
+   },
+   {
+    "text": "Licența neexclusivă se cere organismului înainte de utilizare; organismul răspunde în cel mult 10 zile (Legea 8/1996, art. 162 lit. b)). Metodologia pentru autori cere licența înaintea oricărei utilizări, indiferent cât durează (Metodologia din 30.09.2011, pct. 1).",
+    "obligatoriu": true
+   },
+   {
+    "text": "Când mai multe organisme gestionează același domeniu, plata se face prin colectorul unic desemnat prin decizie ORDA; acesta eliberează licența în numele tuturor (Legea 8/1996, art. 168 alin. (2), (3) și (7)).",
+    "obligatoriu": true
+   },
+   {
+    "text": "Utilizatorul trimite în 30 de zile de la cerere informațiile și documentele necesare calculului (art. 162 lit. f)) și informațiile despre utilizare în termenul și formatul convenite (art. 169 alin. (7)). Metodologia pentru autori cere copii ale actelor spațiului în 10 zile (pct. 9).",
+    "obligatoriu": true
+   },
+   {
+    "text": "Dacă spațiul e închiriat sau subînchiriat, plătește cel care folosește partea de spațiu unde se difuzează muzica, după suprafața folosită (Metodologia din 30.09.2011, pct. 3).",
+    "obligatoriu": true
+   },
+   {
+    "text": "Când oprește muzica, utilizatorul trimite organismului, înainte de data încetării, o notificare scrisă cu datele licenței și adresa locației (Metodologia din 30.09.2011, pct. 10).",
+    "obligatoriu": true
+   },
+   {
+    "text": "Comunicarea publică fără autorizarea titularului este contravenție: amendă de la 3.000 la 30.000 lei (Legea 8/1996, art. 190 lit. g)); la fel nerespectarea de către utilizator a art. 162 lit. f) (art. 190 lit. h)). Limitele se dublează pentru persoana juridică al cărei obiect de activitate implică comunicarea publică (art. 192 alin. (1)).",
+    "obligatoriu": true
+   }
+  ],
+  "documente": [
+   {
+    "nume": "Cerere scrisă de licență neexclusivă (autorizație), depusă la organismul de gestiune colectivă sau la colectorul unic înainte de difuzarea muzicii",
+    "obligatoriu": true,
+    "nota": "Legea 8/1996, art. 162 lit. b) și art. 168 alin. (7); Metodologia din 30.09.2011, pct. 1"
+   },
+   {
+    "nume": "Copii ale planurilor cadastrale ale spațiilor sau, în lipsa lor, ale actelor de proprietate ori folosință (vânzare-cumpărare, închiriere, comodat etc.)",
+    "obligatoriu": true,
+    "nota": "Metodologia din 30.09.2011, pct. 9: la cerere, în 10 zile"
+   },
+   {
+    "nume": "Certificatul de clasificare al unității de cazare (stele sau margarete)",
+    "obligatoriu": false,
+    "nota": "Metodologia din 30.09.2011, pct. 8: doar pentru unitățile de cazare"
+   },
+   {
+    "nume": "Informațiile și documentele cerute pentru calculul remunerațiilor și despre operele folosite, ștampilate și semnate de reprezentantul legal, în format scris și electronic",
+    "obligatoriu": true,
+    "nota": "Legea 8/1996, art. 162 lit. f) și art. 169 alin. (7): în 30 de zile de la cerere sau în termenul convenit"
+   },
+   {
+    "nume": "Notificare scrisă de încetare a utilizării (denumire, sediu, numărul și data licenței, adresa locației, data încetării)",
+    "obligatoriu": false,
+    "nota": "Metodologia din 30.09.2011, pct. 10: doar la oprirea muzicii"
+   }
+  ],
+  "pasi": [
+   "Verifici dacă în spațiu se aude muzică pentru clienți (radio, TV, playlist, CD, muzică live) și notezi pentru fiecare spațiu suprafața în metri pătrați sau numărul de camere și localitatea (oraș, stațiune ori comună sau sat).",
+   "Afli de pe orda.ro, la Metodologii, rubrica Comunicare publică – ambiental, metodologiile în vigoare, deciziile ORDA de actualizare cu inflația și colectorii desemnați: pentru autori și pentru artiști interpreți și producători de fonograme.",
+   "Înainte de prima difuzare, ceri în scris licența neexclusivă de la fiecare colector; organismul trebuie să răspundă în cel mult 10 zile, iar un eventual refuz trebuie motivat în scris (Legea 8/1996, art. 162 lit. b)).",
+   "Trimiți actele cerute (actele spațiului, clasificarea, pentru hoteluri) și încheiați licența. Organismul nu are voie să condiționeze licența de servicii care nu au legătură cu ea (art. 165 alin. (10)).",
+   "Plătești lunar, pe baza facturii emise de organism și transmise prin RO e-Factura; fără factură nu există obligația de plată (art. 168 alin. (1)). Pentru autori, metodologia fixează termenul la data de 15 a lunii pentru care se plătește, plus TVA (pct. 4).",
+   "Păstrezi licența și facturile la îndemână: reprezentanții organismelor pot verifica utilizarea în spațiu (Metodologia din 30.09.2011, pct. 7), iar ORDA și poliția pot constata contravențiile (Legea 8/1996, art. 192 alin. (2)).",
+   "Organismul te anunță cu 30 de zile înainte de expirarea licenței (art. 165 alin. (9^2)); dacă schimbi spațiul sau suprafața, anunți și ceri actualizarea; dacă oprești muzica, trimiți notificarea de încetare înainte de data opririi."
+  ],
+  "taxe": "Nu există o taxă de stat. Se plătesc remunerații organismelor de gestiune colectivă, după tabelele din metodologiile publicate în Monitorul Oficial: pentru autori, Metodologia din 30.09.2011 (sume lunare pe cameră și categorie la cazare, pe tranșe de suprafață la restaurante, baruri și magazine, sumă pe eveniment la sălile de evenimente); pentru artiști interpreți și producători de fonograme, metodologia stabilită prin Hotărârea arbitrală nr. 1/2016 (Decizia ORDA nr. 10/2016). Sumele fixe se actualizează anual cu inflația prin decizii ORDA publicate în Monitorul Oficial (Legea 8/1996, art. 167); pe orda.ro sunt listate, pentru autori, Decizia ORDA nr. 68/2025, iar pentru artiști și producători, Decizia ORDA nr. 6/2026. La sume se adaugă TVA. Pentru întârziere se pot cere doar penalități la nivelul dobânzii legale (art. 165 alin. (9^1)). Pentru perioada fără licență, metodologia pentru autori cere triplul sumelor datorate (pct. 6). Sumele exacte se iau din tabelele în vigoare.",
+  "termen_legal": "Licența se cere înainte de utilizare; organismul răspunde în cel mult 10 zile (Legea 8/1996, art. 162 lit. b)). Plata se face lunar, până la data de 15 a lunii (Metodologia din 30.09.2011, pct. 4). Informațiile cerute se dau în 30 de zile (art. 162 lit. f)).",
+  "temei_legal": "Legea 8/1996 privind dreptul de autor și drepturile conexe, republicată, forma consolidată: art. 13 lit. f), art. 20, art. 112, art. 145, art. 145^1, art. 162 lit. b), f) și t), art. 164–168, art. 169 alin. (7), art. 190 lit. g) și h), art. 192. Metodologia din 30.09.2011 privind remunerațiile autorilor de opere muzicale pentru comunicarea publică în scop ambiental (MO nr. 710/2011), modificată în parte prin Decizia civilă nr. 121A/2012 a Curții de Apel București (Decizia ORDA nr. 198/2012). Metodologia pentru artiști interpreți și producători de fonograme, stabilită prin Hotărârea arbitrală nr. 1/2016 (Decizia ORDA nr. 10/2016). Deciziile ORDA de actualizare a remunerațiilor cu inflația.",
+  "activitati": [
+   "comert",
+   "horeca",
+   "servicii"
+  ],
+  "surse": [
+   {
+    "titlu": "Legea nr. 8/1996 privind dreptul de autor și drepturile conexe, forma consolidată",
+    "url": "https://legislatie.just.ro/Public/DetaliiDocument/7816",
+    "verificat": "2026-11-12"
+   },
+   {
+    "titlu": "Metodologia din 30 septembrie 2011 privind remunerațiile autorilor de opere muzicale pentru comunicarea publică în scop ambiental",
+    "url": "https://legislatie.just.ro/Public/DetaliiDocument/296184",
+    "verificat": "2026-11-12"
+   },
+   {
+    "titlu": "orda.ro – Metodologii (comunicare publică – ambiental: colectori, beneficiari, decizii de actualizare)",
+    "url": "https://orda.ro/metodologii-2/",
+    "verificat": "2026-11-12"
+   },
+   {
+    "titlu": "Decizia ORDA nr. 198/2012 – publicarea Deciziei civile nr. 121A/2012 a Curții de Apel București care modifică în parte metodologia pentru autori",
+    "url": "https://orda.ro/wp-content/uploads/2020/04/DECIZII%20ORDA/2012/Decizia%20ORDA%20nr_198%20-%202012.pdf",
+    "verificat": "2026-11-12"
+   },
+   {
+    "titlu": "Decizia ORDA nr. 10/2016 – publicarea Hotărârii arbitrale nr. 1/2016 (metodologia pentru artiști interpreți și producători de fonograme)",
+    "url": "https://legislatie.just.ro/Public/DetaliiDocument/198384",
+    "verificat": "2026-11-12"
+   }
+  ]
+ },
+ {
+  "cheie": "card-tahograf-si-verificare",
+  "titlu": "Carduri de tahograf (conducător auto și întreprindere), descărcarea și păstrarea datelor, verificarea periodică a tahografului",
+  "domeniu": "transport",
+  "institutie": "Autoritatea Rutieră Română (ARR): cardurile se cer la ghișeul agenției teritoriale (cardul de întreprindere la agenția din raza sediului). Verificarea periodică a tahografului: la atelierele autorizate de RAR. Controlul: ISCTR.",
+  "descriere": "Vehiculele care intră sub regulile europene privind timpii de conducere și odihnă trebuie să aibă tahograf omologat, care înregistrează condusul, pauzele și odihna. Fiecare șofer are propriul card de conducător auto, emis de ARR, valabil cel mult 5 ani. Firma de transport are cardul întreprinderii (cardul societății), tot de la ARR, valabil cel mult 5 ani, cu care descarcă și blochează datele din tahografele digitale ale vehiculelor proprii. Firma trebuie să descarce și să păstreze la sediu datele de pe cardurile șoferilor cel puțin o dată la 28 de zile și datele din tahografele vehiculelor cel puțin o dată la 90 de zile, separat pentru fiecare șofer, și să le poată arăta la control pentru cel puțin ultimele 365 de zile. Tahograful se verifică periodic, la cel mult 2 ani, la un atelier autorizat de RAR. Cardul pierdut, furat sau deteriorat se înlocuiește, iar cel cu date schimbate se schimbă, în cel mult 7 zile. Nerespectarea acestor obligații se amendează.",
+  "conditii": [
+   {
+    "text": "Cardul de conducător auto se eliberează la cerere conducătorilor auto care fac transport cu vehicule supuse Regulamentului (CE) nr. 561/2006 (Normele aprobate prin OMT 459/2017, art. 4); un șofer nu poate avea mai mult de un card propriu (OG 37/2007, art. 8 alin. (2) lit. v)).",
+    "obligatoriu": true
+   },
+   {
+    "text": "Solicitantul are permis valabil pentru cel puțin una din categoriile B, BE, C1, C1E, C, CE, D1, D1E, D, DE și reședința curentă în România sau, după caz, un raport de muncă cu o întreprindere (Normele, art. 5 alin. (1) lit. c) și e)).",
+    "obligatoriu": true
+   },
+   {
+    "text": "Cardul societății se eliberează, la cerere, întreprinderilor care fac transport cu vehicule supuse Regulamentului (CE) nr. 561/2006; e netransmisibil, emis pe numele întreprinderii, valabil cel mult 5 ani; o întreprindere poate avea mai multe (Normele, art. 3 alin. (4), art. 13, art. 14).",
+    "obligatoriu": true
+   },
+   {
+    "text": "Întreprinderea descarcă și stochează la sediu datele de pe cardurile șoferilor cel mai târziu la fiecare 28 de zile și datele din tahografele digitale ale vehiculelor cel mai târziu la fiecare 90 de zile (OG 37/2007, art. 6 alin. (3)).",
+    "obligatoriu": true
+   },
+   {
+    "text": "Înregistrările se păstrează ca foi de înregistrare, rapoarte imprimate sau date descărcate, în ordine cronologică și separat pentru fiecare șofer, și se prezintă la control pentru cel puțin ultimele 365 de zile (OG 37/2007, art. 8 alin. (2) lit. gg) și hh)).",
+    "obligatoriu": true
+   },
+   {
+    "text": "Inspecția periodică a tahografului se face la cel mult 2 ani (HG 899/2003, art. 7), doar la operatori economici autorizați de RAR (art. 4 alin. (1)); folosirea unui tahograf fără verificare periodică valabilă este încălcare foarte gravă (OG 37/2007, art. 8 alin. (2) lit. u)).",
+    "obligatoriu": true
+   },
+   {
+    "text": "Cardul pierdut, furat, deteriorat sau distrus se înlocuiește, iar cel cu date modificate, eronate sau defect se schimbă, cu cerere în cel mult 7 zile (Normele, art. 9–12 și 19–22).",
+    "obligatoriu": true
+   },
+   {
+    "text": "Amenzi pentru întreprindere de la 4.000 la 6.000 lei pentru nedescărcarea datelor, nepăstrarea sau neprezentarea înregistrărilor, lipsa verificării periodice (OG 37/2007, art. 9 alin. (1) lit. e)) și de la 9.000 la 12.000 lei pentru încălcările deosebit de grave, ca vehiculul fără tahograf omologat (lit. a)).",
+    "obligatoriu": true
+   }
+  ],
+  "documente": [
+   {
+    "nume": "Card de conducător auto: cerere-tip ARR (formularul e pe arr.ro și la agenții)",
+    "obligatoriu": true,
+    "nota": "Normele aprobate prin OMT 459/2017, art. 5 alin. (1) lit. a)"
+   },
+   {
+    "nume": "Card de conducător auto: copie a actului de identitate (buletin, carte de identitate sau pașaport)",
+    "obligatoriu": true,
+    "nota": "Normele, art. 5 alin. (1) lit. b); copiile se semnează cu mențiunea „conform cu originalul”, după pagina ARR"
+   },
+   {
+    "nume": "Card de conducător auto: copie a permisului de conducere valabil (sau dovada înlocuitoare cu drept de circulație ori adeverința de preschimbare)",
+    "obligatoriu": true,
+    "nota": "Normele, art. 5 alin. (1) lit. c)"
+   },
+   {
+    "nume": "Card de conducător auto: dovada reședinței curente în România sau, după caz, actele care dovedesc raportul de muncă cu o întreprindere",
+    "obligatoriu": true,
+    "nota": "Normele, art. 5 alin. (1) lit. e)"
+   },
+   {
+    "nume": "Card de conducător auto: actul care dovedește dreptul de muncă în România, pentru cetățenii din afara UE și SEE",
+    "obligatoriu": false,
+    "nota": "Normele, art. 5 alin. (1) lit. d)"
+   },
+   {
+    "nume": "Card de conducător auto: fotografie color actuală 25 x 32 mm și dovada plății tarifului",
+    "obligatoriu": true,
+    "nota": "Normele, art. 5 alin. (1) lit. f) și g)"
+   },
+   {
+    "nume": "Cardul întreprinderii: cerere-tip ARR, copia actului de identitate al reprezentantului desemnat, împuternicirea dată de întreprindere și dovada plății tarifului pentru numărul de carduri cerut",
+    "obligatoriu": true,
+    "nota": "Normele, art. 15 alin. (1) lit. a)–d)"
+   },
+   {
+    "nume": "La înlocuire: dovada de la poliție (furt) sau declarația pe propria răspundere (pierdere, distrugere), cu dovada plății tarifului",
+    "obligatoriu": false,
+    "nota": "Normele, art. 12 alin. (1) și art. 22 alin. (1)"
+   },
+   {
+    "nume": "Dovada verificării periodice a tahografului, eliberată de atelierul autorizat RAR",
+    "obligatoriu": true,
+    "nota": "HG 899/2003, art. 4 și 7"
+   }
+  ],
+  "pasi": [
+   "Fiecare șofer depune la orice agenție teritorială ARR, personal sau prin împuternicit cu procură notarială, dosarul pentru cardul de conducător auto; ARR eliberează cardul în termen de o lună sau comunică refuzul motivat (Normele OMT 459/2017, art. 5).",
+   "Firma depune la agenția ARR din raza sediului dosarul pentru cardul sau cardurile întreprinderii; ARR le eliberează în cel mult 15 zile (Normele, art. 15).",
+   "Cu cardul întreprinderii, firma descarcă datele din tahograful digital al fiecărui vehicul cel puțin o dată la 90 de zile, iar datele de pe cardul fiecărui șofer cel puțin o dată la 28 de zile, și le stochează la sediu (OG 37/2007, art. 6 alin. (3)).",
+   "Datele descărcate, foile de înregistrare și rapoartele imprimate se păstrează în ordine cronologică, separat pe șofer, cel puțin pentru ultimele 365 de zile, gata de prezentat la controlul ISCTR (OG 37/2007, art. 8 alin. (2) lit. gg)–hh)).",
+   "Tahograful fiecărui vehicul se duce la inspecție periodică la un atelier autorizat de RAR, la cel mult 2 ani; tot acolo se face orice reparare (HG 899/2003, art. 4 alin. (1) și art. 7).",
+   "Cardurile se înnoiesc cu cel puțin 15 zile înainte de expirare, returnând cardul vechi; ARR emite cardul nou în cel mult 5 zile (Normele, art. 8 și art. 18).",
+   "La pierdere, furt, deteriorare sau date schimbate (nume, domiciliu, permis, date ale firmei), ceri înlocuirea sau schimbarea cardului în cel mult 7 zile la ARR (Normele, art. 10, 12, 20, 22)."
+  ],
+  "taxe": "Pagina ARR „Cartele tahografice” indică un tarif de 300 lei pentru eliberarea cardului de conducător auto, a cardului întreprinderii și a cardului de atelier. Normele cer dovada plății tarifului și la înnoire, schimbare sau înlocuire, dar nu stabilesc sumele. Tariful inspecției periodice a tahografului îl stabilește atelierul autorizat; nu apare în sursele citite.",
+  "termen_legal": "Card de șofer: o lună; card de întreprindere: 15 zile; înnoire: cerere cu 15 zile înainte de expirare, card în 5 zile; înlocuire sau schimbare: cerere în 7 zile (Normele OMT 459/2017). Descărcare: la 28 de zile (carduri), la 90 de zile (vehicule); inspecție: la cel mult 2 ani.",
+  "temei_legal": "Regulamentul (UE) nr. 165/2014 privind tahografele în transportul rutier. OG 37/2007 privind stabilirea cadrului de aplicare a regulilor privind perioadele de conducere, pauzele și perioadele de odihnă ale conducătorilor auto și utilizarea aparatelor de înregistrare, forma consolidată: art. 6 alin. (3), art. 8 alin. (1) și (2), art. 9 alin. (1) și (3). Normele privind eliberarea, înlocuirea, schimbarea, înnoirea și retragerea cardurilor de tahograf, aprobate prin Ordinul ministrului transporturilor nr. 459/2017, cu modificările ulterioare: art. 3–22. HG 899/2003 privind omologarea de tip a tahografelor și autorizarea operatorilor economici care instalează, repară sau inspectează tahografe, forma consolidată: art. 4 și art. 7.",
+  "activitati": [
+   "transport"
+  ],
+  "surse": [
+   {
+    "titlu": "arr.ro – Cartele tahografice (conducător auto, întreprindere, atelier)",
+    "url": "https://www.arr.ro/instructiuni-eliberare-documente_doc_742_cartele-tahografice_pg_0.htm",
+    "verificat": "2026-11-12"
+   },
+   {
+    "titlu": "Normele privind eliberarea, înlocuirea, schimbarea, înnoirea și retragerea cardurilor de tahograf (OMT 459/2017), forma consolidată",
+    "url": "https://legislatie.just.ro/Public/DetaliiDocumentAfis/305557",
+    "verificat": "2026-11-12"
+   },
+   {
+    "titlu": "OG 37/2007 privind perioadele de conducere, pauzele și odihna conducătorilor auto și utilizarea aparatelor de înregistrare, forma consolidată",
+    "url": "https://legislatie.just.ro/Public/DetaliiDocument/84525",
+    "verificat": "2026-11-12"
+   },
+   {
+    "titlu": "HG 899/2003 privind omologarea tahografelor și autorizarea atelierelor de instalare, reparare și inspecție, forma consolidată",
+    "url": "https://legislatie.just.ro/Public/DetaliiDocument/45687",
+    "verificat": "2026-11-12"
+   }
+  ]
  }
 ]

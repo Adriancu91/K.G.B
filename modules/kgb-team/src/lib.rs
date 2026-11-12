@@ -27,7 +27,7 @@ use kgb_core::workspace::now_ms;
 use kgb_core::{CoreError, CoreResult};
 use kgb_sheets::book::Book;
 use kgb_sheets::convert::{Cell, table};
-use kgb_store::{Fields, RecordState, Write};
+use kgb_store::{Error as StoreError, Fields, RecordState, Write};
 use serde::Deserialize;
 use serde::de::DeserializeOwned;
 use serde_json::{Value, json};
@@ -339,13 +339,25 @@ impl Team {
         f.insert("actualizat_ms".into(), json!(now_ms()));
         let id = day_id(d.angajat, &d.data);
         // version 0 = a new day; a second entry for the same day is refused
-        // by the store (expected version 0 on an existing record).
-        let v = ctx
-            .write(vec![Write::put(TIMESHEET, id, f).expect(d.version)])
-            .map_err(|e| match d.version {
-                0 => bad("pontajul", "ziua aceasta e deja pontată; modific-o pe cea existentă"),
-                _ => e,
-            })?[0];
+        // by the store (expected version 0 on an existing record). The id is
+        // fixed per employee and day, so a day that was deleted is still there
+        // as a deleted record: it is brought back and overwritten instead.
+        let live = ctx.get(TIMESHEET, id)?.filter(|r| !r.deleted);
+        let writes = match (d.version, live) {
+            (0, Some(_)) => return Err(bad("pontajul", "ziua aceasta e deja pontată; modific-o pe cea existentă")),
+            (0, None) => match ctx.write(vec![Write::put(TIMESHEET, id, f.clone()).expect(0)]) {
+                Ok(v) => return Ok(json!({"id": id, "version": v[0], "lucrat_min": min})),
+                Err(CoreError::Store(StoreError::VersionConflict { actual: gone, .. })) => {
+                    vec![
+                        Write::restore(TIMESHEET, id).expect(gone),
+                        Write::put(TIMESHEET, id, f).expect(gone + 1),
+                    ]
+                }
+                Err(e) => return Err(e),
+            },
+            (v, _) => vec![Write::put(TIMESHEET, id, f).expect(v)],
+        };
+        let v = *ctx.write(writes)?.last().unwrap_or(&0);
         Ok(json!({"id": id, "version": v, "lucrat_min": min}))
     }
 

@@ -85,6 +85,18 @@ fn timesheet_leave_and_monthly_report() {
         )
         .unwrap_err();
     assert!(e.to_string().contains("deja pontată"), "{e}");
+    // A day entered by mistake, deleted, then entered again: allowed (the
+    // owner hit this on 2026-11-12: „zice că am adăugat deja”).
+    let w = call(&mm, &mut ws, "pontaj_save", day("2026-11-12", "07:00", "17:00", 0));
+    call(&mm, &mut ws, "pontaj_delete", json!({"id": w["id"], "version": w["version"]}));
+    let again = call(&mm, &mut ws, "pontaj_save", day("2026-11-12", "08:00", "16:00", 0));
+    assert_eq!(again["lucrat_min"], 480);
+    assert_eq!(again["id"], w["id"]);
+    let e = mm
+        .call(&mut ws, None, ID, "pontaj_save", day("2026-11-12", "08:00", "16:00", 0))
+        .unwrap_err();
+    assert!(e.to_string().contains("deja pontată"), "{e}");
+    call(&mm, &mut ws, "pontaj_delete", json!({"id": again["id"], "version": again["version"]}));
     let mut fix = day("2026-11-03", "08:00", "18:00", 30);
     fix["version"] = d3["version"].clone();
     fix["nota"] = json!("corectat");
