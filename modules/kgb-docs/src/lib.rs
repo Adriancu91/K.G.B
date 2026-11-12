@@ -91,7 +91,7 @@ const BUILT_IN: [(&str, &str, &str, &[u8]); 5] = [
     ),
 ];
 /// The built-in PDF models, written in Typst (step 4.8b; D-045).
-const BUILT_IN_PDF: [(&str, &str, &str, &str); 17] = [
+const BUILT_IN_PDF: [(&str, &str, &str, &str); 27] = [
     (
         "pdf-oferta",
         "Ofertă comercială (PDF)",
@@ -196,14 +196,75 @@ const BUILT_IN_PDF: [(&str, &str, &str, &str); 17] = [
         "avize",
         include_str!("../models/pdf-declaratie-proprie-raspundere.typ"),
     ),
+    (
+        "pdf-contract-comodat",
+        "Contract de comodat (PDF)",
+        "juridic",
+        include_str!("../models/pdf-contract-comodat.typ"),
+    ),
+    (
+        "pdf-contract-arendare",
+        "Contract de arendare (PDF)",
+        "juridic",
+        include_str!("../models/pdf-contract-arendare.typ"),
+    ),
+    (
+        "pdf-fisa-postului",
+        "Fișa postului (PDF)",
+        "hr",
+        include_str!("../models/pdf-fisa-postului.typ"),
+    ),
+    (
+        "pdf-act-aditional-cim",
+        "Act adițional la contractul de muncă (PDF)",
+        "hr",
+        include_str!("../models/pdf-act-aditional-cim.typ"),
+    ),
+    (
+        "pdf-demisie",
+        "Demisie (PDF)",
+        "hr",
+        include_str!("../models/pdf-demisie.typ"),
+    ),
+    (
+        "pdf-informare-date-personale",
+        "Notă de informare privind datele personale (PDF)",
+        "date",
+        include_str!("../models/pdf-informare-date-personale.typ"),
+    ),
+    (
+        "pdf-pv-lucrari-ascunse",
+        "Proces-verbal de lucrări ce devin ascunse (PDF)",
+        "tehnic",
+        include_str!("../models/pdf-pv-lucrari-ascunse.typ"),
+    ),
+    (
+        "pdf-comanda-furnizor",
+        "Comandă către furnizor (PDF)",
+        "comercial",
+        include_str!("../models/pdf-comanda-furnizor.typ"),
+    ),
+    (
+        "pdf-factura-proforma",
+        "Factură proformă (PDF)",
+        "comercial",
+        include_str!("../models/pdf-factura-proforma.typ"),
+    ),
+    (
+        "pdf-fisa-interventie-service",
+        "Fișă de intervenție service (PDF)",
+        "tehnic",
+        include_str!("../models/pdf-fisa-interventie-service.typ"),
+    ),
 ];
-const CATEGORIES: [&str; 7] = [
+const CATEGORIES: [&str; 8] = [
     "administrativ",
     "comercial",
     "hr",
     "tehnic",
     "juridic",
     "avize",
+    "date",
     "altele",
 ];
 
@@ -242,7 +303,7 @@ fn uuid_of(r: &RecordState, k: &str) -> CoreResult<Uuid> {
 }
 
 /// Romanian names for the usual field words (field names stay ASCII).
-const WORDS: [(&str, &str); 61] = [
+const WORDS: [(&str, &str); 91] = [
     ("numar", "Număr"),
     ("pret", "Preț"),
     ("cui", "CUI"),
@@ -304,6 +365,36 @@ const WORDS: [(&str, &str); 61] = [
     ("valabila_pana_la", "Valabilă până la"),
     ("ziua_platii", "Ziua plății"),
     ("um", "U.M."),
+    ("identificare_cadastrala", "Identificare cadastrală"),
+    ("modul_platii", "Modul plății"),
+    ("termenul_platii", "Termenul plății"),
+    ("numar_contract", "Număr contract"),
+    ("cod_cor", "Cod COR"),
+    ("in_subordine", "În subordine"),
+    ("cerinte", "Cerințe"),
+    ("atributii", "Atribuții"),
+    ("responsabilitati", "Responsabilități"),
+    ("data_aplicarii", "Data aplicării"),
+    ("responsabil_date", "Responsabil cu protecția datelor"),
+    ("datele_si_scopul", "Datele și scopul"),
+    ("perioada_stocarii", "Perioada stocării"),
+    ("obligatia_furnizarii", "Obligația furnizării datelor"),
+    ("adresa_santierului", "Adresa șantierului"),
+    ("autorizatia", "Autorizația de construire"),
+    ("lucrarile_verificate", "Lucrările verificate"),
+    ("faza_urmatoare", "Faza următoare"),
+    ("rte", "Responsabil tehnic cu execuția"),
+    ("diriginte", "Diriginte de șantier"),
+    ("cota_tva", "Cota TVA"),
+    ("tva", "TVA"),
+    ("ora_plecarii", "Ora plecării"),
+    ("lucrari_efectuate", "Lucrări efectuate"),
+    ("piese", "Piese înlocuite"),
+    ("starea_finala", "Starea la plecare"),
+    ("recomandari", "Recomandări"),
+    ("preaviz", "Preaviz (zile lucrătoare)"),
+    ("program", "Programul de lucru"),
+    ("locul_muncii", "Locul muncii"),
 ];
 
 /// A readable label for a field: `client.adresa` → „Client · adresa”,
@@ -538,9 +629,12 @@ impl Docs {
                 .split_whitespace()
                 .collect::<Vec<_>>()
                 .join(" ");
-            if let Some((k, _)) = values
-                .iter()
-                .find(|(_, v)| !v.split_whitespace().all(|w| text.contains(w)))
+            // A word may also be split at the end of a line, at its own hyphen
+            // („Cluj-↵Napoca”) or hyphenated by the typesetter („locali-↵tatea”).
+            let joined = text.replace("- ", "-");
+            let unhyphenated = text.replace("- ", "");
+            let found = |w: &str| text.contains(w) || joined.contains(w) || unhyphenated.contains(w);
+            if let Some((k, _)) = values.iter().find(|(_, v)| !v.split_whitespace().all(found))
             {
                 return Err(bad(format!(
                     "verificarea a eșuat: valoarea „{}” nu apare în PDF",

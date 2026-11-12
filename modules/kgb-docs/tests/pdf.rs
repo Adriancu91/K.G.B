@@ -123,11 +123,11 @@ fn pdf_from_a_typst_model() {
 /// Step 7.4i: every new model compiles to a PDF with its title and the
 /// values typed in; the parties use field names the partner directory fills.
 #[test]
-fn the_new_models_of_7_4i_and_7_9d_generate() {
+fn the_new_models_of_7_4i_7_9d_and_8_15_generate() {
     let (_tmp, mut ws, mm) = setup();
     let list = call(&mut ws, &mm, "models", json!({})).unwrap();
     let models = list.as_array().unwrap();
-    assert_eq!(models.len(), 22, "5 Word + 17 PDF");
+    assert_eq!(models.len(), 32, "5 Word + 27 PDF");
     for (name, title, party) in [
         ("Contract de vânzare-cumpărare (PDF)", "CONTRACT DE VÂNZARE-CUMPĂRARE", "cumparator"),
         ("Contract de închiriere (PDF)", "CONTRACT DE ÎNCHIRIERE", "chirias"),
@@ -144,6 +144,17 @@ fn the_new_models_of_7_4i_and_7_9d_generate() {
         ("Somație de plată (PDF)", "SOMAȚIE DE PLATĂ", "partener"),
         ("Cerere pentru aviz sau autorizație (PDF)", "CERERE", ""),
         ("Declarație pe propria răspundere (PDF)", "DECLARAȚIE PE PROPRIA RĂSPUNDERE", ""),
+        // 8.15
+        ("Contract de comodat (PDF)", "CONTRACT DE COMODAT", "comodatar"),
+        ("Contract de arendare (PDF)", "CONTRACT DE ARENDARE", "arendator"),
+        ("Fișa postului (PDF)", "FIȘA POSTULUI", ""),
+        ("Act adițional la contractul de muncă (PDF)", "ACT ADIȚIONAL", ""),
+        ("Demisie (PDF)", "DEMISIE", ""),
+        ("Notă de informare privind datele personale (PDF)", "NOTĂ DE INFORMARE", ""),
+        ("Proces-verbal de lucrări ce devin ascunse (PDF)", "PROCES-VERBAL DE LUCRĂRI CE DEVIN ASCUNSE", ""),
+        ("Comandă către furnizor (PDF)", "COMANDĂ", "furnizor"),
+        ("Factură proformă (PDF)", "FACTURĂ PROFORMĂ", "client"),
+        ("Fișă de intervenție service (PDF)", "FIȘĂ DE INTERVENȚIE", "client"),
     ] {
         let m = models.iter().find(|m| m["nume"] == name).unwrap_or_else(|| panic!("{name}"));
         let fields: Vec<String> = m["campuri"].as_array().unwrap().iter().filter(|f| f["din_firma"] != true).map(|f| f["camp"].as_str().unwrap().to_string()).collect();
@@ -155,6 +166,8 @@ fn the_new_models_of_7_4i_and_7_9d_generate() {
         let g = call(&mut ws, &mm, "generate", json!({"model": m["id"], "valori": vals})).unwrap_or_else(|e| panic!("{name}: {e}"));
         let text = call(&mut ws, &mm, "text", json!({"id": g["id"]})).unwrap()["text"].as_str().unwrap().to_string();
         let flat: String = text.split_whitespace().collect::<Vec<_>>().join(" ");
+        // A value may wrap at the end of a line at its hyphen (val-↵field), as „Cluj-↵Napoca” can.
+        let flat = flat.replace("- ", "-");
         assert!(flat.contains(title), "{name}: {flat}");
         assert!(flat.contains("Kronos Global Business SRL"), "{name}");
         for f in &fields {

@@ -18,6 +18,7 @@ const CATEGORY: Record<string, string> = {
   tehnic: "Tehnice",
   juridic: "Juridice",
   avize: "Avize și autorizații",
+  date: "Protecția datelor",
   altele: "Altele",
 };
 

@@ -45,6 +45,8 @@ pub const ACTIVITIES: &[Activity] = &[
             "pdf-contract-vanzare",
             "pdf-pv-predare-primire",
             "pdf-somatie-plata",
+            "pdf-comanda-furnizor",
+            "pdf-factura-proforma",
         ],
     },
     Activity {
@@ -72,6 +74,7 @@ pub const ACTIVITIES: &[Activity] = &[
             "pdf-oferta",
             "pdf-pv-predare-primire",
             "pdf-cerere-institutie",
+            "pdf-pv-lucrari-ascunse",
         ],
     },
     Activity {
@@ -96,6 +99,7 @@ pub const ACTIVITIES: &[Activity] = &[
             "pdf-pv-predare-primire",
             "pdf-imputernicire",
             "pdf-oferta",
+            "pdf-comanda-furnizor",
         ],
     },
     Activity {
@@ -122,6 +126,7 @@ pub const ACTIVITIES: &[Activity] = &[
             "adeverinta-salariat",
             "pdf-decizie",
             "pdf-cerere-institutie",
+            "pdf-comanda-furnizor",
         ],
     },
     Activity {
@@ -149,6 +154,7 @@ pub const ACTIVITIES: &[Activity] = &[
             "pdf-pv-receptie",
             "pdf-somatie-plata",
             "cerere",
+            "pdf-fisa-interventie-service",
         ],
     },
     Activity {
@@ -170,7 +176,13 @@ pub const ACTIVITIES: &[Activity] = &[
             "kgb.calc",
         ],
         profile: "depozit",
-        models: &["pdf-nir", "pdf-pv-receptie", "pdf-decizie", "adeverinta-salariat"],
+        models: &[
+            "pdf-nir",
+            "pdf-pv-receptie",
+            "pdf-decizie",
+            "adeverinta-salariat",
+            "pdf-comanda-furnizor",
+        ],
     },
     Activity {
         id: "agricultura",
@@ -187,7 +199,14 @@ pub const ACTIVITIES: &[Activity] = &[
             "kgb.planner",
         ],
         profile: "management",
-        models: &["pdf-contract-vanzare", "pdf-contract-inchiriere", "pdf-nir", "cerere"],
+        models: &[
+            "pdf-contract-vanzare",
+            "pdf-contract-inchiriere",
+            "pdf-nir",
+            "cerere",
+            "pdf-contract-arendare",
+            "pdf-contract-comodat",
+        ],
     },
     Activity {
         id: "cabinet",
@@ -210,6 +229,7 @@ pub const ACTIVITIES: &[Activity] = &[
             "cerere",
             "adeverinta-salariat",
             "pdf-imputernicire",
+            "pdf-informare-date-personale",
         ],
     },
     Activity {
@@ -227,7 +247,13 @@ pub const ACTIVITIES: &[Activity] = &[
             "kgb.contracts",
         ],
         profile: "personal",
-        models: &["cerere", "pdf-imputernicire", "pdf-contract-inchiriere"],
+        models: &[
+            "cerere",
+            "pdf-imputernicire",
+            "pdf-contract-inchiriere",
+            "pdf-informare-date-personale",
+            "pdf-fisa-postului",
+        ],
     },
 ];
 
