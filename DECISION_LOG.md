@@ -530,3 +530,17 @@ Deciziile DECIS se schimbă doar cu aprobarea explicită a proprietarului (Maste
 
   `quarantine/` (ce a tăiat recuperarea, păstrat pentru diagnoză) rămâne neatins; ștergerea lui rămâne doar la cererea explicită din „Date și backup” (`purge_leftovers`). Se cere de om, de exemplu imediat după blocarea unei notițe; nu rulează singură. Consecința cunoscută: podeaua de compactare crește, deci un PC rămas în urmă face o sincronizare completă, nu incrementală. Nu șterge nimic de pe celelalte PC-uri (până la compactarea lor) și nici din backupuri. Test: `kgb-core/tests/files.rs::forget_history_leaves_no_old_bytes_on_disk`. Textul vechi și atașamentul vechi sunt pe disc înainte și nu mai apar în niciun fișier din dosarul spațiului de lucru după; starea curentă rămâne citibilă.
 - **Teste:** COS `cdp-notes-lockfiles` (blocare cu atașament: nimic în clar lângă caiet, copie criptată, citire întreagă cu parola, „Scoate parola”); K.G.B. testul Rust al Notelor (numele atașamentului, ștergerea) și e2e `cos-notes-full`.
+
+### D-091 — Poarta Etapei 7 aprobată
+- **Data:** 12 nov. 2026 · **Statut:** DECIS — proprietarul: „Aprob poarta”.
+- **Pe baza:** `docs/ETAPA7_RAPORT.md` (FINAL); un singur build din `main` (faa1f99), 62 de teste de fereastră, 728/728 verificări, nicio regresie.
+- **Rămân deschise, 🔒, la proprietar:**
+  - proba cu stickul de semnătură;
+  - foaia tipărită;
+  - OCR-ul pe o poză de telefon;
+  - contul real al programului de facturare online;
+  - `desktop.mjs` cu el de față;
+  - proba cu al doilea PC și poarta Etapei 6 (6.10, 6.12);
+  - cotele de TVA confirmate cu un contabil;
+  - decizia despre e-mailul din aplicație.
+- **Următorul pas:** Etapa 8 (Comercializare, Master Plan: installer stabil, semnare, licențiere, update/rollback, documentație). Începe după planul ei și deciziile proprietarului.

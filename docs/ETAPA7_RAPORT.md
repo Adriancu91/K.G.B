@@ -1,6 +1,6 @@
 # K.G.B. — Etapa 7: raport (ciornă)
 
-**Data:** 12 nov. 2026 · **Statut:** FINAL, în așteptarea porții proprietarului (poarta Etapei 7, mai jos: toate testele trecute pe un singur build). Au lucrat două sesiuni: sesiunea K.G.B. (nucleul, Business, Permise, telefonul, profilul firmei din documente, programul de facturare online, porțile) și sesiunea COS (ce s-a mutat din Cyber Office Studio, modulele noi pentru tipuri de firme, depozitul și dublurile). Fiecare pas are în `WORKLIST.md` dovada lui: commit-ul și testele trecute în fereastra reală.
+**Data:** 12 nov. 2026 · **Statut:** FINAL — poarta aprobată de proprietar pe 12 nov. 2026 (D-091). Au lucrat două sesiuni: sesiunea K.G.B. (nucleul, Business, Permise, telefonul, profilul firmei din documente, programul de facturare online, porțile) și sesiunea COS (ce s-a mutat din Cyber Office Studio, modulele noi pentru tipuri de firme, depozitul și dublurile). Fiecare pas are în `WORKLIST.md` dovada lui: commit-ul și testele trecute în fereastra reală.
 **Cum s-a lucrat:** fiecare pas pe o ramură `kgb/cos-*`, construit și încercat în fereastra reală (e2e pe build-ul release, cu date separate), apoi trecut prin poarta sesiunii K.G.B. și unit în `main`. Deciziile s-au luat de comun acord (D-074).
 
 ## Pe scurt
