@@ -90,6 +90,20 @@ try {
   const ts = await p.eval("[...document.querySelectorAll('.timesheet-table tbody tr')].map(r => r.innerText).join(' | ')");
   check("tura de zi = 8:00, tura de noapte (peste miezul nopții) = 7:30", ts.includes("8:00") && ts.includes("7:30"), ts);
 
+  // A day entered by mistake, deleted, then entered again (owner, 2026-11-12: „zice că am adăugat deja”).
+  const delRow = (day) => p.eval(`[...document.querySelectorAll('.timesheet-table tbody tr')].find(r => r.innerText.includes(${JSON.stringify(day)}))?.querySelector('button.danger-text')?.click() ?? false`);
+  await setValue(p, "input[aria-label='Ziua']", "2026-11-04");
+  await p.click("Pontează");
+  await p.until("document.querySelectorAll('.timesheet-table tbody tr').length === 3", 5000);
+  await delRow("04.11.2026");
+  await p.until("document.querySelectorAll('.timesheet-table tbody tr').length === 2", 5000);
+  await p.click("Pontează");
+  await p.until("document.querySelectorAll('.timesheet-table tbody tr').length === 3 || !!document.querySelector('.error')", 5000);
+  const again = await p.eval("({ rows: document.querySelectorAll('.timesheet-table tbody tr').length, err: document.querySelector('.error')?.innerText ?? '' })");
+  check("o zi pontată greșit, ștearsă, se poate ponta din nou", again.rows === 3 && !again.err.includes("deja pontat"), JSON.stringify(again));
+  await delRow("04.11.2026");
+  await p.until("document.querySelectorAll('.timesheet-table tbody tr').length === 2", 5000);
+
   // Leave 5–11 Nov, approved; pontaj on 6 Nov refused.
   await tab(p, "Concedii");
   await selectText(p, "select[aria-label='Angajatul concediului']", "Ana Test");
