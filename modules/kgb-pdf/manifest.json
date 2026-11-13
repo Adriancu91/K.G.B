@@ -2,7 +2,7 @@
   "manifest_format": 1,
   "id": "kgb.pdf",
   "name": "Documente PDF",
-  "description": "Afișare, unire, separare, extragere și rotire de pagini, text. Fiecare modificare devine o versiune nouă; originalul importat rămâne neatins. PDF-urile deteriorate sau criptate se deschid doar pentru citire.",
+  "description": "Citește, unește, separă, extrage și rotește pagini PDF; completează formulare, editează textul, pune ștampila firmei și semnătura digitală cu certificat, ascunde definitiv datele care nu trebuie văzute, scoate textul din scanări (OCR), comprimă și pune mai multe pagini pe o foaie. Fiecare modificare devine o versiune nouă; originalul importat rămâne neatins. PDF-urile deteriorate sau criptate se deschid doar pentru citire.",
   "version": "0.1.0",
   "core": ">=0.1.0, <0.2.0",
   "status": "beta",

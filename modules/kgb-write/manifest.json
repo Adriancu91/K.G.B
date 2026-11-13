@@ -2,7 +2,7 @@
   "manifest_format": 1,
   "id": "kgb.write",
   "name": "Documente text",
-  "description": "Scrie și editează documente în fereastra de documente (cu .docx dus-întors). Fiecare salvare devine o versiune nouă; versiunile vechi rămân.",
+  "description": "Scrie și editează documente în fereastra de documente; deschide .docx și îl salvează tot ca .docx, iar documentul se poate exporta și ca PDF sau .odt. Fiecare salvare devine o versiune nouă; cea importată și celelalte versiuni vechi rămân.",
   "version": "0.1.0",
   "core": ">=0.1.0, <0.2.0",
   "status": "beta",

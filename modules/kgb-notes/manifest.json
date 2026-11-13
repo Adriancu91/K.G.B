@@ -2,7 +2,7 @@
   "manifest_format": 1,
   "id": "kgb.notes",
   "name": "Note",
-  "description": "Caietul de note: notițe cu text, liste de bifat, poze, secțiuni și caiete, coș, căutare. Fiecare notă se păstrează separat, deci se sincronizează între PC-uri fără să se piardă ce ai scris pe celălalt.",
+  "description": "Caietul de note: notițe cu text, liste de bifat, poze și fișiere atașate, secțiuni și caiete, coș, căutare. Mementouri o dată sau repetate zilnic, săptămânal, lunar ori anual. O notă se poate bloca cu parolă: textul și atașamentele ei se criptează. Fiecare notă se păstrează separat, deci se sincronizează între PC-uri fără să se piardă ce ai scris pe celălalt.",
   "version": "0.1.0",
   "core": ">=0.1.0, <0.2.0",
   "status": "beta",
