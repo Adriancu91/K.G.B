@@ -357,7 +357,7 @@ export function App() {
         )}
         {(workspaceOpened || page === "workspace") && nav.some((n) => n.id === "workspace") && (
           <div className="workspace-host" hidden={page !== "workspace"}>
-            <WorkspacePage modules={modules} visible={page === "workspace"} onError={setError} focusNotes={focusNotes} onNotesTab={setWsNotes} />
+            <WorkspacePage modules={modules} visible={page === "workspace"} onError={setError} focusNotes={focusNotes} onNotesTab={setWsNotes} workspaceId={info.workspace?.id ?? "local"} />
           </div>
         )}
         {page === "home" && (

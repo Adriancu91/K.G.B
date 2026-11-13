@@ -6,7 +6,8 @@
 // tab, the Note page leads to that tab instead of opening a second window on the same notebook.
 //
 // Usage: node app/e2e/workspace.mjs <path-to-kgb-app.exe> <screenshot-dir>
-// Uses a throw-away data folder (KGB_DATA_DIR), never the user's real data.
+// Uses a throw-away data folder (KGB_DATA_DIR), never the user's real data. The window's storage is shared by every
+// run on this PC: the tabs' keys (kgb.workspace.tabs:<workspace>) found at the start are put back at the end.
 import { spawn, execFileSync } from "node:child_process";
 import { mkdirSync, mkdtempSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
@@ -82,8 +83,19 @@ const pick = async (p, name) => {
 writeFileSync(join(files, "preturi-ianuarie.csv"), "Produs,Pret\nCafea,25\nZahar,8\nLapte,7\n");
 writeFileSync(join(files, "preturi-februarie.csv"), "Produs,Pret\nCafea,27\nZahar,8\nLapte,7\n");
 
+const KEYS = "Object.keys(localStorage).filter(k => k.startsWith('kgb.workspace.tabs'))";
+let kept = null;
+const putBack = async (p) => {
+  if (!kept || !p) return;
+  await p.eval(`(() => { const was = ${JSON.stringify(kept)}; for (const k of ${KEYS}) if (!(k in was)) localStorage.removeItem(k);
+    for (const [k, v] of Object.entries(was)) localStorage.setItem(k, v); return true; })()`);
+  await sleep(3000);
+  kept = null;
+};
+
 try {
   let p = await start();
+  kept = await p.eval(`Object.fromEntries(${KEYS}.map(k => [k, localStorage.getItem(k)]))`);
   check(
     "fără modulele de birou, „Spațiu de lucru” nu e în meniu",
     !(await p.eval("[...document.querySelectorAll('nav .nav')].some(e => e.textContent.trim().startsWith('Spațiu de lucru'))")),
@@ -184,10 +196,12 @@ try {
   await sleep(400);
   const left = await tabNames(p);
   check("× închide tabul", left.length === 2 && left[0].includes("preturi-februarie.csv"), JSON.stringify(left));
+  await putBack(p);
   await stop(p);
 } catch (e) {
   check("scenariul a rulat până la capăt", false, String(e?.stack ?? e));
   if (page) await page.screenshot(join(shots, "eroare.png")).catch(() => {});
+  await putBack(page).catch(() => {});
   try {
     execFileSync("taskkill", ["/F", "/T", "/PID", String(proc?.pid)], { stdio: "ignore" });
   } catch {

@@ -1,7 +1,8 @@
 // „Spațiu de lucru” (8.21, cerut de Adrian): several documents open at once, in tabs, as in Cyber Office Studio
 // (D-071, D-073): spreadsheets and text documents in the COS windows (cos-sheets.html, each tab its own frame), the
 // notebook, PDFs (the PDF page showing one document) and the document models. Tabs stay open after a restart
-// (kept in this window's storage: the documents themselves are in the core). „+” makes a new one; „Alături” puts two
+// (kept in this window's storage under the workspace's id, since the storage is shared by every workspace on this PC:
+// the documents themselves are in the core). „+” makes a new one; „Alături” puts two
 // tabs side by side and „Compară” shows the rows only on the left and only on the right (for two spreadsheets the
 // different cells are also coloured in both tables, until the side-by-side view is closed).
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
@@ -76,9 +77,9 @@ function frameSrc(kind: TabKind, doc: string | null): string {
 const isFrame = (k: TabKind) => k === "sheets" || k === "docs" || k === "notes";
 const comparable = (k: TabKind) => k === "sheets" || k === "docs" || k === "pdf";
 
-function load(): Stored {
+function load(key: string): Stored {
   try {
-    const s = JSON.parse(localStorage.getItem(STORE) ?? "null") as Stored | null;
+    const s = JSON.parse(localStorage.getItem(key) ?? "null") as Stored | null;
     if (s && Array.isArray(s.tabs)) return s;
   } catch {
     // Nothing kept: an empty workspace.
@@ -121,8 +122,11 @@ export function WorkspacePage({
   onError,
   focusNotes = 0,
   onNotesTab,
+  workspaceId,
 }: {
   modules: ModulesReply;
+  /** The open workspace (its tabs are kept apart from those of another workspace on this PC). */
+  workspaceId: string;
   visible: boolean;
   onError: (e: string | null) => void;
   focusNotes?: number;
@@ -138,8 +142,9 @@ export function WorkspacePage({
   );
   const writable = useCallback((k: TabKind) => can(k) && (modules.access[MODULE[k]] ?? "scriere") === "scriere", [can, modules]);
 
-  const [tabs, setTabs] = useState<WsTab[]>(() => load().tabs.filter((t) => t.doc || t.kind === "notes" || t.kind === "models"));
-  const [active, setActive] = useState<string | null>(() => load().active);
+  const storeKey = `${STORE}:${workspaceId}`;
+  const [tabs, setTabs] = useState<WsTab[]>(() => load(storeKey).tabs.filter((t) => t.doc || t.kind === "notes" || t.kind === "models"));
+  const [active, setActive] = useState<string | null>(() => load(storeKey).active);
   const [pair, setPair] = useState<[string, string] | null>(null);
   const [menu, setMenu] = useState(false);
   const [picker, setPicker] = useState<{ docs: { kind: TabKind; doc: Doc }[]; q: string } | null>(null);
@@ -181,11 +186,11 @@ export function WorkspacePage({
   useEffect(() => {
     try {
       const keep = tabs.filter((t) => t.doc || t.kind === "notes" || t.kind === "models").map(({ unsaved: _u, ...t }) => ({ ...t, src: frameSrc(t.kind, t.doc) }));
-      localStorage.setItem(STORE, JSON.stringify({ tabs: keep, active }));
+      localStorage.setItem(storeKey, JSON.stringify({ tabs: keep, active }));
     } catch {
       // Without storage the tabs last until the window closes.
     }
-  }, [tabs, active]);
+  }, [tabs, active, storeKey]);
 
   useEffect(() => {
     if (active && tabs.some((t) => t.key === active)) return;
