@@ -802,6 +802,21 @@ async fn clip_zoom(app: State<'_, AppState>, handle: tauri::AppHandle, id: Strin
     clip::zoom(&handle, &app.root, &id, zoom)
 }
 
+/// A frozen web window shown on the start page, over its panel (`[x, y, w, h]`, logical pixels; 0 size hides it).
+#[tauri::command]
+async fn clip_embed(app: State<'_, AppState>, handle: tauri::AppHandle, id: String, rect: [f64; 4]) -> CmdResult<()> {
+    if rect[2] >= 20.0 && rect[3] >= 20.0 {
+        internet_on(&app)?;
+    }
+    clip::embed(&handle, &app.root, &id, rect)
+}
+
+#[tauri::command]
+async fn clip_unembed(handle: tauri::AppHandle, id: String) -> CmdResult<()> {
+    clip::unembed(&handle, &id);
+    Ok(())
+}
+
 #[tauri::command]
 async fn clip_close(handle: tauri::AppHandle, id: String) -> CmdResult<()> {
     clip::close(&handle, &id);
@@ -2551,6 +2566,8 @@ fn main() {
             clip_freeze,
             clip_zoom,
             clip_close,
+            clip_embed,
+            clip_unembed,
             radio_search,
             radio_play,
             radio_stop,

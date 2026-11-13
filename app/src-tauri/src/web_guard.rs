@@ -78,23 +78,26 @@ pub fn check(url: &str) -> Result<Url, String> {
 
 /// Refuses, in this window, every permission a page asks for.
 pub fn deny_permissions(w: &tauri::WebviewWindow) {
-    let _ = w.with_webview(|wv| {
-        use webview2_com::Microsoft::Web::WebView2::Win32::COREWEBVIEW2_PERMISSION_STATE_DENY;
-        use webview2_com::PermissionRequestedEventHandler;
-        unsafe {
-            let Ok(core) = wv.controller().CoreWebView2() else { return };
-            let handler = PermissionRequestedEventHandler::create(Box::new(|_sender, args| {
-                if let Some(a) = args {
-                    a.SetState(COREWEBVIEW2_PERMISSION_STATE_DENY)?;
-                }
-                Ok(())
-            }));
-            let mut token = 0i64;
-            if let Err(e) = core.add_PermissionRequested(&handler, &mut token) {
-                tracing::warn!("web window: permissions not hooked: {e}");
+    let _ = w.with_webview(deny_on);
+}
+
+/// The same, for a webview given directly (a web window shown on the start page).
+pub fn deny_on(wv: tauri::webview::PlatformWebview) {
+    use webview2_com::Microsoft::Web::WebView2::Win32::COREWEBVIEW2_PERMISSION_STATE_DENY;
+    use webview2_com::PermissionRequestedEventHandler;
+    unsafe {
+        let Ok(core) = wv.controller().CoreWebView2() else { return };
+        let handler = PermissionRequestedEventHandler::create(Box::new(|_sender, args| {
+            if let Some(a) = args {
+                a.SetState(COREWEBVIEW2_PERMISSION_STATE_DENY)?;
             }
+            Ok(())
+        }));
+        let mut token = 0i64;
+        if let Err(e) = core.add_PermissionRequested(&handler, &mut token) {
+            tracing::warn!("web window: permissions not hooked: {e}");
         }
-    });
+    }
 }
 
 /// Opens an address in the computer's browser (a link clicked in a web window), only a public https page.

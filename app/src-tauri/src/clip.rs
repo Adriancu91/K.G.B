@@ -18,7 +18,8 @@ use std::path::{Path, PathBuf};
 use std::sync::Mutex;
 
 use serde::{Deserialize, Serialize};
-use tauri::{AppHandle, Manager, PhysicalPosition, Url, WebviewUrl, WebviewWindowBuilder};
+use tauri::webview::WebviewBuilder;
+use tauri::{AppHandle, LogicalPosition, LogicalSize, Manager, PhysicalPosition, Url, WebviewUrl, WebviewWindowBuilder};
 
 pub const LABEL: &str = "clip-";
 const FILE: &str = "ferestre-web.json";
@@ -139,6 +140,7 @@ pub fn save(root: &Path, mut c: Clip) -> Result<Clip, String> {
 
 pub fn delete(app: &AppHandle, root: &Path, id: &str) -> Result<(), String> {
     close(app, id);
+    unembed(app, id);
     let mut all = load(root);
     all.retain(|x| x.id != id);
     store(root, &all)
@@ -199,6 +201,97 @@ fn script(c: &Clip, pick: bool) -> String {
     format!("(() => {{\n  if (window.top !== window) return;\n  const C = {cfg};\n  {body}\n}})();")
 }
 
+/// The page a web window shows, once it has loaded the first time.
+type Shown = std::sync::Arc<Mutex<Option<Url>>>;
+
+/// After the page has loaded once, a click on a link does not move the frozen page: the link opens in the
+/// computer's browser. Before that, redirects of the address are followed; a reload of the same page is allowed.
+fn may_go(shown: &Shown, u: &Url) -> bool {
+    let same = |a: &Url, b: &Url| {
+        let (mut a, mut b) = (a.clone(), b.clone());
+        a.set_fragment(None);
+        b.set_fragment(None);
+        a == b
+    };
+    match shown.lock().ok().and_then(|g| g.clone()) {
+        None => crate::web_guard::refuse(u).is_none(),
+        Some(cur) if same(&cur, u) => true,
+        Some(_) => {
+            crate::web_guard::open_outside(u);
+            false
+        }
+    }
+}
+
+fn loaded(shown: &Shown, p: &tauri::webview::PageLoadPayload<'_>) {
+    if matches!(p.event(), tauri::webview::PageLoadEvent::Finished)
+        && let Ok(mut g) = shown.lock()
+        && g.is_none()
+    {
+        *g = Some(p.url().clone());
+    }
+}
+
+/// Label of a web window shown on the start page (a webview inside the main window): `clip-acasa_<id>`. It starts
+/// with [`LABEL`], so every command from it is refused, as from the separate windows.
+fn home_label(id: &str) -> String {
+    format!("{LABEL}acasa_{id}")
+}
+
+/// Shows a frozen web window on the start page, inside the main window, over its panel: `rect` is `[x, y, w, h]`
+/// in logical pixels of the window. It is moved if it is there already; a size under 20 hides it (the panel is not
+/// fully on screen, or a dialog is over it).
+pub fn embed(app: &AppHandle, root: &Path, id: &str, rect: [f64; 4]) -> Result<(), String> {
+    let [x, y, w, h] = rect;
+    let label = home_label(id);
+    if let Some(v) = app.get_webview(&label) {
+        if w < 20.0 || h < 20.0 {
+            let _ = v.hide();
+        } else {
+            let _ = v.set_position(LogicalPosition::new(x, y));
+            let _ = v.set_size(LogicalSize::new(w, h));
+            let _ = v.show();
+        }
+        return Ok(());
+    }
+    if w < 20.0 || h < 20.0 {
+        return Ok(());
+    }
+    let c = load(root).into_iter().find(|x| x.id == id).ok_or("fereastra nu există")?;
+    if !c.inghetata {
+        return Err("alege întâi zona și apasă „Îngheață” în „Ferestre web”".into());
+    }
+    let url = check_url(&c.url)?;
+    let main = app.get_window("main").ok_or("fereastra principală nu e deschisă")?;
+    let shown: Shown = Default::default();
+    let (shown_nav, shown_load) = (shown.clone(), shown.clone());
+    let b = WebviewBuilder::new(label, WebviewUrl::External(url))
+        .incognito(true)
+        .initialization_script(script(&c, false))
+        .on_navigation(move |u| may_go(&shown_nav, u))
+        .on_page_load(move |_v, p| loaded(&shown_load, &p))
+        .on_new_window(|u, _| {
+            crate::web_guard::open_outside(&u);
+            tauri::webview::NewWindowResponse::Deny
+        })
+        .on_download(|_, _| false);
+    let v = main
+        .add_child(b, LogicalPosition::new(x, y), LogicalSize::new(w, h))
+        .map_err(|e| format!("fereastra web nu a pornit: {e}"))?;
+    let _ = v.with_webview(crate::web_guard::deny_on);
+    if (c.zoom - 1.0).abs() > f64::EPSILON {
+        let _ = v.set_zoom(c.zoom);
+    }
+    Ok(())
+}
+
+/// Takes a web window off the start page (the person left the page, or removed the panel).
+pub fn unembed(app: &AppHandle, id: &str) {
+    if let Some(v) = app.get_webview(&home_label(id)) {
+        let _ = v.close();
+    }
+}
+
 pub fn open(app: &AppHandle, root: &Path, id: &str, pick: bool) -> Result<(), String> {
     let c = load(root).into_iter().find(|x| x.id == id).ok_or("fereastra nu există")?;
     let url = check_url(&c.url)?;
@@ -211,14 +304,8 @@ pub fn open(app: &AppHandle, root: &Path, id: &str, pick: bool) -> Result<(), St
     let handle = app.clone();
     // After the page has loaded once, a click on a link does not move the frozen page: the link opens in the
     // computer's browser. Before that, redirects of the address are followed; a reload of the same page is allowed.
-    let shown: std::sync::Arc<Mutex<Option<Url>>> = Default::default();
+    let shown: Shown = Default::default();
     let (shown_nav, shown_load) = (shown.clone(), shown.clone());
-    let same = |a: &Url, b: &Url| {
-        let (mut a, mut b) = (a.clone(), b.clone());
-        a.set_fragment(None);
-        b.set_fragment(None);
-        a == b
-    };
     let mut b = WebviewWindowBuilder::new(app, new_label(id), WebviewUrl::External(url))
         .title(if pick { format!("{} — alege zona, apoi „Îngheață” în K.G.B.", c.nume) } else { c.nume.clone() })
         .inner_size(f64::from(c.latime), f64::from(c.inaltime))
@@ -229,25 +316,8 @@ pub fn open(app: &AppHandle, root: &Path, id: &str, pick: bool) -> Result<(), St
         .incognito(true)
         .zoom_hotkeys_enabled(false)
         .initialization_script(script(&c, pick))
-        .on_navigation(move |u| {
-            let cur = shown_nav.lock().ok().and_then(|g| g.clone());
-            match cur {
-                None => crate::web_guard::refuse(u).is_none(),
-                Some(cur) if same(&cur, u) => true,
-                Some(_) => {
-                    crate::web_guard::open_outside(u);
-                    false
-                }
-            }
-        })
-        .on_page_load(move |_w, p| {
-            if matches!(p.event(), tauri::webview::PageLoadEvent::Finished)
-                && let Ok(mut g) = shown_load.lock()
-                && g.is_none()
-            {
-                *g = Some(p.url().clone());
-            }
-        })
+        .on_navigation(move |u| may_go(&shown_nav, u))
+        .on_page_load(move |_w, p| loaded(&shown_load, &p))
         .on_new_window(|u, _| {
             crate::web_guard::open_outside(&u);
             tauri::webview::NewWindowResponse::Deny

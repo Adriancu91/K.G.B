@@ -39,7 +39,7 @@ const blank = (): Clip => ({
   inghetata: false,
 });
 
-export function WebClipsPage({ onError }: { onError: (e: string | null) => void }) {
+export function WebClipsPage({ onError, onHome, onToggleHome }: { onError: (e: string | null) => void; onHome: string[]; onToggleHome: (id: string) => void }) {
   const [r, setR] = useState<Reply>({ ferestre: [], deschise: [] });
   const [edit, setEdit] = useState<Clip | null>(null);
   const [picking, setPicking] = useState<string | null>(null);
@@ -169,6 +169,9 @@ export function WebClipsPage({ onError }: { onError: (e: string | null) => void 
                   </button>
                 )}
                 <button onClick={() => pick(c)}>Alege zona</button>
+                <button onClick={() => onToggleHome(c.id)} disabled={!c.inghetata && !onHome.includes(c.id)} title="Arată zona înghețată într-un panou pe Acasă">
+                  {onHome.includes(c.id) ? "Scoate de pe Acasă" : "Fixează pe Acasă"}
+                </button>
                 {isOpen && <button onClick={() => close(c)}>Închide</button>}
                 <label className="row small">
                   <input type="checkbox" checked={c.deasupra} onChange={(e) => save2(c, { deasupra: e.target.checked })} />

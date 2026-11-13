@@ -390,6 +390,48 @@ function RadioPanel({ onOpen }: { onOpen: (id: string) => void }) {
   );
 }
 
+/** A frozen web window of „Ferestre web”, shown inside its panel (8.20): the page is a separate view of the
+ * main window, cut off from K.G.B., placed over the panel's body and moved with it. It is shown only while the
+ * panel is fully on screen and no dialog is open over it. */
+function WebClipPanel({ id, onOpen }: { id: string; onOpen: (id: string) => void }) {
+  const box = useRef<HTMLDivElement>(null);
+  const [err, setErr] = useState<string | null>(null);
+  useEffect(() => {
+    if (err) return;
+    let last = "";
+    let stopped = false;
+    const tick = () => {
+      const el = box.current;
+      const main = document.querySelector("main");
+      if (!el || !main) return;
+      const r = el.getBoundingClientRect();
+      const m = main.getBoundingClientRect();
+      const covered = !!document.querySelector('.overlay, [role="dialog"], [aria-modal="true"]');
+      const inside = r.width >= 20 && r.height >= 20 && r.top >= m.top && r.bottom <= m.bottom && r.left >= m.left && r.right <= m.right;
+      const rect = !covered && inside ? [r.left, r.top, r.width, r.height].map((v) => Math.round(v)) : [0, 0, 0, 0];
+      const key = rect.join(",");
+      if (key === last) return;
+      last = key;
+      invoke("clip_embed", { id, rect }).catch((e: unknown) => {
+        if (!stopped) setErr(message(e));
+      });
+    };
+    tick();
+    const t = setInterval(tick, 100);
+    return () => {
+      stopped = true;
+      clearInterval(t);
+      void invoke("clip_unembed", { id }).catch(() => {});
+    };
+  }, [id, err]);
+  if (err) return <Off err={err} onOpen={onOpen} />;
+  return (
+    <div className="web-clip-box" ref={box} data-clip={id}>
+      <p className="muted small">Se încarcă pagina… (se vede când panoul e întreg pe ecran)</p>
+    </div>
+  );
+}
+
 /** The player in Windows' media controls (Spotify or any other), 7.4e. */
 function MediaPanel() {
   const [m, setM] = useState<Playing | null | undefined>(undefined);
@@ -446,6 +488,8 @@ function Content(props: {
     </button>
   );
   const loading = <p className="muted">Se încarcă…</p>;
+
+  if (id.startsWith("web:")) return <WebClipPanel id={id.slice(4)} onOpen={onOpen} />;
 
   if (id.startsWith("fix:")) {
     const page = id.slice(4);
@@ -693,6 +737,15 @@ export function Home(props: {
     props.onOpen(id);
   };
   const pageLabel = (id: string) => props.pages.find((p) => p.id === id)?.label;
+  const [clipNames, setClipNames] = useState<Record<string, string>>({});
+  const hasClips = panels.some((p) => p.id.startsWith("web:"));
+  useEffect(() => {
+    if (!hasClips) return;
+    invoke<{ ferestre: { id: string; nume: string }[] }>("clip_list").then(
+      (r) => setClipNames(Object.fromEntries(r.ferestre.map((f) => [f.id, f.nume]))),
+      () => setClipNames({}),
+    );
+  }, [hasClips]);
 
   // "De rezolvat": everything late or about to be, most urgent first; postponed ones wait.
   const t = today();
@@ -841,7 +894,11 @@ export function Home(props: {
       <div ref={canvas} className={narrow ? "cc-canvas narrow" : "cc-canvas"} style={narrow ? undefined : { height: bottom }}>
         {panels.map((p) => {
           const r = live?.id === p.id ? live : place(p, cw);
-          const title = p.id.startsWith("fix:") ? (pageLabel(p.id.slice(4)) ?? "Pagină fixată") : TITLES[p.id];
+          const title = p.id.startsWith("fix:")
+            ? (pageLabel(p.id.slice(4)) ?? "Pagină fixată")
+            : p.id.startsWith("web:")
+              ? (clipNames[p.id.slice(4)] ?? "Fereastră web")
+              : TITLES[p.id];
           return (
             <article
               key={p.id}

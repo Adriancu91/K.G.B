@@ -3812,7 +3812,12 @@
   "ghidul se salvează doar ca fișier .pdf": "the guide is saved only as a .pdf file",
   "ghidul nu e un PDF valid": "the guide is not a valid PDF",
   "Fișierele tale": "Your files",
-  "Ce imporți (.docx, .xlsx, PDF) rămâne neatins; fiecare salvare e o versiune nouă, pe care o poți reface din „Versiuni”. Ca să dai un fișier altcuiva, folosești „Exportă” și alegi dosarul.": "What you import (.docx, .xlsx, PDF) stays untouched; every save is a new version, which you can restore from “Versions”. To give a file to someone else, use “Export” and choose the folder."
+  "Ce imporți (.docx, .xlsx, PDF) rămâne neatins; fiecare salvare e o versiune nouă, pe care o poți reface din „Versiuni”. Ca să dai un fișier altcuiva, folosești „Exportă” și alegi dosarul.": "What you import (.docx, .xlsx, PDF) stays untouched; every save is a new version, which you can restore from “Versions”. To give a file to someone else, use “Export” and choose the folder.",
+  "Se încarcă pagina… (se vede când panoul e întreg pe ecran)": "Loading the page… (shown when the panel is fully on screen)",
+  "Fereastră web": "Web window",
+  "Arată zona înghețată într-un panou pe Acasă": "Show the frozen area in a panel on Home",
+  "alege întâi zona și apasă „Îngheață” în „Ferestre web”": "first choose the area and press “Freeze” in “Web windows”",
+  "fereastra principală nu e deschisă": "the main window is not open"
  },
  "templates": {
   "{0} facturi găsite": "{0} invoices found",

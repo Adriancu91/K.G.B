@@ -88,6 +88,12 @@ try {
 
   const st = await invoke("get_settings");
   await invoke("save_settings", { settings: { ...st.settings, internet: true }, version: st.version });
+  // The settings were changed behind the page's back (as the test does): the page reads them again.
+  await p.eval("location.reload(), true");
+  await sleep(1500);
+  await p.until("!!document.querySelector('aside')", 15000);
+  await p.click("Ferestre web", "nav .nav");
+  await p.until("!!document.querySelector('.web-clips')", 8000);
   await p.until("[...document.querySelectorAll('.web-clips button')].some(b => b.innerText === 'Alege zona')", 8000);
   await p.click("Alege zona", ".web-clips button");
   await waitFor(() => asked.some((a) => a.startsWith("/ipc")), 15000);
@@ -108,6 +114,27 @@ try {
   check("apoi pagina se redeschide live pe partea înghețată, fără bare de derulare", loads === 2 && pos.includes("y=1200") && pos.includes("ov=hidden"), pos);
   check("fereastra apare deschisă în listă", list.deschise.includes(c.id));
   await p.screenshot(join(shots, "03-inghetata.png"));
+
+  // Pinned on Home: the frozen part, live, inside a panel that moves like the others.
+  await p.click("Fixează pe Acasă", ".web-clips button");
+  await p.until("[...document.querySelectorAll('.web-clips button')].some(b => b.innerText === 'Scoate de pe Acasă')", 8000);
+  await p.click("Acasă", "nav .nav");
+  await p.until(`!!document.querySelector('.panel[data-panel="web:${c.id}"]')`, 8000);
+  await p.eval(`document.querySelector('.panel[data-panel="web:${c.id}"]').scrollIntoView({ block: "center" })`);
+  const before = asked.filter((a) => a.startsWith("/pos")).length;
+  const t1 = Date.now();
+  while (asked.filter((a) => a.startsWith("/pos")).length <= before && Date.now() - t1 < 20000) await sleep(250);
+  const homePos = asked.filter((a) => a.startsWith("/pos")).at(-1) ?? "";
+  const title = await p.eval(`document.querySelector('.panel[data-panel="web:${c.id}"] h3').innerText`);
+  check("„Fixează pe Acasă” pune pe Acasă un panou cu numele ferestrei, cu pagina live pe partea înghețată", title === "Curs de test" && asked.filter((a) => a.startsWith("/pos")).length > before && homePos.includes("y=1200") && homePos.includes("ov=hidden"), `${title} · ${homePos}`);
+  await p.screenshot(join(shots, "04-pe-acasa.png"));
+  const kept = await invoke("get_settings");
+  check("panoul rămâne pe Acasă (e în setări)", kept.settings.home.panels.some((x) => x.id === `web:${c.id}`));
+  await p.click("Ferestre web", "nav .nav");
+  await p.until("!!document.querySelector('.web-clips')", 8000);
+  await p.click("Scoate de pe Acasă", ".web-clips button");
+  await p.until("[...document.querySelectorAll('.web-clips button')].some(b => b.innerText === 'Fixează pe Acasă')", 8000);
+  check("„Scoate de pe Acasă” îl scoate", !(await invoke("get_settings")).settings.home.panels.some((x) => x.id === `web:${c.id}`));
 
   await p.click("Închide", ".web-clips button");
   await p.until("!(document.querySelector('.web-clips')?.innerText ?? '').includes('deschisă')", 8000);

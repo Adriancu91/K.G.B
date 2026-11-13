@@ -364,7 +364,21 @@ export function App() {
         {page === "devices" && <DevicesPage onError={setError} />}
         {page === "sources" && <SourcesPage onError={setError} />}
         {page === "partners" && <PartnersPage onError={setError} />}
-        {page === "web-clips" && <WebClipsPage onError={setError} />}
+        {page === "web-clips" && (
+          <WebClipsPage
+            onError={setError}
+            onHome={s.home.panels.filter((p) => p.id.startsWith("web:")).map((p) => p.id.slice(4))}
+            onToggleHome={(id) => {
+              const pid = `web:${id}`;
+              const panels = s.home.panels;
+              const bottom = Math.max(0, ...panels.map((p) => p.y + p.h + 12));
+              void saveSettings({
+                ...s,
+                home: { ...s.home, panels: panels.some((p) => p.id === pid) ? panels.filter((p) => p.id !== pid) : [...panels, { id: pid, x: 0, y: bottom, w: 500, h: 300 }] },
+              });
+            }}
+          />
+        )}
         {page === "help" && <HelpPage modules={modules} focus={helpFocus} onOpen={(id) => setPage(id)} onError={setError} />}
         {page === "chat" && <ChatPage onError={setError} />}
         {page === "phone" && <PhonePage modules={modules} onError={setError} />}

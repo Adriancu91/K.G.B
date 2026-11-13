@@ -578,6 +578,7 @@ Deciziile DECIS se schimbă doar cu aprobarea explicită a proprietarului (Maste
   - toate permisiunile cerute de pagină (cameră, microfon, locație, notificări, clipboard) sunt refuzate;
   - după prima încărcare, un clic pe un link nu mută pagina înghețată: linkul se deschide în browserul omului. Redirecționările de la deschidere și reîncărcarea aceleiași pagini sunt permise;
   - poziția din titlu se citește strict: doar `kgbclip:<x>,<y>`, cifre, cel mult 7 fiecare; altfel titlul se ignoră.
+- **Pe Acasă (cerere 13.11):** „Fixează pe Acasă” pune zona înghețată într-un panou pe care îl muți și îl redimensionezi ca pe celelalte. Pagina e o a doua vedere web în fereastra principală (funcția `unstable` a Tauri, fără pachete noi), cu aceleași reguli: fără comenzi K.G.B. (eticheta `clip-acasa_*`), InPrivate, doar https publice, fără descărcări, pop-up-uri sau permisiuni. Se arată doar cât panoul e întreg pe ecran și niciun dialog nu e deschis peste el; se închide când pleci de pe Acasă.
 - **Limită cunoscută:** paginile care se derulează într-un element interior, nu în pagina întreagă, nu se pot îngheța pe o poziție; se vede partea de sus.
 - **Test:** e2e `webclips`, cu o pagină de test pe 127.0.0.1. Verifică și că pagina nu poate chema K.G.B.
 

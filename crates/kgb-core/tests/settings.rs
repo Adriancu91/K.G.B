@@ -182,6 +182,7 @@ fn home_panels_saved_migrated_and_checked() {
         p("notificari", 100, 40, 900, 300),
         p("azi", 0, 400, 300, 200),
         p("fix:kgb.business", 400, 400, 300, 120),
+        p("web:19a8f3c2b1", 0, 640, 500, 260),
     ];
     s.home.amanate.insert("factura:12".into(), "2026-11-15".into());
     let v = settings::save(w.store_mut(), &s, l.version, PROFILES).unwrap();
@@ -198,6 +199,8 @@ fn home_panels_saved_migrated_and_checked() {
         vec![p("azi", 0, 0, 300, 10)],
         vec![p("azi", 0, 30_000, 300, 200)],
         vec![p("fix:../x", 0, 0, 300, 200)],
+        vec![p("web:../x", 0, 0, 300, 200)],
+        vec![p("web:", 0, 0, 300, 200)],
     ] {
         let mut b = s.clone();
         b.home.panels = bad;

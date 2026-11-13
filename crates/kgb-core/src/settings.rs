@@ -86,6 +86,12 @@ pub const HOME_PANELS: &[&str] = &[
 ];
 /// Prefix of a page pinned to the start page.
 pub const PINNED_PREFIX: &str = "fix:";
+/// Prefix of a frozen web window shown on the start page (8.20, D-099): `web:<id>` of „Ferestre web”.
+pub const WEB_PREFIX: &str = "web:";
+
+fn valid_clip_id(id: &str) -> bool {
+    !id.is_empty() && id.len() <= 32 && id.bytes().all(|c| c.is_ascii_alphanumeric() || c == b'-')
+}
 /// Horizontal position and width are in thousandths of the page width, so a
 /// panel never leaves a narrower window; vertical ones are in pixels.
 pub const HOME_WIDTH: u16 = 1000;
@@ -253,7 +259,9 @@ impl Settings {
         let mut seen = std::collections::BTreeSet::new();
         for p in &self.home.panels {
             let known =
-                HOME_PANELS.contains(&p.id.as_str()) || p.id.strip_prefix(PINNED_PREFIX).is_some_and(valid_page_id);
+                HOME_PANELS.contains(&p.id.as_str())
+                    || p.id.strip_prefix(PINNED_PREFIX).is_some_and(valid_page_id)
+                    || p.id.strip_prefix(WEB_PREFIX).is_some_and(valid_clip_id);
             if !known {
                 return bad(format!("panoul „{}” nu există", p.id));
             }
