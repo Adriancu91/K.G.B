@@ -1,0 +1,297 @@
+{
+  "manifest_format": 1,
+  "id": "kgb.courses",
+  "name": "Cursuri și cursanți",
+  "description": "Grupele de curs, after-school sau atelier cu programul lor pe zilele săptămânii, cursanții (cu părintele sau tutorele, pentru copii), înscrierile și retragerile, prezența la fiecare ședință, taxa lunară sau pe curs, încasările și restanțele calculate. Doar datele scrise de om; nimic nu pleacă din aplicație.",
+  "version": "0.1.0",
+  "core": ">=0.1.0, <0.2.0",
+  "status": "beta",
+  "permissions": [
+    "storage.own"
+  ],
+  "services": [
+    "storage",
+    "log"
+  ],
+  "data_types": [
+    {
+      "collection": "grupe",
+      "description": "grupele: numele, felul, formatorul, sala, perioada, zilele și ora, durata, locurile, taxa (lunară sau pe curs)",
+      "schema": {
+        "fields": {
+          "nume": {
+            "type": "string",
+            "required": true,
+            "max_len": 120
+          },
+          "fel": {
+            "type": "string",
+            "required": true,
+            "enum": [
+              "curs",
+              "grupa",
+              "after_school",
+              "atelier"
+            ]
+          },
+          "formator": {
+            "type": "string",
+            "required": true,
+            "max_len": 120
+          },
+          "sala": {
+            "type": "string",
+            "required": true,
+            "max_len": 120
+          },
+          "de_la": {
+            "type": "string",
+            "required": true,
+            "max_len": 10
+          },
+          "pana_la": {
+            "type": "string",
+            "required": true,
+            "max_len": 10
+          },
+          "zile": {
+            "type": "array",
+            "required": true,
+            "max_len": 7
+          },
+          "ora": {
+            "type": "string",
+            "required": true,
+            "max_len": 5
+          },
+          "durata_min": {
+            "type": "integer",
+            "required": true,
+            "min": 15,
+            "max": 600
+          },
+          "capacitate": {
+            "type": "integer",
+            "required": true,
+            "min": 0,
+            "max": 1000
+          },
+          "taxa_fel": {
+            "type": "string",
+            "required": true,
+            "enum": [
+              "lunar",
+              "curs"
+            ]
+          },
+          "taxa": {
+            "type": "integer",
+            "required": true,
+            "min": 0,
+            "max": 100000000
+          },
+          "activ": {
+            "type": "bool",
+            "required": true
+          },
+          "nota": {
+            "type": "string",
+            "required": true,
+            "max_len": 1000
+          },
+          "creat_ms": {
+            "type": "integer",
+            "required": true,
+            "min": 0
+          }
+        },
+        "additional": false
+      }
+    },
+    {
+      "collection": "cursanti",
+      "description": "cursanții: numele, telefonul, e-mailul, părintele sau tutorele, o notă",
+      "schema": {
+        "fields": {
+          "nume": {
+            "type": "string",
+            "required": true,
+            "max_len": 120
+          },
+          "telefon": {
+            "type": "string",
+            "required": true,
+            "max_len": 40
+          },
+          "email": {
+            "type": "string",
+            "required": true,
+            "max_len": 120
+          },
+          "tutore": {
+            "type": "string",
+            "required": true,
+            "max_len": 120
+          },
+          "nota": {
+            "type": "string",
+            "required": true,
+            "max_len": 1000
+          },
+          "creat_ms": {
+            "type": "integer",
+            "required": true,
+            "min": 0
+          }
+        },
+        "additional": false
+      }
+    },
+    {
+      "collection": "inscrieri",
+      "description": "înscrierile: grupa, cursantul, de când, până când (retras), taxa proprie sau a grupei, starea",
+      "schema": {
+        "fields": {
+          "grupa": {
+            "type": "string",
+            "required": true,
+            "max_len": 36
+          },
+          "cursant": {
+            "type": "string",
+            "required": true,
+            "max_len": 36
+          },
+          "de_la": {
+            "type": "string",
+            "required": true,
+            "max_len": 10
+          },
+          "pana_la": {
+            "type": "string",
+            "required": true,
+            "max_len": 10
+          },
+          "taxa": {
+            "type": "integer",
+            "required": true,
+            "min": -1,
+            "max": 100000000
+          },
+          "stare": {
+            "type": "string",
+            "required": true,
+            "enum": [
+              "activ",
+              "retras"
+            ]
+          },
+          "creat_ms": {
+            "type": "integer",
+            "required": true,
+            "min": 0
+          }
+        },
+        "additional": false
+      }
+    },
+    {
+      "collection": "prezente",
+      "description": "prezența pe ședințe: grupa, data, cine a fost, dacă ședința s-a ținut",
+      "schema": {
+        "fields": {
+          "grupa": {
+            "type": "string",
+            "required": true,
+            "max_len": 36
+          },
+          "data": {
+            "type": "string",
+            "required": true,
+            "max_len": 10
+          },
+          "prezenti": {
+            "type": "array",
+            "required": true,
+            "max_len": 1000
+          },
+          "tinuta": {
+            "type": "bool",
+            "required": true
+          },
+          "nota": {
+            "type": "string",
+            "required": true,
+            "max_len": 500
+          }
+        },
+        "additional": false
+      }
+    },
+    {
+      "collection": "plati",
+      "description": "încasările: înscrierea, data, suma, felul, documentul; o încasare greșită se anulează cu motiv, nu se șterge",
+      "schema": {
+        "fields": {
+          "inscriere": {
+            "type": "string",
+            "required": true,
+            "max_len": 36
+          },
+          "data": {
+            "type": "string",
+            "required": true,
+            "max_len": 10
+          },
+          "suma": {
+            "type": "integer",
+            "required": true,
+            "min": 1,
+            "max": 100000000
+          },
+          "fel": {
+            "type": "string",
+            "required": true,
+            "enum": [
+              "numerar",
+              "card",
+              "transfer"
+            ]
+          },
+          "document": {
+            "type": "string",
+            "required": true,
+            "max_len": 60
+          },
+          "nota": {
+            "type": "string",
+            "required": true,
+            "max_len": 500
+          },
+          "anulata": {
+            "type": "bool",
+            "required": true
+          },
+          "motiv": {
+            "type": "string",
+            "required": true,
+            "max_len": 300
+          },
+          "creat_ms": {
+            "type": "integer",
+            "required": true,
+            "min": 0
+          }
+        },
+        "additional": false
+      }
+    }
+  ],
+  "events": {
+    "emits": [],
+    "listens": []
+  },
+  "data_format": 1,
+  "migrations": [],
+  "on_disable": "Grupele, cursanții, prezențele și încasările rămân în spațiul de lucru și reapar când modulul este activat din nou."
+}
