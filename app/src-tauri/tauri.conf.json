@@ -36,10 +36,17 @@
     ],
     "windows": {
       "webviewInstallMode": {
-        "type": "skip"
+        "type": "downloadBootstrapper",
+        "silent": true
       },
       "nsis": {
-        "installMode": "currentUser"
+        "installMode": "currentUser",
+        "languages": [
+          "Romanian"
+        ],
+        "customLanguageFiles": {
+          "Romanian": "nsis/Romanian.nsh"
+        }
       }
     },
     "resources": [

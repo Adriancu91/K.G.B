@@ -3770,7 +3770,16 @@
   "adresele acestui PC sau ale rețelei locale nu se deschid aici": "addresses of this PC or of the local network are not opened here",
   "doar adrese https:// se pot deschide": "only https:// addresses can be opened",
   "Panoul „Știri”: săgețile îl mută, Shift+săgețile îl redimensionează": "Panel “News”: arrow keys move it, Shift+arrow keys resize it",
-  "Ascunde „Știri”": "Hide “News”"
+  "Ascunde „Știri”": "Hide “News”",
+  "Programul nu e încă semnat digital: Windows avertizează la instalare („editor necunoscut”).": "The program is not digitally signed yet: Windows warns at install (“unknown publisher”).",
+  "Pe unele calculatoare cu Windows 10 lipsește WebView2, de care K.G.B. are nevoie; se instalează de la Microsoft.": "Some Windows 10 computers lack WebView2, which K.G.B. needs; it is installed from Microsoft.",
+  "Sincronizarea între calculatoare e verificată doar cu noduri de test pe același PC; proba cu un al doilea PC urmează.": "Sync between computers is only checked with test nodes on the same PC; the test with a second PC is still to come.",
+  "„Ferestre web”: paginile care se derulează într-o zonă interioară, nu în pagina întreagă, nu se pot îngheța pe o poziție.": "“Web windows”: pages that scroll inside an inner area, not the whole page, cannot be frozen at a position.",
+  "Radio: apar doar posturile care transmit pe adrese https.": "Radio: only stations streaming on https addresses are listed.",
+  "Știrile de la Guvernul României au ora fără fus orar și pot apărea cu două ore decalaj.": "News from the Romanian Government have times without a time zone and may show two hours off.",
+  "Cotele de TVA (21 / 11 / 0) trebuie confirmate cu un contabil.": "The VAT rates (21 / 11 / 0) must be confirmed with an accountant.",
+  "Probleme cunoscute": "Known issues",
+  "Pentru ajutor: „Trimite o observație” (din stânga jos) și „Salvează raportul într-un fișier” de mai sus. Raportul nu conține CNP-uri, numere de card sau de telefon, IBAN-uri, adrese de e-mail, chei sau numele tău de utilizator Windows; îl trimiți tu, dacă vrei.": "For help: “Send feedback” (bottom left) and “Save the report to a file” above. The report contains no personal ID numbers, card or phone numbers, IBANs, e-mail addresses, keys or your Windows user name; you send it yourself, if you want."
  },
  "templates": {
   "{0} facturi găsite": "{0} invoices found",

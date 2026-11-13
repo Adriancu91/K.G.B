@@ -1463,6 +1463,7 @@ struct RatesReply {
 /// EUR/RON and USD/RON for the start page (step 7.4e), only with the BNR source on.
 #[tauri::command]
 async fn fx_rates(app: State<'_, AppState>) -> CmdResult<RatesReply> {
+    internet_on(&app)?;
     with_session(&app, |s| kgb_core::fx::usable(s.ws.store()).map(|_| ()))?;
     Ok(RatesReply {
         curs: external::rates().await?,
@@ -1479,6 +1480,7 @@ struct WeatherReply {
 /// Today's weather in the town chosen on the start page, only with the MET Norway source on.
 #[tauri::command]
 async fn weather_today(app: State<'_, AppState>, azi: String, offset_min: i64) -> CmdResult<WeatherReply> {
+    internet_on(&app)?;
     let town = with_session(&app, |s| {
         kgb_core::weather::usable(s.ws.store())?;
         Ok(settings::load(s.ws.store())?.settings.home.vreme)
@@ -1505,6 +1507,7 @@ struct NewsReply {
 /// first. No other address is read.
 #[tauri::command]
 async fn news_feed(app: State<'_, AppState>) -> CmdResult<NewsReply> {
+    internet_on(&app)?;
     let sources = with_session(&app, |s| kgb_core::sources::active(s.ws.store(), Some("rss")))?;
     let mut stiri = Vec::new();
     let mut erori = Vec::new();
@@ -1578,6 +1581,7 @@ static ANAF_LAST: std::sync::Mutex<Option<std::time::Instant>> = std::sync::Mute
 /// switched on. Only the CUI and the day are sent.
 #[tauri::command]
 async fn anaf_lookup(app: State<'_, AppState>, cui: String, azi: String) -> CmdResult<kgb_core::anaf::Company> {
+    internet_on(&app)?;
     let body = with_session(&app, |s| {
         kgb_core::anaf::usable(s.ws.store())?;
         kgb_core::anaf::request_body(&[cui.trim()], azi.trim())

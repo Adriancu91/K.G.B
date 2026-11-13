@@ -580,3 +580,20 @@ Deciziile DECIS se schimbă doar cu aprobarea explicită a proprietarului (Maste
   - poziția din titlu se citește strict: doar `kgbclip:<x>,<y>`, cifre, cel mult 7 fiecare; altfel titlul se ignoră.
 - **Limită cunoscută:** paginile care se derulează într-un element interior, nu în pagina întreagă, nu se pot îngheța pe o poziție; se vede partea de sus.
 - **Test:** e2e `webclips`, cu o pagină de test pe 127.0.0.1. Verifică și că pagina nu poate chema K.G.B.
+
+### D-095 — WebView2 la instalare: adus de la Microsoft doar dacă lipsește
+- **Data:** 13 nov. 2026 · **Statut:** DECIS, acord COS + K.G.B. (D-074), varianta recomandată (b) din `docs/ETAPA8_PLAN.md`.
+- **Cum:** `webviewInstallMode: downloadBootstrapper` (silențios). Pe Windows 10/11 la zi WebView2 există deja și nu se descarcă nimic.
+- **Textele installerului sunt în română** (`app/src-tauri/nsis/Romanian.nsh`; Tauri nu are română). Fără WebView2 și fără internet, installerul spune ce lipsește și ce e de făcut: conectarea la internet sau instalarea „Microsoft Edge WebView2 Runtime”.
+- **Kit „offline”** (WebView2 inclus, `embedBootstrapper` sau `offlineInstaller`): doar la cererea unui client cu PC-uri fără internet; nu din fabrică.
+
+### D-096 — Fără telemetrie
+- **Data:** 13 nov. 2026 · **Statut:** DECIS, acord COS + K.G.B. (D-074), varianta (a).
+- **Ce:** K.G.B. nu trimite nimic singur. Erorile rămân în jurnalul local; „Trimite o observație” și pachetul de diagnostic se salvează pe calculator, iar omul le trimite el.
+- **Dovada:** e2e `privacy`, inclus în regresie. Aplicația pornește cu un proxy al testului care înregistrează orice conexiune. Cu setările implicite nu pleacă nimic. Cu „Setări › Internet” oprit nu pleacă nici cererile surselor pornite (reparat în 8.11). Un control arată că proxy-ul chiar vede cererile.
+
+### D-097 — Dezinstalarea păstrează datele implicit
+- **Data:** 13 nov. 2026 · **Statut:** DECIS, acord COS + K.G.B. (D-074).
+- **Ce:** bifa installerului pentru ștergerea datelor e debifată din fabrică. Textul ei, în română, spune ce se pierde: „Șterge și datele K.G.B. de pe acest PC (documente, setări, backupuri din dosarul aplicației). Nu se pot recupera.”
+- **Niciodată atinse:** dosarele alese de om în afara datelor aplicației (dosarul pentru exporturi, dosarele de backup alese, documentele deschise de pe disc). Dezinstalarea șterge, doar cu bifa pusă, dosarul de date al aplicației (`%LOCALAPPDATA%\ro.kronos.kgb`).
+- **Test:** scenariul `app/e2e/installer.mjs` (instalare → upgrade → dezinstalare → reinstalare). Rulează doar într-un mediu curat (8.4, 🔒), fiindcă pe laptopul proprietarului ar atinge K.G.B.-ul lui.
