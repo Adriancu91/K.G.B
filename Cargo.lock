@@ -3755,6 +3755,7 @@ dependencies = [
  "kgb-permits",
  "kgb-planner",
  "kgb-recipes",
+ "kgb-rentals",
  "kgb-sheets",
  "kgb-store",
  "kgb-team",
