@@ -1,5 +1,5 @@
 // 7.9a, end to end in the real window: the catalog of procedures from official sources (D-088). In „Permise și
-// autorizații” › Proceduri › „Din catalog…” the 34 procedures are listed with their institution and the day their
+// autorizații” › Proceduri › „Din catalog…” the 42 procedures are listed with their institution and the day their
 // sources were checked; a search finds the ISU ones; the fire-safety approval is added (it becomes the firm's, with
 // its documents, steps and dated official sources) and a case file opened on it has its checklist.
 //
@@ -49,9 +49,9 @@ try {
   await p.click("Din catalog", "button");
   await p.until("document.querySelectorAll('.catalog-list li').length > 0", 10000);
   const n = await p.eval("document.querySelectorAll('.catalog-list li').length");
-  check("catalogul arată cele 34 de proceduri", n === 34, `${n}`);
+  check("catalogul arată cele 42 de proceduri", n === 42, `${n}`);
   const first = await p.eval("document.querySelector('.catalog-list li').innerText");
-  check("fiecare cu instituția și data verificării surselor", /surse verificate la 2026-11-10/.test(first), first.replace(/\s+/g, " ").slice(0, 160));
+  check("fiecare cu instituția și data verificării surselor", /surse verificate la 2026-11-1[0-3]/.test(first), first.replace(/\s+/g, " ").slice(0, 160));
   // Lot 2 (7.9a): the new procedures, each checked on 2026-11-11.
   await p.fill("input[aria-label='Caută în catalog']", "taxi");
   await sleep(300);
@@ -62,6 +62,14 @@ try {
   await sleep(300);
   const tah = await p.eval("[...document.querySelectorAll('.catalog-list li')].map(e => e.innerText.replace(/\\s+/g, ' '))");
   check("lotul 3: căutarea „tahograf” găsește cardurile și verificarea tahografului, verificate la 2026-11-12", tah.some((t) => t.includes("2026-11-12")), JSON.stringify(tah).slice(0, 200));
+  // Lot 4 (8.16): checked on 2026-11-13; the construction procedures rewritten after the new code (Legea 169/2026).
+  await p.fill("input[aria-label='Caută în catalog']", "e-Factura");
+  await sleep(300);
+  const ef = await p.eval("[...document.querySelectorAll('.catalog-list li')].map(e => e.innerText.replace(/\\s+/g, ' '))");
+  check("lotul 4: căutarea „e-Factura” găsește procedura, verificată la 2026-11-13", ef.some((t) => t.includes("2026-11-13")), JSON.stringify(ef).slice(0, 200));
+  const cu = await call("catalog");
+  const urb = cu.find((x) => x.cheie === "certificat-urbanism");
+  check("certificatul de urbanism e scris după Legea 169/2026, nu după legea abrogată", !!urb && JSON.stringify(urb).includes("169/2026"), urb ? urb.descriere.slice(0, 160) : "lipsește");
   await p.fill("input[aria-label='Caută în catalog']", "ISU");
   await sleep(300);
   const isu = await p.eval("[...document.querySelectorAll('.catalog-list li strong')].map(e => e.innerText)");

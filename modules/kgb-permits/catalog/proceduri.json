@@ -3,54 +3,78 @@
   "cheie": "certificat-urbanism",
   "titlu": "Certificat de urbanism",
   "domeniu": "constructii",
-  "institutie": "Primăria (primarul) sau consiliul județean (președintele), după caz, potrivit art. 4 din Legea 50/1991",
-  "descriere": "Act de informare prin care autoritatea arată regimul juridic, economic și tehnic al terenului și construcțiilor, cerințele urbanistice ale amplasamentului și lista avizelor/acordurilor necesare pentru autorizare. Este primul pas înainte de autorizația de construire sau de desființare și nu dă dreptul de a executa lucrări.",
+  "institutie": "Primarul (comună, oraș, municipiu, sector) sau președintele consiliului județean, adică cel care emite și autorizația de construire (Codul, art. 253 alin. (7), art. 304). Cererea-tip se depune la sediu, în scris, sau în format digital, inclusiv prin aplicațiile primăriei.",
+  "descriere": "Din 25 august 2026 se aplică Codul amenajării teritoriului, urbanismului și construcțiilor (Legea 169/2026), care a înlocuit Legea 50/1991. Certificatul de urbanism este actul obligatoriu de informare despre regulile, permisiunile și restricțiile care se aplică terenului și construcțiilor (regimul juridic, economic și tehnic, rețelele de utilități, documentația de urbanism în vigoare). Codul are acum cinci feluri de certificate, după scop: pentru informare, pentru operațiuni cadastrale (dezlipire, alipire, servituți), pentru construire/desființare de clădiri și amenajări, pentru construire/desființare de lucrări inginerești și pentru construcții cu caracter special. Certificatul pentru construire/desființare deschide procesul de autorizare: arată condițiile obligatorii, studiile, avizele și acordurile necesare (inclusiv cele prin Comisia de acord unic), dacă trebuie PUD sau PUZ și termenul de valabilitate. Nu dă dreptul de a construi sau de a demola.",
   "conditii": [
    {
-    "text": "Poate fi cerut de orice persoană fizică sau juridică interesată; nu este necesară prezentarea titlului asupra imobilului (Ordinul 839/2009, art. 19 alin. (2)).",
+    "text": "Certificatul pentru informare îl poate cere orice persoană fizică sau juridică interesată; conținutul e același pentru toți solicitanții (Codul, art. 254 alin. (2) și (3)).",
     "obligatoriu": false
    },
    {
-    "text": "Cererea trebuie să menționeze scopul emiterii certificatului; scopul se trece obligatoriu în certificat (Legea 50/1991, art. 6 alin. (2)).",
+    "text": "Certificatul pentru construire/desființare pentru clădiri și amenajări se adresează titularului unui drept real asupra imobilului (art. 257 alin. (1)); cel pentru lucrări inginerești se emite fără ca solicitantul să aibă un drept real principal (art. 258 alin. (2)).",
     "obligatoriu": true
    },
    {
-    "text": "Certificatul de urbanism nu conferă dreptul de a executa lucrări de construcții (Legea 50/1991, art. 6 alin. (5)).",
+    "text": "Certificatul cuprinde obligatoriu scopul pentru care e emis; poate avea mai multe scopuri și poate privi unul sau mai multe imobile (art. 253 alin. (5) și (6)).",
     "obligatoriu": true
+   },
+   {
+    "text": "Certificatul de urbanism nu dă dreptul de a executa lucrări de construire sau desființare (art. 253 alin. (2)).",
+    "obligatoriu": true
+   },
+   {
+    "text": "Dacă proiectul nu se încadrează în documentația de urbanism, primăria poate cere PUD sau PUZ, iar certificatul se folosește abia după aprobarea lor; poate emite și certificat negativ, motivat (art. 257 alin. (9) și (10), art. 260).",
+    "obligatoriu": false
+   },
+   {
+    "text": "Certificatele emise înainte de 25.08.2026 își păstrează valabilitatea (art. 582 alin. (4)).",
+    "obligatoriu": false
    }
   ],
   "documente": [
    {
-    "nume": "Cererea-tip (formularul-model F.1 „Cerere pentru emiterea certificatului de urbanism”), cu elementele de identificare a solicitantului, ale imobilului (localitate, număr cadastral, număr de carte funciară) și scopul solicitării",
+    "nume": "Cererea-tip de emitere a certificatului de urbanism, cu scopul solicitării și opțiunea de primire în scris sau în format digital",
     "obligatoriu": true,
-    "nota": "Ordinul 839/2009, art. 19 alin. (1) lit. a)"
+    "nota": "Codul, art. 253 alin. (5), art. 254 alin. (4), art. 257 alin. (2)"
    },
    {
-    "nume": "Plan de încadrare în zonă (scara 1:10.000, 1:5.000, 1:2.000, 1:1.000 sau 1:500), eliberat de oficiul de cadastru și publicitate imobiliară",
-    "obligatoriu": false,
-    "nota": "Pentru imobilele neînscrise în evidențele de cadastru și publicitate imobiliară (art. 19 alin. (1) lit. b) pct. 1)"
-   },
-   {
-    "nume": "Extras din planul cadastral de pe ortofotoplan și extras de carte funciară pentru informare, actualizat la zi",
-    "obligatoriu": false,
-    "nota": "Pentru imobilele înscrise în evidențele de cadastru și publicitate imobiliară (art. 19 alin. (1) lit. b) pct. 2)"
-   },
-   {
-    "nume": "Documentul de plată a taxei de eliberare a certificatului de urbanism, în copie",
+    "nume": "Pentru informare: numărul cadastral al imobilului intabulat; pentru imobilele neînscrise în e-Terra, plan de încadrare în zonă (Stereo 70) de la ANCPI și, după caz, extras de carte funciară actualizat (cel mult 30 de zile)",
     "obligatoriu": true,
-    "nota": "Art. 19 alin. (1) lit. c)"
+    "nota": "Art. 254 alin. (10)–(12)"
+   },
+   {
+    "nume": "Pentru construcții noi, amenajări și extinderi în plan orizontal: extras de carte funciară actualizat la zi și planul de situație propus, cu amprenta la sol a clădirilor de construit, extins sau desființat",
+    "obligatoriu": false,
+    "nota": "Art. 257 alin. (8) lit. a); la alte intervenții se acceptă și extras de CF plus plan de încadrare în zonă de la oficiul de cadastru"
+   },
+   {
+    "nume": "Descrierea succintă a investiției propuse",
+    "obligatoriu": false,
+    "nota": "Pentru certificatul de construire/desființare (art. 257 alin. (8) lit. b))"
+   },
+   {
+    "nume": "Pentru operațiuni cadastrale: extras de carte funciară actualizat (sau plan de încadrare în zonă), împuternicirea proprietarului dacă e cazul și documentația cadastrală cu propunerea de comasare/dezmembrare făcută de arhitect sau urbanist",
+    "obligatoriu": false,
+    "nota": "Art. 256 alin. (7)"
+   },
+   {
+    "nume": "Dovada plății taxei de eliberare",
+    "obligatoriu": true,
+    "nota": "Taxa după Codul fiscal, art. 474 alin. (1)–(4), cu scutirile din art. 476 (Codul, art. 253 alin. (10))"
    }
   ],
   "pasi": [
-   "Se obțin de la oficiul/biroul de cadastru planul de încadrare în zonă sau, pentru imobilele înscrise, extrasul de plan cadastral și extrasul de carte funciară pentru informare.",
-   "Se plătește taxa de eliberare la primărie/consiliul județean.",
-   "Se completează cererea-tip F.1, cu scopul solicitării, și se depune dosarul la emitent; certificatul poate fi primit și în format digital, prin e-mail, dacă solicitantul își exprimă acordul în cerere (Legea 50/1991, art. 6 alin. (2^2)).",
-   "Emitentul eliberează certificatul în cel mult 15 zile lucrătoare de la înregistrarea cererii.",
-   "Se urmează lista de avize/acorduri și cerințele din certificat (inclusiv contactarea autorității de mediu) pentru pregătirea documentației de autorizare."
+   "Se alege tipul de certificat după scop: informare, operațiuni cadastrale, construire/desființare pentru clădiri și amenajări sau pentru lucrări inginerești.",
+   "Se pregătesc actele: extrasul de carte funciară (cel mult 30 de zile) sau planul de încadrare în zonă de la cadastru și, pentru construire/desființare, planul de situație propus și descrierea investiției.",
+   "Se plătește taxa la primărie sau consiliul județean și se depune cererea-tip, în scris sau în format digital.",
+   "Emitentul eliberează certificatul: pentru informare în 5 zile lucrătoare unde există sistem informatic (10 până atunci), pentru operațiuni cadastrale în 10 zile lucrătoare, pentru construire/desființare în 15 zile lucrătoare (art. 254, 256, 257 alin. (4)).",
+   "Dacă certificatul cere PUD sau PUZ, se elaborează și se aprobă întâi documentația de urbanism; certificatul mai e valabil 12 luni după aprobare (art. 257 alin. (10)).",
+   "Pe baza certificatului se obțin studiile, avizele și acordurile cerute (direct sau prin Comisia de acord unic) și se pregătește proiectul pentru autorizare.",
+   "Dacă e nevoie de mai mult timp, prelungirea se cere cu cel puțin 15 zile lucrătoare înainte de expirare; se acordă pentru cel mult 24 de luni, apoi trebuie un certificat nou (art. 257 alin. (16) și (17))."
   ],
-  "taxe": "Stabilită de consiliul local după Codul fiscal, art. 474: în mediul urban 5–14 lei după suprafață (peste 1.000 mp: 14 lei + 0,01 lei/mp); în zona rurală 50% din aceasta; prelungirea: 30% din taxa inițială; avizarea de comisia de urbanism: până la 15 lei. Sumele sunt indexate anual de consiliile locale (art. 491), deci cuantumul exact se află la primărie.",
-  "termen_legal": "Cel mult 15 zile lucrătoare de la înregistrarea cererii (Legea 50/1991, art. 6 alin. (2)).",
-  "temei_legal": "Legea 50/1991, art. 6; Ordinul MDRL 839/2009 (Normele metodologice), art. 19; Legea 227/2015 (Codul fiscal), art. 474.",
+  "taxe": "Taxa se stabilește după Codul fiscal, art. 474 alin. (1)–(4) (Codul, art. 253 alin. (10)): în mediul urban, după suprafață, între 5 și 14 lei (peste 1.000 mp: 14 lei + 0,01 lei/mp pentru fiecare mp peste 1.000); în zona rurală, 50% din aceasta; prelungirea costă 30% din taxa inițială; avizarea de către comisia de urbanism, până la 15 lei, stabilită de consiliul local. Scutirile sunt în art. 476. Cuantumul exact îl stabilește consiliul local, deci se află la primărie.",
+  "termen_legal": "Construire/desființare: cel mult 15 zile lucrătoare (art. 257 alin. (4)); informare: 5 zile lucrătoare cu sistem informatic, 10 până atunci (art. 254 alin. (6)–(7)); operațiuni cadastrale: 10 zile lucrătoare (art. 256 alin. (4)). Valabilitate: 12–36 de luni.",
+  "temei_legal": "Legea 169/2026 (Codul amenajării teritoriului, urbanismului și construcțiilor), art. 249 alin. (1), art. 253–258, art. 260, art. 582 alin. (4); Legea 227/2015 (Codul fiscal), art. 474 alin. (1)–(4) și art. 476. Ordinul 839/2009 a fost abrogat (Codul, art. 576 alin. (3) lit. e)).",
   "activitati": [
    "constructii",
    "comert",
@@ -61,105 +85,114 @@
   ],
   "surse": [
    {
-    "titlu": "Legea 50/1991 privind autorizarea executării lucrărilor de construcții (forma consolidată 19.08.2026)",
-    "url": "https://legislatie.just.ro/Public/DetaliiDocument/1515",
-    "verificat": "2026-11-10"
+    "titlu": "Legea 169/2026 – Codul amenajării teritoriului, urbanismului și construcțiilor (forma consolidată 14.10.2026)",
+    "url": "https://legislatie.just.ro/Public/DetaliiDocument/313329",
+    "verificat": "2026-11-13"
    },
    {
-    "titlu": "Consiliul Județean Satu Mare – Documente necesare emiterii certificatului de urbanism (art. 19 din Ordinul 839/2009)",
-    "url": "https://www.cjsm.ro/storage/arhitect-sef/acte-necesare-emiterii-certificatului-de-urbanism.pdf",
-    "verificat": "2026-11-10"
-   },
-   {
-    "titlu": "Legea 227/2015 privind Codul fiscal, art. 474 (forma consolidată 25.10.2026)",
+    "titlu": "Legea 227/2015 privind Codul fiscal, art. 474 și 476 (forma consolidată 25.10.2026)",
     "url": "https://legislatie.just.ro/Public/DetaliiDocument/171282",
-    "verificat": "2026-11-10"
+    "verificat": "2026-11-13"
    }
   ]
  },
  {
   "cheie": "autorizatie-construire",
-  "titlu": "Autorizație de construire (Legea 50/1991)",
+  "titlu": "Autorizație de construire",
   "domeniu": "constructii",
-  "institutie": "Primăria (primarul) sau consiliul județean (președintele), după caz, potrivit art. 4 din Legea 50/1991",
-  "descriere": "Actul final al administrației publice locale pe baza căruia se pot executa lucrări de construire, reconstruire, consolidare, modificare, extindere, schimbare de destinație sau reparare a construcțiilor, cu excepțiile din art. 11. Se emite pentru lucrările de bază și pentru organizarea executării lucrărilor.",
+  "institutie": "Primarul (comună, oraș, municipiu, sector) sau președintele consiliului județean, după caz (Codul, art. 251, art. 304). Documentația se depune la sediu, în scris sau în format digital cu semnătură electronică calificată, ori prin Ghișeul unic național, după ce funcționează (art. 270).",
+  "descriere": "Din 25 august 2026 se aplică Codul amenajării teritoriului, urbanismului și construcțiilor (Legea 169/2026), care a înlocuit Legea 50/1991. Autorizația de construire este actul administrativ pe baza căruia se pot executa lucrări de realizare a clădirilor noi, de intervenție asupra clădirilor existente (consolidare, reparare, modernizare, extindere, schimbare de destinație, desființare parțială etc.) și de amenajări, inclusiv organizarea execuției. Codul diferențiază clădirile, lucrările inginerești și amenajările. Unele lucrări mici se fac doar pe bază de notificare (procedură simplificată) sau fără nicio formalitate (art. 294–299). Nu se mai emit autorizații provizorii; există în schimb autorizație de modificare și autorizație de regularizare (art. 246). Avizele se pot obține direct sau, la alegere, printr-un singur acord unic al Comisiei de acord unic.",
   "conditii": [
    {
-    "text": "Documentația se depune și se înregistrează numai dacă sunt prezentate toate documentele prevăzute la art. 7 alin. (1) (Legea 50/1991, art. 7 alin. (1^2)).",
+    "text": "Procesul începe cu certificatul de urbanism pentru construire/desființare; dacă proiectul cere modificarea reglementărilor urbanistice, autorizarea se suspendă până la aprobarea PUZ/PUD (Codul, art. 249 alin. (1)–(2)).",
     "obligatoriu": true
    },
    {
-    "text": "Executarea lucrărilor se poate face numai pe baza proiectului tehnic și a detaliilor de execuție (art. 7 alin. (4)).",
+    "text": "Autorizația se cere de titularul dreptului de proprietate sau al altui drept real ori, pentru unele lucrări, al unui drept de creanță, cu acordul proprietarului (art. 245 alin. (3)–(4), art. 248).",
     "obligatoriu": true
    },
    {
-    "text": "Unele lucrări care nu modifică structura de rezistență sau aspectul arhitectural se pot executa fără autorizație (art. 11), cu excepția monumentelor istorice și a zonelor protejate.",
+    "text": "Proiectul se face de colective de arhitecți și ingineri, cu participarea obligatorie a arhitectului cu drept de semnătură, și se verifică de verificatori atestați (art. 259 alin. (5), art. 264 alin. (8)).",
+    "obligatoriu": true
+   },
+   {
+    "text": "Acordul vecinilor sau al asociației de proprietari, în formă autentică, e necesar când lucrările cer măsuri de punere în siguranță a clădirilor vecine (art. 261).",
     "obligatoriu": false
    },
    {
-    "text": "Documentația tehnică D.T. se elaborează după conținutul-cadru din anexa 1 la lege și se semnează de specialiștii prevăzuți la art. 9 (arhitect, ingineri etc.).",
+    "text": "Lucrările încep numai după emiterea autorizației, pe baza proiectului tehnic de execuție verificat și cu toate avizele (art. 264 alin. (6), art. 276 alin. (3), art. 278 alin. (1)).",
+    "obligatoriu": true
+   },
+   {
+    "text": "Clădirile se pot face în regie proprie doar pentru locuințe parter în mediul rural, garaje, terase și anexe gospodărești parter; altfel, prin antreprenori (art. 279 alin. (1)).",
     "obligatoriu": true
    }
   ],
   "documente": [
    {
-    "nume": "Cererea pentru emiterea autorizației de construire/desființare (formularul-model F.8), inclusiv anexa",
+    "nume": "Cererea pentru emiterea autorizației de construire (format standard aprobat prin ordin al ministrului), cu datele certificatului de urbanism, ale proiectanților și verificatorilor, valoarea lucrărilor și durata de execuție",
     "obligatoriu": true,
-    "nota": "Ordinul 839/2009, art. 20, citat de Consiliul Județean Argeș"
+    "nota": "Codul, art. 262 alin. (1) lit. a), art. 263"
    },
    {
-    "nume": "Certificatul de urbanism, în copie",
+    "nume": "Extras de plan cadastral și extras de carte funciară, fiecare nu mai vechi de 30 de zile, și, după caz, actele care dovedesc dreptul de a construi",
     "obligatoriu": true,
-    "nota": "Legea 50/1991, art. 7 alin. (1) lit. a)"
+    "nota": "Art. 262 alin. (1) lit. b); dacă proprietarul din CF e chiar solicitantul, nu mai trebuie alte acte"
    },
    {
-    "nume": "Dovada titlului asupra imobilului (teren și/sau construcții), în copie conformă cu originalul, și, după caz, extrasul de plan cadastral și extrasul de carte funciară de informare actualizate la zi",
+    "nume": "Dovada luării în evidență a proiectului de către Ordinul Arhitecților din România (la clădiri)",
     "obligatoriu": true,
-    "nota": "Art. 7 alin. (1) lit. b)"
+    "nota": "Art. 262 alin. (1) lit. c)"
    },
    {
-    "nume": "Documentația tehnică – D.T. (D.T.A.C.)",
+    "nume": "Proiectul pentru autorizarea construirii (conținut-cadru în anexa 2, iar pentru gospodării unifamiliale în mediul rural în anexa 3) și referatele de verificare",
     "obligatoriu": true,
-    "nota": "Art. 7 alin. (1) lit. c); CJ Argeș cere două exemplare, unul se returnează vizat spre neschimbare"
+    "nota": "Art. 262 alin. (1) lit. d) și l), art. 264 alin. (3)–(4)"
    },
    {
-    "nume": "Documentația tehnică D.T. pentru acordul/autorizația administratorului drumului, pentru lucrări pe domeniul public la infrastructura tehnico-edilitară",
+    "nume": "Punctul de vedere sau actul autorității de mediu (dacă e cazul), avizele și acordurile din certificatul de urbanism sau acordul unic și documentațiile complementare cerute (studiu geotehnic, expertize, raport NZEB etc.)",
+    "obligatoriu": true,
+    "nota": "Art. 262 alin. (1) lit. e)–g), art. 265, art. 266; mediul nu e necesar la locuințe unifamiliale, anexe, împrejmuiri (art. 268 alin. (2))"
+   },
+   {
+    "nume": "Expertiza tehnică sau raportul preliminar privind influența asupra vecinătăților, dacă e cazul",
     "obligatoriu": false,
-    "nota": "Art. 7 alin. (1) lit. c^1), dacă e cazul"
+    "nota": "Art. 262 alin. (1) lit. h)"
    },
    {
-    "nume": "Avizele și acordurile stabilite prin certificatul de urbanism, punctul de vedere al autorității pentru protecția mediului și, după caz, actul administrativ al acesteia",
-    "obligatoriu": true,
-    "nota": "Art. 7 alin. (1) lit. d)"
-   },
-   {
-    "nume": "Studiile de specialitate, nota tehnică justificativă, raportul de expertiză tehnică sau raportul de audit energetic, dacă au fost cerute prin certificatul de urbanism",
+    "nume": "Proiectul pentru acordul/autorizația administratorului drumului, pentru lucrări pe domeniul public la utilități și accese",
     "obligatoriu": false,
-    "nota": "Ordinul 839/2009, art. 20 alin. (1) lit. f), după caz"
+    "nota": "Art. 262 alin. (1) lit. i), art. 267 alin. (1)"
    },
    {
-    "nume": "Documentația tehnică pentru organizarea executării lucrărilor (D.T.O.E.), cu avizele specifice (circulație, ocuparea temporară a domeniului public, sanitar, salubritate etc.)",
-    "obligatoriu": false,
-    "nota": "Când se cere și autorizarea organizării executării lucrărilor (Ordinul 839/2009, art. 20 alin. (3) lit. a))"
-   },
-   {
-    "nume": "Dovada achitării taxelor aferente certificatului de urbanism și autorizației de construire",
+    "nume": "Devizul general, durata de execuție și valoarea obiectivului de investiție",
     "obligatoriu": true,
-    "nota": "Art. 7 alin. (1) lit. f)"
+    "nota": "Art. 262 alin. (1) lit. j)–k)"
+   },
+   {
+    "nume": "Declarație pe propria răspundere, dacă se invocă aprobarea tacită a unor avize",
+    "obligatoriu": false,
+    "nota": "Art. 262 alin. (1) lit. m), art. 269 alin. (14)–(16)"
+   },
+   {
+    "nume": "Dovada plății taxei de autorizare și, dacă e cazul, a taxei de timbru de arhitectură",
+    "obligatoriu": true,
+    "nota": "Art. 262 alin. (1) lit. b), art. 313 alin. (1)"
    }
   ],
   "pasi": [
-   "Se obține certificatul de urbanism și, pe baza lui, avizele/acordurile cerute și punctul de vedere sau actul autorității de mediu.",
-   "Se elaborează documentația tehnică D.T. de către specialiști autorizați și se verifică potrivit legii.",
-   "Se plătește taxa de autorizare și se depune dosarul complet la emitent.",
-   "Dacă documentația e incompletă, emitentul notifică în scris în 5 zile lucrătoare; termenul se decalează cu timpul necesar completării, care trebuie depusă în maximum 3 luni (art. 7 alin. (3), (3^2)).",
-   "Emitentul eliberează autorizația în cel mult 30 de zile de la depunerea documentației; la cerere justificată se poate emite în regim de urgență, în până la 7 zile lucrătoare, cu taxă de urgență (art. 7 alin. (1^6)).",
-   "Înainte de începerea lucrărilor, investitorul anunță emitentul autorizației și inspectoratul teritorial în construcții despre data începerii (art. 7 alin. (8)).",
-   "Lucrările trebuie începute în perioada de valabilitate (cel mult 24 de luni de la emitere); prelungirea se cere cu cel puțin 45 de zile lucrătoare înainte de expirare și se acordă gratuit, o singură dată, pentru cel mult 24 de luni (art. 7 alin. (5), (7))."
+   "Se obține certificatul de urbanism pentru construire și, dacă el cere, se aprobă PUD sau PUZ.",
+   "Se elaborează studiile și proiectul pentru autorizarea construirii (și, dacă se cere odată, cel pentru organizarea execuției), verificate de verificatori atestați; se notifică autoritatea de mediu, dacă e cazul.",
+   "Se obțin avizele și acordurile: fie direct de la fiecare emitent (15 zile, cu excepții; dacă nu răspund la termen, avizul se consideră dat tacit), fie prin Comisia de acord unic, care emite acordul unic (30 de zile) (art. 269).",
+   "Se plătește taxa și se depune documentația completă la primărie/consiliul județean, în scris sau digital.",
+   "Dacă lipsesc acte, autoritatea notifică în cel mult 10 zile lucrătoare toate deficiențele și dă un termen de completare de cel mult 3 luni; se poate cere o consultare la sediu (art. 271–272).",
+   "Autorizația se emite în cel mult 30 de zile calendaristice de la documentația completă (de la acordul unic, dacă s-a ales comisia); la cerere, în regim de urgență, în până la 7 zile lucrătoare, cu taxă specială (art. 273).",
+   "Înainte de începere: se notează autorizația în cartea funciară și într-un ziar de largă răspândire, se anunță primăria și ISC despre data începerii, proiectantul încarcă proiectul tehnic în Registrul Național al Construcțiilor și se pune panoul de identificare (art. 278, art. 314 alin. (7)).",
+   "La final: se regularizează valoarea lucrărilor și taxele, se anunță primăria despre terminare și se face recepția la terminarea lucrărilor, cu reprezentantul emitentului (art. 280)."
   ],
-  "taxe": "Taxa de eliberare (Codul fiscal, art. 474): 0,5% din valoarea autorizată a lucrărilor pentru clădiri rezidențiale sau anexe; 1% din valoarea autorizată (inclusiv instalațiile) pentru alte construcții; se plătește înainte de emitere și se regularizează după terminarea lucrărilor. Prelungirea: 30% din taxa inițială. Taxa de urgență se stabilește prin hotărâre a consiliului local/județean. Cuantumurile locale se află la primărie.",
-  "termen_legal": "Cel mult 30 de zile de la depunerea documentației complete (Legea 50/1991, art. 7 alin. (1)); 15 zile pentru anexele gospodărești ale exploatațiilor agricole (art. 7 alin. (1^1)).",
-  "temei_legal": "Legea 50/1991, art. 2–4, 7, 9, 11; Ordinul MDRL 839/2009, art. 20; Legea 227/2015 (Codul fiscal), art. 474.",
+  "taxe": "Taxa de autorizare se calculează după Codul fiscal, art. 474 (Codul, art. 313 alin. (1)): 0,5% din valoarea autorizată a lucrărilor pentru clădiri rezidențiale sau anexe; 1% din valoarea autorizată (inclusiv instalațiile) pentru alte construcții. Se plătește înainte de emitere, pe valoarea declarată, și se regularizează după terminare (art. 474 alin. (7)). Organizarea de șantier autorizată separat: 3% din valoarea ei (art. 474 alin. (12)). Prelungirea duratei de execuție: 30% din taxa inițială (Codul, art. 310 alin. (5)). Se adaugă, după caz, taxa de timbru de arhitectură (Legea 35/1994, art. 1 alin. (4)) și taxa de urgență stabilită de consiliul local. Lucrările în procedura simplificată (notificare) plătesc jumătate din taxă (art. 313 alin. (4)); lucrările în primă urgență la construcții cu pericol public sunt scutite (art. 313 alin. (3)). Taxele pentru avize se plătesc separat, emitenților (art. 308).",
+  "termen_legal": "Cel mult 30 de zile calendaristice de la depunerea documentației complete (Codul, art. 273 alin. (1)); urgență: până la 7 zile lucrătoare (alin. (2)). Autorizația e valabilă 3 ani și nu se mai prelungește, cu excepțiile din art. 309–310.",
+  "temei_legal": "Legea 169/2026 (Codul amenajării teritoriului, urbanismului și construcțiilor), art. 245–252, 259–280, 294–299, 304, 308–314, 582; Legea 227/2015 (Codul fiscal), art. 474. Legea 50/1991 și Ordinul 839/2009 au fost abrogate (Codul, art. 576 alin. (3) lit. b) și e)).",
   "activitati": [
    "constructii",
    "comert",
@@ -171,19 +204,14 @@
   ],
   "surse": [
    {
-    "titlu": "Legea 50/1991 privind autorizarea executării lucrărilor de construcții (forma consolidată 19.08.2026)",
-    "url": "https://legislatie.just.ro/Public/DetaliiDocument/1515",
-    "verificat": "2026-11-10"
-   },
-   {
-    "titlu": "Consiliul Județean Argeș – Documentele necesare emiterii certificatelor de urbanism, autorizațiilor de construire/desființare și avizelor",
-    "url": "https://www.cjarges.ro/documents/10865/64857/Anexa+2_DOCUMENTELE+NECESARE+EMITERII_AC_CU_Avize+de+specialitate.pdf/7edf6789-432f-4863-852b-d47d85752b4d",
-    "verificat": "2026-11-10"
+    "titlu": "Legea 169/2026 – Codul amenajării teritoriului, urbanismului și construcțiilor (forma consolidată 14.10.2026)",
+    "url": "https://legislatie.just.ro/Public/DetaliiDocument/313329",
+    "verificat": "2026-11-13"
    },
    {
     "titlu": "Legea 227/2015 privind Codul fiscal, art. 474 (forma consolidată 25.10.2026)",
     "url": "https://legislatie.just.ro/Public/DetaliiDocument/171282",
-    "verificat": "2026-11-10"
+    "verificat": "2026-11-13"
    }
   ]
  },
@@ -191,65 +219,78 @@
   "cheie": "autorizatie-desfiintare",
   "titlu": "Autorizație de desființare",
   "domeniu": "constructii",
-  "institutie": "Primăria (primarul) sau consiliul județean (președintele), după caz, potrivit art. 4 din Legea 50/1991",
-  "descriere": "Demolarea, dezafectarea sau dezmembrarea, parțială ori totală, a construcțiilor și instalațiilor, a instalațiilor și utilajelor tehnologice, închiderea carierelor și a oricăror amenajări se fac numai pe baza autorizației de desființare obținute în prealabil. Se emite în aceleași condiții ca autorizația de construire.",
+  "institutie": "Primarul (comună, oraș, municipiu, sector) sau președintele consiliului județean, după caz (Codul, art. 304). Documentația se depune la sediu, în scris sau în format digital cu semnătură electronică calificată, ori prin Ghișeul unic național, după ce funcționează (art. 270, prin art. 302).",
+  "descriere": "Din 25 august 2026 se aplică Codul amenajării teritoriului, urbanismului și construcțiilor (Legea 169/2026), care a înlocuit Legea 50/1991. Autorizația de desființare permite demolarea, dezafectarea sau dezasamblarea, parțială ori totală, a construcțiilor și instalațiilor lor, închiderea carierelor și a exploatărilor și desființarea oricăror amenajări, pe baza unui proiect tehnic de execuție (art. 246 alin. (2)). Se emite în aceleași condiții ca autorizația de construire. Dacă pe locul celei vechi se face o construcție nouă, se emite o singură autorizație de construire, care aprobă și desființarea, și se plătește doar taxa pentru construcția nouă. Anexele gospodărești și construcțiile exterioare locuințelor unifamiliale, în afara zonelor protejate, se desființează doar pe bază de notificare (procedura simplificată).",
   "conditii": [
    {
-    "text": "Autorizația de desființare se obține înainte de începerea lucrărilor (Legea 50/1991, art. 8 alin. (1)).",
+    "text": "Desființarea se face numai pe baza autorizației emise în prealabil, în termenul ei de valabilitate, cu excepția cazurilor prevăzute de lege (Codul, art. 245 alin. (1)–(2)).",
     "obligatoriu": true
    },
    {
-    "text": "Se emite în aceleași condiții ca autorizația de construire, conform planurilor urbanistice, cu excepțiile din art. 11 (art. 8 alin. (2)).",
+    "text": "Autorizația de desființare se emite în aceleași condiții ca autorizația de construire, ținând seama de specificul desființării (art. 302 alin. (1)); procesul începe cu certificatul de urbanism pentru construire/desființare (art. 249 alin. (1)).",
     "obligatoriu": true
+   },
+   {
+    "text": "Desființarea anexelor gospodărești sau a construcțiilor exterioare locuințelor unifamiliale, în afara zonelor construite protejate, se face prin notificare, nu prin autorizație (art. 302 alin. (5)).",
+    "obligatoriu": false
+   },
+   {
+    "text": "La monumente istorice și în zone protejate e nevoie de avizul Ministerului Culturii; autorizația poate fi refuzată dacă desființarea compromite patrimoniul natural sau cultural (art. 274 alin. (5), art. 275 alin. (3), art. 284 alin. (2)).",
+    "obligatoriu": false
+   },
+   {
+    "text": "Dacă lucrările cer punerea în siguranță a clădirilor vecine, trebuie acordul vecinilor în formă autentică (art. 261 alin. (1)).",
+    "obligatoriu": false
    }
   ],
   "documente": [
    {
-    "nume": "Cererea pentru emiterea autorizației de construire/desființare (formularul-model F.8), inclusiv anexa, completată cu datele din documentația D.T.A.D.",
+    "nume": "Cererea pentru emiterea autorizației (format standard aprobat prin ordin al ministrului)",
     "obligatoriu": true,
-    "nota": "Ordinul 839/2009, art. 20 alin. (2), citat de CJ Argeș"
+    "nota": "Codul, art. 262 alin. (1) lit. a), aplicabil prin art. 302 alin. (1)"
    },
    {
-    "nume": "Certificatul de urbanism, în copie",
+    "nume": "Certificatul de urbanism pentru construire/desființare (datele lui se trec în cerere)",
     "obligatoriu": true,
-    "nota": "Aceleași documente ca la autorizația de construire, adaptate scopului"
+    "nota": "Art. 249 alin. (1), art. 263 lit. c)"
    },
    {
-    "nume": "Dovada titlului asupra imobilului și, după caz, extrasul de plan cadastral și extrasul de carte funciară de informare actualizate",
+    "nume": "Extras de plan cadastral și extras de carte funciară, nu mai vechi de 30 de zile, și, după caz, actele care dovedesc dreptul asupra imobilului",
     "obligatoriu": true,
-    "nota": ""
+    "nota": "Art. 262 alin. (1) lit. b)"
    },
    {
-    "nume": "Documentația tehnică pentru autorizarea executării lucrărilor de desființare (D.T.A.D.)",
+    "nume": "Proiectul pentru autorizarea desființării: memoriu cu istoricul și descrierea construcției, fotografii ale fațadelor și interioarelor, expertiza tehnică (după caz), plan de încadrare, plan de situație, plan al rețelelor subterane și releveul construcției",
     "obligatoriu": true,
-    "nota": "Conținut-cadru în anexa 1 la Legea 50/1991"
+    "nota": "Conținut-cadru în anexa 5 la Cod (art. 302 alin. (4))"
    },
    {
-    "nume": "Avizele, acordurile și punctul de vedere/actul autorității de mediu cerute prin certificatul de urbanism",
+    "nume": "Avizele și acordurile cerute prin certificatul de urbanism (sau acordul unic) și, dacă e cazul, actul autorității de mediu",
     "obligatoriu": true,
-    "nota": ""
+    "nota": "Art. 262 alin. (1) lit. e)–g), art. 266"
    },
    {
-    "nume": "Certificatul de atestare fiscală privind valoarea de impozitare a imobilului, în copie",
-    "obligatoriu": true,
-    "nota": "Specific desființării (Ordinul 839/2009, art. 20 alin. (2))"
+    "nume": "Autorizația pentru desființarea materialului dendrologic (arbori), dacă e cazul",
+    "obligatoriu": false,
+    "nota": "Art. 265 alin. (2) lit. i)"
    },
    {
-    "nume": "Dovada achitării taxelor aferente certificatului de urbanism și autorizației",
+    "nume": "Dovada plății taxei de autorizare",
     "obligatoriu": true,
-    "nota": "Legea 50/1991, art. 7 alin. (1) lit. f), aplicabil prin art. 8 alin. (2)"
+    "nota": "Art. 313 alin. (1)"
    }
   ],
   "pasi": [
-   "Se obține certificatul de urbanism cu scopul desființării și avizele/acordurile cerute prin el.",
-   "Se obține de la primărie certificatul de atestare fiscală cu valoarea de impozitare a imobilului.",
-   "Se elaborează documentația tehnică D.T.A.D. și se plătește taxa.",
-   "Se depune dosarul complet la emitent, care eliberează autorizația în termenul aplicabil autorizației de construire.",
-   "Înainte de începerea lucrărilor se anunță emitentul și inspectoratul teritorial în construcții (formularul ISC F.14), iar la final se face recepția și se comunică încheierea lucrărilor (F.16)."
+   "Se cere certificatul de urbanism pentru construire/desființare, cu scopul desființării și planul de situație cu clădirile de desființat.",
+   "Se obțin avizele și acordurile din certificat, direct sau prin Comisia de acord unic, și, dacă e cazul, avizul Ministerului Culturii și acordul vecinilor.",
+   "Se elaborează proiectul pentru autorizarea desființării după anexa 5 la Cod (cu expertiză tehnică, după caz).",
+   "Se plătește taxa și se depune documentația completă; deficiențele se notifică în cel mult 10 zile lucrătoare, cu termen de completare de cel mult 3 luni (art. 271).",
+   "Autorizația se emite în cel mult 30 de zile calendaristice de la documentația completă, ca la autorizația de construire (art. 273, aplicat prin art. 302).",
+   "Înainte de începere se anunță primăria și ISC despre data începerii (art. 278 alin. (3)); la final se anunță terminarea și se face recepția la terminarea lucrărilor (art. 280)."
   ],
-  "taxe": "0,1% din valoarea impozabilă stabilită pentru impozitul pe clădiri, aferentă părții desființate (Codul fiscal, art. 474 alin. (9)). Cuantumul exact se stabilește de primărie.",
-  "termen_legal": "Aceleași condiții ca autorizația de construire (Legea 50/1991, art. 8 alin. (2)): cel mult 30 de zile de la depunerea documentației complete (art. 7 alin. (1)).",
-  "temei_legal": "Legea 50/1991, art. 7–8; Ordinul MDRL 839/2009, art. 20 alin. (2); Legea 227/2015 (Codul fiscal), art. 474 alin. (9).",
+  "taxe": "0,1% din valoarea impozabilă stabilită pentru impozitul pe clădiri, aferentă părții desființate (Codul fiscal, art. 474 alin. (9), la care trimite Codul, art. 313 alin. (1)). Dacă desființarea e cuprinsă în autorizația de construire pentru o construcție nouă, se plătește doar taxa pentru construcția nouă (Codul, art. 302 alin. (3)). Desființarea prin procedura simplificată (notificare) plătește jumătate din taxă (art. 313 alin. (4)). Cuantumul exact se află la primărie.",
+  "termen_legal": "Ca la autorizația de construire: cel mult 30 de zile calendaristice de la depunerea documentației complete (Codul, art. 273 alin. (1), art. 302 alin. (1)). Valabilitate: 3 ani (art. 309 alin. (1)).",
+  "temei_legal": "Legea 169/2026 (Codul amenajării teritoriului, urbanismului și construcțiilor), art. 245–246, 249, 261–262, 271, 273–275, 278, 280, 302–304, 309–310, 313 și anexa 5; Legea 227/2015 (Codul fiscal), art. 474 alin. (9). Legea 50/1991 și Ordinul 839/2009 au fost abrogate (Codul, art. 576 alin. (3) lit. b) și e)).",
   "activitati": [
    "constructii",
    "comert",
@@ -258,126 +299,123 @@
   ],
   "surse": [
    {
-    "titlu": "Legea 50/1991 privind autorizarea executării lucrărilor de construcții (forma consolidată 19.08.2026)",
-    "url": "https://legislatie.just.ro/Public/DetaliiDocument/1515",
-    "verificat": "2026-11-10"
-   },
-   {
-    "titlu": "Consiliul Județean Argeș – Documentele necesare emiterii certificatelor de urbanism, autorizațiilor de construire/desființare și avizelor",
-    "url": "https://www.cjarges.ro/documents/10865/64857/Anexa+2_DOCUMENTELE+NECESARE+EMITERII_AC_CU_Avize+de+specialitate.pdf/7edf6789-432f-4863-852b-d47d85752b4d",
-    "verificat": "2026-11-10"
+    "titlu": "Legea 169/2026 – Codul amenajării teritoriului, urbanismului și construcțiilor (forma consolidată 14.10.2026)",
+    "url": "https://legislatie.just.ro/Public/DetaliiDocument/313329",
+    "verificat": "2026-11-13"
    },
    {
     "titlu": "Legea 227/2015 privind Codul fiscal, art. 474 (forma consolidată 25.10.2026)",
     "url": "https://legislatie.just.ro/Public/DetaliiDocument/171282",
-    "verificat": "2026-11-10"
+    "verificat": "2026-11-13"
    }
   ]
  },
  {
   "cheie": "receptie-lucrari",
-  "titlu": "Comunicarea începerii și încheierii lucrărilor (ISC) și recepția la terminarea lucrărilor",
+  "titlu": "Înștiințarea începerii și finalizării lucrărilor și recepția la terminarea lucrărilor",
   "domeniu": "constructii",
-  "institutie": "Inspectoratul de Stat în Construcții (inspectoratul județean / al municipiului București) și emitentul autorizației (primăria sau consiliul județean)",
-  "descriere": "Investitorul anunță emitentul autorizației și inspectoratul în construcții despre începerea lucrărilor, apoi comunică încheierea lor și obține adeverința ISC de plată a cotelor. Lucrările autorizate sunt finalizate doar după recepția la terminarea lucrărilor, obligatorie pentru toate construcțiile autorizate, inclusiv cele în regie proprie.",
+  "institutie": "Emitentul autorizației de construire (primăria sau consiliul județean) și Inspectoratul de Stat în Construcții (inspectoratul județean / al municipiului București). Înștiințările se trimit în format digital (e-mail) sau în scris, la registratură; recepția o organizează beneficiarul/dezvoltatorul.",
+  "descriere": "Din 25 august 2026 se aplică Codul amenajării teritoriului, urbanismului și construcțiilor (Legea 169/2026), care a înlocuit Legea 50/1991 și cea mai mare parte din Legea 10/1995. Titularul autorizației anunță primăria (emitentul) și ISC când începe lucrările și plătește cotele către ISC, apoi anunță primăria când le termină și regularizează valoarea lucrărilor. Lucrările sunt considerate finalizate doar după recepția la terminarea lucrărilor, obligatorie pentru toate construcțiile autorizate sau notificate, inclusiv cele făcute în regie proprie. Recepția se face tot după regulamentul aprobat prin HG 273/1994, păstrat în vigoare de cod până la un regulament nou. Pentru lucrările făcute pe bază de notificare, recepția se face între executant, beneficiar și un reprezentant al primăriei.",
   "conditii": [
    {
-    "text": "Începerea lucrărilor se anunță emitentului autorizației și inspectoratului teritorial în construcții; altfel data începerii se consideră ziua următoare emiterii autorizației (Legea 50/1991, art. 7 alin. (8)).",
+    "text": "Titularul autorizației înștiințează emitentul autorizației și ISC despre data începerii lucrărilor, în format digital sau în scris; neanunțarea se sancționează cu amendă de 2.000 lei (Legea 169/2026, art. 278 alin. (3)–(4); art. 357 alin. (1) lit. j) și alin. (4) lit. g)).",
     "obligatoriu": true
    },
    {
-    "text": "Recepția la terminarea lucrărilor este obligatorie pentru toate construcțiile autorizate și se face cu participarea reprezentantului desemnat de emitentul autorizației (Legea 50/1991, art. 37 alin. (2)).",
+    "text": "Cel târziu la începerea lucrărilor se afișează la loc vizibil panoul de identificare a investiției, iar prin proiectant se încarcă în Registrul Național al Construcțiilor proiectul tehnic cu referatele de verificare, autorizația, avizele și acordurile (art. 278 alin. (5)–(6)).",
     "obligatoriu": true
    },
    {
-    "text": "Comisia de recepție se completează cu reprezentant ISC (construcții noi de categoria A, B sau C, indiferent de finanțare, și de categoria D de interes public finanțate din fonduri publice), ISU (categoriile din Legea 307/2006) și direcția pentru cultură (monumente istorice), după caz.",
+    "text": "Recepția la terminarea lucrărilor este obligatorie pentru toate construcțiile autorizate sau notificate, inclusiv în regie proprie, și se face după regulamentul de recepție, cu participarea obligatorie a reprezentantului emitentului autorizației (art. 280 alin. (2)–(3); art. 577 alin. (6)).",
+    "obligatoriu": true
+   },
+   {
+    "text": "Între finalizarea lucrărilor și recepție, titularul regularizează la emitentul autorizației valoarea lucrărilor și cotele datorate pentru controlul statului (art. 280 alin. (9); art. 143 alin. (7); art. 352 alin. (2) lit. b)).",
+    "obligatoriu": true
+   },
+   {
+    "text": "Construcțiile executate fără autorizație sau cu nerespectarea ei nu pot fi recepționate (art. 280 alin. (8)).",
+    "obligatoriu": true
+   },
+   {
+    "text": "Comisia de recepție se completează cu reprezentant ISC (construcții noi de categoria A, B, C, indiferent de finanțare, și de categoria D de interes public finanțate din fonduri publice), ISU (construcțiile din Legea 307/2006) și direcția pentru cultură (monumente istorice), după caz (HG 273/1994, Regulament, art. 11 alin. (2)).",
     "obligatoriu": false
    },
    {
-    "text": "La terminarea lucrărilor, beneficiarul regularizează taxa pentru autorizația de construire și celelalte cote legale (art. 37 alin. (3)–(4)).",
-    "obligatoriu": true
+    "text": "La lucrările făcute pe bază de notificare, recepția se face între executant, beneficiar și un reprezentant al primăriei, iar beneficiarul înregistrează procesul-verbal în Registrul Național al Construcțiilor; până la funcționarea registrului, o copie se trimite la ISC fizic sau pe e-mail (art. 298 alin. (6)).",
+    "obligatoriu": false
    }
   ],
   "documente": [
    {
-    "nume": "Formular F.14 – Comunicare privind începerea execuției lucrărilor (în două exemplare)",
+    "nume": "Înștiințarea privind data începerii lucrărilor, către emitentul autorizației și către ISC (ISC publică în continuare formularul F.14 „Comunicare privind începerea execuției lucrărilor”)",
     "obligatoriu": true,
-    "nota": "Data începerii se anunță cu minim 10 zile înainte (precizări ISC la F.14). Un exemplar înregistrat se păstrează pe șantier."
+    "nota": "Legea 169/2026, art. 278 alin. (3)–(4); art. 514 alin. (1) lit. a)"
    },
    {
-    "nume": "Copia autorizației de construire/desființare",
+    "nume": "Dovada plății cotei de 0,1% și a 50% din cota de 0,5% din valoarea lucrărilor autorizate, către ISC",
     "obligatoriu": true,
-    "nota": "Se anexează la F.14; la F.16 doar dacă nu a fost deja depusă"
+    "nota": "Se plătesc odată cu înștiințarea de începere (art. 143 alin. (4) și (6); art. 352 alin. (2) lit. a))"
    },
    {
-    "nume": "Dovada identității titularului autorizației (CI pentru persoane fizice, certificat de înregistrare fiscală pentru persoane juridice)",
+    "nume": "Înștiințarea privind data finalizării lucrărilor, către emitentul autorizației (ISC publică formularul F.16 „Comunicare privind încheierea execuției lucrărilor”)",
     "obligatoriu": true,
-    "nota": "Fără ea formularul nu se înregistrează"
+    "nota": "Art. 280 alin. (10); emitentul o transmite electronic la ISC (art. 280 alin. (11))"
    },
    {
-    "nume": "Dovada plății cotei de 0,1% (Legea 50/1991) și a 50% din cota de 0,5% (Legea 10/1995) din valoarea lucrărilor autorizate",
+    "nume": "Notificarea executantului către beneficiar privind finalizarea lucrării și cererea de convocare a comisiei de recepție",
     "obligatoriu": true,
-    "nota": "Se anexează la F.14"
+    "nota": "Art. 452 alin. (3) lit. n); HG 273/1994, Regulament, art. 9"
    },
    {
-    "nume": "Formular F.16 – Comunicare privind încheierea execuției lucrărilor",
+    "nume": "Punctul de vedere al proiectanților (pe fiecare specialitate) și al dirigintelui de șantier",
     "obligatoriu": true,
-    "nota": "Pe baza lui ISC eliberează adeverința A6, necesară la recepție"
+    "nota": "Art. 528 alin. (3) lit. a)–b)"
    },
    {
-    "nume": "Adresa/declarația privind valoarea reală a lucrărilor executate, eliberată de emitentul autorizației",
+    "nume": "Cartea tehnică a construcției, cu proiectul real executat („as built”), procesele-verbale de lucrări ascunse și de control în faze determinante",
     "obligatoriu": true,
-    "nota": "Se anexează la F.16 sau separat, ulterior"
+    "nota": "Art. 528 alin. (3) lit. d) și g); HG 273/1994, Regulament, art. 15 alin. (3) lit. d)"
    },
    {
-    "nume": "Dovada plății cotelor de 0,1% și 0,5% raportate la valoarea regularizată (diferențele)",
+    "nume": "Manualul de utilizare și de mentenanță și instrucțiunile de urmărire a comportării în timp; fișele de instruire a operatorilor pentru echipamente și instalații",
     "obligatoriu": true,
-    "nota": "Se anexează la F.16"
+    "nota": "Art. 528 alin. (2) și alin. (3) lit. e)–f)"
    },
    {
-    "nume": "Adeverința ISC (A6) de confirmare a plății cotelor legale",
+    "nume": "Devizul general actualizat la terminarea lucrărilor și/sau documentele care certifică valoarea finală calculată de emitentul autorizației pentru regularizare",
     "obligatoriu": true,
-    "nota": "Examinată de comisia de recepție"
+    "nota": "HG 273/1994, Regulament, art. 15 alin. (3) lit. e)"
    },
    {
-    "nume": "Cartea tehnică a construcției, inclusiv proiectul „as built”, dispozițiile de șantier, procesele-verbale de lucrări ascunse și de control în faze determinante",
+    "nume": "Adeverința ISC care confirmă plata cotelor legale",
     "obligatoriu": true,
-    "nota": "Examinată de comisia de recepție"
-   },
-   {
-    "nume": "Devizul general actualizat la terminarea lucrărilor și/sau documentele care certifică valoarea calculată de emitentul autorizației pentru regularizarea taxei",
-    "obligatoriu": true,
-    "nota": ""
+    "nota": "HG 273/1994, Regulament, art. 10 alin. (1) lit. c) și art. 15 alin. (3) lit. f)"
    },
    {
     "nume": "Certificatul de performanță energetică",
     "obligatoriu": false,
-    "nota": "După caz, conform Legii 372/2005"
+    "nota": "După caz, conform Legii 372/2005 (HG 273/1994, Regulament, art. 15 alin. (3) lit. g))"
    },
    {
-    "nume": "Procesul-verbal de recepție parțială",
+    "nume": "Procesul-verbal de recepție parțială sau pe stadiu fizic de execuție",
     "obligatoriu": false,
-    "nota": "După caz, când investitorul a preluat o parte din construcție"
-   },
-   {
-    "nume": "Referatele pe specialități ale proiectantului și dirigintelui de șantier privind modul de execuție",
-    "obligatoriu": true,
-    "nota": ""
+    "nota": "Dacă beneficiarul a preluat o parte din construcție (art. 527 alin. (6)–(7); art. 280 alin. (6))"
    }
   ],
   "pasi": [
-   "Înainte de începerea lucrărilor se plătesc cota de 0,1% și 50% din cota de 0,5% și se depune la inspectoratul județean în construcții formularul F.14, cu anexele (fizic sau pe e-mail); se anunță și emitentul autorizației.",
-   "La finalizare, executantul comunică investitorului, în perioada de valabilitate a autorizației, terminarea lucrărilor și cere în scris recepția.",
-   "În 5 zile, investitorul cere factorilor implicați desemnarea reprezentanților, stabilește data și locul și transmite ISC comunicarea executantului, referatele proiectantului și dirigintelui și valoarea lucrărilor fără TVA.",
-   "Se obține de la emitentul autorizației adresa/declarația privind valoarea reală a lucrărilor, se plătesc diferențele de cote și se depune formularul F.16 la ISC.",
-   "ISC eliberează adeverința A6 în 30 de zile calendaristice de la înregistrarea F.16, dacă dosarul e complet și cotele sunt plătite.",
-   "Investitorul numește comisia de recepție în maximum 3 zile de la primirea tuturor desemnărilor; comisia examinează construcția și documentele și decide admiterea, suspendarea sau respingerea recepției.",
-   "Se încheie procesul-verbal de recepție la terminarea lucrărilor, care se trimite la ISC pentru finalizarea dosarului; se regularizează taxa de autorizare la primărie.",
-   "Recepția finală se convoacă de investitor în cel mult 10 zile de la expirarea perioadei de garanție."
+   "Înainte de începerea lucrărilor: se plătesc la ISC cota de 0,1% și jumătate din cota de 0,5% și se trimite înștiințarea de începere la primărie (emitentul) și la ISC; se afișează panoul de identificare și se încarcă documentele în Registrul Național al Construcțiilor (art. 143, 278, 352, 514).",
+   "La terminare, executantul anunță în scris beneficiarul că lucrarea e gata și cere convocarea comisiei de recepție; titularul autorizației înștiințează primăria despre data finalizării (art. 280 alin. (10); art. 452 alin. (3) lit. n)).",
+   "În 5 zile, beneficiarul (investitorul) cere instituțiilor desemnarea reprezentanților, stabilește data și locul și trimite la ISC comunicarea executantului, referatele proiectantului și dirigintelui și valoarea lucrărilor fără TVA, pentru adeverința de plată a cotelor (HG 273/1994, Regulament, art. 10 alin. (1)).",
+   "Se regularizează la primărie valoarea lucrărilor și se plătesc la ISC diferențele de cote, cel târziu până la semnarea procesului-verbal de recepție (art. 280 alin. (9); art. 352 alin. (2) lit. b)).",
+   "Instituțiile își comunică reprezentanții în 10 zile, iar beneficiarul numește comisia în cel mult 3 zile de la ultima comunicare; dirigintele de șantier asigură secretariatul comisiei (HG 273/1994, Regulament, art. 10 alin. (2)–(3), art. 11; Legea 169/2026, art. 456 alin. (1) lit. j)).",
+   "Comisia examinează pe loc construcția și documentele și decide admiterea, suspendarea (remedieri în cel mult 90 de zile) sau respingerea recepției; recepția trebuie finalizată în 30 de zile de la notificarea executantului (art. 423 alin. (7) lit. a); HG 273/1994, Regulament, art. 15–18).",
+   "Beneficiarul aprobă decizia în 3 zile și semnează procesul-verbal; de la această dată curge garanția. Procesul-verbal se comunică în 5 zile, inclusiv primăriei și ISC (HG 273/1994, Regulament, art. 19, 20, 23; Legea 169/2026, art. 531 alin. (9)).",
+   "Cartea tehnică se predă proprietarului și se înregistrează în format digital în Registrul Național al Construcțiilor; recepția finală se organizează în cel mult 10 zile de la expirarea garanției (art. 529, 530 alin. (9), 532 alin. (4))."
   ],
-  "taxe": "Cota de 0,1% din valoarea lucrărilor autorizate, către ISC (Legea 50/1991, art. 30), plătită la anunțarea începerii lucrărilor, cu penalitate de 0,15%/zi de întârziere; cota de 0,5% (Legea 10/1995): 50% la început, restul la regularizare, pe valoarea finală fără TVA. Plata se poate face prin ghiseul.ro.",
-  "termen_legal": "Adeverința ISC A6: 30 de zile calendaristice de la înregistrarea F.16 (ghidul ISC). Neanunțarea începerii lucrărilor se sancționează cu amendă de 1.000 lei (Legea 50/1991, art. 26 alin. (1) și (2) lit. g), conform formularului ISC F.14).",
-  "temei_legal": "Legea 50/1991, art. 7 alin. (8), art. 30, art. 37; Legea 10/1995 privind calitatea în construcții; Regulamentul de recepție aprobat prin HG 273/1994, modificat prin HG 343/2017.",
+  "taxe": "Cota de 0,1% din valoarea lucrărilor autorizate, către ISC, plătită odată cu înștiințarea de începere (jumătate, adică 0,05%, la lucrările făcute pe bază de notificare); se aplică și diferențelor din regularizare (Legea 169/2026, art. 143 alin. (4)–(7)). Cota de 0,5% din valoarea fără TVA, către ISC: 50% la înștiințarea de începere, restul pe valoarea finală, până la semnarea procesului-verbal de recepție (art. 352 alin. (1)–(2)). Întârzierea se penalizează cu 0,15% pe zi (art. 143 alin. (6); art. 352 alin. (3)). Fac excepție, între altele, lucrările la monumente istorice și lăcașuri de cult (cota de 0,1%) și consolidarea clădirilor de locuit din clasa I de risc seismic (cota de 0,5%).",
+  "termen_legal": "Recepția la terminare se finalizează în 30 de zile de la notificarea executantului (art. 423 alin. (7) lit. a)); recepția finală se organizează în cel mult 10 zile de la expirarea garanției (art. 532 alin. (4)). Garanția minimă: 1 an (CC1), 3 ani (CC2), 5 ani (CC3, CC4) (art. 531 alin. (6)).",
+  "temei_legal": "Legea 169/2026 (Codul amenajării teritoriului, urbanismului și construcțiilor), art. 143, 278, 280, 298, 352, 357, 422 alin. (5), 423 alin. (7), 452, 456, 514, 527–532, 577 alin. (6); Regulamentul privind recepția construcțiilor aprobat prin HG 273/1994, modificat prin HG 343/2017, rămas în vigoare prin art. 577 alin. (6) din cod. Legea 50/1991 și art. 1–9, 11–40 și 42–44 din Legea 10/1995 au fost abrogate (art. 576 alin. (3) lit. b)–c)).",
   "activitati": [
    "constructii",
    "comert",
@@ -388,29 +426,19 @@
   ],
   "surse": [
    {
-    "titlu": "Legea 50/1991 privind autorizarea executării lucrărilor de construcții (forma consolidată 19.08.2026)",
-    "url": "https://legislatie.just.ro/Public/DetaliiDocument/1515",
-    "verificat": "2026-11-10"
+    "titlu": "Legea 169/2026 – Codul amenajării teritoriului, urbanismului și construcțiilor (forma consolidată 14.10.2026)",
+    "url": "https://legislatie.just.ro/Public/DetaliiDocument/313329",
+    "verificat": "2026-11-13"
    },
    {
-    "titlu": "ISC – Formular F.14 Comunicare privind începerea execuției lucrărilor",
-    "url": "https://www.isc.gov.ro/files/2025/Formulare/Formular%20F14%20Comunicare%20privind%20inceperea%20executiei%20lucrarilor.docx",
-    "verificat": "2026-11-10"
+    "titlu": "Regulamentul privind recepția construcțiilor, aprobat prin HG 273/1994 (forma consolidată 29.07.2017)",
+    "url": "https://legislatie.just.ro/Public/DetaliiDocument/74084",
+    "verificat": "2026-11-13"
    },
    {
-    "titlu": "ISC – Formular F.16 Comunicare privind încheierea execuției lucrărilor",
-    "url": "https://www.isc.gov.ro/files/2025/Formulare/Formular%20F16%20Comunicare%20privind%20incheierea%20executiei%20lucrarilor.docx",
-    "verificat": "2026-11-10"
-   },
-   {
-    "titlu": "ISC – Ce trebuie făcut pentru obținerea adeverinței de confirmare a plății cotelor de 0,1% și 0,5%",
-    "url": "https://www.isc.gov.ro/files/2021/Formulare/Ce%20trebuie%20facut%20pentru%20obtinerea%20adeverintei.pdf",
-    "verificat": "2026-11-10"
-   },
-   {
-    "titlu": "ISC – Recepția lucrărilor, etapă importantă în viața unei construcții",
-    "url": "https://www.isc.gov.ro/files/2021/Mass-media/Receptia%20lucrarilor%20de%20constructii-2021.pdf",
-    "verificat": "2026-11-10"
+    "titlu": "Inspectoratul de Stat în Construcții – formulare F.14 și F.16 și pașii pentru adeverința de plată a cotelor",
+    "url": "https://www.isc.gov.ro/",
+    "verificat": "2026-11-13"
    }
   ]
  },
@@ -418,19 +446,31 @@
   "cheie": "intabulare-constructie",
   "titlu": "Intabularea unei construcții noi în cartea funciară",
   "domeniu": "constructii",
-  "institutie": "Oficiul de cadastru și publicitate imobiliară (OCPI) / biroul de cadastru și publicitate imobiliară, sub ANCPI",
-  "descriere": "Înscrierea în evidențele de cadastru și carte funciară a unei construcții noi edificate pe un teren deja înscris, și intabularea dreptului de proprietate asupra ei. Pentru construcțiile ridicate după 1 august 2001 se face pe baza certificatului de atestare eliberat de primărie și a documentației cadastrale.",
+  "institutie": "Oficiul de cadastru și publicitate imobiliară (OCPI), prin biroul de cadastru și publicitate imobiliară din raza imobilului, sub ANCPI. Cererea se depune la ghișeu sau online, prin persoana autorizată în cadastru sau notar, în sistemul e-Terra. Certificatul de atestare îl eliberează primăria.",
+  "descriere": "Din 25 august 2026 se aplică Codul amenajării teritoriului, urbanismului și construcțiilor (Legea 169/2026), care a înlocuit Legea 50/1991. Procedura de intabulare rămâne cea din Legea 7/1996 a cadastrului: construcția nouă, ridicată pe un teren deja înscris în cartea funciară, se înscrie în planul cadastral și în cartea funciară, iar dreptul de proprietate se intabulează pe baza certificatului de atestare a edificării construcției, eliberat de primărie după recepția la terminarea lucrărilor, și a documentației cadastrale. Codul cere beneficiarului înscrierea construcției în cartea funciară. Pentru lucrările făcute pe bază de notificare (fără autorizație), intabularea se face pe baza dovezii notificării și a înregistrării în Registrul Național al Construcțiilor.",
   "conditii": [
    {
-    "text": "Pentru construcțiile edificate după 1 august 2001 este nevoie de certificatul de atestare eliberat de autoritatea emitentă a autorizației, care confirmă executarea conform autorizației și existența procesului-verbal de recepție la terminarea lucrărilor (Legea 50/1991, art. 37 alin. (6); Ordinul ANCPI 600/2023, art. 89).",
+    "text": "Dreptul de proprietate asupra construcției se înscrie pe baza certificatului de atestare eliberat de primăria care a emis autorizația, care confirmă că s-a construit conform autorizației și că există proces-verbal de recepție la terminarea lucrărilor, și a documentației cadastrale (Legea 7/1996, art. 37 alin. (1); Ordinul ANCPI 600/2023, art. 89 alin. (1) lit. a)).",
     "obligatoriu": true
    },
    {
-    "text": "Terenul trebuie să fie înscris în cartea funciară (documentația de la art. 87 privește construcții pe teren înscris).",
+    "text": "Lucrările sunt considerate finalizate doar după recepția la terminarea lucrărilor; construcțiile fără autorizație sau cu nerespectarea ei nu pot fi recepționate (Legea 169/2026, art. 280 alin. (1) și (8)).",
     "obligatoriu": true
    },
    {
-    "text": "Pentru construcțiile fără autorizație, după împlinirea termenului de prescripție, certificatul/adeverința se emite pe baza unei expertize tehnice (art. 37 alin. (6) din Legea 50/1991).",
+    "text": "Terenul trebuie să fie deja înscris în cartea funciară (Ordinul ANCPI 600/2023, art. 87 – înscrierea unei construcții pe un teren înscris în cartea funciară).",
+    "obligatoriu": true
+   },
+   {
+    "text": "Pentru lucrările executate pe bază de notificare, intabularea se face pe baza dovezii transmiterii notificării și a verificării înregistrării în Registrul Național al Construcțiilor (Legea 169/2026, art. 298 alin. (7)).",
+    "obligatoriu": false
+   },
+   {
+    "text": "Dreptul de proprietate se poate înscrie și pe stadii de execuție, pe baza certificatului de atestare a stadiului realizării construcției, a procesului-verbal de constatare a stadiului și a documentației cadastrale (Legea 7/1996, art. 37 alin. (3); Ordinul ANCPI 600/2023, art. 89 alin. (2)).",
+    "obligatoriu": false
+   },
+   {
+    "text": "Construcțiile făcute fără autorizație sau cu nerespectarea ei trebuie întâi regularizate prin autorizație de regularizare (Legea 169/2026, art. 301); pentru construcțiile ridicate înainte de 1 august 2001 se folosește certificatul de atestare fiscală (Legea 7/1996, art. 37 alin. (2)).",
     "obligatoriu": false
    }
   ],
@@ -451,7 +491,7 @@
     "nota": "Art. 87 alin. (1) lit. c)"
    },
    {
-    "nume": "Copiile actelor de identitate (persoane fizice) sau certificatul constatator (persoane juridice)",
+    "nume": "Copiile actelor de identitate sau adeverința de la evidența populației (persoane fizice), respectiv certificatul constatator (persoane juridice)",
     "obligatoriu": true,
     "nota": "Art. 87 alin. (1) lit. d)"
    },
@@ -466,9 +506,9 @@
     "nota": "Art. 87 alin. (1) lit. f)"
    },
    {
-    "nume": "Certificatul de atestare a edificării construcției (art. 37 alin. (6) din Legea 50/1991) sau alte acte doveditoare ale dreptului de proprietate asupra construcției",
+    "nume": "Certificatul de atestare a edificării construcției (Legea 7/1996, art. 37 alin. (1)) sau alte acte doveditoare ale dreptului de proprietate asupra construcției",
     "obligatoriu": true,
-    "nota": "Art. 87 alin. (1) lit. g); modelele de certificat sunt în anexele 28–29 la regulament"
+    "nota": "Art. 87 alin. (1) lit. g); îl emite primarul (Legea 169/2026, art. 120 alin. (1) lit. h))"
    },
    {
     "nume": "Memoriul tehnic",
@@ -476,30 +516,32 @@
     "nota": "Art. 87 alin. (1) lit. h)"
    },
    {
-    "nume": "Copia planului care a stat la baza alocării numărului cadastral",
-    "obligatoriu": false,
-    "nota": "Doar dacă imobilul e înscris în sistem fără geometrie (art. 87 alin. (1) lit. i))"
-   },
-   {
     "nume": "Planul de amplasament și delimitare, cu reprezentarea terenului și a construcției",
     "obligatoriu": true,
     "nota": "Art. 87 alin. (1) lit. j)"
    },
    {
+    "nume": "Copia planului care a stat la baza alocării numărului cadastral",
+    "obligatoriu": false,
+    "nota": "Doar dacă imobilul e înscris în sistem fără geometrie (art. 87 alin. (1) lit. i))"
+   },
+   {
     "nume": "Releveele pentru fiecare nivel, autorizația de construire și documentația tehnică aferentă",
     "obligatoriu": false,
-    "nota": "Doar dacă se cere, la solicitarea expresă, și recepția releveelor (art. 87 alin. (2))"
+    "nota": "Doar dacă se cere expres și recepția releveelor (art. 87 alin. (2))"
    }
   ],
   "pasi": [
-   "După recepția la terminarea lucrărilor, se cere primăriei (emitentul autorizației) certificatul de atestare a edificării construcției și certificatul fiscal.",
-   "O persoană autorizată în domeniul cadastrului măsoară construcția și întocmește documentația cadastrală (memoriu tehnic, plan de amplasament și delimitare).",
-   "Se plătește tariful ANCPI și se depune cererea de recepție și înscriere, cu documentația, la biroul de cadastru și publicitate imobiliară din raza imobilului.",
-   "OCPI recepționează documentația și, prin încheiere, înscrie construcția și dreptul de proprietate în cartea funciară; dacă e nevoie de completări, termenul de soluționare se prelungește cu zilele necesare depunerii lor."
+   "După recepția la terminarea lucrărilor, se cere primăriei certificatul de atestare a edificării construcției și certificatul fiscal (Legea 7/1996, art. 37 alin. (1); Ordinul ANCPI 600/2023, art. 87 alin. (1) lit. f)–g)).",
+   "O persoană autorizată în cadastru măsoară construcția și întocmește documentația cadastrală: memoriul tehnic și planul de amplasament și delimitare, cu destinația, regimul de înălțime, anul construirii și suprafețele (Ordinul ANCPI 600/2023, art. 87–88).",
+   "Se plătește tariful ANCPI și se depune cererea de recepție și înscriere, cu documentația, la biroul de cadastru și publicitate imobiliară din raza imobilului sau online, prin persoana autorizată.",
+   "Dacă lipsesc acte, OCPI emite un singur referat de completare; completările se depun în 10 zile lucrătoare de la comunicare (Ordinul ANCPI 600/2023, art. 33 alin. (11)–(13)).",
+   "OCPI recepționează documentația și, prin încheiere, înscrie construcția în planul cadastral și intabulează dreptul de proprietate în cartea funciară.",
+   "Dacă cererea e respinsă, se poate redepune o singură dată, fără tarif nou, în cel mult 30 de zile calendaristice de la comunicarea respingerii (Ordinul ANCPI 600/2023, art. 33 alin. (9))."
   ],
-  "taxe": "Tarif ANCPI, plătit înainte de depunere; cuantumul nu a putut fi verificat pe site-ul ANCPI (indisponibil la verificare). Se adaugă onorariul persoanei autorizate în cadastru.",
-  "termen_legal": "",
-  "temei_legal": "Legea 50/1991, art. 37 alin. (6); Legea 7/1996 a cadastrului și publicității imobiliare, art. 37 (invocat de regulament); Ordinul directorului general ANCPI 600/2023 (Regulamentul de recepție și înscriere), art. 87–89.",
+  "taxe": "Tarif ANCPI pentru înscrierea construcției (cod 2.6.1): 60 lei pe construcție plus 0,05% din valoarea de impozitare, plătit înainte de depunere (Ordinul ANCPI 16/2019, anexa). Regim de urgență, la cerere: tarif suplimentar de 4 ori tariful normal, dar cel mult 5.000 lei pe serviciu (Ordinul 16/2019, art. 4 alin. (3)). Se adaugă onorariul persoanei autorizate în cadastru și eventualele taxe ale primăriei pentru certificate.",
+  "termen_legal": "Completările cerute prin referatul de completare se depun în 10 zile lucrătoare (Ordinul ANCPI 600/2023, art. 33 alin. (13)). Regimul de urgență: cel mult 1/3 din termenul normal (Ordinul 16/2019, art. 4 alin. (1)).",
+  "temei_legal": "Legea 7/1996 a cadastrului și a publicității imobiliare, art. 37 alin. (1)–(3); Ordinul directorului general ANCPI 600/2023 (Regulamentul de recepție și înscriere în evidențele de cadastru și carte funciară), art. 33, 87–89; Ordinul ANCPI 16/2019 privind tarifele; Legea 169/2026 (Codul amenajării teritoriului, urbanismului și construcțiilor), art. 120 alin. (1) lit. h), 280, 298 alin. (7), 301, 420 alin. (8) lit. i), 583 alin. (3). Legea 50/1991 a fost abrogată (art. 576 alin. (3) lit. b)); trimiterile la ea se consideră făcute la cod (art. 583 alin. (3)).",
   "activitati": [
    "constructii",
    "comert",
@@ -510,14 +552,29 @@
   ],
   "surse": [
    {
-    "titlu": "Ordinul ANCPI 600/2023 – Regulamentul de recepție și înscriere în evidențele de cadastru și carte funciară (forma consolidată 01.08.2026)",
-    "url": "https://legislatie.just.ro/Public/DetaliiDocument/312552",
-    "verificat": "2026-11-10"
+    "titlu": "Legea 7/1996 a cadastrului și a publicității imobiliare, art. 37 (forma consolidată 13.07.2026)",
+    "url": "https://legislatie.just.ro/Public/DetaliiDocument/69491",
+    "verificat": "2026-11-13"
    },
    {
-    "titlu": "Legea 50/1991 privind autorizarea executării lucrărilor de construcții, art. 37 (forma consolidată 19.08.2026)",
-    "url": "https://legislatie.just.ro/Public/DetaliiDocument/1515",
-    "verificat": "2026-11-10"
+    "titlu": "Ordinul ANCPI 600/2023 – Regulamentul de recepție și înscriere în evidențele de cadastru și carte funciară (forma consolidată 01.08.2026)",
+    "url": "https://legislatie.just.ro/Public/DetaliiDocument/312552",
+    "verificat": "2026-11-13"
+   },
+   {
+    "titlu": "Ordinul ANCPI 16/2019 privind tarifele pentru serviciile ANCPI (forma consolidată 08.03.2026)",
+    "url": "https://legislatie.just.ro/Public/DetaliiDocument/209916",
+    "verificat": "2026-11-13"
+   },
+   {
+    "titlu": "Legea 169/2026 – Codul amenajării teritoriului, urbanismului și construcțiilor (forma consolidată 14.10.2026)",
+    "url": "https://legislatie.just.ro/Public/DetaliiDocument/313329",
+    "verificat": "2026-11-13"
+   },
+   {
+    "titlu": "ANCPI – anunț privind funcționarea e-Terra (20.08.2026)",
+    "url": "https://www.ancpi.ro/",
+    "verificat": "2026-11-13"
    }
   ]
  },
@@ -2509,15 +2566,19 @@
   "cheie": "acord-acces-drum-public",
   "titlu": "Acordul prealabil și autorizația de amplasare și/sau de acces în zona drumului public (construcții, accese, panouri lângă drum)",
   "domeniu": "constructii",
-  "institutie": "Administratorul drumului: pentru drumurile naționale și autostrăzi, CNAIR prin Direcția Regională de Drumuri și Poduri (DRDP) din zonă; pentru drumurile județene, consiliul județean; pentru drumurile locale, consiliul local (primăria)",
-  "descriere": "Pentru o construcție, o amplasare sau o cale de acces în zona unui drum public sunt necesare două acte de la administratorul drumului: acordul prealabil și autorizația de amplasare și/sau de acces, pe lângă autorizația de construire, când aceasta e necesară. Le cer, de exemplu, o stație de carburanți, un magazin, un depozit, o hală, un hotel sau o parcare cu ieșire la drumul național, ori cine pune un panou publicitar în zona drumului; răspunde beneficiarul lucrării. Pentru drumurile naționale, documentele și tarifele de mai jos sunt cele publicate de DRDP Timișoara (CNAIR); la drumurile județene și locale condițiile și tarifele le stabilește consiliul județean sau local, deci diferă de la o zonă la alta.",
+  "institutie": "Administratorul drumului: pentru drumuri naționale și autostrăzi, CNAIR prin Direcția Regională de Drumuri și Poduri (DRDP) din zonă; pentru drumuri județene, consiliul județean; pentru drumuri locale și sectoarele din intravilanul municipiilor, consiliul local. Dosarul se depune la administrator",
+  "descriere": "Din 25 august 2026 se aplică Codul amenajării teritoriului, urbanismului și construcțiilor (Legea 169/2026), care a înlocuit Legea 50/1991; actele de la administratorul drumului au rămas cele din OG 43/1997, pe care codul nu a modificat-o. Pentru o construcție, o activitate comercială, o cale de acces sau un panou în zona unui drum public sunt necesare două acte de la administratorul drumului: acordul prealabil și autorizația de amplasare și/sau de acces, pe lângă autorizația de construire, când aceasta e necesară. Le cer, de exemplu, o stație de carburanți, un magazin, un depozit, o hală, un hotel sau o parcare cu ieșire la drum; răspunde beneficiarul lucrării. Codul le leagă de autorizarea construirii: proiectul pentru acordul sau autorizația administratorului drumului face parte din dosarul pentru autorizația de construire. Pentru drumurile naționale, documentele și tarifele de mai jos sunt cele publicate de DRDP Timișoara (CNAIR), care încă trimit la Legea 50/1991 și la faza DTAC; instituțiile au 120 de zile de la publicarea codului ca să-și actualizeze procedurile. La drumurile județene și locale condițiile și tarifele le stabilește consiliul județean sau local.",
   "conditii": [
    {
     "text": "Pentru orice construcție, activitate comercială, cale de acces, amenajare, instalație sau panou publicitar în zona drumului public sunt obligatorii acordul prealabil și autorizația de amplasare și/sau de acces, emise de administratorul drumului, pe lângă autorizația de construire, după caz (OG 43/1997, art. 46 alin. (1)).",
     "obligatoriu": true
    },
    {
-    "text": "Accesele la drumurile publice se proiectează și se construiesc pe baza acordului prealabil, a autorizației de amplasare și/sau de acces și cu avizul poliției rutiere (OG 43/1997, art. 52).",
+    "text": "Proiectul pentru acordul sau autorizația administratorului drumului, pentru căile de acces și lucrările pe domeniul public, se face odată cu proiectul pentru autorizarea construirii și intră în dosarul pentru autorizația de construire, dacă e cazul (Legea 169/2026, art. 249 alin. (5) lit. b) și art. 262 alin. (1) lit. i)).",
+    "obligatoriu": true
+   },
+   {
+    "text": "Accesele la drumurile publice se proiectează și se construiesc pe baza acordului prealabil, a autorizației de amplasare și/sau de acces și cu avizul poliției rutiere (OG 43/1997, art. 52 alin. (1)). Codul spune că avizul poliției rutiere nu e necesar pentru locuințe unifamiliale sau alte investiții pe străzi de categoria III și IV, aflate la cel puțin 25 m de o intersecție sau trecere de pietoni și care nu generează trafic (sub 5 autovehicule mici pe zi, fără transport greu) (Legea 169/2026, art. 267 alin. (3)).",
     "obligatoriu": true
    },
    {
@@ -2529,7 +2590,7 @@
     "obligatoriu": true
    },
    {
-    "text": "Beneficiarul încheie cu administratorul drumului un contract de utilizare și acces în zona drumului, semnat odată cu eliberarea autorizației, și plătește tarifele; nu plătesc cei care folosesc zona drumului doar pentru acces la proprietate și operatorii unui serviciu public (OG 43/1997, art. 46 alin. (9)–(10)).",
+    "text": "Beneficiarul încheie cu administratorul drumului contractul de utilizare și acces în zona drumului, semnat odată cu eliberarea autorizației, și plătește tarifele; nu plătesc cei care folosesc zona drumului doar pentru acces la proprietate și operatorii unui serviciu public (OG 43/1997, art. 46 alin. (9)–(10)). Lucrările din zona de protecție sunt scutite de tarifele de utilizare (art. 47 alin. (9) lit. a)).",
     "obligatoriu": true
    },
    {
@@ -2537,8 +2598,8 @@
     "obligatoriu": true
    },
    {
-    "text": "Pe drumurile naționale, acordul prealabil și autorizația se emit la faza documentației tehnice pentru autorizația de construire (DTAC); autorizația de amplasare și/sau de acces se obține cât timp acordul prealabil e valabil, altfel procedura se reia (Ordinul MT 1836/2018, anexa 6, după DRDP Timișoara).",
-    "obligatoriu": true
+    "text": "Dacă lucrarea privește doar racordarea sau branșarea la rețelele de utilități existente, acordul sau autorizația administratorului drumului pentru racord se emite de autoritatea locală, odată cu autorizația de construire pentru imobil (Legea 169/2026, art. 267 alin. (1)).",
+    "obligatoriu": false
    }
   ],
   "documente": [
@@ -2550,7 +2611,7 @@
    {
     "nume": "Certificat de urbanism valabil",
     "obligatoriu": true,
-    "nota": "Lista DRDP Timișoara; la panourile existente se atașează și somația de intrare în legalitate de la administratorul drumului."
+    "nota": "Lista DRDP Timișoara; certificatul se emite după Legea 169/2026, art. 257; cele emise înainte de 25.08.2026 rămân valabile (art. 582 alin. (4))."
    },
    {
     "nume": "Proces-verbal de constatare pe teren, încheiat cu Secția de Drumuri Naționale (sau Secția Autostrăzi) pe raza căreia se face lucrarea",
@@ -2563,14 +2624,9 @@
     "nota": "Lista DRDP Timișoara; când documentele nu le depune beneficiarul."
    },
    {
-    "nume": "Punctul de vedere al executantului și al consultantului (drum în reabilitare sau consolidare) sau al proiectantului (teren pe traseul unui drum viitor: autostradă, drum expres)",
-    "obligatoriu": false,
-    "nota": "Lista DRDP Timișoara; doar în aceste situații."
-   },
-   {
     "nume": "Acordul Inspectoratului de Poliție Județean, Direcția Poliției Rutiere (sau Poliția Autostrăzi), cu copia chitanței de plată",
     "obligatoriu": true,
-    "nota": "Lista DRDP Timișoara; avizul poliției rutiere pentru accese e cerut și de OG 43/1997, art. 52."
+    "nota": "Lista DRDP Timișoara; OG 43/1997, art. 52 alin. (1); excepțiile din Legea 169/2026, art. 267 alin. (3)."
    },
    {
     "nume": "Proiect tehnic: memoriu tehnic (original)",
@@ -2583,17 +2639,7 @@
     "nota": "Lista DRDP Timișoara."
    },
    {
-    "nume": "Plan de scurgere a apelor, la scara 1:500",
-    "obligatoriu": true,
-    "nota": "Lista DRDP Timișoara."
-   },
-   {
-    "nume": "Secțiuni transversale (prin acces, prin construcții și prin benzile suplimentare)",
-    "obligatoriu": true,
-    "nota": "Lista DRDP Timișoara."
-   },
-   {
-    "nume": "Detalii de sistem rutier pentru acces și pentru drumul național",
+    "nume": "Plan de scurgere a apelor, secțiuni transversale (prin acces, construcții și benzile suplimentare) și detalii de sistem rutier",
     "obligatoriu": true,
     "nota": "Lista DRDP Timișoara."
    },
@@ -2614,20 +2660,20 @@
    }
   ],
   "pasi": [
-   "Se află cine administrează drumul: pentru drum național sau autostradă, CNAIR prin DRDP-ul din zonă; pentru drum județean, consiliul județean; pentru drum local, primăria sau consiliul local.",
-   "Se obține certificatul de urbanism de la primărie sau de la consiliul județean.",
+   "Se află cine administrează drumul: pentru drum național sau autostradă, CNAIR prin DRDP-ul din zonă; pentru drum județean, consiliul județean; pentru drum local sau sector de drum din intravilanul unui municipiu, consiliul local (OG 43/1997, art. 21–22).",
+   "Se cere certificatul de urbanism pentru construire de la primărie sau de la consiliul județean; se emite în cel mult 15 zile lucrătoare și arată avizele și acordurile necesare, inclusiv pe cele ale administratorului drumului (Legea 169/2026, art. 257 alin. (4) și (12)–(13)).",
    "Pentru drumurile naționale: se cere la Secția de Drumuri Naționale din zonă verificarea pe teren a amplasamentului și se obține procesul-verbal de constatare.",
-   "Se face proiectul tehnic (memoriu, planuri, secțiuni, sistem rutier), cu accesul amenajat după normativul în vigoare pentru intersecții la nivel.",
-   "Se obține acordul poliției rutiere (IPJ, Direcția Poliției Rutiere) pentru acces.",
-   "Se depun la administratorul drumului cererea și dosarul pentru acordul prealabil; pe drumurile naționale, la DRDP, se plătesc tariful de analiză primară și tariful pentru acord.",
-   "Cât timp acordul prealabil e valabil, se cere autorizația de amplasare și/sau de acces; odată cu ea se semnează contractul de utilizare și acces în zona drumului (dacă nu există scutire de tarif).",
-   "Cu acordul și autorizația administratorului drumului se cere autorizația de construire la primărie sau la consiliul județean.",
+   "Se face proiectul pentru autorizarea construirii împreună cu proiectul pentru acordul sau autorizația administratorului drumului (memoriu, planuri, secțiuni, sistem rutier, accesul după normativul în vigoare) (Legea 169/2026, art. 249 alin. (5) lit. b)).",
+   "Se obține acordul poliției rutiere pentru acces, dacă lucrarea nu intră în excepțiile din Legea 169/2026, art. 267 alin. (3).",
+   "Se depun la administratorul drumului cererea și dosarul pentru acordul prealabil; pe drumurile naționale, la DRDP, se plătesc tariful de analiză primară și tariful pentru acord. În municipii și județe se întreabă la primărie dacă acest acord se poate obține prin comisia de acord unic (Legea 169/2026, art. 305–307).",
+   "Cât timp acordul prealabil e valabil, se cere autorizația de amplasare și/sau de acces; odată cu ea se semnează contractul de utilizare și acces în zona drumului, dacă nu există scutire de tarif (OG 43/1997, art. 46 alin. (9)–(10)).",
+   "Se depune la primărie sau la consiliul județean dosarul pentru autorizația de construire, cu actele administratorului drumului; autorizația se emite în cel mult 30 de zile de la dosarul complet (Legea 169/2026, art. 262 și art. 273 alin. (1)).",
    "Lucrarea se execută doar după autorizare și doar cum s-a aprobat; apoi se plătește tariful lunar de utilizare a zonei drumului, prevăzut în contract.",
-   "La schimbarea destinației obiectivului (de exemplu din locuință în spațiu comercial) se cere întâi aprobarea administratorului drumului."
+   "La schimbarea destinației obiectivului (de exemplu din locuință în spațiu comercial) se cere întâi aprobarea administratorului drumului (OG 43/1997, art. 46 alin. (8))."
   ],
-  "taxe": "Drumuri naționale (CNAIR): tarifele din Ordinul MT 1836/2018, anexa 6, cu modificările ulterioare, cum le publică DRDP Timișoara (în euro, cu TVA). Acte: analiza primară a documentației 30 euro/document; aviz sau acord prealabil pentru obiective socioeconomice și mijloace de publicitate 130 euro, plus 0,08 euro pentru fiecare mp de teren peste 1.000 mp; autorizație de amplasare și/sau de acces 80 euro; reanalizarea documentației 75 euro; prelungirea acordului sau a autorizației câte 50 euro; duplicat 10 euro; persoanele fizice care își construiesc locuința, garajul sau gardul plătesc o singură dată 27 euro. Utilizare lunară: căi de acces la obiective (stații de carburanți, hoteluri, depozite, spații comerciale, showroom-uri) 1,89 euro/mp pe autostradă, 0,75 euro/mp pe drum european, 0,45 euro/mp pe drum național; locuri de parcare 0,83 euro/mp pe drum european, 0,5 euro/mp pe drum național; obiectivele din zona de protecție aflate în afara terenurilor CNAIR sunt scutite de tariful de utilizare. Drumuri județene și locale: tarifele se aprobă prin hotărâre a consiliului județean sau local (OG 43/1997, art. 47 alin. (10)). Tarifele se pot actualiza: se verifică la DRDP sau la administratorul drumului înainte de depunere.",
-  "termen_legal": "",
-  "temei_legal": "OG 43/1997 privind regimul drumurilor, republicată: art. 14–17 (zonele drumului), art. 21–22 (administratorii), art. 46 (acordul prealabil, autorizația, contractul, valabilitatea; fără autorizație lucrarea se desființează pe cheltuiala beneficiarului în 5 zile de la notificare, alin. (4)–(5)), art. 47 (distanțe și tarife), art. 52 (căile de acces), art. 61 alin. (1) lit. a) (amendă 2.000–6.000 lei); Ordinul ministrului transporturilor 1836/2018 privind tarifele aplicate de CNAIR, anexa 6, cu modificările ulterioare; normativul AND 600/2010; Legea 50/1991.",
+  "taxe": "Drumuri naționale (CNAIR): tarifele din Ordinul MT 1836/2018, anexa 6, cu modificările ulterioare, cum le publică DRDP Timișoara (în euro, cu TVA). Acte: analiza primară a documentației 30 euro/document; acord prealabil pentru obiective socioeconomice și mijloace de publicitate 130 euro, plus 0,08 euro pentru fiecare mp de teren peste 1.000 mp; autorizație de amplasare și/sau de acces 80 euro; reanalizarea documentației 75 euro; prelungirea autorizației 50 euro; persoanele fizice care își construiesc locuința, garajul, anexa, gardul sau doar accesul la proprietate plătesc 27 euro/document. Utilizare lunară pentru căi de acces la obiective (stații de carburanți, hoteluri, depozite, spații comerciale, showroom-uri): 1,89 euro/mp pe autostradă, 0,75 euro/mp pe drum european, 0,45 euro/mp pe drum național principal; alte tarife (parcări, panouri, duplicate) sunt în aceeași anexă. Lucrările din zona de protecție sunt scutite de tariful de utilizare (OG 43/1997, art. 47 alin. (9) lit. a)). Drumuri județene și locale: tarifele se aprobă prin hotărâre a consiliului județean sau local (OG 43/1997, art. 47 alin. (10)). Pentru certificatul de urbanism și autorizația de construire se plătesc taxele locale din Codul fiscal, art. 474 (Legea 169/2026, art. 253 alin. (10) și art. 313). Tarifele se pot actualiza: se verifică la administratorul drumului înainte de depunere.",
+  "termen_legal": "OG 43/1997 nu dă un termen pentru acord și autorizație. Certificatul de urbanism: cel mult 15 zile lucrătoare (Legea 169/2026, art. 257 alin. (4)); autorizația de construire: cel mult 30 de zile de la dosarul complet (art. 273 alin. (1)).",
+  "temei_legal": "OG 43/1997 privind regimul drumurilor, republicată, forma consolidată la 25.08.2025, nemodificată de cod: art. 14–17 (zonele drumului), art. 21–22 (administratorii), art. 46 (acordul prealabil, autorizația, contractul, valabilitatea; fără autorizație lucrarea se desființează pe cheltuiala beneficiarului în 5 zile de la notificare, alin. (4)–(5)), art. 47 (distanțe, tarife, scutiri), art. 52 (căile de acces), art. 61 alin. (1) lit. a) (amendă 2.000–6.000 lei). Legea 169/2026 (Codul amenajării teritoriului, urbanismului și construcțiilor): art. 249 alin. (5) lit. b), art. 257, art. 262 alin. (1) lit. i), art. 266, art. 267 alin. (1) și (3), art. 273, art. 305–308 (comisia de acord unic), art. 576 alin. (3) (abrogarea Legii 50/1991), art. 582 alin. (4) și art. 583 alin. (3)–(4). Ordinul ministrului transporturilor 1836/2018, anexa 6; normativul AND 600/2010.",
   "activitati": [
    "comert",
    "constructii",
@@ -2637,24 +2683,34 @@
   ],
   "surse": [
    {
-    "titlu": "OG nr. 43/1997 privind regimul drumurilor (text consolidat)",
+    "titlu": "Legea nr. 169/2026 privind Codul amenajării teritoriului, urbanismului și construcțiilor (forma consolidată)",
+    "url": "https://legislatie.just.ro/Public/DetaliiDocument/313329",
+    "verificat": "2026-11-13"
+   },
+   {
+    "titlu": "OG nr. 43/1997 privind regimul drumurilor (forma consolidată)",
     "url": "https://legislatie.just.ro/Public/DetaliiDocument/11269",
-    "verificat": "2026-11-11"
+    "verificat": "2026-11-13"
    },
    {
     "titlu": "DRDP Timișoara (CNAIR) – Acorduri și autorizații de amplasare în zona DN",
     "url": "https://www.drdptm.ro/index.php?page=azd",
-    "verificat": "2026-11-11"
+    "verificat": "2026-11-13"
    },
    {
     "titlu": "DRDP Timișoara – Conținutul documentațiilor pentru acordul prealabil, construcții",
     "url": "https://www.drdptm.ro/INFORMATII/Acorduri%20si%20autorizatii%20de%20amplasare%20in%20zona%20DN/constructii.pdf",
-    "verificat": "2026-11-11"
+    "verificat": "2026-11-13"
    },
    {
     "titlu": "DRDP Timișoara – Baza legală și tarifele (Ordinul MT 1836/2018, anexa 6)",
     "url": "https://www.drdptm.ro/INFORMATII/Acorduri%20si%20autorizatii%20de%20amplasare%20in%20zona%20DN/baza_legala.pdf",
-    "verificat": "2026-11-11"
+    "verificat": "2026-11-13"
+   },
+   {
+    "titlu": "Legea nr. 227/2015 privind Codul fiscal (forma consolidată), art. 474",
+    "url": "https://legislatie.just.ro/Public/DetaliiDocument/171282",
+    "verificat": "2026-11-13"
    }
   ]
  },
@@ -2662,15 +2718,19 @@
   "cheie": "autorizatie-publicitate-firma",
   "titlu": "Autorizarea firmei (inclusiv firmă luminoasă) pe clădirea în care funcționează afacerea și taxa pentru afișaj",
   "domeniu": "constructii",
-  "institutie": "Primăria localității unde se află clădirea (în București, primăria de sector sau Primăria Municipiului București, după competență); taxa pentru afișaj se declară la compartimentul de impozite și taxe locale al aceleiași primării",
-  "descriere": "Firma este orice inscripție, formă sau imagine prinsă de o clădire care arată ce operator economic sau ce activitate funcționează acolo. Legea 185/2013 cere ca firmele și copertinele inscripționate să fie autorizate prin autorizație de construire, emisă de primărie după certificatul de urbanism (Legea 50/1991). Excepție: firmele scrise pe vitrine și pe ușile de acces nu au nevoie de autorizație de construire, ci doar de avizul primăriei. Procedura și actele exacte diferă de la o localitate la alta, după regulamentul local de publicitate; exemplul de mai jos este de la Cluj-Napoca.",
+  "institutie": "Primăria localității unde se află clădirea (în București, primăria de sector sau Primăria Municipiului București, după competență); dosarul se depune la ghișeu sau în format digital, semnat electronic. Taxa pentru afișaj se declară la compartimentul de impozite și taxe locale al aceleiași primării",
+  "descriere": "Din 25 august 2026 se aplică Codul amenajării teritoriului, urbanismului și construcțiilor (Legea 169/2026), care a înlocuit Legea 50/1991. Legea 185/2013 privind mijloacele de publicitate a rămas în vigoare și nu a fost modificată de cod. Firma este orice inscripție, formă sau imagine prinsă de o clădire care arată ce operator economic sau ce activitate funcționează acolo. Firmele și copertinele inscripționate se pun doar cu autorizație de construire, emisă de primărie după certificatul de urbanism, acum după regulile codului. Codul trece firmele și reclamele între construcțiile temporare, a căror durată se scrie în autorizație și nu poate depăși 5 ani. Excepție: firmele scrise pe vitrine și pe ușile de acces nu au nevoie de autorizație de construire, ci doar de avizul primăriei. Actele exacte diferă de la o localitate la alta, după regulamentul local de publicitate; exemplul de mai jos este de la Cluj-Napoca, al cărui regulament încă trimite la Legea 50/1991.",
   "conditii": [
    {
-    "text": "Firma și copertina inscripționată se montează doar pe baza autorizației de construire (Legea 185/2013, art. 19 alin. (1) și art. 4; Legea 50/1991, art. 3 alin. (1) lit. h)).",
+    "text": "Firma și copertina inscripționată se montează doar pe baza autorizației de construire (Legea 185/2013, art. 19 alin. (1) și art. 4 alin. (1)); autorizația se emite acum după Legea 169/2026 (art. 259 alin. (6) și art. 583 alin. (3)).",
     "obligatoriu": true
    },
    {
-    "text": "Firma scrisă pe vitrină sau pe ușa de acces nu cere autorizație de construire: se pune pe baza avizului autorității publice locale (Legea 185/2013, art. 19 alin. (2)–(4)).",
+    "text": "În autorizație se scriu caracterul provizoriu și durata autorizării (Legea 185/2013, art. 4 alin. (2)); pentru construcțiile temporare, între care codul trece firmele și reclamele, durata nu poate depăși 5 ani (Legea 169/2026, art. 368 alin. (3) lit. d) și anexa nr. 1).",
+    "obligatoriu": true
+   },
+   {
+    "text": "Firma scrisă pe vitrină sau pe ușa de acces nu cere autorizație de construire: se pune pe baza avizului autorității publice locale, după plata taxelor de publicitate (Legea 185/2013, art. 19 alin. (2)–(4)).",
     "obligatoriu": false
    },
    {
@@ -2678,7 +2738,7 @@
     "obligatoriu": true
    },
    {
-    "text": "Firma în consolă se pune la cel puțin 2,50 m deasupra trotuarului și iese în afară cel mult 1,20 m (Legea 185/2013, art. 18 alin. (1) lit. b)).",
+    "text": "Firma în consolă se pune la cel puțin 2,50 m deasupra trotuarului și iese în afară cel mult 1,20 m; copertina inscripționată, la cel puțin 2,50 m și cel mult 1,50 m în afara fațadei (Legea 185/2013, art. 18 alin. (1) lit. b)–c)).",
     "obligatoriu": true
    },
    {
@@ -2696,44 +2756,44 @@
   ],
   "documente": [
    {
-    "nume": "Certificat de urbanism",
+    "nume": "Cererea pentru certificatul de urbanism, cu extras de carte funciară actualizat și plan de încadrare în zonă sau plan de situație, plus o descriere scurtă a lucrării",
     "obligatoriu": true,
-    "nota": "Legea 50/1991, art. 7 alin. (1) lit. a); la Cluj-Napoca primul pas, cu cerere tip (HCL 133/2018, art. 5)"
+    "nota": "Legea 169/2026, art. 257 alin. (8); formularele sunt aprobate prin Ordinul nr. 975/2026"
    },
    {
-    "nume": "Dovada dreptului asupra imobilului",
+    "nume": "Cererea pentru autorizația de construire, în formatul standard",
     "obligatoriu": true,
-    "nota": "Legea 50/1991, art. 7 alin. (1) lit. b)"
+    "nota": "Legea 169/2026, art. 262 alin. (1) lit. a) și art. 263"
    },
    {
-    "nume": "Documentația tehnică (D.T.) pentru autorizația de construire",
+    "nume": "Extras de plan cadastral și extras de carte funciară, nu mai vechi de 30 de zile, și actul care dă dreptul de a construi (de exemplu contractul de închiriere al spațiului)",
     "obligatoriu": true,
-    "nota": "Legea 50/1991, art. 7 alin. (1) lit. c); la Cluj-Napoca cu desene ale întregii fațade și ale elementelor existente pe ea"
+    "nota": "Legea 169/2026, art. 262 alin. (1) lit. b)"
+   },
+   {
+    "nume": "Proiectul pentru autorizarea construirii (la Cluj-Napoca, cu desene ale întregii fațade și ale elementelor existente pe ea)",
+    "obligatoriu": true,
+    "nota": "Legea 169/2026, art. 262 alin. (1) lit. d) și art. 264; exemplu local: HCL Cluj-Napoca 133/2018, art. 5"
    },
    {
     "nume": "Avizele și acordurile cerute prin certificatul de urbanism",
     "obligatoriu": true,
-    "nota": "Legea 50/1991, art. 7 alin. (1) lit. d)"
+    "nota": "Legea 169/2026, art. 262 alin. (1) lit. g) și art. 266; avizul sanitar nu e necesar pentru mijloace publicitare (art. 267 alin. (2) lit. d))"
    },
    {
     "nume": "Dovada plății taxelor pentru certificatul de urbanism și pentru autorizație",
     "obligatoriu": true,
-    "nota": "Legea 50/1991, art. 7 alin. (1) lit. f)"
+    "nota": "Legea 169/2026, art. 253 alin. (10) și art. 313; Codul fiscal, art. 474"
    },
    {
-    "nume": "Avizul Comisiei de Estetică Urbană",
+    "nume": "Avizul Comisiei de Estetică Urbană și, în zonele protejate, avizul direcției județene pentru cultură",
     "obligatoriu": false,
     "nota": "Exemplu local, Cluj-Napoca (HCL 133/2018, art. 5)"
    },
    {
-    "nume": "Avizul direcției județene pentru cultură (patrimoniu)",
-    "obligatoriu": false,
-    "nota": "Cluj-Napoca, doar în zonele construite protejate (HCL 133/2018, art. 5)"
-   },
-   {
     "nume": "Acordul proprietarilor, pentru firma de pe un bloc de locuințe",
     "obligatoriu": false,
-    "nota": "Legea 185/2013, art. 18 alin. (1) lit. a)"
+    "nota": "Legea 185/2013, art. 18 alin. (1) lit. a); Legea 169/2026, art. 266 alin. (2) lit. m)"
    },
    {
     "nume": "Avizul primăriei, doar pentru firma de pe vitrină sau ușa de acces, în locul autorizației",
@@ -2747,17 +2807,18 @@
    }
   ],
   "pasi": [
-   "Se citește regulamentul local de publicitate al localității: arată ce firme sunt permise în zonă, dimensiunile și unde se pun (de exemplu, la Cluj-Napoca o firmă pe plăcuță are cel mult 1200 cmp pentru majoritatea firmelor și se pune paralel cu fațada).",
-   "Dacă firma e doar scrisă pe vitrină sau pe ușă, se cere avizul primăriei și se montează; pașii de autorizare de mai jos nu mai sunt necesari.",
-   "Pentru firma de pe fațadă (inclusiv cea luminoasă) se depune la primărie cererea pentru certificatul de urbanism.",
-   "Se obțin avizele cerute în certificatul de urbanism (la Cluj-Napoca: avizul Comisiei de Estetică Urbană și, în zonele protejate, avizul pentru patrimoniu).",
-   "Se depune cererea de autorizație de construire cu documentația tehnică, avizele, dovada dreptului asupra spațiului și dovada plății taxelor.",
-   "După primirea autorizației se montează firma.",
-   "În 30 de zile de la montare se depune declarația pentru taxa de afișaj la compartimentul de taxe locale; taxa se plătește apoi anual."
+   "Se citește regulamentul local de publicitate al localității: arată ce firme sunt permise în zonă, dimensiunile și unde se pun (de exemplu, la Cluj-Napoca o activitate are o singură firmă, la parter, paralelă cu fațada, iar activitățile fără spațiu la parter pot pune doar o plăcuță de cel mult 1200 cmp la intrare).",
+   "Dacă firma e doar scrisă pe vitrină sau pe ușă, se cere avizul primăriei, se plătește taxa și se montează; pașii de autorizare de mai jos nu mai sunt necesari (Legea 185/2013, art. 19 alin. (2)–(4)).",
+   "Pentru firma de pe fațadă (inclusiv cea luminoasă) se cere la primărie certificatul de urbanism pentru construire; se emite în cel mult 15 zile lucrătoare și cuprinde lista avizelor necesare (Legea 169/2026, art. 257 alin. (4) și (12)).",
+   "Se obțin avizele cerute în certificatul de urbanism (la Cluj-Napoca: avizul Comisiei de Estetică Urbană și, în zonele protejate, avizul pentru patrimoniu); unde există comisia de acord unic, unele avize se pot obține prin ea (Legea 169/2026, art. 305–308).",
+   "Se depune cererea de autorizație de construire cu proiectul, avizele, extrasele de carte funciară, dovada dreptului asupra spațiului și dovada plății taxelor, la ghișeu sau în format digital, semnat electronic (Legea 169/2026, art. 262 și art. 270).",
+   "Dacă dosarul e incomplet, primăria anunță în cel mult 10 zile lucrătoare ce lipsește; autorizația se emite în cel mult 30 de zile de la dosarul complet (Legea 169/2026, art. 271 alin. (1) și art. 273 alin. (1)).",
+   "După primirea autorizației se montează firma, cum s-a aprobat; autorizația trebuie folosită în 3 ani de la emitere (Legea 169/2026, art. 309 alin. (1)).",
+   "În 30 de zile de la montare se depune declarația pentru taxa de afișaj la compartimentul de taxe locale; taxa se plătește apoi anual (Codul fiscal, art. 478 alin. (4)–(5))."
   ],
-  "taxe": "Pentru firma de pe clădire se plătesc taxa de certificat de urbanism și taxa de autorizație de construire (Legea 50/1991, art. 7 alin. (1) lit. f)), stabilite local. Taxa pentru afișaj în scop de reclamă și publicitate (Codul fiscal, art. 478) se plătește anual la bugetul local al localității unde e afișajul (în București, la sector): metri pătrați sau fracțiune de metru pătrat × suma stabilită de consiliul local, de până la 32 lei/mp pentru afișajul de la locul unde se desfășoară activitatea economică și de până la 23 lei/mp pentru celelalte panouri, sume care se pot indexa local. Taxa se recalculează pe lunile de afișare și se plătește în două rate egale, până la 31 martie și 30 septembrie; dacă e de cel mult 50 lei, se plătește integral până la 31 martie. Nu se datorează pentru afișajul din interiorul clădirilor (art. 479 alin. (3)). Suma exactă se află în hotărârea consiliului local.",
-  "termen_legal": "Autorizația de construire se emite în 30 de zile de la depunerea documentației complete (Legea 50/1991, art. 7 alin. (1)); declarația pentru taxa de afișaj se depune în 30 de zile de la amplasare (Codul fiscal, art. 478 alin. (5)).",
-  "temei_legal": "Legea 185/2013 privind amplasarea și autorizarea mijloacelor de publicitate, republicată: art. 3 lit. f), art. 4, art. 8, art. 18–21; Legea 50/1991, republicată: art. 3 alin. (1) lit. h), art. 4, art. 6, art. 7 alin. (1); Legea 227/2015 privind Codul fiscal: art. 477–479; exemplu local: Regulamentul privind mijloacele de publicitate din Cluj-Napoca (HCL 133/2018).",
+  "taxe": "Pentru firma de pe clădire se plătesc taxa pentru certificatul de urbanism și taxa pentru autorizația de construire, după Codul fiscal, art. 474 (Legea 169/2026, art. 253 alin. (10) și art. 313 alin. (1)): certificatul de urbanism, în mediul urban, între 5 și 14 lei după suprafață (jumătate în mediul rural); autorizația de construire pentru alte construcții decât cele rezidențiale, 1% din valoarea lucrărilor; pentru firmele și reclamele de pe căile și spațiile publice, până la 8 lei/mp ocupat (art. 474 alin. (14)). Sumele exacte le stabilește consiliul local. Taxa pentru afișaj în scop de reclamă și publicitate (Codul fiscal, art. 478) se plătește anual la bugetul local al localității unde e afișajul (în București, la sector): metri pătrați sau fracțiune de metru pătrat × suma stabilită de consiliul local, de până la 32 lei/mp pentru afișajul de la locul unde se desfășoară activitatea economică și de până la 23 lei/mp pentru celelalte panouri. Taxa se recalculează pe lunile de afișare și se plătește în două rate egale, până la 31 martie și 30 septembrie; dacă e de cel mult 50 lei, se plătește integral până la 31 martie. Nu se datorează pentru afișajul din interiorul clădirilor (art. 479 alin. (3)). Suma exactă se află în hotărârea consiliului local.",
+  "termen_legal": "Certificatul de urbanism: cel mult 15 zile lucrătoare (Legea 169/2026, art. 257 alin. (4)); autorizația de construire: cel mult 30 de zile de la dosarul complet (art. 273 alin. (1)); declarația pentru taxa de afișaj: în 30 de zile de la amplasare (Codul fiscal, art. 478 alin. (5)).",
+  "temei_legal": "Legea 185/2013 privind amplasarea și autorizarea mijloacelor de publicitate, republicată, forma consolidată la 24.07.2026, nemodificată de cod: art. 3 lit. f), art. 4, art. 8, art. 18–21. Legea 169/2026 (Codul amenajării teritoriului, urbanismului și construcțiilor): art. 249, art. 253 alin. (10), art. 257, art. 259 alin. (6), art. 262–264, art. 266, art. 267 alin. (2) lit. d), art. 270–273, art. 309, art. 313, art. 368 alin. (3) lit. d), anexa nr. 1 (construcții temporare), art. 576 alin. (3) lit. b) (abrogarea Legii 50/1991), art. 583 alin. (3) (trimiterile la legea abrogată se socotesc făcute la cod). Legea 227/2015 privind Codul fiscal: art. 474, art. 477–479. Exemplu local: Regulamentul privind mijloacele de publicitate din Cluj-Napoca (HCL 133/2018).",
   "activitati": [
    "comert",
    "horeca",
@@ -2766,24 +2827,24 @@
   ],
   "surse": [
    {
+    "titlu": "Legea nr. 169/2026 privind Codul amenajării teritoriului, urbanismului și construcțiilor (forma consolidată)",
+    "url": "https://legislatie.just.ro/Public/DetaliiDocument/313329",
+    "verificat": "2026-11-13"
+   },
+   {
     "titlu": "Legea nr. 185/2013 privind amplasarea și autorizarea mijloacelor de publicitate (republicată, forma consolidată)",
     "url": "https://legislatie.just.ro/Public/DetaliiDocument/149533",
-    "verificat": "2026-11-11"
+    "verificat": "2026-11-13"
    },
    {
-    "titlu": "Legea nr. 50/1991 privind autorizarea executării lucrărilor de construcții (republicată, forma consolidată)",
-    "url": "https://legislatie.just.ro/Public/DetaliiDocument/55794",
-    "verificat": "2026-11-11"
-   },
-   {
-    "titlu": "Legea nr. 227/2015 privind Codul fiscal (forma consolidată), art. 477–479",
+    "titlu": "Legea nr. 227/2015 privind Codul fiscal (forma consolidată), art. 474 și 477–479",
     "url": "https://legislatie.just.ro/Public/DetaliiDocument/171282",
-    "verificat": "2026-11-11"
+    "verificat": "2026-11-13"
    },
    {
     "titlu": "Primăria Cluj-Napoca – Regulament privind organizarea, autorizarea și amplasarea mijloacelor de publicitate (HCL 133/2018)",
     "url": "https://primariaclujnapoca.ro/informatii-publice/regulament-local/regulament-privind-organizarea-autorizarea-si-amplasarea-mijloacelor-de-publicitate-pe-raza-municipiului-cluj-napoca/",
-    "verificat": "2026-11-11"
+    "verificat": "2026-11-13"
    }
   ]
  },
@@ -4055,6 +4116,1011 @@
     "titlu": "HG 899/2003 privind omologarea tahografelor și autorizarea atelierelor de instalare, reparare și inspecție, forma consolidată",
     "url": "https://legislatie.just.ro/Public/DetaliiDocument/45687",
     "verificat": "2026-11-12"
+   }
+  ]
+ },
+ {
+  "cheie": "atestat-producator-carnet-comercializare",
+  "titlu": "Atestatul de producător și carnetul de comercializare pentru vânzarea produselor agricole din gospodăria proprie",
+  "domeniu": "comercial",
+  "institutie": "Primăria (primarul) localității unde se află terenul, ferma sau gospodăria; cererea se depune la ghișeu, de regulă la compartimentul registrului agricol. Avizul consultativ îl dă o asociație de agricultori înregistrată la primărie sau structura teritorială a Ministerului Agriculturii",
+  "descriere": "Persoana fizică ce vrea să vândă produsele obținute în propria fermă sau gospodărie (legume, fructe, cereale, animale, produse animale, miere) are nevoie de două documente de la primărie: atestatul de producător, care arată că este producător agricol, și carnetul de comercializare, din care completează câte o filă la fiecare transport și vânzare. Ambele sunt valabile 7 ani. Carnetul îl pot folosi și soțul sau soția și rudele până la gradul II care locuiesc și se gospodăresc împreună cu titularul. Cu ele se vinde en-gros sau en-detail în piețe agroalimentare, târguri, piețe ambulante, volante sau mixte, unde administratorul pieței trebuie să rezerve producătorilor cel puțin 40% din locuri. Cu carnetul se vând doar produse proprii; e interzisă revânzarea produselor cumpărate de la alții. PFA, întreprinderile individuale și familiale nu folosesc carnetul: intră în piață pe baza adeverinței de la primărie (modelul din anexa legii) și a avizului consultativ. Producătorii din alte state UE vând pe baza actelor din țara lor.",
+  "conditii": [
+   {
+    "text": "Atestatul se eliberează la cerere persoanelor fizice care aleg să desfășoare o activitate economică în agricultură, pe baza datelor din registrul agricol (Legea 145/2014, art. 3 alin. (1) și (3)); deci terenul sau animalele trebuie să fie înscrise în registrul agricol.",
+    "obligatoriu": true
+   },
+   {
+    "text": "Activitatea înseamnă obținerea în propria fermă sau gospodărie a unor produse care depășesc consumul propriu și sunt destinate vânzării (art. 2 lit. a)).",
+    "obligatoriu": true
+   },
+   {
+    "text": "Pentru atestat e nevoie de avizul consultativ al unei structuri asociative profesionale, patronale sau sindicale din agricultură înregistrate la primărie sau, în lipsa lui, al entității teritoriale a Ministerului Agriculturii; avizul e gratuit, iar obținerea lui o asigură primarul (art. 3 alin. (5), art. 4 alin. (1) și (4)).",
+    "obligatoriu": true
+   },
+   {
+    "text": "Carnetul se eliberează doar după verificarea existenței atestatului, verificarea pe teren a produselor de vânzare și avizul consultativ (art. 8 alin. (3)).",
+    "obligatoriu": true
+   },
+   {
+    "text": "Carnetul se folosește exclusiv pentru produse vegetale, zootehnice și apicole din producția proprie; e interzisă vânzarea produselor cumpărate de la terți (art. 7 alin. (2), art. 8 alin. (5)).",
+    "obligatoriu": true
+   },
+   {
+    "text": "La locul de vânzare producătorul are actul de identitate, atestatul și carnetul, ține copie după atestat și după fila din carnet vizată anual și afișează eticheta produsului (art. 14 alin. (1), (3) și (4) lit. a)).",
+    "obligatoriu": true
+   },
+   {
+    "text": "Vânzarea fără atestat sau fără carnet valabil: amendă de 15.000–22.500 lei; vânzarea pe carnet a altor produse decât cele proprii: 7.500–15.000 lei; folosirea filelor contrar regulilor: 200–1.000 lei (art. 16 lit. a), f), h)).",
+    "obligatoriu": true
+   }
+  ],
+  "documente": [
+   {
+    "nume": "Cerere pentru eliberarea atestatului de producător",
+    "obligatoriu": true,
+    "nota": "Legea 145/2014, art. 3 alin. (3); atestatul se eliberează la cerere. Modelul cererii nu e în lege: se ia de la primărie"
+   },
+   {
+    "nume": "Act de identitate al solicitantului",
+    "obligatoriu": true,
+    "nota": "Atestatul cuprinde datele de identificare ale producătorului (art. 3 alin. (1)); actul de identitate e cerut și la vânzare (art. 14 alin. (1))"
+   },
+   {
+    "nume": "Înscrierea la zi a terenurilor, culturilor și animalelor în registrul agricol al primăriei",
+    "obligatoriu": true,
+    "nota": "Art. 3 alin. (1) și (3): atestatul se eliberează pe baza datelor din registrul agricol"
+   },
+   {
+    "nume": "Avizul consultativ al asociației agricole înregistrate la primărie sau al structurii teritoriale a ministerului",
+    "obligatoriu": true,
+    "nota": "Art. 3 alin. (5), art. 4 alin. (1) și (4); gratuit, îl obține primarul"
+   },
+   {
+    "nume": "Cerere pentru eliberarea carnetului de comercializare (se pot cere mai multe carnete)",
+    "obligatoriu": true,
+    "nota": "Art. 8 alin. (3); primăria o trece în registrul de evidență a carnetelor (Ordinul 20/2015, art. 4 și anexa 3)"
+   },
+   {
+    "nume": "Atestatul de producător valabil",
+    "obligatoriu": true,
+    "nota": "Art. 8 alin. (3): primăria verifică existența lui înainte de a da carnetul"
+   },
+   {
+    "nume": "Datele pentru prima filă a carnetului: membrii familiei care îl vor folosi, suprafețele cultivate și animalele pe specii, producția estimată pentru vânzare",
+    "obligatoriu": true,
+    "nota": "Art. 8 alin. (6); Ordinul 20/2015, art. 3"
+   },
+   {
+    "nume": "PFA, întreprindere individuală sau familială: adeverința primăriei (modelul din anexa legii) și avizul consultativ, prezentate administratorului pieței, plus copie după certificatul de înregistrare la registrul comerțului",
+    "obligatoriu": false,
+    "nota": "Art. 13 alin. (1) și (4), art. 14 alin. (4) lit. b); nu folosesc carnetul"
+   }
+  ],
+  "pasi": [
+   "Verifici la primărie, la registrul agricol, că terenul, culturile și animalele tale sunt înscrise corect; atestatul se face pe baza acestor date.",
+   "Depui la primăria de care ține ferma sau gospodăria cererea pentru atestatul de producător, cu actul de identitate.",
+   "Primăria cere avizul consultativ de la o asociație agricolă înregistrată la ea sau de la structura teritorială a Ministerului Agriculturii; avizul e gratuit.",
+   "Primarul eliberează atestatul în 5 zile lucrătoare de la cerere, valabil 7 ani. Un refuz trebuie motivat în scris și se poate ataca în contencios administrativ (art. 9 alin. (2)).",
+   "Ceri carnetul de comercializare la aceeași primărie; se verifică atestatul și, pe teren, produsele pe care vrei să le vinzi. Carnetul se dă în 5 zile lucrătoare și e valabil 7 ani; prima filă se completează cu familia, suprafețele, animalele și producția estimată și o semnează primarul.",
+   "La fiecare transport spre piață completezi o filă din carnet cu produsele și cantitățile; pentru vânzările zilnice din piețe, târguri și piețe ambulante treci seara totalul vândut pe zi (art. 11 alin. (2), art. 15).",
+   "La alte vânzări (de exemplu către o firmă) completezi fila de vânzare: primul exemplar îl dai cumpărătorului, al doilea îl păstrezi, al treilea rămâne în carnet (art. 10 alin. (1)).",
+   "La tarabă ai actul de identitate, atestatul, carnetul, copii după atestat și după fila din carnet vizată anual și afișezi eticheta cu datele tale, produsul, localitatea, data obținerii și prețul (art. 2 lit. f), art. 14).",
+   "Carnetul terminat îl returnezi la primărie în 15 zile lucrătoare de la folosirea ultimei file (art. 10 alin. (2)); la pierdere sau furt anunți poliția în 24 de ore și primăria (Ordinul 20/2015, art. 5)."
+  ],
+  "taxe": "Avizul consultativ se eliberează gratuit (art. 3 alin. (5)). Pentru formularele de atestat și carnet, solicitantul plătește suma stabilită prin hotărârea consiliului local, din care se recuperează costul tipăririi, fără a depăși valorile maxime din legislația fiscală (art. 5 alin. (2)). Suma diferă de la o localitate la alta; legea nu stabilește un cuantum.",
+  "termen_legal": "Atestatul: 5 zile lucrătoare de la cerere (art. 4 alin. (1)); carnetul: 5 zile lucrătoare de la cerere (art. 8 alin. (3)). Ambele sunt valabile 7 ani (art. 3 alin. (2), art. 8 alin. (3)).",
+  "temei_legal": "Legea 145/2014 pentru stabilirea unor măsuri de reglementare a pieței produselor din sectorul agricol, modificată prin Legile 87/2016, 70/2018 și 166/2019, art. 1–5, 7–11, 13–18; Ordinul MADR/MDRAP nr. 20/208/2015 privind aprobarea modelului carnetului de comercializare a produselor din sectorul agricol, art. 1–5 și anexele.",
+  "activitati": [
+   "agricultura",
+   "comert"
+  ],
+  "surse": [
+   {
+    "titlu": "Legea 145/2014 pentru stabilirea unor măsuri de reglementare a pieței produselor din sectorul agricol, forma consolidată la 10.10.2019",
+    "url": "https://legislatie.just.ro/Public/DetaliiDocument/162616",
+    "verificat": "2026-11-13"
+   },
+   {
+    "titlu": "Legea 145/2014, forma consolidată la 10.04.2018 (după Legea 70/2018)",
+    "url": "https://legislatie.just.ro/Public/DetaliiDocumentAfis/199363",
+    "verificat": "2026-11-13"
+   },
+   {
+    "titlu": "Ordinul MADR/MDRAP nr. 20/208/2015 privind aprobarea modelului carnetului de comercializare a produselor din sectorul agricol",
+    "url": "https://legislatie.just.ro/Public/DetaliiDocumentAfis/165158",
+    "verificat": "2026-11-13"
+   }
+  ]
+ },
+ {
+  "cheie": "apia-cerere-unica-plata",
+  "titlu": "Cererea unică de plată la APIA pentru plățile directe pe suprafață și pentru animale (campania anuală, Planul strategic PAC 2023–2027)",
+  "domeniu": "altul",
+  "institutie": "Agenția de Plăți și Intervenție pentru Agricultură (APIA): cererea se completează online în aplicația AGI Online (agi.apia.org.ro) și se depune la centrul local APIA (sub 50 ha) sau la centrul județean (peste 50 ha), pe bază de programare; documentele se pot trimite și electronic",
+  "descriere": "Fermierii care vor subvenții pe suprafață (de exemplu sprijinul de bază pentru venit, PD-01, sprijinul redistributiv, eco-schemele) sau pentru animale depun în fiecare an o singură cerere de plată la APIA, chiar dacă au teren sau ferme în mai multe localități ori județe. Cererea cuprinde declarația de suprafață: parcelele se desenează (digitizează) pe hartă în aplicația AGI Online, în blocurile fizice. Pentru animale, datele se preiau întâi de funcționarul APIA, apoi se continuă în aplicație. Pot cere plăți persoanele fizice, PFA, întreprinderile individuale și familiale, firmele, cooperativele și formele asociative care sunt fermieri activi. Fermierul trebuie să fie înscris în Registrul unic de identificare (parte din sistemul integrat de administrare și control, IACS), unde primește un cod unic. Persoana fizică și PFA, întreprinderea individuală sau familială cu același titular depun o singură cerere. Cel care a dat terenul în arendă, închiriere sau comodat nu primește plăți pentru acel teren. Cererea se semnează (APIA încurajează semnătura electronică); după termen nu mai este primită.",
+  "conditii": [
+   {
+    "text": "Fermierul este înregistrat în Registrul unic de identificare, administrat de APIA (HG 1571/2022, art. 6 alin. (1) lit. a); Ordinul MADR 102/2024).",
+    "obligatoriu": true
+   },
+   {
+    "text": "Este fermier activ, după secțiunea 4.1.4 din PS 2023–2027: cine ar fi avut dreptul anul trecut la plăți directe de cel mult 5.000 de euro e considerat activ; peste 5.000 de euro trebuie să dovedească dreptul de a face agricultură (persoane fizice: adeverința primăriei după anexa 5 și/sau extras din baza națională de date a animalelor; firme, PFA, II, IF: certificat constatator ONRC) (HG 1571/2022, art. 5 alin. (1); instrucțiunile cererii 2026, pct. 56).",
+    "obligatoriu": true
+   },
+   {
+    "text": "Exploatația are cel puțin 1 ha, iar fiecare parcelă cel puțin 0,3 ha; la sere și solarii parcela minimă e 0,03 ha, la culturi permanente 0,1 ha (HG 1571/2022, art. 6 alin. (1) lit. c)).",
+    "obligatoriu": true
+   },
+   {
+    "text": "Declară toate parcelele agricole folosite și le delimitează în aplicația GIS a APIA, în blocul fizic (art. 6 alin. (1) lit. d) și n)).",
+    "obligatoriu": true
+   },
+   {
+    "text": "Terenul declarat este la dispoziția fermierului la data depunerii, dovedit cu documente încheiate înainte de cerere și valabile la acea dată; suprafețele fără aceste documente până la termen sunt neeligibile (HG 1571/2022, art. 6 alin. (1) lit. l); Ordinul MADR 106/2024, art. 5 alin. (2) și (9)).",
+    "obligatoriu": true
+   },
+   {
+    "text": "Cererea se depune în termen; cererea depusă după data-limită este inadmisibilă, iar modificările se fac cel târziu până la data-limită (HG 1571/2022, art. 6 alin. (1) lit. b) și alin. (2); Ordinul MADR 106/2024, art. 3 alin. (3) și (4)).",
+    "obligatoriu": true
+   },
+   {
+    "text": "Respectă condiționalitatea (inclusiv cea socială), trece în cerere date reale și anunță APIA în 15 zile calendaristice orice schimbare a datelor (HG 1571/2022, art. 6 alin. (1) lit. e)–h), k), k^1)).",
+    "obligatoriu": true
+   }
+  ],
+  "documente": [
+   {
+    "nume": "Copie de pe cartea sau buletinul de identitate ori pașaport; la firme: certificatul de înregistrare la ONRC sau actul de înființare/statutul, după caz",
+    "obligatoriu": true,
+    "nota": "Ordinul MADR 106/2024, art. 5 alin. (1) lit. a)"
+   },
+   {
+    "nume": "Dovada unui cont bancar activ în lei, deschis la o bancă ce activează în România",
+    "obligatoriu": true,
+    "nota": "Ordinul MADR 106/2024, art. 5 alin. (1) lit. b)"
+   },
+   {
+    "nume": "Adeverința conform înscrisurilor din registrul agricol pe anul curent (model anexa 5)",
+    "obligatoriu": true,
+    "nota": "Ordinul MADR 106/2024, art. 5 alin. (2) lit. a) și alin. (3): APIA o cere direct primăriei; o aduce fermierul doar la prima cerere de plată"
+   },
+   {
+    "nume": "Copie conformă cu originalul a contractului de închiriere, concesiune sau comodat cu primăria, ori de concesiune/arendă cu Agenția Domeniilor Statului sau altă entitate publică",
+    "obligatoriu": false,
+    "nota": "Ordinul MADR 106/2024, art. 5 alin. (2) lit. b) și c); doar dacă folosești astfel de teren"
+   },
+   {
+    "nume": "Procura notarială (persoane fizice) sau împuternicirea (firme) și copia actului de identitate al împuternicitului",
+    "obligatoriu": false,
+    "nota": "Ordinul MADR 106/2024, art. 5 alin. (1) lit. c); doar dacă depune altcineva în locul tău"
+   },
+   {
+    "nume": "Dovada calității de fermier activ (adeverința primăriei, extras din baza națională de date a animalelor sau certificat constatator ONRC), pentru cei peste 5.000 de euro plăți directe sau la prima cerere",
+    "obligatoriu": false,
+    "nota": "Instrucțiunile cererii 2026, pct. 56; până la data-limită de depunere"
+   },
+   {
+    "nume": "Fermierii până la 50 ha cu peste 5.000 de euro: adeverința de venituri de la ANAF (persoane fizice, PFA, II, IF) sau adeverința de venituri după anexa 9 (firme)",
+    "obligatoriu": false,
+    "nota": "Instrucțiunile cererii 2026, pct. 56; se poate depune până la 1 februarie 2027"
+   },
+   {
+    "nume": "Pentru animale: date la zi în baza națională de date (cod de exploatație ANSVSA)",
+    "obligatoriu": false,
+    "nota": "HG 1571/2022, art. 6 alin. (1) lit. o); Ordinul MADR 106/2024, art. 6"
+   }
+  ],
+  "pasi": [
+   "Verifici la primărie că terenul și animalele sunt înscrise corect în registrul agricol și că actele de folosință a terenului (arendă, închiriere etc.) sunt valabile la data cererii; dacă ai animale, verifici datele din baza națională de date.",
+   "Dacă depui prima dată, te înscrii în Registrul unic de identificare la APIA și primești codul unic de fermier, pe care îl folosești în toate cererile.",
+   "Faci programare la centrul APIA: centrul local dacă ceri sub 50 ha, centrul județean dacă ceri peste 50 ha.",
+   "Pentru sprijinul pentru animale, funcționarul APIA preia mai întâi datele din sectorul zootehnic; ele trec automat în cererea din AGI Online.",
+   "Completezi cererea în aplicația AGI Online: desenezi sau actualizezi parcelele pe hartă, alegi cultura și sprijinul cerut pentru fiecare parcelă și corectezi avertismentele. Dacă nu te descurci, te ajută funcționarii APIA.",
+   "Trimiți electronic sau aduci documentele: act de identitate, dovada contului bancar, actele terenului, procura dacă e cazul și, după caz, dovezile de fermier activ.",
+   "Cererea se închide în aplicație (de tine sau de funcționar, cu acordul tău) și primește număr de înregistrare; abia atunci e considerată depusă. O semnezi, inclusiv formularul privind datele personale.",
+   "Până la data-limită poți depune modificări; după data-limită cererea nouă e inadmisibilă. Orice schimbare de date de după depunere o anunți la APIA în 15 zile calendaristice."
+  ],
+  "taxe": "",
+  "termen_legal": "Perioada se stabilește anual prin ordin al ministrului agriculturii (HG 1571/2022, art. 6 alin. (2)). În 2026: 16 martie – 5 iunie 2026 inclusiv (Ordinul MADR 106/2024, art. 3 alin. (2^2)); după termen cererea e inadmisibilă (alin. (3)).",
+  "temei_legal": "Regulamentul (UE) 2021/2115 și Regulamentul (UE) 2021/2116; HG 1571/2022 privind cadrul general de implementare a intervențiilor din sectoarele vegetal și zootehnic ale Planului strategic PAC 2023–2027, cu modificările ulterioare (ultima: HG 141/2026), art. 1, 4–7; Ordinul MADR 106/2024 privind modalitatea de implementare și documentele justificative pentru aceste intervenții, cu modificările ulterioare (ultima: Ordinul 44/2026), art. 3, 5, 6; Ordinul MADR 102/2024 privind înregistrarea în Registrul unic de identificare; instrucțiunile de completare a cererii de plată 2026 (Monitorul Oficial nr. 193 bis/12.03.2026, anexa 2).",
+  "activitati": [
+   "agricultura"
+  ],
+  "surse": [
+   {
+    "titlu": "APIA – APIA dă startul Campaniei de informare pentru primirea Cererilor de Plată în anul 2026",
+    "url": "https://apia.org.ro/comunicat-de-presa/apia-da-startul-campaniei-de-informare-pentru-primirea-cererilor-de-plata-in-anul-2026/",
+    "verificat": "2026-11-13"
+   },
+   {
+    "titlu": "APIA – Instrucțiuni de completare a formularului de cerere de plată 2026 (anexa 2)",
+    "url": "https://apia.org.ro/wp-content/uploads/2026/03/Anexa-2.pdf",
+    "verificat": "2026-11-13"
+   },
+   {
+    "titlu": "HG 1571/2022 privind stabilirea cadrului general de implementare a intervențiilor aferente sectoarelor vegetal și zootehnic din Planul strategic PAC 2023–2027, forma consolidată la 16.03.2026",
+    "url": "https://legislatie.just.ro/Public/DetaliiDocument/263344",
+    "verificat": "2026-11-13"
+   },
+   {
+    "titlu": "Ordinul MADR 106/2024, forma consolidată la 27.02.2026",
+    "url": "https://legislatie.just.ro/Public/DetaliiDocument/307046",
+    "verificat": "2026-11-13"
+   }
+  ]
+ },
+ {
+  "cheie": "sistem-national-efactura",
+  "titlu": "Transmiterea facturilor prin sistemul național RO e-Factura (B2B, B2G, B2C)",
+  "domeniu": "comercial",
+  "institutie": "Ministerul Finanțelor (sistemul RO e-Factura) și ANAF; online, prin Spațiul Privat Virtual (SPV) de pe anaf.ro (Autentificare RO e-Factura/RO e-Transport) sau prin interfața API; nu se depune nimic la ghișeu",
+  "descriere": "Firmele stabilite în România trebuie să trimită facturile emise prin sistemul național RO e-Factura, nu doar pe e-mail sau pe hârtie. Obligația se aplică facturilor către alte firme (B2B), către instituții publice (B2G) și, din 1 ianuarie 2025, și celor către persoane fizice (B2C), pentru livrările și serviciile cu loc în România, indiferent dacă firma e plătitoare de TVA. Fac excepție bonurile fiscale care țin loc de factură simplificată și livrările intracomunitare. Factura se face în format XML, după standardul european SR EN 16931-1 și regulile naționale RO_CIUS (CIUS-RO); Ministerul Finanțelor oferă gratuit aplicații pentru generarea, validarea XML și transformarea în PDF. Factura originală este fișierul XML cu sigiliul electronic al Ministerului Finanțelor; dacă fișierul are erori, sistemul trimite un mesaj de eroare, iar factura corectată se retrimite. Pentru acces, firma trebuie să fie înregistrată în SPV (persoanele juridice, cu certificat digital calificat). Factura trebuie trimisă în cel mult 5 zile lucrătoare de la emitere. Netransmiterea în B2B se amendează cu 15% din valoarea facturii, iar întârzierea cu amenzi fixe, după mărimea firmei.",
+  "conditii": [
+   {
+    "text": "B2B: emitentul, persoană impozabilă stabilită în România, transmite factura prin RO e-Factura pentru livrările și serviciile cu loc în România; excepții: bonurile fiscale cu valoare de factură simplificată și livrările intracomunitare (OUG 120/2021, art. 10 alin. (1)).",
+    "obligatoriu": true
+   },
+   {
+    "text": "B2C: din 1 ianuarie 2025, facturile către persoane neimpozabile se transmit și ele prin sistem, cu excepția bonurilor fiscale cu valoare de factură simplificată (OUG 120/2021, art. 10^1 alin. (2)).",
+    "obligatoriu": true
+   },
+   {
+    "text": "B2C: dacă cumpărătorul persoană fizică nu își dă codul de identificare fiscală, pe factură se trece un cod format din 13 cifre de zero (OUG 120/2021, art. 10^1 alin. (3)).",
+    "obligatoriu": false
+   },
+   {
+    "text": "B2G și instituții publice: obligația de folosire a sistemului se aplică și facturilor către autorități și entități contractante sau alte instituții publice (OUG 120/2021, art. 5 și art. 9^1).",
+    "obligatoriu": true
+   },
+   {
+    "text": "Factura respectă SR EN 16931-1, specificațiile RO_CIUS și sintaxele CEN/TS 16931-2 (OUG 120/2021, art. 4 alin. (1)); la contractele de achiziții publice se trec și codurile CPV (art. 4 alin. (2^1)).",
+    "obligatoriu": true
+   },
+   {
+    "text": "Termen: cel mult 5 zile lucrătoare de la emiterea facturii, dar nu mai târziu de 5 zile lucrătoare de la termenul de emitere din art. 319 alin. (16) din Codul fiscal (OUG 120/2021, art. 10 alin. (7); pentru B2C, art. 10^1 alin. (2^1)).",
+    "obligatoriu": true
+   },
+   {
+    "text": "Nu e obligatoriu sistemul pentru facturile privind operațiuni în afara sferei TVA (OUG 120/2021, art. 10^3); autofacturile emise după art. 319 alin. (8) din Codul fiscal se consideră B2B (art. 10^4).",
+    "obligatoriu": false
+   },
+   {
+    "text": "Persoanele care se identifică prin CNP au reguli separate: nu sunt obligate, dar pot opta pentru sistem (OUG 120/2021, art. 10^10, modificat prin Legea 88/2026).",
+    "obligatoriu": false
+   },
+   {
+    "text": "Sancțiuni: netransmiterea facturii B2B de către emitent, sau primirea și înregistrarea ei de către cumpărător fără să fi trecut prin sistem: amendă de 15% din valoarea totală a facturii (OUG 120/2021, art. 13^2 alin. (1) lit. a) și b), alin. (2)).",
+    "obligatoriu": true
+   },
+   {
+    "text": "Sancțiuni pentru depășirea termenului: 5.000–10.000 lei (contribuabili mari), 2.500–5.000 lei (mijlocii), 1.000–2.500 lei (ceilalți și persoanele fizice) (OUG 120/2021, art. 13^2 alin. (1) lit. c) și d), alin. (3)).",
+    "obligatoriu": true
+   }
+  ],
+  "documente": [
+   {
+    "nume": "Înregistrarea firmei ca utilizator în Spațiul Privat Virtual (SPV) de pe anaf.ro",
+    "obligatoriu": true,
+    "nota": "Ghidul ANAF RO e-Factura (2024), cap. II: fără înregistrare în SPV nu se poate trimite factura"
+   },
+   {
+    "nume": "Certificat digital calificat pentru reprezentantul firmei (persoane juridice)",
+    "obligatoriu": true,
+    "nota": "Ghidul ANAF, cap. II: înregistrare utilizatori persoane juridice cu certificat calificat"
+   },
+   {
+    "nume": "Factura în format XML, conformă cu SR EN 16931-1 și RO_CIUS",
+    "obligatoriu": true,
+    "nota": "OUG 120/2021, art. 4 alin. (1); se poate genera cu aplicația gratuită de pe mfinante.gov.ro"
+   },
+   {
+    "nume": "Cerere de înscriere în Registrul RO e-Factura opțional sau obligatoriu (formularele 081 / 082)",
+    "obligatoriu": false,
+    "nota": "Doar pentru categoriile scutite care optează sau au obligație de înscriere (OUG 120/2021, art. 10^5–10^8; OPANAF 3788/2024 și 3789/2024, conform ghidului ANAF)"
+   }
+  ],
+  "pasi": [
+   "Se înregistrează firma în Spațiul Privat Virtual: pe anaf.ro, Servicii online – Înregistrare utilizatori – Persoane juridice – înregistrare cu certificat calificat (reprezentantul are nevoie de un certificat digital calificat).",
+   "Se emite factura în format XML: fie din programul propriu de facturare, fie cu aplicația gratuită a Ministerului Finanțelor de pe mfinante.gov.ro, care nu cere autentificare.",
+   "Opțional, fișierul XML se verifică înainte de trimitere cu instrumentul gratuit „Validare XML factură” de pe mfinante.gov.ro.",
+   "Se intră pe anaf.ro – Autentificare RO e-Factura/RO e-Transport – Factura electronică – Trimitere factură; se alege sintaxa (UBL implicit) și CIF-ul vânzătorului, se încarcă fișierul și se apasă „Transmitere XML Factură”. Firmele cu program propriu pot trimite direct prin API.",
+   "Sistemul dă un „index de încărcare”; cu el se verifică starea. Dacă factura e corectă, primește sigiliul electronic al Ministerului Finanțelor și ajunge la cumpărător; dacă are erori, se primește un mesaj de eroare, factura se corectează și se retrimite (OUG 120/2021, art. 4 alin. (4)–(5)).",
+   "Totul se face în cel mult 5 zile lucrătoare de la emiterea facturii (OUG 120/2021, art. 10 alin. (7)).",
+   "Facturile primite și trimise se descarcă din „Factura electronică – Răspunsuri factură”, în XML și PDF; fișierele stau în sistem 60 de zile, apoi se cer din arhivă. Se păstrează fișierul XML cu sigiliul, care este originalul facturii (art. 4 alin. (6)).",
+   "Dacă cumpărătorul are obiecții, le trimite prin mesaj în sistem; o factură greșită se corectează după art. 330 din Codul fiscal, iar factura de corecție se trimite tot prin RO e-Factura (OUG 120/2021, art. 4 alin. (9)–(10))."
+  ],
+  "taxe": "Pentru folosirea sistemului nu am găsit în surse vreo taxă; aplicațiile Ministerului Finanțelor de generare, validare și transformare în PDF sunt puse la dispoziție gratuit. Certificatul digital calificat se obține de la un furnizor acreditat, cu costul stabilit de acesta.",
+  "termen_legal": "Transmiterea în RO e-Factura: cel mult 5 zile lucrătoare de la emiterea facturii, dar nu mai târziu de 5 zile lucrătoare de la termenul-limită de emitere din art. 319 alin. (16) din Codul fiscal (OUG 120/2021, art. 10 alin. (7)).",
+  "temei_legal": "OUG 120/2021 privind administrarea, funcționarea și implementarea sistemului național RO e-Factura, aprobată și modificată prin Legea 139/2022, cu modificările ulterioare (Legea 296/2023, OUG 69/2024, OUG 138/2024, OUG 89/2025, OUG 6/2026, Legea 88/2026): art. 2, 4, 5, 9^1, 10, 10^1, 10^3, 10^4, 10^10, 11, 13^2; Codul fiscal (Legea 227/2015), art. 319 și 330.",
+  "activitati": [
+   "comert",
+   "servicii",
+   "productie",
+   "constructii",
+   "transport",
+   "horeca",
+   "birou"
+  ],
+  "surse": [
+   {
+    "titlu": "OUG 120/2021 privind sistemul național RO e-Factura, forma consolidată (legislatie.just.ro)",
+    "url": "https://legislatie.just.ro/Public/DetaliiDocument/247243",
+    "verificat": "2026-11-13"
+   },
+   {
+    "titlu": "ANAF (DGRFP Iași) – Utilizarea sistemului național de facturare electronică RO e-Factura, august 2024",
+    "url": "https://static.anaf.ro/static/10/Iasi/material_informativ_13-08-2024.pdf",
+    "verificat": "2026-11-13"
+   }
+  ]
+ },
+ {
+  "cheie": "inregistrare-marca-osim",
+  "titlu": "Înregistrarea unei mărci la OSIM (marcă națională, protecție în România)",
+  "domeniu": "comercial",
+  "institutie": "Oficiul de Stat pentru Invenții și Mărci (OSIM), București; cererea se depune online pe portalul OSIM (secțiunea Mărci), la sediul OSIM, prin poștă cu confirmare de primire sau pe e-mail, cu formularul PDF completat pe calculator",
+  "descriere": "Marca este semnul (nume, siglă, combinație de cuvinte și imagini, formă etc.) prin care clienții recunosc produsele sau serviciile firmei. Înregistrată la OSIM, marca dă titularului dreptul exclusiv de a o folosi în România pentru produsele și serviciile trecute în cerere și de a interzice altora să folosească semne identice sau asemănătoare. Cererea se face pentru o singură marcă și cuprinde lista produselor și serviciilor, împărțite pe clasele din Clasificarea de la Nisa (ediția a 12-a, 2025); taxele cresc cu fiecare clasă în plus. OSIM publică cererea, o examinează, apoi publică admiterea; în 2 luni oricine are un drept mai vechi poate face opoziție. Dacă nu sunt probleme, după plata taxei se eliberează certificatul. Protecția durează 10 ani de la data depozitului și se poate reînnoi la nesfârșit, din 10 în 10 ani. Marca trebuie folosită efectiv: dacă nu e folosită 5 ani la rând fără motiv întemeiat, titularul poate pierde dreptul. Protecția prin OSIM e valabilă doar în România.",
+  "conditii": [
+   {
+    "text": "Cererea se depune la OSIM, în limba română, și conține solicitarea expresă de înregistrare, datele solicitantului, reprezentarea mărcii, lista produselor și/sau serviciilor și dovada plății taxei de depunere și publicare (Legea 84/1998, art. 9 alin. (1)–(2)).",
+    "obligatoriu": true
+   },
+   {
+    "text": "O cerere privește o singură marcă (Legea 84/1998, art. 9 alin. (4)).",
+    "obligatoriu": true
+   },
+   {
+    "text": "Produsele și serviciile se încadrează în clasele Clasificării de la Nisa și se descriu clar și precis (Legea 84/1998, art. 10 alin. (2)–(4)); dacă se trece doar titlul clasei, el acoperă doar ce înseamnă literal acel titlu (ghidul OSIM).",
+    "obligatoriu": true
+   },
+   {
+    "text": "Taxa de examinare se plătește odată cu cererea sau în cel mult 30 de zile de la depunere; altfel cererea se respinge (Legea 84/1998, art. 16 alin. (1)–(2)).",
+    "obligatoriu": true
+   },
+   {
+    "text": "Marca nu trebuie să cadă sub motivele absolute de refuz prevăzute de lege (Legea 84/1998, art. 5 alin. (1)); terții pot depune observații pe aceste motive (art. 20).",
+    "obligatoriu": true
+   },
+   {
+    "text": "Marca nu trebuie să încalce drepturi anterioare ale altora (motive relative, art. 6); titularii acestor drepturi pot face opoziție (Legea 84/1998, art. 26 alin. (1)–(2)).",
+    "obligatoriu": true
+   },
+   {
+    "text": "Solicitanții fără domiciliu, sediu sau unitate efectivă în UE sau SEE trebuie reprezentați de un mandatar autorizat (ghidul OSIM).",
+    "obligatoriu": false
+   },
+   {
+    "text": "Marca trebuie folosită efectiv în România; nefolosirea 5 ani neîntrerupt, fără motive întemeiate, duce la decădere la cerere (Legea 84/1998, art. 55 alin. (1) lit. a)).",
+    "obligatoriu": true
+   }
+  ],
+  "documente": [
+   {
+    "nume": "Cererea de înregistrare a mărcii (formularul tip OSIM, completat online sau pe calculator)",
+    "obligatoriu": true,
+    "nota": "Legea 84/1998, art. 9 alin. (1)–(2); formularul pe osim.ro"
+   },
+   {
+    "nume": "Reprezentarea mărcii (imaginea siglei, în format gif sau jpeg la depunerea online), cu culorile revendicate, dacă e cazul",
+    "obligatoriu": true,
+    "nota": "Legea 84/1998, art. 9 alin. (2); ghidul OSIM"
+   },
+   {
+    "nume": "Lista produselor și/sau serviciilor, grupate pe clasele de la Nisa",
+    "obligatoriu": true,
+    "nota": "Legea 84/1998, art. 9 alin. (2) și art. 10"
+   },
+   {
+    "nume": "Dovada plății taxelor de depunere și publicare",
+    "obligatoriu": true,
+    "nota": "Legea 84/1998, art. 9 alin. (2) lit. e); la depunerea online se trece numărul ordinului de plată și se atașează scanul lui"
+   },
+   {
+    "nume": "Dovada plății taxei de examinare",
+    "obligatoriu": true,
+    "nota": "Legea 84/1998, art. 16 alin. (1): odată cu cererea sau în 30 de zile de la depunere"
+   },
+   {
+    "nume": "Documentele de prioritate (dacă se invocă o cerere depusă anterior în alt stat, în ultimele 6 luni)",
+    "obligatoriu": false,
+    "nota": "Legea 84/1998, art. 12 alin. (2) și art. 14"
+   },
+   {
+    "nume": "Regulamentul de utilizare (marcă colectivă) sau regulamentul și autorizația de certificare (marcă de certificare)",
+    "obligatoriu": false,
+    "nota": "Ghidul OSIM; doar pentru aceste tipuri de mărci"
+   },
+   {
+    "nume": "Împuternicirea mandatarului autorizat, dacă cererea se depune prin reprezentant",
+    "obligatoriu": false,
+    "nota": "Ghidul OSIM"
+   }
+  ],
+  "pasi": [
+   "Se alege marca și se verifică (opțional, cu cercetare documentară la OSIM, contra cost) că nu există deja mărci identice sau asemănătoare; se stabilesc produsele și serviciile și clasele de la Nisa (dacă nu știți clasa, OSIM poate face încadrarea, cu taxă).",
+   "Se plătesc taxa de depunere și taxa de publicare (un singur ordin de plată la depunerea online) și se depune cererea online pe portalul OSIM, la sediu, prin poștă sau pe e-mail.",
+   "OSIM verifică cererea și acordă data de depozit în 7 zile; dacă lipsește ceva, solicitantul are 30 de zile să completeze (Legea 84/1998, art. 18 alin. (1)–(2)).",
+   "Taxa de examinare se plătește odată cu cererea sau în cel mult 30 de zile de la depunere (art. 16).",
+   "Cererea se publică electronic în cel mult 7 zile de la data de depozit (art. 19 alin. (1)); în 2 luni de la publicare oricine poate depune observații pe motive absolute (art. 20).",
+   "OSIM examinează cererea pe fond în 6 luni de la publicare (art. 21 alin. (1)); dacă găsește obstacole, solicitantul e notificat și poate răspunde.",
+   "Admiterea se publică în Buletinul Oficial de Proprietate Industrială; în 2 luni, cei cu drepturi anterioare pot face opoziție (art. 25 alin. (4), art. 26); opoziția se poate rezolva amiabil sau de comisia OSIM (art. 27–28).",
+   "După încheierea procedurii, titularul plătește taxa de certificat în 30 de zile de la notificare și primește certificatul de înregistrare; neplata înseamnă renunțare la înregistrare (art. 32).",
+   "Reînnoirea: cererea și taxa se depun în cele 6 luni dinaintea expirării celor 10 ani sau, cu taxă majorată, în cel mult 6 luni după expirare; altfel titularul pierde marca (art. 33 alin. (3)–(6))."
+  ],
+  "taxe": "Taxe OSIM pentru solicitanți români, valabile din 1 ianuarie 2026 (OG 41/1998, anexa 4): depunere 51 lei; publicare 152 lei (alb-negru) sau 508 lei (color). Examinare marcă individuală, pentru o clasă: 559 lei (alb-negru) sau 965 lei (color), plus 152 lei pentru element figurativ sau grafică specială (ghidul OSIM: verbală 559, figurativă alb-negru 711, color cu culori revendicate 1.117 lei); fiecare clasă în plus 254 lei. Certificat de înregistrare 254 lei. Încadrarea în clase de către OSIM (dacă nu știți clasa) 152 lei. Examinarea unei opoziții: 305 lei pentru o clasă și 152 lei pentru fiecare clasă în plus. Reînnoire marcă individuală, pentru o clasă: 610 lei (alb-negru) sau 1.016 lei (color), plus 152 lei pentru element figurativ și 254 lei pentru fiecare clasă în plus; certificatul de reînnoire 254 lei. Reînnoirea după expirare (în perioada de grație de 6 luni): taxa de reînnoire majorată cu 50% (OG 41/1998, art. 24 alin. (1), conform calculatorului OSIM). Mărcile colective și de certificare au taxe mai mari (examinare de la 1.982 lei). Verificați sumele pe osim.ro înainte de plată.",
+  "termen_legal": "Data de depozit: 7 zile (art. 18); publicarea cererii: 7 zile de la depozit (art. 19); examinarea pe fond: 6 luni de la publicare (art. 21 alin. (1)); opoziția: 2 luni de la publicarea admiterii (art. 26 alin. (1)); certificatul: 30 de zile de la notificare (art. 32).",
+  "temei_legal": "Legea 84/1998 privind mărcile și indicațiile geografice, republicată, cu modificările ulterioare: art. 5, 6, 9, 10, 12, 14, 16, 18–21, 25–28, 32, 33, 55; Regulamentul de aplicare aprobat prin HG 1134/2010, cu modificările ulterioare; OG 41/1998 privind taxele în domeniul proprietății industriale, republicată, anexa 4 (taxe pentru mărci).",
+  "activitati": [
+   "comert",
+   "servicii",
+   "productie",
+   "horeca"
+  ],
+  "surse": [
+   {
+    "titlu": "OSIM – Înregistrarea cererii de marcă (ghid de depunere și taxe)",
+    "url": "https://www.osim.ro/depuneri-online-marci/ghiduri",
+    "verificat": "2026-11-13"
+   },
+   {
+    "titlu": "OSIM – Anexa 4: cuantumul și termenele de plată a taxelor pentru mărci și indicații geografice, valabile din 01.01.2026",
+    "url": "https://www.osim.ro/images/Taxe/2026/Taxe-PI-01.01.2026-Anexa-4-Marci-OSIM.pdf",
+    "verificat": "2026-11-13"
+   },
+   {
+    "titlu": "OSIM – Calculator taxe mărci 2026",
+    "url": "https://osim.ro/images/Marci/OSIM-RO-calculator-taxe-2026-MarciBB.html",
+    "verificat": "2026-11-13"
+   },
+   {
+    "titlu": "Legea 84/1998 privind mărcile și indicațiile geografice, republicată (legislatie.just.ro)",
+    "url": "https://legislatie.just.ro/Public/DetaliiDocument/230312",
+    "verificat": "2026-11-13"
+   },
+   {
+    "titlu": "OSIM – Legislație mărci",
+    "url": "https://www.osim.ro/legislatie-marci",
+    "verificat": "2026-11-13"
+   }
+  ]
+ },
+ {
+  "cheie": "ssm-si-medicina-muncii-la-angajare",
+  "titlu": "Securitatea și sănătatea în muncă (SSM) și medicina muncii la primul angajat și la fiecare angajare",
+  "domeniu": "altul",
+  "institutie": "Nu se depune o cerere separată: obligațiile se îndeplinesc în firmă și sunt controlate de inspectoratul teritorial de muncă (ITM) din județ. Examenul medical se face la un medic specialist de medicina muncii, la solicitarea scrisă a angajatorului.",
+  "descriere": "De la primul angajat, firma răspunde de securitatea și sănătatea lucrătorilor, chiar dacă folosește o firmă externă. Trebuie să aleagă cine se ocupă de prevenire: patronul însuși (doar în firmele mici, cu activități fără riscuri deosebite și cu un curs SSM de cel puțin 40 de ore), un lucrător desemnat, un serviciu intern sau un serviciu extern de prevenire și protecție. Firma are o evaluare scrisă a riscurilor pe fiecare loc de muncă și un plan de prevenire și protecție făcut pe baza ei, plus instrucțiuni proprii. Fiecare om nou primește, înainte să înceapă lucrul, instruirea introductiv-generală (cu test), apoi instruirea la locul de muncă de la șeful direct; abia apoi poate lucra. Urmează instruirea periodică, la cel mult 6 luni (12 luni pentru personalul tehnico-administrativ). Totul se trece în fișa de instruire individuală, semnată, pe hârtie sau electronic. Tot la angajare, omul trece prin examenul medical de medicina muncii: angajatorul completează fișa de solicitare și fișa factorilor de risc, iar medicul dă fișa de aptitudine (apt, apt condiționat, inapt temporar sau permanent). Se angajează doar persoane apte, iar costul examenelor îl suportă angajatorul. Pe partea de urgențe, firma stabilește măsurile de prim ajutor, de stingere a incendiilor și de evacuare și desemnează oamenii care le aplică. Obligațiile detaliate de apărare împotriva incendiilor sunt în legislația specifică și nu sunt descrise aici.",
+  "conditii": [
+   {
+    "text": "Angajatorul organizează activitatea de prevenire în unul dintre aceste moduri: și-o asumă singur, desemnează lucrători, înființează un serviciu intern sau apelează la un serviciu extern (Normele aprobate prin HG 1425/2006, art. 14; Legea 319/2006, art. 8, art. 9 alin. (4)).",
+    "obligatoriu": true
+   },
+   {
+    "text": "Patronul poate face singur activitatea SSM doar dacă firma are cel mult 9 lucrători (sau între 10 și 49, dacă riscurile nu pot produce accidente grave), activitatea nu e în anexa 5 la Norme, lucrează efectiv în firmă și a absolvit un curs SSM de minimum 40 de ore (Normele, art. 16 alin. (1), art. 17 alin. (1)).",
+    "obligatoriu": false
+   },
+   {
+    "text": "Firmele cu 50–249 de lucrători desemnează lucrători sau organizează un serviciu intern, iar cele cu peste 250 de lucrători organizează un serviciu intern; ce nu pot face cu personalul propriu, fac prin servicii externe (Normele, art. 18, 19).",
+    "obligatoriu": false
+   },
+   {
+    "text": "Autorizarea funcționării din punctul de vedere al SSM nu se mai cere separat la ITM pentru firmele înregistrate la registrul comerțului după Legea 359/2004 și nici pentru PFA, întreprinderi individuale și familiale (OUG 44/2008): se face prin procedura de înregistrare (Normele, art. 3, art. 4).",
+    "obligatoriu": false
+   },
+   {
+    "text": "Angajatorul are o evaluare a riscurilor pentru securitatea și sănătatea în muncă și un plan de prevenire și protecție bazat pe ea (Legea 319/2006, art. 12 alin. (1) lit. a), art. 13 lit. b)); evaluarea se revizuiește la schimbări de tehnologie sau echipamente, după un eveniment sau la riscuri noi (Normele, art. 15 alin. (3)).",
+    "obligatoriu": true
+   },
+   {
+    "text": "Fiecare persoană e informată înainte de angajare despre riscurile postului și măsurile de protecție (Legea 319/2006, art. 13 lit. h)).",
+    "obligatoriu": true
+   },
+   {
+    "text": "Instruirea are trei faze: introductiv-generală, la locul de muncă și periodică, fiecare de cel puțin o oră; cine nu și-a însușit instruirea introductiv-generală nu poate fi angajat (Legea 319/2006, art. 20; Normele, art. 77, art. 80^1, art. 89 alin. (3), art. 94).",
+    "obligatoriu": true
+   },
+   {
+    "text": "Instruirea periodică se face la cel mult 6 luni, iar pentru personalul tehnico-administrativ la cel mult 12 luni; se repetă suplimentar după o absență de peste 30 de zile lucrătoare, după un accident sau la schimbări de echipamente ori proceduri (Normele, art. 96 alin. (2^1) și (3), art. 98).",
+    "obligatoriu": true
+   },
+   {
+    "text": "Instruirea se face în timpul programului și nu pe banii lucrătorului; dovada poate fi pe hârtie sau electronică, semnată electronic (Legea 319/2006, art. 21).",
+    "obligatoriu": true
+   },
+   {
+    "text": "Se angajează doar persoane găsite apte la examenul medical și se asigură controlul medical periodic (Legea 319/2006, art. 13 lit. j)); costul serviciilor medicale profilactice e suportat de angajator (HG 355/2007, art. 7).",
+    "obligatoriu": true
+   },
+   {
+    "text": "Angajatorul ia măsuri de prim ajutor, stingere a incendiilor și evacuare, ține legătura cu serviciile de urgență și desemnează lucrătorii care aplică aceste măsuri (Legea 319/2006, art. 10).",
+    "obligatoriu": true
+   },
+   {
+    "text": "Amenzi, printre altele: 4.000–8.000 lei pentru lipsa evaluării riscurilor, a instruirii (art. 20) sau angajarea fără examen medical (art. 13 lit. j)); 5.000–10.000 lei pentru lipsa planului de prevenire și protecție; 3.500–7.000 lei pentru încălcarea art. 8; 3.000–6.000 lei pentru încălcarea art. 10 (Legea 319/2006, art. 39 alin. (2), (4), (5), (6)).",
+    "obligatoriu": true
+   }
+  ],
+  "documente": [
+   {
+    "nume": "Decizia scrisă de desemnare a lucrătorului desemnat sau contractul cu serviciul extern de prevenire și protecție; dacă patronul își asumă singur activitatea, documentul de absolvire a cursului SSM de minimum 40 de ore",
+    "obligatoriu": true,
+    "nota": "Normele, art. 14, art. 16 alin. (1) lit. c), art. 20 alin. (1)"
+   },
+   {
+    "nume": "Evaluarea riscurilor pentru securitatea și sănătatea în muncă, pe locuri de muncă/posturi de lucru",
+    "obligatoriu": true,
+    "nota": "Legea 319/2006, art. 12 alin. (1) lit. a); Normele, art. 15 alin. (1) pct. 1"
+   },
+   {
+    "nume": "Planul de prevenire și protecție",
+    "obligatoriu": true,
+    "nota": "Legea 319/2006, art. 13 lit. b); Normele, art. 15 alin. (1) pct. 2"
+   },
+   {
+    "nume": "Instrucțiuni proprii de SSM și atribuțiile de SSM trecute în fișa postului",
+    "obligatoriu": true,
+    "nota": "Legea 319/2006, art. 13 lit. d) și e)"
+   },
+   {
+    "nume": "Programul de instruire-testare și tematicile de instruire aprobate de angajator",
+    "obligatoriu": true,
+    "nota": "Normele, art. 80, art. 80^1, art. 93, art. 97"
+   },
+   {
+    "nume": "Fișa de instruire individuală pentru fiecare lucrător (hârtie sau electronic), însoțită de o copie a ultimei fișe de aptitudine",
+    "obligatoriu": true,
+    "nota": "Normele, art. 81, anexa 11; se păstrează de la angajare până la încetarea contractului"
+   },
+   {
+    "nume": "Fișa de instruire colectivă pentru lucrătorii firmelor din afară și pentru vizitatori",
+    "obligatoriu": false,
+    "nota": "Normele, art. 82 alin. (2)–(4), anexa 12; doar când e cazul"
+   },
+   {
+    "nume": "Fișa de solicitare a examenului medical la angajare și fișa de identificare a factorilor de risc profesional, completate și semnate de angajator",
+    "obligatoriu": true,
+    "nota": "HG 355/2007, art. 8 alin. (5), art. 16 alin. (1), anexele 2 și 3"
+   },
+   {
+    "nume": "Fișa de aptitudine eliberată de medicul de medicina muncii (un exemplar pentru angajator, unul pentru lucrător)",
+    "obligatoriu": true,
+    "nota": "HG 355/2007, art. 17, anexa 5; angajatorul păstrează fișele de aptitudine și lista locurilor de muncă cu riscuri (art. 38)"
+   },
+   {
+    "nume": "Decizia de desemnare a lucrătorilor pentru prim ajutor, stingerea incendiilor și evacuare",
+    "obligatoriu": true,
+    "nota": "Legea 319/2006, art. 10 alin. (2)"
+   }
+  ],
+  "pasi": [
+   "Înainte de primul angajat, alegeți cine se ocupă de SSM: dumneavoastră (dacă îndepliniți condițiile și aveți cursul de 40 de ore), un angajat desemnat prin decizie scrisă sau un serviciu extern de prevenire și protecție.",
+   "Faceți evaluarea riscurilor pentru fiecare loc de muncă și, pe baza ei, planul de prevenire și protecție, instrucțiunile proprii și atribuțiile de SSM din fișele posturilor.",
+   "Completați fișa de solicitare a examenului medical și fișa factorilor de risc pentru postul respectiv și trimiteți viitorul angajat la medicul de medicina muncii, pe costul firmei.",
+   "Primiți fișa de aptitudine: angajați doar dacă avizul este „apt” sau „apt condiționat” (cu respectarea recomandărilor medicului).",
+   "Informați omul despre riscurile postului înainte de angajare, apoi faceți instruirea introductiv-generală (individual sau în grupe de cel mult 20), încheiată cu un test.",
+   "Șeful direct face instruirea la locul de muncă, cu demonstrații practice (echipament de protecție, prim ajutor, evacuare); omul începe lucrul doar după ce șeful ierarhic verifică ce a învățat și semnează în fișa de instruire individuală.",
+   "Desemnați oamenii pentru prim ajutor, stingerea incendiilor și evacuare și stabiliți legătura cu serviciile de urgență.",
+   "Repetați instruirea periodică la cel mult 6 luni (12 luni pentru birou/tehnico-administrativ) și controlul medical periodic la intervalele stabilite de medic; refaceți evaluarea riscurilor când se schimbă ceva important."
+  ],
+  "taxe": "",
+  "termen_legal": "Înainte de începerea lucrului: examenul medical și instruirea introductiv-generală și la locul de muncă (Legea 319/2006, art. 13 lit. j), art. 20 alin. (1) lit. a)); instruirea periodică la cel mult 6 luni, respectiv 12 luni (Normele, art. 96).",
+  "temei_legal": "Legea securității și sănătății în muncă nr. 319/2006, art. 6–13, 20, 21, 39; Normele metodologice aprobate prin HG 1425/2006, cu modificările ulterioare, art. 14–19, 76–99, anexele 5, 6, 11, 12; HG 355/2007 privind supravegherea sănătății lucrătorilor, art. 5, 7, 8, 13–17, 38 și anexele 1–5.",
+  "activitati": [
+   "comert",
+   "constructii",
+   "transport",
+   "horeca",
+   "servicii",
+   "productie",
+   "agricultura",
+   "cabinet",
+   "birou"
+  ],
+  "surse": [
+   {
+    "titlu": "Legea nr. 319/2006 a securității și sănătății în muncă, forma consolidată",
+    "url": "https://legislatie.just.ro/Public/DetaliiDocument/73772",
+    "verificat": "2026-11-13"
+   },
+   {
+    "titlu": "Normele metodologice de aplicare a Legii nr. 319/2006, aprobate prin HG 1425/2006, forma consolidată",
+    "url": "https://legislatie.just.ro/Public/DetaliiDocument/252029",
+    "verificat": "2026-11-13"
+   },
+   {
+    "titlu": "HG 355/2007 privind supravegherea sănătății lucrătorilor, forma consolidată",
+    "url": "https://legislatie.just.ro/Public/DetaliiDocument/82130",
+    "verificat": "2026-11-13"
+   },
+   {
+    "titlu": "Inspecția Muncii (REGES) – Protecția muncii: asigurarea securității și sănătății în muncă",
+    "url": "https://reges.inspectiamuncii.ro/informatii-utile/informatii-angajator/protectia-muncii/",
+    "verificat": "2026-11-13"
+   }
+  ]
+ },
+ {
+  "cheie": "evidenta-gestiunii-deseurilor",
+  "titlu": "Evidența gestiunii deșeurilor și obligațiile firmei care produce deșeuri",
+  "domeniu": "mediu",
+  "institutie": "Agenția județeană pentru protecția mediului (APM): evidența se transmite online, în sistemul electronic pus la dispoziție de Agenția Națională pentru Protecția Mediului (ANPM), până la 15 martie a anului următor. Controlul îl face Garda Națională de Mediu.",
+  "descriere": "Orice firmă care produce deșeuri (ambalaje, hârtie, resturi din producție, moloz, uleiuri uzate etc.) răspunde de ele până ajung la un operator autorizat. Concret: fiecare deșeu se încadrează în lista deșeurilor și primește un cod de 6 cifre; deșeurile periculoase sunt marcate cu asterisc (*). Firma ține lunar, pentru fiecare tip de deșeu, o evidență a gestiunii: cât a generat, cât a valorificat, cât a eliminat, cât a rămas în stoc, cum l-a depozitat temporar și unde l-a trimis. Pe baza ei, până la 15 martie a anului următor, datele se pun la dispoziția agenției județene pentru protecția mediului, electronic. Evidența se păstrează cel puțin 3 ani. Firma colectează separat cel puțin hârtia, metalul, plasticul, sticla și textilele, nu amestecă deșeurile periculoase între ele sau cu altele și predă deșeurile doar unui operator autorizat (sau le tratează singură, dacă are autorizație). Păstrează documentele care dovedesc predarea, pentru că autoritățile sau deținătorul anterior le pot cere. Firma desemnează un angajat responsabil cu gestionarea deșeurilor sau delegă această sarcină unei persoane din afară; dacă activitatea are autorizație de mediu, persoana trebuie să aibă un curs recunoscut în gestionarea deșeurilor. Abandonarea, aruncarea sau ascunderea deșeurilor sunt interzise. Amenzile pentru firme sunt mari: 40.000–60.000 de lei pentru lipsa evidenței, a colectării separate, a persoanei desemnate sau pentru predarea greșită.",
+  "conditii": [
+   {
+    "text": "Fiecare tip de deșeu se încadrează în lista deșeurilor, cu cod complet de 6 cifre; deșeurile periculoase sunt marcate cu asterisc (OUG 92/2021, art. 7 alin. (1); HG 856/2002, art. 4 alin. (3), art. 5, art. 6).",
+    "obligatoriu": true
+   },
+   {
+    "text": "Producătorii de deșeuri țin o evidență cronologică lunară, pe tipuri de deșeuri (cod, cantitate în tone, origine, destinație, mod de transport, metodă de tratare, cantitate eliminată) și o pun la dispoziția APM, electronic, până la 15 martie a anului următor (OUG 92/2021, art. 48 alin. (1); HG 856/2002, art. 1 alin. (1), anexa 1).",
+    "obligatoriu": true
+   },
+   {
+    "text": "Evidența gestiunii deșeurilor se păstrează cel puțin 3 ani (transportatorii: cel puțin 12 luni), iar documentele justificative ale operațiunilor se dau la cererea autorităților sau a deținătorului anterior (OUG 92/2021, art. 48 alin. (5) și (6)).",
+    "obligatoriu": true
+   },
+   {
+    "text": "Producătorii și deținătorii de deșeuri introduc colectarea separată cel puțin pentru hârtie, metal, plastic și sticlă și, din 1 ianuarie 2025, pentru textile (OUG 92/2021, art. 17 alin. (3)).",
+    "obligatoriu": true
+   },
+   {
+    "text": "Deșeurile se tratează prin mijloace proprii sau prin predare la un operator economic autorizat de tratare sau de colectare (OUG 92/2021, art. 23 alin. (1)); predarea la un operator pentru tratare preliminară nu scutește, ca regulă, de răspunderea pentru valorificarea sau eliminarea completă (art. 24 alin. (1)).",
+    "obligatoriu": true
+   },
+   {
+    "text": "Deșeurile periculoase se colectează, se transportă și se depozitează separat, cu trasabilitate de la locul de generare la destinația finală, și nu se amestecă între ele sau cu alte deșeuri; producătorii au buletinele de analiză care le caracterizează (OUG 92/2021, art. 27 alin. (1), art. 28 alin. (1), art. 48 alin. (2)).",
+    "obligatoriu": false
+   },
+   {
+    "text": "Firma care generează deșeuri desemnează o persoană dintre angajați pentru obligațiile privind gestionarea deșeurilor sau delegă această obligație unei terțe persoane; dacă activitatea are autorizație de mediu, persoana trebuie instruită printr-un program recunoscut național (OUG 92/2021, art. 23 alin. (4) și (5)).",
+    "obligatoriu": true
+   },
+   {
+    "text": "Abandonarea, aruncarea și ascunderea deșeurilor sunt interzise (OUG 92/2021, art. 20 alin. (3)).",
+    "obligatoriu": true
+   },
+   {
+    "text": "Amenzi pentru persoane juridice: 40.000–60.000 lei pentru încălcarea, printre altele, a art. 17 alin. (3), art. 23, art. 24 alin. (1), art. 27 alin. (1), art. 28 alin. (1) și art. 48 alin. (1), (2), (5), (6); 50.000–70.000 lei pentru abandonarea sau ascunderea deșeurilor (OUG 92/2021, art. 62 alin. (1) lit. a) și b)).",
+    "obligatoriu": true
+   }
+  ],
+  "documente": [
+   {
+    "nume": "Evidența gestiunii deșeurilor, lunar, pentru fiecare tip de deșeu (generare, valorificare, eliminare, stoc; stocare temporară, tratare, transport, destinație)",
+    "obligatoriu": true,
+    "nota": "HG 856/2002, art. 1 alin. (1), anexa 1; OUG 92/2021, art. 48 alin. (1)"
+   },
+   {
+    "nume": "Raportarea anuală a datelor din evidență către APM, în sistemul electronic al ANPM",
+    "obligatoriu": true,
+    "nota": "OUG 92/2021, art. 48 alin. (1); până la 15 martie a anului următor"
+   },
+   {
+    "nume": "Documentele care dovedesc predarea deșeurilor la operatori autorizați (documente justificative ale operațiunilor de gestionare)",
+    "obligatoriu": true,
+    "nota": "OUG 92/2021, art. 23 alin. (1), art. 48 alin. (6)"
+   },
+   {
+    "nume": "Decizia de desemnare a persoanei responsabile cu gestionarea deșeurilor sau contractul prin care obligația e delegată unei terțe persoane",
+    "obligatoriu": true,
+    "nota": "OUG 92/2021, art. 23 alin. (4)"
+   },
+   {
+    "nume": "Certificatul de absolvire a programului de perfecționare în gestionarea deșeurilor al persoanei desemnate",
+    "obligatoriu": false,
+    "nota": "OUG 92/2021, art. 23 alin. (5); doar pentru activitățile cu autorizație de mediu sau autorizație integrată de mediu"
+   },
+   {
+    "nume": "Buletinele de analiză care caracterizează deșeurile periculoase",
+    "obligatoriu": false,
+    "nota": "OUG 92/2021, art. 48 alin. (2); doar dacă firma produce sau deține deșeuri periculoase"
+   }
+  ],
+  "pasi": [
+   "Faceți lista deșeurilor pe care le produce firma și încadrați fiecare deșeu în lista deșeurilor, cu codul de 6 cifre (deșeurile din ambalaje se trec la codul 15 01, nu la 20 01); marcați-le pe cele periculoase (*).",
+   "Desemnați în scris un angajat responsabil cu gestionarea deșeurilor sau delegați sarcina unei persoane din afară; dacă aveți autorizație de mediu, persoana trebuie să aibă un curs recunoscut.",
+   "Organizați colectarea separată în firmă: cel puțin hârtie, metal, plastic, sticlă și textile; deșeurile periculoase se țin separat, în recipiente potrivite, fără să fie amestecate.",
+   "Încheiați contracte doar cu operatori autorizați (operatorul de salubrizare, colectori sau firme de tratare autorizate) și păstrați documentele fiecărei predări.",
+   "Completați lunar evidența gestiunii deșeurilor, după modelul din anexa 1 la HG 856/2002: cantități generate, valorificate, eliminate, rămase în stoc, cum au fost stocate și unde au fost trimise.",
+   "Până la 15 martie, transmiteți datele anului trecut agenției județene pentru protecția mediului, electronic, în sistemul ANPM.",
+   "Păstrați evidența și documentele de predare cel puțin 3 ani și prezentați-le la controlul Gărzii Naționale de Mediu sau la cererea APM."
+  ],
+  "taxe": "",
+  "termen_legal": "Evidența se ține lunar și se transmite APM până la 15 martie a anului următor; se păstrează cel puțin 3 ani (OUG 92/2021, art. 48 alin. (1) și (5)).",
+  "temei_legal": "OUG 92/2021 privind regimul deșeurilor, aprobată cu modificări prin Legea 17/2023, forma consolidată, art. 7, 17 alin. (3), 20 alin. (3), 23, 24, 27, 28, 48, 62; HG 856/2002 privind evidența gestiunii deșeurilor și pentru aprobarea listei cuprinzând deșeurile, inclusiv deșeurile periculoase, art. 1, 4–7, 9 și anexele 1 și 2.",
+  "activitati": [
+   "comert",
+   "constructii",
+   "horeca",
+   "servicii",
+   "productie",
+   "agricultura",
+   "transport"
+  ],
+  "surse": [
+   {
+    "titlu": "OUG 92/2021 privind regimul deșeurilor, forma consolidată",
+    "url": "https://legislatie.just.ro/Public/DetaliiDocument/263478",
+    "verificat": "2026-11-13"
+   },
+   {
+    "titlu": "HG 856/2002 privind evidența gestiunii deșeurilor și pentru aprobarea listei cuprinzând deșeurile, inclusiv deșeurile periculoase",
+    "url": "https://legislatie.just.ro/Public/DetaliiDocument/38294",
+    "verificat": "2026-11-13"
+   },
+   {
+    "titlu": "Ministerul Mediului – 30 cele mai frecvente întrebări privind gestionarea deșeurilor și a siturilor contaminate",
+    "url": "https://mmediu.ro/en/domenii/mediu/deseuri/faq-si-prezentari/30-cele-mai-frecvente-intrebari-privind-gestionarea-deseurilor-si-a-siturilor-contaminate/",
+    "verificat": "2026-11-13"
+   }
+  ]
+ },
+ {
+  "cheie": "autorizare-anre-instalatii-gaze",
+  "titlu": "Autorizația ANRE pentru firmele care proiectează, execută sau exploatează instalații și rețele de gaze naturale (PDIB, EDIB, PDSB, EDSB, PT, ET, RPFA etc.)",
+  "domeniu": "constructii",
+  "institutie": "Autoritatea Națională de Reglementare în Domeniul Energiei (ANRE), str. Constantin Nacu nr. 3, Sector 2, București. Cererea se trimite online (portalul ANRE, e-mail la instalatori@anre.ro sau platforma ROePAS, cu semnătură electronică) sau pe hârtie, la registratura ANRE.",
+  "descriere": "O firmă are voie să proiecteze, să execute sau să exploateze instalații și rețele de gaze naturale doar dacă are autorizația ANRE potrivită tipului de lucrare. Regulamentul în vigoare a fost aprobat prin Ordinul ANRE nr. 17/2026 (Monitorul Oficial nr. 444 din 26 mai 2026) și a înlocuit Ordinul 132/2021. Pentru instalațiile de utilizare a gazelor (instalația din clădire, de după contor) de medie, redusă și joasă presiune, se cer autorizația PDIB (proiectare) și EDIB (execuție). Pentru rețelele de distribuție de medie, redusă și joasă presiune se cer PDSB și EDSB. Pentru înaltă presiune (transport, distribuție, instalații de utilizare) se cer PT și ET. Mai există tipurile PPI/EPI (conducte din amonte, înmagazinare), PGNL/EGNL (GNL pentru clienți), PGNLT/EGNLT (terminale GNL), PH/EIH (hidrogen) și RPFA (persoana fizică autorizată care doar înlocuiește racordul flexibil la aparatele de gaz de cel mult 3 mc/h). Verificările și reviziile instalațiilor de utilizare le fac doar firmele cu EDIB sau ET, după presiune. Autorizația nu expiră, dar trebuie vizată o dată la 5 ani. Firma trebuie să aibă angajați instalatori autorizați ANRE (persoane fizice) de tipul cerut, sudori autorizați și dotarea tehnică minimă. Antreprenorul general poate subcontracta lucrările de gaze doar către firme autorizate ANRE, cu acordul beneficiarului, și răspunde solidar cu acestea.",
+  "conditii": [
+   {
+    "text": "Proiectarea, execuția și exploatarea instalațiilor și sistemelor de gaze naturale se fac doar de firme autorizate ANRE pe baza regulamentului specific (Legea 123/2012, art. 119 pct. 1 și art. 121 alin. (1); Regulamentul aprobat prin Ordinul ANRE 17/2026, art. 1 alin. (3) și art. 31 alin. (1)).",
+    "obligatoriu": true
+   },
+   {
+    "text": "PDIB (proiectare instalații de utilizare, medie/redusă/joasă presiune): cel puțin 2 angajați instalatori autorizați tip PGIU, dintre care unul inginer cu cel puțin 5 ani experiență în proiectare, coordonator (Regulament, art. 8 lit. a)).",
+    "obligatoriu": false
+   },
+   {
+    "text": "EDIB (execuție instalații de utilizare, medie/redusă/joasă presiune): cel puțin 3 angajați instalatori autorizați tip EGIU, unul inginer cu cel puțin 3 ani experiență în execuție; cel puțin 1 sudor autorizat în oțel și 1 sudor autorizat în polietilenă (cap la cap și electrofuziune); aparate de sudură PE proprii sau în folosință, cu verificarea tehnică periodică valabilă (Regulament, art. 15).",
+    "obligatoriu": false
+   },
+   {
+    "text": "PDSB: cel puțin 2 instalatori autorizați tip PGD, unul inginer cu cel puțin 5 ani experiență (art. 7). EDSB: cel puțin 3 instalatori tip EGD, unul inginer cu cel puțin 3 ani experiență, 1 sudor în oțel, 2 sudori în polietilenă, aparate de sudură PE și laborator autorizat pentru controlul sudurilor (art. 14).",
+    "obligatoriu": false
+   },
+   {
+    "text": "PT: cel puțin 2 instalatori tip PGT, unul inginer cu cel puțin 7 ani experiență (art. 6). ET: cel puțin 3 instalatori tip EGT, unul inginer cu cel puțin 5 ani experiență, și cel puțin 2 sudori autorizați în oțel (art. 13).",
+    "obligatoriu": false
+   },
+   {
+    "text": "RPFA (înlocuirea racordurilor flexibile): cel puțin 1 angajat instalator autorizat tip EGIU (Regulament, art. 19 lit. c)).",
+    "obligatoriu": false
+   },
+   {
+    "text": "Pe toată durata autorizației se păstrează structura minimă de personal și dotarea; orice schimbare a personalului minim se anunță la ANRE în 15 zile calendaristice (Regulament, art. 4 alin. (1) lit. d); anexele 7 și 8, pct. 7).",
+    "obligatoriu": true
+   },
+   {
+    "text": "Firma de execuție dă garanție de cel puțin 2 ani pentru lucrări, de la punerea în funcțiune, și lucrează doar pe proiecte făcute de firme autorizate și verificate de verificatori de proiecte (anexa 8, pct. 12 și 18).",
+    "obligatoriu": true
+   },
+   {
+    "text": "Nu se acordă autorizație firmei în faliment sau căreia ANRE i-a retras o autorizație similară în ultimii 5 ani din vina ei (Regulament, art. 22 alin. (6)).",
+    "obligatoriu": true
+   },
+   {
+    "text": "Firmele cu autorizații emise după Ordinul 132/2021 le păstrează până la termen, dar trebuie să dovedească noile cerințe de personal și dotare în 3 luni de la intrarea în vigoare a regulamentului (Regulament, art. 39).",
+    "obligatoriu": true
+   }
+  ],
+  "documente": [
+   {
+    "nume": "Cerere de acordare a autorizației, după modelul din anexa 1, cu tipurile de autorizații cerute",
+    "obligatoriu": true,
+    "nota": "Regulament, art. 4 alin. (1); modelul e pe anre.ro"
+   },
+   {
+    "nume": "Certificat constatator de la Registrul Comerțului, actualizat la data cererii",
+    "obligatoriu": true,
+    "nota": "Regulament, art. 4 alin. (1) lit. a)"
+   },
+   {
+    "nume": "Organigrama firmei, datată și semnată de reprezentantul legal",
+    "obligatoriu": true,
+    "nota": "Regulament, art. 4 alin. (1) lit. b)"
+   },
+   {
+    "nume": "Declarații de consimțământ pentru datele personale (anexa 2)",
+    "obligatoriu": true,
+    "nota": "Regulament, art. 4 alin. (1) lit. c)"
+   },
+   {
+    "nume": "Declarația pe propria răspundere a reprezentantului legal (anexa 3), cu lista dotărilor tehnico-materiale",
+    "obligatoriu": true,
+    "nota": "Regulament, art. 4 alin. (1) lit. d) și g)"
+   },
+   {
+    "nume": "CV-uri pentru conducerea firmei și pentru coordonatorii activității autorizate",
+    "obligatoriu": true,
+    "nota": "Regulament, art. 4 alin. (1) lit. e)"
+   },
+   {
+    "nume": "Declarațiile scrise ale instalatorilor autorizați că sunt de acord să le fie folosită autorizația (anexa 4), în original",
+    "obligatoriu": true,
+    "nota": "Regulament, art. 4 alin. (1) lit. f)"
+   },
+   {
+    "nume": "Declarație privind respectarea Legii securității și sănătății în muncă nr. 319/2006",
+    "obligatoriu": true,
+    "nota": "Regulament, art. 4 alin. (1) lit. h)"
+   },
+   {
+    "nume": "Dovada plății tarifului de autorizare",
+    "obligatoriu": true,
+    "nota": "Regulament, art. 4 alin. (1) lit. i); dacă tariful nu intră în 10 zile lucrătoare, cererea se clasează (art. 22 alin. (1))"
+   },
+   {
+    "nume": "Raport din registrul general de evidență a salariaților pentru fiecare instalator autorizat și sudor din structura minimă, plus copii ale autorizațiilor sudorilor",
+    "obligatoriu": true,
+    "nota": "Regulament, art. 5–19, după tipul cerut"
+   },
+   {
+    "nume": "Acte care arată că firma deține sau folosește aparatele de sudură pentru polietilenă (cap la cap și electrofuziune), cu verificarea tehnică valabilă",
+    "obligatoriu": false,
+    "nota": "Regulament, art. 14 lit. f), art. 15 lit. e), art. 16 lit. e), art. 17 lit. e); pentru EDSB, EDIB, EGNLT, EGNL"
+   },
+   {
+    "nume": "Declarații din anexa 3 privind responsabilul cu tehnologia sudării, inginerul de automatizări (la proiectare) și garanția de cel puțin 2 ani",
+    "obligatoriu": false,
+    "nota": "Regulament, art. 5–18, după tipul cerut"
+   }
+  ],
+  "pasi": [
+   "Se alege tipul de autorizație după lucrare și presiune: de exemplu PDIB și EDIB pentru instalațiile de utilizare din clădiri (medie, redusă și joasă presiune), PDSB și EDSB pentru rețele de distribuție, PT și ET pentru înaltă presiune.",
+   "Se angajează personalul minim (instalatori autorizați ANRE de tipul cerut, sudori autorizați) și se asigură dotarea tehnică din lista din anexa 3 la regulament.",
+   "Se plătește tariful prin ordin de plată în contul ANRE, integral, la depunere sau înainte.",
+   "Se trimite cererea (anexa 1) cu documentele comune și cele specifice tipului, într-un singur exemplar: pe portalul ANRE, pe e-mail, prin ROePAS (cu semnătură electronică) sau pe hârtie la registratura ANRE.",
+   "ANRE analizează dosarul în 30 de zile calendaristice; dacă lipsesc acte, firma le completează în 30 de zile calendaristice de la comunicare. Dacă nu completează în 6 luni de la înregistrare, cererea se clasează.",
+   "ANRE decide acordarea sau refuzul în 30 de zile de la dosarul complet, prin decizie a președintelui ANRE; refuzul se poate ataca în contencios administrativ.",
+   "Autorizația se ridică de la sediul ANRE (de reprezentantul legal, un împuternicit sau prin curier) sau se poate cere trimiterea ei pe e-mail.",
+   "Pentru viză, cererea (anexa 1) se trimite cu 60–90 de zile calendaristice înainte de împlinirea a 5 ani de la emitere sau de la ultima viză; după acest termen, se tratează ca cerere nouă.",
+   "Schimbarea denumirii, a formei juridice sau a sediului se anunță la ANRE în 10 zile calendaristice, cu certificatul constatator și tariful de modificare; ANRE emite autorizația modificată în 10 zile lucrătoare."
+  ],
+  "taxe": "Pentru 2026, după pagina ANRE (tarifele aprobate prin Ordinul ANRE nr. 82/2025): autorizație de proiectare, acordare sau viză: 2.000 lei; autorizație de execuție, acordare sau viză: 3.000 lei; duplicat: 125 lei; modificarea denumirii, a formei juridice sau a sediului: 25% din tariful de emitere. Plata se face integral, prin ordin de plată, în contul ANRE RO98TREZ70020F160300XXXX (ATCPMB, CUI 11514848). Tariful nu se returnează dacă firma renunță sau autorizația e refuzată (Regulament, art. 22 alin. (5)). Dacă cererea a fost clasată pentru lipsa completărilor, o nouă cerere în 30 de zile costă 50% din tarif (art. 23 alin. (6)).",
+  "termen_legal": "Analiza dosarului: 30 de zile calendaristice; completări: 30 de zile; decizia: 30 de zile de la dosarul complet (Regulament, art. 23); viza: cerere cu 60–90 de zile înainte de împlinirea a 5 ani (art. 22 alin. (2), art. 25).",
+  "temei_legal": "Legea energiei electrice și a gazelor naturale nr. 123/2012, art. 119 pct. 1, art. 120, art. 121 alin. (1); Ordinul ANRE nr. 17/2026 privind aprobarea Regulamentului pentru autorizarea operatorilor economici care desfășoară activități în domeniul gazelor naturale, art. 1, 4–19, 22–29, 31, 34, 35, 39 și anexele 1–10; tarifele: Ordinul ANRE nr. 82/2025.",
+  "activitati": [
+   "constructii",
+   "servicii"
+  ],
+  "surse": [
+   {
+    "titlu": "Ordinul ANRE nr. 17/2026 și Regulamentul pentru autorizarea operatorilor economici din domeniul gazelor naturale (Monitorul Oficial nr. 444/26.05.2026)",
+    "url": "https://anre.ro/wp-content/uploads/2026/05/Ord-17-2026.pdf",
+    "verificat": "2026-11-13"
+   },
+   {
+    "titlu": "ANRE – Participanți la piață, persoane juridice, gaze naturale (autorizare, tarife, documente)",
+    "url": "https://anre.ro/participanti-la-piata-de-energie/persoane-juridice/gaze-naturale/",
+    "verificat": "2026-11-13"
+   },
+   {
+    "titlu": "ANRE – Comunicat de presă: nou regulament de autorizare a operatorilor economici din domeniul gazelor naturale",
+    "url": "https://anre.ro/comunicat-de-presa-anre-a-adoptat-un-nou-regulament-de-autorizare-a-operatorilor-economici-din-domeniul-gazelor-naturale-standarde-tehnice-mai-ridicate-noi-categorii-de-autorizatii-si-responsabili/",
+    "verificat": "2026-11-13"
+   },
+   {
+    "titlu": "Legea nr. 123/2012 a energiei electrice și a gazelor naturale",
+    "url": "https://legislatie.just.ro/Public/DetaliiDocumentAfis/139677",
+    "verificat": "2026-11-13"
+   }
+  ]
+ },
+ {
+  "cheie": "autorizare-program-after-school",
+  "titlu": "Program de tip „școală după școală” / after-school organizat de o firmă sau o organizație: autorizarea sanitară, ISU și parteneriatul cu școala",
+  "domeniu": "sanitar",
+  "institutie": "Direcția de sănătate publică (DSP) județeană sau a Bucureștiului, pentru autorizarea sanitară (la ghișeu, cerere și declarație pe propria răspundere); ISU, dacă spațiul se încadrează la avizare/autorizare; inspectoratul școlar avizează doar programul organizat de școală.",
+  "descriere": "Există două situații diferite. 1) Programul oficial „Școala după școală” îl organizează școala, nu firma: consiliul de administrație al școlii decide, iar consiliul de administrație al inspectoratului școlar avizează proiectul. Școala poate face parteneriate cu organizații neguvernamentale, cluburi ale copiilor și sportive și poate încheia contracte de parteneriat sau sponsorizare cu operatori economici; activitățile le țin cadre didactice sau alte persoane, sub îndrumarea lor. Programul are cel puțin 12 ore pe săptămână și se poate desfășura și în spații puse la dispoziție de autorități locale, ONG-uri sau culte, dar nu în spații neautorizate, nu în sedii de partid și nu în spații private ale personalului implicat. 2) Un after-school privat, în spațiul propriu al firmei sau al asociației, nu este școală și nu primește aviz de la inspectoratul școlar prin această metodologie; el este un serviciu de îngrijire a copiilor pe timp de zi. Normele de igienă aprobate prin Ordinul MS 1456/2020 se aplică explicit și serviciilor de tip „after school”: amplasare ferită de poluare și zgomot, ventilație, iluminat, grupuri sanitare, masa (inclusiv prin catering). Activitățile de îngrijire zilnică pentru copii (CAEN 8891) și alte forme de învățământ (8559) sunt în lista activităților autorizate sanitar pe baza declarației pe propria răspundere. Dacă clădirea se încadrează în categoriile din HG 571/2016, e nevoie și de aviz și autorizație de securitate la incendiu de la ISU. Nu am găsit în sursele oficiale o metodologie nouă pentru „Școala după școală” după Legea 198/2023; se aplică în continuare cea din 2011.",
+  "conditii": [
+   {
+    "text": "Spațiul respectă normele de igienă pentru unitățile pentru copii, care cuprind și serviciile de îngrijire pe timp de zi de tipul „after school” (Normele aprobate prin Ordinul MS 1456/2020, art. 1 lit. a)).",
+    "obligatoriu": true
+   },
+   {
+    "text": "Amplasare în zone ferite de poluare și zgomot, în afara arterelor de mare circulație; orice modificare de structură a spațiului se face doar cu notificarea prealabilă a DSP (Normele, art. 4 alin. (1) și (2)).",
+    "obligatoriu": true
+   },
+   {
+    "text": "Creșele și grădinițele cu program prelungit nu se cuplează cu unități școlare de alt nivel sau cu instituții de alt profil; circuitele copiilor sunt separate de cele administrativ-gospodărești (Normele, art. 5 alin. (3) și (4)).",
+    "obligatoriu": true
+   },
+   {
+    "text": "Masa se servește din bucătărie proprie sau prin catering, cu respectarea regulilor pentru unitățile fără bucătărie proprie (Normele, art. 33–34); personalul care manipulează alimente face controalele medicale periodice.",
+    "obligatoriu": false
+   },
+   {
+    "text": "Autorizația sanitară de funcționare pe bază de declarație pe propria răspundere se aplică activităților din anexa 2 la Ordinul MS 1030/2009 (printre ele CAEN 8891 și 8559), pentru cei care nu se înregistrează la Registrul Comerțului (Ordinul 1030/2009, art. 5).",
+    "obligatoriu": true
+   },
+   {
+    "text": "Aviz și autorizație ISU dacă construcția intră în anexa 1 la HG 571/2016, de exemplu educație timpurie și învățământ primar cu aria desfășurată de cel puțin 175 mp (pct. II lit. e^1)); încadrarea exactă a unui after-school se verifică la ISU.",
+    "obligatoriu": false
+   },
+   {
+    "text": "Programul „Școala după școală” al școlii: decizia consiliului de administrație al școlii și avizul consiliului de administrație al inspectoratului școlar (Metodologia aprobată prin Ordinul 5349/2011, art. 3 alin. (5) și (6)).",
+    "obligatoriu": false
+   },
+   {
+    "text": "Firma sau ONG-ul intră în programul școlii doar prin parteneriat, contract de parteneriat sau de sponsorizare cu școala (Metodologia, art. 18 alin. (1) și (2)); activitățile sunt conduse de cadre didactice sau sub îndrumarea lor (art. 14 alin. (1)).",
+    "obligatoriu": false
+   },
+   {
+    "text": "Programul școlii nu se ține în spații neautorizate, în sedii de partid sau în spații private ale personalului implicat; școlile care nu au program propriu nu pot închiria spații pentru after-school privat (Metodologia, art. 3 alin. (8) și (9), art. 21).",
+    "obligatoriu": false
+   }
+  ],
+  "documente": [
+   {
+    "nume": "Cerere pentru autorizația sanitară de funcționare (model anexa 3 la Ordinul MS 1030/2009)",
+    "obligatoriu": true,
+    "nota": "Ordinul 1030/2009, art. 6 alin. (1); formularul se ia de la DSP"
+   },
+   {
+    "nume": "Declarație pe propria răspundere semnată (anexa 4a sau 4b la Ordinul 1030/2009)",
+    "obligatoriu": true,
+    "nota": "Ordinul 1030/2009, art. 6 alin. (1)"
+   },
+   {
+    "nume": "Dacă DSP cere procedura cu referat de evaluare: cerere, documentația tehnică, dovada plății tarifului și declarația că spațiul e deținut legal și nu e în litigiu",
+    "obligatoriu": false,
+    "nota": "Ordinul 1030/2009, art. 10 alin. (1) lit. a)–d)"
+   },
+   {
+    "nume": "Documentația pentru avizul și autorizația de securitate la incendiu, dacă spațiul se încadrează în HG 571/2016",
+    "obligatoriu": false,
+    "nota": "HG 571/2016, art. 1 și anexa 1"
+   },
+   {
+    "nume": "Pentru programul școlii: proiectul „Școala după școală”, cu sistem de monitorizare și evaluare, echipa și responsabilitățile fiecăruia",
+    "obligatoriu": false,
+    "nota": "Metodologia, art. 19 alin. (1) și (2); îl depune școala"
+   },
+   {
+    "nume": "Pentru programul școlii: cererea scrisă a părintelui și contractul de parteneriat cu directorul școlii",
+    "obligatoriu": false,
+    "nota": "Metodologia, art. 10 alin. (2) și (3)"
+   }
+  ],
+  "pasi": [
+   "Se stabilește forma: after-school privat în spațiul propriu (serviciu de îngrijire a copiilor) sau participare la programul „Școala după școală” al unei școli, ca partener.",
+   "Se alege spațiul și se verifică față de normele de igienă (Ordinul MS 1456/2020): amplasare, ventilație, iluminat, grupuri sanitare, spațiu pentru masă sau catering; modificările de structură se notifică întâi la DSP.",
+   "Se verifică la ISU dacă spațiul intră în categoriile din HG 571/2016 (de exemplu 175 mp sau mai mult pentru educație timpurie și învățământ primar); dacă da, se obțin avizul și autorizația de securitate la incendiu înainte de deschidere.",
+   "Se depune la DSP cererea pentru autorizația sanitară de funcționare și declarația pe propria răspundere; DSP eliberează autorizația în cel mult 20 de zile lucrătoare și verifică unitatea în 30 de zile.",
+   "Dacă lucrați cu o școală: școala face analiza de nevoi (ianuarie–februarie), oferta până la 1 martie, consiliul de administrație decide, iar inspectoratul școlar avizează proiectul; firma sau ONG-ul semnează cu școala un contract de parteneriat sau de sponsorizare.",
+   "Copiii se înscriu pe baza cererii părinților și a unui contract; se păstrează la vedere autorizațiile obținute și se respectă normele de igienă la fiecare activitate."
+  ],
+  "taxe": "Autorizarea sanitară pe baza declarației pe propria răspundere nu se taxează (Ordinul MS 1030/2009, art. 4 alin. (4)). Dacă DSP aplică procedura pe bază de referat de evaluare, tariful din anexa 1 la Ordinul 1030/2009 este 200 lei (unitățile publice de învățământ sunt scutite, art. 4 alin. (5)).",
+  "termen_legal": "Autorizația sanitară pe bază de declarație: cel mult 20 de zile lucrătoare (Ordinul 1030/2009, art. 8), cu verificare în 30 de zile (art. 6 alin. (3)); pe bază de referat de evaluare: 20 de zile lucrătoare de la dosarul complet (art. 13).",
+  "temei_legal": "Legea învățământului preuniversitar nr. 198/2023, art. 31 alin. (8) și art. 32 alin. (2); Metodologia de organizare a Programului „Școala după școală”, aprobată prin Ordinul MECTS nr. 5349/2011, art. 3, 5, 10, 14, 17–19, 21; Normele de igienă aprobate prin Ordinul MS nr. 1456/2020, art. 1, 4, 5, 10, 33, 34; Ordinul MS nr. 1030/2009 privind procedurile de reglementare sanitară, art. 4–10, 13 și anexele 1–2; HG nr. 571/2016, art. 1 și anexa 1.",
+  "activitati": [
+   "servicii"
+  ],
+  "surse": [
+   {
+    "titlu": "Metodologia de organizare a Programului „Școala după școală” (Ordinul 5349/2011)",
+    "url": "https://legislatie.just.ro/Public/DetaliiDocumentAfis/132318",
+    "verificat": "2026-11-13"
+   },
+   {
+    "titlu": "Normele de igienă din unitățile pentru ocrotirea, educarea, instruirea, odihna și recreerea copiilor și tinerilor (Ordinul MS 1456/2020)",
+    "url": "https://legislatie.just.ro/Public/DetaliiDocument/229619",
+    "verificat": "2026-11-13"
+   },
+   {
+    "titlu": "Ordinul MS 1030/2009 privind procedurile de reglementare sanitară",
+    "url": "https://legislatie.just.ro/Public/DetaliiDocumentAfis/110951",
+    "verificat": "2026-11-13"
+   },
+   {
+    "titlu": "HG 571/2016 privind categoriile de construcții supuse avizării și/sau autorizării privind securitatea la incendiu",
+    "url": "https://legislatie.just.ro/Public/DetaliiDocument/180921",
+    "verificat": "2026-11-13"
+   },
+   {
+    "titlu": "Legea învățământului preuniversitar nr. 198/2023",
+    "url": "https://legislatie.just.ro/Public/DetaliiDocument/301748",
+    "verificat": "2026-11-13"
    }
   ]
  }
