@@ -231,8 +231,8 @@ Interdicții permanente: fără baze de date (D-005, D-018), fără schimbări d
 - [ ] 🔒 8.12 Numele, marca, domeniile, EULA și nota de confidențialitate (proprietarul, cu un jurist dacă vrea)
 - [ ] 8.13 Raport `docs/ETAPA8_RAPORT.md`
 - [ ] 🔒 8.14 Poarta Etapei 8: instalare, upgrade, dezinstalare, backup și restaurare pe medii curate
-- [ ] 8.15 (cerere 13.11) Mai multe modele de documente, din mai multe domenii (sesiunea COS)
-- [ ] 8.16 (cerere 13.11) Mai multe tipuri de autorizații în catalog, lotul 4, doar din surse oficiale (sesiunea COS)
+- [x] 8.15 (cerere 13.11) Modele de documente din domenii noi (sesiunea COS, 1c08785): 10 modele PDF (comodat, arendare, fișa postului, act adițional la CIM, demisie, informare GDPR, PV de lucrări ce devin ascunse, comandă către furnizor, proformă, fișă de intervenție service), categoria „Protecția datelor”, recomandări pe activități; verificarea textului din PDF acceptă și cuvintele despărțite la capăt de rând. e2e docs 15/15, pdf 52/52
+- [x] 8.16 (cerere 13.11) Catalogul de proceduri, lotul 4 (sesiunea COS, 237cb44): 42 de proceduri; cele 7 de construcții rescrise după Codul amenajării teritoriului, urbanismului și construcțiilor (Legea 169/2026, în vigoare din 25.08.2026), surse verificate pe 13.11. e2e permits-catalog 14/14, permits 6/6, activity 12/12
 - [ ] 8.17 (cerere 13.11) Mai multe domenii de activitate și module pentru ele (sesiunea COS)
 - [x] 8.18 (cerere 13.11) Acasă: panoul „Știri” (InfoNews), cu ultimele 8 titluri din sursele pornite (clic = pagina în browser). 5 surse RSS propuse, verificate pe 13.11, completate și oprite (Guvernul României, Comisia Europeană, BCE, Eurostat ×2); una ștearsă nu mai e propusă. e2e `home-news-radio` 8/8 (cu 8.19)
 - [x] 8.19 (cerere 13.11) Muzică gratuită (D-098, acord COS): panoul „Radio” pe Acasă, cu posturile din catalogul public Radio Browser (sursă oprită din fabrică). Căutare după nume sau „Posturi din România”; pornire, oprire și volum; postul cântă într-o fereastră ascunsă, InPrivate, fără acces la K.G.B., doar de la adrese https publice. e2e `home-news-radio` 8/8. Muzica de pe PC: încă nu
