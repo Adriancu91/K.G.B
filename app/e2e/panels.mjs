@@ -57,9 +57,9 @@ try {
 
   // The sources are added when „Surse externe” is first opened by the owner.
   await p.click("Surse externe", "nav .nav");
-  await p.until("document.querySelectorAll('.sources-table tbody tr').length === 3", 5000);
+  await p.until("document.querySelectorAll('.sources-table tbody tr').length === 9", 5000);
   const rows = await p.eval("[...document.querySelectorAll('.sources-table tbody tr')].map(r => r.innerText.split('\\n')[0] + ' — ' + (r.innerText.includes('oprită') ? 'oprită' : 'activă')).join(' | ')");
-  check("ANAF, BNR și MET Norway sunt în „Surse externe”, toate oprite", rows.split("oprită").length === 4, rows);
+  check("ANAF, BNR, MET Norway, fluxurile de știri propuse și catalogul de radiouri sunt în „Surse externe”, toate oprite", rows.split("oprită").length === 10, rows);
 
   await home(p);
   await p.until("document.querySelector(\".panel[data-panel='curs']\").innerText.includes('oprită')", 8000);

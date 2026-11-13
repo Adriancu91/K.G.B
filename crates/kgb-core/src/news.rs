@@ -351,6 +351,77 @@ pub fn parse(xml: &str, source: &str) -> Result<Vec<Item>, String> {
     Ok(out)
 }
 
+/// News feeds proposed by K.G.B. (8.18): each checked on the day written, with terms that allow showing the
+/// headline with a link to the original. They are added filled in but switched off (D-063); a feed the person
+/// deleted is not proposed again.
+pub const PROPOSED: &[(&str, &str, &str, &str, &str)] = &[
+    (
+        "Guvernul României — știri",
+        "https://www.gov.ro/ro/rss",
+        "https://gov.ro/ro/conditii-legale",
+        "Condițiile legale gov.ro (citite pe 13 nov. 2026): materialele de pe site se pot reproduce cu menționarea sursei, în limitele legii dreptului de autor. Orele din flux nu au fus orar.",
+        "reproducere cu menționarea sursei (Guvernul României, gov.ro)",
+    ),
+    (
+        "Comisia Europeană — comunicate (EN)",
+        "https://ec.europa.eu/commission/presscorner/api/rss?language=en",
+        "https://commission.europa.eu/legal-notice_en",
+        "Nota legală a Comisiei (citită pe 13 nov. 2026): reutilizare după Decizia 2011/833/UE; conținutul UE e sub CC BY 4.0, cu menționarea sursei și a modificărilor. Siglele și mărcile sunt excluse.",
+        "CC BY 4.0 (© Uniunea Europeană)",
+    ),
+    (
+        "Banca Centrală Europeană — comunicate (EN)",
+        "https://www.ecb.europa.eu/rss/press.html",
+        "https://www.ecb.europa.eu/services/disclaimer/html/index.en.html",
+        "Termenii BCE (citiți pe 13 nov. 2026): informațiile se pot folosi liber dacă sunt reproduse corect și BCE e citată ca sursă.",
+        "folosire liberă cu citarea sursei (BCE)",
+    ),
+    (
+        "Eurostat — indicatori euro (EN)",
+        "https://ec.europa.eu/eurostat/en/search?p_p_id=estatsearchportlet_WAR_estatsearchportlet&p_p_lifecycle=2&p_p_state=maximized&p_p_mode=view&p_p_resource_id=atom&_estatsearchportlet_WAR_estatsearchportlet_collection=CAT_PREREL",
+        "https://ec.europa.eu/eurostat/web/main/help/copyright-notice",
+        "Nota de copyright Eurostat (citită pe 13 nov. 2026): conținutul editorial e sub CC BY 4.0, reutilizare cu menționarea sursei și a modificărilor.",
+        "CC BY 4.0 (© Uniunea Europeană, Eurostat)",
+    ),
+    (
+        "Eurostat — știri (EN)",
+        "https://ec.europa.eu/eurostat/en/search?p_p_id=estatsearchportlet_WAR_estatsearchportlet&p_p_lifecycle=2&p_p_state=maximized&p_p_mode=view&p_p_resource_id=atom&_estatsearchportlet_WAR_estatsearchportlet_collection=CAT_EURNEW",
+        "https://ec.europa.eu/eurostat/web/main/help/copyright-notice",
+        "Nota de copyright Eurostat (citită pe 13 nov. 2026): conținutul editorial e sub CC BY 4.0, reutilizare cu menționarea sursei și a modificărilor.",
+        "CC BY 4.0 (© Uniunea Europeană, Eurostat)",
+    ),
+];
+pub const PROPOSED_CHECKED: &str = "2026-11-13";
+
+/// Adds the proposed feeds that were never in the register; returns how many were added.
+pub fn ensure_proposed(store: &mut kgb_store::Store) -> crate::CoreResult<usize> {
+    let mut n = 0;
+    for (nume, url, termeni_url, termeni, licenta) in PROPOSED {
+        let id = uuid::Uuid::new_v5(&uuid::Uuid::NAMESPACE_URL, url.as_bytes());
+        if store.get_any(crate::sources::SOURCES_COLLECTION, id)?.is_some() {
+            continue;
+        }
+        crate::sources::add_fixed(
+            store,
+            id,
+            crate::sources::SourceInput {
+                id: None,
+                nume: (*nume).into(),
+                url: (*url).into(),
+                tip: "rss".into(),
+                termeni: (*termeni).into(),
+                termeni_url: (*termeni_url).into(),
+                licenta: (*licenta).into(),
+                verificat: PROPOSED_CHECKED.into(),
+                note: "Propusă de K.G.B., completată, dar oprită: o pornește proprietarul (D-063).".into(),
+                version: 0,
+            },
+        )?;
+        n += 1;
+    }
+    Ok(n)
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;

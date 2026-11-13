@@ -1,0 +1,131 @@
+// 8.20 (D-099), end to end in the real window: „Ferestre web”, a small window with part of a web page, frozen there.
+// The page is served by a small server of this test (a long page); in the page's window a script of the test plays
+// the person: the first time it scrolls to 1200 px (choosing the part) and tries to call K.G.B.; afterwards it
+// tells the server where the page stands. Checks: with „Setări › Internet” off nothing loads; the page's window
+// cannot call K.G.B.; „Îngheață” keeps the position, and the window reopens live
+// at that position with the scrollbars hidden; „Închide” closes it.
+//
+// Usage: node app/e2e/webclips.mjs <path-to-kgb-app.exe> <screenshot-dir>
+// Uses a throw-away data folder (KGB_DATA_DIR), never the user's real data.
+import { spawn, execFileSync } from "node:child_process";
+import { createServer } from "node:http";
+import { mkdirSync, mkdtempSync, rmSync } from "node:fs";
+import { tmpdir } from "node:os";
+import { join } from "node:path";
+import { connect, sleep } from "./cdp.mjs";
+
+const [exe, shots] = process.argv.slice(2);
+if (!exe || !shots) {
+  console.error("usage: node webclips.mjs <kgb-app.exe> <screenshot-dir>");
+  process.exit(2);
+}
+mkdirSync(shots, { recursive: true });
+const data = mkdtempSync(join(tmpdir(), "kgb-clips-"));
+const PORT = 9377;
+let proc;
+let page;
+const results = [];
+const check = (name, ok, detail = "") => {
+  results.push(ok);
+  console.log(`${ok ? "PASS" : "FAIL"}  ${name}${detail ? ` — ${detail}` : ""}`);
+};
+
+let loads = 0;
+const asked = [];
+const server = createServer((req, res) => {
+  const u = req.url ?? "";
+  asked.push(u);
+  if (u === "/lung.html") {
+    loads++;
+    const first = loads === 1;
+    const script = first
+      ? `window.addEventListener('load', () => {
+           setTimeout(() => window.scrollTo(0, 1200), 300);
+           const t = window.__TAURI_INTERNALS__;
+           if (!t) { fetch('/ipc?ok=0&why=lipsa'); return; }
+           try { t.invoke('app_info').then(() => fetch('/ipc?ok=1'), (e) => fetch('/ipc?ok=0&why=' + encodeURIComponent(String(e)).slice(0, 80))); }
+           catch (e) { fetch('/ipc?ok=0&why=exceptie'); }
+         });`
+      : `window.addEventListener('load', () => setTimeout(() => fetch('/pos?y=' + Math.round(window.scrollY) + '&ov=' + getComputedStyle(document.documentElement).overflowY), 2500));`;
+    return res
+      .writeHead(200, { "Content-Type": "text/html; charset=utf-8" })
+      .end(`<!doctype html><html><head><title>Pagina lunga</title></head><body style="margin:0"><div style="height:1200px;background:#ddd">sus</div><div id="tinta" style="height:200px;background:#2a7;color:#fff;font:40px sans-serif">CURS 4,9765</div><div style="height:2000px">jos</div><script>${script}</script></body></html>`);
+  }
+  res.writeHead(204).end();
+});
+await new Promise((ok) => server.listen(0, "127.0.0.1", ok));
+const base = `http://127.0.0.1:${server.address().port}`;
+const waitFor = async (pred, ms) => {
+  const t0 = Date.now();
+  while (!pred() && Date.now() - t0 < ms) await sleep(200);
+  return pred();
+};
+
+try {
+  proc = spawn(exe, [], {
+    env: { ...process.env, KGB_DATA_DIR: data, KGB_NO_DESKTOP_NOTIFY: "1", KGB_TEST_WEB_LOCAL: "1", WEBVIEW2_ADDITIONAL_BROWSER_ARGUMENTS: `--remote-debugging-port=${PORT}` },
+    stdio: "ignore",
+  });
+  const p = await connect(PORT, 20000);
+  page = p;
+  await p.until("!!document.querySelector('aside')", 15000);
+  const invoke = (cmd, args = {}) => p.eval(`window.__TAURI_INTERNALS__.invoke(${JSON.stringify(cmd)}, ${JSON.stringify(args)}).then(r => r, e => ({ error: String(e) }))`);
+  const setv = (sel, v) => p.eval(`(() => { const e = document.querySelector(${JSON.stringify(sel)}); Object.getOwnPropertyDescriptor(HTMLInputElement.prototype, 'value').set.call(e, ${JSON.stringify(v)}); e.dispatchEvent(new Event('input', { bubbles: true })); return true; })()`);
+
+  const st0 = await invoke("get_settings");
+  await invoke("save_settings", { settings: { ...st0.settings, internet: false }, version: st0.version });
+  await p.click("Ferestre web", "nav .nav");
+  await p.until("!!document.querySelector('.web-clips')", 8000);
+  await p.click("Fereastră web nouă", ".web-clips button");
+  await setv("[aria-label='Numele ferestrei']", "Curs de test");
+  await setv("[aria-label='Adresa paginii']", `${base}/lung.html`);
+  await p.screenshot(join(shots, "01-fereastra-noua.png"));
+
+  // Internet off: saved, but the page is not loaded.
+  await p.click("Salvează și alege zona", ".web-clips button");
+  await p.until("(document.querySelector('.error')?.innerText ?? '').includes('Internet')", 8000);
+  check("cu internetul oprit, pagina nu se încarcă", loads === 0, `${asked.length} cereri`);
+
+  const st = await invoke("get_settings");
+  await invoke("save_settings", { settings: { ...st.settings, internet: true }, version: st.version });
+  await p.until("[...document.querySelectorAll('.web-clips button')].some(b => b.innerText === 'Alege zona')", 8000);
+  await p.click("Alege zona", ".web-clips button");
+  await waitFor(() => asked.some((a) => a.startsWith("/ipc")), 15000);
+  check("„Alege zona” deschide pagina într-o fereastră separată", loads === 1);
+  const ipc = asked.find((a) => a.startsWith("/ipc")) ?? "";
+  check("pagina din fereastra web nu poate chema K.G.B.", ipc.startsWith("/ipc?ok=0"), ipc);
+  await sleep(2000);
+  await p.screenshot(join(shots, "02-alege-zona.png"));
+
+  // Freeze.
+  await p.click("Îngheață", ".web-clips button");
+  await p.until("(document.querySelector('.web-clips')?.innerText ?? '').includes('înghețată')", 8000);
+  const list = await invoke("clip_list");
+  const c = list.ferestre[0];
+  check("„Îngheață” ține minte poziția aleasă (1200 px), mărimea și locul ferestrei", c && c.inghetata && c.y === 1200 && c.latime >= 120 && !!c.pozitie, JSON.stringify(c));
+  await waitFor(() => asked.some((a) => a.startsWith("/pos")), 15000);
+  const pos = asked.find((a) => a.startsWith("/pos")) ?? "";
+  check("apoi pagina se redeschide live pe partea înghețată, fără bare de derulare", loads === 2 && pos.includes("y=1200") && pos.includes("ov=hidden"), pos);
+  check("fereastra apare deschisă în listă", list.deschise.includes(c.id));
+  await p.screenshot(join(shots, "03-inghetata.png"));
+
+  await p.click("Închide", ".web-clips button");
+  await p.until("!(document.querySelector('.web-clips')?.innerText ?? '').includes('deschisă')", 8000);
+  check("„Închide” închide fereastra web", (await invoke("clip_list")).deschise.length === 0);
+  p.close();
+} catch (e) {
+  check("scenariul a rulat până la capăt", false, e.message);
+  await page?.screenshot(join(shots, "eroare.png")).catch(() => {});
+} finally {
+  try {
+    execFileSync("taskkill", ["/F", "/T", "/PID", String(proc?.pid)], { stdio: "ignore" });
+  } catch {
+    /* already gone */
+  }
+  server.close();
+  await sleep(800);
+  rmSync(data, { recursive: true, force: true });
+}
+const failed = results.filter((r) => !r).length;
+console.log(`\n${results.length - failed}/${results.length} verificări trecute`);
+process.exit(failed ? 1 : 0);

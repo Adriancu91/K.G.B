@@ -169,3 +169,19 @@ fn modules_see_only_active_sources_with_permission() {
     let e = mm.call(&mut ws2, None, "t.reader", "rss", json!({})).unwrap_err();
     assert!(e.to_string().contains("sources.read"), "{e}");
 }
+
+/// 8.18: the proposed news feeds come filled in and switched off; one the person deleted is not proposed again.
+#[test]
+fn proposed_news_feeds_are_off_and_not_back_after_delete() {
+    let t = tempfile::tempdir().unwrap();
+    let mut ws = Workspace::create(&t.path().join("ws"), "T").unwrap();
+    let n = kgb_core::news::ensure_proposed(ws.store_mut()).unwrap();
+    assert_eq!(n, kgb_core::news::PROPOSED.len());
+    let all = sources::list(ws.store()).unwrap();
+    assert_eq!(all.len(), n);
+    assert!(all.iter().all(|s| !s.activa && s.tip == "rss" && !s.termeni.is_empty() && !s.licenta.is_empty() && s.verificat == "2026-11-13"));
+    assert!(sources::active(ws.store(), Some("rss")).unwrap().is_empty());
+    sources::delete(ws.store_mut(), all[0].id).unwrap();
+    assert_eq!(kgb_core::news::ensure_proposed(ws.store_mut()).unwrap(), 0);
+    assert_eq!(sources::list(ws.store()).unwrap().len(), n - 1);
+}

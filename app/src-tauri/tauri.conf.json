@@ -1,7 +1,6 @@
 {
   "$schema": "https://schema.tauri.app/config/2",
   "productName": "KGB",
-  "version": "0.1.0",
   "identifier": "ro.kronos.kgb",
   "build": {
     "frontendDist": "../dist",
@@ -43,6 +42,9 @@
         "installMode": "currentUser"
       }
     },
+    "resources": [
+      "THIRD-PARTY-NOTICES.txt"
+    ],
     "publisher": "Kronos",
     "shortDescription": "K.G.B. — Kronos Global Business (pre-lansare)"
   }
