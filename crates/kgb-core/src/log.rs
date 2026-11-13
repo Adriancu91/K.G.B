@@ -297,6 +297,77 @@ pub fn recent_problems(dir: &Path, limit: usize) -> Vec<Value> {
     out.split_off(skip)
 }
 
+/// What the diagnostic package must never carry (8.10), hidden from a text:
+/// - runs of 10 or more digits (a CNP has 13, a card 16, a phone 10);
+/// - IBANs (`RO49AAAA…`) and e-mail addresses;
+/// - long tokens (keys, tokens, hashes: 32 or more letters and digits in a row, with digits);
+/// - the Windows user's name in paths (`C:\Users\<nume>\…`).
+pub fn scrub(text: &str) -> String {
+    let chars: Vec<char> = text.chars().collect();
+    let mut out: Vec<char> = Vec::with_capacity(chars.len());
+    let mail = |c: char| c.is_ascii_alphanumeric() || matches!(c, '_' | '-' | '.' | '+');
+    let mut k = 0;
+    while k < chars.len() {
+        let c = chars[k];
+        // A Windows user folder: keep `\Users\`, hide the name.
+        if matches!(c, '\\' | '/') && k + 7 <= chars.len() {
+            let seg: String = chars[k + 1..k + 6].iter().collect();
+            if seg.eq_ignore_ascii_case("users") && matches!(chars[k + 6], '\\' | '/') {
+                out.extend(&chars[k..k + 7]);
+                k += 7;
+                while k < chars.len() && !matches!(chars[k], '\\' | '/' | '"' | ' ' | '\n') {
+                    k += 1;
+                }
+                out.extend("[utilizator]".chars());
+                continue;
+            }
+        }
+        // An e-mail: hide the local part already written and the domain.
+        if c == '@' && k > 0 && mail(chars[k - 1]) && k + 1 < chars.len() && mail(chars[k + 1]) {
+            while out.last().is_some_and(|x| mail(*x)) {
+                out.pop();
+            }
+            k += 1;
+            while k < chars.len() && mail(chars[k]) {
+                k += 1;
+            }
+            out.extend("[e-mail]".chars());
+            continue;
+        }
+        if c.is_ascii_alphanumeric() && (k == 0 || !chars[k - 1].is_ascii_alphanumeric()) {
+            let mut e = k;
+            while e < chars.len() && chars[e].is_ascii_alphanumeric() {
+                e += 1;
+            }
+            if e < chars.len() && chars[e] == '@' {
+                // the e-mail branch above takes it
+                out.extend(&chars[k..e]);
+                k = e;
+                continue;
+            }
+            let tok = &chars[k..e];
+            let digits = tok.iter().filter(|x| x.is_ascii_digit()).count();
+            let iban = (15..=34).contains(&tok.len())
+                && tok[..2].iter().all(char::is_ascii_uppercase)
+                && tok[2..4].iter().all(char::is_ascii_digit);
+            if iban {
+                out.extend("[IBAN]".chars());
+            } else if tok.len() >= 32 && digits > 0 {
+                out.extend("[ascuns]".chars());
+            } else if tok.len() >= 10 && digits == tok.len() {
+                out.extend("[număr ascuns]".chars());
+            } else {
+                out.extend(tok);
+            }
+            k = e;
+            continue;
+        }
+        out.push(c);
+        k += 1;
+    }
+    out.into_iter().collect()
+}
+
 /// Plain-text diagnostic report. Contains versions, paths and recent
 /// problems only — never records or document content.
 pub fn diagnostic_report(app_version: &str, sections: &[(&str, String)], log_dir: &Path) -> String {
@@ -315,7 +386,8 @@ pub fn diagnostic_report(app_version: &str, sections: &[(&str, String)], log_dir
     for p in problems {
         let _ = writeln!(r, "{p}");
     }
-    r
+    // 8.10: nothing personal leaves in the package (CNP, IBAN, e-mail, keys, the Windows user's name).
+    scrub(&r)
 }
 
 /// Current UTC time as `YYYY-MM-DDTHH:MM:SS.mmmZ` (no time-zone crate needed).
@@ -345,4 +417,24 @@ pub fn format_utc(ms: u64) -> String {
         sod % 60,
         ms % 1000
     )
+}
+
+#[cfg(test)]
+mod scrub_tests {
+    use super::scrub;
+
+    #[test]
+    fn nothing_personal_is_left() {
+        let t = "eroare la 1850101123456 (CNP) pe card 4111111111111111, tel 0722123456, IBAN RO49AAAA1B31007593840000, \
+                 scris de ion.popescu+test@firma.ro în C:\\Users\\krono\\AppData\\Local\\kgb și /Users/ana/x, \
+                 cheia a1b2c3d4e5f6a7b8c9d0a1b2c3d4e5f6a7b8 \
+                 la 2026-11-13T04:12:00.123Z, CUI 14399840, J40/1234/2020, versiunea 0.1.0";
+        let s = scrub(t);
+        for gone in ["1850101123456", "4111111111111111", "0722123456", "RO49AAAA1B31007593840000", "ion.popescu", "firma.ro", "krono", "ana/x", "a1b2c3d4e5f6"] {
+            assert!(!s.contains(gone), "{gone} in {s}");
+        }
+        for kept in ["2026-11-13T04:12:00.123Z", "CUI 14399840", "J40/1234/2020", "0.1.0", "C:\\Users\\[utilizator]\\AppData", "[e-mail]", "[IBAN]", "[număr ascuns]", "[ascuns]"] {
+            assert!(s.contains(kept), "{kept} not in {s}");
+        }
+    }
 }

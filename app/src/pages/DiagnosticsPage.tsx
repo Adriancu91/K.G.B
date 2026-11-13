@@ -4,6 +4,17 @@ import { useCallback, useEffect, useState } from "react";
 import { invoke } from "@tauri-apps/api/core";
 import { api, message, type Diagnostics } from "../api";
 
+/** „Probleme cunoscute” (8.10): what does not work yet, or works with a limit, in this version. */
+const KNOWN: string[] = [
+  "Programul nu e încă semnat digital: Windows avertizează la instalare („editor necunoscut”).",
+  "Pe unele calculatoare cu Windows 10 lipsește WebView2, de care K.G.B. are nevoie; se instalează de la Microsoft.",
+  "Sincronizarea între calculatoare e verificată doar cu noduri de test pe același PC; proba cu un al doilea PC urmează.",
+  "„Ferestre web”: paginile care se derulează într-o zonă interioară, nu în pagina întreagă, nu se pot îngheța pe o poziție.",
+  "Radio: apar doar posturile care transmit pe adrese https.",
+  "Știrile de la Guvernul României au ora fără fus orar și pot apărea cu două ore decalaj.",
+  "Cotele de TVA (21 / 11 / 0) trebuie confirmate cu un contabil.",
+];
+
 const when = (ms: unknown) => (typeof ms === "number" ? new Date(ms).toLocaleString("ro-RO") : "");
 
 export function DiagnosticsPage({ onError }: { onError: (e: string | null) => void }) {
@@ -79,6 +90,16 @@ export function DiagnosticsPage({ onError }: { onError: (e: string | null) => vo
           )}
         </tbody>
       </table>
+      <h2>Probleme cunoscute</h2>
+      <ul className="known-issues">
+        {KNOWN.map((k) => (
+          <li key={k}>{k}</li>
+        ))}
+      </ul>
+      <p className="muted">
+        Pentru ajutor: „Trimite o observație” (din stânga jos) și „Salvează raportul într-un fișier” de mai sus. Raportul nu conține CNP-uri, numere de card
+        sau de telefon, IBAN-uri, adrese de e-mail, chei sau numele tău de utilizator Windows; îl trimiți tu, dacă vrei.
+      </p>
       <h2>Componente terțe și licențe</h2>
       <p className="muted">K.G.B. folosește componente open source. Lista lor, cu licența fiecăreia și textele licențelor, e livrată cu programul (fișierul THIRD-PARTY-NOTICES.txt de lângă K.G.B.).</p>
       {notices === null ? (
