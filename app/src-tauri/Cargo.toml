@@ -35,6 +35,7 @@ kgb-works.workspace = true
 kgb-autoservice.workspace = true
 kgb-courses.workspace = true
 kgb-members.workspace = true
+kgb-rentals.workspace = true
 tracing.workspace = true
 # tray-icon: K.G.B. stays next to the clock (7.4m-3); the tray code was
 # already downloaded with Tauri at this version.
