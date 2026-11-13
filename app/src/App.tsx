@@ -23,6 +23,7 @@ import { MaintenancePage } from "./modules/maintenance/MaintenancePage";
 import { RecipesPage } from "./modules/recipes/RecipesPage";
 import { WorksPage } from "./modules/works/WorksPage";
 import { AutoServicePage } from "./modules/autoservice/AutoServicePage";
+import { CoursesPage } from "./modules/courses/CoursesPage";
 import { NotificationBell } from "./components/Notifications";
 import { Catalog } from "./pages/Catalog";
 import { DataPage } from "./pages/DataPage";
@@ -62,6 +63,7 @@ const MODULE_PAGES: Record<string, ComponentType<{ onError: (e: string | null) =
   "kgb.recipes": RecipesPage,
   "kgb.works": WorksPage,
   "kgb.autoservice": AutoServicePage,
+  "kgb.courses": CoursesPage,
   "kgb.write": WritePage,
 };
 

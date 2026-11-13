@@ -3742,6 +3742,7 @@ dependencies = [
  "kgb-calc",
  "kgb-contracts",
  "kgb-core",
+ "kgb-courses",
  "kgb-docs",
  "kgb-extract",
  "kgb-maintenance",
@@ -3863,6 +3864,18 @@ dependencies = [
  "uuid",
  "windows-sys 0.61.2",
  "zeroize",
+]
+
+[[package]]
+name = "kgb-courses"
+version = "0.1.0"
+dependencies = [
+ "kgb-core",
+ "kgb-store",
+ "serde",
+ "serde_json",
+ "tempfile",
+ "uuid",
 ]
 
 [[package]]

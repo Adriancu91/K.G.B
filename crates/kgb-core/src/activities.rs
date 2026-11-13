@@ -285,6 +285,7 @@ pub const ACTIVITIES: &[Activity] = &[
         name: "Educație și training",
         description: "Cursuri, after-school, centre de formare: programări, contracte cu părinții sau cursanții, documente, autorizații.",
         modules: &[
+            "kgb.courses",
             "kgb.appointments",
             "kgb.contracts",
             "kgb.business",
