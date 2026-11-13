@@ -3747,6 +3747,7 @@ dependencies = [
  "kgb-extract",
  "kgb-maintenance",
  "kgb-market",
+ "kgb-members",
  "kgb-net",
  "kgb-news",
  "kgb-notes",
@@ -3754,6 +3755,7 @@ dependencies = [
  "kgb-permits",
  "kgb-planner",
  "kgb-recipes",
+ "kgb-rentals",
  "kgb-sheets",
  "kgb-store",
  "kgb-team",
@@ -3942,6 +3944,18 @@ dependencies = [
 ]
 
 [[package]]
+name = "kgb-members"
+version = "0.1.0"
+dependencies = [
+ "kgb-core",
+ "kgb-store",
+ "serde",
+ "serde_json",
+ "tempfile",
+ "uuid",
+]
+
+[[package]]
 name = "kgb-net"
 version = "0.1.0"
 dependencies = [
@@ -4038,6 +4052,18 @@ dependencies = [
  "kgb-core",
  "kgb-store",
  "rust_xlsxwriter",
+ "serde",
+ "serde_json",
+ "tempfile",
+ "uuid",
+]
+
+[[package]]
+name = "kgb-rentals"
+version = "0.1.0"
+dependencies = [
+ "kgb-core",
+ "kgb-store",
  "serde",
  "serde_json",
  "tempfile",

@@ -1,0 +1,237 @@
+{
+  "manifest_format": 1,
+  "id": "kgb.members",
+  "name": "Membri și cotizații",
+  "description": "Membrii asociației, fundației sau clubului (persoane sau firme), cu data intrării și a ieșirii, categoria lor, cotizația pe an sau pe lună pentru fiecare categorie, încasările (anulate cu motiv, niciodată șterse), situația pe an cu restanțele calculate și ședințele cu prezența și hotărârile. Regulile de cvorum sunt cele din statut: aplicația doar numără.",
+  "version": "0.1.0",
+  "core": ">=0.1.0, <0.2.0",
+  "status": "beta",
+  "permissions": [
+    "storage.own"
+  ],
+  "services": [
+    "storage",
+    "log"
+  ],
+  "data_types": [
+    {
+      "collection": "membri",
+      "description": "membrii: numele, persoană sau firmă, categoria, telefonul, e-mailul, adresa, data intrării și a ieșirii, starea",
+      "schema": {
+        "fields": {
+          "nume": {
+            "type": "string",
+            "required": true,
+            "max_len": 160
+          },
+          "fel": {
+            "type": "string",
+            "required": true,
+            "enum": [
+              "persoana",
+              "firma"
+            ]
+          },
+          "categorie": {
+            "type": "string",
+            "required": true,
+            "max_len": 60
+          },
+          "telefon": {
+            "type": "string",
+            "required": true,
+            "max_len": 40
+          },
+          "email": {
+            "type": "string",
+            "required": true,
+            "max_len": 120
+          },
+          "adresa": {
+            "type": "string",
+            "required": true,
+            "max_len": 200
+          },
+          "intrat": {
+            "type": "string",
+            "required": true,
+            "max_len": 10
+          },
+          "iesit": {
+            "type": "string",
+            "required": true,
+            "max_len": 10
+          },
+          "stare": {
+            "type": "string",
+            "required": true,
+            "enum": [
+              "activ",
+              "retras",
+              "exclus"
+            ]
+          },
+          "nota": {
+            "type": "string",
+            "required": true,
+            "max_len": 1000
+          },
+          "creat_ms": {
+            "type": "integer",
+            "required": true,
+            "min": 0
+          }
+        },
+        "additional": false
+      }
+    },
+    {
+      "collection": "tarife",
+      "description": "cotizațiile: anul, categoria (gol = toți membrii), suma, pe an sau pe lună",
+      "schema": {
+        "fields": {
+          "an": {
+            "type": "integer",
+            "required": true,
+            "min": 2000,
+            "max": 2100
+          },
+          "categorie": {
+            "type": "string",
+            "required": true,
+            "max_len": 60
+          },
+          "suma": {
+            "type": "integer",
+            "required": true,
+            "min": 0,
+            "max": 100000000
+          },
+          "perioada": {
+            "type": "string",
+            "required": true,
+            "enum": [
+              "anual",
+              "lunar"
+            ]
+          }
+        },
+        "additional": false
+      }
+    },
+    {
+      "collection": "plati",
+      "description": "încasările de cotizație: membrul, anul pentru care se plătește, data, suma, felul, documentul; o încasare greșită se anulează cu motiv",
+      "schema": {
+        "fields": {
+          "membru": {
+            "type": "string",
+            "required": true,
+            "max_len": 36
+          },
+          "an": {
+            "type": "integer",
+            "required": true,
+            "min": 2000,
+            "max": 2100
+          },
+          "data": {
+            "type": "string",
+            "required": true,
+            "max_len": 10
+          },
+          "suma": {
+            "type": "integer",
+            "required": true,
+            "min": 1,
+            "max": 100000000
+          },
+          "fel": {
+            "type": "string",
+            "required": true,
+            "enum": [
+              "numerar",
+              "card",
+              "transfer"
+            ]
+          },
+          "document": {
+            "type": "string",
+            "required": true,
+            "max_len": 60
+          },
+          "nota": {
+            "type": "string",
+            "required": true,
+            "max_len": 500
+          },
+          "anulata": {
+            "type": "bool",
+            "required": true
+          },
+          "motiv": {
+            "type": "string",
+            "required": true,
+            "max_len": 300
+          },
+          "creat_ms": {
+            "type": "integer",
+            "required": true,
+            "min": 0
+          }
+        },
+        "additional": false
+      }
+    },
+    {
+      "collection": "sedinte",
+      "description": "ședințele: data, felul (adunare generală, consiliu director, altele), ordinea de zi, cine a fost prezent, hotărârile",
+      "schema": {
+        "fields": {
+          "data": {
+            "type": "string",
+            "required": true,
+            "max_len": 10
+          },
+          "fel": {
+            "type": "string",
+            "required": true,
+            "enum": [
+              "adunare_generala",
+              "consiliu_director",
+              "alta"
+            ]
+          },
+          "ordine_de_zi": {
+            "type": "string",
+            "required": true,
+            "max_len": 4000
+          },
+          "prezenti": {
+            "type": "array",
+            "required": true,
+            "max_len": 5000
+          },
+          "hotarari": {
+            "type": "string",
+            "required": true,
+            "max_len": 8000
+          },
+          "creat_ms": {
+            "type": "integer",
+            "required": true,
+            "min": 0
+          }
+        },
+        "additional": false
+      }
+    }
+  ],
+  "events": {
+    "emits": [],
+    "listens": []
+  },
+  "data_format": 1,
+  "migrations": [],
+  "on_disable": "Membrii, cotizațiile, încasările și ședințele rămân în spațiul de lucru și reapar când modulul este activat din nou."
+}

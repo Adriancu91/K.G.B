@@ -1,0 +1,256 @@
+{
+  "manifest_format": 1,
+  "id": "kgb.rentals",
+  "name": "Spații și chiriași",
+  "description": "Spațiile date în chirie (apartamente, birouri, spații comerciale, depozite) cu suprafața și numărul de persoane, contractele cu chiriașii (chiria lunară, garanția, ziua de plată), utilitățile comune ale lunii împărțite pe suprafață, pe persoane sau egal (exact la ban, partea spațiilor libere rămâne a proprietarului), încasările (anulate cu motiv, niciodată șterse) și restanțele calculate.",
+  "version": "0.1.0",
+  "core": ">=0.1.0, <0.2.0",
+  "status": "beta",
+  "permissions": [
+    "storage.own",
+    "partners.read"
+  ],
+  "services": [
+    "storage",
+    "partners",
+    "log"
+  ],
+  "data_types": [
+    {
+      "collection": "spatii",
+      "description": "spațiile: numele, clădirea, felul, suprafața (sutimi de mp), persoanele, dacă intră la utilități",
+      "schema": {
+        "fields": {
+          "nume": {
+            "type": "string",
+            "required": true,
+            "max_len": 80
+          },
+          "cladire": {
+            "type": "string",
+            "required": true,
+            "max_len": 120
+          },
+          "fel": {
+            "type": "string",
+            "required": true,
+            "enum": [
+              "apartament",
+              "birou",
+              "comercial",
+              "depozit",
+              "teren",
+              "altul"
+            ]
+          },
+          "suprafata": {
+            "type": "integer",
+            "required": true,
+            "min": 0,
+            "max": 100000000
+          },
+          "persoane": {
+            "type": "integer",
+            "required": true,
+            "min": 0,
+            "max": 1000
+          },
+          "activ": {
+            "type": "bool",
+            "required": true
+          },
+          "nota": {
+            "type": "string",
+            "required": true,
+            "max_len": 1000
+          },
+          "creat_ms": {
+            "type": "integer",
+            "required": true,
+            "min": 0
+          }
+        },
+        "additional": false
+      }
+    },
+    {
+      "collection": "inchirieri",
+      "description": "contractele de închiriere: spațiul, chiriașul, perioada, chiria pe lună, garanția, ziua de plată, starea",
+      "schema": {
+        "fields": {
+          "spatiu": {
+            "type": "string",
+            "required": true,
+            "max_len": 36
+          },
+          "chirias": {
+            "type": "string",
+            "required": true,
+            "max_len": 36
+          },
+          "chirias_nume": {
+            "type": "string",
+            "required": true,
+            "max_len": 200
+          },
+          "numar": {
+            "type": "string",
+            "required": true,
+            "max_len": 40
+          },
+          "de_la": {
+            "type": "string",
+            "required": true,
+            "max_len": 10
+          },
+          "pana_la": {
+            "type": "string",
+            "required": true,
+            "max_len": 10
+          },
+          "chirie": {
+            "type": "integer",
+            "required": true,
+            "min": 0,
+            "max": 100000000
+          },
+          "garantie": {
+            "type": "integer",
+            "required": true,
+            "min": 0,
+            "max": 100000000
+          },
+          "zi_plata": {
+            "type": "integer",
+            "required": true,
+            "min": 1,
+            "max": 28
+          },
+          "stare": {
+            "type": "string",
+            "required": true,
+            "enum": [
+              "activ",
+              "incheiat"
+            ]
+          },
+          "nota": {
+            "type": "string",
+            "required": true,
+            "max_len": 1000
+          },
+          "creat_ms": {
+            "type": "integer",
+            "required": true,
+            "min": 0
+          }
+        },
+        "additional": false
+      }
+    },
+    {
+      "collection": "utilitati",
+      "description": "costurile comune ale unei luni: felul, suma, cum se împart (suprafață, persoane, egal)",
+      "schema": {
+        "fields": {
+          "luna": {
+            "type": "string",
+            "required": true,
+            "max_len": 7
+          },
+          "fel": {
+            "type": "string",
+            "required": true,
+            "max_len": 60
+          },
+          "suma": {
+            "type": "integer",
+            "required": true,
+            "min": 1,
+            "max": 1000000000
+          },
+          "cheie": {
+            "type": "string",
+            "required": true,
+            "enum": [
+              "suprafata",
+              "persoane",
+              "egal"
+            ]
+          },
+          "document": {
+            "type": "string",
+            "required": true,
+            "max_len": 60
+          }
+        },
+        "additional": false
+      }
+    },
+    {
+      "collection": "incasari",
+      "description": "încasările de la chiriași: contractul, luna pentru care se plătește, data, suma, felul; o încasare greșită se anulează cu motiv",
+      "schema": {
+        "fields": {
+          "inchiriere": {
+            "type": "string",
+            "required": true,
+            "max_len": 36
+          },
+          "luna": {
+            "type": "string",
+            "required": true,
+            "max_len": 7
+          },
+          "data": {
+            "type": "string",
+            "required": true,
+            "max_len": 10
+          },
+          "suma": {
+            "type": "integer",
+            "required": true,
+            "min": 1,
+            "max": 1000000000
+          },
+          "fel": {
+            "type": "string",
+            "required": true,
+            "enum": [
+              "numerar",
+              "card",
+              "transfer"
+            ]
+          },
+          "document": {
+            "type": "string",
+            "required": true,
+            "max_len": 60
+          },
+          "anulata": {
+            "type": "bool",
+            "required": true
+          },
+          "motiv": {
+            "type": "string",
+            "required": true,
+            "max_len": 300
+          },
+          "creat_ms": {
+            "type": "integer",
+            "required": true,
+            "min": 0
+          }
+        },
+        "additional": false
+      }
+    }
+  ],
+  "events": {
+    "emits": [],
+    "listens": []
+  },
+  "data_format": 1,
+  "migrations": [],
+  "on_disable": "Spațiile, contractele, utilitățile și încasările rămân în spațiul de lucru și reapar când modulul este activat din nou."
+}

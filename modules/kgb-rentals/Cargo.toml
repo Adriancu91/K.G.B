@@ -1,0 +1,17 @@
+[package]
+name = "kgb-rentals"
+version = "0.1.0"
+edition.workspace = true
+publish.workspace = true
+license.workspace = true
+description = "K.G.B. module: premises and tenants (step 8.17) - premises with area and occupants, leases with monthly rent, the month's common utilities split by area, people or equally to the ban, payments cancelled with a reason, arrears computed."
+
+[dependencies]
+kgb-core.workspace = true
+kgb-store.workspace = true
+serde.workspace = true
+serde_json.workspace = true
+uuid.workspace = true
+
+[dev-dependencies]
+tempfile.workspace = true

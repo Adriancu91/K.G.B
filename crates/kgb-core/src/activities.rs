@@ -311,6 +311,7 @@ pub const ACTIVITIES: &[Activity] = &[
         name: "Imobiliare și administrare",
         description: "Închirieri de spații, administrarea clădirilor: contracte facturate lunar, mentenanța clădirii, acte și autorizații.",
         modules: &[
+            "kgb.rentals",
             "kgb.contracts",
             "kgb.business",
             "kgb.vault",
@@ -361,6 +362,7 @@ pub const ACTIVITIES: &[Activity] = &[
         name: "Asociații și fundații",
         description: "ONG-uri, cluburi, asociații: ședințe și hotărâri, proiecte, contracte, documente și foi de calcul.",
         modules: &[
+            "kgb.members",
             "kgb.docs",
             "kgb.write",
             "kgb.pdf",
