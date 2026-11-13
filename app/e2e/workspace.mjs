@@ -134,7 +134,8 @@ try {
   await clickText(p, "⇄ Compară", ".ws-bar");
   await p.until("!!document.querySelector('.ws-diff')", 15000);
   const diff = await p.eval("document.querySelector('.ws-compare').innerText.replace(/\\s+/g, ' ')");
-  check("„Compară”: un rând doar în stânga (25), unul doar în dreapta (27)", diff.includes("− 1 doar în stânga") && diff.includes("+ 1 doar în dreapta") && /B2: 25/.test(diff) && /B2: 27/.test(diff), diff.slice(0, 300));
+  // The rows that differ: the workbooks' names and the price in B2.
+  check("„Compară”: B2 25 doar în stânga, B2 27 doar în dreapta", diff.includes("− 2 doar în stânga") && diff.includes("+ 2 doar în dreapta") && diff.includes("− Foaia 1 › B2: 25") && diff.includes("+ Foaia 1 › B2: 27"), diff.slice(0, 400));
   const marked = await Promise.all([0, 1].map((n) => frUntil(p, n, "document.querySelectorAll('td.cmp-diff').length", 8000).catch(() => 0)));
   check("celula diferită e colorată în ambele tabele", marked[0] === 1 && marked[1] === 1, JSON.stringify(marked));
   await p.screenshot(join(shots, "01-compara.png"));
@@ -166,14 +167,20 @@ try {
   check("cu caietul într-un tab, pagina Note duce la tabul lui (o singură fereastră pe caiet)", one.ws && one.frames === 1 && !one.page && one.active === "notes", JSON.stringify(one));
 
   // After a restart: the two saved ones come back.
-  await sleep(500);
+  // The tabs are kept in the window's storage, written a moment after a change.
+  await sleep(4000);
   await stop(p);
   p = await start();
   await openWorkspace(p);
   await p.until("document.querySelectorAll('.ws-tab').length === 3", 8000).catch(() => {});
   const again = await tabNames(p);
   check("după repornire revin cele două foi salvate și caietul (foaia nouă, nesalvată, nu)", again.length === 3 && again[0].includes("preturi-ianuarie.csv") && again[1].includes("preturi-februarie.csv") && again[2].includes("Caietul de note"), JSON.stringify(again));
+  // The imported .csv counts as unsaved (it is not a workbook of the app yet): closing it asks first.
+  await p.until("!!document.querySelectorAll('.ws-tab')[0]?.querySelector('.ws-dot')", 30000).catch(() => {});
   await p.eval("document.querySelectorAll('.ws-close')[0].click()");
+  await sleep(400);
+  check("un tab cu ceva nesalvat întreabă înainte să se închidă", await p.eval("!!document.querySelector('.dialog[role=alertdialog]')"));
+  await clickText(p, "Închide fără să salvez");
   await sleep(400);
   const left = await tabNames(p);
   check("× închide tabul", left.length === 2 && left[0].includes("preturi-februarie.csv"), JSON.stringify(left));
