@@ -3737,6 +3737,7 @@ dependencies = [
  "hyper",
  "hyper-util",
  "kgb-appointments",
+ "kgb-autoservice",
  "kgb-business",
  "kgb-calc",
  "kgb-contracts",
@@ -3788,6 +3789,18 @@ dependencies = [
  "tempfile",
  "uuid",
  "windows-sys 0.61.2",
+]
+
+[[package]]
+name = "kgb-autoservice"
+version = "0.1.0"
+dependencies = [
+ "kgb-core",
+ "kgb-store",
+ "serde",
+ "serde_json",
+ "tempfile",
+ "uuid",
 ]
 
 [[package]]

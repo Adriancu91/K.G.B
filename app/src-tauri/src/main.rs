@@ -106,6 +106,7 @@ fn builtin_modules() -> Vec<Box<dyn Module>> {
         Box::new(kgb_maintenance::Maintenance::new()),
         Box::new(kgb_recipes::Recipes::new()),
         Box::new(kgb_works::Works::new()),
+        Box::new(kgb_autoservice::AutoService::new()),
     ]
 }
 

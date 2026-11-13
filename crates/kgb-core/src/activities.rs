@@ -260,6 +260,7 @@ pub const ACTIVITIES: &[Activity] = &[
         name: "Service auto și vulcanizare",
         description: "Ateliere auto: fișe de intervenție, piese și stocuri, programări, echipa, autorizarea RAR și deșeurile.",
         modules: &[
+            "kgb.autoservice",
             "kgb.business",
             "kgb.vault",
             "kgb.appointments",

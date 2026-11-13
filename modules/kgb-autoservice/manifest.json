@@ -1,0 +1,188 @@
+{
+  "manifest_format": 1,
+  "id": "kgb.autoservice",
+  "name": "Service auto",
+  "description": "Mașinile clienților (număr, VIN, marcă, model, an) cu istoricul lor și comenzile de lucru ale atelierului: reclamația, constatările, manopera și piesele, TVA-ul și totalul calculate, kilometrajul, garanția lucrării și pașii deschisă, în lucru, gata, predată sau anulată cu motiv. O comandă predată nu se mai schimbă.",
+  "version": "0.1.0",
+  "core": ">=0.1.0, <0.2.0",
+  "status": "beta",
+  "permissions": [
+    "storage.own",
+    "partners.read"
+  ],
+  "services": [
+    "storage",
+    "partners",
+    "log"
+  ],
+  "data_types": [
+    {
+      "collection": "vehicule",
+      "description": "mașinile clienților: clientul, telefonul, numărul de înmatriculare, VIN-ul, marca, modelul, anul, combustibilul",
+      "schema": {
+        "fields": {
+          "client": {
+            "type": "string",
+            "required": true,
+            "max_len": 36
+          },
+          "client_nume": {
+            "type": "string",
+            "required": true,
+            "max_len": 200
+          },
+          "telefon": {
+            "type": "string",
+            "required": true,
+            "max_len": 40
+          },
+          "nr": {
+            "type": "string",
+            "required": true,
+            "max_len": 12
+          },
+          "vin": {
+            "type": "string",
+            "required": true,
+            "max_len": 17
+          },
+          "marca": {
+            "type": "string",
+            "required": true,
+            "max_len": 60
+          },
+          "model": {
+            "type": "string",
+            "required": true,
+            "max_len": 60
+          },
+          "an": {
+            "type": "integer",
+            "required": true,
+            "min": 0,
+            "max": 2100
+          },
+          "combustibil": {
+            "type": "string",
+            "required": true,
+            "enum": [
+              "",
+              "benzina",
+              "motorina",
+              "hibrid",
+              "electric",
+              "gpl",
+              "altul"
+            ]
+          },
+          "nota": {
+            "type": "string",
+            "required": true,
+            "max_len": 1000
+          },
+          "creat_ms": {
+            "type": "integer",
+            "required": true,
+            "min": 0
+          }
+        },
+        "additional": false
+      }
+    },
+    {
+      "collection": "comenzi",
+      "description": "comenzile de lucru: mașina, numărul, data intrării, kilometrajul, reclamația, constatările, liniile (manoperă și piese), cota de TVA, garanția, starea, data predării, motivul anulării",
+      "schema": {
+        "fields": {
+          "vehicul": {
+            "type": "string",
+            "required": true,
+            "max_len": 36
+          },
+          "numar": {
+            "type": "integer",
+            "required": true,
+            "min": 1
+          },
+          "data_intrare": {
+            "type": "string",
+            "required": true,
+            "max_len": 10
+          },
+          "km": {
+            "type": "integer",
+            "required": true,
+            "min": -1,
+            "max": 5000000
+          },
+          "reclamatie": {
+            "type": "string",
+            "required": true,
+            "max_len": 2000
+          },
+          "constatari": {
+            "type": "string",
+            "required": true,
+            "max_len": 2000
+          },
+          "linii": {
+            "type": "array",
+            "required": true,
+            "max_len": 200
+          },
+          "cota_tva": {
+            "type": "integer",
+            "required": true,
+            "min": 0,
+            "max": 100
+          },
+          "garantie_luni": {
+            "type": "integer",
+            "required": true,
+            "min": 0,
+            "max": 60
+          },
+          "stare": {
+            "type": "string",
+            "required": true,
+            "enum": [
+              "deschisa",
+              "in_lucru",
+              "gata",
+              "predata",
+              "anulata"
+            ]
+          },
+          "data_predare": {
+            "type": "string",
+            "required": true,
+            "max_len": 10
+          },
+          "motiv_anulare": {
+            "type": "string",
+            "required": true,
+            "max_len": 500
+          },
+          "nota": {
+            "type": "string",
+            "required": true,
+            "max_len": 2000
+          },
+          "creat_ms": {
+            "type": "integer",
+            "required": true,
+            "min": 0
+          }
+        },
+        "additional": false
+      }
+    }
+  ],
+  "events": {
+    "emits": [],
+    "listens": []
+  },
+  "data_format": 1,
+  "migrations": [],
+  "on_disable": "Mașinile și comenzile rămân în spațiul de lucru și reapar când modulul este activat din nou."
+}
