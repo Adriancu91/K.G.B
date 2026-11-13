@@ -11,6 +11,8 @@ import { AskHost } from "../../cos/src/ask";
 import { setLang } from "../../cos/src/i18n";
 import { ScreenshotHost } from "../../cos/src/screenshot";
 import { SketchHost } from "../../cos/src/sketch";
+import { setTabMarks, tabContent, tabText, tabTitleOf } from "../../cos/src/tabs";
+import { unsavedAll } from "../../cos/src/unsaved";
 import { showPdf, showSnapshot, type Snapshot } from "./printPdf";
 import { DOCS, NOTES, SHEETS, installCosBridge, openDocument, setNotesReadOnly, type KgbHost } from "../modules/sheets/cosBridge";
 import "../../cos/src/styles.css";
@@ -151,6 +153,18 @@ if (printJob) {
   // The window's shortcuts (Ctrl+S, Ctrl+O, Ctrl+Z…) work only in the application "in front" (COS active.ts);
   // in this frame the window is always in front.
   setCurrentModule(notes ? "note" : docs ? "doc" : "sheets");
+  // The workspace with tabs (8.21, pages/WorkspacePage) reads each frame through this: the file's name and path
+  // (kgb:<id>/<name> once it is in the core), whether something is unsaved, the content and text for „Compară”,
+  // and the cells it found different, coloured in the table while the two tabs stay side by side.
+  const key = notes ? "note" : docs ? "doc" : "sheets";
+  (window as Window & { kgbTab?: unknown }).kgbTab = {
+    title: () => tabTitleOf(key),
+    unsaved: () => unsavedAll().length > 0,
+    content: () => tabContent(key),
+    text: () => tabText(key),
+    marks: (m: Record<string, string[]> | null) =>
+      setTabMarks(key, m ? new Map(Object.entries(m).map(([sheet, cells]) => [sheet, new Set(cells)])) : null),
+  };
   // The window speaks the app's language (RO / EN) and changes with it.
   setLang(host.lang());
   host.onLang(setLang);

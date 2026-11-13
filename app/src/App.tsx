@@ -38,6 +38,7 @@ import { SourcesPage } from "./pages/SourcesPage";
 import { PartnersPage } from "./pages/PartnersPage";
 import { WebClipsPage } from "./pages/WebClipsPage";
 import { HelpPage } from "./pages/HelpPage";
+import { WorkspacePage } from "./pages/WorkspacePage";
 import { ChatPage } from "./pages/ChatPage";
 import { PhonePage } from "./pages/PhonePage";
 import { TeamOverviewPage } from "./pages/TeamOverviewPage";
@@ -88,6 +89,20 @@ export function App() {
   const [modules, setModules] = useState<ModulesReply | null>(null);
   const [page, setPage] = useState("home");
   const [helpFocus, setHelpFocus] = useState<string | null>(null);
+  // Once opened, the workspace stays in memory (hidden) while other pages are shown: its tabs keep their windows.
+  const [workspaceOpened, setWorkspaceOpened] = useState(false);
+  useEffect(() => {
+    if (page === "workspace") setWorkspaceOpened(true);
+  }, [page]);
+  // The notebook is open in one window only: with it in a workspace tab, the Note page leads to that tab.
+  const [wsNotes, setWsNotes] = useState(false);
+  const [focusNotes, setFocusNotes] = useState(0);
+  useEffect(() => {
+    if (page === "kgb.notes" && wsNotes) {
+      setFocusNotes((n) => n + 1);
+      setPage("workspace");
+    }
+  }, [page, wsNotes]);
   const [error, setError] = useState<string | null>(null);
   const [dragWidth, setDragWidth] = useState<number | null>(null);
 
@@ -161,6 +176,10 @@ export function App() {
 
   const s = settings?.settings;
   const nav: NavItem[] = [{ id: "home", label: "Acasă" }];
+  // The workspace with tabs (8.21), when one of the office modules is on.
+  const office = ["kgb.sheets", "kgb.write", "kgb.pdf", "kgb.notes", "kgb.docs"];
+  if (modules?.modules.some((m) => office.includes(m.id) && m.enabled && (modules.access[m.id] ?? "scriere") !== "niciunul"))
+    nav.push({ id: "workspace", label: "Spațiu de lucru" });
   for (const m of modules?.modules ?? []) {
     const access = modules?.access[m.id] ?? "scriere";
     if (m.enabled && !modules?.hidden.includes(m.id) && access !== "niciunul") {
@@ -297,7 +316,7 @@ export function App() {
               doar citire
             </span>
           )}
-          {page !== "home" && (
+          {page !== "home" && page !== "workspace" && (
             <button
               className="link small pin"
               title="Pune un panou cu această pagină pe Acasă"
@@ -335,6 +354,11 @@ export function App() {
               închide
             </button>
           </p>
+        )}
+        {(workspaceOpened || page === "workspace") && nav.some((n) => n.id === "workspace") && (
+          <div className="workspace-host" hidden={page !== "workspace"}>
+            <WorkspacePage modules={modules} visible={page === "workspace"} onError={setError} focusNotes={focusNotes} onNotesTab={setWsNotes} workspaceId={info.workspace?.id ?? "local"} />
+          </div>
         )}
         {page === "home" && (
           <Home
@@ -386,7 +410,7 @@ export function App() {
         {page === "org" && <OrgPage onError={setError} onChanged={() => void loadModules()} />}
         {page === "diagnostics" && <DiagnosticsPage onError={setError} />}
         {page === "data" && <DataPage onError={setError} onSwitched={() => window.location.reload()} />}
-        {ModulePage && <ModulePage onError={setError} access={modules.access[page]} onOpen={setPage} />}
+        {ModulePage && !(page === "kgb.notes" && wsNotes) && <ModulePage onError={setError} access={modules.access[page]} onOpen={setPage} />}
         {!ModulePage && modules.modules.some((m) => m.id === page) && (
           <p className="muted">Acest modul nu are încă interfață.</p>
         )}
