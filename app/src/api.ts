@@ -57,6 +57,7 @@ export interface AppInfo {
   app_version: string;
   core_version: string;
   pre_release: boolean;
+  canal: "test" | "stabil";
   startup_error: string | null;
   workspace: { id: string; name: string; dir: string } | null;
   owner: Owner | null;

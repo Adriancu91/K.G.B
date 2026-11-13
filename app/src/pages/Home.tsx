@@ -26,6 +26,8 @@ const TITLES: Record<string, string> = {
   curs: "Curs BNR",
   vreme: "Vremea",
   media: "Ce se aude acum",
+  stiri: "Știri",
+  radio: "Radio",
 };
 const BUILT_IN = Object.keys(TITLES);
 const WIDTH = 1000;
@@ -35,6 +37,11 @@ const MAX_H = 2000;
 const NARROW = 720;
 const HIDDEN_UNTIL = "9999-12-31";
 
+interface NewsFeed {
+  stiri: { titlu: string; link: string; ms: number; rezumat: string; sursa: string }[];
+  erori: [string, string][];
+  surse: number;
+}
 interface Task {
   id: string;
   titlu: string;
@@ -251,6 +258,138 @@ function WeatherPanel({ town, onTown, onOpen }: { town: string; onTown: (t: stri
   );
 }
 
+/** The latest headlines of the approved news sources (InfoNews, 8.18); a title opens the item in the computer's browser. */
+function NewsPanel({ onOpen }: { onOpen: (id: string) => void }) {
+  const [f, setF] = useState<NewsFeed | null>(null);
+  const [err, setErr] = useState<string | null>(null);
+  useEffect(() => {
+    invoke<NewsFeed>("news_feed").then(setF, (e) => setErr(message(e)));
+  }, []);
+  const go = (url: string) => void invoke("news_open", { url }).catch((e: unknown) => setErr(message(e)));
+  if (err) return <Off err={err} onOpen={onOpen} />;
+  if (!f) return <p className="muted">Se încarcă…</p>;
+  if (f.surse === 0)
+    return (
+      <p className="muted">
+        Nicio sursă de știri pornită.{" "}
+        <button className="link" onClick={() => onOpen("sources")}>
+          Pornește una din „Surse externe”
+        </button>
+      </p>
+    );
+  return (
+    <div className="home-news">
+      <ul>
+        {f.stiri.slice(0, 8).map((i) => (
+          <li key={i.link || i.titlu}>
+            {i.link ? (
+              <button className="link" onClick={() => go(i.link)} title={i.rezumat}>
+                {i.titlu}
+              </button>
+            ) : (
+              <span>{i.titlu}</span>
+            )}
+            <span className="muted small">
+              {" "}
+              · {i.sursa}
+              {i.ms ? ` · ${new Date(i.ms).toLocaleTimeString("ro-RO", { hour: "2-digit", minute: "2-digit" })}` : ""}
+            </span>
+          </li>
+        ))}
+      </ul>
+      {f.stiri.length === 0 && <p className="muted">Nicio știre deocamdată.</p>}
+      {f.erori.length > 0 && <p className="muted small">Nu s-au putut citi: {f.erori.map(([n]) => n).join(", ")}.</p>}
+      <button className="link small" onClick={() => onOpen("kgb.news")}>
+        Toate știrile
+      </button>
+    </div>
+  );
+}
+
+interface Station {
+  stationuuid: string;
+  name: string;
+  tags: string;
+  codec: string;
+  bitrate: number;
+  countrycode: string;
+}
+
+/** Free internet radio from the public Radio Browser directory (8.19, D-098): search, play, stop, volume. */
+function RadioPanel({ onOpen }: { onOpen: (id: string) => void }) {
+  const [list, setList] = useState<Station[] | null>(null);
+  const [now, setNow] = useState<Station | null>(null);
+  const [q, setQ] = useState("");
+  const [err, setErr] = useState<string | null>(null);
+  const [vol, setVol] = useState(() => {
+    try {
+      return Number(localStorage.getItem("kgb.radio.volum") ?? "0.6") || 0.6;
+    } catch {
+      return 0.6;
+    }
+  });
+  useEffect(() => {
+    invoke<Station | null>("radio_now").then(setNow, () => setNow(null));
+  }, []);
+  const search = (name: string) => {
+    setErr(null);
+    invoke<Station[]>("radio_search", { nume: name, tara: name ? "" : "RO" }).then(setList, (e) => setErr(message(e)));
+  };
+  const play = (s: Station) => invoke<Station>("radio_play", { id: s.stationuuid, volum: vol }).then(setNow, (e) => setErr(message(e)));
+  const stop = () => invoke("radio_stop").then(() => setNow(null), (e) => setErr(message(e)));
+  const volume = (v: number) => {
+    setVol(v);
+    try {
+      localStorage.setItem("kgb.radio.volum", String(v));
+    } catch {
+      /* the volume is only remembered when storage works */
+    }
+    void invoke("radio_volume", { volum: v });
+  };
+  return (
+    <div className="radio">
+      {now && (
+        <div className="row wrap radio-now">
+          <strong>▶ {now.name}</strong>
+          <button onClick={() => void stop()}>Oprește</button>
+          <input type="range" min={0} max={1} step={0.05} value={vol} aria-label="Volumul radioului" onChange={(e) => volume(Number(e.target.value))} />
+        </div>
+      )}
+      <form
+        className="row"
+        onSubmit={(e) => {
+          e.preventDefault();
+          search(q.trim());
+        }}
+      >
+        <input aria-label="Caută un post de radio" placeholder="numele postului" value={q} onChange={(e) => setQ(e.target.value)} />
+        <button type="submit">Caută</button>
+        <button type="button" onClick={() => search("")}>
+          Posturi din România
+        </button>
+      </form>
+      {err && <Off err={err} onOpen={onOpen} />}
+      {list && list.length === 0 && <p className="muted">Niciun post găsit.</p>}
+      {list && list.length > 0 && (
+        <ul className="radio-list">
+          {list.map((s) => (
+            <li key={s.stationuuid}>
+              <button className="link" onClick={() => void play(s)}>
+                {s.name}
+              </button>
+              <span className="muted small">
+                {" "}
+                · {[s.countrycode, s.codec, s.bitrate ? `${s.bitrate} kbps` : ""].filter(Boolean).join(" · ")}
+              </span>
+            </li>
+          ))}
+        </ul>
+      )}
+      <p className="muted small">Posturi care transmit gratuit pe internet, din catalogul public Radio Browser.</p>
+    </div>
+  );
+}
+
 /** The player in Windows' media controls (Spotify or any other), 7.4e. */
 function MediaPanel() {
   const [m, setM] = useState<Playing | null | undefined>(undefined);
@@ -330,6 +469,10 @@ function Content(props: {
       return <WeatherPanel town={props.town} onTown={props.onTown} onOpen={onOpen} />;
     case "media":
       return <MediaPanel />;
+    case "stiri":
+      return <NewsPanel onOpen={onOpen} />;
+    case "radio":
+      return <RadioPanel onOpen={onOpen} />;
     case "alerta": {
       const notes = data.notes;
       if (!notes) return loading;

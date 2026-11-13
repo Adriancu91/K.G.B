@@ -30,6 +30,7 @@ pub mod peers;
 pub mod phones;
 pub mod presence;
 pub mod profiles;
+pub mod radio;
 pub mod registry;
 pub mod replication;
 pub mod schema;

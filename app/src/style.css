@@ -1952,3 +1952,61 @@ tr.contract-soon td {
 /* 7.10b Autorizațiile firmei: expirate în roșu, cele care expiră curând în portocaliu (și cu text). */
 .held-list tr.held-expired td { background: color-mix(in srgb, var(--danger, #c0392b) 12%, transparent); }
 .held-list tr.held-soon td { background: color-mix(in srgb, var(--warn, #e67e22) 14%, transparent); }
+
+/* Acasă › Știri (8.18) */
+.home-news ul {
+  list-style: none;
+  margin: 0 0 6px;
+  padding: 0;
+}
+.home-news li {
+  padding: 3px 0;
+  border-bottom: 1px solid var(--line, rgba(127, 127, 127, 0.2));
+}
+.home-news li .link {
+  text-align: left;
+}
+
+/* Ferestre web (8.20) */
+.clip-form {
+  display: grid;
+  gap: 8px;
+  max-width: 560px;
+  margin: 10px 0;
+}
+.clip-form label {
+  display: grid;
+  gap: 4px;
+}
+.clip-form label.row {
+  display: flex;
+}
+.clip-list {
+  list-style: none;
+  padding: 0;
+  display: grid;
+  gap: 8px;
+}
+.clip-list li .muted.small {
+  overflow-wrap: anywhere;
+}
+
+/* Acasă › Radio (8.19) */
+.radio-list {
+  list-style: none;
+  margin: 6px 0;
+  padding: 0;
+  max-height: 170px;
+  overflow: auto;
+}
+.radio-list li {
+  padding: 2px 0;
+}
+.radio-now input[type="range"] {
+  width: 110px;
+}
+pre.notices {
+  max-height: 480px;
+  overflow: auto;
+  white-space: pre-wrap;
+}

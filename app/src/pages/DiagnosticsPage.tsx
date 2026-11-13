@@ -1,6 +1,7 @@
 // Diagnostics: versions, storage recovery, recent problems, audit journal.
 // The report never contains notes or other user content.
 import { useCallback, useEffect, useState } from "react";
+import { invoke } from "@tauri-apps/api/core";
 import { api, message, type Diagnostics } from "../api";
 
 const when = (ms: unknown) => (typeof ms === "number" ? new Date(ms).toLocaleString("ro-RO") : "");
@@ -8,6 +9,8 @@ const when = (ms: unknown) => (typeof ms === "number" ? new Date(ms).toLocaleStr
 export function DiagnosticsPage({ onError }: { onError: (e: string | null) => void }) {
   const [d, setD] = useState<Diagnostics | null>(null);
   const [saved, setSaved] = useState<string | null>(null);
+  const [notices, setNotices] = useState<string | null>(null);
+  const showNotices = () => void invoke<string>("third_party_notices").then(setNotices, (e: unknown) => onError(message(e)));
 
   const refresh = useCallback(async () => {
     try {
@@ -76,6 +79,13 @@ export function DiagnosticsPage({ onError }: { onError: (e: string | null) => vo
           )}
         </tbody>
       </table>
+      <h2>Componente terțe și licențe</h2>
+      <p className="muted">K.G.B. folosește componente open source. Lista lor, cu licența fiecăreia și textele licențelor, e livrată cu programul (fișierul THIRD-PARTY-NOTICES.txt de lângă K.G.B.).</p>
+      {notices === null ? (
+        <button onClick={showNotices}>Arată licențele</button>
+      ) : (
+        <pre className="report notices">{notices}</pre>
+      )}
     </section>
   );
 }

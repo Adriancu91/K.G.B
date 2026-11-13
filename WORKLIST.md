@@ -216,9 +216,9 @@ Interdicții permanente: fără baze de date (D-005, D-018), fără schimbări d
 - [x] 7.8 Raport Etapa 7 (`docs/ETAPA7_RAPORT.md`) — **12 nov. 2026:** scris de ambele sesiuni; poarta: un singur build din main (faa1f99), 62 de teste, 728/728 verificări, nicio regresie (gate.mjs învechit, actualizat); desktop.mjs 🔒 (scrie în lista de pornire a Windows, cu proprietarul de față)
 - [x] 7.12 Poarta Etapei 7: decizia proprietarului pe baza raportului — **aprobată 12 nov. 2026 (D-091)**
 
-## Etapa 8 — pași (plan: `docs/ETAPA8_PLAN.md`; decizii propuse D-092 … D-097; planul așteaptă acordul proprietarului)
-- [ ] 8.1 Licențele componentelor livrate: lista completă (Rust și JavaScript, inclusiv cele indirecte), `THIRD-PARTY-NOTICES` în installer și în „Despre”, copyleft sau neclar semnalat
-- [ ] 8.2 Versiuni și canale: versiunea dintr-un singur loc, canal stabil și canal de test, banda „pre-lansare” doar pe canalul de test, note de versiune
+## Etapa 8 — pași (plan: `docs/ETAPA8_PLAN.md`; decizii propuse D-092 … D-097; pornită la cererea proprietarului, 13 nov. 2026)
+- [x] 8.1 Licențele componentelor livrate: `node tools/licenses.mjs` le listează din `Cargo.lock` și `package-lock.json` (768 de componente: 615 Rust, 153 JavaScript; fără licență: 0; în afara listei acceptate: 0; MPL-2.0: 6, acceptat în D-021) → `docs/LICENTE_COMPONENTE.md` și `THIRD-PARTY-NOTICES.txt` (lista și textele licențelor), livrat cu installerul și arătat în „Diagnostic” („Arată licențele”). 92 de componente nu au fișier de licență în pachet; sunt numite separat
+- [x] 8.2 Versiuni și canale: versiunea doar în `Cargo.toml` (`[workspace.package]`), installerul o ia de acolo (`tauri.conf.json` nu mai are versiune), testul `version_tests` verifică și `app/package.json`; canalul se alege la build (`KGB_CHANNEL=stabil`, altfel canalul de test), cu banda și „canalul de test” în subsol doar pe canalul de test. Notele de versiune pentru om rămân pentru 8.9
 - [ ] 8.3 Installer stabil: utilizatorul curent, verificarea Windows și WebView2 (D-095), upgrade cu datele păstrate, dezinstalare care păstrează datele implicit (D-097); scenariul automat instalare → upgrade → dezinstalare → reinstalare
 - [ ] 🔒 8.4 Medii curate de test (Windows Sandbox / mașină virtuală / al doilea PC), pornite de proprietar
 - [ ] 🔒 8.5 Semnarea programului (D-092): certificat sau serviciu ales și plătit de proprietar; installer și program semnate, verificate
@@ -231,3 +231,9 @@ Interdicții permanente: fără baze de date (D-005, D-018), fără schimbări d
 - [ ] 🔒 8.12 Numele, marca, domeniile, EULA și nota de confidențialitate (proprietarul, cu un jurist dacă vrea)
 - [ ] 8.13 Raport `docs/ETAPA8_RAPORT.md`
 - [ ] 🔒 8.14 Poarta Etapei 8: instalare, upgrade, dezinstalare, backup și restaurare pe medii curate
+- [ ] 8.15 (cerere 13.11) Mai multe modele de documente, din mai multe domenii (sesiunea COS)
+- [ ] 8.16 (cerere 13.11) Mai multe tipuri de autorizații în catalog, lotul 4, doar din surse oficiale (sesiunea COS)
+- [ ] 8.17 (cerere 13.11) Mai multe domenii de activitate și module pentru ele (sesiunea COS)
+- [x] 8.18 (cerere 13.11) Acasă: panoul „Știri” (InfoNews), cu ultimele 8 titluri din sursele pornite (clic = pagina în browser). 5 surse RSS propuse, verificate pe 13.11, completate și oprite (Guvernul României, Comisia Europeană, BCE, Eurostat ×2); una ștearsă nu mai e propusă. e2e `home-news-radio` 8/8 (cu 8.19)
+- [x] 8.19 (cerere 13.11) Muzică gratuită (D-098, acord COS): panoul „Radio” pe Acasă, cu posturile din catalogul public Radio Browser (sursă oprită din fabrică). Căutare după nume sau „Posturi din România”; pornire, oprire și volum; postul cântă într-o fereastră ascunsă, InPrivate, fără acces la K.G.B., doar de la adrese https publice. e2e `home-news-radio` 8/8. Muzica de pe PC: încă nu
+- [x] 8.20 (cerere 13.11) „Ferestre web” (D-099, acord COS): o mini-fereastră cu o pagină web, decupată pe zona aleasă și înghețată acolo, văzută live; opțional mereu deasupra și reîncărcare la interval. E izolată: fără comenzi K.G.B., InPrivate, doar https publice, fără descărcări, pop-up-uri sau permisiuni; linkurile se deschid în browser. e2e `webclips` 7/7

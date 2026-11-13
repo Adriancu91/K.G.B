@@ -544,3 +544,39 @@ Deciziile DECIS se schimbă doar cu aprobarea explicită a proprietarului (Maste
   - cotele de TVA confirmate cu un contabil;
   - decizia despre e-mailul din aplicație.
 - **Următorul pas:** Etapa 8 (Comercializare, Master Plan: installer stabil, semnare, licențiere, update/rollback, documentație). Începe după planul ei și deciziile proprietarului.
+
+### D-098 — Muzică gratuită: radiouri pe internet din Radio Browser
+- **Data:** 13 nov. 2026 · **Statut:** DECIS — acord COS + K.G.B. (D-074), la cererea proprietarului: „adaugă și ceva de ascultat muzică gratuit”.
+- **Sursa:** Radio Browser, catalogul public al posturilor care transmit gratuit pe internet. Condițiile au fost citite pe 13 nov. 2026: API complet gratuit și open source, folosibil în programe gratuite și comerciale. Catalogul cere un User-Agent care numește programul și semnalarea fiecărui clic pe un post. Fluxurile audio aparțin posturilor.
+- **Cum:**
+  - catalogul e o sursă în „Surse externe”, completată, dar oprită din fabrică (D-063);
+  - căutarea și pornirea unui post se fac doar la clic, cu „Setări › Internet” pornit;
+  - postul cântă într-o fereastră ascunsă, separată (`radio-*`), care nu poate chema nicio comandă K.G.B. și folosește un profil InPrivate propriu (nimic nu rămâne pe disc). Regulile de conținut ale ferestrei principale nu se schimbă;
+  - un singur post cântă odată; panoul „Radio” e pe Acasă.
+- **Adăugate de sesiunea COS (acord 13 nov. 2026):**
+  - nicio cerere spre catalog, nici măcar căutarea serverelor, până când sursa e pornită;
+  - fluxul se deschide doar de la o adresă https publică, niciodată localhost, `.local` sau adrese private (10.x, 172.16–31.x, 192.168.x, 127.x, link-local), prin `web_guard`. Posturile care transmit doar pe http nu apar în listă;
+  - fereastra radioului nu descarcă nimic, nu deschide pop-up-uri și refuză toate permisiunile;
+  - volumul se ține minte (pe acest PC). Postul se oprește la ieșirea din K.G.B.; aplicația nu are încă o blocare proprie.
+- **Nu e încă:** muzica de pe PC (pasul următor).
+- **Test:** e2e `home-news-radio`, cu un catalog și un flux de test pe 127.0.0.1.
+
+### D-099 — „Ferestre web”: o parte dintr-o pagină web, înghețată, văzută live
+- **Data:** 13 nov. 2026 · **Statut:** DECIS — acord COS + K.G.B. (D-074), la cererea proprietarului: o mini-fereastră web, redimensionată și înghețată pe o anumită parte a paginii, ca să vadă live cursuri, burse sau știri fără alt browser.
+- **De ce așa și nu „extragerea tabelelor”:**
+  - K.G.B. nu citește și nu salvează nimic din pagină; o arată, ca un browser;
+  - nu depinde de structura paginii;
+  - nu încalcă condițiile site-urilor care interzic preluarea automată (cazul Kitco).
+- **Cum:**
+  - fiecare fereastră e o fereastră separată (`clip-*`). Nu e în capability-ul `main`, iar filtrul de comenzi refuză orice comandă venită din ea. Folosește un profil InPrivate propriu: cookie-urile site-urilor nu se amestecă cu ale aplicației și nu rămân pe disc. (Un dosar de date WebView2 separat ar cere un al doilea proces de browser, pe care WebView2 l-a refuzat lângă cel al aplicației, cu eroarea 0x8007139F.) Fereastra are aceleași setări de browser ca aplicația;
+  - pagina se încarcă doar la clic, cu „Setări › Internet” pornit; se reîncarcă singură doar dacă omul alege un interval;
+  - zona se alege derulând și redimensionând fereastra. „Îngheață” ține minte poziția (raportată de un script prin titlul paginii, doar numere), mărimea, locul și zoom-ul; live, pagina e ținută pe poziție, fără bare de derulare;
+  - ferestrele se păstrează pe fiecare PC (`ferestre-web.json`), opțional „mereu deasupra”.
+- **Adăugate de sesiunea COS (acord 13 nov. 2026):**
+  - doar https, fără adrese locale sau private (`web_guard`, aceleași reguli ca la radio);
+  - fără descărcări și fără pop-up-uri;
+  - toate permisiunile cerute de pagină (cameră, microfon, locație, notificări, clipboard) sunt refuzate;
+  - după prima încărcare, un clic pe un link nu mută pagina înghețată: linkul se deschide în browserul omului. Redirecționările de la deschidere și reîncărcarea aceleiași pagini sunt permise;
+  - poziția din titlu se citește strict: doar `kgbclip:<x>,<y>`, cifre, cel mult 7 fiecare; altfel titlul se ignoră.
+- **Limită cunoscută:** paginile care se derulează într-un element interior, nu în pagina întreagă, nu se pot îngheța pe o poziție; se vede partea de sus.
+- **Test:** e2e `webclips`, cu o pagină de test pe 127.0.0.1. Verifică și că pagina nu poate chema K.G.B.

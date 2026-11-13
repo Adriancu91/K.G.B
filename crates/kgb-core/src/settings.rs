@@ -81,6 +81,8 @@ pub const HOME_PANELS: &[&str] = &[
     "curs",
     "vreme",
     "media",
+    "stiri",
+    "radio",
 ];
 /// Prefix of a page pinned to the start page.
 pub const PINNED_PREFIX: &str = "fix:";
@@ -144,6 +146,8 @@ impl Home {
                 panel("curs", 0, 796, 240, 190),
                 panel("vreme", 250, 796, 330, 190),
                 panel("media", 590, 796, 410, 190),
+                panel("stiri", 0, 998, 600, 300),
+                panel("radio", 610, 998, 390, 300),
             ],
             amanate: Default::default(),
             vreme: String::new(),
