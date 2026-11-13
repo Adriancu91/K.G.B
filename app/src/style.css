@@ -2010,3 +2010,21 @@ pre.notices {
   overflow: auto;
   white-space: pre-wrap;
 }
+
+/* Ajutor (8.9) */
+.help-toc {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 14px;
+  margin: 10px 0;
+}
+.help-chapter {
+  margin: 10px 0;
+  max-width: 900px;
+}
+.help-chapter h2 {
+  margin-top: 0;
+}
+.help input[aria-label="Caută în ghid"] {
+  min-width: 260px;
+}

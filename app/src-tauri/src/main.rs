@@ -713,6 +713,21 @@ fn third_party_notices() -> &'static str {
     include_str!("../THIRD-PARTY-NOTICES.txt")
 }
 
+/// Saves the user's guide as PDF (8.9) where the person chose in the save dialog: only a `.pdf` path, only a PDF.
+#[tauri::command]
+fn help_pdf_save(dest: String, data: String) -> CmdResult<()> {
+    use base64::Engine as _;
+    let path = std::path::PathBuf::from(&dest);
+    if !path.is_absolute() || path.extension().and_then(|e| e.to_str()).map(str::to_ascii_lowercase).as_deref() != Some("pdf") {
+        return Err("ghidul se salvează doar ca fișier .pdf".into());
+    }
+    let bytes = base64::engine::general_purpose::STANDARD.decode(data.as_bytes()).map_err(err)?;
+    if !bytes.starts_with(b"%PDF-") || bytes.len() > 20 * 1024 * 1024 {
+        return Err("ghidul nu e un PDF valid".into());
+    }
+    std::fs::write(&path, bytes).map_err(|e| format!("ghidul nu s-a putut salva: {e}"))
+}
+
 /// Radio stations from the directory (8.19, D-098), at the person's click.
 #[tauri::command]
 async fn radio_search(app: State<'_, AppState>, nume: String, tara: String) -> CmdResult<Vec<kgb_core::radio::Station>> {
@@ -2541,7 +2556,8 @@ fn main() {
             radio_stop,
             radio_volume,
             radio_now,
-            third_party_notices
+            third_party_notices,
+            help_pdf_save
             ]);
             // The hidden print windows (D-081) may call only their two commands: no modules, files or dialogs.
             move |invoke| {

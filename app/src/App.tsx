@@ -37,6 +37,7 @@ import { DevicesPage } from "./pages/DevicesPage";
 import { SourcesPage } from "./pages/SourcesPage";
 import { PartnersPage } from "./pages/PartnersPage";
 import { WebClipsPage } from "./pages/WebClipsPage";
+import { HelpPage } from "./pages/HelpPage";
 import { ChatPage } from "./pages/ChatPage";
 import { PhonePage } from "./pages/PhonePage";
 import { TeamOverviewPage } from "./pages/TeamOverviewPage";
@@ -86,6 +87,7 @@ export function App() {
   const [settings, setSettings] = useState<SettingsReply | null>(null);
   const [modules, setModules] = useState<ModulesReply | null>(null);
   const [page, setPage] = useState("home");
+  const [helpFocus, setHelpFocus] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [dragWidth, setDragWidth] = useState<number | null>(null);
 
@@ -169,7 +171,7 @@ export function App() {
       });
     }
   }
-  nav.push({ id: "partners", label: "Parteneri" }, { id: "chat", label: "Mesaje" }, { id: "web-clips", label: "Ferestre web" }, { id: "phone", label: "Telefon" }, { id: "team-overview", label: "Echipa pe scurt" }, { id: "catalog", label: "Catalog module" }, { id: "org", label: "Organizație" }, { id: "devices", label: "Dispozitive și sincronizare" }, { id: "sources", label: "Surse externe" }, { id: "settings", label: "Setări" }, { id: "data", label: "Date și backup" }, { id: "diagnostics", label: "Diagnostic" });
+  nav.push({ id: "partners", label: "Parteneri" }, { id: "chat", label: "Mesaje" }, { id: "web-clips", label: "Ferestre web" }, { id: "phone", label: "Telefon" }, { id: "team-overview", label: "Echipa pe scurt" }, { id: "catalog", label: "Catalog module" }, { id: "org", label: "Organizație" }, { id: "devices", label: "Dispozitive și sincronizare" }, { id: "sources", label: "Surse externe" }, { id: "settings", label: "Setări" }, { id: "data", label: "Date și backup" }, { id: "diagnostics", label: "Diagnostic" }, { id: "help", label: "Ajutor" });
 
   // If the open module was disabled or hidden, fall back to the start page.
   useEffect(() => {
@@ -312,6 +314,18 @@ export function App() {
               {s.home.panels.some((p) => p.id === `fix:${page}`) ? "Scoate de pe Acasă" : "Fixează pe Acasă"}
             </button>
           )}
+          {modules.modules.some((m) => m.id === page) && (
+            <button
+              className="link small"
+              title="Ce face acest modul, în ghidul utilizatorului"
+              onClick={() => {
+                setHelpFocus(page);
+                setPage("help");
+              }}
+            >
+              Ajutor
+            </button>
+          )}
           <NotificationBell moduleName={(id) => modules.modules.find((m) => m.id === id)?.name ?? id} onError={setError} />
         </div>
         {error && (
@@ -351,6 +365,7 @@ export function App() {
         {page === "sources" && <SourcesPage onError={setError} />}
         {page === "partners" && <PartnersPage onError={setError} />}
         {page === "web-clips" && <WebClipsPage onError={setError} />}
+        {page === "help" && <HelpPage modules={modules} focus={helpFocus} onOpen={(id) => setPage(id)} onError={setError} />}
         {page === "chat" && <ChatPage onError={setError} />}
         {page === "phone" && <PhonePage modules={modules} onError={setError} />}
         {page === "team-overview" && <TeamOverviewPage modules={modules} onError={setError} />}
