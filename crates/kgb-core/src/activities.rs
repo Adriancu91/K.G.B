@@ -361,6 +361,7 @@ pub const ACTIVITIES: &[Activity] = &[
         name: "Asociații și fundații",
         description: "ONG-uri, cluburi, asociații: ședințe și hotărâri, proiecte, contracte, documente și foi de calcul.",
         modules: &[
+            "kgb.members",
             "kgb.docs",
             "kgb.write",
             "kgb.pdf",
