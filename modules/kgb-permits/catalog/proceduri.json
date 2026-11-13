@@ -81,7 +81,8 @@
    "productie",
    "horeca",
    "agricultura",
-   "servicii"
+   "servicii",
+   "imobiliare"
   ],
   "surse": [
    {
@@ -200,7 +201,13 @@
    "horeca",
    "agricultura",
    "servicii",
-   "transport"
+   "transport",
+   "auto",
+   "educatie",
+   "imobiliare",
+   "it",
+   "ong",
+   "frumusete"
   ],
   "surse": [
    {
@@ -295,7 +302,8 @@
    "constructii",
    "comert",
    "productie",
-   "agricultura"
+   "agricultura",
+   "imobiliare"
   ],
   "surse": [
    {
@@ -422,7 +430,8 @@
    "productie",
    "horeca",
    "agricultura",
-   "servicii"
+   "servicii",
+   "imobiliare"
   ],
   "surse": [
    {
@@ -548,7 +557,8 @@
    "productie",
    "horeca",
    "agricultura",
-   "servicii"
+   "servicii",
+   "imobiliare"
   ],
   "surse": [
    {
@@ -664,7 +674,9 @@
    "comert",
    "horeca",
    "productie",
-   "servicii"
+   "servicii",
+   "educatie",
+   "imobiliare"
   ],
   "surse": [
    {
@@ -778,7 +790,9 @@
    "comert",
    "horeca",
    "productie",
-   "servicii"
+   "servicii",
+   "educatie",
+   "imobiliare"
   ],
   "surse": [
    {
@@ -1014,7 +1028,8 @@
    "transport",
    "servicii",
    "horeca",
-   "comert"
+   "comert",
+   "auto"
   ],
   "surse": [
    {
@@ -1464,7 +1479,9 @@
    "comert",
    "servicii",
    "productie",
-   "cabinet"
+   "cabinet",
+   "educatie",
+   "frumusete"
   ],
   "surse": [
    {
@@ -1609,7 +1626,13 @@
    "productie",
    "agricultura",
    "cabinet",
-   "birou"
+   "birou",
+   "auto",
+   "educatie",
+   "imobiliare",
+   "it",
+   "ong",
+   "frumusete"
   ],
   "surse": [
    {
@@ -1725,7 +1748,13 @@
    "productie",
    "agricultura",
    "cabinet",
-   "birou"
+   "birou",
+   "auto",
+   "educatie",
+   "imobiliare",
+   "it",
+   "ong",
+   "frumusete"
   ],
   "surse": [
    {
@@ -1849,7 +1878,8 @@
   "temei_legal": "OG nr. 99/2000 privind comercializarea produselor și serviciilor de piață, republicată, art. 5, 6, 8, 9 (formă consolidată la 12.12.2024); hotărârile consiliului local.",
   "activitati": [
    "comert",
-   "horeca"
+   "horeca",
+   "frumusete"
   ],
   "surse": [
    {
@@ -1914,7 +1944,13 @@
    "productie",
    "agricultura",
    "cabinet",
-   "birou"
+   "birou",
+   "auto",
+   "educatie",
+   "imobiliare",
+   "it",
+   "ong",
+   "frumusete"
   ],
   "surse": [
    {
@@ -2117,7 +2153,13 @@
    "productie",
    "agricultura",
    "cabinet",
-   "birou"
+   "birou",
+   "auto",
+   "educatie",
+   "imobiliare",
+   "it",
+   "ong",
+   "frumusete"
   ],
   "surse": [
    {
@@ -2823,7 +2865,10 @@
    "comert",
    "horeca",
    "servicii",
-   "cabinet"
+   "cabinet",
+   "auto",
+   "educatie",
+   "frumusete"
   ],
   "surse": [
    {
@@ -3225,7 +3270,9 @@
   "activitati": [
    "comert",
    "horeca",
-   "servicii"
+   "servicii",
+   "auto",
+   "frumusete"
   ],
   "surse": [
    {
@@ -3327,7 +3374,8 @@
    "comert",
    "horeca",
    "productie",
-   "agricultura"
+   "agricultura",
+   "auto"
   ],
   "surse": [
    {
@@ -3455,7 +3503,8 @@
   "temei_legal": "Regulamentul pentru atestarea operatorilor economici care proiectează, execută și verifică instalații electrice, aprobat prin Ordinul ANRE nr. 134/2021 (MO nr. 1216/22.12.2021), art. 2, 8–10, 12–14, 20–22, 24, 26, 28, 30–31, 36, 41 și anexele 1, 3–10; Ordinul ANRE nr. 82/2025 privind tarifele și contribuțiile bănești percepute de ANRE în 2026, anexa 2; cadrul general: Legea energiei electrice și a gazelor naturale nr. 123/2012.",
   "activitati": [
    "constructii",
-   "servicii"
+   "servicii",
+   "imobiliare"
   ],
   "surse": [
    {
@@ -3563,7 +3612,8 @@
   "temei_legal": "OG 82/2000 privind autorizarea operatorilor economici care desfășoară activități de reparare, reglare, modificare constructivă și dezmembrare a vehiculelor rutiere, art. 1, 2, 3, 4, 5, 6^1; Reglementările RNTR 9, aprobate prin Ordinul nr. 2.131/2005, cu modificările ulterioare (Ordinele 1.022/2013, 572/2016, 2.222/2020, 1.223/2021), cap. II pct. 4–21 și anexele 1–4.",
   "activitati": [
    "servicii",
-   "transport"
+   "transport",
+   "auto"
   ],
   "surse": [
    {
@@ -3964,7 +4014,8 @@
   "activitati": [
    "comert",
    "horeca",
-   "servicii"
+   "servicii",
+   "frumusete"
   ],
   "surse": [
    {
@@ -4440,7 +4491,13 @@
    "constructii",
    "transport",
    "horeca",
-   "birou"
+   "birou",
+   "auto",
+   "educatie",
+   "imobiliare",
+   "it",
+   "ong",
+   "frumusete"
   ],
   "surse": [
    {
@@ -4555,7 +4612,8 @@
    "comert",
    "servicii",
    "productie",
-   "horeca"
+   "horeca",
+   "it"
   ],
   "surse": [
    {
@@ -4715,7 +4773,13 @@
    "productie",
    "agricultura",
    "cabinet",
-   "birou"
+   "birou",
+   "auto",
+   "educatie",
+   "imobiliare",
+   "it",
+   "ong",
+   "frumusete"
   ],
   "surse": [
    {
@@ -4835,7 +4899,13 @@
    "servicii",
    "productie",
    "agricultura",
-   "transport"
+   "transport",
+   "auto",
+   "educatie",
+   "imobiliare",
+   "it",
+   "ong",
+   "frumusete"
   ],
   "surse": [
    {
@@ -4981,7 +5051,8 @@
   "temei_legal": "Legea energiei electrice și a gazelor naturale nr. 123/2012, art. 119 pct. 1, art. 120, art. 121 alin. (1); Ordinul ANRE nr. 17/2026 privind aprobarea Regulamentului pentru autorizarea operatorilor economici care desfășoară activități în domeniul gazelor naturale, art. 1, 4–19, 22–29, 31, 34, 35, 39 și anexele 1–10; tarifele: Ordinul ANRE nr. 82/2025.",
   "activitati": [
    "constructii",
-   "servicii"
+   "servicii",
+   "imobiliare"
   ],
   "surse": [
    {
@@ -5094,7 +5165,8 @@
   "termen_legal": "Autorizația sanitară pe bază de declarație: cel mult 20 de zile lucrătoare (Ordinul 1030/2009, art. 8), cu verificare în 30 de zile (art. 6 alin. (3)); pe bază de referat de evaluare: 20 de zile lucrătoare de la dosarul complet (art. 13).",
   "temei_legal": "Legea învățământului preuniversitar nr. 198/2023, art. 31 alin. (8) și art. 32 alin. (2); Metodologia de organizare a Programului „Școala după școală”, aprobată prin Ordinul MECTS nr. 5349/2011, art. 3, 5, 10, 14, 17–19, 21; Normele de igienă aprobate prin Ordinul MS nr. 1456/2020, art. 1, 4, 5, 10, 33, 34; Ordinul MS nr. 1030/2009 privind procedurile de reglementare sanitară, art. 4–10, 13 și anexele 1–2; HG nr. 571/2016, art. 1 și anexa 1.",
   "activitati": [
-   "servicii"
+   "servicii",
+   "educatie"
   ],
   "surse": [
    {

@@ -45,6 +45,7 @@ try {
   await p.until("!!document.querySelector('[role=radiogroup][aria-label=\"Tipul de activitate\"]')", 10000);
   const kinds = await p.eval("[...document.querySelectorAll('.activity strong')].map(e => e.textContent)");
   check("fereastra arată tipurile de activitate", kinds.includes("Comerț") && kinds.includes("Construcții") && kinds.length >= 8, kinds.join(", "));
+  check("8.17: și tipurile noi (service auto, educație, imobiliare, IT, asociații, saloane)", ["Service auto și vulcanizare", "Educație și training", "Imobiliare și administrare", "IT și servicii digitale", "Asociații și fundații", "Saloane și îngrijire personală"].every((k) => kinds.includes(k)) && kinds.length === 15, String(kinds.length));
   await p.click("Comerț", ".activity");
   await p.until("!!document.querySelector('.activity-modules')", 5000);
   const mods = await p.eval("[...document.querySelectorAll('.activity-modules li')].map(li => li.innerText.replace(/\\s+/g, ' '))");

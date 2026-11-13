@@ -90,17 +90,7 @@ mod tests {
     /// Every procedure of the catalog is complete and sourced (D-088).
     #[test]
     fn the_catalog_is_sourced_and_complete() {
-        let acts = [
-            "comert",
-            "constructii",
-            "transport",
-            "horeca",
-            "servicii",
-            "productie",
-            "agricultura",
-            "cabinet",
-            "birou",
-        ];
+        let acts: Vec<&str> = kgb_core::activities::ACTIVITIES.iter().map(|a| a.id).collect();
         let mut keys = std::collections::BTreeSet::new();
         for e in entries() {
             assert!(keys.insert(e.cheie.clone()), "{} de două ori", e.cheie);
