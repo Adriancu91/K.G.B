@@ -38,6 +38,7 @@ import { SourcesPage } from "./pages/SourcesPage";
 import { PartnersPage } from "./pages/PartnersPage";
 import { WebClipsPage } from "./pages/WebClipsPage";
 import { HelpPage } from "./pages/HelpPage";
+import { WorkspacePage } from "./pages/WorkspacePage";
 import { ChatPage } from "./pages/ChatPage";
 import { PhonePage } from "./pages/PhonePage";
 import { TeamOverviewPage } from "./pages/TeamOverviewPage";
@@ -88,6 +89,11 @@ export function App() {
   const [modules, setModules] = useState<ModulesReply | null>(null);
   const [page, setPage] = useState("home");
   const [helpFocus, setHelpFocus] = useState<string | null>(null);
+  // Once opened, the workspace stays in memory (hidden) while other pages are shown: its tabs keep their windows.
+  const [workspaceOpened, setWorkspaceOpened] = useState(false);
+  useEffect(() => {
+    if (page === "workspace") setWorkspaceOpened(true);
+  }, [page]);
   const [error, setError] = useState<string | null>(null);
   const [dragWidth, setDragWidth] = useState<number | null>(null);
 
@@ -161,6 +167,10 @@ export function App() {
 
   const s = settings?.settings;
   const nav: NavItem[] = [{ id: "home", label: "Acasă" }];
+  // The workspace with tabs (8.21), when one of the office modules is on.
+  const office = ["kgb.sheets", "kgb.write", "kgb.pdf", "kgb.notes", "kgb.docs"];
+  if (modules?.modules.some((m) => office.includes(m.id) && m.enabled && (modules.access[m.id] ?? "scriere") !== "niciunul"))
+    nav.push({ id: "workspace", label: "Spațiu de lucru" });
   for (const m of modules?.modules ?? []) {
     const access = modules?.access[m.id] ?? "scriere";
     if (m.enabled && !modules?.hidden.includes(m.id) && access !== "niciunul") {
@@ -297,7 +307,7 @@ export function App() {
               doar citire
             </span>
           )}
-          {page !== "home" && (
+          {page !== "home" && page !== "workspace" && (
             <button
               className="link small pin"
               title="Pune un panou cu această pagină pe Acasă"
@@ -335,6 +345,11 @@ export function App() {
               închide
             </button>
           </p>
+        )}
+        {(workspaceOpened || page === "workspace") && nav.some((n) => n.id === "workspace") && (
+          <div className="workspace-host" hidden={page !== "workspace"}>
+            <WorkspacePage modules={modules} visible={page === "workspace"} onError={setError} />
+          </div>
         )}
         {page === "home" && (
           <Home

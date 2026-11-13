@@ -89,9 +89,11 @@ function Canvas({ doc, page, width }: { doc: PDFDocumentProxy; page: number; wid
   return err ? <p className="error">Pagina nu se poate afișa: {err}</p> : <canvas ref={ref} aria-label={`Pagina ${page}`} />;
 }
 
-export function PdfPage({ onError }: { onError: (e: string | null) => void }) {
+// `docId`: the page shows only this document, without the list (a tab of the workspace, 8.21); `active`: the
+// page is the one in front (the keys Ctrl+S, Delete, Escape act only there).
+export function PdfPage({ onError, docId, active = true }: { onError: (e: string | null) => void; docId?: string; active?: boolean }) {
   const [docs, setDocs] = useState<Doc[]>([]);
-  const [current, setCurrent] = useState<string | null>(null);
+  const [current, setCurrent] = useState<string | null>(docId ?? null);
   const [version, setVersion] = useState<number | null>(null);
   const [info, setInfo] = useState<Info | null>(null);
   const [view, setView] = useState<PDFDocumentProxy | null>(null);
@@ -319,6 +321,7 @@ export function PdfPage({ onError }: { onError: (e: string | null) => void }) {
   // Keys as in COS: Esc stops placing, Delete removes the chosen stamp, Ctrl+S saves the stamps.
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
+      if (!active) return;
       const t = e.target;
       const typing = t instanceof HTMLInputElement || t instanceof HTMLTextAreaElement || t instanceof HTMLSelectElement;
       if (e.key === "Escape" && armed) setArmed(null);
@@ -343,10 +346,13 @@ export function PdfPage({ onError }: { onError: (e: string | null) => void }) {
 
   return (
     <section className="pdf">
+      {!docId && (
       <p className="muted">
         Modul beta. Originalul importat nu se modifică niciodată: fiecare schimbare devine o versiune nouă, după
         previzualizare. PDF-urile deteriorate sau criptate se deschid doar pentru citire.
       </p>
+      )}
+      {!docId && (
       <div className="row wrap">
         <button className="primary" onClick={() => void onImport()} disabled={busy}>
           Importă PDF…
@@ -360,8 +366,11 @@ export function PdfPage({ onError }: { onError: (e: string | null) => void }) {
         </button>
         {notice && <span className="muted grow">{notice}</span>}
       </div>
+      )}
+      {docId && notice && <p className="muted">{notice}</p>}
 
       <div className="pdf-layout">
+        {!docId && (
         <ul className="list pdf-docs" aria-label="Documente PDF">
           {docs.length === 0 && <li className="muted">Niciun document. Importă un PDF.</li>}
           {docs.map((d) => (
@@ -379,6 +388,7 @@ export function PdfPage({ onError }: { onError: (e: string | null) => void }) {
             </li>
           ))}
         </ul>
+        )}
 
         {doc && info && info.id === doc.id && (
           <div className="pdf-doc grow">
