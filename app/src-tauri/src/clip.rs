@@ -244,7 +244,12 @@ fn home_label(id: &str) -> String {
 /// Shows a frozen web window on the start page, inside the main window, over its panel: `rect` is `[x, y, w, h]`
 /// in logical pixels of the window. It is moved if it is there already; a size under 20 hides it (the panel is not
 /// fully on screen, or a dialog is over it).
+/// The start page sends where its panels are many times a second, each on its own thread: one at a time, or two
+/// could both find no web window and both try to make it ("a webview with label … already exists").
+static EMBED: std::sync::Mutex<()> = std::sync::Mutex::new(());
+
 pub fn embed(app: &AppHandle, root: &Path, id: &str, rect: [f64; 4], offset: [f64; 2]) -> Result<(), String> {
+    let _one = EMBED.lock().unwrap_or_else(|e| e.into_inner());
     let [x, y, w, h] = rect;
     let label = home_label(id);
     // The part of the panel hidden by scrolling the start page: the page inside is moved by as much, so the frozen
@@ -298,6 +303,7 @@ pub fn embed(app: &AppHandle, root: &Path, id: &str, rect: [f64; 4], offset: [f6
 
 /// Takes a web window off the start page (the person left the page, or removed the panel).
 pub fn unembed(app: &AppHandle, id: &str) {
+    let _one = EMBED.lock().unwrap_or_else(|e| e.into_inner());
     if let Some(v) = app.get_webview(&home_label(id)) {
         let _ = v.close();
     }

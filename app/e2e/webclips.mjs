@@ -144,6 +144,12 @@ try {
   check("panoul rămâne pe Acasă (e în setări)", kept.settings.home.panels.some((x) => x.id === `web:${c.id}`));
   await p.click("Ferestre web", "nav .nav");
   await p.until("!!document.querySelector('.web-clips')", 8000);
+  // Home sends where the panel is many times a second, each call on its own thread: several at once while the web
+  // window is being made must not fail with "a webview with label … already exists" (seen by the owner, 13.11).
+  await invoke("clip_unembed", { id: c.id });
+  const many = await p.eval(`Promise.all([0, 1, 2, 3, 4, 5].map((i) => window.__TAURI_INTERNALS__.invoke('clip_embed', { id: ${JSON.stringify(c.id)}, rect: [300 + i, 300, 400, 300], offset: [0, 0] }).then(() => 'ok', (e) => String(e))))`);
+  await invoke("clip_unembed", { id: c.id });
+  check("mai multe cereri deodată pentru același panou nu dau „already exists”", many.every((r) => r === "ok"), many.join(" | "));
   await p.click("Scoate de pe Acasă", ".web-clips button");
   await p.until("[...document.querySelectorAll('.web-clips button')].some(b => b.innerText === 'Fixează pe Acasă')", 8000);
   check("„Scoate de pe Acasă” îl scoate", !(await invoke("get_settings")).settings.home.panels.some((x) => x.id === `web:${c.id}`));
