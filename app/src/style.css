@@ -2030,16 +2030,180 @@ pre.notices {
 }
 
 /* Acasă › fereastră web (8.20) */
-.web-clip-box {
-  position: relative;
+.web-clip {
+  display: flex;
+  flex-direction: column;
   width: 100%;
   height: 100%;
+}
+.web-clip-tools {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 6px;
+  padding: 2px 10px;
+}
+.web-clip-box {
+  position: relative;
+  flex: 1;
   min-height: 60px;
 }
-.panel.free .panel-body:has(> .web-clip-box) {
+.panel.free .panel-body:has(> .web-clip) {
   padding: 0;
   overflow: hidden;
 }
 .web-clip-box > p {
   margin: 8px 12px;
+}
+
+/* ---------- Stilurile ferestrei (cerere 13.11): butoane în relief, culori în degrade ---------- */
+/* Each look sets two accent colours (--g1 → --g2); light and dark mode keep their own background and text. */
+:root[data-look="ocean"] {
+  --g1: #1565c0;
+  --g2: #00acc1;
+  --accent: #1976d2;
+}
+:root[data-look="aurora"] {
+  --g1: #6a1b9a;
+  --g2: #ec407a;
+  --accent: #8e24aa;
+}
+:root[data-look="chihlimbar"] {
+  --g1: #e65100;
+  --g2: #ffb300;
+  --accent: #ef6c00;
+}
+:root[data-look] {
+  --accent-fg: #ffffff;
+  --relief: 0 1px 0 rgba(255, 255, 255, 0.35) inset, 0 -2px 0 rgba(0, 0, 0, 0.18) inset, 0 2px 4px rgba(0, 0, 0, 0.18);
+}
+:where(:root[data-look]) button:where(:not(.link, .icon)) {
+  background: linear-gradient(180deg, color-mix(in srgb, var(--panel) 85%, #fff) 0%, var(--panel) 55%, color-mix(in srgb, var(--panel) 88%, #000) 100%);
+  box-shadow: var(--relief);
+  border-color: color-mix(in srgb, var(--line) 70%, var(--accent));
+  transition: transform 0.06s ease, box-shadow 0.12s ease, filter 0.12s ease;
+}
+:where(:root[data-look]) button.primary {
+  background: linear-gradient(135deg, var(--g1), var(--g2));
+  border-color: color-mix(in srgb, var(--g1) 80%, #000);
+  color: #fff;
+  text-shadow: 0 1px 1px rgba(0, 0, 0, 0.25);
+}
+:where(:root[data-look]) button:where(:not(.link, .icon)):hover:not(:disabled) {
+  filter: brightness(1.06);
+  box-shadow: var(--relief), 0 4px 10px color-mix(in srgb, var(--g1) 30%, transparent);
+}
+:where(:root[data-look]) button:where(:not(.link, .icon)):active:not(:disabled) {
+  transform: translateY(1px);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.25) inset;
+}
+:root[data-look] .card,
+:root[data-look] .panel {
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.05) inset, 0 6px 18px rgba(0, 0, 0, 0.12);
+}
+:root[data-look] .panel h3,
+:root[data-look] .page-head h1 {
+  background: linear-gradient(90deg, var(--g1), var(--g2));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+:root[data-look] .banner {
+  background: linear-gradient(90deg, var(--g1), var(--g2));
+}
+:root[data-look] nav .nav.active,
+:root[data-look] nav .nav[aria-current="page"] {
+  background: linear-gradient(135deg, var(--g1), var(--g2));
+  color: #fff;
+}
+
+/* Setări › Stilul: one card per look, showing its buttons */
+.look-picker {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.look-card {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  align-items: center;
+  padding: 10px;
+  min-width: 150px;
+}
+.look-card.on {
+  outline: 2px solid var(--accent);
+}
+.look-sample {
+  display: flex;
+  gap: 6px;
+}
+.look-btn {
+  padding: 3px 8px;
+  border-radius: 6px;
+  border: 1px solid var(--line);
+  background: var(--panel);
+  font-size: 12px;
+}
+.look-btn.primary {
+  background: var(--accent);
+  color: var(--accent-fg);
+}
+[data-look-preview="ocean"] .look-btn,
+[data-look-preview="aurora"] .look-btn,
+[data-look-preview="chihlimbar"] .look-btn {
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.35) inset, 0 -2px 0 rgba(0, 0, 0, 0.18) inset, 0 2px 4px rgba(0, 0, 0, 0.18);
+}
+[data-look-preview="ocean"] .look-btn.primary {
+  background: linear-gradient(135deg, #1565c0, #00acc1);
+  color: #fff;
+}
+[data-look-preview="aurora"] .look-btn.primary {
+  background: linear-gradient(135deg, #6a1b9a, #ec407a);
+  color: #fff;
+}
+[data-look-preview="chihlimbar"] .look-btn.primary {
+  background: linear-gradient(135deg, #e65100, #ffb300);
+  color: #fff;
+}
+
+/* Acasă › „Panouri”: the links that add panels, in one menu */
+.cc-panels-menu {
+  position: relative;
+}
+.cc-panels-menu > summary {
+  list-style: none;
+  cursor: pointer;
+  padding: calc(var(--pad) - 2px) 12px;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  background: var(--panel);
+}
+.cc-panels-menu > summary::after {
+  content: " ▾";
+}
+.cc-panels-menu[open] > summary::after {
+  content: " ▴";
+}
+.cc-panels-list {
+  position: absolute;
+  right: 0;
+  top: calc(100% + 4px);
+  z-index: 50;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 6px;
+  min-width: 220px;
+  padding: 10px 12px;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+}
+.cc-panels-list hr {
+  width: 100%;
+  border: 0;
+  border-top: 1px solid var(--line);
+  margin: 2px 0;
 }

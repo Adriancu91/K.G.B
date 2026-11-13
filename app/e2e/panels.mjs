@@ -90,7 +90,10 @@ try {
   await p.click("Parteneri", "nav .nav");
   await home(p);
   await p.until("document.querySelector(\".panel[data-panel='alerta']\") || false", 2000).catch(() => {});
-  if (!(await p.eval("!!document.querySelector(\".panel[data-panel='alerta']\")"))) await p.click("+ Alertă", ".cc-actions button");
+  if (!(await p.eval("!!document.querySelector(\".panel[data-panel='alerta']\")"))) {
+    await p.eval("document.querySelector('.cc-panels-menu').open = true");
+    await p.click("+ Alertă", ".cc-panels-list button");
+  }
   await p.until("document.querySelector(\".panel[data-panel='alerta']\").innerText.includes('Licență de test')", 8000);
   check("„Alertă” arată notificarea cea mai importantă", true);
   await p.eval(`[...document.querySelectorAll(".panel[data-panel='alerta'] button")].find(b => b.innerText === 'Am văzut').click()`);

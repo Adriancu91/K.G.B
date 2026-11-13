@@ -1,6 +1,7 @@
 // Workspace settings. Every change is validated and saved by the core.
 import { invoke } from "@tauri-apps/api/core";
 import { useEffect, useState, type FormEvent } from "react";
+import { applyLook, currentLook, LOOKS } from "../look";
 import { api, message, type AppInfo, type Density, type Settings, type SettingsReply, type Theme } from "../api";
 import { setLang, useLang } from "../i18n/lang";
 
@@ -56,6 +57,11 @@ export function SettingsPage(props: {
   onInfoChanged: () => Promise<void>;
   onError: (e: string | null) => void;
 }) {
+  const [look, setLook] = useState(currentLook());
+  const chooseLook = (id: string) => {
+    setLook(id);
+    applyLook(id);
+  };
   const s = props.reply.settings;
   const lang = useLang();
   const [owner, setOwner] = useState(props.info.owner?.display_name ?? "");
@@ -97,6 +103,27 @@ export function SettingsPage(props: {
           <option value="light">Luminoasă</option>
           <option value="dark">Întunecată</option>
         </select>
+      </div>
+      <div className="field">
+        <span>Stilul</span>
+        <div className="look-picker" role="radiogroup" aria-label="Stilul ferestrei">
+          {LOOKS.map(([id, name]) => (
+            <button
+              key={id}
+              role="radio"
+              aria-checked={look === id}
+              data-look-preview={id}
+              className={look === id ? "look-card on" : "look-card"}
+              onClick={() => chooseLook(id)}
+            >
+              <span className="look-sample">
+                <span className="look-btn primary">Salvează</span>
+                <span className="look-btn">Renunță</span>
+              </span>
+              <span>{name}</span>
+            </button>
+          ))}
+        </div>
       </div>
       <div className="field">
         <label htmlFor="density">Densitate</label>

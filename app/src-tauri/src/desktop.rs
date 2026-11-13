@@ -28,6 +28,16 @@ pub struct Prefs {
     /// K.G.B. on the computer.
     #[serde(default = "ro")]
     pub limba: String,
+    /// The look of the window on this PC: "clasic", "ocean", "aurora" or "chihlimbar" (buttons in relief, colour
+    /// gradients). Each person may choose it for themself, like the language.
+    #[serde(default = "classic")]
+    pub stil: String,
+}
+
+pub const LOOKS: &[&str] = &["clasic", "ocean", "aurora", "chihlimbar"];
+
+fn classic() -> String {
+    "clasic".into()
 }
 
 fn yes() -> bool {
@@ -43,6 +53,7 @@ impl Default for Prefs {
         Prefs {
             langa_ceas: true,
             limba: ro(),
+            stil: classic(),
         }
     }
 }

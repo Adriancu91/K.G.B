@@ -396,6 +396,28 @@ function RadioPanel({ onOpen }: { onOpen: (id: string) => void }) {
 function WebClipPanel({ id, onOpen }: { id: string; onOpen: (id: string) => void }) {
   const box = useRef<HTMLDivElement>(null);
   const [err, setErr] = useState<string | null>(null);
+  const [zoom, setZoom] = useState(1);
+  const zoomRef = useRef(1);
+  useEffect(() => {
+    invoke<{ ferestre: { id: string; zoom: number }[] }>("clip_list").then(
+      (r) => {
+        const z = r.ferestre.find((f) => f.id === id)?.zoom ?? 1;
+        zoomRef.current = z;
+        setZoom(z);
+      },
+      () => {},
+    );
+  }, [id]);
+  const changeZoom = (d: number) => {
+    const z = Math.min(4, Math.max(0.25, Math.round((zoomRef.current + d) * 100) / 100));
+    invoke<{ zoom: number }>("clip_zoom", { id, zoom: z }).then(
+      (c) => {
+        zoomRef.current = c.zoom;
+        setZoom(c.zoom);
+      },
+      (e: unknown) => setErr(message(e)),
+    );
+  };
   useEffect(() => {
     if (err) return;
     let last = "";
@@ -406,28 +428,51 @@ function WebClipPanel({ id, onOpen }: { id: string; onOpen: (id: string) => void
       if (!el || !main) return;
       const r = el.getBoundingClientRect();
       const m = main.getBoundingClientRect();
-      const covered = !!document.querySelector('.overlay, [role="dialog"], [aria-modal="true"]');
-      const inside = r.width >= 20 && r.height >= 20 && r.top >= m.top && r.bottom <= m.bottom && r.left >= m.left && r.right <= m.right;
-      const rect = !covered && inside ? [r.left, r.top, r.width, r.height].map((v) => Math.round(v)) : [0, 0, 0, 0];
-      const key = rect.join(",");
+      const covered = !!document.querySelector('.overlay, [role="dialog"], [aria-modal="true"], .cc-panels-menu[open]');
+      // Only the part of the panel that is on screen; the page inside moves by what scrolled out above or left.
+      const left = Math.max(r.left, m.left);
+      const top = Math.max(r.top, m.top);
+      const w = Math.min(r.right, m.right) - left;
+      const h = Math.min(r.bottom, m.bottom) - top;
+      const show = !covered && w >= 20 && h >= 20;
+      const rect = show ? [left, top, w, h].map((v) => Math.round(v)) : [0, 0, 0, 0];
+      const offset = show ? [(left - r.left) / zoomRef.current, (top - r.top) / zoomRef.current].map((v) => Math.round(v)) : [0, 0];
+      const key = `${rect.join(",")}/${offset.join(",")}`;
       if (key === last) return;
       last = key;
-      invoke("clip_embed", { id, rect }).catch((e: unknown) => {
+      invoke("clip_embed", { id, rect, offset }).catch((e: unknown) => {
         if (!stopped) setErr(message(e));
       });
     };
     tick();
     const t = setInterval(tick, 100);
+    const main = document.querySelector("main");
+    const onScroll = () => requestAnimationFrame(tick);
+    main?.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll);
     return () => {
       stopped = true;
       clearInterval(t);
+      main?.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onScroll);
       void invoke("clip_unembed", { id }).catch(() => {});
     };
   }, [id, err]);
   if (err) return <Off err={err} onOpen={onOpen} />;
   return (
-    <div className="web-clip-box" ref={box} data-clip={id}>
-      <p className="muted small">Se încarcă pagina… (se vede când panoul e întreg pe ecran)</p>
+    <div className="web-clip">
+      <div className="web-clip-tools">
+        <button className="icon" onClick={() => changeZoom(-0.1)} aria-label="Micșorează pagina" title="Micșorează pagina">
+          −
+        </button>
+        <span className="small">{Math.round(zoom * 100)}%</span>
+        <button className="icon" onClick={() => changeZoom(0.1)} aria-label="Mărește pagina" title="Mărește pagina">
+          +
+        </button>
+      </div>
+      <div className="web-clip-box" ref={box} data-clip={id}>
+        <p className="muted small">Se încarcă pagina…</p>
+      </div>
     </div>
   );
 }
@@ -878,14 +923,27 @@ export function Home(props: {
           </button>
         ))}
         <span className="grow" />
-        {builtInHidden.map((id) => (
-          <button key={id} className="link" onClick={() => save({ panels: [...panels, { id, x: 0, y: bottom, w: 495, h: 260 }] })}>
-            + {TITLES[id]}
-          </button>
-        ))}
-        <button className="link" onClick={() => save({ panels: props.implicit.panels })}>
-          Revino la implicit
-        </button>
+        <details className="cc-panels-menu">
+          <summary>Panouri</summary>
+          <div className="cc-panels-list" role="menu">
+            {builtInHidden.map((id) => (
+              <button key={id} role="menuitem" className="link" onClick={(e) => {
+                (e.currentTarget.closest("details") as HTMLDetailsElement | null)?.removeAttribute("open");
+                save({ panels: [...panels, { id, x: 0, y: bottom, w: 495, h: 260 }] });
+              }}>
+                + {TITLES[id]}
+              </button>
+            ))}
+            {builtInHidden.length === 0 && <span className="muted small">Toate panourile sunt pe Acasă.</span>}
+            <hr />
+            <button role="menuitem" className="link" onClick={(e) => {
+              (e.currentTarget.closest("details") as HTMLDetailsElement | null)?.removeAttribute("open");
+              save({ panels: props.implicit.panels });
+            }}>
+              Revino la implicit
+            </button>
+          </div>
+        </details>
       </div>
       <p className="muted small">
         Muți un panou trăgându-l de titlu; îl mărești trăgând de marginea din dreapta, de jos sau de colț. Îl pui deasupra celorlalte atingându-l. Orice

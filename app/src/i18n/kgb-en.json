@@ -3817,7 +3817,19 @@
   "Fereastră web": "Web window",
   "Arată zona înghețată într-un panou pe Acasă": "Show the frozen area in a panel on Home",
   "alege întâi zona și apasă „Îngheață” în „Ferestre web”": "first choose the area and press “Freeze” in “Web windows”",
-  "fereastra principală nu e deschisă": "the main window is not open"
+  "fereastra principală nu e deschisă": "the main window is not open",
+  "Se încarcă pagina…": "Loading the page…",
+  "Aurora": "Aurora",
+  "Ocean": "Ocean",
+  "Chihlimbar": "Amber",
+  "Clasic": "Classic",
+  "Stilul": "Style",
+  "Panouri": "Panels",
+  "Toate panourile sunt pe Acasă.": "All panels are on Home.",
+  "Stilul ferestrei": "Window style",
+  "stilul nu există": "the style does not exist",
+  "Salvează": "Save",
+  "Renunță": "Cancel"
  },
  "templates": {
   "{0} facturi găsite": "{0} invoices found",
@@ -4587,7 +4599,8 @@
   "cel mult {0} ferestre web": "at most {0} web windows",
   "catalogul de radiouri a răspuns cu codul {0}": "the radio directory answered with code {0}",
   "radioul nu a pornit: {0}": "the radio did not start: {0}",
-  "ghidul nu s-a putut salva: {0}": "the guide could not be saved: {0}"
+  "ghidul nu s-a putut salva: {0}": "the guide could not be saved: {0}",
+  "Stilul nu s-a salvat: {0}": "The style was not saved: {0}"
  },
  "skip": [
   "durata contractului este de",
