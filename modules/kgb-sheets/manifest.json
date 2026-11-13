@@ -2,7 +2,7 @@
   "manifest_format": 1,
   "id": "kgb.sheets",
   "name": "Foi de calcul",
-  "description": "Deschide XLSX, XLSM, XLS, ODS și CSV; editează XLSX cu formule recalculate. Fiecare salvare devine o versiune nouă, după o previzualizare care arată exact ce s-ar pierde; originalul importat rămâne neatins.",
+  "description": "Deschide .xlsx, .xlsm, .xls, .xlsb, .ods și .csv; editează foile cu formule recalculate. Pornești și din modele gata făcute: factură, deviz de lucrări, registru de casă, buget lunar, centralizator de cheltuieli, listă de inventariere. Exportă .xlsx, .csv și PDF. Fiecare salvare devine o versiune nouă, după o previzualizare care arată exact ce s-ar pierde; originalul importat rămâne neatins.",
   "version": "0.1.0",
   "core": ">=0.1.0, <0.2.0",
   "status": "beta",
