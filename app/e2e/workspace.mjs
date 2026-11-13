@@ -2,7 +2,8 @@
 // spreadsheets (two CSV files imported, one value different) open in two tabs from „Deschide un document salvat…”,
 // side by side, „Compară” finds the one row only on the left and the one only on the right and colours the different
 // cell in both tables, „+ › Foaie de calcul nouă” makes a third tab, the two saved ones come back after a restart
-// (the new, unsaved one does not) and a tab closes with ×.
+// (the new, unsaved one does not) and a tab closes with ×. The notebook is open in one window only: with it in a
+// tab, the Note page leads to that tab instead of opening a second window on the same notebook.
 //
 // Usage: node app/e2e/workspace.mjs <path-to-kgb-app.exe> <screenshot-dir>
 // Uses a throw-away data folder (KGB_DATA_DIR), never the user's real data.
@@ -20,7 +21,7 @@ if (!exe || !shots) {
 mkdirSync(shots, { recursive: true });
 const data = mkdtempSync(join(tmpdir(), "kgb-workspace-"));
 const files = mkdtempSync(join(tmpdir(), "kgb-workspace-files-"));
-const PORT = 9382;
+const PORT = 9384;
 let proc;
 let page;
 const results = [];
@@ -93,6 +94,13 @@ try {
   await p.eval(`${card}.querySelector('button').click()`);
   await sleep(300);
   await p.click("Acordă și activează");
+  await sleep(500);
+  const notesCard = "[...document.querySelectorAll('.card')].find(c => c.querySelector('h3')?.innerText.trim() === 'Note')";
+  await p.until(`!!${notesCard}`, 8000);
+  await p.eval(`${notesCard}.querySelector('button').click()`);
+  await sleep(300);
+  await p.click("Acordă și activează");
+  await sleep(500);
   for (const f of ["preturi-ianuarie.csv", "preturi-februarie.csv"]) {
     const r = await p.eval(`window.__TAURI_INTERNALS__.invoke("module_import_file", ${JSON.stringify({ id: "kgb.sheets", path: join(files, f) })}).then(r => r.document?.name ?? '', e => 'ERR ' + e)`);
     if (r !== f) throw new Error(`import ${f}: ${r}`);
@@ -144,18 +152,31 @@ try {
   check("„+ › Foaie de calcul nouă” deschide al treilea tab, în față", (await tabNames(p)).length === 3 && (await p.eval("document.querySelectorAll('.ws-tab')[2].classList.contains('active')")));
   await p.screenshot(join(shots, "02-taburi.png"));
 
+  // The notebook in a tab; then the Note page leads to it (one window on the notebook, not two).
+  await p.eval("document.querySelector('.ws-plus').click()");
+  await sleep(200);
+  await clickText(p, "Caietul de note", ".ws-menu");
+  await p.until("[...document.querySelectorAll('iframe')].some(f => f.getAttribute('src')?.includes('app=notes'))", 8000);
+  await p.eval("[...document.querySelectorAll('nav .nav')].find(e => e.textContent.trim().startsWith('Note')).click()");
+  await sleep(1200);
+  const one = await p.eval(`({ ws: !document.querySelector('.workspace-host')?.hidden,
+    frames: [...document.querySelectorAll('iframe')].filter(f => f.getAttribute('src')?.includes('app=notes')).length,
+    page: !!document.querySelector('.notes-window'),
+    active: document.querySelector('.ws-tab.active')?.dataset.kind ?? '' })`);
+  check("cu caietul într-un tab, pagina Note duce la tabul lui (o singură fereastră pe caiet)", one.ws && one.frames === 1 && !one.page && one.active === "notes", JSON.stringify(one));
+
   // After a restart: the two saved ones come back.
   await sleep(500);
   await stop(p);
   p = await start();
   await openWorkspace(p);
-  await p.until("document.querySelectorAll('.ws-tab').length === 2", 8000).catch(() => {});
+  await p.until("document.querySelectorAll('.ws-tab').length === 3", 8000).catch(() => {});
   const again = await tabNames(p);
-  check("după repornire revin cele două foi salvate (cea nouă, nesalvată, nu)", again.length === 2 && again[0].includes("preturi-ianuarie.csv") && again[1].includes("preturi-februarie.csv"), JSON.stringify(again));
+  check("după repornire revin cele două foi salvate și caietul (foaia nouă, nesalvată, nu)", again.length === 3 && again[0].includes("preturi-ianuarie.csv") && again[1].includes("preturi-februarie.csv") && again[2].includes("Caietul de note"), JSON.stringify(again));
   await p.eval("document.querySelectorAll('.ws-close')[0].click()");
   await sleep(400);
   const left = await tabNames(p);
-  check("× închide tabul", left.length === 1 && left[0].includes("preturi-februarie.csv"), JSON.stringify(left));
+  check("× închide tabul", left.length === 2 && left[0].includes("preturi-februarie.csv"), JSON.stringify(left));
   await stop(p);
 } catch (e) {
   check("scenariul a rulat până la capăt", false, String(e?.stack ?? e));

@@ -94,6 +94,15 @@ export function App() {
   useEffect(() => {
     if (page === "workspace") setWorkspaceOpened(true);
   }, [page]);
+  // The notebook is open in one window only: with it in a workspace tab, the Note page leads to that tab.
+  const [wsNotes, setWsNotes] = useState(false);
+  const [focusNotes, setFocusNotes] = useState(0);
+  useEffect(() => {
+    if (page === "kgb.notes" && wsNotes) {
+      setFocusNotes((n) => n + 1);
+      setPage("workspace");
+    }
+  }, [page, wsNotes]);
   const [error, setError] = useState<string | null>(null);
   const [dragWidth, setDragWidth] = useState<number | null>(null);
 
@@ -348,7 +357,7 @@ export function App() {
         )}
         {(workspaceOpened || page === "workspace") && nav.some((n) => n.id === "workspace") && (
           <div className="workspace-host" hidden={page !== "workspace"}>
-            <WorkspacePage modules={modules} visible={page === "workspace"} onError={setError} />
+            <WorkspacePage modules={modules} visible={page === "workspace"} onError={setError} focusNotes={focusNotes} onNotesTab={setWsNotes} />
           </div>
         )}
         {page === "home" && (
@@ -401,7 +410,7 @@ export function App() {
         {page === "org" && <OrgPage onError={setError} onChanged={() => void loadModules()} />}
         {page === "diagnostics" && <DiagnosticsPage onError={setError} />}
         {page === "data" && <DataPage onError={setError} onSwitched={() => window.location.reload()} />}
-        {ModulePage && <ModulePage onError={setError} access={modules.access[page]} onOpen={setPage} />}
+        {ModulePage && !(page === "kgb.notes" && wsNotes) && <ModulePage onError={setError} access={modules.access[page]} onOpen={setPage} />}
         {!ModulePage && modules.modules.some((m) => m.id === page) && (
           <p className="muted">Acest modul nu are încă interfață.</p>
         )}

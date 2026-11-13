@@ -113,7 +113,21 @@ export function sheetDiffs(left: string, right: string): [Record<string, string[
   return [ml, mr];
 }
 
-export function WorkspacePage({ modules, visible, onError }: { modules: ModulesReply; visible: boolean; onError: (e: string | null) => void }) {
+// `focusNotes`: changes when the app asks for the notebook while a tab here has it open (one window per notebook);
+// `onNotesTab`: says whether a tab here holds the notebook.
+export function WorkspacePage({
+  modules,
+  visible,
+  onError,
+  focusNotes = 0,
+  onNotesTab,
+}: {
+  modules: ModulesReply;
+  visible: boolean;
+  onError: (e: string | null) => void;
+  focusNotes?: number;
+  onNotesTab?: (open: boolean) => void;
+}) {
   const can = useCallback(
     (k: TabKind) => {
       const id = MODULE[k];
@@ -205,6 +219,17 @@ export function WorkspacePage({ modules, visible, onError }: { modules: ModulesR
     }, 1000);
     return () => window.clearInterval(iv);
   }, []);
+
+  // The notebook is open in one window only: the app's Note page brings this tab to the front instead.
+  const notesKey = tabs.find((t) => t.kind === "notes")?.key ?? null;
+  useEffect(() => {
+    onNotesTab?.(notesKey !== null);
+  }, [notesKey, onNotesTab]);
+  useEffect(() => {
+    if (!focusNotes || !notesKey) return;
+    setActive(notesKey);
+    setPair((p) => (p && !p.includes(notesKey) ? null : p));
+  }, [focusNotes]); // eslint-disable-line react-hooks/exhaustive-deps
 
   // A window shown again (or made narrower by the side-by-side view) lays itself out anew.
   const shown = useMemo(() => (pair && active && pair.includes(active) ? pair : active ? [active] : []), [pair, active]);
