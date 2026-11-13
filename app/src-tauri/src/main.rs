@@ -804,11 +804,17 @@ async fn clip_zoom(app: State<'_, AppState>, handle: tauri::AppHandle, id: Strin
 
 /// A frozen web window shown on the start page, over its panel (`[x, y, w, h]`, logical pixels; 0 size hides it).
 #[tauri::command]
-async fn clip_embed(app: State<'_, AppState>, handle: tauri::AppHandle, id: String, rect: [f64; 4]) -> CmdResult<()> {
+async fn clip_embed(
+    app: State<'_, AppState>,
+    handle: tauri::AppHandle,
+    id: String,
+    rect: [f64; 4],
+    offset: Option<[f64; 2]>,
+) -> CmdResult<()> {
     if rect[2] >= 20.0 && rect[3] >= 20.0 {
         internet_on(&app)?;
     }
-    clip::embed(&handle, &app.root, &id, rect)
+    clip::embed(&handle, &app.root, &id, rect, offset.unwrap_or([0.0, 0.0]))
 }
 
 #[tauri::command]
@@ -2002,6 +2008,25 @@ fn lang_set(app: State<AppState>, limba: String) -> CmdResult<String> {
     Ok(prefs.limba)
 }
 
+/// The look of the window on this PC (cerere 13.11): buttons in relief and colour gradients.
+#[tauri::command]
+fn stil_get(app: State<AppState>) -> String {
+    desktop::load(&app.root).stil
+}
+
+#[tauri::command]
+fn stil_set(app: State<AppState>, stil: String) -> CmdResult<String> {
+    if !desktop::LOOKS.contains(&stil.as_str()) {
+        return Err("stilul nu există".into());
+    }
+    let prefs = desktop::Prefs {
+        stil,
+        ..desktop::load(&app.root)
+    };
+    desktop::save(&app.root, &prefs).map_err(|e| format!("Stilul nu s-a salvat: {e}"))?;
+    Ok(prefs.stil)
+}
+
 fn show_main(app: &tauri::AppHandle) {
     if let Some(w) = app.get_webview_window("main") {
         let _ = w.show();
@@ -2568,6 +2593,8 @@ fn main() {
             clip_close,
             clip_embed,
             clip_unembed,
+            stil_get,
+            stil_set,
             radio_search,
             radio_play,
             radio_stop,

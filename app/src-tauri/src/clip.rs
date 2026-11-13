@@ -186,11 +186,14 @@ fn script(c: &Clip, pick: bool) -> String {
       if (!document.getElementById("kgb-clip-css") && document.head) {
         const s = document.createElement("style"); s.id = "kgb-clip-css"; s.textContent = css; document.head.appendChild(s);
       }
-      if (Math.round(window.scrollX) !== C.x || Math.round(window.scrollY) !== C.y) window.scrollTo(C.x, C.y);
+      const o = Array.isArray(window.__kgbOff) ? window.__kgbOff : [0, 0];
+      const X = C.x + (+o[0] || 0), Y = C.y + (+o[1] || 0);
+      if (Math.round(window.scrollX) !== X || Math.round(window.scrollY) !== Y) window.scrollTo(X, Y);
     } catch (e) {}
   };
   document.addEventListener("DOMContentLoaded", hold);
   window.addEventListener("load", () => { hold(); setInterval(hold, 1000); });
+  window.addEventListener("kgbclip", hold);
   window.addEventListener("wheel", (e) => e.preventDefault(), { passive: false });
   window.addEventListener("keydown", (e) => {
     const t = (e.target && e.target.tagName) || "";
@@ -241,13 +244,21 @@ fn home_label(id: &str) -> String {
 /// Shows a frozen web window on the start page, inside the main window, over its panel: `rect` is `[x, y, w, h]`
 /// in logical pixels of the window. It is moved if it is there already; a size under 20 hides it (the panel is not
 /// fully on screen, or a dialog is over it).
-pub fn embed(app: &AppHandle, root: &Path, id: &str, rect: [f64; 4]) -> Result<(), String> {
+pub fn embed(app: &AppHandle, root: &Path, id: &str, rect: [f64; 4], offset: [f64; 2]) -> Result<(), String> {
     let [x, y, w, h] = rect;
     let label = home_label(id);
+    // The part of the panel hidden by scrolling the start page: the page inside is moved by as much, so the frozen
+    // part stays where it is in the panel (page pixels, whole numbers only).
+    let off = format!(
+        "window.__kgbOff=[{},{}];",
+        offset[0].clamp(0.0, 100_000.0).round() as i64,
+        offset[1].clamp(0.0, 100_000.0).round() as i64
+    );
     if let Some(v) = app.get_webview(&label) {
         if w < 20.0 || h < 20.0 {
             let _ = v.hide();
         } else {
+            let _ = v.eval(format!("{off}try{{window.dispatchEvent(new Event('kgbclip'))}}catch(e){{}}"));
             let _ = v.set_position(LogicalPosition::new(x, y));
             let _ = v.set_size(LogicalSize::new(w, h));
             let _ = v.show();
@@ -267,7 +278,7 @@ pub fn embed(app: &AppHandle, root: &Path, id: &str, rect: [f64; 4]) -> Result<(
     let (shown_nav, shown_load) = (shown.clone(), shown.clone());
     let b = WebviewBuilder::new(label, WebviewUrl::External(url))
         .incognito(true)
-        .initialization_script(script(&c, false))
+        .initialization_script(format!("{off}\n{}", script(&c, false)))
         .on_navigation(move |u| may_go(&shown_nav, u))
         .on_page_load(move |_v, p| loaded(&shown_load, &p))
         .on_new_window(|u, _| {
@@ -378,6 +389,9 @@ pub fn zoom(app: &AppHandle, root: &Path, id: &str, z: f64) -> Result<Clip, Stri
     let c = save(root, c)?;
     if let Some(w) = window(app, id) {
         let _ = w.set_zoom(c.zoom);
+    }
+    if let Some(v) = app.get_webview(&home_label(id)) {
+        let _ = v.set_zoom(c.zoom);
     }
     Ok(c)
 }

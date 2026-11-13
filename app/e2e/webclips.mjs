@@ -46,7 +46,7 @@ const server = createServer((req, res) => {
            try { t.invoke('app_info').then(() => fetch('/ipc?ok=1'), (e) => fetch('/ipc?ok=0&why=' + encodeURIComponent(String(e)).slice(0, 80))); }
            catch (e) { fetch('/ipc?ok=0&why=exceptie'); }
          });`
-      : `window.addEventListener('load', () => setTimeout(() => fetch('/pos?y=' + Math.round(window.scrollY) + '&ov=' + getComputedStyle(document.documentElement).overflowY), 2500));`;
+      : `window.addEventListener('load', () => { let last = -1; setInterval(() => { const y = Math.round(window.scrollY); if (y !== last) { last = y; fetch('/pos?y=' + y + '&ov=' + getComputedStyle(document.documentElement).overflowY); } }, 300); });`;
     return res
       .writeHead(200, { "Content-Type": "text/html; charset=utf-8" })
       .end(`<!doctype html><html><head><title>Pagina lunga</title></head><body style="margin:0"><div style="height:1200px;background:#ddd">sus</div><div id="tinta" style="height:200px;background:#2a7;color:#fff;font:40px sans-serif">CURS 4,9765</div><div style="height:2000px">jos</div><script>${script}</script></body></html>`);
@@ -128,6 +128,18 @@ try {
   const title = await p.eval(`document.querySelector('.panel[data-panel="web:${c.id}"] h3').innerText`);
   check("„Fixează pe Acasă” pune pe Acasă un panou cu numele ferestrei, cu pagina live pe partea înghețată", title === "Curs de test" && asked.filter((a) => a.startsWith("/pos")).length > before && homePos.includes("y=1200") && homePos.includes("ov=hidden"), `${title} · ${homePos}`);
   await p.screenshot(join(shots, "04-pe-acasa.png"));
+  // Scrolling Home so the top 100 px of the panel's page are hidden: it stays shown, the page inside moves by 100.
+  const panelSel = `.panel[data-panel="web:${c.id}"] .web-clip-box`;
+  await p.eval("document.querySelector('.cc-canvas').style.marginBottom = '1500px', true");
+  await sleep(300);
+  await p.eval(`(() => { const m = document.querySelector('main'); const r = document.querySelector('${panelSel}').getBoundingClientRect(); m.scrollTop += r.top - m.getBoundingClientRect().top + 100; return true; })()`);
+  const t2 = Date.now();
+  while (!asked.some((a) => a.startsWith("/pos?y=1300")) && Date.now() - t2 < 10000) await sleep(250);
+  check("derulând Acasă, panoul tăiat sus rămâne afișat, iar pagina din el se mută cu partea ascunsă", asked.some((a) => a.startsWith("/pos?y=1300")), JSON.stringify(asked.filter((a) => a.startsWith("/pos")).slice(-3)));
+  await p.eval(`document.querySelector('.panel[data-panel="web:${c.id}"]').scrollIntoView({ block: "center" })`);
+  await p.eval(`document.querySelector('.panel[data-panel="web:${c.id}"] button[aria-label="Micșorează pagina"]').click()`);
+  await p.until(`document.querySelector('.panel[data-panel="web:${c.id}"] .web-clip-tools').innerText.includes('90%')`, 8000);
+  check("butoanele −/+ din panou micșorează pagina și țin minte mărimea", (await invoke("clip_list")).ferestre[0].zoom === 0.9);
   const kept = await invoke("get_settings");
   check("panoul rămâne pe Acasă (e în setări)", kept.settings.home.panels.some((x) => x.id === `web:${c.id}`));
   await p.click("Ferestre web", "nav .nav");

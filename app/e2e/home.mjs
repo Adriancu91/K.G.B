@@ -86,7 +86,7 @@ try {
   const band = await p.eval("document.querySelector('.cc-band').innerText");
   check("banda de sus: salut, data, spațiul de lucru, ce e urgent", band.includes("Proprietar") && /\d{4}/.test(band) && band.includes("acte expiră în 7 zile"), band.replace(/\n/g, " "));
   const acts = await p.eval("document.querySelector('.cc-actions').innerText");
-  check("bara de acțiuni rapide", acts.includes("+ Partener") && acts.includes("Revino la implicit"), acts.replace(/\n/g, " ").slice(0, 80));
+  check("bara de acțiuni rapide", acts.includes("+ Partener") && acts.includes("Panouri"), acts.replace(/\n/g, " ").slice(0, 80));
   const todo = await p.eval("document.querySelector(\".panel[data-panel='rezolvat']\").innerText");
   check("„De rezolvat” arată actul care expiră, cu termenul scris", todo.includes("Autorizație de mediu nr. AM-7") && todo.includes("în 3 zile"), todo.split("\n").slice(0, 3).join(" | "));
   await scrollToTop(p);
@@ -162,7 +162,8 @@ try {
   // Hide, bring back, back to the default.
   await p.eval(`document.querySelector(".panel[data-panel='notificari'] button[aria-label^='Ascunde']").click()`);
   await p.until("!document.querySelector(\".panel[data-panel='notificari']\")", 5000);
-  check("un panou ascuns se poate aduce înapoi", await p.eval("[...document.querySelectorAll('.cc-actions button')].some(b => b.innerText === '+ Notificări necitite')"));
+  await p.eval("document.querySelector('.cc-panels-menu').open = true");
+  check("un panou ascuns se poate aduce înapoi, din meniul „Panouri”", await p.eval("[...document.querySelectorAll('.cc-panels-list button')].some(b => b.innerText === '+ Notificări necitite')"));
   await p.click("Revino la implicit", ".cc-actions button");
   await p.until("[...document.querySelectorAll('.panel.free')].map(e => e.dataset.panel).join(' ') === 'bani cifre rezolvat azi notificari documente curs vreme media stiri radio'", 5000);
   check("„Revino la implicit” aduce pornirea pentru rolul tău", true);
